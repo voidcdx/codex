@@ -85,6 +85,11 @@ Exception: Kuva/Tenet innate elements follow HCET priority (Heat > Cold > Electr
 | Radiation       | Heat + Electricity  |
 | Viral           | Cold + Toxin        |
 
+### Innate Element Placement Rules
+- **Primary innate elements** (e.g. Heat on Ignis) occupy **"Slot 9"** — after all mod slots — unless a mod of the same element is equipped. If a mod of the same element is present, the innate amount merges into that mod's slot position (first occurrence wins queue order).
+- **Secondary (combined) innate elements** (e.g. Magnetic on Kuva Nukor) are a fixed bucket — they cannot be uncombined or combined further with anything else. They are passed through directly to the damage output.
+- **Quantization order:** Combine raw bonus percentages first → calculate raw damage → then apply `quantize_damage()` to the final combined total. Never quantize individual primaries before combining.
+
 ## Damage Type Effectiveness (Update 36.0+)
 - **Vulnerable (+):** ×1.5
 - **Resistant (−):** ×0.5
