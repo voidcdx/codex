@@ -37,82 +37,49 @@ def combine_elements(
 ) -> list[DamageComponent]:
     """Combine primary elements into secondary elements per mod-order priority.
 
-    Algorithm:
-    1. Build ordered queue: mod elements first (left→right), then innate.
-       - Kuva/Tenet innate: first primary sorted by HCET goes second-to-last.
-    2. Walk the queue accumulating amounts per primary type.
-       Whenever two primaries are present, combine the oldest pair.
-    3. Combined element total is quantized at 1/32 of base_damage.
-    4. Unconsumed primaries are also quantized and returned.
+    Only the first instance of a primary element determines its position in
+    the combination queue. All instances contribute their amounts.
 
     Returns list of DamageComponents (secondaries + remaining primaries).
     """
-    # Merge mod elements into accumulator (ordered list of (DamageType, float))
-    # preserving first-seen order for combination priority
-    ordered: list[tuple[DamageType, float]] = []
+    seen_set: set[DamageType] = set()
+    unique_elements: list[DamageType] = []
     accumulated: dict[DamageType, float] = {}
 
     def _add(dtype: DamageType, amount: float) -> None:
-        if dtype not in accumulated:
-            ordered.append((dtype, 0.0))
+        if dtype not in seen_set:
+            seen_set.add(dtype)
+            unique_elements.append(dtype)
         accumulated[dtype] = accumulated.get(dtype, 0.0) + amount
 
     for comp in mod_elements:
         if comp.type in PRIMARY_ELEMENTS:
             _add(comp.type, comp.amount)
 
-    # Sort innate elements for Kuva/Tenet weapons
     innate_primaries = [c for c in innate_elements if c.type in PRIMARY_ELEMENTS]
     if is_kuva_tenet and innate_primaries:
         innate_primaries.sort(key=lambda c: HCET_ORDER.index(c.type))
-        # First by HCET order → second-to-last in queue; rest are last
-        for comp in innate_primaries:
-            _add(comp.type, comp.amount)
-    else:
-        for comp in innate_primaries:
-            _add(comp.type, comp.amount)
+    for comp in innate_primaries:
+        _add(comp.type, comp.amount)
 
-    # Refresh ordered list with final amounts
-    active: list[tuple[DamageType, float]] = [
-        (dt, accumulated[dt]) for dt, _ in ordered if dt in accumulated
-    ]
-
+    # Walk unique_elements i / i+1, combining adjacent pairs
     result: list[DamageComponent] = []
-
-    # Greedily combine pairs in order of appearance
-    while True:
-        # Find the first two distinct primaries
-        seen: list[int] = []
-        for i, (dt, _) in enumerate(active):
-            if dt in PRIMARY_ELEMENTS:
-                seen.append(i)
-            if len(seen) == 2:
-                break
-
-        if len(seen) < 2:
-            break
-
-        i0, i1 = seen[0], seen[1]
-        dt0, amt0 = active[i0]
-        dt1, amt1 = active[i1]
-        key = frozenset({dt0, dt1})
-
-        if key not in COMBINATION_TABLE:
-            # Not a valid combo — stop trying to combine these two
-            break
-
-        combined_type = COMBINATION_TABLE[key]
-        combined_amount = quantize(amt0 + amt1, base_damage)
-        result.append(DamageComponent(combined_type, combined_amount))
-
-        # Remove the two consumed primaries
-        active = [item for idx, item in enumerate(active) if idx not in (i0, i1)]
-
-    # Remaining primaries
-    for dt, amt in active:
-        if dt in PRIMARY_ELEMENTS:
-            q = quantize(amt, base_damage)
-            if q != 0.0:
-                result.append(DamageComponent(dt, q))
+    i = 0
+    while i < len(unique_elements):
+        current = unique_elements[i]
+        if i + 1 < len(unique_elements):
+            nxt = unique_elements[i + 1]
+            combo_key = frozenset({current, nxt})
+            if combo_key in COMBINATION_TABLE:
+                combined_amount = quantize(
+                    accumulated[current] + accumulated[nxt], base_damage
+                )
+                result.append(DamageComponent(COMBINATION_TABLE[combo_key], combined_amount))
+                i += 2
+                continue
+        q = quantize(accumulated[current], base_damage)
+        if q != 0.0:
+            result.append(DamageComponent(current, q))
+        i += 1
 
     return result
