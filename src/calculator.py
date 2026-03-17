@@ -74,6 +74,48 @@ EFFECTIVENESS: dict[tuple[HealthType, DamageType], float] = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Armor type modifiers: (ArmorType, DamageType) → (armor_mod, damage_mod)
+# armor_mod: fraction of armor ignored (effective_armor = armor × (1 − armor_mod))
+# damage_mod: additive damage bonus (e.g. 0.5 → ×1.5, -0.5 → ×0.5)
+# Omitted entries: (0.0, 0.0) — no armor ignore, neutral damage
+# ---------------------------------------------------------------------------
+ARMOR_TYPE_MODIFIERS: dict[tuple[ArmorType, DamageType], tuple[float, float]] = {
+    # Ferrite Armor (Grineer)
+    (ArmorType.FERRITE, DamageType.PUNCTURE):  (0.5,  0.5),
+    (ArmorType.FERRITE, DamageType.CORROSIVE): (0.75, 0.5),
+    (ArmorType.FERRITE, DamageType.BLAST):     (0.0, -0.5),
+    (ArmorType.FERRITE, DamageType.RADIATION): (0.0, -0.5),
+    # Alloy Armor (Corpus/Corrupted)
+    (ArmorType.ALLOY, DamageType.PUNCTURE):    (0.5,  0.5),
+    (ArmorType.ALLOY, DamageType.COLD):        (0.0,  0.5),
+    (ArmorType.ALLOY, DamageType.RADIATION):   (0.75, 0.5),
+    (ArmorType.ALLOY, DamageType.ELECTRICITY): (0.0, -0.5),
+    (ArmorType.ALLOY, DamageType.MAGNETIC):    (0.0, -0.5),
+    (ArmorType.ALLOY, DamageType.BLAST):       (0.0, -0.5),
+}
+
+
+def calculate_armor_multiplier(
+    armor: float,
+    damage_type: DamageType,
+    armor_type: ArmorType,
+) -> float:
+    """Damage fraction passing through armor, per-type.
+
+    Applies type-specific armor ignore and damage bonus, then clamps to the
+    2,700 armor cap before computing DR = armor / (armor + 300).
+    Returns 1.0 when there is no armor.
+    """
+    if armor_type == ArmorType.NONE or armor == 0.0:
+        return 1.0
+    armor_mod, damage_mod = ARMOR_TYPE_MODIFIERS.get((armor_type, damage_type), (0.0, 0.0))
+    effective_armor = armor * (1.0 - armor_mod)
+    clamped_armor = max(0.0, min(2700.0, effective_armor))
+    armor_multiplier = 1.0 - (clamped_armor / (clamped_armor + 300.0))
+    return armor_multiplier * (1.0 + damage_mod)
+
+
 class DamageCalculator:
     """Implements the 5-step Warframe damage pipeline.
 
@@ -174,14 +216,13 @@ class DamageCalculator:
         ]
 
         # --- Step 5: Armor mitigation [math.floor] ---
-        armor_mult = self._armor_mitigation(enemy)
         final: dict[DamageType, float] = {}
         for c in after_type:
-            effective = self._armor_effectiveness(c.type, enemy.armor_type)
-            if effective:
-                value = math.floor(c.amount * armor_mult)
-            else:
-                value = c.amount
+            if c.type in (DamageType.TRUE, DamageType.VOID):
+                final[c.type] = float(c.amount)
+                continue
+            mult = calculate_armor_multiplier(enemy.base_armor, c.type, enemy.armor_type)
+            value = math.floor(c.amount * mult)
             if value > 0:
                 final[c.type] = float(value)
 
@@ -190,20 +231,3 @@ class DamageCalculator:
     # ------------------------------------------------------------------
     def _type_multiplier(self, dtype: DamageType, health: HealthType) -> float:
         return EFFECTIVENESS.get((health, dtype), 1.0)
-
-    def _armor_mitigation(self, enemy: Enemy) -> float:
-        """300 / (300 + effective_armor). Returns 1.0 when no armor."""
-        if enemy.base_armor == 0.0 or enemy.armor_type == ArmorType.NONE:
-            return 1.0
-        return 300.0 / (300.0 + enemy.base_armor)
-
-    def _armor_effectiveness(self, dtype: DamageType, armor: ArmorType) -> bool:
-        """True if this damage type is mitigated by the given armor type.
-
-        TRUE and VOID damage bypass armor entirely.
-        """
-        if armor == ArmorType.NONE:
-            return False
-        if dtype in (DamageType.TRUE, DamageType.VOID):
-            return False
-        return True
