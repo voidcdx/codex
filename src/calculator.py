@@ -181,10 +181,13 @@ class DamageCalculator:
     """Implements the 5-step Warframe damage pipeline.
 
     Step 1: Base Damage × (1 + ΣDamageMods)      → Modded Base   [math.floor]
-    Step 2: Modded Base × Body Part Multiplier    → Part Damage   [round]
-    Step 3: Part Damage × (1 + FactionMod)        → Faction Dmg   [math.floor]
-    Step 4: Faction Dmg × DamageType Multiplier   → Typed Dmg     [math.floor]
-    Step 5: Typed Dmg × Armor Mitigation          → Final Dmg     [math.floor]
+    Step 2: Modded Base × Body Part Multiplier    → Part Damage   [warframe_round]
+    Step 3: Part Damage × DamageType Multiplier   → Typed Dmg     [math.floor]
+    Step 4: Typed Dmg × Armor Mitigation          → Mitigated Dmg [math.floor]
+    Step 5: Mitigated Dmg × (1 + FactionMod)      → Final Dmg     [math.floor]
+
+    Crit-on-headshot: if is_crit=True and body_part_multiplier > 1,
+    the crit multiplier is doubled before applying to Step 2 output.
     """
 
     def calculate(
@@ -192,6 +195,8 @@ class DamageCalculator:
         weapon: Weapon,
         mods: list[Mod],      # ordered by slot position (slot 0 = top-left)
         enemy: Enemy,
+        crit_multiplier: float = 1.0,   # pass calculate_crit_multiplier() result
+        is_crit_headshot: bool = False,  # doubles crit multiplier on headshots
     ) -> dict[DamageType, float]:
         """Return final per-type damage values after the full pipeline."""
         base_damage = weapon.total_base_damage
@@ -255,37 +260,41 @@ class DamageCalculator:
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
 
-        # --- Step 2: Body part multiplier [round to nearest] ---
+        # --- Step 2: Body part multiplier × crit multiplier [warframe_round] ---
+        effective_crit = crit_multiplier
+        if is_crit_headshot and enemy.body_part_multiplier > 1.0:
+            effective_crit = 1.0 + (crit_multiplier - 1.0) * 2.0
+        combined_mult = enemy.body_part_multiplier * effective_crit
+        from src.quantizer import warframe_round as _wr
         after_bodypart: list[DamageComponent] = [
-            DamageComponent(c.type, round(c.amount * enemy.body_part_multiplier))
+            DamageComponent(c.type, _wr(c.amount * combined_mult))
             for c in modded
         ]
 
-        # --- Step 3: Faction multiplier [math.floor] ---
-        after_faction: list[DamageComponent] = [
-            DamageComponent(c.type, math.floor(c.amount * (1.0 + faction_bonus)))
-            for c in after_bodypart
-        ]
-
-        # --- Step 4: Damage type effectiveness [math.floor] ---
+        # --- Step 3: Damage type effectiveness [math.floor] ---
         after_type: list[DamageComponent] = [
             DamageComponent(
                 c.type,
                 math.floor(c.amount * self._type_multiplier(c.type, enemy.health_type))
             )
-            for c in after_faction
+            for c in after_bodypart
         ]
 
-        # --- Step 5: Armor mitigation [math.floor] ---
-        final: dict[DamageType, float] = {}
+        # --- Step 4: Armor mitigation [math.floor] ---
+        after_armor: dict[DamageType, float] = {}
         for c in after_type:
             if c.type in (DamageType.TRUE, DamageType.VOID):
-                final[c.type] = float(c.amount)
+                after_armor[c.type] = float(c.amount)
                 continue
             mult = calculate_armor_multiplier(enemy.base_armor, c.type, enemy.armor_type)
             value = math.floor(c.amount * mult)
             if value > 0:
-                final[c.type] = float(value)
+                after_armor[c.type] = float(value)
+
+        # --- Step 5: Faction mod — applied last [math.floor] ---
+        final: dict[DamageType, float] = {}
+        for dtype, value in after_armor.items():
+            final[dtype] = float(math.floor(value * (1.0 + faction_bonus)))
 
         return final
 

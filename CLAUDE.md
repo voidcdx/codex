@@ -43,13 +43,25 @@ Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5co
 ```
 1. Base Damage × (1 + ΣDamageMods)           → Modded Base Damage  [round DOWN]
 2. Modded Base Damage × Body Part Multiplier  → Part Damage         [round to nearest]
-3. Part Damage × (1 + FactionMod)             → Faction Damage      [round DOWN]
-4. Faction Damage × DamageType Multiplier     → Typed Damage        [round DOWN]
-5. Typed Damage × Armor Mitigation            → Final Damage        [round DOWN]
+3. Part Damage × DamageType Multiplier        → Typed Damage        [round DOWN]
+4. Typed Damage × Armor Mitigation            → Mitigated Damage    [round DOWN]
+5. Mitigated Damage × (1 + FactionMod)        → Final Damage        [round DOWN]
 ```
 
 **Armor Mitigation** = `300 / (300 + effective_armor)`
+**Faction mods apply LAST** — multiplicative `(1 + bonus)` after armor mitigation.
 **Faction/Damage mods** do NOT affect quantization scale — they are simple multipliers on already-quantized values.
+
+## Critical Hit Rules
+- **Tier Scaling:** `M_crit = 1 + T × (CD − 1)` where T = `floor(total_crit_chance)`
+- **Average Multiplier:** Use `1 + CC × (CD − 1)` for DPS calculations (exact for all tiers).
+- **Headshot:** Normal headshot = ×2 body part multiplier (Step 2).
+- **Crit on Headshot:** If the hit is also a critical, the crit multiplier is **doubled**: `M_crit_headshot = 1 + T × (CD − 1) × 2`. Apply after Step 2, before Step 3.
+
+## Faction Mod Rules
+- **Placement:** Faction mods (Bane of X) apply **at the very end** — Step 5, after armor mitigation.
+- **Formula:** `Final Damage × (1 + faction_bonus)`
+- **Double-Dipping (Status Procs):** For damage-over-time procs triggered by the hit (Slash bleed, Gas cloud, Heat burn), the faction bonus applies **twice**: `proc_damage × (1 + faction_bonus)²`. This is because the proc inherits the faction bonus from the hit that triggered it, then applies it again when the proc ticks.
 
 ## Quantization Rules (Damage 3.0)
 Scale = `base_damage / 32`
