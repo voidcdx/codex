@@ -143,14 +143,16 @@ def calculate_crit_multiplier(
     Formula: M_crit = 1 + T × (modded_cm − 1)
     Average is exact for all tiers: 1 + total_cc × (modded_cm − 1)
     """
+    d_cc = Decimal(str(total_cc))
+    d_cm = Decimal(str(modded_cm))
     if mode == "average":
-        return 1.0 + total_cc * (modded_cm - 1.0)
+        return float(Decimal('1') + d_cc * (d_cm - Decimal('1')))
     if mode == "guaranteed":
-        T = crit_tier(total_cc)
-        return 1.0 + T * (modded_cm - 1.0)
+        T = Decimal(crit_tier(total_cc))
+        return float(Decimal('1') + T * (d_cm - Decimal('1')))
     if mode == "max":
-        T = crit_tier(total_cc) + 1
-        return 1.0 + T * (modded_cm - 1.0)
+        T = Decimal(crit_tier(total_cc) + 1)
+        return float(Decimal('1') + T * (d_cm - Decimal('1')))
     raise ValueError(f"Unknown mode {mode!r}. Use 'average', 'guaranteed', or 'max'.")
 
 
