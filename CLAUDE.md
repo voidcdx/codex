@@ -88,3 +88,8 @@ Exception: Kuva/Tenet innate elements follow HCET priority (Heat > Cold > Electr
 
 ## Rules
 - Short answers only. Don't rewrite entire files — only the parts that need changing. Ask questions when uncertain.
+
+## Critical Implementation Rules
+- **Rounding:** NEVER use the built-in `round()` function. All rounding must use the `warframe_round` utility (Decimal + ROUND_HALF_UP) to prevent Banker's Rounding errors.
+- **Quantization:** Apply quantization (scale of 1/32) to each damage type (Impact, Puncture, Slash, Elementals) individually before summing.
+- **Precision:** Use `Decimal` or high-precision floats for intermediate steps to avoid floating-point drift.
