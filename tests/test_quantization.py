@@ -75,3 +75,38 @@ class TestQuantizeComponents:
         # 10 / 3.125 = 3.2 → round to 3 → 9.375
         assert result[0].amount == pytest.approx(9.375)
         assert result[1].amount == pytest.approx(9.375)
+
+
+class TestBoundaries:
+    """Verify ROUND_HALF_UP behaviour at exact 0.5 boundaries.
+
+    With base_dmg=32, scale=1.0 — so modded/scale is always a clean .5 value,
+    making it easy to confirm Banker's Rounding would fail here.
+    """
+
+    BASE = 32.0  # scale = 32/32 = 1.0
+
+    def test_half_boundary_rounds_up(self):
+        # 0.5 / 1.0 = 0.5 → ROUND_HALF_UP → 1 → 1 * 1.0 = 1.0
+        # Python's round(0.5) = 0 (Banker's) — this would fail with round()
+        assert quantize(0.5, self.BASE) == pytest.approx(1.0)
+
+    def test_one_and_half_boundary_rounds_up(self):
+        # 1.5 / 1.0 = 1.5 → ROUND_HALF_UP → 2 → 2.0
+        # Python's round(1.5) = 2 (happens to be correct here by chance)
+        assert quantize(1.5, self.BASE) == pytest.approx(2.0)
+
+    def test_two_and_half_boundary_rounds_up(self):
+        # 2.5 / 1.0 = 2.5 → ROUND_HALF_UP → 3 → 3.0
+        # Python's round(2.5) = 2 (Banker's) — this would fail with round()
+        assert quantize(2.5, self.BASE) == pytest.approx(3.0)
+
+    def test_three_and_half_boundary_rounds_up(self):
+        # 3.5 / 1.0 = 3.5 → ROUND_HALF_UP → 4 → 4.0
+        # Python's round(3.5) = 4 (happens to be correct here by chance)
+        assert quantize(3.5, self.BASE) == pytest.approx(4.0)
+
+    def test_four_and_half_boundary_rounds_up(self):
+        # 4.5 / 1.0 = 4.5 → ROUND_HALF_UP → 5 → 5.0
+        # Python's round(4.5) = 4 (Banker's) — this would fail with round()
+        assert quantize(4.5, self.BASE) == pytest.approx(5.0)
