@@ -1,0 +1,44 @@
+from dataclasses import dataclass, field
+from src.enums import DamageType, FactionType, HealthType, ArmorType
+
+
+@dataclass
+class DamageComponent:
+    type: DamageType
+    amount: float  # IEEE 754 float64
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, DamageComponent):
+            return NotImplemented
+        return self.type == other.type and abs(self.amount - other.amount) < 1e-9
+
+
+@dataclass
+class Weapon:
+    name: str
+    base_damage: dict[DamageType, float]          # IPS + any fixed elemental
+    innate_elements: list[DamageComponent] = field(default_factory=list)
+    is_kuva_tenet: bool = False
+
+    @property
+    def total_base_damage(self) -> float:
+        return sum(self.base_damage.values())
+
+
+@dataclass
+class Mod:
+    name: str
+    damage_bonus: float = 0.0                     # additive, e.g. 1.65 for Serration
+    elemental_bonuses: list[DamageComponent] = field(default_factory=list)
+    faction_bonus: float = 0.0
+    faction_type: FactionType | None = None        # Python 3.10+ union syntax
+
+
+@dataclass
+class Enemy:
+    name: str
+    faction: FactionType
+    health_type: HealthType
+    armor_type: ArmorType
+    base_armor: float = 0.0
+    body_part_multiplier: float = 1.0
