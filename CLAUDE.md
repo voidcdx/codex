@@ -56,9 +56,18 @@ Scale = `base_damage / 32`
 
 For each damage type:
 ```python
-quantized = round(raw_amount / scale) * scale
+from decimal import Decimal, ROUND_HALF_UP
+
+def warframe_round(x: Decimal) -> Decimal:
+    """NEVER use Python's built-in round() — it uses Banker's Rounding (round-half-to-even),
+    which produces wrong results on exact .5 boundaries. Always use this instead."""
+    return x.quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+
+quantized = warframe_round(Decimal(str(raw_amount)) / Decimal(str(scale))) * Decimal(str(scale))
 ```
-- Applied independently per damage type (Impact, Puncture, Slash, each elemental)
+- **NEVER use Python's `round()` built-in** — use `warframe_round` (Decimal + ROUND_HALF_UP) everywhere
+- **Use `Decimal` for all intermediate steps** to prevent floating-point drift
+- Applied **independently per damage type** (Impact, Puncture, Slash, each elemental)
 - Applied **before** faction/damage multipliers
 - Combined elements (e.g. Viral from Cold+Toxin) quantize their **combined total** at 1/32 of base
 
