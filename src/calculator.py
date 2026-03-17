@@ -97,6 +97,43 @@ ARMOR_TYPE_MODIFIERS: dict[tuple[ArmorType, DamageType], tuple[float, float]] = 
 }
 
 
+def crit_tier(total_cc: float) -> int:
+    """Crit Tier T = floor(total_crit_chance).
+
+    Args:
+        total_cc: Crit chance as a decimal (1.65 = 165%). NOT a percentage.
+    """
+    return math.floor(total_cc)
+
+
+def calculate_crit_multiplier(
+    total_cc: float,
+    modded_cm: float,
+    mode: str = "average",
+) -> float:
+    """Critical hit damage multiplier.
+
+    Args:
+        total_cc:  Total crit chance as a decimal (e.g. 1.65 for 165%).
+        modded_cm: Modded crit multiplier (e.g. 3.5 for 350%).
+        mode:      "average"   — weighted average across all possible tiers (DPS use)
+                   "guaranteed"— floor tier only, worst case per-hit
+                   "max"       — ceiling tier, best case per-hit
+
+    Formula: M_crit = 1 + T × (modded_cm − 1)
+    Average is exact for all tiers: 1 + total_cc × (modded_cm − 1)
+    """
+    if mode == "average":
+        return 1.0 + total_cc * (modded_cm - 1.0)
+    if mode == "guaranteed":
+        T = crit_tier(total_cc)
+        return 1.0 + T * (modded_cm - 1.0)
+    if mode == "max":
+        T = crit_tier(total_cc) + 1
+        return 1.0 + T * (modded_cm - 1.0)
+    raise ValueError(f"Unknown mode {mode!r}. Use 'average', 'guaranteed', or 'max'.")
+
+
 def calculate_armor_multiplier(
     armor: float,
     damage_type: DamageType,

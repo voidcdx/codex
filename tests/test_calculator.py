@@ -7,7 +7,7 @@ M10: Integration — Nagantaka Prime full wiki example
 """
 import math
 import pytest
-from src.calculator import DamageCalculator, calculate_armor_multiplier
+from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.enums import DamageType, FactionType, HealthType, ArmorType
 
@@ -249,3 +249,53 @@ class TestCalculateArmorMultiplier:
     def test_radiation_vs_alloy_ignores_75_percent_armor(self):
         # armor_mod=0.75 → effective=300*0.25=75; passes 0.8; damage_mod=0.5 → 1.2
         assert calculate_armor_multiplier(300.0, DamageType.RADIATION, ArmorType.ALLOY) == pytest.approx(1.2)
+
+
+# ---------------------------------------------------------------------------
+# crit_tier and calculate_crit_multiplier tests
+# ---------------------------------------------------------------------------
+class TestCritTier:
+    def test_t1_below_100(self):
+        assert crit_tier(0.75) == 0   # <100% → T0 (no guaranteed crit)
+
+    def test_t1_at_100(self):
+        assert crit_tier(1.0) == 1    # exactly 100% → T1
+
+    def test_t2_at_165(self):
+        assert crit_tier(1.65) == 1   # 165% → T1 guaranteed, 65% chance T2
+
+    def test_t2_at_200(self):
+        assert crit_tier(2.0) == 2    # 200% → T2
+
+    def test_t3_at_225(self):
+        assert crit_tier(2.25) == 2   # 225% → T2 guaranteed, 25% chance T3
+
+
+class TestCalculateCritMultiplier:
+    CM = 3.5   # modded crit multiplier (e.g. 350%)
+
+    def test_average_t1_only(self):
+        # CC=0.75, CM=3.5: 1 + 0.75*(3.5-1) = 1 + 1.875 = 2.875
+        assert calculate_crit_multiplier(0.75, self.CM, "average") == pytest.approx(2.875)
+
+    def test_average_t2_165_percent(self):
+        # CC=1.65: 1 + 1.65*(3.5-1) = 1 + 4.125 = 5.125
+        assert calculate_crit_multiplier(1.65, self.CM, "average") == pytest.approx(5.125)
+
+    def test_guaranteed_uses_floor_tier(self):
+        # CC=1.65 → T=1: 1 + 1*(3.5-1) = 3.5
+        assert calculate_crit_multiplier(1.65, self.CM, "guaranteed") == pytest.approx(3.5)
+
+    def test_max_uses_ceiling_tier(self):
+        # CC=1.65 → T+1=2: 1 + 2*(3.5-1) = 6.0
+        assert calculate_crit_multiplier(1.65, self.CM, "max") == pytest.approx(6.0)
+
+    def test_average_equals_guaranteed_at_exact_100(self):
+        # CC=1.0 exactly: average = 1+1*(CM-1) = CM; guaranteed = same
+        assert calculate_crit_multiplier(1.0, self.CM, "average") == pytest.approx(
+            calculate_crit_multiplier(1.0, self.CM, "guaranteed")
+        )
+
+    def test_invalid_mode_raises(self):
+        with pytest.raises(ValueError):
+            calculate_crit_multiplier(1.5, self.CM, "invalid")
