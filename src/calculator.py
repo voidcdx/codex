@@ -1,4 +1,5 @@
 import math
+from decimal import Decimal
 from src.enums import DamageType, HealthType, ArmorType, FactionType
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.quantizer import quantize, quantize_components
@@ -110,10 +111,13 @@ def calculate_armor_multiplier(
     if armor_type == ArmorType.NONE or armor == 0.0:
         return 1.0
     armor_mod, damage_mod = ARMOR_TYPE_MODIFIERS.get((armor_type, damage_type), (0.0, 0.0))
-    effective_armor = armor * (1.0 - armor_mod)
-    clamped_armor = max(0.0, min(2700.0, effective_armor))
-    armor_multiplier = 1.0 - (clamped_armor / (clamped_armor + 300.0))
-    return armor_multiplier * (1.0 + damage_mod)
+    d_armor = Decimal(str(armor))
+    d_armor_mod = Decimal(str(armor_mod))
+    d_damage_mod = Decimal(str(damage_mod))
+    effective_armor = d_armor * (Decimal('1') - d_armor_mod)
+    clamped_armor = max(Decimal('0'), min(Decimal('2700'), effective_armor))
+    armor_multiplier = Decimal('1') - (clamped_armor / (clamped_armor + Decimal('300')))
+    return float(armor_multiplier * (Decimal('1') + d_damage_mod))
 
 
 class DamageCalculator:
