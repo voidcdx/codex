@@ -25,11 +25,21 @@ class DamageType(Enum):
 
 
 class FactionType(Enum):
+    # Core factions
     GRINEER = auto()
+    KUVA_GRINEER = auto()       # Kuva Lich / Sisters of Parvos allies
     CORPUS = auto()
+    CORPUS_AMALGAM = auto()     # Amalgam units (Jupiter/Ropalolyst)
     INFESTED = auto()
-    CORRUPTED = auto()
+    DEIMOS_INFESTED = auto()    # Deimos / Cambion Drift variants
+    CORRUPTED = auto()          # Orokin Void
     SENTIENT = auto()
+    # Newer factions (Update 35+)
+    NARMER = auto()             # Narmer / Veil units
+    MURMUR = auto()             # Void Cascade / Whispers in the Walls
+    ZARIMAN = auto()            # Zariman / Angels of Zariman
+    SCALDRA = auto()            # Jade Shadows / Technocyte
+    TECHROT = auto()            # 1999 update
     NONE = auto()
 
 

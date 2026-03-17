@@ -97,6 +97,26 @@ ARMOR_TYPE_MODIFIERS: dict[tuple[ArmorType, DamageType], tuple[float, float]] = 
 }
 
 
+# ---------------------------------------------------------------------------
+# Bane Mods (faction damage multipliers)
+# Standard Bane mods: +30% at max rank
+# Primed Bane mods:   +55% at max rank
+# Formula (Step 3): Modded Damage × (1 + faction_bonus)
+# ---------------------------------------------------------------------------
+BANE_MODS: dict[str, Mod] = {
+    # Standard
+    "Bane of Grineer":   Mod("Bane of Grineer",   faction_bonus=0.30, faction_type=FactionType.GRINEER),
+    "Bane of Corpus":    Mod("Bane of Corpus",     faction_bonus=0.30, faction_type=FactionType.CORPUS),
+    "Bane of Infested":  Mod("Bane of Infested",   faction_bonus=0.30, faction_type=FactionType.INFESTED),
+    "Bane of Corrupted": Mod("Bane of Corrupted",  faction_bonus=0.30, faction_type=FactionType.CORRUPTED),
+    # Primed
+    "Primed Bane of Grineer":   Mod("Primed Bane of Grineer",   faction_bonus=0.55, faction_type=FactionType.GRINEER),
+    "Primed Bane of Corpus":    Mod("Primed Bane of Corpus",     faction_bonus=0.55, faction_type=FactionType.CORPUS),
+    "Primed Bane of Infested":  Mod("Primed Bane of Infested",   faction_bonus=0.55, faction_type=FactionType.INFESTED),
+    "Primed Bane of Corrupted": Mod("Primed Bane of Corrupted",  faction_bonus=0.55, faction_type=FactionType.CORRUPTED),
+}
+
+
 def crit_tier(total_cc: float) -> int:
     """Crit Tier T = floor(total_crit_chance).
 

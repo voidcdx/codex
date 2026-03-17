@@ -7,7 +7,7 @@ M10: Integration — Nagantaka Prime full wiki example
 """
 import math
 import pytest
-from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier
+from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, BANE_MODS
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.enums import DamageType, FactionType, HealthType, ArmorType
 
@@ -299,3 +299,46 @@ class TestCalculateCritMultiplier:
     def test_invalid_mode_raises(self):
         with pytest.raises(ValueError):
             calculate_crit_multiplier(1.5, self.CM, "invalid")
+
+
+# ---------------------------------------------------------------------------
+# BANE_MODS constants + faction Step 3 integration
+# ---------------------------------------------------------------------------
+class TestBaneMods:
+    def test_all_eight_bane_mods_present(self):
+        expected = {
+            "Bane of Grineer", "Bane of Corpus", "Bane of Infested", "Bane of Corrupted",
+            "Primed Bane of Grineer", "Primed Bane of Corpus",
+            "Primed Bane of Infested", "Primed Bane of Corrupted",
+        }
+        assert set(BANE_MODS.keys()) == expected
+
+    def test_standard_bane_bonus_is_30_percent(self):
+        assert BANE_MODS["Bane of Grineer"].faction_bonus == pytest.approx(0.30)
+        assert BANE_MODS["Bane of Infested"].faction_bonus == pytest.approx(0.30)
+
+    def test_primed_bane_bonus_is_55_percent(self):
+        assert BANE_MODS["Primed Bane of Grineer"].faction_bonus == pytest.approx(0.55)
+        assert BANE_MODS["Primed Bane of Corpus"].faction_bonus == pytest.approx(0.55)
+
+    def test_bane_applied_in_pipeline(self):
+        # Braton Slash=24, no damage mods, Bane of Grineer +30% vs Grineer FLESH (no armor)
+        # Step1: quantize(24, 60) = round(24/1.875)*1.875 = 13*1.875 = 24.375
+        # Step2: round(24.375*1.0) = 24
+        # Step3: floor(24 * 1.30) = floor(31.2) = 31
+        # Step4: Slash vs FLESH ×1.5 → floor(31*1.5) = floor(46.5) = 46
+        # Step5: no armor → 46
+        result = calc.calculate(braton(), [BANE_MODS["Bane of Grineer"]], grineer_flesh_no_armor())
+        assert result[DamageType.SLASH] == pytest.approx(46.0)
+
+    def test_primed_bane_applied_in_pipeline(self):
+        # Same as above but +55%: floor(24 * 1.55) = floor(37.2) = 37
+        # Step4: floor(37*1.5) = floor(55.5) = 55
+        result = calc.calculate(braton(), [BANE_MODS["Primed Bane of Grineer"]], grineer_flesh_no_armor())
+        assert result[DamageType.SLASH] == pytest.approx(55.0)
+
+    def test_wrong_faction_bane_not_applied(self):
+        # Bane of Corpus on Grineer enemy → no bonus
+        result_with = calc.calculate(braton(), [BANE_MODS["Bane of Corpus"]], grineer_flesh_no_armor())
+        result_without = calc.calculate(braton(), [], grineer_flesh_no_armor())
+        assert result_with == result_without
