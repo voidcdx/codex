@@ -63,11 +63,110 @@ class _LuaParser:
         self.pos += len(s)
 
     def parse(self) -> Any:
+        """
+        Parse a Lua module file. Handles two forms:
+          1. Plain table literal:   return { ... }
+          2. Statement sequence:    local t = {}
+                                    t["k"] = { ... }
+                                    return t
+        """
         self._skip()
-        # strip leading "return "
+        # Form 1: starts directly with "return { ... }"
         if self.src[self.pos:self.pos+7] == "return ":
             self.pos += 7
-        return self._value()
+            return self._value()
+
+        # Form 2: sequence of statements — execute them into a namespace
+        namespace: dict[str, Any] = {}
+        return_val: Any = None
+
+        while self.pos < len(self.src):
+            self._skip()
+            if self.pos >= len(self.src):
+                break
+
+            # return <expr>
+            if self.src[self.pos:self.pos+7] == "return ":
+                self.pos += 7
+                self._skip()
+                # return a variable name
+                m = re.match(r"([A-Za-z_]\w*)", self.src[self.pos:])
+                if m:
+                    return_val = namespace.get(m.group(1))
+                    self.pos += len(m.group(0))
+                else:
+                    return_val = self._value()
+                break
+
+            # local varname = value
+            if self.src[self.pos:self.pos+6] == "local ":
+                self.pos += 6
+                self._skip()
+                m = re.match(r"([A-Za-z_]\w*)", self.src[self.pos:])
+                if not m:
+                    self._skip_statement(); continue
+                varname = m.group(1)
+                self.pos += len(varname)
+                self._skip()
+                if self._peek() == "=":
+                    self.pos += 1
+                    namespace[varname] = self._value()
+                else:
+                    namespace[varname] = None
+                self._skip_semi()
+                continue
+
+            # varname["key"] = value  OR  varname.key = value
+            m = re.match(r"([A-Za-z_]\w*)", self.src[self.pos:])
+            if m:
+                varname = m.group(1)
+                self.pos += len(varname)
+                self._skip()
+
+                if self._peek() == "[":
+                    # varname[key] = value
+                    self.pos += 1
+                    key = self._value()
+                    self._consume("]")
+                    self._skip()
+                    if self._peek() == "=":
+                        self.pos += 1
+                        val = self._value()
+                        if varname in namespace and isinstance(namespace[varname], dict):
+                            namespace[varname][key] = val
+                    self._skip_semi()
+                    continue
+
+                if self._peek() == ".":
+                    # varname.key = value
+                    self.pos += 1
+                    km = re.match(r"([A-Za-z_]\w*)", self.src[self.pos:])
+                    if km:
+                        key = km.group(1)
+                        self.pos += len(key)
+                        self._skip()
+                        if self._peek() == "=":
+                            self.pos += 1
+                            val = self._value()
+                            if varname in namespace and isinstance(namespace[varname], dict):
+                                namespace[varname][key] = val
+                    self._skip_semi()
+                    continue
+
+            # unrecognised statement — skip to next line
+            self._skip_statement()
+
+        return return_val
+
+    def _skip_semi(self) -> None:
+        self._skip()
+        if self._peek() in (",", ";"):
+            self.pos += 1
+
+    def _skip_statement(self) -> None:
+        """Skip to the next newline (give up on this statement)."""
+        while self.pos < len(self.src) and self.src[self.pos] != "\n":
+            self.pos += 1
 
     def _value(self) -> Any:
         self._skip()
