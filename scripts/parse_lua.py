@@ -1,0 +1,232 @@
+#!/usr/bin/env python3
+"""
+parse_lua.py
+------------
+Reads data/weapons_data.lua and data/mods_data.lua (downloaded manually from
+wiki.warframe.com) and produces data/weapons_raw.json and data/mods_raw.json.
+
+Run:
+  python scripts/parse_lua.py
+"""
+
+from __future__ import annotations
+
+import json
+import re
+from pathlib import Path
+from typing import Any
+
+DATA_DIR = Path(__file__).parent.parent / "data"
+
+
+# ---------------------------------------------------------------------------
+# Minimal Lua table → Python parser
+# Handles the subset used in Warframe wiki data modules:
+#   { ["key"] = value, ... }  and  { value, ... }
+# Values: strings, numbers, booleans, nil, nested tables.
+# ---------------------------------------------------------------------------
+
+class _LuaParser:
+    def __init__(self, src: str) -> None:
+        self.src = src
+        self.pos = 0
+
+    def _skip(self) -> None:
+        """Skip whitespace and -- comments."""
+        while self.pos < len(self.src):
+            if self.src[self.pos] in " \t\r\n":
+                self.pos += 1
+            elif self.src[self.pos:self.pos+2] == "--":
+                # long comment --[[ ... ]]
+                if self.src[self.pos+2:self.pos+4] == "[[":
+                    self.pos += 4
+                    while self.pos < len(self.src):
+                        if self.src[self.pos:self.pos+2] == "]]":
+                            self.pos += 2
+                            break
+                        self.pos += 1
+                else:
+                    while self.pos < len(self.src) and self.src[self.pos] != "\n":
+                        self.pos += 1
+            else:
+                break
+
+    def _peek(self) -> str:
+        self._skip()
+        return self.src[self.pos] if self.pos < len(self.src) else ""
+
+    def _consume(self, s: str) -> None:
+        self._skip()
+        if self.src[self.pos:self.pos+len(s)] != s:
+            ctx = self.src[max(0, self.pos-20):self.pos+30]
+            raise SyntaxError(f"Expected {s!r} near: {ctx!r}")
+        self.pos += len(s)
+
+    def parse(self) -> Any:
+        self._skip()
+        # strip leading "return "
+        if self.src[self.pos:self.pos+7] == "return ":
+            self.pos += 7
+        return self._value()
+
+    def _value(self) -> Any:
+        self._skip()
+        if self.pos >= len(self.src):
+            return None
+        c = self.src[self.pos]
+
+        if c == "{":
+            return self._table()
+        if c == '"':
+            return self._string('"')
+        if c == "'":
+            return self._string("'")
+        if self.src[self.pos:self.pos+2] == "[[":
+            return self._long_string()
+        if self.src[self.pos:self.pos+4] == "true":
+            self.pos += 4; return True
+        if self.src[self.pos:self.pos+5] == "false":
+            self.pos += 5; return False
+        if self.src[self.pos:self.pos+3] == "nil":
+            self.pos += 3; return None
+
+        # number (int or float, optionally negative)
+        m = re.match(r"-?(?:0x[\da-fA-F]+|\d+\.?\d*(?:[eE][+-]?\d+)?)",
+                     self.src[self.pos:])
+        if m:
+            s = m.group(0)
+            self.pos += len(s)
+            try:
+                return int(s, 0)
+            except ValueError:
+                return float(s)
+
+        raise SyntaxError(
+            f"Unexpected {c!r} at pos {self.pos}: "
+            f"…{self.src[self.pos:self.pos+40]!r}"
+        )
+
+    def _string(self, q: str) -> str:
+        self.pos += 1
+        parts: list[str] = []
+        while self.pos < len(self.src):
+            c = self.src[self.pos]
+            if c == "\\":
+                self.pos += 1
+                esc = self.src[self.pos]
+                parts.append({"n":"\n","t":"\t","r":"\r",
+                              '"':'"',"'":"'","\\":"\\",
+                              "a":"\a","b":"\b","f":"\f","v":"\v"
+                              }.get(esc, esc))
+                self.pos += 1
+            elif c == q:
+                self.pos += 1
+                break
+            else:
+                parts.append(c)
+                self.pos += 1
+        return "".join(parts)
+
+    def _long_string(self) -> str:
+        self.pos += 2  # skip [[
+        # count optional = signs: [==[...]==]
+        eq = 0
+        while self.pos < len(self.src) and self.src[self.pos] == "=":
+            eq += 1; self.pos += 1
+        if self.src[self.pos] != "[":
+            raise SyntaxError("Invalid long string")
+        self.pos += 1
+        close = "]" + "=" * eq + "]"
+        parts: list[str] = []
+        while self.pos < len(self.src):
+            if self.src[self.pos:self.pos+len(close)] == close:
+                self.pos += len(close)
+                break
+            parts.append(self.src[self.pos])
+            self.pos += 1
+        result = "".join(parts)
+        return result.lstrip("\n")
+
+    def _table(self) -> dict | list:
+        self._consume("{")
+        obj: dict = {}
+        arr: list = []
+        is_arr = True
+        idx = 1
+
+        while True:
+            self._skip()
+            if self._peek() == "}":
+                self._consume("}")
+                break
+
+            # ["key"] = value
+            if self._peek() == "[" and self.src[self.pos+1:self.pos+2] != "[":
+                self.pos += 1
+                key = self._value()
+                self._consume("]")
+                self._consume("=")
+                val = self._value()
+                obj[key] = val
+                is_arr = False
+
+            # ident = value  (bare key)
+            elif re.match(r"[A-Za-z_]\w*\s*=(?!=)", self.src[self.pos:]):
+                m = re.match(r"([A-Za-z_]\w*)\s*=", self.src[self.pos:])
+                key = m.group(1)
+                self.pos += m.end()
+                val = self._value()
+                obj[key] = val
+                is_arr = False
+
+            # positional value
+            else:
+                val = self._value()
+                obj[idx] = val
+                arr.append(val)
+                idx += 1
+
+            self._skip()
+            if self._peek() in (",", ";"):
+                self.pos += 1
+
+        return arr if (is_arr and arr) else obj
+
+
+def lua_to_py(src: str) -> Any:
+    return _LuaParser(src).parse()
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main() -> None:
+    for stem, out_name in [("weapons_data", "weapons_raw"), ("mods_data", "mods_raw")]:
+        lua_path = DATA_DIR / f"{stem}.lua"
+        if not lua_path.exists():
+            print(f"Missing {lua_path} — download it from:")
+            if stem == "weapons_data":
+                print("  https://wiki.warframe.com/w/Module:Weapons/data?action=raw")
+            else:
+                print("  https://wiki.warframe.com/w/Module:Mods/data?action=raw")
+            continue
+
+        print(f"Parsing {lua_path.name} …", end=" ", flush=True)
+        src = lua_path.read_text(encoding="utf-8")
+        data = lua_to_py(src)
+
+        # Mods/data wraps everything in { Mods = {...} }
+        if stem == "mods_data" and isinstance(data, dict) and "Mods" in data:
+            data = data["Mods"]
+
+        out = DATA_DIR / f"{out_name}.json"
+        out.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+        n = len(data) if isinstance(data, (dict, list)) else "?"
+        print(f"{n} entries → {out.name}")
+
+    print("\nNext: python scripts/parse_wiki_data.py")
+
+
+if __name__ == "__main__":
+    main()
