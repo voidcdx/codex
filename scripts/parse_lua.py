@@ -322,30 +322,48 @@ def lua_to_py(src: str) -> Any:
 # Main
 # ---------------------------------------------------------------------------
 
+WEAPON_SLOTS = ["primary", "secondary", "melee", "archwing", "companion", "railjack"]
+
+
 def main() -> None:
-    for stem, out_name in [("weapons_data", "weapons_raw"), ("mods_data", "mods_raw")]:
-        lua_path = DATA_DIR / f"{stem}.lua"
-        if not lua_path.exists():
-            print(f"Missing {lua_path} — download it from:")
-            if stem == "weapons_data":
-                print("  https://wiki.warframe.com/w/Module:Weapons/data?action=raw")
+    # ── Weapons (sub-pages) ──────────────────────────────────────────────
+    weapon_files = sorted(DATA_DIR.glob("weapons_*.lua"))
+    if not weapon_files:
+        print("No weapons_*.lua files found in data/. Download these and save them:")
+        for slot in ["primary", "secondary", "melee"]:
+            print(f"  https://wiki.warframe.com/w/Module:Weapons/data/{slot}?action=raw"
+                  f"  →  data/weapons_{slot}.lua")
+    else:
+        all_weapons: dict = {}
+        for lua_path in weapon_files:
+            print(f"Parsing {lua_path.name} …", end=" ", flush=True)
+            src = lua_path.read_text(encoding="utf-8")
+            data = lua_to_py(src)
+            if isinstance(data, dict):
+                data = {k: v for k, v in data.items() if k is not None}
+                all_weapons.update(data)
+                print(f"{len(data)} entries")
             else:
-                print("  https://wiki.warframe.com/w/Module:Mods/data?action=raw")
-            continue
+                print("skipped (unexpected format)")
 
-        print(f"Parsing {lua_path.name} …", end=" ", flush=True)
-        src = lua_path.read_text(encoding="utf-8")
+        out = DATA_DIR / "weapons_raw.json"
+        out.write_text(json.dumps(all_weapons, indent=2, ensure_ascii=False))
+        print(f"Total: {len(all_weapons)} weapons → {out.name}\n")
+
+    # ── Mods ─────────────────────────────────────────────────────────────
+    mods_path = DATA_DIR / "mods_data.lua"
+    if not mods_path.exists():
+        print("Missing data/mods_data.lua — download from:")
+        print("  https://wiki.warframe.com/w/Module:Mods/data?action=raw")
+    else:
+        print(f"Parsing {mods_path.name} …", end=" ", flush=True)
+        src = mods_path.read_text(encoding="utf-8")
         data = lua_to_py(src)
-
-        # Mods/data wraps everything in { Mods = {...} }
-        if stem == "mods_data" and isinstance(data, dict) and "Mods" in data:
+        if isinstance(data, dict) and "Mods" in data:
             data = data["Mods"]
-
-        # Drop entries with None keys (unparseable Lua expressions)
         if isinstance(data, dict):
             data = {k: v for k, v in data.items() if k is not None}
-
-        out = DATA_DIR / f"{out_name}.json"
+        out = DATA_DIR / "mods_raw.json"
         out.write_text(json.dumps(data, indent=2, ensure_ascii=False))
         n = len(data) if isinstance(data, (dict, list)) else "?"
         print(f"{n} entries → {out.name}")
