@@ -159,53 +159,118 @@ def parse_weapons(raw: dict | list) -> dict:
 # ---------------------------------------------------------------------------
 # Mod parsing
 # ---------------------------------------------------------------------------
-# Wiki mod entries look like:
+# Wiki mod entries (from Module:Mods/data) look like:
 # {
 #   "Name": "Serration",
 #   "Type": "Rifle",
 #   "Polarity": "Madurai",
 #   "Rarity": "Rare",
-#   "MaxRank": 10,
+#   "MaxRank": 10,      ← also "fusionLimit" in some exports
 #   "BaseDrain": 4,
-#   "Effect": "+165% Damage",      ← raw description string
-#   "Stats": [{ "Damage": 0.165 }] ← structured (if present)
+#   "Effect": "+165% Damage",           ← plain string
+#   OR (from WFCD-style exports):
+#   "levelStats": [                     ← per-rank stats array
+#       {"stats": ["+16.5% Damage"]},   ← rank 0
+#       ...
+#       {"stats": ["+165% Damage"]}     ← rank 10 (max)
+#   ]
 # }
 #
-# Some mods have structured numeric stats; others only have description strings.
-# We parse both.
+# Elemental stat strings embed DT_ color tags, e.g.:
+#   "+90% <DT_FIRE_COLOR>Heat"
+#   "+90% <DT_FREEZE_COLOR>Cold"
+# We strip the tag and match the element name.
+#
+# Faction mods use a multiplier format:
+#   "x1.55 Damage to Corpus"
+# Faction bonus = multiplier - 1.0  (e.g. x1.55 → 0.55)
+
+# Map DT_ color tags → elemental type name
+DT_TAG_MAP: dict[str, str] = {
+    "DT_FIRE_COLOR":        "heat",
+    "DT_FREEZE_COLOR":      "cold",
+    "DT_ELECTRICITY_COLOR": "electricity",
+    "DT_POISON_COLOR":      "toxin",
+    "DT_EXPLOSION_COLOR":   "blast",
+    "DT_RADIATION_COLOR":   "radiation",
+    "DT_GAS_COLOR":         "gas",
+    "DT_MAGNETIC_COLOR":    "magnetic",
+    "DT_VIRAL_COLOR":       "viral",
+    "DT_CORROSIVE_COLOR":   "corrosive",
+    "DT_IMPACT_COLOR":      "impact",
+    "DT_PUNCTURE_COLOR":    "puncture",
+    "DT_SLASH_COLOR":       "slash",
+    "DT_RADIANT_COLOR":     "void",
+    "DT_SENTIENT":          "sentient",
+}
+
+# Plain element name → field suffix (for strings without DT_ tags)
+ELEM_NAME_MAP: dict[str, str] = {
+    "heat": "heat_pct", "cold": "cold_pct",
+    "electricity": "electricity_pct", "toxin": "toxin_pct",
+    "blast": "blast_pct", "radiation": "radiation_pct",
+    "gas": "gas_pct", "magnetic": "magnetic_pct",
+    "viral": "viral_pct", "corrosive": "corrosive_pct",
+}
 
 MOD_EFFECT_PATTERNS: list[tuple[str, str]] = [
-    # (regex pattern, field name)
-    (r"\+(\d+(?:\.\d+)?)%\s*(?:Base\s+)?Damage",         "damage_bonus_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Heat(?:\s+Damage)?",          "heat_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Cold(?:\s+Damage)?",          "cold_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Electricity(?:\s+Damage)?",   "electricity_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Toxin(?:\s+Damage)?",         "toxin_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Blast(?:\s+Damage)?",         "blast_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Corrosive(?:\s+Damage)?",     "corrosive_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Gas(?:\s+Damage)?",           "gas_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Magnetic(?:\s+Damage)?",      "magnetic_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Radiation(?:\s+Damage)?",     "radiation_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Viral(?:\s+Damage)?",         "viral_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*(?:Damage\s+to\s+)?(?:Grineer|Corrupted|Corpus|Infested)",
-                                                           "faction_bonus_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Critical\s+Chance",           "crit_chance_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Critical\s+Damage",           "crit_damage_pct"),
+    # plain "+N% Damage" (no element)
+    (r"\+(\d+(?:\.\d+)?)%\s*(?:Base\s+)?Damage(?!\s+to)",  "damage_bonus_pct"),
+    # faction: "x1.55 Damage to Corpus"
+    (r"x([\d.]+)\s+Damage\s+to\s+(?:Grineer|Corpus|Infested|Corrupted)",
+                                                              "_faction_mult"),
+    # crit
+    (r"\+(\d+(?:\.\d+)?)%\s*Critical\s+Chance",              "crit_chance_pct"),
+    (r"\+(\d+(?:\.\d+)?)%\s*Critical\s+Damage",              "crit_damage_pct"),
+    # other stats
     (r"\+(\d+(?:\.\d+)?)%\s*(?:Fire\s+Rate|Attack\s+Speed)", "fire_rate_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*Multishot",                   "multishot_pct"),
+    (r"\+(\d+(?:\.\d+)?)%\s*Multishot",                      "multishot_pct"),
     (r"\+(\d+(?:\.\d+)?)%\s*(?:Magazine|Ammo\s+(?:Maximum|Capacity))",
-                                                           "magazine_pct"),
+                                                              "magazine_pct"),
 ]
 
 import re  # noqa: E402 (after dataclasses imports)
 
 
 def _parse_mod_effect(effect_str: str) -> dict:
+    """Parse a single stat string from a mod entry."""
     out: dict = {}
+
+    # Strip DT_ color tags: "<DT_FIRE_COLOR>Heat" → "Heat"
+    # Also capture the tag so we know which element it is.
+    dt_match = re.search(r"<(DT_\w+)>(\w+)", effect_str)
+    if dt_match:
+        tag, elem_name = dt_match.group(1), dt_match.group(2).lower()
+        elem_type = DT_TAG_MAP.get(tag, elem_name)
+        # Find the associated percentage
+        pct_m = re.search(r"\+(\d+(?:\.\d+)?)%", effect_str)
+        if pct_m:
+            field = ELEM_NAME_MAP.get(elem_type, f"{elem_type}_pct")
+            out[field] = float(pct_m.group(1)) / 100.0
+        return out
+
+    # Plain element name without tag (fallback)
+    for elem, field in ELEM_NAME_MAP.items():
+        if re.search(rf"\+\d[\d.]*%\s*{elem}(?:\s+Damage)?", effect_str, re.IGNORECASE):
+            pct_m = re.search(r"\+(\d+(?:\.\d+)?)%", effect_str)
+            if pct_m:
+                out[field] = float(pct_m.group(1)) / 100.0
+            return out
+
+    # Faction multiplier: "x1.55 Damage to Corpus" → faction_bonus = 0.55
+    fact_m = re.search(r"x([\d.]+)\s+Damage\s+to\s+(\w+)", effect_str, re.IGNORECASE)
+    if fact_m:
+        out["faction_bonus"] = round(float(fact_m.group(1)) - 1.0, 6)
+        out["faction_target"] = fact_m.group(2).lower()
+        return out
+
+    # Generic patterns (damage bonus, crit, fire rate, etc.)
     for pattern, field in MOD_EFFECT_PATTERNS:
         m = re.search(pattern, effect_str, re.IGNORECASE)
         if m:
             out[field] = float(m.group(1)) / 100.0
+            break
+
     return out
 
 
@@ -214,32 +279,40 @@ def _parse_mod(raw: dict) -> dict | None:
     if not name:
         return None
 
+    max_rank = raw.get("MaxRank") or raw.get("fusionLimit") or 0
+
     out: dict = {
         "name":       name,
-        "type":       raw.get("Type", ""),
+        "type":       raw.get("Type") or raw.get("compatName", ""),
         "polarity":   raw.get("Polarity", ""),
         "rarity":     raw.get("Rarity", ""),
-        "max_rank":   raw.get("MaxRank", 0),
-        "base_drain": raw.get("BaseDrain", 0),
+        "max_rank":   int(max_rank),
+        "base_drain": raw.get("BaseDrain") or raw.get("baseDrain") or 0,
     }
 
-    # Try structured Stats first
-    stats = raw.get("Stats")
-    if isinstance(stats, list) and stats:
-        last = stats[-1]  # max rank stats
+    # levelStats: per-rank array — use last entry (max rank)
+    level_stats = raw.get("levelStats") or raw.get("Stats")
+    if isinstance(level_stats, list) and level_stats:
+        last = level_stats[-1]
+        stat_strings: list[str] = []
         if isinstance(last, dict):
-            for k, v in last.items():
-                try:
-                    out[k.lower()] = float(v)
-                except (TypeError, ValueError):
-                    pass
+            stat_strings = last.get("stats", [])
+        elif isinstance(last, list):
+            stat_strings = last
+        for s in stat_strings:
+            if isinstance(s, str):
+                parsed = _parse_mod_effect(s)
+                out.update(parsed)
+        if stat_strings:
+            out["effect_raw"] = " | ".join(stat_strings)
 
-    # Parse description string for bonuses
-    effect = raw.get("Effect") or raw.get("Description") or ""
-    if isinstance(effect, str) and effect:
-        parsed = _parse_mod_effect(effect)
-        out.update(parsed)
-        out["effect_raw"] = effect
+    # Fallback: plain Effect/Description string
+    if "effect_raw" not in out:
+        effect = raw.get("Effect") or raw.get("Description") or ""
+        if isinstance(effect, str) and effect:
+            parsed = _parse_mod_effect(effect)
+            out.update(parsed)
+            out["effect_raw"] = effect
 
     return out
 
@@ -257,8 +330,12 @@ def parse_mods(raw: dict | list) -> dict:
     mods: dict = {}
     for entry in entries:
         parsed = _parse_mod(entry)
-        if parsed and parsed.get("name"):
-            mods[parsed["name"]] = parsed
+        if not parsed or not parsed.get("name"):
+            continue
+        n = parsed["name"]
+        # Keep the entry with the highest max_rank (deduplicate legacy versions)
+        if n not in mods or parsed["max_rank"] > mods[n]["max_rank"]:
+            mods[n] = parsed
 
     print(f"  Mods parsed: {len(mods)}")
     return mods
