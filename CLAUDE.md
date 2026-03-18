@@ -30,12 +30,40 @@ src/
   quantizer.py      # quantize() — pure function, no side effects
   combiner.py       # ElementalCombiner — mod-order-based element combination
   calculator.py     # DamageCalculator — full pipeline
+  loader.py         # !! TODO: load weapons.json/mods.json → Weapon/Mod objects
 tests/
   test_quantization.py
   test_combiner.py
   test_pipeline.py  # integration tests using wiki examples
-memory-bank/        # detailed architectural notes
+data/
+  weapons.json      # 588 weapons parsed from wiki (primary/secondary/melee)
+  mods.json         # 1534 mods parsed from wiki
+  enemies.json      # !! TODO: scrape Module:Enemies/data from wiki
+scripts/
+  parse_lua.py      # parses raw .lua module files downloaded from wiki
+  parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json
+  fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
+  extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 ```
+
+## !! Three Things Still Needed !!
+
+### 1. Enemy Database
+Scrape `https://wiki.warframe.com/w/Module:Enemies/data?action=raw` → `data/enemies_data.lua`
+Parse with `parse_lua.py`, then add enemy normalizer to `parse_wiki_data.py`.
+Each enemy needs: `faction`, `health_type`, `armor_type`, `base_armor`, `body_part_multiplier`.
+See `HANDOFF.md` for full details.
+
+### 2. Data Loader (`src/loader.py`)
+Convert `data/weapons.json` and `data/mods.json` into `Weapon`/`Mod` objects.
+Key mappings:
+- `"impact": 1.2` → `{DamageType.IMPACT: 1.2}`
+- `"heat_pct": 0.9` → `DamageComponent(DamageType.HEAT, 0.9)` in `Mod.elemental_bonuses`
+- `"damage_bonus_pct": 1.65` → `Mod.damage_bonus = 1.65`
+- `"faction_bonus": 0.55, "faction_target": "corpus"` → `Mod.faction_bonus / Mod.faction_type`
+
+### 3. CLI / Entrypoint
+Simple command-line interface to run a full calculation. See `HANDOFF.md`.
 
 ## Confirmed Order of Operations (from wiki research)
 Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research):
