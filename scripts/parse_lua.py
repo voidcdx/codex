@@ -110,7 +110,14 @@ class _LuaParser:
                 self._skip()
                 if self._peek() == "=":
                     self.pos += 1
-                    namespace[varname] = self._value()
+                    saved = self.pos
+                    try:
+                        namespace[varname] = self._value()
+                    except SyntaxError:
+                        # e.g. mw.site.namespaces[828].name — skip
+                        self.pos = saved
+                        self._skip_statement()
+                        namespace[varname] = None
                 else:
                     namespace[varname] = None
                 self._skip_semi()
@@ -126,14 +133,17 @@ class _LuaParser:
                 if self._peek() == "[":
                     # varname[key] = value
                     self.pos += 1
-                    key = self._value()
-                    self._consume("]")
-                    self._skip()
-                    if self._peek() == "=":
-                        self.pos += 1
-                        val = self._value()
-                        if varname in namespace and isinstance(namespace[varname], dict):
-                            namespace[varname][key] = val
+                    try:
+                        key = self._value()
+                        self._consume("]")
+                        self._skip()
+                        if self._peek() == "=":
+                            self.pos += 1
+                            val = self._value()
+                            if varname in namespace and isinstance(namespace[varname], dict):
+                                namespace[varname][key] = val
+                    except SyntaxError:
+                        self._skip_statement()
                     self._skip_semi()
                     continue
 
