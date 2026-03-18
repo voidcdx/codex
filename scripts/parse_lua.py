@@ -210,10 +210,22 @@ class _LuaParser:
             except ValueError:
                 return float(s)
 
-        raise SyntaxError(
-            f"Unexpected {c!r} at pos {self.pos}: "
-            f"…{self.src[self.pos:self.pos+40]!r}"
-        )
+        # Anything else (identifier, function call, concatenation, mw.* API, …)
+        # We can't evaluate it locally — consume the expression and return None.
+        # An "expression" ends at a structural delimiter: , ; } ) \n
+        depth = 0
+        while self.pos < len(self.src):
+            ch = self.src[self.pos]
+            if ch in "({[":
+                depth += 1
+            elif ch in ")}]":
+                if depth == 0:
+                    break
+                depth -= 1
+            elif ch in (",", ";", "\n") and depth == 0:
+                break
+            self.pos += 1
+        return None
 
     def _string(self, q: str) -> str:
         self.pos += 1
@@ -328,6 +340,10 @@ def main() -> None:
         # Mods/data wraps everything in { Mods = {...} }
         if stem == "mods_data" and isinstance(data, dict) and "Mods" in data:
             data = data["Mods"]
+
+        # Drop entries with None keys (unparseable Lua expressions)
+        if isinstance(data, dict):
+            data = {k: v for k, v in data.items() if k is not None}
 
         out = DATA_DIR / f"{out_name}.json"
         out.write_text(json.dumps(data, indent=2, ensure_ascii=False))
