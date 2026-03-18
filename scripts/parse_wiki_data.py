@@ -85,46 +85,81 @@ STAT_KEYS = {
 }
 
 
+def _parse_damage_dict(d: dict) -> tuple[dict, dict]:
+    """Extract IPS and elemental amounts from a Damage sub-dict."""
+    ips: dict[str, float] = {}
+    elems: dict[str, float] = {}
+    for wiki_key, canon in IPS_KEYS.items():
+        v = d.get(wiki_key)
+        if v is not None:
+            try: ips[canon] = float(v)
+            except (TypeError, ValueError): pass
+    for wiki_key, canon in ELEMENTAL_KEYS.items():
+        v = d.get(wiki_key)
+        if v is not None:
+            try: elems[canon] = float(v)
+            except (TypeError, ValueError): pass
+    return ips, elems
+
+
 def _parse_weapon(name: str, raw: dict) -> dict | None:
     out: dict = {"name": name}
 
-    # Damage — may be nested under "Damage" key or flat
-    damage_src = raw.get("Damage") if isinstance(raw.get("Damage"), dict) else raw
+    # Damage lives inside Attacks[N].Damage (wiki format)
+    # Use the first attack named "Normal Attack", or index 0.
+    attacks = raw.get("Attacks") or []
+    normal = next(
+        (a for a in attacks if isinstance(a, dict)
+         and a.get("AttackName", "").lower() == "normal attack"),
+        attacks[0] if attacks else None,
+    )
 
-    ips: dict[str, float] = {}
-    for wiki_key, canon in IPS_KEYS.items():
-        v = damage_src.get(wiki_key)
-        if v is not None:
-            try:
-                ips[canon] = float(v)
-            except (TypeError, ValueError):
-                pass
+    if normal is None:
+        return None
 
-    elems: dict[str, float] = {}
-    for wiki_key, canon in ELEMENTAL_KEYS.items():
-        v = damage_src.get(wiki_key)
-        if v is not None:
-            try:
-                elems[canon] = float(v)
-            except (TypeError, ValueError):
-                pass
+    damage_dict = normal.get("Damage") if isinstance(normal.get("Damage"), dict) else {}
+    ips, elems = _parse_damage_dict(damage_dict)
 
     if not ips and not elems:
-        return None  # skip entries with no damage data
+        return None
 
     if ips:
         out["base_damage"] = ips
     if elems:
         out["innate_elements"] = elems
 
-    # Other stats
-    for wiki_key, canon in STAT_KEYS.items():
+    # Per-attack stats (crit, status, fire rate)
+    ATTACK_STAT_KEYS = {
+        "CritChance":     "crit_chance",
+        "CritMultiplier": "crit_multiplier",
+        "StatusChance":   "status_chance",
+        "FireRate":       "fire_rate",
+    }
+    for wiki_key, canon in ATTACK_STAT_KEYS.items():
+        v = normal.get(wiki_key)
+        if v is not None:
+            try: out[canon] = float(v)
+            except (TypeError, ValueError): pass
+
+    # Top-level stats
+    TOP_STAT_KEYS = {
+        "Magazine":    "magazine",
+        "MagSize":     "magazine",
+        "Reload":      "reload",
+        "Mastery":     "mastery_req",
+        "MasteryReq":  "mastery_req",
+        "Disposition": "riven_disposition",
+        "Slot":        "slot",
+        "Class":       "class",
+        "Trigger":     "trigger",
+        "Family":      "family",
+        "MaxRank":     "max_rank",
+    }
+    for wiki_key, canon in TOP_STAT_KEYS.items():
         v = raw.get(wiki_key)
         if v is not None:
-            try:
-                out[canon] = float(v) if isinstance(v, (int, float)) else v
-            except (TypeError, ValueError):
-                out[canon] = v
+            try: out[canon] = float(v) if isinstance(v, (int, float)) else v
+            except (TypeError, ValueError): out[canon] = v
 
     return out
 
