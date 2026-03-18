@@ -394,13 +394,13 @@ def main() -> None:
     print("=== Parsing weapons ===")
     weapons = parse_weapons(json.loads(w_raw.read_text()))
     out_w = DATA_DIR / "weapons.json"
-    out_w.write_text(json.dumps(weapons, indent=2, ensure_ascii=False))
+    out_w.write_text(json.dumps(weapons, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Saved → {out_w}\n")
 
     print("=== Parsing mods ===")
     mods = parse_mods(json.loads(m_raw.read_text()))
     out_m = DATA_DIR / "mods.json"
-    out_m.write_text(json.dumps(mods, indent=2, ensure_ascii=False))
+    out_m.write_text(json.dumps(mods, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Saved → {out_m}\n")
 
 
