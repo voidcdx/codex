@@ -186,12 +186,19 @@ def load_mod(name: str) -> Mod:
     faction_target = entry.get("faction_target") or ""
     faction_type: FactionType | None = _FACTION_TYPE.get(faction_target.lower())
 
+    cc_bonus = float(entry.get("crit_chance_pct") or 0.0)
+    cd_bonus = float(entry.get("crit_damage_pct") or 0.0)
+    sc_bonus = float(entry.get("status_chance_pct") or 0.0)
+
     return Mod(
         name=name,
         damage_bonus=damage_bonus,
         elemental_bonuses=elemental_bonuses,
         faction_bonus=faction_bonus,
         faction_type=faction_type,
+        cc_bonus=cc_bonus,
+        cd_bonus=cd_bonus,
+        sc_bonus=sc_bonus,
     )
 
 

@@ -39,7 +39,7 @@
       text-transform: uppercase;
     }
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 24px;
       display: grid;
@@ -74,7 +74,9 @@
       outline: none;
     }
     select:focus, input[type=text]:focus { border-color: var(--accent); }
-    .mods-list { margin-bottom: 12px; }
+
+    /* Fixed 8-slot mod grid */
+    .mods-list { margin-bottom: 4px; }
     .mod-slot {
       display: flex;
       align-items: center;
@@ -90,20 +92,10 @@
       border-radius: 4px;
       padding: 4px 8px;
       font-size: 12px;
+      flex-shrink: 0;
     }
     .mod-slot button:hover { border-color: var(--bad); color: var(--bad); }
-    .btn-add {
-      background: none;
-      border: 1px dashed var(--border);
-      color: var(--text-dim);
-      width: 100%;
-      padding: 6px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
-    .btn-add:hover { border-color: var(--accent); color: var(--accent); }
+
     .options-row {
       display: flex;
       gap: 12px;
@@ -130,6 +122,26 @@
     .right-col { display: flex; flex-direction: column; gap: 16px; }
 
     /* Weapon stats panel */
+    .weapon-stats-img-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .weapon-stats-img-row img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .weapon-stats-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .weapon-stats-sub { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+
     .stat-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
     .stat-row { display: flex; gap: 8px; }
     .stat-block {
@@ -138,11 +150,19 @@
       border: 1px solid var(--border);
       border-radius: 4px;
       padding: 8px 10px;
+      min-width: 0;
     }
     .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 3px; }
     .stat-value { font-size: 15px; font-weight: 600; color: var(--text); }
     .stat-value.crit { color: #f0a030; }
     .stat-value.status { color: #60b0e0; }
+    .stat-modded {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent2);
+      margin-top: 2px;
+    }
+    .stat-modded::before { content: '▶ '; font-size: 9px; opacity: 0.7; }
 
     /* Results */
     .no-results {
@@ -209,26 +229,39 @@
       outline: none;
     }
     .search-input:focus { border-color: var(--accent); }
-    .weapon-preview {
-      display: none;
-      align-items: center;
-      gap: 12px;
-      margin-top: 4px;
-      margin-bottom: 12px;
+
+    /* Damage table modded column */
+    .col-modded { color: var(--accent2); font-weight: 600; }
+    .col-base { color: var(--text-dim); }
+    .elem-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
     }
-    .weapon-preview.visible { display: flex; }
-    .weapon-preview img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      border-radius: 4px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      flex-shrink: 0;
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 12px;
+      }
+      .stat-row { flex-wrap: wrap; }
+      .stat-block { min-width: 80px; }
+      .bar-cell { width: 80px; }
+      .result-header { flex-direction: column; gap: 6px; }
+      .result-total { font-size: 18px; }
+      .options-row { flex-direction: column; }
+      header { padding: 10px 16px; }
+      header h1 { font-size: 15px; }
     }
-    .weapon-preview-info { overflow: hidden; }
-    .weapon-preview-name { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .weapon-preview-sub { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+    @media (max-width: 480px) {
+      .breakdown-table .bar-cell { display: none; }
+      .weapon-stats-img-row img { width: 52px; height: 52px; }
+    }
   </style>
 </head>
 <body>
@@ -244,20 +277,12 @@
       <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…">
       <label for="weapon-select">Weapon</label>
       <select id="weapon-select" size="1"></select>
-      <div class="weapon-preview" id="weapon-preview">
-        <img id="weapon-preview-img" src="" alt="">
-        <div class="weapon-preview-info">
-          <div class="weapon-preview-name" id="weapon-preview-name"></div>
-          <div class="weapon-preview-sub" id="weapon-preview-sub"></div>
-        </div>
-      </div>
     </div>
 
-    <!-- Mods -->
+    <!-- Mods — fixed 8 slots -->
     <div class="panel" style="margin-bottom:16px">
       <h2>Mods (in slot order)</h2>
       <div id="mods-list" class="mods-list"></div>
-      <button class="btn-add" onclick="addModSlot()">+ Add Mod Slot</button>
     </div>
 
     <!-- Enemy -->
@@ -295,7 +320,7 @@
 
     <!-- Weapon Stats -->
     <div class="panel" id="weapon-stats-panel" style="display:none">
-      <h2>Base Weapon Stats</h2>
+      <h2>Weapon Stats</h2>
       <div id="weapon-stats-content"></div>
     </div>
 
@@ -319,7 +344,25 @@
 let allWeapons = [];
 let allMods = [];
 let allEnemies = [];
-let modSlotCount = 0;
+
+// Warframe element colours
+const ELEM_COLORS = {
+  impact:      '#9090b0',
+  puncture:    '#d0c080',
+  slash:       '#e05050',
+  heat:        '#ff7a30',
+  cold:        '#60b0e0',
+  electricity: '#f0e040',
+  toxin:       '#60d030',
+  blast:       '#ffd040',
+  corrosive:   '#a0e040',
+  gas:         '#c0e040',
+  magnetic:    '#c060f0',
+  radiation:   '#f0a020',
+  viral:       '#f060a0',
+  true:        '#ffffff',
+  void:        '#9060ff',
+};
 
 async function loadData() {
   [allWeapons, allMods, allEnemies] = await Promise.all([
@@ -333,10 +376,11 @@ async function loadData() {
   document.getElementById('weapon-select').addEventListener('change', onWeaponChange);
   document.getElementById('enemy-select').addEventListener('change', () => showEnemyStats(getCurrentEnemy()));
 
+  initModGrid();
+
   // Default selections for quick testing
   setSelectValue('weapon-select', 'Soma Prime');
   setSelectValue('enemy-select', 'Heavy Gunner');
-  addModSlot('Serration');
   onWeaponChange();
   showEnemyStats(getCurrentEnemy());
 }
@@ -349,6 +393,38 @@ function getCurrentWeapon() {
 function getCurrentEnemy() {
   const name = document.getElementById('enemy-select').value;
   return allEnemies.find(x => x.name === name) || null;
+}
+
+// ---------------------------------------------------------------------------
+// Fixed 8-slot mod grid
+// ---------------------------------------------------------------------------
+function initModGrid() {
+  const list = document.getElementById('mods-list');
+  list.innerHTML = '';
+  for (let i = 0; i < 8; i++) {
+    const div = document.createElement('div');
+    div.className = 'mod-slot';
+
+    const sel = document.createElement('select');
+    sel.innerHTML = '<option value="">(empty)</option>';
+    sel.addEventListener('change', () => {
+      refreshModDropdowns();
+      updateModdedStats();
+    });
+
+    const btn = document.createElement('button');
+    btn.textContent = '✕';
+    btn.title = 'Clear slot';
+    btn.onclick = () => {
+      sel.value = '';
+      refreshModDropdowns();
+      updateModdedStats();
+    };
+
+    div.appendChild(sel);
+    div.appendChild(btn);
+    list.appendChild(div);
+  }
 }
 
 // Returns the set of mod types compatible with the given weapon
@@ -369,7 +445,6 @@ function getCompatibleModTypes(weapon) {
       types.add('Rifle');
       types.add('Bow');
     } else {
-      // Rifle, Launcher, Arm-Cannon, Speargun, Exalted Weapon, etc.
       types.add('Rifle');
       types.add('Assault Rifle');
     }
@@ -411,7 +486,6 @@ function getCompatibleModTypes(weapon) {
 }
 
 function buildModOptions(compatibleTypes) {
-  const weapon = getCurrentWeapon();
   const filtered = compatibleTypes
     ? allMods.filter(m => compatibleTypes.has(m.type))
     : allMods;
@@ -425,8 +499,7 @@ function refreshModDropdowns() {
   const types = getCompatibleModTypes(weapon);
   document.querySelectorAll('#mods-list select').forEach(sel => {
     const current = sel.value;
-    sel.innerHTML = buildModOptions(types);
-    // Restore value if still compatible, else reset to empty
+    sel.innerHTML = buildModOptions(weapon ? types : null);
     if (current && Array.from(sel.options).some(o => o.value === current)) {
       sel.value = current;
     }
@@ -434,61 +507,54 @@ function refreshModDropdowns() {
 }
 
 function onWeaponChange() {
-  updateWeaponPreview();
   refreshModDropdowns();
   showWeaponStats(getCurrentWeapon());
+  updateModdedStats();
 }
 
-function updateWeaponPreview() {
-  const w = getCurrentWeapon();
-  const preview = document.getElementById('weapon-preview');
-  if (!w || !w.image) { preview.classList.remove('visible'); return; }
-
-  const img = document.getElementById('weapon-preview-img');
-  img.src = '/static/images/weapons/' + w.image;
-  img.onerror = () => { preview.classList.remove('visible'); };
-  img.onload  = () => { preview.classList.add('visible'); };
-
-  document.getElementById('weapon-preview-name').textContent = w.name;
-  const sub = [w.slot, w.class].filter(Boolean).join(' · ');
-  document.getElementById('weapon-preview-sub').textContent = sub;
-}
-
+// ---------------------------------------------------------------------------
+// Weapon stats panel — base stats
+// ---------------------------------------------------------------------------
 function showWeaponStats(weapon) {
   const panel = document.getElementById('weapon-stats-panel');
   if (!weapon) { panel.style.display = 'none'; return; }
 
-  const dmg = weapon.base_damage || {};
-  const dmgEntries = Object.entries(dmg);
-  const total = dmgEntries.reduce((s, [, v]) => s + v, 0);
-
-  const dmgRows = dmgEntries.map(([type, val]) =>
-    `<tr><td>${capitalize(type)}</td><td>${val.toFixed(1)}</td></tr>`
-  ).join('');
-
   const pct = v => (v * 100).toFixed(1) + '%';
   const fmt = (v, suffix) => v != null ? v + (suffix || '') : '—';
-
   const sub = [weapon.slot, weapon.class, weapon.trigger].filter(Boolean).join(' · ');
 
+  const imgHtml = weapon.image
+    ? `<div class="weapon-stats-img-row" id="weapon-img-row">
+        <img src="/static/images/weapons/${esc(weapon.image)}" alt=""
+             onerror="document.getElementById('weapon-img-row').style.display='none'">
+        <div>
+          <div class="weapon-stats-name">${esc(weapon.name)}</div>
+          <div class="weapon-stats-sub">${esc(sub)}</div>
+        </div>
+       </div>`
+    : `<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+        <div class="weapon-stats-name">${esc(weapon.name)}</div>
+        <div class="weapon-stats-sub">${esc(sub)}</div>
+       </div>`;
+
   document.getElementById('weapon-stats-content').innerHTML = `
-    <div style="margin-bottom:10px">
-      <div style="font-size:15px;font-weight:600;color:var(--text)">${esc(weapon.name)}</div>
-      <div style="font-size:11px;color:var(--text-dim);margin-top:3px">${esc(sub)}</div>
-    </div>
+    ${imgHtml}
     <div class="stat-rows">
       <div class="stat-row">
         <div class="stat-block">
           <div class="stat-label">Crit Chance</div>
-          <div class="stat-value crit">${pct(weapon.crit_chance || 0)}</div>
+          <div class="stat-value crit" id="sv-cc">${pct(weapon.crit_chance || 0)}</div>
+          <div class="stat-modded" id="sm-cc" style="display:none"></div>
         </div>
         <div class="stat-block">
           <div class="stat-label">Crit Mult</div>
-          <div class="stat-value crit">${fmt(weapon.crit_multiplier, 'x')}</div>
+          <div class="stat-value crit" id="sv-cm">${fmt(weapon.crit_multiplier, 'x')}</div>
+          <div class="stat-modded" id="sm-cm" style="display:none"></div>
         </div>
         <div class="stat-block">
           <div class="stat-label">Status</div>
-          <div class="stat-value status">${pct(weapon.status_chance || 0)}</div>
+          <div class="stat-value status" id="sv-sc">${pct(weapon.status_chance || 0)}</div>
+          <div class="stat-modded" id="sm-sc" style="display:none"></div>
         </div>
       </div>
       <div class="stat-row">
@@ -506,21 +572,155 @@ function showWeaponStats(weapon) {
         </div>
       </div>
     </div>
-    <table class="breakdown-table">
-      <thead><tr><th>Damage Type</th><th style="text-align:right">Base</th></tr></thead>
-      <tbody>${dmgRows}</tbody>
-      <tfoot class="total-row"><tr><td>Total</td><td style="text-align:right">${total.toFixed(1)}</td></tr></tfoot>
-    </table>
+    <div id="damage-table-wrap"></div>
   `;
+
+  renderDamageTable(weapon.base_damage, null);
   panel.style.display = 'block';
 }
 
+function renderDamageTable(baseDmg, moddedData) {
+  const wrap = document.getElementById('damage-table-wrap');
+  if (!wrap) return;
+
+  const hasModded = moddedData && Object.keys(moddedData.modded_damage || {}).length > 0;
+
+  // Merge all damage types: base IPS + modded elementals
+  const allTypes = new Set([
+    ...Object.keys(baseDmg),
+    ...(hasModded ? Object.keys(moddedData.modded_damage) : []),
+  ]);
+
+  const baseTotal = Object.values(baseDmg).reduce((s, v) => s + v, 0);
+  const moddedTotal = hasModded ? moddedData.modded_total : null;
+
+  const headerModded = hasModded
+    ? `<th style="text-align:right" class="col-modded">Modded</th>`
+    : '';
+
+  const rows = Array.from(allTypes).map(type => {
+    const baseVal = baseDmg[type];
+    const modVal  = hasModded ? moddedData.modded_damage[type] : null;
+    const color   = ELEM_COLORS[type] || 'var(--text)';
+    const dot     = `<span class="elem-dot" style="background:${color}"></span>`;
+    const label   = type.charAt(0).toUpperCase() + type.slice(1);
+
+    const baseCell = baseVal != null
+      ? `<td class="col-base" style="text-align:right">${baseVal.toFixed(1)}</td>`
+      : `<td class="col-base" style="text-align:right;color:var(--border)">—</td>`;
+
+    const moddedCell = hasModded
+      ? `<td class="col-modded" style="text-align:right">${modVal != null ? modVal.toFixed(1) : '—'}</td>`
+      : '';
+
+    return `<tr>
+      <td>${dot}${label}</td>
+      ${baseCell}
+      ${moddedCell}
+    </tr>`;
+  }).join('');
+
+  const moddedTotalCell = hasModded
+    ? `<td style="text-align:right" class="col-modded">${moddedTotal.toFixed(1)}</td>`
+    : '';
+
+  wrap.innerHTML = `
+    <table class="breakdown-table">
+      <thead>
+        <tr>
+          <th>Damage Type</th>
+          <th style="text-align:right">Base</th>
+          ${headerModded}
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+      <tfoot class="total-row">
+        <tr>
+          <td>Total</td>
+          <td style="text-align:right">${baseTotal.toFixed(1)}</td>
+          ${moddedTotalCell}
+        </tr>
+      </tfoot>
+    </table>
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Live modded stats update
+// ---------------------------------------------------------------------------
+let _modUpdateTimer = null;
+
+function updateModdedStats() {
+  clearTimeout(_modUpdateTimer);
+  _modUpdateTimer = setTimeout(_doUpdateModdedStats, 120);
+}
+
+async function _doUpdateModdedStats() {
+  const weapon = getCurrentWeapon();
+  if (!weapon) return;
+
+  const mods = Array.from(document.querySelectorAll('#mods-list select'))
+    .map(s => s.value).filter(Boolean);
+
+  try {
+    const resp = await fetch('/api/modded-weapon', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ weapon: weapon.name, mods }),
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+
+    // Update damage table
+    renderDamageTable(weapon.base_damage, mods.length > 0 ? data : null);
+
+    // Update crit/status stat blocks
+    const hasMods = mods.length > 0;
+    const pct = v => (v * 100).toFixed(1) + '%';
+
+    const smCC = document.getElementById('sm-cc');
+    const smCM = document.getElementById('sm-cm');
+    const smSC = document.getElementById('sm-sc');
+
+    if (smCC) {
+      if (hasMods && Math.abs(data.modded_cc - data.base_cc) > 0.0001) {
+        smCC.textContent = pct(data.modded_cc);
+        smCC.style.display = 'block';
+      } else {
+        smCC.style.display = 'none';
+      }
+    }
+    if (smCM) {
+      if (hasMods && Math.abs(data.modded_cm - data.base_cm) > 0.0001) {
+        smCM.textContent = data.modded_cm.toFixed(2) + 'x';
+        smCM.style.display = 'block';
+      } else {
+        smCM.style.display = 'none';
+      }
+    }
+    if (smSC) {
+      if (hasMods && Math.abs(data.modded_sc - data.base_sc) > 0.0001) {
+        smSC.textContent = pct(data.modded_sc);
+        smSC.style.display = 'block';
+      } else {
+        smSC.style.display = 'none';
+      }
+    }
+  } catch(e) {
+    // silent — non-critical
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Enemy stats panel
+// ---------------------------------------------------------------------------
 function showEnemyStats(enemy) {
   const panel = document.getElementById('enemy-stats-panel');
   if (!enemy) { panel.style.display = 'none'; return; }
 
   const fmt = (v, suffix) => v != null && v !== 0 ? v + (suffix || '') : '—';
-  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '—';
+  // Handles underscore-separated strings like "infested_flesh" → "Infested Flesh"
+  const cap = s => s ? s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '—';
 
   const headRow = enemy.head_multiplier && enemy.head_multiplier !== 1
     ? `<div class="stat-row">
@@ -570,10 +770,9 @@ function showEnemyStats(enemy) {
   panel.style.display = 'block';
 }
 
-function capitalize(s) {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
+// ---------------------------------------------------------------------------
+// Utilities
+// ---------------------------------------------------------------------------
 function populateSelect(id, names) {
   const sel = document.getElementById(id);
   sel.innerHTML = names.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
@@ -586,38 +785,14 @@ function setSelectValue(id, value) {
   }
 }
 
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function addModSlot(defaultVal) {
-  modSlotCount++;
-  const id = `mod-slot-${modSlotCount}`;
-  const div = document.createElement('div');
-  div.className = 'mod-slot';
-  div.id = id;
-
-  const weapon = getCurrentWeapon();
-  const types = getCompatibleModTypes(weapon);
-
-  const sel = document.createElement('select');
-  sel.innerHTML = buildModOptions(weapon ? types : null);
-
-  const btn = document.createElement('button');
-  btn.textContent = '✕';
-  btn.onclick = () => div.remove();
-
-  div.appendChild(sel);
-  div.appendChild(btn);
-  document.getElementById('mods-list').appendChild(div);
-
-  if (defaultVal) setSelectByText(sel, defaultVal);
-}
-
 function setSelectByText(sel, text) {
   for (const opt of sel.options) {
     if (opt.value === text) { sel.value = text; return; }
   }
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 // Search/filter selects
@@ -636,6 +811,9 @@ function setupSearch(inputId, selectId, getNames, onChange) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Calculate
+// ---------------------------------------------------------------------------
 async function runCalculation() {
   const weapon = document.getElementById('weapon-select').value;
   const enemy  = document.getElementById('enemy-select').value;
@@ -705,9 +883,11 @@ function showResults(data) {
 
   const rows = entries.map(([type, val]) => {
     const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
+    const color = ELEM_COLORS[type.toLowerCase()] || 'var(--accent)';
+    const dot = `<span class="elem-dot" style="background:${color}"></span>`;
     return `<tr>
-      <td>${type}</td>
-      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></td>
+      <td>${dot}${type}</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div></td>
       <td>${val.toFixed(2)}</td>
     </tr>`;
   }).join('');

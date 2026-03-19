@@ -32,6 +32,9 @@ class Mod:
     elemental_bonuses: list[DamageComponent] = field(default_factory=list)
     faction_bonus: float = 0.0
     faction_type: FactionType | None = None        # Python 3.10+ union syntax
+    cc_bonus: float = 0.0                         # additive crit chance, e.g. 1.5 for Point Strike
+    cd_bonus: float = 0.0                         # additive crit damage, e.g. 1.2 for Vital Sense
+    sc_bonus: float = 0.0                         # additive status chance, e.g. 0.9 for Rifle Aptitude
 
 
 @dataclass

@@ -21,12 +21,16 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+import math
 from src.calculator import DamageCalculator, calculate_crit_multiplier
+from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
     _raw_enemies, _raw_mods, _raw_weapons,
     list_enemies, list_mods, list_weapons,
     load_enemy, load_mod, load_weapon,
 )
+from src.models import DamageComponent
+from src.quantizer import quantize
 
 app = FastAPI(title="Warframe Damage Calculator", version="1.0.0")
 
@@ -98,6 +102,95 @@ def get_enemies() -> list[dict]:
 # ---------------------------------------------------------------------------
 # Calculate endpoint
 # ---------------------------------------------------------------------------
+
+class ModdedWeaponRequest(BaseModel):
+    weapon: str
+    mods: list[str] = []
+
+
+@app.post("/api/modded-weapon")
+def modded_weapon(req: ModdedWeaponRequest) -> dict:
+    try:
+        weapon = load_weapon(req.weapon)
+    except KeyError:
+        raise HTTPException(400, f"Unknown weapon: {req.weapon!r}")
+
+    mods = []
+    for mod_name in req.mods:
+        try:
+            mods.append(load_mod(mod_name))
+        except KeyError:
+            raise HTTPException(400, f"Unknown mod: {mod_name!r}")
+
+    base_damage = weapon.total_base_damage
+    raw_w = _raw_weapons().get(weapon.name, {})
+    base_cc = float(raw_w.get("crit_chance") or 0.0)
+    base_cm = float(raw_w.get("crit_multiplier") or 1.0)
+    base_sc = float(raw_w.get("status_chance") or 0.0)
+
+    total_damage_bonus = sum(m.damage_bonus for m in mods)
+    total_cc_bonus = sum(m.cc_bonus for m in mods)
+    total_cd_bonus = sum(m.cd_bonus for m in mods)
+    total_sc_bonus = sum(m.sc_bonus for m in mods)
+
+    # Build elemental components from mods + innate, then combine
+    mod_elements: list[DamageComponent] = []
+    for m in mods:
+        mod_elements.extend(m.elemental_bonuses)
+
+    scaled_mod_elements = [
+        DamageComponent(c.type, c.amount * base_damage)
+        for c in mod_elements
+        if c.type in PRIMARY_ELEMENTS
+    ]
+    scaled_innate_primary = [
+        DamageComponent(c.type, c.amount * base_damage)
+        for c in weapon.innate_elements
+        if c.type in PRIMARY_ELEMENTS
+    ]
+    innate_secondary = [
+        DamageComponent(c.type, quantize(c.amount * base_damage, base_damage))
+        for c in weapon.innate_elements
+        if c.type not in PRIMARY_ELEMENTS
+    ]
+    combined_elements = combine_elements(
+        scaled_mod_elements,
+        scaled_innate_primary,
+        base_damage=base_damage,
+        is_kuva_tenet=weapon.is_kuva_tenet,
+    )
+    elemental_components = combined_elements + [c for c in innate_secondary if c.amount != 0.0]
+
+    # Modded IPS
+    base_dmg_dict = {dt.name.lower(): v for dt, v in weapon.base_damage.items()}
+    modded_dmg_dict: dict[str, float] = {}
+    for dt, v in weapon.base_damage.items():
+        q = quantize(float(math.floor(v * (1.0 + total_damage_bonus))), base_damage)
+        if q != 0.0:
+            modded_dmg_dict[dt.name.lower()] = q
+
+    # Modded elementals (apply damage bonus scaling already done in combine_elements)
+    for c in elemental_components:
+        q = quantize(float(math.floor(c.amount * (1.0 + total_damage_bonus))), base_damage)
+        if q != 0.0:
+            modded_dmg_dict[c.type.name.lower()] = q
+
+    base_total = sum(weapon.base_damage.values())
+    modded_total = sum(modded_dmg_dict.values())
+
+    return {
+        "base_damage":  base_dmg_dict,
+        "base_total":   round(base_total, 4),
+        "modded_damage": modded_dmg_dict,
+        "modded_total":  round(modded_total, 4),
+        "base_cc":  base_cc,
+        "modded_cc": round(base_cc * (1.0 + total_cc_bonus), 6),
+        "base_cm":  base_cm,
+        "modded_cm": round(base_cm * (1.0 + total_cd_bonus), 6),
+        "base_sc":  base_sc,
+        "modded_sc": round(base_sc * (1.0 + total_sc_bonus), 6),
+    }
+
 
 class CalcRequest(BaseModel):
     weapon:    str
