@@ -7,9 +7,20 @@ fi
 
 cd "$CLAUDE_PROJECT_DIR"
 
-git fetch origin claude/continue-work-WfJ0X
-git checkout claude/continue-work-WfJ0X
-git pull origin claude/continue-work-WfJ0X
+# Fetch all remote claude/ branches
+git fetch origin 'refs/heads/claude/*:refs/remotes/origin/claude/*' 2>/dev/null || true
+
+# Pick the most recently updated claude/ branch on the remote
+BRANCH=$(git for-each-ref --sort=-committerdate \
+  --format='%(refname:short)' 'refs/remotes/origin/claude/*' \
+  | head -1 | sed 's|^origin/||')
+
+if [ -z "$BRANCH" ]; then
+  echo "session-start: no claude/ branch found on remote, staying on current branch"
+else
+  echo "session-start: using branch $BRANCH"
+  git checkout -B "$BRANCH" "origin/$BRANCH"
+fi
 
 pip install -q -r requirements.txt
 
