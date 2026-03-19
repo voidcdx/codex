@@ -268,16 +268,16 @@
       <select id="enemy-select" size="1"></select>
     </div>
 
-    <!-- Options -->
+    <!-- Hit Options -->
     <div class="panel" style="margin-bottom:16px">
-      <h2>Options</h2>
+      <h2>Hit Options</h2>
       <div class="options-row">
         <div>
-          <label for="crit-mode">Crit Mode</label>
+          <label for="crit-mode">Hit Type</label>
           <select id="crit-mode">
-            <option value="average">Average DPS</option>
-            <option value="guaranteed">Guaranteed</option>
-            <option value="max">Maximum</option>
+            <option value="average">Average (Expected)</option>
+            <option value="guaranteed">Guaranteed Crit</option>
+            <option value="max">Maximum Crit</option>
           </select>
         </div>
         <div style="display:flex;align-items:center;gap:8px;padding-top:18px">
@@ -297,6 +297,12 @@
     <div class="panel" id="weapon-stats-panel" style="display:none">
       <h2>Base Weapon Stats</h2>
       <div id="weapon-stats-content"></div>
+    </div>
+
+    <!-- Enemy Stats -->
+    <div class="panel" id="enemy-stats-panel" style="display:none">
+      <h2>Enemy Stats</h2>
+      <div id="enemy-stats-content"></div>
     </div>
 
     <!-- Results -->
@@ -325,17 +331,24 @@ async function loadData() {
   populateSelect('enemy-select', allEnemies.map(e => e.name));
 
   document.getElementById('weapon-select').addEventListener('change', onWeaponChange);
+  document.getElementById('enemy-select').addEventListener('change', () => showEnemyStats(getCurrentEnemy()));
 
   // Default selections for quick testing
   setSelectValue('weapon-select', 'Soma Prime');
   setSelectValue('enemy-select', 'Heavy Gunner');
   addModSlot('Serration');
   onWeaponChange();
+  showEnemyStats(getCurrentEnemy());
 }
 
 function getCurrentWeapon() {
   const name = document.getElementById('weapon-select').value;
   return allWeapons.find(x => x.name === name) || null;
+}
+
+function getCurrentEnemy() {
+  const name = document.getElementById('enemy-select').value;
+  return allEnemies.find(x => x.name === name) || null;
 }
 
 // Returns the set of mod types compatible with the given weapon
@@ -502,6 +515,61 @@ function showWeaponStats(weapon) {
   panel.style.display = 'block';
 }
 
+function showEnemyStats(enemy) {
+  const panel = document.getElementById('enemy-stats-panel');
+  if (!enemy) { panel.style.display = 'none'; return; }
+
+  const fmt = (v, suffix) => v != null && v !== 0 ? v + (suffix || '') : '—';
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '—';
+
+  const headRow = enemy.head_multiplier && enemy.head_multiplier !== 1
+    ? `<div class="stat-row">
+        <div class="stat-block" style="flex:2">
+          <div class="stat-label">Head Multiplier</div>
+          <div class="stat-value">${enemy.head_multiplier}×</div>
+        </div>
+       </div>`
+    : '';
+
+  document.getElementById('enemy-stats-content').innerHTML = `
+    <div style="margin-bottom:10px">
+      <div style="font-size:15px;font-weight:600;color:var(--text)">${esc(enemy.name)}</div>
+    </div>
+    <div class="stat-rows">
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">Faction</div>
+          <div class="stat-value">${cap(enemy.faction)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Health Type</div>
+          <div class="stat-value">${cap(enemy.health_type)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Armor Type</div>
+          <div class="stat-value">${cap(enemy.armor_type)}</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">Base Health</div>
+          <div class="stat-value">${fmt(enemy.base_health)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Base Shield</div>
+          <div class="stat-value">${fmt(enemy.base_shield)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Base Armor</div>
+          <div class="stat-value">${fmt(enemy.base_armor)}</div>
+        </div>
+      </div>
+      ${headRow}
+    </div>
+  `;
+  panel.style.display = 'block';
+}
+
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -554,16 +622,17 @@ function setSelectByText(sel, text) {
 
 // Search/filter selects
 document.addEventListener('DOMContentLoaded', () => {
-  setupSearch('weapon-search', 'weapon-select', () => allWeapons.map(w => w.name));
-  setupSearch('enemy-search', 'enemy-select', () => allEnemies.map(e => e.name));
+  setupSearch('weapon-search', 'weapon-select', () => allWeapons.map(w => w.name), onWeaponChange);
+  setupSearch('enemy-search', 'enemy-select', () => allEnemies.map(e => e.name), () => showEnemyStats(getCurrentEnemy()));
   loadData();
 });
 
-function setupSearch(inputId, selectId, getNames) {
+function setupSearch(inputId, selectId, getNames, onChange) {
   document.getElementById(inputId).addEventListener('input', function() {
     const q = this.value.toLowerCase();
     const names = getNames().filter(n => n.toLowerCase().includes(q));
     populateSelect(selectId, names);
+    if (onChange) onChange();
   });
 }
 

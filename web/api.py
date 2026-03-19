@@ -83,11 +83,14 @@ def get_enemies() -> list[dict]:
     out = []
     for name, entry in raw.items():
         out.append({
-            "name":        name,
-            "faction":     entry.get("faction", ""),
-            "health_type": entry.get("health_type", ""),
-            "armor_type":  entry.get("armor_type", ""),
-            "base_armor":  entry.get("base_armor", 0),
+            "name":           name,
+            "faction":        entry.get("faction", ""),
+            "health_type":    entry.get("health_type", ""),
+            "armor_type":     entry.get("armor_type", ""),
+            "base_armor":     entry.get("base_armor", 0),
+            "base_health":    entry.get("base_health", 0),
+            "base_shield":    entry.get("base_shield", 0),
+            "head_multiplier": entry.get("head_multiplier", 1),
         })
     return sorted(out, key=lambda x: x["name"])
 
