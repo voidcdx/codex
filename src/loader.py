@@ -189,6 +189,7 @@ def load_mod(name: str) -> Mod:
     cc_bonus = float(entry.get("crit_chance_pct") or 0.0)
     cd_bonus = float(entry.get("crit_damage_pct") or 0.0)
     sc_bonus = float(entry.get("status_chance_pct") or 0.0)
+    multishot_bonus = float(entry.get("multishot_pct") or 0.0)
 
     return Mod(
         name=name,
@@ -199,6 +200,7 @@ def load_mod(name: str) -> Mod:
         cc_bonus=cc_bonus,
         cd_bonus=cd_bonus,
         sc_bonus=sc_bonus,
+        multishot_bonus=multishot_bonus,
     )
 
 

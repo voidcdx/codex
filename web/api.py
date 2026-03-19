@@ -132,6 +132,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     total_cc_bonus = sum(m.cc_bonus for m in mods)
     total_cd_bonus = sum(m.cd_bonus for m in mods)
     total_sc_bonus = sum(m.sc_bonus for m in mods)
+    total_ms_bonus = sum(m.multishot_bonus for m in mods)
 
     # Build elemental components from mods + innate, then combine
     mod_elements: list[DamageComponent] = []
@@ -189,6 +190,8 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "modded_cm": round(base_cm * (1.0 + total_cd_bonus), 6),
         "base_sc":  base_sc,
         "modded_sc": round(base_sc * (1.0 + total_sc_bonus), 6),
+        "base_multishot":   1.0,
+        "modded_multishot": round(1.0 + total_ms_bonus, 6),
     }
 
 

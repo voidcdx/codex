@@ -262,6 +262,21 @@
       .breakdown-table .bar-cell { display: none; }
       .weapon-stats-img-row img { width: 52px; height: 52px; }
     }
+    /* Tooltip */
+    #tt {
+      position: fixed; z-index: 9999;
+      background: #1a1a2e; color: #c8c8d8;
+      border: 1px solid #3a3a5a;
+      border-radius: 6px; padding: 7px 11px;
+      font-size: 12px; max-width: 240px;
+      line-height: 1.5; pointer-events: none;
+      opacity: 0; transition: opacity 0.15s;
+      white-space: normal;
+    }
+    #tt.visible { opacity: 1; }
+    .stat-label[data-tooltip] { cursor: default; border-bottom: 1px dotted var(--text-dim); }
+    .ms-note { font-size: 12px; color: var(--text-dim); display: block; margin-top: 6px; }
+    .ms-note strong { color: var(--accent2); }
   </style>
 </head>
 <body>
@@ -363,6 +378,54 @@ const ELEM_COLORS = {
   true:        '#ffffff',
   void:        '#9060ff',
 };
+
+// Tooltip text map
+const TOOLTIPS = {
+  'crit-chance':  'Chance per hit to deal a critical strike. 100–200% = guaranteed Tier 1 + chance at Tier 2, etc.',
+  'crit-mult':    'Damage multiplier on a critical hit. Formula: 1 + T × (CM − 1) where T = floor(total crit chance).',
+  'status':       'Chance per hit to apply a status proc — Slash bleed, Heat burn, Viral debuff, etc.',
+  'fire-rate':    'Shots (or attacks) per second. Affects DPS but not per-hit damage.',
+  'magazine':     'Rounds before a reload is required.',
+  'reload':       'Time in seconds to reload the weapon.',
+  'multishot':    'Projectiles fired per trigger pull. Each projectile deals full damage and independently rolls status/crit. Base is 1.0 for all weapons.',
+  'impact':       'Strong vs. Machinery, Robotic. Weak vs. Infested Sinew.',
+  'puncture':     'Strong vs. Armor, Fossilized. Weak vs. Infested Flesh.',
+  'slash':        'Strong vs. Cloned Flesh, Infested. Weak vs. Robotic, Machinery. Procs a bleed DoT that bypasses armor.',
+  'heat':         'Strong vs. Cloned Flesh, Infested Flesh. Weak vs. Robotic. Procs a burn DoT.',
+  'cold':         'Strong vs. Shields, Proto Shields. Weak vs. Infested. Procs a slow.',
+  'electricity':  'Strong vs. Robotic, Machinery. Weak vs. Alloy Armor. Procs a chain stun.',
+  'toxin':        'Strong vs. Cloned Flesh, Fossilized. Weak vs. Robotic, Machinery. Procs a poison DoT that bypasses shields.',
+  'blast':        'Heat + Cold. Strong vs. Machinery, Fossilized. Weak vs. Alloy Armor. Procs a knockback.',
+  'corrosive':    'Electricity + Toxin. Strong vs. Ferrite Armor, Fossilized. Weak vs. Proto Shields. Permanently strips armor stacks.',
+  'gas':          'Heat + Toxin. Strong vs. Infested Flesh. Weak vs. Robotic, Machinery. Procs a toxic cloud AoE.',
+  'magnetic':     'Cold + Electricity. Strong vs. Shields, Proto Shields. Weak vs. Alloy Armor. Procs a shield drain.',
+  'radiation':    'Heat + Electricity. Strong vs. Alloy Armor, Robotic. Weak vs. Ferrite Armor, Infested. Procs confusion (enemies attack each other).',
+  'viral':        'Cold + Toxin. Strong vs. Cloned Flesh, Flesh. Weak vs. Robotic, Machinery. Procs a health debuff (×2.0 damage to health at 10 stacks).',
+  'void':         'Dealt by Operator amps and select weapons. No special armor/health interactions.',
+};
+
+// Track current multishot for results note
+let _currentMultishot = 1.0;
+
+function initTooltips() {
+  const tip = document.getElementById('tt');
+  if (!tip) return;
+  document.querySelectorAll('[data-tooltip]').forEach(el => {
+    if (el._ttBound) return;
+    el._ttBound = true;
+    el.addEventListener('mouseenter', e => {
+      const text = TOOLTIPS[e.currentTarget.dataset.tooltip];
+      if (!text) return;
+      tip.textContent = text;
+      tip.classList.add('visible');
+    });
+    el.addEventListener('mousemove', e => {
+      tip.style.left = (e.clientX + 14) + 'px';
+      tip.style.top  = (e.clientY + 14) + 'px';
+    });
+    el.addEventListener('mouseleave', () => tip.classList.remove('visible'));
+  });
+}
 
 async function loadData() {
   [allWeapons, allMods, allEnemies] = await Promise.all([
@@ -542,33 +605,38 @@ function showWeaponStats(weapon) {
     <div class="stat-rows">
       <div class="stat-row">
         <div class="stat-block">
-          <div class="stat-label">Crit Chance</div>
+          <div class="stat-label" data-tooltip="crit-chance">Crit Chance</div>
           <div class="stat-value crit" id="sv-cc">${pct(weapon.crit_chance || 0)}</div>
           <div class="stat-modded" id="sm-cc" style="display:none"></div>
         </div>
         <div class="stat-block">
-          <div class="stat-label">Crit Mult</div>
+          <div class="stat-label" data-tooltip="crit-mult">Crit Mult</div>
           <div class="stat-value crit" id="sv-cm">${fmt(weapon.crit_multiplier, 'x')}</div>
           <div class="stat-modded" id="sm-cm" style="display:none"></div>
         </div>
         <div class="stat-block">
-          <div class="stat-label">Status</div>
+          <div class="stat-label" data-tooltip="status">Status</div>
           <div class="stat-value status" id="sv-sc">${pct(weapon.status_chance || 0)}</div>
           <div class="stat-modded" id="sm-sc" style="display:none"></div>
         </div>
       </div>
       <div class="stat-row">
         <div class="stat-block">
-          <div class="stat-label">Fire Rate</div>
+          <div class="stat-label" data-tooltip="fire-rate">Fire Rate</div>
           <div class="stat-value">${fmt(weapon.fire_rate)}</div>
         </div>
         <div class="stat-block">
-          <div class="stat-label">Magazine</div>
+          <div class="stat-label" data-tooltip="magazine">Magazine</div>
           <div class="stat-value">${fmt(weapon.magazine)}</div>
         </div>
         <div class="stat-block">
-          <div class="stat-label">Reload</div>
+          <div class="stat-label" data-tooltip="reload">Reload</div>
           <div class="stat-value">${fmt(weapon.reload, 's')}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label" data-tooltip="multishot">Multishot</div>
+          <div class="stat-value" id="sv-ms">1.0</div>
+          <div class="stat-modded" id="sm-ms" style="display:none"></div>
         </div>
       </div>
     </div>
@@ -577,6 +645,7 @@ function showWeaponStats(weapon) {
 
   renderDamageTable(weapon.base_damage, null);
   panel.style.display = 'block';
+  initTooltips();
 }
 
 function renderDamageTable(baseDmg, moddedData) {
@@ -604,6 +673,7 @@ function renderDamageTable(baseDmg, moddedData) {
     const color   = ELEM_COLORS[type] || 'var(--text)';
     const dot     = `<span class="elem-dot" style="background:${color}"></span>`;
     const label   = type.charAt(0).toUpperCase() + type.slice(1);
+    const ttAttr  = TOOLTIPS[type] ? ` data-tooltip="${type}"` : '';
 
     const baseCell = baseVal != null
       ? `<td class="col-base" style="text-align:right">${baseVal.toFixed(1)}</td>`
@@ -614,7 +684,7 @@ function renderDamageTable(baseDmg, moddedData) {
       : '';
 
     return `<tr>
-      <td>${dot}${label}</td>
+      <td${ttAttr}>${dot}${label}</td>
       ${baseCell}
       ${moddedCell}
     </tr>`;
@@ -643,6 +713,7 @@ function renderDamageTable(baseDmg, moddedData) {
       </tfoot>
     </table>
   `;
+  initTooltips();
 }
 
 // ---------------------------------------------------------------------------
@@ -704,6 +775,19 @@ async function _doUpdateModdedStats() {
         smSC.style.display = 'block';
       } else {
         smSC.style.display = 'none';
+      }
+    }
+
+    const smMS = document.getElementById('sm-ms');
+    if (smMS) {
+      const ms = data.modded_multishot || 1.0;
+      _currentMultishot = ms;
+      if (hasMods && ms > 1.0001) {
+        smMS.textContent = '→ ' + ms.toFixed(2) + 'x';
+        smMS.style.display = 'block';
+      } else {
+        smMS.style.display = 'none';
+        if (!hasMods) _currentMultishot = 1.0;
       }
     }
   } catch(e) {
@@ -883,14 +967,21 @@ function showResults(data) {
 
   const rows = entries.map(([type, val]) => {
     const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
-    const color = ELEM_COLORS[type.toLowerCase()] || 'var(--accent)';
+    const key  = type.toLowerCase();
+    const color = ELEM_COLORS[key] || 'var(--accent)';
     const dot = `<span class="elem-dot" style="background:${color}"></span>`;
+    const ttAttr = TOOLTIPS[key] ? ` data-tooltip="${key}"` : '';
     return `<tr>
-      <td>${dot}${type}</td>
+      <td${ttAttr}>${dot}${type}</td>
       <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div></td>
       <td>${val.toFixed(2)}</td>
     </tr>`;
   }).join('');
+
+  const ms = _currentMultishot;
+  const msNote = ms > 1.0001
+    ? `<span class="ms-note">Per-projectile damage. ×${ms.toFixed(2)} multishot → <strong>${(data.total * ms).toFixed(2)}</strong> effective per trigger</span>`
+    : '';
 
   document.getElementById('results-content').innerHTML = `
     <div class="result-header">
@@ -905,9 +996,12 @@ function showResults(data) {
         <tr><td colspan="2">TOTAL</td><td>${data.total.toFixed(2)}</td></tr>
       </tfoot>
     </table>
+    ${msNote}
   `;
   document.getElementById('results-content').style.display = 'block';
+  initTooltips();
 }
 </script>
+<div id="tt"></div>
 </body>
 </html>
