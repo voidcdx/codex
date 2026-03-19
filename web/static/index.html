@@ -192,6 +192,26 @@
       outline: none;
     }
     .search-input:focus { border-color: var(--accent); }
+    .weapon-preview {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+    .weapon-preview.visible { display: flex; }
+    .weapon-preview img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 4px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .weapon-preview-info { overflow: hidden; }
+    .weapon-preview-name { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .weapon-preview-sub { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
   </style>
 </head>
 <body>
@@ -207,6 +227,13 @@
       <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…">
       <label for="weapon-select">Weapon</label>
       <select id="weapon-select" size="1"></select>
+      <div class="weapon-preview" id="weapon-preview">
+        <img id="weapon-preview-img" src="" alt="">
+        <div class="weapon-preview-info">
+          <div class="weapon-preview-name" id="weapon-preview-name"></div>
+          <div class="weapon-preview-sub" id="weapon-preview-sub"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Mods -->
@@ -269,10 +296,29 @@ async function loadData() {
   populateSelect('weapon-select', allWeapons.map(w => w.name));
   populateSelect('enemy-select', allEnemies.map(e => e.name));
 
+  document.getElementById('weapon-select').addEventListener('change', updateWeaponPreview);
+
   // Default selections for quick testing
   setSelectValue('weapon-select', 'Soma Prime');
   setSelectValue('enemy-select', 'Heavy Gunner');
   addModSlot('Serration');
+  updateWeaponPreview();
+}
+
+function updateWeaponPreview() {
+  const name = document.getElementById('weapon-select').value;
+  const w = allWeapons.find(x => x.name === name);
+  const preview = document.getElementById('weapon-preview');
+  if (!w || !w.image) { preview.classList.remove('visible'); return; }
+
+  const img = document.getElementById('weapon-preview-img');
+  img.src = '/static/images/weapons/' + w.image;
+  img.onerror = () => { preview.classList.remove('visible'); };
+  img.onload  = () => { preview.classList.add('visible'); };
+
+  document.getElementById('weapon-preview-name').textContent = w.name;
+  const sub = [w.slot, w.class].filter(Boolean).join(' · ');
+  document.getElementById('weapon-preview-sub').textContent = sub;
 }
 
 function populateSelect(id, names) {

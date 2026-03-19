@@ -15,7 +15,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Ack & Brunt",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ack-and-Brunt.png"
   },
   "Amanata": {
     "name": "Amanata",
@@ -32,7 +33,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Amanata",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Amanata.png"
   },
   "Amphis": {
     "name": "Amphis",
@@ -50,7 +52,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Amphis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Amphis.png"
   },
   "Anku": {
     "name": "Anku",
@@ -68,7 +71,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Anku",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Anku.png"
   },
   "Ankyros": {
     "name": "Ankyros",
@@ -86,7 +90,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Ankyros",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ankyros.png"
   },
   "Ankyros Prime": {
     "name": "Ankyros Prime",
@@ -104,7 +109,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Ankyros",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ankyros-Prime.png"
   },
   "Arca Titron": {
     "name": "Arca Titron",
@@ -121,7 +127,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Arca Titron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Arca-Titron.png"
   },
   "Argo & Vel": {
     "name": "Argo & Vel",
@@ -138,7 +145,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Argo & Vel",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Argo-and-Vel.png"
   },
   "Arum Spinosa": {
     "name": "Arum Spinosa",
@@ -156,7 +164,8 @@
     "slot": "Melee",
     "class": "Warfan",
     "family": "Arum Spinosa",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Arum-Spinosa.png"
   },
   "Atterax": {
     "name": "Atterax",
@@ -174,7 +183,8 @@
     "slot": "Melee",
     "class": "Whip",
     "family": "Atterax",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Atterax.png"
   },
   "Azothane": {
     "name": "Azothane",
@@ -192,7 +202,8 @@
     "slot": "Melee",
     "class": "Two-Handed Nikana",
     "family": "Azothane",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Azothane.png"
   },
   "Bo": {
     "name": "Bo",
@@ -209,7 +220,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Bo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Bo.png"
   },
   "Bo Prime": {
     "name": "Bo Prime",
@@ -226,7 +238,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Bo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Bo-Prime.png"
   },
   "Boltace": {
     "name": "Boltace",
@@ -244,7 +257,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Boltace",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Boltace.png"
   },
   "Broken Scepter": {
     "name": "Broken Scepter",
@@ -262,7 +276,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Broken Scepter",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Broken-Scepter.png"
   },
   "Broken War": {
     "name": "Broken War",
@@ -280,7 +295,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Broken War",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Broken-War.png"
   },
   "Cadus": {
     "name": "Cadus",
@@ -299,7 +315,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Cadus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cadus.png"
   },
   "Cassowar": {
     "name": "Cassowar",
@@ -317,7 +334,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Cassowar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cassowar.png"
   },
   "Caustacyst": {
     "name": "Caustacyst",
@@ -338,7 +356,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Caustacyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Caustacyst.png"
   },
   "Ceramic Dagger": {
     "name": "Ceramic Dagger",
@@ -355,7 +374,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Ceramic Dagger",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ceramic-Dagger.png"
   },
   "Cerata": {
     "name": "Cerata",
@@ -376,7 +396,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Cerata",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cerata.png"
   },
   "Ceti Lacera": {
     "name": "Ceti Lacera",
@@ -397,7 +418,8 @@
     "slot": "Melee",
     "class": "Blade and Whip",
     "family": "Lacera",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ceti-Lacera.png"
   },
   "Cobra & Crane": {
     "name": "Cobra & Crane",
@@ -414,7 +436,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Cobra & Crane",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cobra-and-Crane.png"
   },
   "Cobra & Crane Prime": {
     "name": "Cobra & Crane Prime",
@@ -431,7 +454,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Cobra & Crane",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cobra-and-Crane-Prime.png"
   },
   "Coda Caustacyst": {
     "name": "Coda Caustacyst",
@@ -452,7 +476,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Caustacyst",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Caustacyst.png"
   },
   "Coda Hirudo": {
     "name": "Coda Hirudo",
@@ -470,7 +495,8 @@
     "slot": "Melee",
     "class": "Sparring",
     "family": "Hirudo",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Hirudo.png"
   },
   "Coda Mire": {
     "name": "Coda Mire",
@@ -491,7 +517,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Mire",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Mire.png"
   },
   "Coda Motovore": {
     "name": "Coda Motovore",
@@ -509,7 +536,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Motovore",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Motovore.png"
   },
   "Coda Pathocyst": {
     "name": "Coda Pathocyst",
@@ -530,7 +558,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Pathocyst",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Pathocyst.png"
   },
   "Corufell": {
     "name": "Corufell",
@@ -548,7 +577,8 @@
     "slot": "Melee",
     "class": "Heavy Scythe",
     "family": "Corufell",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Corufell.png"
   },
   "Cronus": {
     "name": "Cronus",
@@ -566,7 +596,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Cronus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cronus.png"
   },
   "Dakra Prime": {
     "name": "Dakra Prime",
@@ -584,7 +615,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Dakra Prime",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dakra-Prime.png"
   },
   "Dark Dagger": {
     "name": "Dark Dagger",
@@ -604,7 +636,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Dark Dagger",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dark-Dagger.png"
   },
   "Dark Split-Sword (Dual Swords)": {
     "name": "Dark Split-Sword (Dual Swords)",
@@ -624,7 +657,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dark Split-Sword (Dual Swords)",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dark-Split-Sword.png"
   },
   "Dark Split-Sword (Heavy Blade)": {
     "name": "Dark Split-Sword (Heavy Blade)",
@@ -644,7 +678,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Dark Split-Sword (Heavy Blade)",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dark-Split-Sword.png"
   },
   "Dark Sword": {
     "name": "Dark Sword",
@@ -664,7 +699,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Dark Sword",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dark-Sword.png"
   },
   "Desert Wind": {
     "name": "Desert Wind",
@@ -677,7 +713,8 @@
     "fire_rate": 1.0,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Desert-Wind.png"
   },
   "Desert Wind Prime": {
     "name": "Desert Wind Prime",
@@ -690,7 +727,8 @@
     "fire_rate": 1.0,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Desert-Wind-Prime.png"
   },
   "Destreza": {
     "name": "Destreza",
@@ -708,7 +746,8 @@
     "slot": "Melee",
     "class": "Rapier",
     "family": "Destreza",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Destreza.png"
   },
   "Destreza Prime": {
     "name": "Destreza Prime",
@@ -726,7 +765,8 @@
     "slot": "Melee",
     "class": "Rapier",
     "family": "Destreza",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Destreza-Prime.png"
   },
   "Dex Dakra": {
     "name": "Dex Dakra",
@@ -744,7 +784,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dex Dakra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dex-Dakra.png"
   },
   "Dex Nikana": {
     "name": "Dex Nikana",
@@ -762,7 +803,8 @@
     "slot": "Melee",
     "class": "Nikana",
     "family": "Nikana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dex-Nikana.png"
   },
   "Diwata": {
     "name": "Diwata",
@@ -777,7 +819,8 @@
     "fire_rate": 1.08,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Diwata.png"
   },
   "Diwata Prime": {
     "name": "Diwata Prime",
@@ -792,7 +835,8 @@
     "fire_rate": 1.08,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Diwata-Prime.png"
   },
   "Dorrclave": {
     "name": "Dorrclave",
@@ -808,7 +852,8 @@
     "slot": "Melee",
     "class": "Blade and Whip",
     "family": "Dorrclave",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dorrclave.png"
   },
   "Dragon Nikana": {
     "name": "Dragon Nikana",
@@ -826,7 +871,8 @@
     "slot": "Melee",
     "class": "Nikana",
     "family": "Dragon Nikana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dragon-Nikana.png"
   },
   "Dual Cleavers": {
     "name": "Dual Cleavers",
@@ -844,7 +890,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Cleavers",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Cleavers.png"
   },
   "Dual Ether": {
     "name": "Dual Ether",
@@ -862,7 +909,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Ether",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Ether.png"
   },
   "Dual Heat Swords": {
     "name": "Dual Heat Swords",
@@ -880,7 +928,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Heat Swords",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Heat-Swords.png"
   },
   "Dual Ichor": {
     "name": "Dual Ichor",
@@ -901,7 +950,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Ichor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Ichor.png"
   },
   "Dual Kamas": {
     "name": "Dual Kamas",
@@ -919,7 +969,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Kamas",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Kamas.png"
   },
   "Dual Kamas Prime": {
     "name": "Dual Kamas Prime",
@@ -937,7 +988,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Kamas",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Kamas-Prime.png"
   },
   "Dual Keres": {
     "name": "Dual Keres",
@@ -955,7 +1007,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Keres",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Keres.png"
   },
   "Dual Keres Prime": {
     "name": "Dual Keres Prime",
@@ -973,7 +1026,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Keres",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Keres-Prime.png"
   },
   "Dual Raza": {
     "name": "Dual Raza",
@@ -991,7 +1045,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Raza",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Raza.png"
   },
   "Dual Skana": {
     "name": "Dual Skana",
@@ -1009,7 +1064,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Skana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Skana.png"
   },
   "Dual Viciss": {
     "name": "Dual Viciss",
@@ -1029,7 +1085,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Viciss",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Viciss.png"
   },
   "Dual Zoren": {
     "name": "Dual Zoren",
@@ -1047,7 +1104,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Zoren",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Zoren.png"
   },
   "Dual Zoren Prime": {
     "name": "Dual Zoren Prime",
@@ -1065,7 +1123,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Zoren",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Zoren-Prime.png"
   },
   "Edun": {
     "name": "Edun",
@@ -1083,7 +1142,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Edun",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Edun.png"
   },
   "Ekhein": {
     "name": "Ekhein",
@@ -1099,7 +1159,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Ekhein",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ekhein.png"
   },
   "Endura": {
     "name": "Endura",
@@ -1117,7 +1178,8 @@
     "slot": "Melee",
     "class": "Rapier",
     "family": "Endura",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Endura.png"
   },
   "Ether Daggers": {
     "name": "Ether Daggers",
@@ -1135,7 +1197,8 @@
     "slot": "Melee",
     "class": "Dual Daggers",
     "family": "Ether Daggers",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ether-Daggers.png"
   },
   "Ether Reaper": {
     "name": "Ether Reaper",
@@ -1153,7 +1216,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Ether Reaper",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ether-Reaper.png"
   },
   "Ether Sword": {
     "name": "Ether Sword",
@@ -1171,7 +1235,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Ether Sword",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ether-Sword.png"
   },
   "Exalted Blade": {
     "name": "Exalted Blade",
@@ -1186,7 +1251,8 @@
     "fire_rate": 0.833,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Exalted-Blade.png"
   },
   "Exalted Prime Blade": {
     "name": "Exalted Prime Blade",
@@ -1201,7 +1267,8 @@
     "fire_rate": 0.833,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Exalted-Prime-Blade.png"
   },
   "Exalted Umbra Blade": {
     "name": "Exalted Umbra Blade",
@@ -1216,7 +1283,8 @@
     "fire_rate": 0.833,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Exalted-Umbra-Blade.png"
   },
   "Falcor": {
     "name": "Falcor",
@@ -1237,7 +1305,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Falcor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Falcor.png"
   },
   "Fang": {
     "name": "Fang",
@@ -1255,7 +1324,8 @@
     "slot": "Melee",
     "class": "Dual Daggers",
     "family": "Fang",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Fang.png"
   },
   "Fang Prime": {
     "name": "Fang Prime",
@@ -1273,7 +1343,8 @@
     "slot": "Melee",
     "class": "Dual Daggers",
     "family": "Fang",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Fang-Prime.png"
   },
   "Fragor": {
     "name": "Fragor",
@@ -1291,7 +1362,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Fragor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Fragor.png"
   },
   "Fragor Prime": {
     "name": "Fragor Prime",
@@ -1309,7 +1381,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Fragor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Fragor-Prime.png"
   },
   "Furax": {
     "name": "Furax",
@@ -1327,7 +1400,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Furax",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Furax.png"
   },
   "Furax Wraith": {
     "name": "Furax Wraith",
@@ -1345,7 +1419,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Furax",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Furax-Wraith.png"
   },
   "Galariak Prime": {
     "name": "Galariak Prime",
@@ -1363,7 +1438,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Galariak Prime",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Galariak-Prime.png"
   },
   "Galatine": {
     "name": "Galatine",
@@ -1381,7 +1457,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Galatine",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Galatine.png"
   },
   "Galatine Prime": {
     "name": "Galatine Prime",
@@ -1399,7 +1476,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Galatine",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Galatine-Prime.png"
   },
   "Galvacord": {
     "name": "Galvacord",
@@ -1420,7 +1498,8 @@
     "slot": "Melee",
     "class": "Whip",
     "family": "Galvacord",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Galvacord.png"
   },
   "Garuda Prime Talons": {
     "name": "Garuda Prime Talons",
@@ -1437,7 +1516,8 @@
     "riven_disposition": 0.0,
     "slot": "Melee",
     "class": "Claws",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Garuda-Prime-Talons.png"
   },
   "Garuda Talons": {
     "name": "Garuda Talons",
@@ -1454,7 +1534,8 @@
     "riven_disposition": 0.0,
     "slot": "Melee",
     "class": "Claws",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Garuda-Talons.png"
   },
   "Gazal Machete": {
     "name": "Gazal Machete",
@@ -1472,7 +1553,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Gazal Machete",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gazal-Machete.png"
   },
   "Ghoulsaw": {
     "name": "Ghoulsaw",
@@ -1490,7 +1572,8 @@
     "slot": "Melee",
     "class": "Assault Saw",
     "family": "Ghoulsaw",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ghoulsaw.png"
   },
   "Glaive": {
     "name": "Glaive",
@@ -1508,7 +1591,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Glaive",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Glaive.png"
   },
   "Glaive Prime": {
     "name": "Glaive Prime",
@@ -1526,7 +1610,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Glaive",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Glaive-Prime.png"
   },
   "Gram": {
     "name": "Gram",
@@ -1544,7 +1629,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Gram",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gram.png"
   },
   "Gram Prime": {
     "name": "Gram Prime",
@@ -1562,7 +1648,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Gram",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gram-Prime.png"
   },
   "Guandao": {
     "name": "Guandao",
@@ -1580,7 +1667,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Guandao",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Guandao.png"
   },
   "Guandao Prime": {
     "name": "Guandao Prime",
@@ -1598,7 +1686,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Guandao",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Guandao-Prime.png"
   },
   "Gunsen": {
     "name": "Gunsen",
@@ -1616,7 +1705,8 @@
     "slot": "Melee",
     "class": "Warfan",
     "family": "Gunsen",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gunsen.png"
   },
   "Gunsen Prime": {
     "name": "Gunsen Prime",
@@ -1634,7 +1724,8 @@
     "slot": "Melee",
     "class": "Warfan",
     "family": "Gunsen",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gunsen-Prime.png"
   },
   "Halikar": {
     "name": "Halikar",
@@ -1652,7 +1743,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Halikar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Halikar.png"
   },
   "Halikar Wraith": {
     "name": "Halikar Wraith",
@@ -1670,7 +1762,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Halikar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Halikar-Wraith.png"
   },
   "Hate": {
     "name": "Hate",
@@ -1688,7 +1781,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Hate",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hate.png"
   },
   "Harmony": {
     "name": "Harmony",
@@ -1705,7 +1799,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Harmony",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Harmony.png"
   },
   "Heat Dagger": {
     "name": "Heat Dagger",
@@ -1726,7 +1821,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Heat Dagger",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Heat-Dagger.png"
   },
   "Heat Sword": {
     "name": "Heat Sword",
@@ -1744,7 +1840,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Heat Sword",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Heat-Sword.png"
   },
   "Heliocor": {
     "name": "Heliocor",
@@ -1762,7 +1859,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Heliocor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Heliocor.png"
   },
   "Hespar": {
     "name": "Hespar",
@@ -1780,7 +1878,8 @@
     "slot": "Melee",
     "class": "Heavy Scythe",
     "family": "Hespar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hespar.png"
   },
   "Hirudo": {
     "name": "Hirudo",
@@ -1798,7 +1897,8 @@
     "slot": "Melee",
     "class": "Sparring",
     "family": "Hirudo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hirudo.png"
   },
   "Innodem": {
     "name": "Innodem",
@@ -1816,7 +1916,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Innodem",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Innodem.png"
   },
   "Iron Staff": {
     "name": "Iron Staff",
@@ -1830,7 +1931,8 @@
     "fire_rate": 1.0,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Iron-Staff.png"
   },
   "Iron Staff Prime": {
     "name": "Iron Staff Prime",
@@ -1844,7 +1946,8 @@
     "fire_rate": 1.0,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Iron-Staff-Prime.png"
   },
   "Jat Kittag": {
     "name": "Jat Kittag",
@@ -1862,7 +1965,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Jat Kittag",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Jat-Kittag.png"
   },
   "Jat Kusar": {
     "name": "Jat Kusar",
@@ -1883,7 +1987,8 @@
     "slot": "Melee",
     "class": "Blade and Whip",
     "family": "Jat Kusar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Jat-Kusar.png"
   },
   "Jaw Sword": {
     "name": "Jaw Sword",
@@ -1901,7 +2006,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Jaw Sword",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Jaw-Sword.png"
   },
   "Kama": {
     "name": "Kama",
@@ -1919,7 +2025,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Kama",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kama.png"
   },
   "Karyst": {
     "name": "Karyst",
@@ -1940,7 +2047,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Karyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Karyst.png"
   },
   "Karyst Prime": {
     "name": "Karyst Prime",
@@ -1961,7 +2069,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Karyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Karyst-Prime.png"
   },
   "Keratinos": {
     "name": "Keratinos",
@@ -1982,7 +2091,8 @@
     "slot": "Melee",
     "class": "Claws",
     "family": "Keratinos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Keratinos.png"
   },
   "Kesheg": {
     "name": "Kesheg",
@@ -2000,7 +2110,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Kesheg",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kesheg.png"
   },
   "Kestrel": {
     "name": "Kestrel",
@@ -2018,7 +2129,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Kestrel",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kestrel.png"
   },
   "Kestrel Prime": {
     "name": "Kestrel Prime",
@@ -2036,7 +2148,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Kestrel",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kestrel-Prime.png"
   },
   "Kogake": {
     "name": "Kogake",
@@ -2054,7 +2167,8 @@
     "slot": "Melee",
     "class": "Sparring",
     "family": "Kogake",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kogake.png"
   },
   "Kogake Prime": {
     "name": "Kogake Prime",
@@ -2072,7 +2186,8 @@
     "slot": "Melee",
     "class": "Sparring",
     "family": "Kogake",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kogake-Prime.png"
   },
   "Korrudo": {
     "name": "Korrudo",
@@ -2090,7 +2205,8 @@
     "slot": "Melee",
     "class": "Sparring",
     "family": "Korrudo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Korrudo.png"
   },
   "Korumm": {
     "name": "Korumm",
@@ -2108,7 +2224,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Korumm",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Korumm.png"
   },
   "Kreska": {
     "name": "Kreska",
@@ -2129,7 +2246,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Kreska",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kreska.png"
   },
   "Krohkur": {
     "name": "Krohkur",
@@ -2147,7 +2265,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Krohkur",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Krohkur.png"
   },
   "Kronen": {
     "name": "Kronen",
@@ -2165,7 +2284,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Kronen",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kronen.png"
   },
   "Kronen Prime": {
     "name": "Kronen Prime",
@@ -2183,7 +2303,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Kronen",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kronen-Prime.png"
   },
   "Kuva Shildeg": {
     "name": "Kuva Shildeg",
@@ -2201,7 +2322,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Kuva Shildeg",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Shildeg.png"
   },
   "Lacera": {
     "name": "Lacera",
@@ -2222,7 +2344,8 @@
     "slot": "Melee",
     "class": "Blade and Whip",
     "family": "Lacera",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lacera.png"
   },
   "Landslide Fists": {
     "name": "Landslide Fists",
@@ -2236,7 +2359,8 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "family": "Landslide Fists",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Landslide-Fists.png"
   },
   "Landslide Fists Prime": {
     "name": "Landslide Fists Prime",
@@ -2250,7 +2374,8 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "family": "Landslide Fists",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Landslide-Fists-Prime.png"
   },
   "Lecta": {
     "name": "Lecta",
@@ -2270,7 +2395,8 @@
     "slot": "Melee",
     "class": "Whip",
     "family": "Lecta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lecta.png"
   },
   "Lesion": {
     "name": "Lesion",
@@ -2288,7 +2414,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Lesion",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lesion.png"
   },
   "Mk1-Bo": {
     "name": "Mk1-Bo",
@@ -2305,7 +2432,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Bo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mk1-Bo.png"
   },
   "Mk1-Furax": {
     "name": "Mk1-Furax",
@@ -2323,7 +2451,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Furax",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mk1-Furax.png"
   },
   "Machete": {
     "name": "Machete",
@@ -2341,7 +2470,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Machete",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Machete.png"
   },
   "Machete Wraith": {
     "name": "Machete Wraith",
@@ -2359,7 +2489,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Machete",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Machete-Wraith.png"
   },
   "Magistar": {
     "name": "Magistar",
@@ -2377,7 +2508,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Magistar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Magistar.png"
   },
   "Masseter": {
     "name": "Masseter",
@@ -2394,7 +2526,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Masseter",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Masseter.png"
   },
   "Masseter Prime": {
     "name": "Masseter Prime",
@@ -2411,7 +2544,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Masseter",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Masseter-Prime.png"
   },
   "Mios": {
     "name": "Mios",
@@ -2429,7 +2563,8 @@
     "slot": "Melee",
     "class": "Blade and Whip",
     "family": "Mios",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mios.png"
   },
   "Mire": {
     "name": "Mire",
@@ -2450,7 +2585,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Mire",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mire.png"
   },
   "Nami Skyla": {
     "name": "Nami Skyla",
@@ -2468,7 +2604,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Nami Skyla",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nami-Skyla.png"
   },
   "Nami Skyla Prime": {
     "name": "Nami Skyla Prime",
@@ -2486,7 +2623,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Nami Skyla",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nami-Skyla-Prime.png"
   },
   "Nami Solo": {
     "name": "Nami Solo",
@@ -2504,7 +2642,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Nami Solo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nami-Solo.png"
   },
   "Nepheri": {
     "name": "Nepheri",
@@ -2525,7 +2664,8 @@
     "slot": "Melee",
     "class": "Dual Daggers",
     "family": "Nepheri",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nepheri.png"
   },
   "Nikana": {
     "name": "Nikana",
@@ -2543,7 +2683,8 @@
     "slot": "Melee",
     "class": "Nikana",
     "family": "Nikana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nikana.png"
   },
   "Nikana Prime": {
     "name": "Nikana Prime",
@@ -2561,7 +2702,8 @@
     "slot": "Melee",
     "class": "Nikana",
     "family": "Nikana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nikana-Prime.png"
   },
   "Ninkondi": {
     "name": "Ninkondi",
@@ -2580,7 +2722,8 @@
     "slot": "Melee",
     "class": "Nunchaku",
     "family": "Ninkondi",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ninkondi.png"
   },
   "Ninkondi Prime": {
     "name": "Ninkondi Prime",
@@ -2601,7 +2744,8 @@
     "slot": "Melee",
     "class": "Nunchaku",
     "family": "Ninkondi",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ninkondi-Prime.png"
   },
   "Obex": {
     "name": "Obex",
@@ -2619,7 +2763,8 @@
     "slot": "Melee",
     "class": "Sparring",
     "family": "Obex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Obex.png"
   },
   "Ohma": {
     "name": "Ohma",
@@ -2639,7 +2784,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Ohma",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ohma.png"
   },
   "Okina": {
     "name": "Okina",
@@ -2657,7 +2803,8 @@
     "slot": "Melee",
     "class": "Dual Daggers",
     "family": "Okina",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Okina.png"
   },
   "Okina Prime": {
     "name": "Okina Prime",
@@ -2675,7 +2822,8 @@
     "slot": "Melee",
     "class": "Dual Daggers",
     "family": "Okina",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Okina-Prime.png"
   },
   "Orthos": {
     "name": "Orthos",
@@ -2693,7 +2841,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Orthos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Orthos.png"
   },
   "Orthos Prime": {
     "name": "Orthos Prime",
@@ -2711,7 +2860,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Orthos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Orthos-Prime.png"
   },
   "Orvius": {
     "name": "Orvius",
@@ -2729,7 +2879,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Orvius",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Orvius.png"
   },
   "Pangolin Prime": {
     "name": "Pangolin Prime",
@@ -2747,7 +2898,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Pangolin Sword",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pangolin-Prime.png"
   },
   "Pangolin Sword": {
     "name": "Pangolin Sword",
@@ -2765,7 +2917,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Pangolin Sword",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pangolin-Sword.png"
   },
   "Paracesis": {
     "name": "Paracesis",
@@ -2783,7 +2936,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Paracesis",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Paracesis.png"
   },
   "Pathocyst": {
     "name": "Pathocyst",
@@ -2804,7 +2958,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Pathocyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pathocyst.png"
   },
   "Pennant": {
     "name": "Pennant",
@@ -2822,7 +2977,8 @@
     "slot": "Melee",
     "class": "Two-Handed Nikana",
     "family": "Pennant",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pennant.png"
   },
   "Plasma Sword": {
     "name": "Plasma Sword",
@@ -2843,7 +2999,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Plasma Sword",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Plasma-Sword.png"
   },
   "Praedos": {
     "name": "Praedos",
@@ -2861,7 +3018,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Praedos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Praedos.png"
   },
   "Prisma Dual Cleavers": {
     "name": "Prisma Dual Cleavers",
@@ -2879,7 +3037,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Dual Cleavers",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Dual-Cleavers.png"
   },
   "Prisma Machete": {
     "name": "Prisma Machete",
@@ -2897,7 +3056,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Machete",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Machete.png"
   },
   "Prisma Obex": {
     "name": "Prisma Obex",
@@ -2915,7 +3075,8 @@
     "slot": "Melee",
     "class": "Sparring",
     "family": "Obex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Obex.png"
   },
   "Prisma Ohma": {
     "name": "Prisma Ohma",
@@ -2935,7 +3096,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Ohma",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Ohma.png"
   },
   "Prisma Skana": {
     "name": "Prisma Skana",
@@ -2953,7 +3115,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Skana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Skana.png"
   },
   "Prova": {
     "name": "Prova",
@@ -2972,7 +3135,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Prova",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prova.png"
   },
   "Prova Vandal": {
     "name": "Prova Vandal",
@@ -2991,7 +3155,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Prova",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prova-Vandal.png"
   },
   "Pulmonars": {
     "name": "Pulmonars",
@@ -3010,7 +3175,8 @@
     "slot": "Melee",
     "class": "Nunchaku",
     "family": "Pulmonars",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pulmonars.png"
   },
   "Pupacyst": {
     "name": "Pupacyst",
@@ -3029,7 +3195,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Pupacyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pupacyst.png"
   },
   "Quassus": {
     "name": "Quassus",
@@ -3047,7 +3214,8 @@
     "slot": "Melee",
     "class": "Warfan",
     "family": "Quassus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Quassus.png"
   },
   "Quassus Prime": {
     "name": "Quassus Prime",
@@ -3065,7 +3233,8 @@
     "slot": "Melee",
     "class": "Warfan",
     "family": "Quassus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Quassus-Prime.png"
   },
   "Rakta Dark Dagger": {
     "name": "Rakta Dark Dagger",
@@ -3085,7 +3254,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Dark Dagger",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Rakta-Dark-Dagger.png"
   },
   "Reaper Prime": {
     "name": "Reaper Prime",
@@ -3103,7 +3273,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Reaper Prime",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Reaper-Prime.png"
   },
   "Redeemer": {
     "name": "Redeemer",
@@ -3121,7 +3292,8 @@
     "slot": "Melee",
     "class": "Gunblade",
     "family": "Redeemer",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Redeemer.png"
   },
   "Redeemer Prime": {
     "name": "Redeemer Prime",
@@ -3139,7 +3311,8 @@
     "slot": "Melee",
     "class": "Gunblade",
     "family": "Redeemer",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Redeemer-Prime.png"
   },
   "Ripkas": {
     "name": "Ripkas",
@@ -3157,7 +3330,8 @@
     "slot": "Melee",
     "class": "Claws",
     "family": "Ripkas",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ripkas.png"
   },
   "Rumblejack": {
     "name": "Rumblejack",
@@ -3176,7 +3350,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Rumblejack",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Rumblejack.png"
   },
   "Ruvox": {
     "name": "Ruvox",
@@ -3192,7 +3367,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Ruvox",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ruvox.png"
   },
   "Sampotes": {
     "name": "Sampotes",
@@ -3210,7 +3386,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Sampotes",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sampotes.png"
   },
   "Sancti Magistar": {
     "name": "Sancti Magistar",
@@ -3228,7 +3405,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Magistar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sancti-Magistar.png"
   },
   "Sarofang": {
     "name": "Sarofang",
@@ -3246,7 +3424,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Sarofang",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sarofang.png"
   },
   "Sarpa": {
     "name": "Sarpa",
@@ -3264,7 +3443,8 @@
     "slot": "Melee",
     "class": "Gunblade",
     "family": "Sarpa",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sarpa.png"
   },
   "Scindo": {
     "name": "Scindo",
@@ -3282,7 +3462,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Scindo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Scindo.png"
   },
   "Scindo Prime": {
     "name": "Scindo Prime",
@@ -3300,7 +3481,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Scindo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Scindo-Prime.png"
   },
   "Scoliac": {
     "name": "Scoliac",
@@ -3318,7 +3500,8 @@
     "slot": "Melee",
     "class": "Whip",
     "family": "Scoliac",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Scoliac.png"
   },
   "Secura Lecta": {
     "name": "Secura Lecta",
@@ -3338,7 +3521,8 @@
     "slot": "Melee",
     "class": "Whip",
     "family": "Lecta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Secura-Lecta.png"
   },
   "Serro": {
     "name": "Serro",
@@ -3357,7 +3541,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Serro",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Serro.png"
   },
   "Shadow Claws": {
     "name": "Shadow Claws",
@@ -3372,7 +3557,8 @@
     "fire_rate": 1.0,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Shadow-Claws.png"
   },
   "Shadow Claws Prime": {
     "name": "Shadow Claws Prime",
@@ -3387,7 +3573,8 @@
     "fire_rate": 1.0,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Shadow-Claws-Prime.png"
   },
   "Shaku": {
     "name": "Shaku",
@@ -3403,7 +3590,8 @@
     "slot": "Melee",
     "class": "Nunchaku",
     "family": "Shaku",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Shaku.png"
   },
   "Shattered Lash": {
     "name": "Shattered Lash",
@@ -3417,7 +3605,8 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "family": "Shattered Lash",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Shattered-Lash.png"
   },
   "Shattered Lash Prime": {
     "name": "Shattered Lash Prime",
@@ -3431,7 +3620,8 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "family": "Shattered Lash",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Shattered-Lash-Prime.png"
   },
   "Sheev": {
     "name": "Sheev",
@@ -3449,7 +3639,8 @@
     "slot": "Melee",
     "class": "Dagger",
     "family": "Sheev",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sheev.png"
   },
   "Sibear": {
     "name": "Sibear",
@@ -3470,7 +3661,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Sibear",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sibear.png"
   },
   "Sigma & Octantis": {
     "name": "Sigma & Octantis",
@@ -3488,7 +3680,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Sigma & Octantis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sigma-and-Octantis.png"
   },
   "Silva & Aegis": {
     "name": "Silva & Aegis",
@@ -3504,7 +3697,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Silva & Aegis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Silva-and-Aegis.png"
   },
   "Silva & Aegis Prime": {
     "name": "Silva & Aegis Prime",
@@ -3520,7 +3714,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Silva & Aegis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Silva-and-Aegis-Prime.png"
   },
   "Skana": {
     "name": "Skana",
@@ -3538,7 +3733,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Skana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Skana.png"
   },
   "Skana Prime": {
     "name": "Skana Prime",
@@ -3556,7 +3752,8 @@
     "slot": "Melee",
     "class": "Sword",
     "family": "Skana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Skana-Prime.png"
   },
   "Skiajati": {
     "name": "Skiajati",
@@ -3574,7 +3771,8 @@
     "slot": "Melee",
     "class": "Nikana",
     "family": "Skiajati",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Skiajati.png"
   },
   "Slaytra": {
     "name": "Slaytra",
@@ -3592,7 +3790,8 @@
     "slot": "Melee",
     "class": "Machete",
     "family": "Slaytra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Slaytra.png"
   },
   "Spinnerex": {
     "name": "Spinnerex",
@@ -3608,7 +3807,8 @@
     "slot": "Melee",
     "class": "Whip",
     "family": "Spinnerex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Spinnerex.png"
   },
   "Stropha": {
     "name": "Stropha",
@@ -3626,7 +3826,8 @@
     "slot": "Melee",
     "class": "Gunblade",
     "family": "Stropha",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Stropha.png"
   },
   "Sun & Moon": {
     "name": "Sun & Moon",
@@ -3644,7 +3845,8 @@
     "slot": "Melee",
     "class": "Dual Nikanas",
     "family": "Sun & Moon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sun-and-Moon.png"
   },
   "Syam": {
     "name": "Syam",
@@ -3662,7 +3864,8 @@
     "slot": "Melee",
     "class": "Nikana",
     "family": "Syam",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Syam.png"
   },
   "Sydon": {
     "name": "Sydon",
@@ -3679,7 +3882,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Sydon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sydon.png"
   },
   "Synoid Heliocor": {
     "name": "Synoid Heliocor",
@@ -3697,7 +3901,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Heliocor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Synoid-Heliocor.png"
   },
   "Tak & Lug": {
     "name": "Tak & Lug",
@@ -3714,7 +3919,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Tak & Lug",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tak-and-Lug.png"
   },
   "Tatsu": {
     "name": "Tatsu",
@@ -3735,7 +3941,8 @@
     "slot": "Melee",
     "class": "Two-Handed Nikana",
     "family": "Tatsu",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tatsu.png"
   },
   "Tatsu Prime": {
     "name": "Tatsu Prime",
@@ -3756,7 +3963,8 @@
     "slot": "Melee",
     "class": "Two-Handed Nikana",
     "family": "Tatsu",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tatsu-Prime.png"
   },
   "Tekko": {
     "name": "Tekko",
@@ -3774,7 +3982,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Tekko",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tekko.png"
   },
   "Tekko Prime": {
     "name": "Tekko Prime",
@@ -3792,7 +4001,8 @@
     "slot": "Melee",
     "class": "Fist",
     "family": "Tekko",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tekko-Prime.png"
   },
   "Telos Boltace": {
     "name": "Telos Boltace",
@@ -3810,7 +4020,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Boltace",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Telos-Boltace.png"
   },
   "Tenet Agendus": {
     "name": "Tenet Agendus",
@@ -3829,7 +4040,8 @@
     "slot": "Melee",
     "class": "Sword and Shield",
     "family": "Tenet Agendus",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Agendus.png"
   },
   "Tenet Exec": {
     "name": "Tenet Exec",
@@ -3846,7 +4058,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Tenet Exec",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Exec.png"
   },
   "Tenet Grigori": {
     "name": "Tenet Grigori",
@@ -3864,7 +4077,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Tenet Grigori",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Grigori.png"
   },
   "Tenet Livia": {
     "name": "Tenet Livia",
@@ -3882,7 +4096,8 @@
     "slot": "Melee",
     "class": "Two-Handed Nikana",
     "family": "Tenet Livia",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Livia.png"
   },
   "Thalys": {
     "name": "Thalys",
@@ -3899,7 +4114,8 @@
     "slot": "Melee",
     "class": "Heavy Scythe",
     "family": "Thalys",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Thalys.png"
   },
   "Tipedo": {
     "name": "Tipedo",
@@ -3917,7 +4133,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Tipedo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tipedo.png"
   },
   "Tipedo Prime": {
     "name": "Tipedo Prime",
@@ -3935,7 +4152,8 @@
     "slot": "Melee",
     "class": "Staff",
     "family": "Tipedo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tipedo-Prime.png"
   },
   "Tonbo": {
     "name": "Tonbo",
@@ -3953,7 +4171,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Tonbo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tonbo.png"
   },
   "Tonkkatt": {
     "name": "Tonkkatt",
@@ -3970,7 +4189,8 @@
     "slot": "Melee",
     "class": "Tonfa",
     "family": "Tonkkatt",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tonkkatt.png"
   },
   "Twin Basolk": {
     "name": "Twin Basolk",
@@ -3991,7 +4211,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Twin Basolk",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Basolk.png"
   },
   "Twin Krohkur": {
     "name": "Twin Krohkur",
@@ -4009,7 +4230,8 @@
     "slot": "Melee",
     "class": "Dual Swords",
     "family": "Twin Krohkur",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Krohkur.png"
   },
   "Valkyr Prime Talons": {
     "name": "Valkyr Prime Talons",
@@ -4023,7 +4245,8 @@
     "fire_rate": 1.5,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Valkyr-Prime-Talons.png"
   },
   "Valkyr Talons": {
     "name": "Valkyr Talons",
@@ -4037,7 +4260,8 @@
     "fire_rate": 1.5,
     "slot": "Melee",
     "class": "Exalted Weapon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Valkyr-Talons.png"
   },
   "Vastilok": {
     "name": "Vastilok",
@@ -4055,7 +4279,8 @@
     "slot": "Melee",
     "class": "Gunblade",
     "family": "Vastilok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vastilok.png"
   },
   "Vaykor Sydon": {
     "name": "Vaykor Sydon",
@@ -4072,7 +4297,8 @@
     "slot": "Melee",
     "class": "Polearm",
     "family": "Sydon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vaykor-Sydon.png"
   },
   "Venato": {
     "name": "Venato",
@@ -4090,7 +4316,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Venato",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Venato.png"
   },
   "Venato Prime": {
     "name": "Venato Prime",
@@ -4108,7 +4335,8 @@
     "slot": "Melee",
     "class": "Scythe",
     "family": "Venato",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Venato-Prime.png"
   },
   "Venka": {
     "name": "Venka",
@@ -4126,7 +4354,8 @@
     "slot": "Melee",
     "class": "Claws",
     "family": "Venka",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Venka.png"
   },
   "Venka Prime": {
     "name": "Venka Prime",
@@ -4144,7 +4373,8 @@
     "slot": "Melee",
     "class": "Claws",
     "family": "Venka",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Venka-Prime.png"
   },
   "Verdilac": {
     "name": "Verdilac",
@@ -4162,7 +4392,8 @@
     "slot": "Melee",
     "class": "Whip",
     "family": "Verdilac",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Verdilac.png"
   },
   "Vericres": {
     "name": "Vericres",
@@ -4180,7 +4411,8 @@
     "slot": "Melee",
     "class": "Warfan",
     "family": "Vericres",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vericres.png"
   },
   "Vinquibus (Melee)": {
     "name": "Vinquibus (Melee)",
@@ -4197,7 +4429,8 @@
     "slot": "Melee",
     "class": "Bayonet",
     "family": "Vinquibus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vinquibus.png"
   },
   "Vitrica": {
     "name": "Vitrica",
@@ -4215,7 +4448,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Vitrica",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vitrica.png"
   },
   "Volnus": {
     "name": "Volnus",
@@ -4233,7 +4467,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Volnus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Volnus.png"
   },
   "Volnus Prime": {
     "name": "Volnus Prime",
@@ -4251,7 +4486,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Volnus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Volnus-Prime.png"
   },
   "War": {
     "name": "War",
@@ -4269,7 +4505,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "War",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "War.png"
   },
   "Whipclaw": {
     "name": "Whipclaw",
@@ -4285,7 +4522,8 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "family": "Whipclaw",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Whipclaw.png"
   },
   "Whipclaw Prime": {
     "name": "Whipclaw Prime",
@@ -4301,7 +4539,8 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "family": "Whipclaw",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Whipclaw-Prime.png"
   },
   "Wolf Sledge": {
     "name": "Wolf Sledge",
@@ -4319,7 +4558,8 @@
     "slot": "Melee",
     "class": "Hammer",
     "family": "Wolf Sledge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Wolf-Sledge.png"
   },
   "Xoris": {
     "name": "Xoris",
@@ -4337,7 +4577,8 @@
     "slot": "Melee",
     "class": "Glaive",
     "family": "Xoris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Xoris.png"
   },
   "Zenistar": {
     "name": "Zenistar",
@@ -4357,7 +4598,8 @@
     "slot": "Melee",
     "class": "Heavy Blade",
     "family": "Zenistar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zenistar.png"
   },
   "Acceltra": {
     "name": "Acceltra",
@@ -4376,7 +4618,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Acceltra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Acceltra.png"
   },
   "Acceltra Prime": {
     "name": "Acceltra Prime",
@@ -4395,7 +4638,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Acceltra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Acceltra-Prime.png"
   },
   "Aeolak": {
     "name": "Aeolak",
@@ -4419,7 +4663,8 @@
     "class": "Rifle",
     "trigger": "Auto / Charge",
     "family": "Aeolak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Aeolak.png"
   },
   "Afentis": {
     "name": "Afentis",
@@ -4440,7 +4685,8 @@
     "class": "Speargun",
     "trigger": "Semi-Auto",
     "family": "Afentis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Afentis.png"
   },
   "Alternox": {
     "name": "Alternox",
@@ -4459,7 +4705,8 @@
     "class": "Rifle",
     "trigger": "Auto / Active",
     "family": "Alternox",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Alternox.png"
   },
   "Alternox Prime": {
     "name": "Alternox Prime",
@@ -4478,7 +4725,8 @@
     "class": "Rifle",
     "trigger": "Auto / Active",
     "family": "Alternox",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Alternox-Prime.png"
   },
   "Ambassador": {
     "name": "Ambassador",
@@ -4497,7 +4745,8 @@
     "class": "Rifle",
     "trigger": "Auto / Charge",
     "family": "Ambassador",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ambassador.png"
   },
   "Amprex": {
     "name": "Amprex",
@@ -4516,7 +4765,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Amprex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Amprex.png"
   },
   "Arca Plasmor": {
     "name": "Arca Plasmor",
@@ -4535,7 +4785,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Arca Plasmor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Arca-Plasmor.png"
   },
   "Argonak": {
     "name": "Argonak",
@@ -4556,7 +4807,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Argonak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Argonak.png"
   },
   "Artemis Bow": {
     "name": "Artemis Bow",
@@ -4574,7 +4826,8 @@
     "slot": "Primary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Artemis-Bow.png"
   },
   "Artemis Bow Prime": {
     "name": "Artemis Bow Prime",
@@ -4592,7 +4845,8 @@
     "slot": "Primary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Artemis-Bow-Prime.png"
   },
   "Astilla": {
     "name": "Astilla",
@@ -4611,7 +4865,8 @@
     "class": "Shotgun",
     "trigger": "Auto",
     "family": "Astilla",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Astilla.png"
   },
   "Astilla Prime": {
     "name": "Astilla Prime",
@@ -4630,7 +4885,8 @@
     "class": "Shotgun",
     "trigger": "Auto",
     "family": "Astilla",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Astilla-Prime.png"
   },
   "Attica": {
     "name": "Attica",
@@ -4651,7 +4907,8 @@
     "class": "Crossbow",
     "trigger": "Auto",
     "family": "Attica",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Attica.png"
   },
   "AX-52": {
     "name": "AX-52",
@@ -4670,7 +4927,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "AX-52",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "AX-52.png"
   },
   "Basmu": {
     "name": "Basmu",
@@ -4689,7 +4947,8 @@
     "class": "Rifle",
     "trigger": "Auto / Held",
     "family": "Basmu",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Basmu.png"
   },
   "Battacor": {
     "name": "Battacor",
@@ -4711,7 +4970,8 @@
     "class": "Rifle",
     "trigger": "Auto Burst / Charge",
     "family": "Battacor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Battacor.png"
   },
   "Baza": {
     "name": "Baza",
@@ -4732,7 +4992,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Baza",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Baza.png"
   },
   "Baza Prime": {
     "name": "Baza Prime",
@@ -4753,7 +5014,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Baza",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Baza-Prime.png"
   },
   "Boar": {
     "name": "Boar",
@@ -4774,7 +5036,8 @@
     "class": "Shotgun",
     "trigger": "Auto",
     "family": "Boar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Boar.png"
   },
   "Boar Prime": {
     "name": "Boar Prime",
@@ -4795,7 +5058,8 @@
     "class": "Shotgun",
     "trigger": "Auto",
     "family": "Boar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Boar-Prime.png"
   },
   "Boltor": {
     "name": "Boltor",
@@ -4816,7 +5080,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Boltor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Boltor.png"
   },
   "Boltor Prime": {
     "name": "Boltor Prime",
@@ -4836,7 +5101,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Boltor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Boltor-Prime.png"
   },
   "Braton": {
     "name": "Braton",
@@ -4857,7 +5123,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Braton",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Braton.png"
   },
   "Braton Prime": {
     "name": "Braton Prime",
@@ -4878,7 +5145,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Braton",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Braton-Prime.png"
   },
   "Braton Vandal": {
     "name": "Braton Vandal",
@@ -4899,7 +5167,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Braton",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Braton-Vandal.png"
   },
   "Bubonico": {
     "name": "Bubonico",
@@ -4923,7 +5192,8 @@
     "class": "Arm-Cannon",
     "trigger": "Auto / Burst",
     "family": "Bubonico",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Bubonico.png"
   },
   "Burston": {
     "name": "Burston",
@@ -4944,7 +5214,8 @@
     "class": "Rifle",
     "trigger": "Burst / Auto",
     "family": "Burston",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Burston.png"
   },
   "Burston Prime": {
     "name": "Burston Prime",
@@ -4965,7 +5236,8 @@
     "class": "Rifle",
     "trigger": "Burst / Auto",
     "family": "Burston",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Burston-Prime.png"
   },
   "Buzlok": {
     "name": "Buzlok",
@@ -4986,7 +5258,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Buzlok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Buzlok.png"
   },
   "Carmine Penta": {
     "name": "Carmine Penta",
@@ -5005,7 +5278,8 @@
     "class": "Launcher",
     "trigger": "Active",
     "family": "Penta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Carmine-Penta.png"
   },
   "Cedo": {
     "name": "Cedo",
@@ -5024,7 +5298,8 @@
     "class": "Shotgun",
     "trigger": "Auto / Semi",
     "family": "Cedo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cedo.png"
   },
   "Cedo Prime": {
     "name": "Cedo Prime",
@@ -5043,7 +5318,8 @@
     "class": "Shotgun",
     "trigger": "Auto / Semi",
     "family": "Cedo",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cedo-Prime.png"
   },
   "Cernos": {
     "name": "Cernos",
@@ -5064,7 +5340,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Cernos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cernos.png"
   },
   "Cernos Prime": {
     "name": "Cernos Prime",
@@ -5085,7 +5362,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Cernos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cernos-Prime.png"
   },
   "Cinta": {
     "name": "Cinta",
@@ -5105,7 +5383,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Cinta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cinta.png"
   },
   "Coda Bassocyst": {
     "name": "Coda Bassocyst",
@@ -5125,7 +5404,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Bassocyst",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Bassocyst.png"
   },
   "Coda Hema": {
     "name": "Coda Hema",
@@ -5144,7 +5424,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Hema",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Hema.png"
   },
   "Coda Sporothrix": {
     "name": "Coda Sporothrix",
@@ -5165,7 +5446,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Sporothrix",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Sporothrix.png"
   },
   "Coda Synapse": {
     "name": "Coda Synapse",
@@ -5184,7 +5466,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Synapse",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Synapse.png"
   },
   "Convectrix": {
     "name": "Convectrix",
@@ -5205,7 +5488,8 @@
     "class": "Shotgun",
     "trigger": "Held",
     "family": "Convectrix",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Convectrix.png"
   },
   "Corinth": {
     "name": "Corinth",
@@ -5226,7 +5510,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Corinth",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Corinth.png"
   },
   "Corinth Prime": {
     "name": "Corinth Prime",
@@ -5247,7 +5532,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Corinth",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Corinth-Prime.png"
   },
   "Daikyu": {
     "name": "Daikyu",
@@ -5268,7 +5554,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Daikyu",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Daikyu.png"
   },
   "Daikyu Prime": {
     "name": "Daikyu Prime",
@@ -5289,7 +5576,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Daikyu",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Daikyu-Prime.png"
   },
   "Dera": {
     "name": "Dera",
@@ -5310,7 +5598,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Dera",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dera.png"
   },
   "Dera Vandal": {
     "name": "Dera Vandal",
@@ -5331,7 +5620,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Dera",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dera-Vandal.png"
   },
   "Dex Sybaris": {
     "name": "Dex Sybaris",
@@ -5352,7 +5642,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Sybaris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dex-Sybaris.png"
   },
   "Drakgoon": {
     "name": "Drakgoon",
@@ -5373,7 +5664,8 @@
     "class": "Shotgun",
     "trigger": "Charge",
     "family": "Drakgoon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Drakgoon.png"
   },
   "Dread": {
     "name": "Dread",
@@ -5394,7 +5686,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Dread",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dread.png"
   },
   "EFV-5 Jupiter": {
     "name": "EFV-5 Jupiter",
@@ -5417,7 +5710,8 @@
     "class": "Rifle",
     "trigger": "Auto / Charge",
     "family": "EFV-5Jupiter",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "EFV-5-Jupiter.png"
   },
   "Evensong": {
     "name": "Evensong",
@@ -5437,7 +5731,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Evensong",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Evensong.png"
   },
   "Exergis": {
     "name": "Exergis",
@@ -5461,7 +5756,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Exergis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Exergis.png"
   },
   "Felarx": {
     "name": "Felarx",
@@ -5482,7 +5778,8 @@
     "class": "Shotgun",
     "trigger": "Auto / Semi",
     "family": "Felarx",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Felarx.png"
   },
   "Ferrox": {
     "name": "Ferrox",
@@ -5503,7 +5800,8 @@
     "class": "Speargun",
     "trigger": "Charge",
     "family": "Ferrox",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ferrox.png"
   },
   "Flux Rifle": {
     "name": "Flux Rifle",
@@ -5523,7 +5821,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Flux Rifle",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Flux-Rifle.png"
   },
   "Fulmin": {
     "name": "Fulmin",
@@ -5545,7 +5844,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Fulmin",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Fulmin.png"
   },
   "Fulmin Prime": {
     "name": "Fulmin Prime",
@@ -5567,7 +5867,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Fulmin",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Fulmin-Prime.png"
   },
   "Glaxion": {
     "name": "Glaxion",
@@ -5586,7 +5887,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Glaxion",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Glaxion.png"
   },
   "Glaxion Vandal": {
     "name": "Glaxion Vandal",
@@ -5605,7 +5907,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Glaxion",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Glaxion-Vandal.png"
   },
   "Gorgon": {
     "name": "Gorgon",
@@ -5626,7 +5929,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool",
     "family": "Gorgon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gorgon.png"
   },
   "Gorgon Wraith": {
     "name": "Gorgon Wraith",
@@ -5647,7 +5951,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool",
     "family": "Gorgon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gorgon-Wraith.png"
   },
   "Gotva Prime": {
     "name": "Gotva Prime",
@@ -5666,7 +5971,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Gotva",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gotva-Prime.png"
   },
   "Grakata": {
     "name": "Grakata",
@@ -5687,7 +5993,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Grakata",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Grakata.png"
   },
   "Grinlok": {
     "name": "Grinlok",
@@ -5708,7 +6015,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Grinlok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Grinlok.png"
   },
   "Harpak": {
     "name": "Harpak",
@@ -5729,7 +6037,8 @@
     "class": "Rifle",
     "trigger": "Burst / Semi",
     "family": "Harpak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Harpak.png"
   },
   "Hek": {
     "name": "Hek",
@@ -5750,7 +6059,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Hek",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hek.png"
   },
   "Hema": {
     "name": "Hema",
@@ -5769,7 +6079,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Hema",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hema.png"
   },
   "Higasa": {
     "name": "Higasa",
@@ -5789,7 +6100,8 @@
     "class": "Rifle",
     "trigger": "Burst / Charge",
     "family": "Higasa",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Higasa.png"
   },
   "Hind": {
     "name": "Hind",
@@ -5810,7 +6122,8 @@
     "class": "Rifle",
     "trigger": "Burst / Semi",
     "family": "Hind",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hind.png"
   },
   "Ignis": {
     "name": "Ignis",
@@ -5829,7 +6142,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Ignis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ignis.png"
   },
   "Ignis Wraith": {
     "name": "Ignis Wraith",
@@ -5848,7 +6162,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Ignis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ignis-Wraith.png"
   },
   "Javlok": {
     "name": "Javlok",
@@ -5867,7 +6182,8 @@
     "class": "Speargun",
     "trigger": "Auto Charge",
     "family": "Javlok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Javlok.png"
   },
   "Karak": {
     "name": "Karak",
@@ -5888,7 +6204,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Karak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Karak.png"
   },
   "Karak Wraith": {
     "name": "Karak Wraith",
@@ -5909,7 +6226,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Karak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Karak-Wraith.png"
   },
   "Kohm": {
     "name": "Kohm",
@@ -5930,7 +6248,8 @@
     "class": "Shotgun",
     "trigger": "Auto-Spool",
     "family": "Kohm",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kohm.png"
   },
   "Komorex": {
     "name": "Komorex",
@@ -5951,7 +6270,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Komorex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Komorex.png"
   },
   "Kuva Bramma": {
     "name": "Kuva Bramma",
@@ -5970,7 +6290,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Kuva Bramma",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Bramma.png"
   },
   "Kuva Chakkhurr": {
     "name": "Kuva Chakkhurr",
@@ -5989,7 +6310,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Kuva Chakkhurr",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Chakkhurr.png"
   },
   "Kuva Drakgoon": {
     "name": "Kuva Drakgoon",
@@ -6010,7 +6332,8 @@
     "class": "Shotgun",
     "trigger": "Charge",
     "family": "Drakgoon",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Drakgoon.png"
   },
   "Kuva Hek": {
     "name": "Kuva Hek",
@@ -6031,7 +6354,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Hek",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Hek.png"
   },
   "Kuva Hind": {
     "name": "Kuva Hind",
@@ -6052,7 +6376,8 @@
     "class": "Rifle",
     "trigger": "Burst / Semi / Auto",
     "family": "Hind",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Hind.png"
   },
   "Kuva Karak": {
     "name": "Kuva Karak",
@@ -6073,7 +6398,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Karak",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Karak.png"
   },
   "Kuva Kohm": {
     "name": "Kuva Kohm",
@@ -6094,7 +6420,8 @@
     "class": "Shotgun",
     "trigger": "Auto-Spool",
     "family": "Kohm",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Kohm.png"
   },
   "Kuva Ogris": {
     "name": "Kuva Ogris",
@@ -6114,7 +6441,8 @@
     "class": "Launcher",
     "trigger": "Semi-Auto",
     "family": "Ogris",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Ogris.png"
   },
   "Kuva Quartakk": {
     "name": "Kuva Quartakk",
@@ -6135,7 +6463,8 @@
     "class": "Rifle",
     "trigger": "Auto / Burst",
     "family": "Quartakk",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Quartakk.png"
   },
   "Kuva Sobek": {
     "name": "Kuva Sobek",
@@ -6156,7 +6485,8 @@
     "class": "Shotgun",
     "trigger": "Auto",
     "family": "Sobek",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Sobek.png"
   },
   "Kuva Tonkor": {
     "name": "Kuva Tonkor",
@@ -6175,7 +6505,8 @@
     "class": "Launcher",
     "trigger": "Semi-Auto",
     "family": "Tonkor",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Tonkor.png"
   },
   "Kuva Zarr": {
     "name": "Kuva Zarr",
@@ -6194,7 +6525,8 @@
     "class": "Launcher",
     "trigger": "Semi-Auto",
     "family": "Zarr",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Zarr.png"
   },
   "Lanka": {
     "name": "Lanka",
@@ -6212,7 +6544,8 @@
     "class": "Sniper Rifle",
     "trigger": "Charge",
     "family": "Lanka",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lanka.png"
   },
   "Latron": {
     "name": "Latron",
@@ -6233,7 +6566,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Latron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Latron.png"
   },
   "Latron Prime": {
     "name": "Latron Prime",
@@ -6254,7 +6588,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Latron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Latron-Prime.png"
   },
   "Latron Wraith": {
     "name": "Latron Wraith",
@@ -6275,7 +6610,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Latron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Latron-Wraith.png"
   },
   "Lenz": {
     "name": "Lenz",
@@ -6294,7 +6630,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Lenz",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lenz.png"
   },
   "Lizzie": {
     "name": "Lizzie",
@@ -6310,7 +6647,8 @@
     "slot": "Primary",
     "class": "Exalted Weapon",
     "trigger": "Held",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lizzie.png"
   },
   "Mk1-Braton": {
     "name": "Mk1-Braton",
@@ -6331,7 +6669,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Braton",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mk1-Braton.png"
   },
   "Mk1-Paris": {
     "name": "Mk1-Paris",
@@ -6352,7 +6691,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Paris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mk1-Paris.png"
   },
   "Mk1-Strun": {
     "name": "Mk1-Strun",
@@ -6373,7 +6713,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Strun",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mk1-Strun.png"
   },
   "Miter": {
     "name": "Miter",
@@ -6394,7 +6735,8 @@
     "class": "Rifle",
     "trigger": "Charge",
     "family": "Miter",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Miter.png"
   },
   "Mutalist Cernos": {
     "name": "Mutalist Cernos",
@@ -6415,7 +6757,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Mutalist Cernos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mutalist-Cernos.png"
   },
   "Mutalist Quanta": {
     "name": "Mutalist Quanta",
@@ -6436,7 +6779,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Mutalist Quanta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mutalist-Quanta.png"
   },
   "Nagantaka": {
     "name": "Nagantaka",
@@ -6457,7 +6801,8 @@
     "class": "Crossbow",
     "trigger": "Semi / Mag Burst",
     "family": "Nagantaka",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nagantaka.png"
   },
   "Nagantaka Prime": {
     "name": "Nagantaka Prime",
@@ -6478,7 +6823,8 @@
     "class": "Crossbow",
     "trigger": "Semi / Mag Burst",
     "family": "Nagantaka",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nagantaka-Prime.png"
   },
   "Nataruk": {
     "name": "Nataruk",
@@ -6498,7 +6844,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Nataruk",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nataruk.png"
   },
   "Neutralizer": {
     "name": "Neutralizer",
@@ -6516,7 +6863,8 @@
     "slot": "Primary",
     "class": "Exalted Weapon",
     "trigger": "Semi-Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Neutralizer.png"
   },
   "Ogris": {
     "name": "Ogris",
@@ -6535,7 +6883,8 @@
     "class": "Launcher",
     "trigger": "Charge",
     "family": "Ogris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ogris.png"
   },
   "Opticor": {
     "name": "Opticor",
@@ -6556,7 +6905,8 @@
     "class": "Rifle",
     "trigger": "Charge",
     "family": "Opticor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Opticor.png"
   },
   "Opticor Vandal": {
     "name": "Opticor Vandal",
@@ -6577,7 +6927,8 @@
     "class": "Rifle",
     "trigger": "Charge",
     "family": "Opticor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Opticor-Vandal.png"
   },
   "Panthera": {
     "name": "Panthera",
@@ -6598,7 +6949,8 @@
     "class": "Rifle",
     "trigger": "Auto / Held",
     "family": "Panthera",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Panthera.png"
   },
   "Panthera Prime": {
     "name": "Panthera Prime",
@@ -6619,7 +6971,8 @@
     "class": "Rifle",
     "trigger": "Auto / Held",
     "family": "Panthera",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Panthera-Prime.png"
   },
   "Paracyst": {
     "name": "Paracyst",
@@ -6638,7 +6991,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Paracyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Paracyst.png"
   },
   "Paris": {
     "name": "Paris",
@@ -6659,7 +7013,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Paris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Paris.png"
   },
   "Paris Prime": {
     "name": "Paris Prime",
@@ -6680,7 +7035,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Paris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Paris-Prime.png"
   },
   "Penta": {
     "name": "Penta",
@@ -6699,7 +7055,8 @@
     "class": "Launcher",
     "trigger": "Active",
     "family": "Penta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Penta.png"
   },
   "Perigale": {
     "name": "Perigale",
@@ -6720,7 +7077,8 @@
     "class": "Sniper Rifle",
     "trigger": "Burst",
     "family": "Perigale",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Perigale.png"
   },
   "Phage": {
     "name": "Phage",
@@ -6739,7 +7097,8 @@
     "class": "Shotgun",
     "trigger": "Held",
     "family": "Phage",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Phage.png"
   },
   "Phantasma": {
     "name": "Phantasma",
@@ -6761,7 +7120,8 @@
     "class": "Shotgun",
     "trigger": "Held / Charge",
     "family": "Phantasma",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Phantasma.png"
   },
   "Phantasma Prime": {
     "name": "Phantasma Prime",
@@ -6783,7 +7143,8 @@
     "class": "Shotgun",
     "trigger": "Held / Charge",
     "family": "Phantasma",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Phantasma-Prime.png"
   },
   "Phenmor": {
     "name": "Phenmor",
@@ -6803,7 +7164,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Phenmor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Phenmor.png"
   },
   "Prisma Gorgon": {
     "name": "Prisma Gorgon",
@@ -6824,7 +7186,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool",
     "family": "Gorgon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Gorgon.png"
   },
   "Prisma Grakata": {
     "name": "Prisma Grakata",
@@ -6845,7 +7208,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Grakata",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Grakata.png"
   },
   "Prisma Grinlok": {
     "name": "Prisma Grinlok",
@@ -6866,7 +7230,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Grinlok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Grinlok.png"
   },
   "Prisma Lenz": {
     "name": "Prisma Lenz",
@@ -6885,7 +7250,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Lenz",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Lenz.png"
   },
   "Prisma Tetra": {
     "name": "Prisma Tetra",
@@ -6905,7 +7271,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Tetra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Tetra.png"
   },
   "Proboscis Cernos": {
     "name": "Proboscis Cernos",
@@ -6926,7 +7293,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Proboscis Cernos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Proboscis-Cernos.png"
   },
   "Purgator 1": {
     "name": "Purgator 1",
@@ -6946,7 +7314,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Purgator 1",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Purgator-1.png"
   },
   "Quanta": {
     "name": "Quanta",
@@ -6965,7 +7334,8 @@
     "class": "Rifle",
     "trigger": "Held / Semi",
     "family": "Quanta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Quanta.png"
   },
   "Quanta Vandal": {
     "name": "Quanta Vandal",
@@ -6984,7 +7354,8 @@
     "class": "Rifle",
     "trigger": "Held / Semi",
     "family": "Quanta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Quanta-Vandal.png"
   },
   "Quartakk": {
     "name": "Quartakk",
@@ -7005,7 +7376,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Quartakk",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Quartakk.png"
   },
   "Quellor": {
     "name": "Quellor",
@@ -7029,7 +7401,8 @@
     "class": "Rifle",
     "trigger": "Auto / Charge",
     "family": "Quellor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Quellor.png"
   },
   "Rakta Cernos": {
     "name": "Rakta Cernos",
@@ -7050,7 +7423,8 @@
     "class": "Bow",
     "trigger": "Charge",
     "family": "Cernos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Rakta-Cernos.png"
   },
   "Rauta": {
     "name": "Rauta",
@@ -7071,7 +7445,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Rauta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Rauta.png"
   },
   "Reconifex": {
     "name": "Reconifex",
@@ -7091,7 +7466,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Reconifex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Reconifex.png"
   },
   "Rubico": {
     "name": "Rubico",
@@ -7112,7 +7488,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Rubico",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Rubico.png"
   },
   "Rubico Prime": {
     "name": "Rubico Prime",
@@ -7133,7 +7510,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Rubico",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Rubico-Prime.png"
   },
   "Sancti Tigris": {
     "name": "Sancti Tigris",
@@ -7154,7 +7532,8 @@
     "class": "Shotgun",
     "trigger": "Duplex",
     "family": "Tigris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sancti-Tigris.png"
   },
   "Scourge": {
     "name": "Scourge",
@@ -7173,7 +7552,8 @@
     "class": "Speargun",
     "trigger": "Auto",
     "family": "Scourge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Scourge.png"
   },
   "Scourge Prime": {
     "name": "Scourge Prime",
@@ -7192,7 +7572,8 @@
     "class": "Speargun",
     "trigger": "Auto",
     "family": "Scourge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Scourge-Prime.png"
   },
   "Secura Penta": {
     "name": "Secura Penta",
@@ -7211,7 +7592,8 @@
     "class": "Launcher",
     "trigger": "Active",
     "family": "Penta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Secura-Penta.png"
   },
   "Shedu": {
     "name": "Shedu",
@@ -7230,7 +7612,8 @@
     "class": "Arm-Cannon",
     "trigger": "Auto",
     "family": "Shedu",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Shedu.png"
   },
   "Simulor": {
     "name": "Simulor",
@@ -7249,7 +7632,8 @@
     "class": "Rifle",
     "trigger": "Active",
     "family": "Simulor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Simulor.png"
   },
   "Snipetron": {
     "name": "Snipetron",
@@ -7270,7 +7654,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Snipetron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Snipetron.png"
   },
   "Snipetron Vandal": {
     "name": "Snipetron Vandal",
@@ -7291,7 +7676,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Snipetron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Snipetron-Vandal.png"
   },
   "Sobek": {
     "name": "Sobek",
@@ -7312,7 +7698,8 @@
     "class": "Shotgun",
     "trigger": "Auto",
     "family": "Sobek",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sobek.png"
   },
   "Soma": {
     "name": "Soma",
@@ -7333,7 +7720,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool",
     "family": "Soma",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Soma.png"
   },
   "Soma Prime": {
     "name": "Soma Prime",
@@ -7354,7 +7742,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool",
     "family": "Soma",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Soma-Prime.png"
   },
   "Sporothrix": {
     "name": "Sporothrix",
@@ -7375,7 +7764,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Sporothrix",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sporothrix.png"
   },
   "Stahlta": {
     "name": "Stahlta",
@@ -7396,7 +7786,8 @@
     "class": "Rifle",
     "trigger": "Auto / Charge",
     "family": "Stahlta",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Stahlta.png"
   },
   "Steflos": {
     "name": "Steflos",
@@ -7418,7 +7809,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Steflos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Steflos.png"
   },
   "Stradavar": {
     "name": "Stradavar",
@@ -7439,7 +7831,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Stradavar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Stradavar.png"
   },
   "Stradavar Prime": {
     "name": "Stradavar Prime",
@@ -7460,7 +7853,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Stradavar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Stradavar-Prime.png"
   },
   "Strun": {
     "name": "Strun",
@@ -7481,7 +7875,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Strun",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Strun.png"
   },
   "Strun Prime": {
     "name": "Strun Prime",
@@ -7502,7 +7897,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Strun",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Strun-Prime.png"
   },
   "Strun Wraith": {
     "name": "Strun Wraith",
@@ -7523,7 +7919,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Strun",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Strun-Wraith.png"
   },
   "Supra": {
     "name": "Supra",
@@ -7544,7 +7941,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool",
     "family": "Supra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Supra.png"
   },
   "Supra Vandal": {
     "name": "Supra Vandal",
@@ -7565,7 +7963,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool",
     "family": "Supra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Supra-Vandal.png"
   },
   "Sybaris": {
     "name": "Sybaris",
@@ -7586,7 +7985,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Sybaris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sybaris.png"
   },
   "Sybaris Prime": {
     "name": "Sybaris Prime",
@@ -7607,7 +8007,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Sybaris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sybaris-Prime.png"
   },
   "Synapse": {
     "name": "Synapse",
@@ -7626,7 +8027,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Synapse",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Synapse.png"
   },
   "Synoid Simulor": {
     "name": "Synoid Simulor",
@@ -7645,7 +8047,8 @@
     "class": "Rifle",
     "trigger": "Active",
     "family": "Simulor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Synoid-Simulor.png"
   },
   "Telos Boltor": {
     "name": "Telos Boltor",
@@ -7665,7 +8068,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Boltor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Telos-Boltor.png"
   },
   "Tenet Arca Plasmor": {
     "name": "Tenet Arca Plasmor",
@@ -7684,7 +8088,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Arca Plasmor",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Arca-Plasmor.png"
   },
   "Tenet Envoy": {
     "name": "Tenet Envoy",
@@ -7703,7 +8108,8 @@
     "class": "Launcher",
     "trigger": "Auto",
     "family": "Tenet Envoy",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Envoy.png"
   },
   "Tenet Ferrox": {
     "name": "Tenet Ferrox",
@@ -7724,7 +8130,8 @@
     "class": "Speargun",
     "trigger": "Charged Auto",
     "family": "Ferrox",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Ferrox.png"
   },
   "Tenet Flux Rifle": {
     "name": "Tenet Flux Rifle",
@@ -7744,7 +8151,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Flux Rifle",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Flux-Rifle.png"
   },
   "Tenet Glaxion": {
     "name": "Tenet Glaxion",
@@ -7763,7 +8171,8 @@
     "class": "Rifle",
     "trigger": "Held",
     "family": "Glaxion",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Glaxion.png"
   },
   "Tenet Tetra": {
     "name": "Tenet Tetra",
@@ -7784,7 +8193,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Tetra",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Tetra.png"
   },
   "Tenora": {
     "name": "Tenora",
@@ -7805,7 +8215,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool / Charge",
     "family": "Tenora",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tenora.png"
   },
   "Tenora Prime": {
     "name": "Tenora Prime",
@@ -7826,7 +8237,8 @@
     "class": "Rifle",
     "trigger": "Auto-Spool / Charge",
     "family": "Tenora",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tenora-Prime.png"
   },
   "Tetra": {
     "name": "Tetra",
@@ -7846,7 +8258,8 @@
     "class": "Rifle",
     "trigger": "Auto",
     "family": "Tetra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tetra.png"
   },
   "Thornbak": {
     "name": "Thornbak",
@@ -7867,7 +8280,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Thornbak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Thornbak.png"
   },
   "Tiberon": {
     "name": "Tiberon",
@@ -7888,7 +8302,8 @@
     "class": "Rifle",
     "trigger": "Burst",
     "family": "Tiberon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tiberon.png"
   },
   "Tiberon Prime": {
     "name": "Tiberon Prime",
@@ -7909,7 +8324,8 @@
     "class": "Rifle",
     "trigger": "Burst / Semi / Auto",
     "family": "Tiberon",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tiberon-Prime.png"
   },
   "Tigris": {
     "name": "Tigris",
@@ -7930,7 +8346,8 @@
     "class": "Shotgun",
     "trigger": "Duplex",
     "family": "Tigris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tigris.png"
   },
   "Tigris Prime": {
     "name": "Tigris Prime",
@@ -7951,7 +8368,8 @@
     "class": "Shotgun",
     "trigger": "Duplex",
     "family": "Tigris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tigris-Prime.png"
   },
   "Tonkor": {
     "name": "Tonkor",
@@ -7970,7 +8388,8 @@
     "class": "Launcher",
     "trigger": "Semi-Auto",
     "family": "Tonkor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tonkor.png"
   },
   "Torid": {
     "name": "Torid",
@@ -7989,7 +8408,8 @@
     "class": "Launcher",
     "trigger": "Semi-Auto",
     "family": "Torid",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Torid.png"
   },
   "Trumna": {
     "name": "Trumna",
@@ -8011,7 +8431,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Trumna",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Trumna.png"
   },
   "Trumna Prime": {
     "name": "Trumna Prime",
@@ -8033,7 +8454,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Trumna",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Trumna-Prime.png"
   },
   "Vaykor Hek": {
     "name": "Vaykor Hek",
@@ -8054,7 +8476,8 @@
     "class": "Shotgun",
     "trigger": "Semi-Auto",
     "family": "Hek",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vaykor-Hek.png"
   },
   "Vadarya Prime": {
     "name": "Vadarya Prime",
@@ -8073,7 +8496,8 @@
     "class": "Sniper Rifle",
     "trigger": "Charge",
     "family": "Vadarya Prime",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vadarya-Prime.png"
   },
   "Vectis": {
     "name": "Vectis",
@@ -8094,7 +8518,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Vectis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vectis.png"
   },
   "Vectis Prime": {
     "name": "Vectis Prime",
@@ -8115,7 +8540,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Vectis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vectis-Prime.png"
   },
   "Veldt": {
     "name": "Veldt",
@@ -8136,7 +8562,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Veldt",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Veldt.png"
   },
   "Vinquibus (Primary)": {
     "name": "Vinquibus (Primary)",
@@ -8156,7 +8583,8 @@
     "class": "Rifle",
     "trigger": "Semi-Auto",
     "family": "Vinquibus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vinquibus.png"
   },
   "Vulkar": {
     "name": "Vulkar",
@@ -8177,7 +8605,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Vulkar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vulkar.png"
   },
   "Vulkar Wraith": {
     "name": "Vulkar Wraith",
@@ -8197,7 +8626,8 @@
     "class": "Sniper Rifle",
     "trigger": "Semi-Auto",
     "family": "Vulkar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vulkar-Wraith.png"
   },
   "Zarr": {
     "name": "Zarr",
@@ -8216,7 +8646,8 @@
     "class": "Launcher",
     "trigger": "Semi-Auto",
     "family": "Zarr",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zarr.png"
   },
   "Zenith": {
     "name": "Zenith",
@@ -8237,7 +8668,8 @@
     "class": "Rifle",
     "trigger": "Auto / Semi",
     "family": "Zenith",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zenith.png"
   },
   "Zhuge": {
     "name": "Zhuge",
@@ -8258,7 +8690,8 @@
     "class": "Crossbow",
     "trigger": "Auto",
     "family": "Zhuge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zhuge.png"
   },
   "Zhuge Prime": {
     "name": "Zhuge Prime",
@@ -8279,7 +8712,8 @@
     "class": "Crossbow",
     "trigger": "Auto",
     "family": "Zhuge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zhuge-Prime.png"
   },
   "Acrid": {
     "name": "Acrid",
@@ -8298,7 +8732,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Acrid",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Acrid.png"
   },
   "Aegrit": {
     "name": "Aegrit",
@@ -8319,7 +8754,8 @@
     "class": "Thrown",
     "trigger": "Active",
     "family": "Aegrit",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Aegrit.png"
   },
   "Afuris": {
     "name": "Afuris",
@@ -8340,7 +8776,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Afuris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Afuris.png"
   },
   "Afuris Prime": {
     "name": "Afuris Prime",
@@ -8361,7 +8798,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Afuris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Afuris-Prime.png"
   },
   "Akarius": {
     "name": "Akarius",
@@ -8380,7 +8818,8 @@
     "class": "Dual Pistols",
     "trigger": "Burst",
     "family": "Akarius",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akarius.png"
   },
   "Akarius Prime": {
     "name": "Akarius Prime",
@@ -8399,7 +8838,8 @@
     "class": "Dual Pistols",
     "trigger": "Burst",
     "family": "Akarius",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akarius-Prime.png"
   },
   "Akbolto": {
     "name": "Akbolto",
@@ -8419,7 +8859,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Akbolto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akbolto.png"
   },
   "Akbolto Prime": {
     "name": "Akbolto Prime",
@@ -8440,7 +8881,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Akbolto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akbolto-Prime.png"
   },
   "Akbronco": {
     "name": "Akbronco",
@@ -8461,7 +8903,8 @@
     "class": "Dual Shotguns",
     "trigger": "Semi-Auto",
     "family": "Akbronco",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akbronco.png"
   },
   "Akbronco Prime": {
     "name": "Akbronco Prime",
@@ -8482,7 +8925,8 @@
     "class": "Dual Shotguns",
     "trigger": "Semi-Auto",
     "family": "Akbronco",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akbronco-Prime.png"
   },
   "Akjagara": {
     "name": "Akjagara",
@@ -8503,7 +8947,8 @@
     "class": "Dual Pistols",
     "trigger": "Burst",
     "family": "Akjagara",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akjagara.png"
   },
   "Akjagara Prime": {
     "name": "Akjagara Prime",
@@ -8524,7 +8969,8 @@
     "class": "Dual Pistols",
     "trigger": "Burst",
     "family": "Akjagara",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akjagara-Prime.png"
   },
   "Aklato": {
     "name": "Aklato",
@@ -8545,7 +8991,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Aklato",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Aklato.png"
   },
   "Aklex": {
     "name": "Aklex",
@@ -8566,7 +9013,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Aklex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Aklex.png"
   },
   "Aklex Prime": {
     "name": "Aklex Prime",
@@ -8587,7 +9035,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Aklex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Aklex-Prime.png"
   },
   "Akmagnus": {
     "name": "Akmagnus",
@@ -8608,7 +9057,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Akmagnus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akmagnus.png"
   },
   "Akmagnus Prime": {
     "name": "Akmagnus Prime",
@@ -8629,7 +9079,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Akmagnus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akmagnus-Prime.png"
   },
   "Aksomati": {
     "name": "Aksomati",
@@ -8650,7 +9101,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto-Spool",
     "family": "Aksomati",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Aksomati.png"
   },
   "Aksomati Prime": {
     "name": "Aksomati Prime",
@@ -8671,7 +9123,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto-Spool",
     "family": "Aksomati",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Aksomati-Prime.png"
   },
   "Akstiletto": {
     "name": "Akstiletto",
@@ -8692,7 +9145,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Akstiletto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akstiletto.png"
   },
   "Akstiletto Prime": {
     "name": "Akstiletto Prime",
@@ -8713,7 +9167,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Akstiletto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akstiletto-Prime.png"
   },
   "Akvasto": {
     "name": "Akvasto",
@@ -8734,7 +9189,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Akvasto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akvasto.png"
   },
   "Akvasto Prime": {
     "name": "Akvasto Prime",
@@ -8755,7 +9211,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Akvasto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akvasto-Prime.png"
   },
   "Akzani": {
     "name": "Akzani",
@@ -8776,7 +9233,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Akzani",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Akzani.png"
   },
   "Angstrum": {
     "name": "Angstrum",
@@ -8795,7 +9253,8 @@
     "class": "Pistol",
     "trigger": "Charge",
     "family": "Angstrum",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Angstrum.png"
   },
   "Arca Scisco": {
     "name": "Arca Scisco",
@@ -8815,7 +9274,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Arca Scisco",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Arca-Scisco.png"
   },
   "Athodai": {
     "name": "Athodai",
@@ -8837,7 +9297,8 @@
     "class": "Pistol",
     "trigger": "Auto / Mag Burst",
     "family": "Athodai",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Athodai.png"
   },
   "Atomos": {
     "name": "Atomos",
@@ -8856,7 +9317,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Atomos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Atomos.png"
   },
   "Azima": {
     "name": "Azima",
@@ -8877,7 +9339,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Azima",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Azima.png"
   },
   "Balefire Charger": {
     "name": "Balefire Charger",
@@ -8893,7 +9356,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Balefire-Charger.png"
   },
   "Balefire Charger Prime": {
     "name": "Balefire Charger Prime",
@@ -8909,7 +9373,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Balefire-Charger-Prime.png"
   },
   "Ballistica": {
     "name": "Ballistica",
@@ -8930,7 +9395,8 @@
     "class": "Crossbow",
     "trigger": "Burst / Charge",
     "family": "Ballistica",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ballistica.png"
   },
   "Ballistica Prime": {
     "name": "Ballistica Prime",
@@ -8951,7 +9417,8 @@
     "class": "Crossbow",
     "trigger": "Charge",
     "family": "Ballistica",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ballistica-Prime.png"
   },
   "Bolto": {
     "name": "Bolto",
@@ -8971,7 +9438,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Bolto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Bolto.png"
   },
   "Brakk": {
     "name": "Brakk",
@@ -8992,7 +9460,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto",
     "family": "Brakk",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Brakk.png"
   },
   "Bronco": {
     "name": "Bronco",
@@ -9013,7 +9482,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto",
     "family": "Bronco",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Bronco.png"
   },
   "Bronco Prime": {
     "name": "Bronco Prime",
@@ -9034,7 +9504,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto",
     "family": "Bronco",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Bronco-Prime.png"
   },
   "Cantare": {
     "name": "Cantare",
@@ -9054,7 +9525,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Cantare",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cantare.png"
   },
   "Castanas": {
     "name": "Castanas",
@@ -9073,7 +9545,8 @@
     "class": "Thrown",
     "trigger": "Active",
     "family": "Castanas",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Castanas.png"
   },
   "Catabolyst": {
     "name": "Catabolyst",
@@ -9092,7 +9565,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Catabolyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Catabolyst.png"
   },
   "Cestra": {
     "name": "Cestra",
@@ -9112,7 +9586,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Cestra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cestra.png"
   },
   "Coda Catabolyst": {
     "name": "Coda Catabolyst",
@@ -9131,7 +9606,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Catabolyst",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Catabolyst.png"
   },
   "Coda Pox": {
     "name": "Coda Pox",
@@ -9150,7 +9626,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Pox",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Pox.png"
   },
   "Coda Tysis": {
     "name": "Coda Tysis",
@@ -9171,7 +9648,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Tysis",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Coda-Tysis.png"
   },
   "Cyanex": {
     "name": "Cyanex",
@@ -9190,7 +9668,8 @@
     "class": "Pistol",
     "trigger": "Auto / Mag Burst",
     "family": "Cyanex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cyanex.png"
   },
   "Cycron": {
     "name": "Cycron",
@@ -9213,7 +9692,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Cycron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Cycron.png"
   },
   "Despair": {
     "name": "Despair",
@@ -9234,7 +9714,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Despair",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Despair.png"
   },
   "Detron": {
     "name": "Detron",
@@ -9253,7 +9734,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto",
     "family": "Detron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Detron.png"
   },
   "Dex Furis": {
     "name": "Dex Furis",
@@ -9274,7 +9756,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Afuris",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dex-Furis.png"
   },
   "Dex Pixia": {
     "name": "Dex Pixia",
@@ -9292,7 +9775,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dex-Pixia.png"
   },
   "Dex Pixia Prime": {
     "name": "Dex Pixia Prime",
@@ -9310,7 +9794,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dex-Pixia-Prime.png"
   },
   "Dual Cestra": {
     "name": "Dual Cestra",
@@ -9330,7 +9815,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Dual Cestra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Cestra.png"
   },
   "Dual Coda Torxica": {
     "name": "Dual Coda Torxica",
@@ -9350,7 +9836,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Dual Torxica",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Dual-Coda-Torxica.png"
   },
   "Dual Toxocyst": {
     "name": "Dual Toxocyst",
@@ -9371,7 +9858,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Dual Toxocyst",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Dual-Toxocyst.png"
   },
   "EFV-8 Mars": {
     "name": "EFV-8 Mars",
@@ -9391,7 +9879,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto / Charge",
     "family": "EFV-8 Mars",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "EFV-8-Mars.png"
   },
   "Embolist": {
     "name": "Embolist",
@@ -9410,7 +9899,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Embolist",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Embolist.png"
   },
   "Epitaph": {
     "name": "Epitaph",
@@ -9431,7 +9921,8 @@
     "class": "Pistol",
     "trigger": "Semi / Charge",
     "family": "Epitaph",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Epitaph.png"
   },
   "Epitaph Prime": {
     "name": "Epitaph Prime",
@@ -9452,7 +9943,8 @@
     "class": "Pistol",
     "trigger": "Semi / Charge",
     "family": "Epitaph",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Epitaph-Prime.png"
   },
   "Euphona Prime": {
     "name": "Euphona Prime",
@@ -9473,7 +9965,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto",
     "family": "Euphona Prime",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Euphona-Prime.png"
   },
   "Furis": {
     "name": "Furis",
@@ -9494,7 +9987,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Furis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Furis.png"
   },
   "Fusilai": {
     "name": "Fusilai",
@@ -9514,7 +10008,8 @@
     "class": "Thrown",
     "trigger": "Auto / Semi",
     "family": "Fusilai",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Fusilai.png"
   },
   "Gammacor": {
     "name": "Gammacor",
@@ -9533,7 +10028,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Gammacor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Gammacor.png"
   },
   "Glory": {
     "name": "Glory",
@@ -9549,7 +10045,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Glory.png"
   },
   "Grimoire": {
     "name": "Grimoire",
@@ -9568,7 +10065,8 @@
     "class": "Tome",
     "trigger": "Auto",
     "family": "Grimoire",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Grimoire.png"
   },
   "Hikou": {
     "name": "Hikou",
@@ -9589,7 +10087,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Hikou",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hikou.png"
   },
   "Hikou Prime": {
     "name": "Hikou Prime",
@@ -9610,7 +10109,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Hikou",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hikou-Prime.png"
   },
   "Hystrix": {
     "name": "Hystrix",
@@ -9631,7 +10131,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Hystrix",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hystrix.png"
   },
   "Hystrix Prime": {
     "name": "Hystrix Prime",
@@ -9652,7 +10153,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Hystrix",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Hystrix-Prime.png"
   },
   "Knell": {
     "name": "Knell",
@@ -9673,7 +10175,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Knell",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Knell.png"
   },
   "Knell Prime": {
     "name": "Knell Prime",
@@ -9694,7 +10197,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Knell",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Knell-Prime.png"
   },
   "Kohmak": {
     "name": "Kohmak",
@@ -9715,7 +10219,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Auto-Spool",
     "family": "Kohmak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kohmak.png"
   },
   "Kompressa": {
     "name": "Kompressa",
@@ -9734,7 +10239,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Kompressa",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kompressa.png"
   },
   "Kompressa Prime": {
     "name": "Kompressa Prime",
@@ -9753,7 +10259,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Kompressa",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kompressa-Prime.png"
   },
   "Kraken": {
     "name": "Kraken",
@@ -9774,7 +10281,8 @@
     "class": "Pistol",
     "trigger": "Burst",
     "family": "Kraken",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kraken.png"
   },
   "Kulstar": {
     "name": "Kulstar",
@@ -9793,7 +10301,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Kulstar",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kulstar.png"
   },
   "Kunai": {
     "name": "Kunai",
@@ -9814,7 +10323,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Kunai",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Kunai.png"
   },
   "Kuva Brakk": {
     "name": "Kuva Brakk",
@@ -9835,7 +10345,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto",
     "family": "Brakk",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Brakk.png"
   },
   "Kuva Kraken": {
     "name": "Kuva Kraken",
@@ -9856,7 +10367,8 @@
     "class": "Pistol",
     "trigger": "Burst / Mag Burst",
     "family": "Kraken",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Kraken.png"
   },
   "Kuva Nukor": {
     "name": "Kuva Nukor",
@@ -9875,7 +10387,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Nukor",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Nukor.png"
   },
   "Kuva Seer": {
     "name": "Kuva Seer",
@@ -9896,7 +10409,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Seer",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Seer.png"
   },
   "Kuva Twin Stubbas": {
     "name": "Kuva Twin Stubbas",
@@ -9917,7 +10431,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Kuva Twin Stubbas",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Kuva-Twin-Stubbas.png"
   },
   "Laetum": {
     "name": "Laetum",
@@ -9937,7 +10452,8 @@
     "class": "Pistol",
     "trigger": "Semi / Auto",
     "family": "Laetum",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Laetum.png"
   },
   "Lato": {
     "name": "Lato",
@@ -9958,7 +10474,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Lato",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lato.png"
   },
   "Lato Prime": {
     "name": "Lato Prime",
@@ -9979,7 +10496,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Lato",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lato-Prime.png"
   },
   "Lato Vandal": {
     "name": "Lato Vandal",
@@ -10000,7 +10518,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Lato",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lato-Vandal.png"
   },
   "Lex": {
     "name": "Lex",
@@ -10021,7 +10540,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Lex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lex.png"
   },
   "Lex Prime": {
     "name": "Lex Prime",
@@ -10042,7 +10562,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Lex",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Lex-Prime.png"
   },
   "Mk1-Furis": {
     "name": "Mk1-Furis",
@@ -10063,7 +10584,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Furis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mk1-Furis.png"
   },
   "Mk1-Kunai": {
     "name": "Mk1-Kunai",
@@ -10084,7 +10606,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Kunai",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mk1-Kunai.png"
   },
   "Magnus": {
     "name": "Magnus",
@@ -10105,7 +10628,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Magnus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Magnus.png"
   },
   "Magnus Prime": {
     "name": "Magnus Prime",
@@ -10126,7 +10650,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Magnus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Magnus-Prime.png"
   },
   "Mara Detron": {
     "name": "Mara Detron",
@@ -10145,7 +10670,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto",
     "family": "Detron",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Mara-Detron.png"
   },
   "Marelok": {
     "name": "Marelok",
@@ -10166,7 +10692,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Marelok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Marelok.png"
   },
   "Noctua": {
     "name": "Noctua",
@@ -10182,7 +10709,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Noctua.png"
   },
   "Nukor": {
     "name": "Nukor",
@@ -10201,7 +10729,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Nukor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Nukor.png"
   },
   "Ocucor": {
     "name": "Ocucor",
@@ -10223,7 +10752,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Ocucor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Ocucor.png"
   },
   "Onos": {
     "name": "Onos",
@@ -10242,7 +10772,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Onos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Onos.png"
   },
   "Pandero": {
     "name": "Pandero",
@@ -10263,7 +10794,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto / Mag Burst",
     "family": "Pandero",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pandero.png"
   },
   "Pandero Prime": {
     "name": "Pandero Prime",
@@ -10284,7 +10816,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto / Mag Burst",
     "family": "Pandero",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pandero-Prime.png"
   },
   "Plinx": {
     "name": "Plinx",
@@ -10306,7 +10839,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Plinx",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Plinx.png"
   },
   "Pox": {
     "name": "Pox",
@@ -10325,7 +10859,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Pox",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pox.png"
   },
   "Prisma Angstrum": {
     "name": "Prisma Angstrum",
@@ -10344,7 +10879,8 @@
     "class": "Pistol",
     "trigger": "Charge",
     "family": "Angstrum",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Angstrum.png"
   },
   "Prisma Twin Gremlins": {
     "name": "Prisma Twin Gremlins",
@@ -10365,7 +10901,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Twin Gremlins",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Prisma-Twin-Gremlins.png"
   },
   "Pyrana": {
     "name": "Pyrana",
@@ -10386,7 +10923,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Auto",
     "family": "Pyrana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pyrana.png"
   },
   "Pyrana Prime": {
     "name": "Pyrana Prime",
@@ -10407,7 +10945,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Auto",
     "family": "Pyrana",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Pyrana-Prime.png"
   },
   "Quatz": {
     "name": "Quatz",
@@ -10431,7 +10970,8 @@
     "class": "Pistol",
     "trigger": "Auto / Burst",
     "family": "Quatz",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Quatz.png"
   },
   "Rakta Ballistica": {
     "name": "Rakta Ballistica",
@@ -10452,7 +10992,8 @@
     "class": "Crossbow",
     "trigger": "Burst / Charge",
     "family": "Ballistica",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Rakta-Ballistica.png"
   },
   "Regulators": {
     "name": "Regulators",
@@ -10470,7 +11011,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Regulators.png"
   },
   "Regulators Prime": {
     "name": "Regulators Prime",
@@ -10488,7 +11030,8 @@
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Regulators-Prime.png"
   },
   "Sagek Prime": {
     "name": "Sagek Prime",
@@ -10508,7 +11051,8 @@
     "slot": "Secondary",
     "class": "Pistol",
     "trigger": "Auto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sagek-Prime.png"
   },
   "Sancti Castanas": {
     "name": "Sancti Castanas",
@@ -10527,7 +11071,8 @@
     "class": "Thrown",
     "trigger": "Active",
     "family": "Castanas",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sancti-Castanas.png"
   },
   "Scyotid": {
     "name": "Scyotid",
@@ -10549,7 +11094,8 @@
     "class": "Thrown",
     "trigger": "Auto / Semi",
     "family": "Scyotid",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Scyotid.png"
   },
   "Secura Dual Cestra": {
     "name": "Secura Dual Cestra",
@@ -10569,7 +11115,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto-Spool",
     "family": "Dual Cestra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Secura-Dual-Cestra.png"
   },
   "Seer": {
     "name": "Seer",
@@ -10590,7 +11137,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Seer",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Seer.png"
   },
   "Sepulcrum": {
     "name": "Sepulcrum",
@@ -10611,7 +11159,8 @@
     "class": "Pistol",
     "trigger": "Burst",
     "family": "Sepulcrum",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sepulcrum.png"
   },
   "Sicarus": {
     "name": "Sicarus",
@@ -10632,7 +11181,8 @@
     "class": "Pistol",
     "trigger": "Burst",
     "family": "Sicarus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sicarus.png"
   },
   "Sicarus Prime": {
     "name": "Sicarus Prime",
@@ -10653,7 +11203,8 @@
     "class": "Pistol",
     "trigger": "Burst",
     "family": "Sicarus",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sicarus-Prime.png"
   },
   "Sonicor": {
     "name": "Sonicor",
@@ -10672,7 +11223,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Sonicor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Sonicor.png"
   },
   "Spectra": {
     "name": "Spectra",
@@ -10692,7 +11244,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Spectra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Spectra.png"
   },
   "Spectra Vandal": {
     "name": "Spectra Vandal",
@@ -10712,7 +11265,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Spectra",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Spectra-Vandal.png"
   },
   "Spira": {
     "name": "Spira",
@@ -10733,7 +11287,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Spira",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Spira.png"
   },
   "Spira Prime": {
     "name": "Spira Prime",
@@ -10754,7 +11309,8 @@
     "class": "Thrown",
     "trigger": "Auto",
     "family": "Spira",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Spira-Prime.png"
   },
   "Staticor": {
     "name": "Staticor",
@@ -10773,7 +11329,8 @@
     "class": "Thrown",
     "trigger": "Charge",
     "family": "Staticor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Staticor.png"
   },
   "Stubba": {
     "name": "Stubba",
@@ -10794,7 +11351,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Stubba",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Stubba.png"
   },
   "Stug": {
     "name": "Stug",
@@ -10813,7 +11371,8 @@
     "class": "Pistol",
     "trigger": "Auto / Charge",
     "family": "Stug",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Stug.png"
   },
   "Synoid Gammacor": {
     "name": "Synoid Gammacor",
@@ -10832,7 +11391,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Gammacor",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Synoid-Gammacor.png"
   },
   "Talons": {
     "name": "Talons",
@@ -10851,7 +11411,8 @@
     "class": "Thrown",
     "trigger": "Active",
     "family": "Talons",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Talons.png"
   },
   "Telos Akbolto": {
     "name": "Telos Akbolto",
@@ -10871,7 +11432,8 @@
     "class": "Dual Pistols",
     "trigger": "Semi-Auto",
     "family": "Akbolto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Telos-Akbolto.png"
   },
   "Tenet Cycron": {
     "name": "Tenet Cycron",
@@ -10890,7 +11452,8 @@
     "class": "Pistol",
     "trigger": "Held",
     "family": "Cycron",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Cycron.png"
   },
   "Tenet Detron": {
     "name": "Tenet Detron",
@@ -10909,7 +11472,8 @@
     "class": "Shotgun Sidearm",
     "trigger": "Semi-Auto / Mag Burst",
     "family": "Detron",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Detron.png"
   },
   "Tenet Diplos": {
     "name": "Tenet Diplos",
@@ -10930,7 +11494,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto / Burst",
     "family": "Tenet Diplos",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Diplos.png"
   },
   "Tenet Plinx": {
     "name": "Tenet Plinx",
@@ -10952,7 +11517,8 @@
     "class": "Pistol",
     "trigger": "Semi / Charge",
     "family": "Plinx",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Plinx.png"
   },
   "Tenet Spirex": {
     "name": "Tenet Spirex",
@@ -10975,7 +11541,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Tenet Spirex",
-    "max_rank": 40.0
+    "max_rank": 40.0,
+    "image": "Tenet-Spirex.png"
   },
   "Twin Grakatas": {
     "name": "Twin Grakatas",
@@ -10996,7 +11563,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Twin Grakatas",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Grakatas.png"
   },
   "Twin Gremlins": {
     "name": "Twin Gremlins",
@@ -11017,7 +11585,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Twin Gremlins",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Gremlins.png"
   },
   "Twin Kohmak": {
     "name": "Twin Kohmak",
@@ -11038,7 +11607,8 @@
     "class": "Dual Shotguns",
     "trigger": "Auto-Spool",
     "family": "Twin Kohmak",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Kohmak.png"
   },
   "Twin Rogga": {
     "name": "Twin Rogga",
@@ -11059,7 +11629,8 @@
     "class": "Dual Shotguns",
     "trigger": "Semi-Auto",
     "family": "Twin Rogga",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Rogga.png"
   },
   "Twin Vipers": {
     "name": "Twin Vipers",
@@ -11080,7 +11651,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Twin Vipers",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Vipers.png"
   },
   "Twin Vipers Wraith": {
     "name": "Twin Vipers Wraith",
@@ -11101,7 +11673,8 @@
     "class": "Dual Pistols",
     "trigger": "Auto",
     "family": "Twin Vipers",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Twin-Vipers-Wraith.png"
   },
   "Tysis": {
     "name": "Tysis",
@@ -11122,7 +11695,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Tysis",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Tysis.png"
   },
   "Vasto": {
     "name": "Vasto",
@@ -11143,7 +11717,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Vasto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vasto.png"
   },
   "Vasto Prime": {
     "name": "Vasto Prime",
@@ -11164,7 +11739,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Vasto",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vasto-Prime.png"
   },
   "Vaykor Marelok": {
     "name": "Vaykor Marelok",
@@ -11185,7 +11761,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Marelok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vaykor-Marelok.png"
   },
   "Velox": {
     "name": "Velox",
@@ -11206,7 +11783,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Velox",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Velox.png"
   },
   "Velox Prime": {
     "name": "Velox Prime",
@@ -11227,7 +11805,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Velox",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Velox-Prime.png"
   },
   "Vesper 77": {
     "name": "Vesper 77",
@@ -11247,7 +11826,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Vesper 77",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Vesper-77.png"
   },
   "Viper": {
     "name": "Viper",
@@ -11268,7 +11848,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Viper",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Viper.png"
   },
   "Viper Wraith": {
     "name": "Viper Wraith",
@@ -11289,7 +11870,8 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Viper",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Viper-Wraith.png"
   },
   "Zakti": {
     "name": "Zakti",
@@ -11309,7 +11891,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Zakti",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zakti.png"
   },
   "Zakti Prime": {
     "name": "Zakti Prime",
@@ -11329,7 +11912,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Zakti",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zakti-Prime.png"
   },
   "Zylok": {
     "name": "Zylok",
@@ -11350,7 +11934,8 @@
     "class": "Pistol",
     "trigger": "Duplex",
     "family": "Zylok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zylok.png"
   },
   "Zylok Prime": {
     "name": "Zylok Prime",
@@ -11371,7 +11956,8 @@
     "class": "Pistol",
     "trigger": "Duplex",
     "family": "Zylok",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zylok-Prime.png"
   },
   "Zymos": {
     "name": "Zymos",
@@ -11391,7 +11977,8 @@
     "class": "Pistol",
     "trigger": "Semi-Auto",
     "family": "Zymos",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Zymos.png"
   },
   "Riot-848": {
     "name": "Riot-848",
@@ -11410,6 +11997,7 @@
     "class": "Pistol",
     "trigger": "Auto",
     "family": "Riot-848",
-    "max_rank": 30.0
+    "max_rank": 30.0,
+    "image": "Riot-848.png"
   }
 }
