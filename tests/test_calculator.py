@@ -7,7 +7,7 @@ M10: Integration — Nagantaka Prime full wiki example
 """
 import math
 import pytest
-from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, BANE_MODS
+from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, BANE_MODS, VIRAL_STACK_MULTIPLIERS
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.enums import DamageType, FactionType, HealthType, ArmorType
 
@@ -342,3 +342,31 @@ class TestBaneMods:
         result_with = calc.calculate(braton(), [BANE_MODS["Bane of Corpus"]], grineer_flesh_no_armor())
         result_without = calc.calculate(braton(), [], grineer_flesh_no_armor())
         assert result_with == result_without
+
+
+# ---------------------------------------------------------------------------
+# M11: Viral status proc multiplier
+# ---------------------------------------------------------------------------
+
+class TestViralStackMultipliers:
+    def test_table_values(self):
+        expected = {0: 1.0, 1: 1.75, 2: 2.0, 3: 2.25, 4: 2.5, 5: 2.75,
+                    6: 3.0, 7: 3.25, 8: 3.5, 9: 3.75, 10: 4.25}
+        assert VIRAL_STACK_MULTIPLIERS == expected
+
+    def test_zero_stacks_no_change(self):
+        result_0  = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=0)
+        result_no = calc.calculate(braton(), [], grineer_flesh_no_armor())
+        assert result_0 == result_no
+
+    def test_10_stacks_multiplier(self):
+        # Braton Slash=24 vs FLESH (no armor, no mods)
+        # Before Viral: Step3 Slash ×1.5 → floor(24*1.5)=36; Step4 no armor→36; Step5 no faction→36
+        # Viral ×4.25: floor(36 * 4.25) = floor(153.0) = 153
+        result = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=10)
+        assert result[DamageType.SLASH] == pytest.approx(153.0)
+
+    def test_stacks_capped_at_10(self):
+        result_10  = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=10)
+        result_cap = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=99)
+        assert result_10 == result_cap

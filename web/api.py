@@ -205,11 +205,12 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
 
 
 class CalcRequest(BaseModel):
-    weapon:    str
-    mods:      list[str] = []
-    enemy:     str
-    crit_mode: str = "average"   # "average" | "guaranteed" | "max"
-    headshot:  bool = False
+    weapon:       str
+    mods:         list[str] = []
+    enemy:        str
+    crit_mode:    str = "average"   # "average" | "guaranteed" | "max"
+    headshot:     bool = False
+    viral_stacks: int = 0           # 0–10
 
 
 @app.post("/api/calculate")
@@ -246,20 +247,22 @@ def calculate(req: CalcRequest) -> dict:
         enemy=enemy,
         crit_multiplier=crit_mult,
         is_crit_headshot=req.headshot,
+        viral_stacks=req.viral_stacks,
     )
 
     breakdown = {dtype.name: val for dtype, val in result.items()}
     total = sum(result.values())
 
     return {
-        "weapon":   weapon.name,
-        "mods":     req.mods,
-        "enemy":    enemy.name,
-        "crit_mode": req.crit_mode,
+        "weapon":        weapon.name,
+        "mods":          req.mods,
+        "enemy":         enemy.name,
+        "crit_mode":     req.crit_mode,
         "crit_multiplier": crit_mult,
-        "headshot": req.headshot,
-        "breakdown": breakdown,
-        "total":    total,
+        "headshot":      req.headshot,
+        "viral_stacks":  req.viral_stacks,
+        "breakdown":     breakdown,
+        "total":         total,
     }
 
 

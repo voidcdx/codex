@@ -324,6 +324,10 @@
           <input type="checkbox" id="headshot-cb" style="width:auto;margin:0">
           <label for="headshot-cb" style="margin:0;cursor:pointer">Headshot</label>
         </div>
+        <div>
+          <label for="viral-stacks">Viral Stacks</label>
+          <input type="number" id="viral-stacks" min="0" max="10" value="0" style="width:64px">
+        </div>
       </div>
     </div>
 
@@ -903,8 +907,9 @@ async function runCalculation() {
   const enemy  = document.getElementById('enemy-select').value;
   const mods   = Array.from(document.querySelectorAll('#mods-list select'))
                    .map(s => s.value).filter(Boolean);
-  const critMode = document.getElementById('crit-mode').value;
-  const headshot = document.getElementById('headshot-cb').checked;
+  const critMode    = document.getElementById('crit-mode').value;
+  const headshot    = document.getElementById('headshot-cb').checked;
+  const viralStacks = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
 
   if (!weapon || !enemy) {
     showError('Please select a weapon and enemy.');
@@ -919,7 +924,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks}),
     });
     const data = await resp.json();
     if (!resp.ok) {
@@ -963,7 +968,8 @@ function showResults(data) {
     `Mods: ${data.mods.length ? data.mods.join(', ') : '(none)'}`,
     `Enemy: ${data.enemy}`,
     `Crit: ${data.crit_mode} — ×${data.crit_multiplier.toFixed(3)}${data.headshot ? ' (headshot)' : ''}`,
-  ].join(' &nbsp;|&nbsp; ');
+    data.viral_stacks > 0 ? `Viral: ${data.viral_stacks} stacks (×${[1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4.25][data.viral_stacks-1]})` : null,
+  ].filter(Boolean).join(' &nbsp;|&nbsp; ');
 
   const rows = entries.map(([type, val]) => {
     const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;

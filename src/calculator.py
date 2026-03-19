@@ -103,6 +103,25 @@ ARMOR_TYPE_MODIFIERS: dict[tuple[ArmorType, DamageType], tuple[float, float]] = 
 # Primed Bane mods:   +55% at max rank
 # Formula (Step 3): Modded Damage × (1 + faction_bonus)
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Viral status proc multipliers per stack count (1–10)
+# Source: wiki.warframe.com/w/Damage/Viral_Damage
+# ---------------------------------------------------------------------------
+VIRAL_STACK_MULTIPLIERS: dict[int, float] = {
+    0: 1.00,
+    1: 1.75,
+    2: 2.00,
+    3: 2.25,
+    4: 2.50,
+    5: 2.75,
+    6: 3.00,
+    7: 3.25,
+    8: 3.50,
+    9: 3.75,
+    10: 4.25,
+}
+
+
 BANE_MODS: dict[str, Mod] = {
     # Standard
     "Bane of Grineer":   Mod("Bane of Grineer",   faction_bonus=0.30, faction_type=FactionType.GRINEER),
@@ -199,6 +218,7 @@ class DamageCalculator:
         enemy: Enemy,
         crit_multiplier: float = 1.0,   # pass calculate_crit_multiplier() result
         is_crit_headshot: bool = False,  # doubles crit multiplier on headshots
+        viral_stacks: int = 0,          # 0–10 Viral status stacks on the enemy
     ) -> dict[DamageType, float]:
         """Return final per-type damage values after the full pipeline."""
         base_damage = weapon.total_base_damage
@@ -298,6 +318,11 @@ class DamageCalculator:
         final: dict[DamageType, float] = {}
         for dtype, value in after_armor.items():
             final[dtype] = float(math.floor(value * (1.0 + faction_bonus)))
+
+        # --- Step 6: Viral status proc multiplier [math.floor] ---
+        viral_mult = VIRAL_STACK_MULTIPLIERS.get(min(viral_stacks, 10), 1.0)
+        if viral_mult != 1.0:
+            final = {dtype: float(math.floor(v * viral_mult)) for dtype, v in final.items()}
 
         return final
 
