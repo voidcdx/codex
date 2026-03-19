@@ -28,42 +28,32 @@ src/
   enums.py          # DamageType, FactionType, HealthType, ArmorType
   models.py         # Weapon, Mod, Enemy dataclasses
   quantizer.py      # quantize() — pure function, no side effects
-  combiner.py       # ElementalCombiner — mod-order-based element combination
-  calculator.py     # DamageCalculator — full pipeline
-  loader.py         # !! TODO: load weapons.json/mods.json → Weapon/Mod objects
+  combiner.py       # elemental combination by mod slot order; innate primary/secondary split
+  calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks
+  loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot support
 tests/
   test_quantization.py
   test_combiner.py
-  test_pipeline.py  # integration tests using wiki examples
+  test_loader.py
+  test_calculator.py  # M7–M11: modded damage, body part, faction, armor, crit, Viral stacks
 data/
-  weapons.json      # 588 weapons parsed from wiki (primary/secondary/melee)
-  mods.json         # 1534 mods parsed from wiki
-  enemies.json      # !! TODO: scrape Module:Enemies/data from wiki
+  weapons.json      # 588 weapons (primary/secondary/melee) — IPS, innate elements, stats, image
+  mods.json         # 1534 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus
+  enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, head_multiplier
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
   parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
+web/
+  api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate
+  static/index.html # dark-theme SPA: weapon/mod/enemy selects, live stats, Viral stacks input
+run_web.py          # python run_web.py → dev server on port 8000
+__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot]
 ```
 
-## !! Three Things Still Needed !!
-
-### 1. Enemy Database
-Scrape `https://wiki.warframe.com/w/Module:Enemies/data?action=raw` → `data/enemies_data.lua`
-Parse with `parse_lua.py`, then add enemy normalizer to `parse_wiki_data.py`.
-Each enemy needs: `faction`, `health_type`, `armor_type`, `base_armor`, `body_part_multiplier`.
-See `HANDOFF.md` for full details.
-
-### 2. Data Loader (`src/loader.py`)
-Convert `data/weapons.json` and `data/mods.json` into `Weapon`/`Mod` objects.
-Key mappings:
-- `"impact": 1.2` → `{DamageType.IMPACT: 1.2}`
-- `"heat_pct": 0.9` → `DamageComponent(DamageType.HEAT, 0.9)` in `Mod.elemental_bonuses`
-- `"damage_bonus_pct": 1.65` → `Mod.damage_bonus = 1.65`
-- `"faction_bonus": 0.55, "faction_target": "corpus"` → `Mod.faction_bonus / Mod.faction_type`
-
-### 3. CLI / Entrypoint
-Simple command-line interface to run a full calculation. See `HANDOFF.md`.
+## 99 Tests Passing
+`pytest` — all pass. Run before committing.
 
 ## Confirmed Order of Operations (from wiki research)
 Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research):
@@ -74,7 +64,11 @@ Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5co
 3. Part Damage × DamageType Multiplier        → Typed Damage        [round DOWN]
 4. Typed Damage × Armor Mitigation            → Mitigated Damage    [round DOWN]
 5. Mitigated Damage × (1 + FactionMod)        → Final Damage        [round DOWN]
+6. Final Damage × Viral stack multiplier      → Viral Damage        [round DOWN]
 ```
+
+**Viral stack multipliers** (0 stacks = ×1.0, max 10 stacks = ×4.25):
+`{1:1.75, 2:2.0, 3:2.25, 4:2.5, 5:2.75, 6:3.0, 7:3.25, 8:3.5, 9:3.75, 10:4.25}`
 
 **Armor Mitigation** = `300 / (300 + effective_armor)`
 **Faction mods apply LAST** — multiplicative `(1 + bonus)` after armor mitigation.
