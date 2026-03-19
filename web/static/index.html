@@ -126,8 +126,25 @@
     .btn-calc:hover { background: var(--accent2); }
     .btn-calc:disabled { background: var(--border); color: var(--text-dim); cursor: default; }
 
+    /* Right column */
+    .right-col { display: flex; flex-direction: column; gap: 16px; }
+
+    /* Weapon stats panel */
+    .stat-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    .stat-row { display: flex; gap: 8px; }
+    .stat-block {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 10px;
+    }
+    .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 3px; }
+    .stat-value { font-size: 15px; font-weight: 600; color: var(--text); }
+    .stat-value.crit { color: #f0a030; }
+    .stat-value.status { color: #60b0e0; }
+
     /* Results */
-    .results-panel { }
     .no-results {
       color: var(--text-dim);
       text-align: center;
@@ -273,11 +290,22 @@
     <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
   </div>
 
-  <!-- Results -->
-  <div class="panel results-panel" id="results-panel">
-    <h2>Results</h2>
-    <div class="no-results" id="no-results">Select a weapon and enemy, then click Calculate.</div>
-    <div id="results-content" style="display:none"></div>
+  <!-- Right column -->
+  <div class="right-col">
+
+    <!-- Weapon Stats -->
+    <div class="panel" id="weapon-stats-panel" style="display:none">
+      <h2>Base Weapon Stats</h2>
+      <div id="weapon-stats-content"></div>
+    </div>
+
+    <!-- Results -->
+    <div class="panel results-panel" id="results-panel">
+      <h2>Results</h2>
+      <div class="no-results" id="no-results">Select a weapon and enemy, then click Calculate.</div>
+      <div id="results-content" style="display:none"></div>
+    </div>
+
   </div>
 </div>
 
@@ -296,18 +324,110 @@ async function loadData() {
   populateSelect('weapon-select', allWeapons.map(w => w.name));
   populateSelect('enemy-select', allEnemies.map(e => e.name));
 
-  document.getElementById('weapon-select').addEventListener('change', updateWeaponPreview);
+  document.getElementById('weapon-select').addEventListener('change', onWeaponChange);
 
   // Default selections for quick testing
   setSelectValue('weapon-select', 'Soma Prime');
   setSelectValue('enemy-select', 'Heavy Gunner');
   addModSlot('Serration');
+  onWeaponChange();
+}
+
+function getCurrentWeapon() {
+  const name = document.getElementById('weapon-select').value;
+  return allWeapons.find(x => x.name === name) || null;
+}
+
+// Returns the set of mod types compatible with the given weapon
+function getCompatibleModTypes(weapon) {
+  if (!weapon) return new Set();
+  const slot = weapon.slot || '';
+  const cls  = weapon.class || '';
+  const types = new Set([weapon.name]); // always include weapon-specific mods
+
+  if (slot === 'Primary') {
+    types.add('Primary');
+    if (cls === 'Shotgun') {
+      types.add('Shotgun');
+    } else if (cls === 'Sniper Rifle') {
+      types.add('Rifle');
+      types.add('Sniper');
+    } else if (cls === 'Bow' || cls === 'Crossbow') {
+      types.add('Rifle');
+      types.add('Bow');
+    } else {
+      // Rifle, Launcher, Arm-Cannon, Speargun, Exalted Weapon, etc.
+      types.add('Rifle');
+      types.add('Assault Rifle');
+    }
+  } else if (slot === 'Secondary') {
+    types.add('Pistol');
+  } else if (slot === 'Melee') {
+    types.add('Melee');
+    const classMap = {
+      'Dagger':           'Daggers',
+      'Dual Daggers':     'Dual Daggers',
+      'Sword':            'Swords',
+      'Dual Swords':      'Dual Swords',
+      'Nikana':           'Nikanas',
+      'Dual Nikanas':     'Dual Nikanas',
+      'Two-Handed Nikana':'Two-Handed Nikana',
+      'Heavy Blade':      'Heavy Blade',
+      'Hammer':           'Hammers',
+      'Polearm':          'Polearms',
+      'Staff':            'Staves',
+      'Whip':             'Whips',
+      'Blade and Whip':   'Blade And Whip',
+      'Glaive':           'Glaives',
+      'Claws':            'Claws',
+      'Tonfa':            'Tonfas',
+      'Scythe':           'Scythes',
+      'Heavy Scythe':     'Heavy Scythe',
+      'Rapier':           'Rapiers',
+      'Sword and Shield': 'Sword And Shield',
+      'Machete':          'Machetes',
+      'Sparring':         'Sparring',
+      'Fist':             'Fists',
+      'Nunchaku':         'Nunchaku',
+      'Warfan':           'Warfans',
+      'Gunblade':         'Gunblade',
+    };
+    if (classMap[cls]) types.add(classMap[cls]);
+  }
+  return types;
+}
+
+function buildModOptions(compatibleTypes) {
+  const weapon = getCurrentWeapon();
+  const filtered = compatibleTypes
+    ? allMods.filter(m => compatibleTypes.has(m.type))
+    : allMods;
+  return '<option value="">(empty)</option>' +
+    filtered.map(m => `<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
+}
+
+// Rebuild all existing mod slot dropdowns to match the new weapon
+function refreshModDropdowns() {
+  const weapon = getCurrentWeapon();
+  const types = getCompatibleModTypes(weapon);
+  document.querySelectorAll('#mods-list select').forEach(sel => {
+    const current = sel.value;
+    sel.innerHTML = buildModOptions(types);
+    // Restore value if still compatible, else reset to empty
+    if (current && Array.from(sel.options).some(o => o.value === current)) {
+      sel.value = current;
+    }
+  });
+}
+
+function onWeaponChange() {
   updateWeaponPreview();
+  refreshModDropdowns();
+  showWeaponStats(getCurrentWeapon());
 }
 
 function updateWeaponPreview() {
-  const name = document.getElementById('weapon-select').value;
-  const w = allWeapons.find(x => x.name === name);
+  const w = getCurrentWeapon();
   const preview = document.getElementById('weapon-preview');
   if (!w || !w.image) { preview.classList.remove('visible'); return; }
 
@@ -319,6 +439,71 @@ function updateWeaponPreview() {
   document.getElementById('weapon-preview-name').textContent = w.name;
   const sub = [w.slot, w.class].filter(Boolean).join(' · ');
   document.getElementById('weapon-preview-sub').textContent = sub;
+}
+
+function showWeaponStats(weapon) {
+  const panel = document.getElementById('weapon-stats-panel');
+  if (!weapon) { panel.style.display = 'none'; return; }
+
+  const dmg = weapon.base_damage || {};
+  const dmgEntries = Object.entries(dmg);
+  const total = dmgEntries.reduce((s, [, v]) => s + v, 0);
+
+  const dmgRows = dmgEntries.map(([type, val]) =>
+    `<tr><td>${capitalize(type)}</td><td>${val.toFixed(1)}</td></tr>`
+  ).join('');
+
+  const pct = v => (v * 100).toFixed(1) + '%';
+  const fmt = (v, suffix) => v != null ? v + (suffix || '') : '—';
+
+  const sub = [weapon.slot, weapon.class, weapon.trigger].filter(Boolean).join(' · ');
+
+  document.getElementById('weapon-stats-content').innerHTML = `
+    <div style="margin-bottom:10px">
+      <div style="font-size:15px;font-weight:600;color:var(--text)">${esc(weapon.name)}</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:3px">${esc(sub)}</div>
+    </div>
+    <div class="stat-rows">
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">Crit Chance</div>
+          <div class="stat-value crit">${pct(weapon.crit_chance || 0)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Crit Mult</div>
+          <div class="stat-value crit">${fmt(weapon.crit_multiplier, 'x')}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Status</div>
+          <div class="stat-value status">${pct(weapon.status_chance || 0)}</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">Fire Rate</div>
+          <div class="stat-value">${fmt(weapon.fire_rate)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Magazine</div>
+          <div class="stat-value">${fmt(weapon.magazine)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Reload</div>
+          <div class="stat-value">${fmt(weapon.reload, 's')}</div>
+        </div>
+      </div>
+    </div>
+    <table class="breakdown-table">
+      <thead><tr><th>Damage Type</th><th style="text-align:right">Base</th></tr></thead>
+      <tbody>${dmgRows}</tbody>
+      <tfoot class="total-row"><tr><td>Total</td><td style="text-align:right">${total.toFixed(1)}</td></tr></tfoot>
+    </table>
+  `;
+  panel.style.display = 'block';
+}
+
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 function populateSelect(id, names) {
@@ -334,7 +519,7 @@ function setSelectValue(id, value) {
 }
 
 function esc(s) {
-  return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function addModSlot(defaultVal) {
@@ -344,9 +529,11 @@ function addModSlot(defaultVal) {
   div.className = 'mod-slot';
   div.id = id;
 
+  const weapon = getCurrentWeapon();
+  const types = getCompatibleModTypes(weapon);
+
   const sel = document.createElement('select');
-  sel.innerHTML = '<option value="">(empty)</option>' +
-    allMods.map(m => `<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
+  sel.innerHTML = buildModOptions(weapon ? types : null);
 
   const btn = document.createElement('button');
   btn.textContent = '✕';
@@ -458,7 +645,7 @@ function showResults(data) {
 
   document.getElementById('results-content').innerHTML = `
     <div class="result-header">
-      <h3>${data.weapon} vs ${data.enemy}</h3>
+      <h3>${esc(data.weapon)} vs ${esc(data.enemy)}</h3>
       <div class="result-total">${data.total.toFixed(2)} <span>total damage</span></div>
     </div>
     <div class="result-meta">${meta}</div>

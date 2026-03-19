@@ -48,9 +48,16 @@ def get_weapons() -> list[dict]:
             "name":             name,
             "slot":             entry.get("slot", ""),
             "class":            entry.get("class", ""),
+            "trigger":          entry.get("trigger", ""),
             "crit_chance":      entry.get("crit_chance", 0),
             "crit_multiplier":  entry.get("crit_multiplier", 1),
             "status_chance":    entry.get("status_chance", 0),
+            "fire_rate":        entry.get("fire_rate", None),
+            "magazine":         entry.get("magazine", None),
+            "reload":           entry.get("reload", None),
+            "mastery_req":      entry.get("mastery_req", 0),
+            "riven_disposition": entry.get("riven_disposition", None),
+            "base_damage":      entry.get("base_damage", {}),
             "image":            entry.get("image", ""),
         })
     return sorted(out, key=lambda x: x["name"])
