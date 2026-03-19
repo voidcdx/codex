@@ -22,9 +22,6 @@ Full pipeline: weapon + mods + enemy → per-type damage breakdown.
 
 ## What's Still Needed
 ### Frontend polish
-- Weapon images: user has 619 PNGs — copy into `web/static/images/weapons/`
-  Filenames: `Soma-Prime.png` convention (spaces→`-`, `&`→`and`, parens stripped)
-  `weapons.json` already has `"image"` field on every weapon
 - Multishot display (Split Chamber doubles projectiles, not per-hit damage)
 - Status chance / proc display
 - DPS mode (fire rate × damage)
