@@ -72,6 +72,8 @@ def get_mods() -> list[dict]:
     raw = _raw_mods()
     out = []
     for name, entry in raw.items():
+        if name.startswith("Flawed "):
+            continue
         out.append({
             "name":     name,
             "type":     entry.get("type", ""),
@@ -144,13 +146,14 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         for c in mod_elements
         if c.type in PRIMARY_ELEMENTS
     ]
+    # Innate element amounts are flat damage values, not percentages of base_damage
     scaled_innate_primary = [
-        DamageComponent(c.type, c.amount * base_damage)
+        DamageComponent(c.type, c.amount)
         for c in weapon.innate_elements
         if c.type in PRIMARY_ELEMENTS
     ]
     innate_secondary = [
-        DamageComponent(c.type, quantize(c.amount * base_damage, base_damage))
+        DamageComponent(c.type, quantize(c.amount, base_damage))
         for c in weapon.innate_elements
         if c.type not in PRIMARY_ELEMENTS
     ]
@@ -162,8 +165,11 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     )
     elemental_components = combined_elements + [c for c in innate_secondary if c.amount != 0.0]
 
-    # Modded IPS
-    base_dmg_dict = {dt.name.lower(): v for dt, v in weapon.base_damage.items()}
+    # Modded IPS + innate secondary (base_damage dict only has IPS; innate secondaries are pre-built)
+    base_dmg_dict: dict[str, float] = {dt.name.lower(): v for dt, v in weapon.base_damage.items()}
+    for c in weapon.innate_elements:
+        key = c.type.name.lower()
+        base_dmg_dict[key] = base_dmg_dict.get(key, 0.0) + c.amount
     modded_dmg_dict: dict[str, float] = {}
     for dt, v in weapon.base_damage.items():
         q = quantize(float(math.floor(v * (1.0 + total_damage_bonus))), base_damage)
@@ -176,7 +182,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         if q != 0.0:
             modded_dmg_dict[c.type.name.lower()] = q
 
-    base_total = sum(weapon.base_damage.values())
+    base_total = weapon.total_base_damage
     modded_total = sum(modded_dmg_dict.values())
 
     return {

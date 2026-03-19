@@ -172,6 +172,8 @@ def load_mod(name: str) -> Mod:
                 break
         else:
             raise KeyError(f"Mod not found: {name!r}")
+    if name.startswith("Flawed "):
+        raise KeyError(f"Flawed mods are no longer used: {name!r}")
 
     entry = raw[name]
     damage_bonus = float(entry.get("damage_bonus_pct") or 0.0)
@@ -247,7 +249,7 @@ def list_weapons() -> list[str]:
 
 
 def list_mods() -> list[str]:
-    return sorted(_raw_mods().keys())
+    return sorted(k for k in _raw_mods().keys() if not k.startswith("Flawed "))
 
 
 def list_enemies() -> list[str]:

@@ -22,7 +22,7 @@ class Weapon:
 
     @property
     def total_base_damage(self) -> float:
-        return sum(self.base_damage.values())
+        return sum(self.base_damage.values()) + sum(c.amount for c in self.innate_elements)
 
 
 @dataclass

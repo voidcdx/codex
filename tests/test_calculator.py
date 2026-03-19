@@ -170,8 +170,8 @@ class TestNagantakaPrimeIntegration:
                 DamageType.SLASH: 104.0,
             },
             innate_elements=[
-                # Gas Valence Formation: 100% innate Gas (will combine after mods)
-                DamageComponent(DamageType.GAS, 1.0),
+                # Gas Valence Formation: 100% innate Gas = flat 209 (equal to IPS total)
+                DamageComponent(DamageType.GAS, 209.0),
             ],
         )
 

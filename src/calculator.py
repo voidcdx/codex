@@ -224,13 +224,14 @@ class DamageCalculator:
         ]
 
         # Split innate elements: primaries go into combiner, secondaries pass through
+        # Innate element amounts are flat damage values, not percentages of base_damage
         scaled_innate_primary = [
-            DamageComponent(c.type, c.amount * base_damage)
+            DamageComponent(c.type, c.amount)
             for c in weapon.innate_elements
             if c.type in PRIMARY_ELEMENTS
         ]
         innate_secondary = [
-            DamageComponent(c.type, quantize(c.amount * base_damage, base_damage))
+            DamageComponent(c.type, quantize(c.amount, base_damage))
             for c in weapon.innate_elements
             if c.type not in PRIMARY_ELEMENTS
         ]
