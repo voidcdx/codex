@@ -61,7 +61,10 @@ def get_weapons() -> list[dict]:
             "reload":           entry.get("reload", None),
             "mastery_req":      entry.get("mastery_req", 0),
             "riven_disposition": entry.get("riven_disposition", None),
-            "base_damage":      entry.get("base_damage", {}),
+            "base_damage":      {
+                **entry.get("base_damage", {}),
+                **entry.get("innate_elements", {}),
+            },
             "image":            entry.get("image", ""),
         })
     return sorted(out, key=lambda x: x["name"])
