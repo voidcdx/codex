@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warframe Damage Calculator</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #1a1a1a;
+      --surface2: #242424;
+      --border: #333;
+      --accent: #c49a1f;
+      --accent2: #e8b923;
+      --text: #e0e0e0;
+      --text-dim: #888;
+      --good: #4caf50;
+      --bad: #f44336;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 {
+      font-size: 18px;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .panel h2 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    label { display: block; margin-bottom: 4px; color: var(--text-dim); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    select, input[type=text] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    select:focus, input[type=text]:focus { border-color: var(--accent); }
+    .mods-list { margin-bottom: 12px; }
+    .mod-slot {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .mod-slot select { margin-bottom: 0; flex: 1; }
+    .mod-slot button {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+    .mod-slot button:hover { border-color: var(--bad); color: var(--bad); }
+    .btn-add {
+      background: none;
+      border: 1px dashed var(--border);
+      color: var(--text-dim);
+      width: 100%;
+      padding: 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .btn-add:hover { border-color: var(--accent); color: var(--accent); }
+    .options-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .options-row > div { flex: 1; }
+    .btn-calc {
+      width: 100%;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .btn-calc:hover { background: var(--accent2); }
+    .btn-calc:disabled { background: var(--border); color: var(--text-dim); cursor: default; }
+
+    /* Results */
+    .results-panel { }
+    .no-results {
+      color: var(--text-dim);
+      text-align: center;
+      padding: 60px 0;
+      font-size: 13px;
+    }
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+    .result-header h3 { font-size: 15px; color: var(--accent2); }
+    .result-total { font-size: 22px; font-weight: 700; color: var(--text); }
+    .result-total span { font-size: 12px; color: var(--text-dim); margin-left: 4px; }
+    .result-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      line-height: 1.8;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .breakdown-table th, .breakdown-table td {
+      padding: 7px 10px;
+      text-align: left;
+      font-size: 13px;
+    }
+    .breakdown-table th {
+      color: var(--text-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+    }
+    .breakdown-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .breakdown-table tr:hover td { background: var(--surface2); }
+    .bar-cell { width: 180px; }
+    .bar-bg { background: var(--surface2); border-radius: 2px; height: 8px; }
+    .bar-fill { background: var(--accent); height: 8px; border-radius: 2px; }
+    .total-row td { border-top: 1px solid var(--border); font-weight: 700; }
+    .error-msg {
+      background: #2a1010;
+      border: 1px solid #5a2020;
+      border-radius: 4px;
+      padding: 12px;
+      color: #e07070;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-bottom: 8px;
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--accent); }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Warframe Damage Calculator</h1>
+</header>
+
+<div class="container">
+  <div>
+    <!-- Weapon -->
+    <div class="panel" style="margin-bottom:16px">
+      <h2>Weapon</h2>
+      <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…">
+      <label for="weapon-select">Weapon</label>
+      <select id="weapon-select" size="1"></select>
+    </div>
+
+    <!-- Mods -->
+    <div class="panel" style="margin-bottom:16px">
+      <h2>Mods (in slot order)</h2>
+      <div id="mods-list" class="mods-list"></div>
+      <button class="btn-add" onclick="addModSlot()">+ Add Mod Slot</button>
+    </div>
+
+    <!-- Enemy -->
+    <div class="panel" style="margin-bottom:16px">
+      <h2>Enemy</h2>
+      <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…">
+      <label for="enemy-select">Enemy</label>
+      <select id="enemy-select" size="1"></select>
+    </div>
+
+    <!-- Options -->
+    <div class="panel" style="margin-bottom:16px">
+      <h2>Options</h2>
+      <div class="options-row">
+        <div>
+          <label for="crit-mode">Crit Mode</label>
+          <select id="crit-mode">
+            <option value="average">Average DPS</option>
+            <option value="guaranteed">Guaranteed</option>
+            <option value="max">Maximum</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding-top:18px">
+          <input type="checkbox" id="headshot-cb" style="width:auto;margin:0">
+          <label for="headshot-cb" style="margin:0;cursor:pointer">Headshot</label>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
+  </div>
+
+  <!-- Results -->
+  <div class="panel results-panel" id="results-panel">
+    <h2>Results</h2>
+    <div class="no-results" id="no-results">Select a weapon and enemy, then click Calculate.</div>
+    <div id="results-content" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+let allWeapons = [];
+let allMods = [];
+let allEnemies = [];
+let modSlotCount = 0;
+
+async function loadData() {
+  [allWeapons, allMods, allEnemies] = await Promise.all([
+    fetch('/api/weapons').then(r => r.json()),
+    fetch('/api/mods').then(r => r.json()),
+    fetch('/api/enemies').then(r => r.json()),
+  ]);
+  populateSelect('weapon-select', allWeapons.map(w => w.name));
+  populateSelect('enemy-select', allEnemies.map(e => e.name));
+
+  // Default selections for quick testing
+  setSelectValue('weapon-select', 'Soma Prime');
+  setSelectValue('enemy-select', 'Heavy Gunner');
+  addModSlot('Serration');
+}
+
+function populateSelect(id, names) {
+  const sel = document.getElementById(id);
+  sel.innerHTML = names.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+}
+
+function setSelectValue(id, value) {
+  const sel = document.getElementById(id);
+  for (const opt of sel.options) {
+    if (opt.value === value) { sel.value = value; return; }
+  }
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function addModSlot(defaultVal) {
+  modSlotCount++;
+  const id = `mod-slot-${modSlotCount}`;
+  const div = document.createElement('div');
+  div.className = 'mod-slot';
+  div.id = id;
+
+  const sel = document.createElement('select');
+  sel.innerHTML = '<option value="">(empty)</option>' +
+    allMods.map(m => `<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
+
+  const btn = document.createElement('button');
+  btn.textContent = '✕';
+  btn.onclick = () => div.remove();
+
+  div.appendChild(sel);
+  div.appendChild(btn);
+  document.getElementById('mods-list').appendChild(div);
+
+  if (defaultVal) setSelectByText(sel, defaultVal);
+}
+
+function setSelectByText(sel, text) {
+  for (const opt of sel.options) {
+    if (opt.value === text) { sel.value = text; return; }
+  }
+}
+
+// Search/filter selects
+document.addEventListener('DOMContentLoaded', () => {
+  setupSearch('weapon-search', 'weapon-select', () => allWeapons.map(w => w.name));
+  setupSearch('enemy-search', 'enemy-select', () => allEnemies.map(e => e.name));
+  loadData();
+});
+
+function setupSearch(inputId, selectId, getNames) {
+  document.getElementById(inputId).addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    const names = getNames().filter(n => n.toLowerCase().includes(q));
+    populateSelect(selectId, names);
+  });
+}
+
+async function runCalculation() {
+  const weapon = document.getElementById('weapon-select').value;
+  const enemy  = document.getElementById('enemy-select').value;
+  const mods   = Array.from(document.querySelectorAll('#mods-list select'))
+                   .map(s => s.value).filter(Boolean);
+  const critMode = document.getElementById('crit-mode').value;
+  const headshot = document.getElementById('headshot-cb').checked;
+
+  if (!weapon || !enemy) {
+    showError('Please select a weapon and enemy.');
+    return;
+  }
+
+  const btn = document.getElementById('calc-btn');
+  btn.disabled = true;
+  btn.textContent = 'Calculating…';
+
+  try {
+    const resp = await fetch('/api/calculate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot}),
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      showError(data.detail || 'Calculation failed.');
+    } else {
+      showResults(data);
+    }
+  } catch(e) {
+    showError('Network error: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Calculate';
+  }
+}
+
+function showError(msg) {
+  document.getElementById('no-results').style.display = 'none';
+  document.getElementById('results-content').style.display = 'none';
+  let errDiv = document.getElementById('error-msg');
+  if (!errDiv) {
+    errDiv = document.createElement('div');
+    errDiv.id = 'error-msg';
+    errDiv.className = 'error-msg';
+    document.getElementById('results-panel').appendChild(errDiv);
+  }
+  errDiv.textContent = msg;
+  errDiv.style.display = 'block';
+}
+
+function showResults(data) {
+  const errDiv = document.getElementById('error-msg');
+  if (errDiv) errDiv.style.display = 'none';
+  document.getElementById('no-results').style.display = 'none';
+
+  const breakdown = data.breakdown;
+  const entries = Object.entries(breakdown).sort((a,b) => b[1] - a[1]);
+  const maxVal = entries.length ? entries[0][1] : 1;
+
+  const meta = [
+    `Weapon: ${data.weapon}`,
+    `Mods: ${data.mods.length ? data.mods.join(', ') : '(none)'}`,
+    `Enemy: ${data.enemy}`,
+    `Crit: ${data.crit_mode} — ×${data.crit_multiplier.toFixed(3)}${data.headshot ? ' (headshot)' : ''}`,
+  ].join(' &nbsp;|&nbsp; ');
+
+  const rows = entries.map(([type, val]) => {
+    const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
+    return `<tr>
+      <td>${type}</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></td>
+      <td>${val.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('results-content').innerHTML = `
+    <div class="result-header">
+      <h3>${data.weapon} vs ${data.enemy}</h3>
+      <div class="result-total">${data.total.toFixed(2)} <span>total damage</span></div>
+    </div>
+    <div class="result-meta">${meta}</div>
+    <table class="breakdown-table">
+      <thead><tr><th>Type</th><th>Bar</th><th>Damage</th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot class="total-row">
+        <tr><td colspan="2">TOTAL</td><td>${data.total.toFixed(2)}</td></tr>
+      </tfoot>
+    </table>
+  `;
+  document.getElementById('results-content').style.display = 'block';
+}
+</script>
+</body>
+</html>

@@ -377,6 +377,135 @@ def parse_mods(raw: dict | list) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Enemy parsing
+# ---------------------------------------------------------------------------
+# Enemy lua files (enemies_grineer.lua, enemies_corpus.lua, etc.) contain:
+#   { "EnemyName": { General = { Faction = "Grineer", ... },
+#                    Stats   = { Health = 300, Armor = 500,
+#                                Multis = { "Head: 3.0x" }, ... } } }
+#
+# Health type and armor type are inferred from faction + stats:
+#   Grineer        → FLESH     + FERRITE (if armor > 0)
+#   Corpus         → FLESH     + ALLOY (if armor > 0)   [shields separate]
+#   Infested       → INFESTED_FLESH + NONE (unless fossilized/ancients)
+#   Orokin         → FLESH     + ALLOY (if armor > 0)
+#   Sentient       → FLESH     + NONE
+#   Narmer         → FLESH     + FERRITE (if armor > 0)
+#   Techrot/Scaldra → INFESTED_FLESH + NONE
+#   Stalker        → FLESH     + ALLOY (if armor > 0)
+#   Unaffiliated   → FLESH     + NONE
+
+_FACTION_HEALTH_TYPE: dict[str, str] = {
+    "grineer":     "flesh",
+    "corpus":      "flesh",
+    "infestation": "infested_flesh",
+    "orokin":      "flesh",
+    "sentient":    "flesh",
+    "narmer":      "flesh",
+    "themurmur":   "flesh",
+    "techrot":     "infested_flesh",
+    "scaldra":     "flesh",
+    "stalker":     "flesh",
+    "anarchs":     "flesh",
+    "unaffiliated": "flesh",
+}
+
+_FACTION_ARMOR_TYPE: dict[str, str] = {
+    "grineer":     "ferrite",
+    "corpus":      "alloy",
+    "infestation": "none",
+    "orokin":      "alloy",
+    "sentient":    "none",
+    "narmer":      "ferrite",
+    "themurmur":   "none",
+    "techrot":     "none",
+    "scaldra":     "none",
+    "stalker":     "alloy",
+    "anarchs":     "none",
+    "unaffiliated": "none",
+}
+
+# File name → canonical faction key
+_FILENAME_FACTION: dict[str, str] = {
+    "enemies_grineer":     "grineer",
+    "enemies_corpus":      "corpus",
+    "enemies_infestation": "infestation",
+    "enemies_orokin":      "orokin",
+    "enemies_sentient":    "sentient",
+    "enemies_narmer":      "narmer",
+    "enemies_themurmur":   "themurmur",
+    "enemies_techrot":     "techrot",
+    "enemies_scaldra":     "scaldra",
+    "enemies_stalker":     "stalker",
+    "enemies_unaffiliated": "unaffiliated",
+}
+
+
+def _parse_head_multiplier(multis: list) -> float:
+    """Extract head multiplier from Multis list, e.g. ["Head: 3.0x"] → 3.0."""
+    for entry in multis:
+        if isinstance(entry, str):
+            m = re.search(r"Head\s*:\s*([\d.]+)x", entry, re.IGNORECASE)
+            if m:
+                return float(m.group(1))
+    return 1.0
+
+
+def _parse_enemy(name: str, raw: dict, faction_key: str) -> dict | None:
+    general = raw.get("General") or {}
+    stats   = raw.get("Stats") or {}
+
+    faction_raw = general.get("Faction", "").lower()
+    # Resolve faction via the file's faction key (more reliable than the string)
+    faction = faction_key
+
+    health_type = _FACTION_HEALTH_TYPE.get(faction, "flesh")
+    base_armor  = float(stats.get("Armor") or 0)
+    armor_type  = _FACTION_ARMOR_TYPE.get(faction, "none") if base_armor > 0 else "none"
+
+    multis = stats.get("Multis") or []
+    head_mult = _parse_head_multiplier(multis) if isinstance(multis, list) else 1.0
+
+    return {
+        "name":                 name,
+        "faction":              faction,
+        "health_type":          health_type,
+        "armor_type":           armor_type,
+        "base_armor":           base_armor,
+        "base_health":          float(stats.get("Health") or 0),
+        "base_shield":          float(stats.get("Shield") or 0),
+        "head_multiplier":      head_mult,
+    }
+
+
+def parse_enemies(lua_files: list) -> dict:
+    """Parse all enemies_*.lua files and return merged dict keyed by name."""
+    from scripts.parse_lua import lua_to_py  # local import to avoid circular
+
+    enemies: dict = {}
+    for lua_path in sorted(lua_files):
+        stem = lua_path.stem            # e.g. "enemies_grineer"
+        faction_key = _FILENAME_FACTION.get(stem, stem.replace("enemies_", ""))
+        print(f"  Parsing {lua_path.name} (faction={faction_key}) …", end=" ", flush=True)
+        src = lua_path.read_text(encoding="utf-8")
+        raw = lua_to_py(src)
+        if not isinstance(raw, dict):
+            print("skipped (unexpected format)")
+            continue
+        count = 0
+        for entry_name, entry_data in raw.items():
+            if not isinstance(entry_data, dict):
+                continue
+            parsed = _parse_enemy(str(entry_name), entry_data, faction_key)
+            if parsed:
+                enemies[str(entry_name)] = parsed
+                count += 1
+        print(f"{count} entries")
+    print(f"  Total enemies: {len(enemies)}")
+    return enemies
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -398,10 +527,22 @@ def main() -> None:
     print(f"Saved → {out_w}\n")
 
     print("=== Parsing mods ===")
-    mods = parse_mods(json.loads(m_raw.read_text()))
+    mods = parse_mods(json.loads(m_raw.read_text(encoding="utf-8", errors="replace")))
     out_m = DATA_DIR / "mods.json"
     out_m.write_text(json.dumps(mods, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Saved → {out_m}\n")
+
+    print("=== Parsing enemies ===")
+    enemy_files = sorted(DATA_DIR.glob("enemies_*.lua"))
+    if not enemy_files:
+        print("  No enemies_*.lua files found. Skipping.")
+    else:
+        import sys
+        sys.path.insert(0, str(DATA_DIR.parent))
+        enemies = parse_enemies(enemy_files)
+        out_e = DATA_DIR / "enemies.json"
+        out_e.write_text(json.dumps(enemies, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"  Saved → {out_e}\n")
 
 
 if __name__ == "__main__":
