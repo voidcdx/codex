@@ -503,11 +503,12 @@ class TestCalculateProcs:
         assert procs["gas"]["active"] is True
         assert procs["gas"]["ticks"] == 6
         # base=150 (100 IPS + 50 innate Gas), damage_bonus=1.65, faction=0.30
-        # DPT = floor(150 × 2.65 × 1.30² × 0.5) = floor(150 × 2.65 × 1.69 × 0.5) = floor(335.9) = 335
+        # Gas vs Flesh = ×1.5 type effectiveness
+        # DPT = floor(150 × 2.65 × 1.30² × 0.5 × 1.5) = floor(150 × 2.65 × 1.69 × 0.5 × 1.5)
+        #      = floor(503.83125) = 503
         # Note: wiki uses 100 base (no innate), we use 150 so values differ.
         # Verify formula shape: DPT ∝ base_damage only, not elemental mods.
-        # Compute expected: floor(150 * 2.65 * 1.69 * 0.5) = floor(335.8875) = 335
-        assert procs["gas"]["damage_per_tick"] == pytest.approx(335.0)
+        assert procs["gas"]["damage_per_tick"] == pytest.approx(503.0)
 
     def test_gas_proc_ignores_elemental_mods(self):
         """Adding elemental mods should NOT change Gas proc DPT."""

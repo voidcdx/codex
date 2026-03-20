@@ -76,12 +76,15 @@ User has a PDF with authoritative damage calculation docs to replace the
 [Mad5cout community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research).
 Share PDF path or paste text when at a desktop → update `CLAUDE.md` "Confirmed Order of Operations".
 
-### ③ Verify Gas Proc Formula
-Current:
+### ③ ~~Verify Gas Proc Formula~~ ✓ DONE
+Verified against wiki. Updated formula:
 ```
-Gas proc = 0.5 × base × (1+damage_bonus) × (1+faction)² × crit × body_part
+Gas DPT = 0.5 × base × (1+damage_bonus) × (1+faction)² × gas_type_eff × crit × body_part
 ```
-Ignores elemental mods. Cross-check against PDF above before confirming.
+- Ignores elemental/physical mods (confirmed)
+- Faction double-dips (confirmed)
+- Added missing Gas type effectiveness vs health (e.g. ×1.5 vs Flesh)
+- `(1+StatusDamageMods)` term exists but we don't track status damage mods yet (defaults to 1.0)
 
 ### ④ Riven Mod Support
 - UI: riven builder panel (select stat type + value per bonus)

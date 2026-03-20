@@ -445,13 +445,16 @@ class DamageCalculator:
 
         # Gas Cloud: uses raw base_damage × (1 + damage_bonus only) — ignores elemental mods.
         # Faction double-dips. Body part and crit apply as additional multipliers.
-        # Source: wiki.warframe.com/w/Damage_2.0/Gas_Damage
+        # Gas type effectiveness vs health applies to the DoT ticks.
+        # Source: wiki.warframe.com/w/Damage/Gas_Damage
         gas_active = DamageType.GAS in types_present
+        gas_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.GAS), 1.0)
         gas_dpt = (
             weapon.total_base_damage
             * (1.0 + total_damage_bonus)
             * (1.0 + faction_bonus) ** 2
             * 0.5
+            * gas_eff
             * combined_mult
         )
 
