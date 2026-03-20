@@ -6,9 +6,11 @@ Endpoints:
   GET  /api/mods             → list of mod names + types
   GET  /api/enemies          → list of enemy names + factions
   POST /api/calculate        → full damage calculation
+  POST /api/optimal-order    → find mod order maximising damage vs enemy
 """
 from __future__ import annotations
 
+import itertools
 import sys
 from pathlib import Path
 
@@ -70,6 +72,14 @@ def get_weapons() -> list[dict]:
     return sorted(out, key=lambda x: x["name"])
 
 
+_PRIMARY_ELEM_FIELDS = {
+    "heat": "heat_pct",
+    "cold": "cold_pct",
+    "electricity": "electricity_pct",
+    "toxin": "toxin_pct",
+}
+
+
 @app.get("/api/mods")
 def get_mods() -> list[dict]:
     raw = _raw_mods()
@@ -77,11 +87,20 @@ def get_mods() -> list[dict]:
     for name, entry in raw.items():
         if name.startswith("Flawed "):
             continue
+        primary_element = None
+        for elem, field in _PRIMARY_ELEM_FIELDS.items():
+            if entry.get(field):
+                primary_element = elem
+                break
         out.append({
-            "name":     name,
-            "type":     entry.get("type", ""),
-            "polarity": entry.get("polarity", ""),
-            "effect":   entry.get("effect_raw", ""),
+            "name":            name,
+            "type":            entry.get("type", ""),
+            "polarity":        entry.get("polarity", ""),
+            "rarity":          entry.get("rarity", "Common"),
+            "base_drain":      int(entry.get("base_drain") or 0),
+            "max_rank":        int(entry.get("max_rank") or 5),
+            "effect":          entry.get("effect_raw", ""),
+            "primary_element": primary_element,
         })
     return sorted(out, key=lambda x: x["name"])
 
@@ -298,6 +317,96 @@ def calculate(req: CalcRequest) -> dict:
         "modded_sc":     round(modded_sc, 6),
         "modded_ms":     round(modded_ms, 6),
     }
+
+
+# ---------------------------------------------------------------------------
+# Optimal mod order endpoint
+# ---------------------------------------------------------------------------
+
+class OptimalOrderRequest(BaseModel):
+    weapon:           str
+    mods:             list[str] = []
+    enemy:            str
+    crit_mode:        str  = "average"
+    headshot:         bool = False
+    viral_stacks:     int  = 0
+    corrosive_stacks: int  = 0
+
+
+@app.post("/api/optimal-order")
+def optimal_order(req: OptimalOrderRequest) -> dict:
+    try:
+        weapon = load_weapon(req.weapon)
+    except KeyError:
+        raise HTTPException(400, f"Unknown weapon: {req.weapon!r}")
+
+    try:
+        enemy = load_enemy(req.enemy, headshot=req.headshot)
+    except KeyError:
+        raise HTTPException(400, f"Unknown enemy: {req.enemy!r}")
+
+    # Load only non-empty slots
+    slots: list[tuple[int, str]] = [(i, n) for i, n in enumerate(req.mods) if n]
+    loaded: list[tuple[int, str, object]] = []
+    for i, name in slots:
+        try:
+            loaded.append((i, name, load_mod(name)))
+        except KeyError:
+            raise HTTPException(400, f"Unknown mod: {name!r}")
+
+    # Identify primary-elemental mods
+    elem_entries = [
+        (i, name, mod)
+        for i, name, mod in loaded
+        if any(c.type in PRIMARY_ELEMENTS for c in mod.elemental_bonuses)
+    ]
+
+    if len(elem_entries) <= 1:
+        return {"optimal_mods": list(req.mods)}
+
+    raw_w = _raw_weapons().get(weapon.name, {})
+    crit_mult = calculate_crit_multiplier(
+        float(raw_w.get("crit_chance") or 0.0),
+        float(raw_w.get("crit_multiplier") or 1.0),
+        mode=req.crit_mode,
+    )
+
+    # Build a base slot dict: position → (name, mod)
+    base_slots: dict[int, tuple[str, object]] = {i: (n, m) for i, n, m in loaded}
+    elem_positions = [i for i, _, _ in elem_entries]
+    elem_pairs     = [(n, m) for _, n, m in elem_entries]
+
+    best_total = -1.0
+    best_mods  = list(req.mods)
+
+    for perm in itertools.permutations(elem_pairs):
+        # Substitute permuted elemental mods back into their original positions
+        trial = dict(base_slots)
+        for pos, (name, mod) in zip(elem_positions, perm):
+            trial[pos] = (name, mod)
+
+        ordered_mods = [trial[i][1] for i in sorted(trial)]
+
+        calc   = DamageCalculator()
+        result = calc.calculate(
+            weapon=weapon,
+            mods=ordered_mods,
+            enemy=enemy,
+            crit_multiplier=crit_mult,
+            is_crit_headshot=req.headshot,
+            viral_stacks=req.viral_stacks,
+            corrosive_stacks=req.corrosive_stacks,
+        )
+        total = sum(result.values())
+
+        if total > best_total:
+            best_total = total
+            # Reconstruct full 8-slot list preserving empty slots
+            best_mods = list(req.mods)
+            for pos, (name, _) in zip(elem_positions, perm):
+                best_mods[pos] = name
+
+    return {"optimal_mods": best_mods}
 
 
 # ---------------------------------------------------------------------------
