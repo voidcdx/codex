@@ -14,11 +14,27 @@ class DamageComponent:
 
 
 @dataclass
+class WeaponAttack:
+    name: str
+    base_damage: dict[DamageType, float]
+    innate_elements: list[DamageComponent] = field(default_factory=list)
+    crit_chance: float = 0.0
+    crit_multiplier: float = 1.0
+    status_chance: float = 0.0
+    shot_type: str = ""
+    fire_rate: float = 0.0
+
+
+@dataclass
 class Weapon:
     name: str
-    base_damage: dict[DamageType, float]          # IPS + any fixed elemental
+    base_damage: dict[DamageType, float]          # IPS + any fixed elemental (from selected attack)
     innate_elements: list[DamageComponent] = field(default_factory=list)
     is_kuva_tenet: bool = False
+    attacks: list[WeaponAttack] = field(default_factory=list)
+    crit_chance: float = 0.0
+    crit_multiplier: float = 1.0
+    status_chance: float = 0.0
 
     @property
     def total_base_damage(self) -> float:

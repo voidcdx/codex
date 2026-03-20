@@ -50,6 +50,14 @@ def get_weapons() -> list[dict]:
     raw = _raw_weapons()
     out = []
     for name, entry in raw.items():
+        attacks = entry.get("attacks") or []
+        # Build a combined base_damage dict from all damage across attacks
+        all_damage: dict[str, float] = {}
+        for atk in attacks:
+            for k, v in (atk.get("base_damage") or {}).items():
+                all_damage[k] = all_damage.get(k, 0.0) + v
+            for k, v in (atk.get("innate_elements") or {}).items():
+                all_damage[k] = all_damage.get(k, 0.0) + v
         out.append({
             "name":             name,
             "slot":             entry.get("slot", ""),
@@ -63,11 +71,9 @@ def get_weapons() -> list[dict]:
             "reload":           entry.get("reload", None),
             "mastery_req":      entry.get("mastery_req", 0),
             "riven_disposition": entry.get("riven_disposition", None),
-            "base_damage":      {
-                **entry.get("base_damage", {}),
-                **entry.get("innate_elements", {}),
-            },
+            "base_damage":      all_damage,
             "image":            entry.get("image", ""),
+            "attacks":          [{"name": a.get("name", ""), "shot_type": a.get("shot_type", "")} for a in attacks],
         })
     return sorted(out, key=lambda x: x["name"])
 
@@ -130,14 +136,15 @@ def get_enemies() -> list[dict]:
 class ModdedWeaponRequest(BaseModel):
     weapon: str
     mods: list[str] = []
+    attack: str | None = None
 
 
 @app.post("/api/modded-weapon")
 def modded_weapon(req: ModdedWeaponRequest) -> dict:
     try:
-        weapon = load_weapon(req.weapon)
-    except KeyError:
-        raise HTTPException(400, f"Unknown weapon: {req.weapon!r}")
+        weapon = load_weapon(req.weapon, attack_name=req.attack)
+    except KeyError as e:
+        raise HTTPException(400, str(e))
 
     mods = []
     for mod_name in req.mods:
@@ -147,10 +154,9 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
             raise HTTPException(400, f"Unknown mod: {mod_name!r}")
 
     base_damage = weapon.total_base_damage
-    raw_w = _raw_weapons().get(weapon.name, {})
-    base_cc = float(raw_w.get("crit_chance") or 0.0)
-    base_cm = float(raw_w.get("crit_multiplier") or 1.0)
-    base_sc = float(raw_w.get("status_chance") or 0.0)
+    base_cc = weapon.crit_chance
+    base_cm = weapon.crit_multiplier
+    base_sc = weapon.status_chance
 
     total_damage_bonus = sum(m.damage_bonus for m in mods)
     total_cc_bonus = sum(m.cc_bonus for m in mods)
@@ -236,6 +242,7 @@ class CalcRequest(BaseModel):
     weapon:       str
     mods:         list[str] = []
     enemy:        str
+    attack:       str | None = None
     crit_mode:    str = "average"   # "average" | "guaranteed" | "max"
     headshot:     bool = False
     viral_stacks: int = 0           # 0–10
@@ -245,9 +252,9 @@ class CalcRequest(BaseModel):
 @app.post("/api/calculate")
 def calculate(req: CalcRequest) -> dict:
     try:
-        weapon = load_weapon(req.weapon)
-    except KeyError:
-        raise HTTPException(400, f"Unknown weapon: {req.weapon!r}")
+        weapon = load_weapon(req.weapon, attack_name=req.attack)
+    except KeyError as e:
+        raise HTTPException(400, str(e))
 
     mods = []
     for mod_name in req.mods:
@@ -264,15 +271,15 @@ def calculate(req: CalcRequest) -> dict:
     if req.crit_mode not in ("average", "guaranteed", "max"):
         raise HTTPException(400, f"crit_mode must be average/guaranteed/max")
 
-    raw_w = _raw_weapons().get(weapon.name, {})
-    base_cc = float(raw_w.get("crit_chance") or 0.0)
-    base_cm = float(raw_w.get("crit_multiplier") or 1.0)
+    base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
+    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods)
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
+    raw_w = _raw_weapons().get(weapon.name, {})
     fire_rate   = float(raw_w.get("fire_rate")  or 1.0)
     magazine    = float(raw_w.get("magazine")   or 1.0)
     reload_time = float(raw_w.get("reload")     or 0.0)
-    base_sc     = float(raw_w.get("status_chance") or 0.0)
+    base_sc     = weapon.status_chance
     total_sc_bonus = sum(m.sc_bonus for m in mods)
     total_ms_bonus = sum(m.multishot_bonus for m in mods)
     modded_sc   = base_sc * (1.0 + total_sc_bonus)
@@ -327,6 +334,7 @@ class OptimalOrderRequest(BaseModel):
     weapon:           str
     mods:             list[str] = []
     enemy:            str
+    attack:           str | None = None
     crit_mode:        str  = "average"
     headshot:         bool = False
     viral_stacks:     int  = 0
@@ -336,9 +344,9 @@ class OptimalOrderRequest(BaseModel):
 @app.post("/api/optimal-order")
 def optimal_order(req: OptimalOrderRequest) -> dict:
     try:
-        weapon = load_weapon(req.weapon)
-    except KeyError:
-        raise HTTPException(400, f"Unknown weapon: {req.weapon!r}")
+        weapon = load_weapon(req.weapon, attack_name=req.attack)
+    except KeyError as e:
+        raise HTTPException(400, str(e))
 
     try:
         enemy = load_enemy(req.enemy, headshot=req.headshot)
@@ -364,10 +372,9 @@ def optimal_order(req: OptimalOrderRequest) -> dict:
     if len(elem_entries) <= 1:
         return {"optimal_mods": list(req.mods)}
 
-    raw_w = _raw_weapons().get(weapon.name, {})
     crit_mult = calculate_crit_multiplier(
-        float(raw_w.get("crit_chance") or 0.0),
-        float(raw_w.get("crit_multiplier") or 1.0),
+        weapon.crit_chance,
+        weapon.crit_multiplier,
         mode=req.crit_mode,
     )
 

@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from src.enums import ArmorType, DamageType, FactionType, HealthType
-from src.models import DamageComponent, Enemy, Mod, Weapon
+from src.models import DamageComponent, Enemy, Mod, Weapon, WeaponAttack
 
 DATA_DIR = Path(__file__).parent.parent / "data"
 
@@ -119,11 +119,43 @@ def _raw_enemies() -> dict[str, Any]:
 # Public API
 # ---------------------------------------------------------------------------
 
-def load_weapon(name: str) -> Weapon:
-    """Load a weapon by exact name. Raises KeyError if not found."""
+def _parse_weapon_attack(raw_attack: dict) -> WeaponAttack:
+    """Convert a raw attack dict from weapons.json into a WeaponAttack."""
+    base_dmg_raw: dict[str, float] = raw_attack.get("base_damage") or {}
+    base_damage = {
+        _DAMAGE_TYPE[k]: float(v)
+        for k, v in base_dmg_raw.items()
+        if k in _DAMAGE_TYPE
+    }
+    innate_elems: list[DamageComponent] = []
+    for k, v in (raw_attack.get("innate_elements") or {}).items():
+        dt = _DAMAGE_TYPE.get(k)
+        if dt is not None:
+            innate_elems.append(DamageComponent(dt, float(v)))
+    return WeaponAttack(
+        name=raw_attack.get("name", ""),
+        base_damage=base_damage,
+        innate_elements=innate_elems,
+        crit_chance=float(raw_attack.get("crit_chance") or 0.0),
+        crit_multiplier=float(raw_attack.get("crit_multiplier") or 1.0),
+        status_chance=float(raw_attack.get("status_chance") or 0.0),
+        shot_type=raw_attack.get("shot_type", ""),
+        fire_rate=float(raw_attack.get("fire_rate") or 0.0),
+    )
+
+
+def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
+    """Load a weapon by exact name.
+
+    Args:
+        name:        Weapon name (case-insensitive fallback).
+        attack_name: Attack mode to select (e.g. "Rocket Explosion").
+                     Defaults to the first attack in the list.
+
+    Raises KeyError if weapon or attack_name not found.
+    """
     raw = _raw_weapons()
     if name not in raw:
-        # case-insensitive fallback
         lower = name.lower()
         for k in raw:
             if k.lower() == lower:
@@ -133,31 +165,65 @@ def load_weapon(name: str) -> Weapon:
             raise KeyError(f"Weapon not found: {name!r}")
 
     entry = raw[name]
-    base_dmg_raw: dict[str, float] = entry.get("base_damage") or {}
-    base_damage = {
-        _DAMAGE_TYPE[k]: float(v)
-        for k, v in base_dmg_raw.items()
-        if k in _DAMAGE_TYPE
-    }
 
-    innate_elems: list[DamageComponent] = []
-    for k, v in (entry.get("innate_elements") or {}).items():
-        dt = _DAMAGE_TYPE.get(k)
-        if dt is not None:
-            innate_elems.append(DamageComponent(dt, float(v)))
+    # Parse all attacks
+    attacks_raw: list[dict] = entry.get("attacks") or []
+    all_attacks = [_parse_weapon_attack(a) for a in attacks_raw]
+
+    # Fall back to legacy flat base_damage/innate_elements if no attacks array
+    if not all_attacks:
+        base_dmg_raw: dict[str, float] = entry.get("base_damage") or {}
+        base_damage = {
+            _DAMAGE_TYPE[k]: float(v)
+            for k, v in base_dmg_raw.items()
+            if k in _DAMAGE_TYPE
+        }
+        innate_elems: list[DamageComponent] = []
+        for k, v in (entry.get("innate_elements") or {}).items():
+            dt = _DAMAGE_TYPE.get(k)
+            if dt is not None:
+                innate_elems.append(DamageComponent(dt, float(v)))
+        selected_base_damage = base_damage
+        selected_innate = innate_elems
+        selected_cc = float(entry.get("crit_chance") or 0.0)
+        selected_cm = float(entry.get("crit_multiplier") or 1.0)
+        selected_sc = float(entry.get("status_chance") or 0.0)
+    else:
+        # Select attack by name or default to first
+        if attack_name:
+            lower_att = attack_name.lower()
+            selected_attack = next(
+                (a for a in all_attacks if a.name.lower() == lower_att), None
+            )
+            if selected_attack is None:
+                available = [a.name for a in all_attacks]
+                raise KeyError(
+                    f"Attack {attack_name!r} not found for {name!r}. "
+                    f"Available: {available}"
+                )
+        else:
+            selected_attack = all_attacks[0]
+
+        selected_base_damage = selected_attack.base_damage
+        selected_innate = selected_attack.innate_elements
+        selected_cc = selected_attack.crit_chance
+        selected_cm = selected_attack.crit_multiplier
+        selected_sc = selected_attack.status_chance
 
     is_kuva_tenet = bool(entry.get("is_kuva_tenet", False))
-    # Heuristic: Kuva / Tenet weapons have those words in their class or family
     family = str(entry.get("family", "") or "")
-    weapon_class = str(entry.get("class", "") or "")
     if "Kuva" in name or "Tenet" in name or "Kuva" in family or "Tenet" in family:
         is_kuva_tenet = True
 
     return Weapon(
         name=name,
-        base_damage=base_damage,
-        innate_elements=innate_elems,
+        base_damage=selected_base_damage,
+        innate_elements=selected_innate,
         is_kuva_tenet=is_kuva_tenet,
+        attacks=all_attacks,
+        crit_chance=selected_cc,
+        crit_multiplier=selected_cm,
+        status_chance=selected_sc,
     )
 
 

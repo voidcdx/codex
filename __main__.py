@@ -29,27 +29,15 @@ def _print_results(
     enemy_name: str,
     crit_mode: str,
     headshot: bool,
+    attack_name: str | None = None,
 ) -> None:
-    weapon = load_weapon(weapon_name)
+    weapon = load_weapon(weapon_name, attack_name=attack_name)
     mods   = [load_mod(m) for m in mod_names]
     enemy  = load_enemy(enemy_name, headshot=headshot)
 
-    # Compute total crit stats from weapon + mods
-    crit_chance_base = 0.0  # weapons.json doesn't store crit_chance on the Weapon dataclass
-    # Read directly from raw JSON for display stats
-    from src.loader import _raw_weapons
-    raw_w = _raw_weapons().get(weapon.name, {})
-    base_cc = float(raw_w.get("crit_chance") or 0.0)
-    base_cm = float(raw_w.get("crit_multiplier") or 1.0)
-
-    from src.enums import DamageType
-    cc_bonus = sum(
-        float(getattr(m, "_crit_chance_bonus", 0))
-        for m in mods
-    )
-    # For now: no crit mods parsed yet — use base values
-    total_cc = base_cc
-    total_cm = base_cm
+    # Crit stats come directly from the selected attack on the weapon
+    total_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
+    total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods)
     crit_mult = calculate_crit_multiplier(total_cc, total_cm, mode=crit_mode)
 
     calc = DamageCalculator()
@@ -63,7 +51,12 @@ def _print_results(
 
     total = sum(result.values())
 
+    # Determine which attack was used
+    selected_attack_name = attack_name or (weapon.attacks[0].name if weapon.attacks else "")
+
     print(f"\nWeapon : {weapon.name}")
+    if len(weapon.attacks) > 1:
+        print(f"Attack : {selected_attack_name}")
     print(f"Mods   : {', '.join(mod_names) if mod_names else '(none)'}")
     print(f"Enemy  : {enemy.name}  [{enemy.faction.name}, {enemy.armor_type.name} armor,"
           f" {enemy.base_armor:.0f} base armor]")
@@ -93,6 +86,8 @@ def main(argv: list[str] | None = None) -> None:
                         default="average", help="Crit mode (default: average)")
     parser.add_argument("--headshot", action="store_true",
                         help="Apply headshot (doubles crit mult)")
+    parser.add_argument("--attack", default=None,
+                        help='Attack mode to use (e.g. "Rocket Explosion"). Defaults to first.')
     parser.add_argument("args", nargs="*",
                         help='"WeaponName" [ModName ...] [vs EnemyName]')
 
@@ -136,7 +131,7 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(1)
 
     try:
-        _print_results(weapon_name, mod_names, enemy_name, ns.crit, ns.headshot)
+        _print_results(weapon_name, mod_names, enemy_name, ns.crit, ns.headshot, ns.attack)
     except KeyError as e:
         print(f"Error: {e}")
         sys.exit(1)

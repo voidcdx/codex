@@ -102,44 +102,57 @@ def _parse_damage_dict(d: dict) -> tuple[dict, dict]:
     return ips, elems
 
 
+def _parse_attack(raw_attack: dict) -> dict:
+    """Parse a single attack entry into a normalized dict."""
+    attack_out: dict = {"name": raw_attack.get("AttackName", "")}
+
+    damage_dict = raw_attack.get("Damage") if isinstance(raw_attack.get("Damage"), dict) else {}
+    ips, elems = _parse_damage_dict(damage_dict)
+    if ips:
+        attack_out["base_damage"] = ips
+    if elems:
+        attack_out["innate_elements"] = elems
+
+    for wiki_key, canon in (
+        ("CritChance", "crit_chance"),
+        ("CritMultiplier", "crit_multiplier"),
+        ("StatusChance", "status_chance"),
+        ("FireRate", "fire_rate"),
+    ):
+        v = raw_attack.get(wiki_key)
+        if v is not None:
+            try: attack_out[canon] = float(v)
+            except (TypeError, ValueError): pass
+
+    shot_type = raw_attack.get("ShotType", "")
+    if shot_type:
+        attack_out["shot_type"] = shot_type
+
+    return attack_out
+
+
 def _parse_weapon(name: str, raw: dict) -> dict | None:
     out: dict = {"name": name}
 
-    # Damage lives inside Attacks[N].Damage (wiki format)
-    # Use the first attack named "Normal Attack", or index 0.
-    attacks = raw.get("Attacks") or []
-    normal = next(
-        (a for a in attacks if isinstance(a, dict)
-         and a.get("AttackName", "").lower() == "normal attack"),
-        attacks[0] if attacks else None,
-    )
+    attacks_raw = raw.get("Attacks") or []
+    parsed_attacks = []
+    for raw_attack in attacks_raw:
+        if not isinstance(raw_attack, dict):
+            continue
+        parsed = _parse_attack(raw_attack)
+        if parsed.get("base_damage") or parsed.get("innate_elements"):
+            parsed_attacks.append(parsed)
 
-    if normal is None:
+    if not parsed_attacks:
         return None
 
-    damage_dict = normal.get("Damage") if isinstance(normal.get("Damage"), dict) else {}
-    ips, elems = _parse_damage_dict(damage_dict)
+    out["attacks"] = parsed_attacks
 
-    if not ips and not elems:
-        return None
-
-    if ips:
-        out["base_damage"] = ips
-    if elems:
-        out["innate_elements"] = elems
-
-    # Per-attack stats (crit, status, fire rate)
-    ATTACK_STAT_KEYS = {
-        "CritChance":     "crit_chance",
-        "CritMultiplier": "crit_multiplier",
-        "StatusChance":   "status_chance",
-        "FireRate":       "fire_rate",
-    }
-    for wiki_key, canon in ATTACK_STAT_KEYS.items():
-        v = normal.get(wiki_key)
-        if v is not None:
-            try: out[canon] = float(v)
-            except (TypeError, ValueError): pass
+    # Promote first-attack stats to weapon level for convenience (crit, status, fire_rate)
+    first = parsed_attacks[0]
+    for stat in ("crit_chance", "crit_multiplier", "status_chance", "fire_rate"):
+        if stat in first:
+            out[stat] = first[stat]
 
     # Top-level stats
     TOP_STAT_KEYS = {
@@ -154,6 +167,7 @@ def _parse_weapon(name: str, raw: dict) -> dict | None:
         "Trigger":     "trigger",
         "Family":      "family",
         "MaxRank":     "max_rank",
+        "Image":       "image",
     }
     for wiki_key, canon in TOP_STAT_KEYS.items():
         v = raw.get(wiki_key)
