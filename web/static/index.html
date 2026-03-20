@@ -328,6 +328,10 @@
           <label for="viral-stacks">Viral Stacks</label>
           <input type="number" id="viral-stacks" min="0" max="10" value="0" style="width:64px">
         </div>
+        <div>
+          <label for="corrosive-stacks">Corrosive Stacks</label>
+          <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:64px">
+        </div>
       </div>
     </div>
 
@@ -912,7 +916,8 @@ async function runCalculation() {
                    .map(s => s.value).filter(Boolean);
   const critMode    = document.getElementById('crit-mode').value;
   const headshot    = document.getElementById('headshot-cb').checked;
-  const viralStacks = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
+  const viralStacks     = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
+  const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
 
   if (!weapon || !enemy) {
     showError('Please select a weapon and enemy.');
@@ -927,7 +932,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks}),
     });
     const data = await resp.json();
     if (!resp.ok) {
@@ -972,6 +977,7 @@ function showResults(data) {
     `Enemy: ${data.enemy}`,
     `Crit: ${data.crit_mode} — ×${data.crit_multiplier.toFixed(3)}${data.headshot ? ' (headshot)' : ''}`,
     data.viral_stacks > 0 ? `Viral: ${data.viral_stacks} stacks (×${[1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4.25][data.viral_stacks-1]})` : null,
+    data.corrosive_stacks > 0 ? `Corrosive: ${data.corrosive_stacks} stacks (−${Math.min(80, 20 + 6*data.corrosive_stacks)}% armor)` : null,
   ].filter(Boolean).join(' &nbsp;|&nbsp; ');
 
   const rows = entries.map(([type, val]) => {
@@ -993,8 +999,8 @@ function showResults(data) {
     : '';
 
   // Status procs section
-  const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)', gas: 'Gas (Cloud)' };
-  const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat, gas: ELEM_COLORS.gas };
+  const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)', gas: 'Gas (Cloud)', toxin: 'Toxin (Poison)', electricity: 'Electricity (Arc)' };
+  const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat, gas: ELEM_COLORS.gas, toxin: ELEM_COLORS.toxin, electricity: ELEM_COLORS.electricity };
   let procsHtml = '';
   if (data.procs) {
     const activeProcs = Object.entries(data.procs).filter(([, p]) => p.active);
@@ -1039,7 +1045,7 @@ function showResults(data) {
         if (!p.active || procsPerSec <= 0) continue;
         const pdps = p.damage_per_tick * procsPerSec;
         totalProcDps += pdps;
-        const label = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)' }[key] || key;
+        const label = PROC_LABELS[key] || key;
         const color = ELEM_COLORS[key] || 'var(--accent)';
         const dot   = `<span class="elem-dot" style="background:${color}"></span>`;
         procDpsRows += `<tr><td>${dot}${label} DPS</td><td></td><td>${fmtNum(pdps)}</td></tr>`;

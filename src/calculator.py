@@ -219,6 +219,7 @@ class DamageCalculator:
         crit_multiplier: float = 1.0,   # pass calculate_crit_multiplier() result
         is_crit_headshot: bool = False,  # doubles crit multiplier on headshots
         viral_stacks: int = 0,          # 0–10 Viral status stacks on the enemy
+        corrosive_stacks: int = 0,     # 0–10 Corrosive status stacks on the enemy
     ) -> dict[DamageType, float]:
         """Return final per-type damage values after the full pipeline."""
         base_damage = weapon.total_base_damage
@@ -313,12 +314,20 @@ class DamageCalculator:
         ]
 
         # --- Step 4: Armor mitigation [math.floor] ---
+        # Corrosive stacks reduce enemy armor: stack 1 = 26%, each additional = +6%, cap 80%.
+        # Formula: armor × (1 − min(0.80, 0.20 + 0.06 × stacks))
+        # Source: wiki.warframe.com/w/Damage/Corrosive_Damage
+        armor = enemy.base_armor
+        if corrosive_stacks > 0:
+            corrosive_reduction = min(0.80, 0.20 + 0.06 * corrosive_stacks)
+            armor = armor * (1.0 - corrosive_reduction)
+
         after_armor: dict[DamageType, float] = {}
         for c in after_type:
             if c.type in (DamageType.TRUE, DamageType.VOID):
                 after_armor[c.type] = float(c.amount)
                 continue
-            mult = calculate_armor_multiplier(enemy.base_armor, c.type, enemy.armor_type)
+            mult = calculate_armor_multiplier(armor, c.type, enemy.armor_type)
             value = math.floor(c.amount * mult)
             if value > 0:
                 after_armor[c.type] = float(value)
@@ -344,7 +353,7 @@ class DamageCalculator:
         crit_multiplier: float = 1.0,
         is_crit_headshot: bool = False,
     ) -> dict[str, dict]:
-        """Compute Slash (Bleed) and Heat (Burn) proc damage per tick and total.
+        """Compute Slash (Bleed), Heat (Burn), Gas (Cloud), Toxin (Poison), and Electricity (Arc) proc damage per tick and total.
 
         Proc damage is based on Step-2 values (after body part + crit, before
         type effectiveness and armor).  Faction bonus double-dips: proc_dmg × (1+f)².
@@ -446,10 +455,28 @@ class DamageCalculator:
             * combined_mult
         )
 
+        # Toxin (Poison): 50% of total step-2 damage × Toxin effectiveness vs health.
+        # Bypasses shields. Faction double-dips.
+        # Source: wiki.warframe.com/w/Damage/Toxin_Damage
+        toxin_active = DamageType.TOXIN in types_present
+        toxin_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.TOXIN), 1.0)
+        toxin_dpt = total_step2 * 0.50 * toxin_eff * (1.0 + faction_bonus) ** 2
+
+        # Electricity (Tesla Chain): 50% of total step-2 damage × Electricity effectiveness.
+        # Stuns target; AoE ticks enemies within 3m — on single target the proc'd enemy
+        # is within its own radius, so the DoT still applies. Starts immediately (no 1s delay).
+        # Multi-target chaining to other enemies is out of scope for this single-target calc.
+        # Source: wiki.warframe.com/w/Damage/Electricity_Damage
+        elec_active = DamageType.ELECTRICITY in types_present
+        elec_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.ELECTRICITY), 1.0)
+        elec_dpt = total_step2 * 0.50 * elec_eff * (1.0 + faction_bonus) ** 2
+
         return {
-            "slash": _proc(slash_active, slash_dpt, 6),
-            "heat":  _proc(heat_active, heat_dpt, 6),
-            "gas":   _proc(gas_active, gas_dpt, 6),
+            "slash":       _proc(slash_active, slash_dpt, 6),
+            "heat":        _proc(heat_active, heat_dpt, 6),
+            "gas":         _proc(gas_active, gas_dpt, 6),
+            "toxin":       _proc(toxin_active, toxin_dpt, 6),
+            "electricity": _proc(elec_active, elec_dpt, 6),
         }
 
     # ------------------------------------------------------------------

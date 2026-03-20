@@ -521,3 +521,169 @@ class TestCalculateProcs:
         procs_without = calc.calculate_procs(weapon, [], enemy)
         procs_with    = calc.calculate_procs(weapon, [heat_mod], enemy)
         assert procs_without["gas"]["damage_per_tick"] == procs_with["gas"]["damage_per_tick"]
+
+
+# ---------------------------------------------------------------------------
+# Toxin proc — 50% of total step-2 damage × Toxin effectiveness vs health
+# Source: wiki.warframe.com/w/Damage/Toxin_Damage
+# ---------------------------------------------------------------------------
+class TestToxinProc:
+    def _flesh_enemy(self):
+        return Enemy(
+            name="Flesh target",
+            faction=FactionType.CORPUS,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+            base_armor=0.0,
+        )
+
+    def test_toxin_proc_inactive_without_toxin(self):
+        procs = calc.calculate_procs(braton(), [], self._flesh_enemy())
+        assert procs["toxin"]["active"] is False
+
+    def test_toxin_proc_active_with_innate_toxin(self):
+        """Slash=60 + Toxin=60 innate; total_step2=120; toxin_eff vs FLESH=1.5
+        DPT = floor(120 * 0.5 * 1.5) = floor(90.0) = 90; 6 ticks → total=540
+        """
+        weapon = Weapon(
+            name="Toxin Test",
+            base_damage={DamageType.SLASH: 60.0},
+            innate_elements=[DamageComponent(DamageType.TOXIN, 60.0)],
+        )
+        procs = calc.calculate_procs(weapon, [], self._flesh_enemy())
+        assert procs["toxin"]["active"] is True
+        assert procs["toxin"]["ticks"] == 6
+        assert procs["toxin"]["damage_per_tick"] == pytest.approx(90.0)
+        assert procs["toxin"]["total_damage"] == pytest.approx(540.0)
+
+    def test_toxin_proc_faction_double_dip(self):
+        """Bane of Corpus (+30%) applies twice: DPT × 1.30² = DPT × 1.69."""
+        weapon = Weapon(
+            name="Toxin Bane Test",
+            base_damage={DamageType.SLASH: 60.0},
+            innate_elements=[DamageComponent(DamageType.TOXIN, 60.0)],
+        )
+        bane_corpus = Mod(name="Bane of Corpus", faction_bonus=0.30, faction_type=FactionType.CORPUS)
+        procs = calc.calculate_procs(weapon, [bane_corpus], self._flesh_enemy())
+        # total_step2=120; DPT = floor(120 * 0.5 * 1.5 * 1.69) = floor(152.1) = 152
+        assert procs["toxin"]["damage_per_tick"] == pytest.approx(152.0)
+
+
+# ---------------------------------------------------------------------------
+# Electricity proc — 50% of total step-2 damage × Electricity effectiveness vs health
+# Single-target DoT only (chaining to other enemies is out of scope).
+# Source: wiki.warframe.com/w/Damage/Electricity_Damage
+# ---------------------------------------------------------------------------
+class TestElectricityProc:
+    def _robotic_enemy(self):
+        return Enemy(
+            name="Robotic target",
+            faction=FactionType.CORPUS,
+            health_type=HealthType.ROBOTIC,
+            armor_type=ArmorType.NONE,
+            base_armor=0.0,
+        )
+
+    def test_electricity_proc_inactive_without_electricity(self):
+        procs = calc.calculate_procs(braton(), [], self._robotic_enemy())
+        assert procs["electricity"]["active"] is False
+
+    def test_electricity_proc_active_with_innate_electricity(self):
+        """Slash=60 + Electricity=60 innate; total_step2=120; elec_eff vs ROBOTIC=1.5
+        DPT = floor(120 * 0.5 * 1.5) = floor(90.0) = 90; 6 ticks → total=540
+        """
+        weapon = Weapon(
+            name="Electricity Test",
+            base_damage={DamageType.SLASH: 60.0},
+            innate_elements=[DamageComponent(DamageType.ELECTRICITY, 60.0)],
+        )
+        procs = calc.calculate_procs(weapon, [], self._robotic_enemy())
+        assert procs["electricity"]["active"] is True
+        assert procs["electricity"]["ticks"] == 6
+        assert procs["electricity"]["damage_per_tick"] == pytest.approx(90.0)
+        assert procs["electricity"]["total_damage"] == pytest.approx(540.0)
+
+    def test_electricity_proc_neutral_vs_flesh(self):
+        """Electricity effectiveness vs FLESH is neutral (1.0).
+        total_step2=120; DPT = floor(120 * 0.5 * 1.0) = 60
+        """
+        weapon = Weapon(
+            name="Electricity Flesh Test",
+            base_damage={DamageType.SLASH: 60.0},
+            innate_elements=[DamageComponent(DamageType.ELECTRICITY, 60.0)],
+        )
+        flesh_enemy = Enemy(
+            name="Flesh",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+            base_armor=0.0,
+        )
+        procs = calc.calculate_procs(weapon, [], flesh_enemy)
+        assert procs["electricity"]["damage_per_tick"] == pytest.approx(60.0)
+
+
+# ---------------------------------------------------------------------------
+# Corrosive strip — armor reduction applied at Step 4 before armor mitigation
+# Formula: stripped_armor = base_armor × (1 − min(0.80, 0.20 + 0.06 × stacks))
+# Source: wiki.warframe.com/w/Damage/Corrosive_Damage
+# ---------------------------------------------------------------------------
+class TestCorrosiveStrip:
+    def _impact_weapon(self):
+        """Pure Impact weapon (neutral vs Ferrite armor: no bonus/penalty)."""
+        return Weapon(
+            name="Impact Test",
+            base_damage={DamageType.IMPACT: 60.0},
+        )
+
+    def _ferrite_enemy(self, armor=300.0):
+        return Enemy(
+            name="Heavy Gunner",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.FERRITE,
+            base_armor=armor,
+        )
+
+    def test_zero_stacks_no_change(self):
+        """0 stacks = no armor reduction; baseline reference."""
+        # Impact=60, Serration(+165%): floor(60*2.65)=159; quantize→159.375; round→159
+        # vs FLESH eff=0.5: floor(159*0.5)=79; IMPACT vs Ferrite: armor_mod=0, damage_mod=0
+        # armor_mult = 1-(300/(300+300)) = 0.5; floor(79*0.5)=39
+        result = calc.calculate(
+            self._impact_weapon(), [serration()], self._ferrite_enemy(),
+            corrosive_stacks=0,
+        )
+        assert result[DamageType.IMPACT] == pytest.approx(39.0)
+
+    def test_five_stacks_50pct_strip(self):
+        """5 stacks: reduction = 0.20+0.06×5 = 0.50 → armor 300→150.
+        armor_mult = 1-(150/(150+300)) = 0.666...; floor(79*0.666...)=52
+        """
+        result = calc.calculate(
+            self._impact_weapon(), [serration()], self._ferrite_enemy(),
+            corrosive_stacks=5,
+        )
+        assert result[DamageType.IMPACT] == pytest.approx(52.0)
+
+    def test_ten_stacks_80pct_cap(self):
+        """10 stacks: reduction capped at 0.80 → armor 300→60.
+        armor_mult = 1-(60/(60+300)) = 0.8333...; floor(79*0.8333...)=65
+        """
+        result = calc.calculate(
+            self._impact_weapon(), [serration()], self._ferrite_enemy(),
+            corrosive_stacks=10,
+        )
+        assert result[DamageType.IMPACT] == pytest.approx(65.0)
+
+    def test_cap_at_80pct(self):
+        """14 stacks should give same result as 10 stacks (cap enforced at 80%)."""
+        r10 = calc.calculate(
+            self._impact_weapon(), [serration()], self._ferrite_enemy(),
+            corrosive_stacks=10,
+        )
+        r14 = calc.calculate(
+            self._impact_weapon(), [serration()], self._ferrite_enemy(),
+            corrosive_stacks=14,
+        )
+        assert r10[DamageType.IMPACT] == r14[DamageType.IMPACT]

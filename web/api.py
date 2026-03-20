@@ -220,6 +220,7 @@ class CalcRequest(BaseModel):
     crit_mode:    str = "average"   # "average" | "guaranteed" | "max"
     headshot:     bool = False
     viral_stacks: int = 0           # 0–10
+    corrosive_stacks: int = 0      # 0–10
 
 
 @app.post("/api/calculate")
@@ -266,6 +267,7 @@ def calculate(req: CalcRequest) -> dict:
         crit_multiplier=crit_mult,
         is_crit_headshot=req.headshot,
         viral_stacks=req.viral_stacks,
+        corrosive_stacks=req.corrosive_stacks,
     )
     procs = calc.calculate_procs(
         weapon=weapon,
@@ -285,7 +287,8 @@ def calculate(req: CalcRequest) -> dict:
         "crit_mode":     req.crit_mode,
         "crit_multiplier": crit_mult,
         "headshot":      req.headshot,
-        "viral_stacks":  req.viral_stacks,
+        "viral_stacks":    req.viral_stacks,
+        "corrosive_stacks": req.corrosive_stacks,
         "breakdown":     breakdown,
         "total":         total,
         "procs":         procs,
