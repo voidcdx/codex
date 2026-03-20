@@ -51,13 +51,12 @@ def get_weapons() -> list[dict]:
     out = []
     for name, entry in raw.items():
         attacks = entry.get("attacks") or []
-        # Build a combined base_damage dict from all damage across attacks
-        all_damage: dict[str, float] = {}
-        for atk in attacks:
-            for k, v in (atk.get("base_damage") or {}).items():
-                all_damage[k] = all_damage.get(k, 0.0) + v
-            for k, v in (atk.get("innate_elements") or {}).items():
-                all_damage[k] = all_damage.get(k, 0.0) + v
+        # Show first attack's damage as the default base_damage
+        first_atk = attacks[0] if attacks else {}
+        first_damage: dict[str, float] = {
+            **first_atk.get("base_damage", {}),
+            **first_atk.get("innate_elements", {}),
+        }
         out.append({
             "name":             name,
             "slot":             entry.get("slot", ""),
@@ -71,9 +70,19 @@ def get_weapons() -> list[dict]:
             "reload":           entry.get("reload", None),
             "mastery_req":      entry.get("mastery_req", 0),
             "riven_disposition": entry.get("riven_disposition", None),
-            "base_damage":      all_damage,
+            "base_damage":      first_damage,
             "image":            entry.get("image", ""),
-            "attacks":          [{"name": a.get("name", ""), "shot_type": a.get("shot_type", "")} for a in attacks],
+            "attacks": [
+                {
+                    "name": a.get("name", ""),
+                    "shot_type": a.get("shot_type", ""),
+                    "base_damage": {**a.get("base_damage", {}), **a.get("innate_elements", {})},
+                    "crit_chance": a.get("crit_chance", 0),
+                    "crit_multiplier": a.get("crit_multiplier", 1),
+                    "status_chance": a.get("status_chance", 0),
+                }
+                for a in attacks
+            ],
         })
     return sorted(out, key=lambda x: x["name"])
 
