@@ -882,6 +882,9 @@ function setSelectByText(sel, text) {
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+function fmtNum(n) {
+  return n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
 
 // Search/filter selects
 document.addEventListener('DOMContentLoaded', () => {
@@ -1014,6 +1017,54 @@ function showResults(data) {
     }
   }
 
+  // DPS section
+  let dpsHtml = '';
+  if (data.fire_rate != null) {
+    const fr  = data.fire_rate;
+    const mag = data.magazine;
+    const rel = data.reload;
+    const ms  = data.modded_ms || 1.0;
+    const sc  = data.modded_sc || 0.0;
+
+    const burstDps     = data.total * ms * fr;
+    const sustainedDps = (rel > 0 && mag > 1)
+      ? data.total * ms * mag / (mag / fr + rel)
+      : null;
+
+    const procsPerSec = sc * ms * fr;
+    let procDpsRows = '';
+    let totalProcDps = 0;
+    if (data.procs) {
+      for (const [key, p] of Object.entries(data.procs)) {
+        if (!p.active || procsPerSec <= 0) continue;
+        const pdps = p.damage_per_tick * procsPerSec;
+        totalProcDps += pdps;
+        const label = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)' }[key] || key;
+        const color = ELEM_COLORS[key] || 'var(--accent)';
+        const dot   = `<span class="elem-dot" style="background:${color}"></span>`;
+        procDpsRows += `<tr><td>${dot}${label} proc DPS</td><td></td><td>${fmtNum(pdps)}</td></tr>`;
+      }
+    }
+
+    const scPct = (sc * 100).toFixed(1);
+    const footnote = procsPerSec > 0
+      ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">Proc DPS is steady-state average @ ${scPct}% status chance</div>`
+      : '';
+
+    dpsHtml = `
+      <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">DPS</h4>
+      <table class="breakdown-table">
+        <thead><tr><th>Metric</th><th></th><th>DPS</th></tr></thead>
+        <tbody>
+          <tr><td>Burst DPS</td><td style="font-size:0.75rem;color:var(--text-muted)">×${ms.toFixed(2)} multishot × ${fr}/s</td><td>${fmtNum(burstDps)}</td></tr>
+          ${sustainedDps != null ? `<tr><td>Sustained DPS</td><td style="font-size:0.75rem;color:var(--text-muted)">${rel}s reload / ${mag} mag</td><td>${fmtNum(sustainedDps)}</td></tr>` : ''}
+          ${procDpsRows}
+        </tbody>
+        ${totalProcDps > 0 ? `<tfoot class="total-row"><tr><td colspan="2">TOTAL w/ procs</td><td>${fmtNum(burstDps + totalProcDps)}</td></tr></tfoot>` : ''}
+      </table>
+      ${footnote}`;
+  }
+
   document.getElementById('results-content').innerHTML = `
     <div class="result-header">
       <h3>${esc(data.weapon)} vs ${esc(data.enemy)}</h3>
@@ -1029,6 +1080,7 @@ function showResults(data) {
     </table>
     ${msNote}
     ${procsHtml}
+    ${dpsHtml}
   `;
   document.getElementById('results-content').style.display = 'block';
   initTooltips();

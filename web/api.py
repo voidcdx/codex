@@ -249,6 +249,15 @@ def calculate(req: CalcRequest) -> dict:
     base_cm = float(raw_w.get("crit_multiplier") or 1.0)
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
+    fire_rate   = float(raw_w.get("fire_rate")  or 1.0)
+    magazine    = float(raw_w.get("magazine")   or 1.0)
+    reload_time = float(raw_w.get("reload")     or 0.0)
+    base_sc     = float(raw_w.get("status_chance") or 0.0)
+    total_sc_bonus = sum(m.sc_bonus for m in mods)
+    total_ms_bonus = sum(m.multishot_bonus for m in mods)
+    modded_sc   = base_sc * (1.0 + total_sc_bonus)
+    modded_ms   = 1.0 + total_ms_bonus
+
     calc = DamageCalculator()
     result = calc.calculate(
         weapon=weapon,
@@ -280,6 +289,11 @@ def calculate(req: CalcRequest) -> dict:
         "breakdown":     breakdown,
         "total":         total,
         "procs":         procs,
+        "fire_rate":     fire_rate,
+        "magazine":      magazine,
+        "reload":        reload_time,
+        "modded_sc":     round(modded_sc, 6),
+        "modded_ms":     round(modded_ms, 6),
     }
 
 
