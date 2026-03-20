@@ -28,34 +28,45 @@ pytest -k "test_viral_combo"        # run single test by name
 ```
 src/
   enums.py          # DamageType, FactionType, HealthType, ArmorType
-  models.py         # Weapon, Mod, Enemy dataclasses
+  models.py         # Weapon, WeaponAttack, Mod, Enemy, DamageComponent dataclasses
   quantizer.py      # quantize() — pure function, no side effects
   combiner.py       # elemental combination by mod slot order; innate primary/secondary split
   calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks + calculate_procs()
-  loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot support
+  loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot + attack selection
 tests/
   test_quantization.py
   test_combiner.py
   test_loader.py
   test_calculator.py  # M7–M13: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
 data/
-  weapons.json      # 588 weapons (primary/secondary/melee) — IPS, innate elements, stats, image
+  weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
   mods.json         # 1534 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus
   enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, head_multiplier
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
-  parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json
+  parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json (multi-attack aware)
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/optimal-order
   static/index.html # SPA: weapon/mod/enemy selects, live stats, Viral stacks input (design overhaul in progress)
 run_web.py          # python run_web.py → dev server on port 8000
-__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot]
+__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]
 ```
 
-## 120 Tests Passing
+## 122 Tests Passing
 `pytest` — all pass. Run before committing.
+
+## Multi-Attack System
+Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Rocket Explosion; Torid: Grenade Impact + Poison Cloud + Incarnon Form). Each attack has its own damage, crit, status, fire rate, and shot type.
+
+**Data schema:** `weapons.json` stores `attacks[]` per weapon. Each attack has `name`, `base_damage`, `innate_elements`, `crit_chance`, `crit_multiplier`, `status_chance`, `fire_rate`, `shot_type`.
+
+**Selection:** `load_weapon(name, attack_name=None)` — defaults to first attack. The selected attack's stats populate `Weapon.base_damage`, `innate_elements`, `crit_chance`, `crit_multiplier`, `status_chance`. All attacks are also available via `Weapon.attacks` for enumeration.
+
+**CLI:** `--attack "Rocket Explosion"` flag (must come before or after all positional args due to argparse).
+
+**API:** All POST endpoints (`/api/calculate`, `/api/modded-weapon`, `/api/optimal-order`) accept optional `"attack"` field. `GET /api/weapons` returns per-weapon `attacks[]` with per-attack stats.
 
 ## Confirmed Order of Operations (from wiki research)
 Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research):
