@@ -4,10 +4,10 @@
 
 :root {
   --bg: #0a0a0f;
-  --surface: rgba(20, 20, 30, 0.7);
-  --surface2: rgba(30, 30, 45, 0.5);
+  --surface: rgba(20, 20, 30, 0.55);
+  --surface2: rgba(30, 30, 45, 0.35);
   --surface-solid: #14141e;
-  --border: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.12);
   --border-highlight: rgba(196, 154, 31, 0.3);
   --accent: #c49a1f;
   --accent2: #e8b923;
@@ -25,13 +25,69 @@
 
 body {
   background: var(--bg);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(196, 154, 31, 0.06), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(30, 30, 80, 0.15), transparent);
   color: var(--text);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   font-size: 14px;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Glassmorphism Background Blobs ────────────────── */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(100px);
+  pointer-events: none;
+}
+body::before {
+  width: 600px;
+  height: 600px;
+  top: -120px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(196, 154, 31, 0.18) 0%, rgba(196, 154, 31, 0.05) 50%, transparent 70%);
+  animation: blobDrift1 20s ease-in-out infinite alternate;
+}
+body::after {
+  width: 500px;
+  height: 500px;
+  bottom: -80px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(60, 50, 160, 0.22) 0%, rgba(40, 30, 120, 0.08) 50%, transparent 70%);
+  animation: blobDrift2 25s ease-in-out infinite alternate;
+}
+
+/* Third blob via container pseudo-element */
+.container::before {
+  content: '';
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(180, 40, 80, 0.14) 0%, rgba(140, 30, 60, 0.04) 50%, transparent 70%);
+  filter: blur(90px);
+  z-index: -1;
+  pointer-events: none;
+  animation: blobDrift3 22s ease-in-out infinite alternate;
+}
+
+@keyframes blobDrift1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(80px, 60px) scale(1.15); }
+}
+@keyframes blobDrift2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-70px, -50px) scale(1.1); }
+}
+@keyframes blobDrift3 {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  100% { transform: translate(-45%, -55%) scale(1.2); }
 }
 
 /* ── Header ─────────────────────────────────────────── */
