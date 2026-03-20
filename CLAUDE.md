@@ -7,7 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Goal
 Create a Python-based damage calculator that accurately emulates in-game damage calculations per the official [Warframe Wiki — Damage/Calculation](https://wiki.warframe.com/w/Damage/Calculation), including full quantization to 1/32nd of base damage.
 
-**Reference wiki:** https://wiki.warframe.com/w/Damage/Calculation (always prefer this over the Fandom mirror)
+**Reference wiki:** https://wiki.warframe.com/w/Damage/Calculation
+
+**NEVER use the Fandom wiki (warframe.fandom.com) — it is no longer updated. Always use the official wiki at wiki.warframe.com.**
 
 ## Technical Stack
 - **Language:** Python 3.11+
