@@ -370,3 +370,104 @@ class TestViralStackMultipliers:
         result_10  = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=10)
         result_cap = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=99)
         assert result_10 == result_cap
+
+
+# ---------------------------------------------------------------------------
+# M12: Secondary elemental mods (Magnetic, Blast, etc.) must apply
+# ---------------------------------------------------------------------------
+
+class TestSecondaryElementalMods:
+    def test_magnetic_mod_applies(self):
+        weapon = Weapon(
+            name="Test Rifle",
+            base_damage={DamageType.IMPACT: 20.0, DamageType.PUNCTURE: 20.0, DamageType.SLASH: 20.0},
+        )
+        magnetic_mod = Mod(
+            name="Magnetic Capacity",
+            elemental_bonuses=[DamageComponent(DamageType.MAGNETIC, 0.60)],
+        )
+        enemy = Enemy(
+            name="Test",
+            faction=FactionType.CORPUS,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        result = calc.calculate(weapon, [magnetic_mod], enemy)
+        assert DamageType.MAGNETIC in result
+        assert result[DamageType.MAGNETIC] == pytest.approx(36.0)
+
+    def test_blast_mod_applies(self):
+        weapon = Weapon(
+            name="Test Rifle",
+            base_damage={DamageType.IMPACT: 30.0, DamageType.SLASH: 30.0},
+        )
+        blast_mod = Mod(
+            name="Blast test",
+            elemental_bonuses=[DamageComponent(DamageType.BLAST, 0.90)],
+        )
+        enemy = Enemy(
+            name="Test",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        result = calc.calculate(weapon, [blast_mod], enemy)
+        assert DamageType.BLAST in result
+
+
+# ---------------------------------------------------------------------------
+# M13: Status proc simulation (calculate_procs)
+# ---------------------------------------------------------------------------
+
+class TestCalculateProcs:
+    def _pure_impact_weapon(self) -> Weapon:
+        return Weapon(name="Impact Only", base_damage={DamageType.IMPACT: 60.0})
+
+    def _braton_no_armor(self) -> Enemy:
+        return Enemy(
+            name="Test",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+
+    def test_slash_proc_active_when_slash_present(self):
+        procs = calc.calculate_procs(braton(), [], self._braton_no_armor())
+        assert procs["slash"]["active"] is True
+
+    def test_slash_proc_inactive_without_slash(self):
+        procs = calc.calculate_procs(self._pure_impact_weapon(), [], self._braton_no_armor())
+        assert procs["slash"]["active"] is False
+        assert procs["slash"]["damage_per_tick"] == 0.0
+        assert procs["slash"]["total_damage"] == 0.0
+
+    def test_slash_proc_no_faction(self):
+        # total_step2 = 19+19+24 = 62; DPT = floor(62 * 0.35) = 21
+        procs = calc.calculate_procs(braton(), [], self._braton_no_armor())
+        assert procs["slash"]["ticks"] == 6
+        assert procs["slash"]["damage_per_tick"] == pytest.approx(21.0)
+        assert procs["slash"]["total_damage"] == pytest.approx(126.0)
+
+    def test_slash_proc_faction_double_dip(self):
+        # DPT = floor(62 * 0.35 * 1.30²) = floor(36.603) = 36
+        enemy = self._braton_no_armor()
+        enemy.faction = FactionType.GRINEER
+        procs = calc.calculate_procs(braton(), [bane_grineer()], enemy)
+        assert procs["slash"]["damage_per_tick"] == pytest.approx(36.0)
+        assert procs["slash"]["total_damage"] == pytest.approx(216.0)
+
+    def test_heat_proc_inactive_without_heat(self):
+        procs = calc.calculate_procs(braton(), [], self._braton_no_armor())
+        assert procs["heat"]["active"] is False
+
+    def test_heat_proc_active_with_innate_heat(self):
+        weapon = Weapon(
+            name="Heat Weapon",
+            base_damage={DamageType.SLASH: 60.0},
+            innate_elements=[DamageComponent(DamageType.HEAT, 60.0)],
+        )
+        procs = calc.calculate_procs(weapon, [], self._braton_no_armor())
+        assert procs["heat"]["active"] is True
+        assert procs["heat"]["ticks"] == 6
+        # total_step2 ~120; heat_eff vs FLESH = 1.5; DPT = floor(120*0.5*1.5) = 90
+        assert procs["heat"]["damage_per_tick"] == pytest.approx(90.0)

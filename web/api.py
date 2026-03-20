@@ -149,6 +149,11 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         for c in mod_elements
         if c.type in PRIMARY_ELEMENTS
     ]
+    mod_secondary = [
+        DamageComponent(c.type, quantize(c.amount * base_damage, base_damage))
+        for c in mod_elements
+        if c.type not in PRIMARY_ELEMENTS
+    ]
     # Innate element amounts are flat damage values, not percentages of base_damage
     scaled_innate_primary = [
         DamageComponent(c.type, c.amount)
@@ -166,7 +171,11 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         base_damage=base_damage,
         is_kuva_tenet=weapon.is_kuva_tenet,
     )
-    elemental_components = combined_elements + [c for c in innate_secondary if c.amount != 0.0]
+    elemental_components = (
+        combined_elements
+        + [c for c in innate_secondary if c.amount != 0.0]
+        + [c for c in mod_secondary if c.amount != 0.0]
+    )
 
     # Modded IPS + innate secondary (base_damage dict only has IPS; innate secondaries are pre-built)
     base_dmg_dict: dict[str, float] = {dt.name.lower(): v for dt, v in weapon.base_damage.items()}
@@ -249,6 +258,13 @@ def calculate(req: CalcRequest) -> dict:
         is_crit_headshot=req.headshot,
         viral_stacks=req.viral_stacks,
     )
+    procs = calc.calculate_procs(
+        weapon=weapon,
+        mods=mods,
+        enemy=enemy,
+        crit_multiplier=crit_mult,
+        is_crit_headshot=req.headshot,
+    )
 
     breakdown = {dtype.name: val for dtype, val in result.items()}
     total = sum(result.values())
@@ -263,6 +279,7 @@ def calculate(req: CalcRequest) -> dict:
         "viral_stacks":  req.viral_stacks,
         "breakdown":     breakdown,
         "total":         total,
+        "procs":         procs,
     }
 
 

@@ -242,6 +242,13 @@ class DamageCalculator:
             for c in mod_elements
             if c.type in PRIMARY_ELEMENTS
         ]
+        # Mod-sourced secondary elements (Magnetic, Blast, etc.) pass through directly —
+        # they cannot combine further, same treatment as innate secondaries.
+        mod_secondary = [
+            DamageComponent(c.type, quantize(c.amount * base_damage, base_damage))
+            for c in mod_elements
+            if c.type not in PRIMARY_ELEMENTS
+        ]
 
         # Split innate elements: primaries go into combiner, secondaries pass through
         # Innate element amounts are flat damage values, not percentages of base_damage
@@ -263,9 +270,11 @@ class DamageCalculator:
             is_kuva_tenet=weapon.is_kuva_tenet,
         )
 
-        elemental_components = combined_elements + [
-            c for c in innate_secondary if c.amount != 0.0
-        ]
+        elemental_components = (
+            combined_elements
+            + [c for c in innate_secondary if c.amount != 0.0]
+            + [c for c in mod_secondary if c.amount != 0.0]
+        )
 
         # --- Build full component list (IPS + elemental) ---
         ips_components = [
@@ -325,6 +334,110 @@ class DamageCalculator:
             final = {dtype: float(math.floor(v * viral_mult)) for dtype, v in final.items()}
 
         return final
+
+    # ------------------------------------------------------------------
+    def calculate_procs(
+        self,
+        weapon: Weapon,
+        mods: list[Mod],
+        enemy: Enemy,
+        crit_multiplier: float = 1.0,
+        is_crit_headshot: bool = False,
+    ) -> dict[str, dict]:
+        """Compute Slash (Bleed) and Heat (Burn) proc damage per tick and total.
+
+        Proc damage is based on Step-2 values (after body part + crit, before
+        type effectiveness and armor).  Faction bonus double-dips: proc_dmg × (1+f)².
+        """
+        from src.quantizer import warframe_round as _wr
+
+        base_damage = weapon.total_base_damage
+
+        total_damage_bonus = sum(m.damage_bonus for m in mods)
+        faction_bonus = sum(
+            m.faction_bonus for m in mods
+            if m.faction_type == enemy.faction
+        )
+
+        mod_elements: list[DamageComponent] = []
+        for m in mods:
+            mod_elements.extend(m.elemental_bonuses)
+
+        scaled_mod_elements = [
+            DamageComponent(c.type, c.amount * base_damage)
+            for c in mod_elements
+            if c.type in PRIMARY_ELEMENTS
+        ]
+        mod_secondary = [
+            DamageComponent(c.type, quantize(c.amount * base_damage, base_damage))
+            for c in mod_elements
+            if c.type not in PRIMARY_ELEMENTS
+        ]
+        scaled_innate_primary = [
+            DamageComponent(c.type, c.amount)
+            for c in weapon.innate_elements
+            if c.type in PRIMARY_ELEMENTS
+        ]
+        innate_secondary = [
+            DamageComponent(c.type, quantize(c.amount, base_damage))
+            for c in weapon.innate_elements
+            if c.type not in PRIMARY_ELEMENTS
+        ]
+        combined_elements = combine_elements(
+            scaled_mod_elements,
+            scaled_innate_primary,
+            base_damage=base_damage,
+            is_kuva_tenet=weapon.is_kuva_tenet,
+        )
+        elemental_components = (
+            combined_elements
+            + [c for c in innate_secondary if c.amount != 0.0]
+            + [c for c in mod_secondary if c.amount != 0.0]
+        )
+
+        ips_components = [
+            DamageComponent(dt, amt) for dt, amt in weapon.base_damage.items()
+        ]
+        all_components = ips_components + elemental_components
+
+        modded: list[DamageComponent] = []
+        for comp in all_components:
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus))
+            q = quantize(float(raw), base_damage)
+            if q != 0.0:
+                modded.append(DamageComponent(comp.type, q))
+
+        effective_crit = crit_multiplier
+        if is_crit_headshot and enemy.body_part_multiplier > 1.0:
+            effective_crit = 1.0 + (crit_multiplier - 1.0) * 2.0
+        combined_mult = enemy.body_part_multiplier * effective_crit
+        after_step2: list[DamageComponent] = [
+            DamageComponent(c.type, _wr(c.amount * combined_mult))
+            for c in modded
+        ]
+
+        types_present = {c.type for c in after_step2}
+        total_step2 = sum(c.amount for c in after_step2)
+
+        def _proc(active: bool, dpt: float, ticks: int) -> dict:
+            return {
+                "active": active,
+                "damage_per_tick": float(math.floor(dpt)) if active else 0.0,
+                "ticks": ticks,
+                "total_damage": float(math.floor(dpt) * ticks) if active else 0.0,
+            }
+
+        slash_active = DamageType.SLASH in types_present
+        slash_dpt = total_step2 * 0.35 * (1.0 + faction_bonus) ** 2
+
+        heat_active = DamageType.HEAT in types_present
+        heat_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.HEAT), 1.0)
+        heat_dpt = total_step2 * 0.50 * heat_eff * (1.0 + faction_bonus) ** 2
+
+        return {
+            "slash": _proc(slash_active, slash_dpt, 6),
+            "heat":  _proc(heat_active, heat_dpt, 6),
+        }
 
     # ------------------------------------------------------------------
     def _type_multiplier(self, dtype: DamageType, health: HealthType) -> float:

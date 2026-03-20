@@ -989,6 +989,31 @@ function showResults(data) {
     ? `<span class="ms-note">Per-projectile damage. ×${ms.toFixed(2)} multishot → <strong>${(data.total * ms).toFixed(2)}</strong> effective per trigger</span>`
     : '';
 
+  // Status procs section
+  const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)' };
+  const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat };
+  let procsHtml = '';
+  if (data.procs) {
+    const activeProcs = Object.entries(data.procs).filter(([, p]) => p.active);
+    if (activeProcs.length) {
+      const procRows = activeProcs.map(([key, p]) => {
+        const color = PROC_COLORS[key] || 'var(--accent)';
+        const dot = `<span class="elem-dot" style="background:${color}"></span>`;
+        return `<tr>
+          <td>${dot}${PROC_LABELS[key] || key}</td>
+          <td>${p.damage_per_tick.toFixed(2)} × ${p.ticks} ticks</td>
+          <td>${p.total_damage.toFixed(2)}</td>
+        </tr>`;
+      }).join('');
+      procsHtml = `
+        <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">Status Procs (if triggered)</h4>
+        <table class="breakdown-table">
+          <thead><tr><th>Proc</th><th>Per Tick</th><th>Total (6 ticks)</th></tr></thead>
+          <tbody>${procRows}</tbody>
+        </table>`;
+    }
+  }
+
   document.getElementById('results-content').innerHTML = `
     <div class="result-header">
       <h3>${esc(data.weapon)} vs ${esc(data.enemy)}</h3>
@@ -1003,6 +1028,7 @@ function showResults(data) {
       </tfoot>
     </table>
     ${msNote}
+    ${procsHtml}
   `;
   document.getElementById('results-content').style.display = 'block';
   initTooltips();
