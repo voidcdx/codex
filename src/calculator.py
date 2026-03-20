@@ -434,9 +434,22 @@ class DamageCalculator:
         heat_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.HEAT), 1.0)
         heat_dpt = total_step2 * 0.50 * heat_eff * (1.0 + faction_bonus) ** 2
 
+        # Gas Cloud: uses raw base_damage × (1 + damage_bonus only) — ignores elemental mods.
+        # Faction double-dips. Body part and crit apply as additional multipliers.
+        # Source: wiki.warframe.com/w/Damage_2.0/Gas_Damage
+        gas_active = DamageType.GAS in types_present
+        gas_dpt = (
+            weapon.total_base_damage
+            * (1.0 + total_damage_bonus)
+            * (1.0 + faction_bonus) ** 2
+            * 0.5
+            * combined_mult
+        )
+
         return {
             "slash": _proc(slash_active, slash_dpt, 6),
             "heat":  _proc(heat_active, heat_dpt, 6),
+            "gas":   _proc(gas_active, gas_dpt, 6),
         }
 
     # ------------------------------------------------------------------

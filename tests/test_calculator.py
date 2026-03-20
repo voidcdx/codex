@@ -471,3 +471,53 @@ class TestCalculateProcs:
         assert procs["heat"]["ticks"] == 6
         # total_step2 ~120; heat_eff vs FLESH = 1.5; DPT = floor(120*0.5*1.5) = 90
         assert procs["heat"]["damage_per_tick"] == pytest.approx(90.0)
+
+    def test_gas_proc_inactive_without_gas(self):
+        procs = calc.calculate_procs(braton(), [], self._braton_no_armor())
+        assert procs["gas"]["active"] is False
+
+    def test_gas_proc_wiki_example(self):
+        """Wiki example: 100 base, Serration(+165%), Bane of Grineer(+30%), Gas innate.
+        Modded Base = 100 × 2.65 × 1.30 = 344.5
+        DPT = 0.5 × 344.5 × 1.30 = 223.925 → floor = 223
+        Source: wiki.warframe.com/w/Damage_2.0/Gas_Damage
+        """
+        weapon = Weapon(
+            name="Gas Wiki Test",
+            base_damage={DamageType.IMPACT: 100.0},
+            innate_elements=[DamageComponent(DamageType.GAS, 50.0)],  # Gas present
+        )
+        # Thermite Rounds (+90% Heat) and Infected Clip (+90% Toxin) are in the wiki
+        # example but should NOT affect Gas proc DPT (elemental mods ignored).
+        heat_mod  = Mod(name="Thermite Rounds", elemental_bonuses=[DamageComponent(DamageType.HEAT, 0.90)])
+        toxin_mod = Mod(name="Infected Clip",   elemental_bonuses=[DamageComponent(DamageType.TOXIN, 0.90)])
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        bane      = Mod(name="Bane of Grineer", faction_bonus=0.30, faction_type=FactionType.GRINEER)
+        enemy = Enemy(
+            name="Lancer",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        procs = calc.calculate_procs(weapon, [serration, heat_mod, toxin_mod, bane], enemy)
+        assert procs["gas"]["active"] is True
+        assert procs["gas"]["ticks"] == 6
+        # base=150 (100 IPS + 50 innate Gas), damage_bonus=1.65, faction=0.30
+        # DPT = floor(150 × 2.65 × 1.30² × 0.5) = floor(150 × 2.65 × 1.69 × 0.5) = floor(335.9) = 335
+        # Note: wiki uses 100 base (no innate), we use 150 so values differ.
+        # Verify formula shape: DPT ∝ base_damage only, not elemental mods.
+        # Compute expected: floor(150 * 2.65 * 1.69 * 0.5) = floor(335.8875) = 335
+        assert procs["gas"]["damage_per_tick"] == pytest.approx(335.0)
+
+    def test_gas_proc_ignores_elemental_mods(self):
+        """Adding elemental mods should NOT change Gas proc DPT."""
+        weapon = Weapon(
+            name="Gas Test",
+            base_damage={DamageType.SLASH: 100.0},
+            innate_elements=[DamageComponent(DamageType.GAS, 50.0)],
+        )
+        enemy = self._braton_no_armor()
+        heat_mod = Mod(name="Hellfire", elemental_bonuses=[DamageComponent(DamageType.HEAT, 0.90)])
+        procs_without = calc.calculate_procs(weapon, [], enemy)
+        procs_with    = calc.calculate_procs(weapon, [heat_mod], enemy)
+        assert procs_without["gas"]["damage_per_tick"] == procs_with["gas"]["damage_per_tick"]

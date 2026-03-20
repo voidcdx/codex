@@ -993,8 +993,8 @@ function showResults(data) {
     : '';
 
   // Status procs section
-  const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)' };
-  const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat };
+  const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)', gas: 'Gas (Cloud)' };
+  const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat, gas: ELEM_COLORS.gas };
   let procsHtml = '';
   if (data.procs) {
     const activeProcs = Object.entries(data.procs).filter(([, p]) => p.active);
