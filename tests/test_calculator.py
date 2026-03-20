@@ -477,18 +477,17 @@ class TestCalculateProcs:
         assert procs["gas"]["active"] is False
 
     def test_gas_proc_wiki_example(self):
-        """Wiki example: 100 base, Serration(+165%), Bane of Grineer(+30%), Gas innate.
-        Modded Base = 100 × 2.65 × 1.30 = 344.5
-        DPT = 0.5 × 344.5 × 1.30 = 223.925 → floor = 223
-        Source: wiki.warframe.com/w/Damage_2.0/Gas_Damage
+        """Verifies Gas proc ignores Heat/Toxin mods.
+        base=150 (100 IPS + 50 innate Gas), damage_bonus=1.65, faction=0.30, no gas/status-damage mods.
+        DPT = floor(150 × 2.65 × 1.30² × 0.5) = floor(335.8875) = 335
+        Source: wiki.warframe.com/w/Damage/Gas_Damage
         """
         weapon = Weapon(
             name="Gas Wiki Test",
             base_damage={DamageType.IMPACT: 100.0},
             innate_elements=[DamageComponent(DamageType.GAS, 50.0)],  # Gas present
         )
-        # Thermite Rounds (+90% Heat) and Infected Clip (+90% Toxin) are in the wiki
-        # example but should NOT affect Gas proc DPT (elemental mods ignored).
+        # Heat and Toxin mods should NOT affect Gas proc DPT.
         heat_mod  = Mod(name="Thermite Rounds", elemental_bonuses=[DamageComponent(DamageType.HEAT, 0.90)])
         toxin_mod = Mod(name="Infected Clip",   elemental_bonuses=[DamageComponent(DamageType.TOXIN, 0.90)])
         serration = Mod(name="Serration", damage_bonus=1.65)
@@ -502,13 +501,61 @@ class TestCalculateProcs:
         procs = calc.calculate_procs(weapon, [serration, heat_mod, toxin_mod, bane], enemy)
         assert procs["gas"]["active"] is True
         assert procs["gas"]["ticks"] == 6
-        # base=150 (100 IPS + 50 innate Gas), damage_bonus=1.65, faction=0.30
-        # Gas vs Flesh = ×1.5 type effectiveness
-        # DPT = floor(150 × 2.65 × 1.30² × 0.5 × 1.5) = floor(150 × 2.65 × 1.69 × 0.5 × 1.5)
-        #      = floor(503.83125) = 503
-        # Note: wiki uses 100 base (no innate), we use 150 so values differ.
-        # Verify formula shape: DPT ∝ base_damage only, not elemental mods.
-        assert procs["gas"]["damage_per_tick"] == pytest.approx(503.0)
+        assert procs["gas"]["damage_per_tick"] == pytest.approx(335.0)
+
+    def test_gas_proc_wiki_example1_status_damage(self):
+        """Wiki Example 1: Heat+Toxin mods ignored; Pistol Elementalist (+90% status damage) scales proc.
+        Modded Base = 180 × (1+2.2) × (1+0.3) = 748.8
+        DPT = floor(0.5 × 748.8 × (1+0.3) × (1+0.9)) = floor(924.768) = 924
+        Source: wiki.warframe.com/w/Damage/Gas_Damage
+        """
+        weapon = Weapon(
+            name="Wiki Ex1",
+            base_damage={DamageType.IMPACT: 180.0},
+            innate_elements=[DamageComponent(DamageType.GAS, 0.0001)],  # tiny Gas to activate proc
+        )
+        hornet      = Mod(name="Hornet Strike",     damage_bonus=2.20)
+        scorch      = Mod(name="Scorch",            elemental_bonuses=[DamageComponent(DamageType.HEAT, 0.90)])
+        pathogen    = Mod(name="Pathogen Rounds",   elemental_bonuses=[DamageComponent(DamageType.TOXIN, 0.90)])
+        expel       = Mod(name="Expel Grineer",     faction_bonus=0.30, faction_type=FactionType.GRINEER)
+        elementalist = Mod(name="Pistol Elementalist", status_damage_bonus=0.90)
+        enemy = Enemy(
+            name="Lancer",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        procs = calc.calculate_procs(weapon, [hornet, scorch, pathogen, expel, elementalist], enemy)
+        assert procs["gas"]["active"] is True
+        # base≈180 (ignoring tiny innate), damage_bonus=2.2, faction=0.3, status_damage=0.9, gas_bonus=0
+        # DPT = floor(0.5 × 180 × 3.2 × 1.69 × 1.9) = floor(0.5 × 748.8 × 1.3 × 1.9) = floor(924.768) = 924
+        assert procs["gas"]["damage_per_tick"] == pytest.approx(924.0)
+
+    def test_gas_proc_wiki_example2_gas_mod(self):
+        """Wiki Example 2: Leaded Gas (+300% gas_bonus) scales proc multiplicatively.
+        Modded Base = 180 × (1+2.2) × (1+0.3) = 748.8
+        DPT = floor(0.5 × 748.8 × (1+3) × (1+0.3) × (1+0.9)) = floor(3699.072) = 3699
+        Source: wiki.warframe.com/w/Damage/Gas_Damage
+        """
+        weapon = Weapon(
+            name="Wiki Ex2",
+            base_damage={DamageType.IMPACT: 180.0},
+            innate_elements=[DamageComponent(DamageType.GAS, 0.0001)],
+        )
+        hornet      = Mod(name="Hornet Strike",     damage_bonus=2.20)
+        leaded_gas  = Mod(name="Leaded Gas",        elemental_bonuses=[DamageComponent(DamageType.GAS, 3.0)])
+        expel       = Mod(name="Expel Grineer",     faction_bonus=0.30, faction_type=FactionType.GRINEER)
+        elementalist = Mod(name="Pistol Elementalist", status_damage_bonus=0.90)
+        enemy = Enemy(
+            name="Lancer",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        procs = calc.calculate_procs(weapon, [hornet, leaded_gas, expel, elementalist], enemy)
+        assert procs["gas"]["active"] is True
+        # gas_bonus=3.0 from Leaded Gas; DPT = floor(0.5 × 180 × 3.2 × 1.69 × 4 × 1.9) = floor(3699.072) = 3699
+        assert procs["gas"]["damage_per_tick"] == pytest.approx(3699.0)
 
     def test_gas_proc_ignores_elemental_mods(self):
         """Adding elemental mods should NOT change Gas proc DPT."""

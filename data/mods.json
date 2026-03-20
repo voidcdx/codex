@@ -1410,7 +1410,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Melee Damage\r\n+60% Status Damage"
+    "effect_raw": "+90% Melee Damage\r\n+60% Status Damage",
+    "status_damage_pct": 0.6
   },
   "Boreal's Hatred": {
     "name": "Boreal's Hatred",
@@ -3255,7 +3256,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": -2,
-    "effect_raw": "Squad receives +60% Status Chance and Status Damage on Heavy Attacks, but lose 90 Shields per hit."
+    "effect_raw": "Squad receives +60% Status Chance and Status Damage on Heavy Attacks, but lose 90 Shields per hit.",
+    "status_damage_pct": 0.6
   },
   "Empowered Quiver": {
     "name": "Empowered Quiver",
@@ -5428,7 +5430,8 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x."
+    "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x.",
+    "status_damage_pct": 0.8
   },
   "Galvanized Hell": {
     "name": "Galvanized Hell",
@@ -6354,7 +6357,8 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+50% Status Damage"
+    "effect_raw": "+50% Status Damage",
+    "status_damage_pct": 0.5
   },
   "Immuno Shield": {
     "name": "Immuno Shield",
@@ -6475,7 +6479,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 0,
-    "effect_raw": "Gain 15% Disinfection and gain 10,000 H�llars"
+    "effect_raw": "Gain 15% Disinfection and gain 10,000 H\ufffdllars"
   },
   "Insulation": {
     "name": "Insulation",
@@ -7579,7 +7583,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+60% Heavy Attack Wind Up Speed"
+    "effect_raw": "+90% Status Damage\r\n+60% Heavy Attack Wind Up Speed",
+    "status_damage_pct": 0.9
   },
   "Melee Guidance": {
     "name": "Melee Guidance",
@@ -8910,7 +8915,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+60% Reload Speed"
+    "effect_raw": "+90% Status Damage\r\n+60% Reload Speed",
+    "status_damage_pct": 0.9
   },
   "Pistol Gambit": {
     "name": "Pistol Gambit",
@@ -10708,7 +10714,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+0.6 Punch Through"
+    "effect_raw": "+90% Status Damage\r\n+0.6 Punch Through",
+    "status_damage_pct": 0.9
   },
   "Rifle Scavenger": {
     "name": "Rifle Scavenger",
@@ -11699,7 +11706,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "magazine_pct": 0.6,
-    "effect_raw": "+90% Status Damage\r\n+60% Magazine Capacity"
+    "effect_raw": "+90% Status Damage\r\n+60% Magazine Capacity",
+    "status_damage_pct": 0.9
   },
   "Shotgun Savvy": {
     "name": "Shotgun Savvy",

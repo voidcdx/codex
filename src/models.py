@@ -36,6 +36,7 @@ class Mod:
     cd_bonus: float = 0.0                         # additive crit damage, e.g. 1.2 for Vital Sense
     sc_bonus: float = 0.0                         # additive status chance, e.g. 0.9 for Rifle Aptitude
     multishot_bonus: float = 0.0                 # additive, e.g. 1.65 for Split Chamber
+    status_damage_bonus: float = 0.0             # additive, e.g. 0.90 for Pistol Elementalist
 
 
 @dataclass

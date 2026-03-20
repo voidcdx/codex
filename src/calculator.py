@@ -367,6 +367,7 @@ class DamageCalculator:
             m.faction_bonus for m in mods
             if m.faction_type == enemy.faction
         )
+        total_status_damage_bonus = sum(m.status_damage_bonus for m in mods)
 
         mod_elements: list[DamageComponent] = []
         for m in mods:
@@ -437,24 +438,28 @@ class DamageCalculator:
             }
 
         slash_active = DamageType.SLASH in types_present
-        slash_dpt = total_step2 * 0.35 * (1.0 + faction_bonus) ** 2
+        slash_dpt = total_step2 * 0.35 * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
         heat_active = DamageType.HEAT in types_present
         heat_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.HEAT), 1.0)
-        heat_dpt = total_step2 * 0.50 * heat_eff * (1.0 + faction_bonus) ** 2
+        heat_dpt = total_step2 * 0.50 * heat_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
-        # Gas Cloud: uses raw base_damage × (1 + damage_bonus only) — ignores elemental mods.
-        # Faction double-dips. Body part and crit apply as additional multipliers.
-        # Gas type effectiveness vs health applies to the DoT ticks.
+        # Gas Cloud: ignores elemental/physical mods; scales with Gas mods, faction (×2),
+        # status damage mods, crit, body part. No type effectiveness (wiki formula has none).
         # Source: wiki.warframe.com/w/Damage/Gas_Damage
         gas_active = DamageType.GAS in types_present
-        gas_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.GAS), 1.0)
+        total_gas_bonus = sum(
+            c.amount for m in mods
+            for c in m.elemental_bonuses
+            if c.type == DamageType.GAS
+        )
         gas_dpt = (
             weapon.total_base_damage
             * (1.0 + total_damage_bonus)
             * (1.0 + faction_bonus) ** 2
             * 0.5
-            * gas_eff
+            * (1.0 + total_gas_bonus)
+            * (1.0 + total_status_damage_bonus)
             * combined_mult
         )
 
@@ -463,7 +468,7 @@ class DamageCalculator:
         # Source: wiki.warframe.com/w/Damage/Toxin_Damage
         toxin_active = DamageType.TOXIN in types_present
         toxin_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.TOXIN), 1.0)
-        toxin_dpt = total_step2 * 0.50 * toxin_eff * (1.0 + faction_bonus) ** 2
+        toxin_dpt = total_step2 * 0.50 * toxin_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
         # Electricity (Tesla Chain): 50% of total step-2 damage × Electricity effectiveness.
         # Stuns target; AoE ticks enemies within 3m — on single target the proc'd enemy
@@ -472,7 +477,7 @@ class DamageCalculator:
         # Source: wiki.warframe.com/w/Damage/Electricity_Damage
         elec_active = DamageType.ELECTRICITY in types_present
         elec_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.ELECTRICITY), 1.0)
-        elec_dpt = total_step2 * 0.50 * elec_eff * (1.0 + faction_bonus) ** 2
+        elec_dpt = total_step2 * 0.50 * elec_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
         return {
             "slash":       _proc(slash_active, slash_dpt, 6),
