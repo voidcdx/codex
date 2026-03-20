@@ -1042,7 +1042,7 @@ function showResults(data) {
         const label = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)' }[key] || key;
         const color = ELEM_COLORS[key] || 'var(--accent)';
         const dot   = `<span class="elem-dot" style="background:${color}"></span>`;
-        procDpsRows += `<tr><td>${dot}${label} proc DPS</td><td></td><td>${fmtNum(pdps)}</td></tr>`;
+        procDpsRows += `<tr><td>${dot}${label} DPS</td><td></td><td>${fmtNum(pdps)}</td></tr>`;
       }
     }
 
