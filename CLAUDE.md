@@ -29,13 +29,13 @@ src/
   models.py         # Weapon, Mod, Enemy dataclasses
   quantizer.py      # quantize() — pure function, no side effects
   combiner.py       # elemental combination by mod slot order; innate primary/secondary split
-  calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks
+  calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks + calculate_procs()
   loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot support
 tests/
   test_quantization.py
   test_combiner.py
   test_loader.py
-  test_calculator.py  # M7–M11: modded damage, body part, faction, armor, crit, Viral stacks
+  test_calculator.py  # M7–M13: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
 data/
   weapons.json      # 588 weapons (primary/secondary/melee) — IPS, innate elements, stats, image
   mods.json         # 1534 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus
@@ -52,7 +52,7 @@ run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot]
 ```
 
-## 99 Tests Passing
+## 110 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Confirmed Order of Operations (from wiki research)
