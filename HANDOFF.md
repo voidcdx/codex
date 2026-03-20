@@ -3,7 +3,7 @@
 ## Current Status
 All core backend complete and tested (120 tests passing).
 Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs + DPS.
-Web UI functional with live modded stats, tooltips, enemy panel, Viral stacks, proc display, and DPS section.
+Web UI functional. **Design overhaul in progress on `claude/design-overhaul-bmwUa`.**
 
 ## What's Done
 
@@ -22,7 +22,7 @@ Web UI functional with live modded stats, tooltips, enemy panel, Viral stacks, p
   Plus: `calculate_procs()` — Slash Bleed, Heat Burn, Gas Cloud, Toxin, Electricity, Corrosive strip
   - Slash: 35% of total Step-2 damage / tick, 6 ticks, faction double-dips
   - Heat: 50% of total Step-2 damage / tick, 6 ticks, applies Heat type-effectiveness, faction double-dips
-  - Gas: 0.5 × base × (1+damage_bonus) × (1+faction)² × crit × body_part — ignores elemental mods, wiki-verified (**formula under review — see Pending**)
+  - Gas: 0.5 × base × (1+damage_bonus) × (1+faction)² × crit × body_part — ignores elemental mods (**formula under review**)
   - Toxin: bypasses shields, deals Toxin damage directly to health
   - Electricity: chain-damage proc
   - Corrosive: strips armor stacks
@@ -38,17 +38,16 @@ same treatment as innate secondary elements.
 - `enemies.json` — 983 enemies from 11 faction lua files; faction, health_type, armor_type (inferred), base_armor, head_multiplier
 
 ### Web (`web/`)
-- `api.py` — FastAPI REST: `GET /api/weapons`, `/api/mods`, `/api/enemies`; `POST /api/modded-weapon`, `/api/calculate`
-  - `/api/calculate` accepts: `weapon`, `mods[]`, `enemy`, `crit_mode`, `headshot`, `viral_stacks`
+- `api.py` — FastAPI REST: `GET /api/weapons`, `/api/mods`, `/api/enemies`; `POST /api/modded-weapon`, `/api/calculate`, `/api/optimal-order`
+  - `/api/calculate` accepts: `weapon`, `mods[]`, `enemy`, `crit_mode`, `headshot`, `viral_stacks`, `corrosive_stacks`
   - `/api/calculate` returns: `breakdown`, `total`, `procs` (Slash/Heat/Gas/Toxin/Electricity), `fire_rate`, `magazine`, `reload`, `modded_sc`, `modded_ms`
-- `static/index.html` — dark-theme SPA:
-  - Weapon panel: image, crit/status/fire rate/magazine/reload/multishot stats, live modded values
-  - 8-slot mod grid filtered by weapon type, live damage table updating on every mod change
-  - Enemy panel: faction, health/armor type, armor, health, head multiplier
-  - Hit Options: crit mode (average/guaranteed/max), headshot toggle, Viral stacks input (0–10)
-  - Results: per-type bar chart with damage breakdown, totals
-  - Status Procs table: Slash (Bleed), Heat (Burn), Gas (Cloud), Toxin, Electricity — damage/tick × ticks = total
-  - DPS section: Burst DPS, Sustained DPS (reload-adjusted), proc DPS per type, Total w/ procs
+  - `/api/mods` now returns per-mod: `primary_element`, `rarity`, `base_drain`, `max_rank`
+  - `/api/optimal-order` — brute-forces all permutations of primary-elemental mods in the selected slots, returns `optimal_mods` (reordered list that maximises total damage vs the given enemy)
+- `static/index.html` — current dark-theme SPA (being replaced — see Pending):
+  - Weapon panel: image, crit/status/fire rate/magazine/reload/multishot, live modded values
+  - 8-slot mod grid filtered by weapon type, live damage table
+  - Enemy panel, Hit Options (crit mode, headshot, Viral/Corrosive stacks)
+  - Results: per-type bar chart, Status Procs table, DPS section
 
 ### CLI
 - `__main__.py` — `python -m dc "Soma Prime" "Serration" vs "Heavy Gunner" [--crit average|guaranteed|max] [--headshot]`
@@ -58,36 +57,42 @@ same treatment as innate secondary elements.
 - `tests/test_quantization.py` — quantizer edge cases
 - `tests/test_combiner.py` — elemental combination + innate rules
 - `tests/test_loader.py` — JSON → model loading
-- `tests/test_calculator.py` — M7–M13: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs (Slash/Heat/Gas/Toxin/Electricity/Corrosive with wiki examples)
+- `tests/test_calculator.py` — M7–M13: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
 
 ## Pending
 
-### Replace Mad5cout Research Reference
-User has a PDF containing authoritative damage calculation documentation to replace the
-[Mad5cout community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research)
-currently cited in CLAUDE.md. Share PDF path or paste text when at a desktop.
-Update `CLAUDE.md` "Confirmed Order of Operations" section with new source once received.
+### ① UI Design Overhaul (branch: `claude/design-overhaul-bmwUa`)
+Rewrite `web/static/index.html`. Target features:
+- **Glassmorphism dark theme** — backdrop-blur panels, subtle gradient borders, Warframe gold accent
+- **2×4 mod grid** — portrait mod cards with polarity icon, rarity colour strip, drag-to-reorder (SortableJS)
+- **Mod picker popup** — click an empty card → searchable list filtered to weapon type, closes on outside click
+- **Element mixer** — SVG arc overlay connecting paired elemental mods → combined element badge (Viral, Corrosive, etc.)
+- **"Optimal Order" button** — calls `/api/optimal-order`, animates cards into the best permutation
+- **Tippy.js tooltips** on stat labels (replaces the custom `#tt` div)
+- All existing calculation features preserved: live modded stats, results breakdown, DPS, procs
 
-### Verify Gas Proc Formula
-Current implementation:
+### ② Replace Mad5cout Research Reference
+User has a PDF with authoritative damage calculation docs to replace the
+[Mad5cout community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research).
+Share PDF path or paste text when at a desktop → update `CLAUDE.md` "Confirmed Order of Operations".
+
+### ③ Verify Gas Proc Formula
+Current:
 ```
 Gas proc = 0.5 × base × (1+damage_bonus) × (1+faction)² × crit × body_part
 ```
-Ignores elemental mods. Needs cross-check against the new PDF reference above before confirming correctness.
+Ignores elemental mods. Cross-check against PDF above before confirming.
 
-### Riven Mod Support
-Custom mod builder with disposition-aware stats. Player enters riven curse/boon values → generates a `Mod` object and slots it in. Needs:
-- UI: riven builder panel (select stat type + value)
-- No data changes needed — Mod dataclass already supports arbitrary bonuses
+### ④ Riven Mod Support
+- UI: riven builder panel (select stat type + value per bonus)
+- Backend: none needed — `Mod` dataclass already supports arbitrary bonuses
 
-### Enemy Data Gaps
-- Health_type and armor_type are faction-inferred defaults, not per-enemy.
-  Some units differ (e.g. Corpus Amalgams use Alloy armor).
-  A manual override table in `enemies.json` would fix edge cases.
+### ⑤ Enemy Data Gaps
+- `health_type` / `armor_type` are faction-inferred defaults, not per-enemy.
+  Corpus Amalgams, Liches, etc. may differ. A manual override table in `enemies.json` would fix edge cases.
 
 ## Branch
-Push target: `claude/continue-work-BV1BS` on `https://github.com/voidcdx/dc`.
-Session-start hook creates a local branch; always push with:
+Active design overhaul: `claude/design-overhaul-bmwUa`
 ```bash
-git push -u origin claude/continue-work-BV1BS
+git push -u origin claude/design-overhaul-bmwUa
 ```

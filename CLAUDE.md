@@ -48,8 +48,8 @@ scripts/
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 web/
-  api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate
-  static/index.html # dark-theme SPA: weapon/mod/enemy selects, live stats, Viral stacks input
+  api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/optimal-order
+  static/index.html # SPA: weapon/mod/enemy selects, live stats, Viral stacks input (design overhaul in progress)
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot]
 ```
