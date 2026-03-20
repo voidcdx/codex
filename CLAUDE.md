@@ -54,7 +54,7 @@ run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot]
 ```
 
-## 110 Tests Passing
+## 120 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Confirmed Order of Operations (from wiki research)
