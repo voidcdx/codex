@@ -21,10 +21,23 @@
       <select id="weapon-select" size="1"></select>
     </div>
 
-    <!-- Mods — fixed 8 slots -->
+    <!-- Mods — 2×4 card grid -->
     <div class="panel" style="margin-bottom:16px">
       <h2>Mods (in slot order)</h2>
-      <div id="mods-list" class="mods-list"></div>
+      <div id="mod-grid" class="mod-grid"></div>
+      <div id="element-badges" class="element-badges"></div>
+      <button class="btn-optimal" id="optimal-btn" onclick="runOptimalOrder()" disabled>Optimal Mod Order</button>
+    </div>
+
+    <!-- Mod Picker Modal -->
+    <div class="mod-picker-overlay" id="mod-picker-overlay">
+      <div class="mod-picker">
+        <div class="mod-picker-header">
+          <h3>Select Mod — Slot <span id="picker-slot-num"></span></h3>
+          <input type="text" class="mod-picker-search" id="mod-picker-search" placeholder="Search mods…" autocomplete="off">
+        </div>
+        <div class="mod-picker-list" id="mod-picker-list"></div>
+      </div>
     </div>
 
     <!-- Enemy -->
@@ -172,7 +185,7 @@ async function loadData() {
   populateSelect('enemy-select', allEnemies.map(e => e.name));
 
   document.getElementById('weapon-select').addEventListener('change', onWeaponChange);
-  document.getElementById('enemy-select').addEventListener('change', () => showEnemyStats(getCurrentEnemy()));
+  document.getElementById('enemy-select').addEventListener('change', () => { showEnemyStats(getCurrentEnemy()); updateOptimalBtn(); });
 
   initModGrid();
 
@@ -194,34 +207,254 @@ function getCurrentEnemy() {
 }
 
 // ---------------------------------------------------------------------------
-// Fixed 8-slot mod grid
+// 2×4 Mod Card Grid
 // ---------------------------------------------------------------------------
+let modSlots = ['','','','','','','','']; // 8 slots, mod names
+let _pickerSlot = -1; // which slot the picker is open for
+let _sortableInstance = null;
+
 function initModGrid() {
-  const list = document.getElementById('mods-list');
-  list.innerHTML = '';
-  for (let i = 0; i < 8; i++) {
-    const div = document.createElement('div');
-    div.className = 'mod-slot';
+  modSlots = ['','','','','','','',''];
+  renderModCards();
+  initSortable();
+  updateOptimalBtn();
+}
 
-    const sel = document.createElement('select');
-    sel.innerHTML = '<option value="">(empty)</option>';
-    sel.addEventListener('change', () => {
-      refreshModDropdowns();
+function renderModCards() {
+  const grid = document.getElementById('mod-grid');
+  grid.innerHTML = '';
+  modSlots.forEach((modName, i) => {
+    const card = document.createElement('div');
+    card.className = 'mod-card' + (modName ? '' : ' empty');
+    card.dataset.slot = i;
+    if (modName) {
+      const mod = allMods.find(m => m.name === modName);
+      const rarity = mod ? (mod.rarity || '').toLowerCase() : '';
+      if (rarity) card.classList.add('rarity-' + rarity);
+      const elemTag = mod && mod.primary_element ? mod.primary_element : '';
+      card.innerHTML = `
+        <button class="mod-clear" onclick="event.stopPropagation();clearModSlot(${i})" title="Remove mod">&times;</button>
+        <div class="mod-name">${esc(modName)}</div>
+        ${elemTag ? `<div class="mod-element">${esc(elemTag)}</div>` : ''}
+        <div class="slot-num">${i+1}</div>`;
+      card.onclick = () => openModPicker(i);
+    } else {
+      card.innerHTML = `
+        <div class="add-icon">+</div>
+        <div class="add-label">Add Mod</div>
+        <div class="slot-num">${i+1}</div>`;
+      card.onclick = () => openModPicker(i);
+    }
+    grid.appendChild(card);
+  });
+  updateElementBadges();
+}
+
+function initSortable() {
+  const grid = document.getElementById('mod-grid');
+  if (_sortableInstance) _sortableInstance.destroy();
+  _sortableInstance = new Sortable(grid, {
+    animation: 200,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    onEnd(evt) {
+      const item = modSlots.splice(evt.oldIndex, 1)[0];
+      modSlots.splice(evt.newIndex, 0, item);
+      renderModCards();
+      initSortable();
       updateModdedStats();
+    }
+  });
+}
+
+function clearModSlot(i) {
+  modSlots[i] = '';
+  renderModCards();
+  initSortable();
+  updateModdedStats();
+  updateOptimalBtn();
+}
+
+function getSelectedMods() {
+  return modSlots.filter(Boolean);
+}
+
+function updateOptimalBtn() {
+  const btn = document.getElementById('optimal-btn');
+  const weapon = getCurrentWeapon();
+  const enemy = document.getElementById('enemy-select').value;
+  btn.disabled = !(weapon && enemy && getSelectedMods().length > 1);
+}
+
+// ---------------------------------------------------------------------------
+// Mod Picker
+// ---------------------------------------------------------------------------
+function openModPicker(slotIndex) {
+  _pickerSlot = slotIndex;
+  document.getElementById('picker-slot-num').textContent = slotIndex + 1;
+  const overlay = document.getElementById('mod-picker-overlay');
+  overlay.classList.add('active');
+  const search = document.getElementById('mod-picker-search');
+  search.value = '';
+  search.focus();
+  renderPickerList('');
+}
+
+function closeModPicker() {
+  document.getElementById('mod-picker-overlay').classList.remove('active');
+  _pickerSlot = -1;
+}
+
+function renderPickerList(query) {
+  const weapon = getCurrentWeapon();
+  const types = getCompatibleModTypes(weapon);
+  const q = query.toLowerCase();
+  const filtered = allMods
+    .filter(m => weapon ? types.has(m.type) : true)
+    .filter(m => !q || m.name.toLowerCase().includes(q));
+
+  const list = document.getElementById('mod-picker-list');
+  const RARITY_COLORS = { common: '#9e9e78', uncommon: '#6a8f47', rare: '#5a7cc4', legendary: '#c49a1f' };
+  list.innerHTML = filtered.slice(0, 100).map(m => {
+    const rc = RARITY_COLORS[(m.rarity || '').toLowerCase()] || '#888';
+    const elem = m.primary_element || '';
+    return `<div class="mod-picker-item" data-mod="${esc(m.name)}" onclick="selectPickerMod(this)">
+      <span class="mod-rarity-dot" style="background:${rc}"></span>
+      ${esc(m.name)}
+      ${elem ? `<span class="mod-element-tag">${esc(elem)}</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function selectPickerMod(el) {
+  if (_pickerSlot < 0) return;
+  modSlots[_pickerSlot] = el.dataset.mod;
+  closeModPicker();
+  renderModCards();
+  initSortable();
+  updateModdedStats();
+  updateOptimalBtn();
+}
+
+// Close picker on outside click
+document.addEventListener('click', e => {
+  const overlay = document.getElementById('mod-picker-overlay');
+  if (overlay && overlay.classList.contains('active') && e.target === overlay) {
+    closeModPicker();
+  }
+});
+
+// Picker search
+document.addEventListener('DOMContentLoaded', () => {
+  const search = document.getElementById('mod-picker-search');
+  if (search) search.addEventListener('input', function() { renderPickerList(this.value); });
+});
+
+// ---------------------------------------------------------------------------
+// Element Combination Badges
+// ---------------------------------------------------------------------------
+const ELEM_COMBOS = {
+  'heat+cold': 'Blast', 'cold+heat': 'Blast',
+  'electricity+toxin': 'Corrosive', 'toxin+electricity': 'Corrosive',
+  'heat+toxin': 'Gas', 'toxin+heat': 'Gas',
+  'cold+electricity': 'Magnetic', 'electricity+cold': 'Magnetic',
+  'heat+electricity': 'Radiation', 'electricity+heat': 'Radiation',
+  'cold+toxin': 'Viral', 'toxin+cold': 'Viral',
+};
+const PRIMARY_ELEMENTS = new Set(['heat', 'cold', 'electricity', 'toxin']);
+
+function updateElementBadges() {
+  const container = document.getElementById('element-badges');
+  if (!container) return;
+  // Gather elemental mods in slot order
+  const elemQueue = [];
+  modSlots.forEach(name => {
+    if (!name) return;
+    const mod = allMods.find(m => m.name === name);
+    if (mod && mod.primary_element && PRIMARY_ELEMENTS.has(mod.primary_element.toLowerCase())) {
+      elemQueue.push(mod.primary_element.toLowerCase());
+    }
+  });
+
+  // Combine in order (same as combiner.py logic)
+  const badges = [];
+  const used = new Set();
+  for (let i = 0; i < elemQueue.length; i++) {
+    if (used.has(i)) continue;
+    let combined = false;
+    for (let j = i + 1; j < elemQueue.length; j++) {
+      if (used.has(j)) continue;
+      const key = elemQueue[i] + '+' + elemQueue[j];
+      if (ELEM_COMBOS[key]) {
+        badges.push({ a: elemQueue[i], b: elemQueue[j], result: ELEM_COMBOS[key] });
+        used.add(i);
+        used.add(j);
+        combined = true;
+        break;
+      }
+    }
+    if (!combined) {
+      badges.push({ a: elemQueue[i], b: null, result: elemQueue[i] });
+      used.add(i);
+    }
+  }
+
+  container.innerHTML = badges.filter(b => b.b).map(b => {
+    const ca = ELEM_COLORS[b.a] || '#888';
+    const cb = ELEM_COLORS[b.b] || '#888';
+    const cr = ELEM_COLORS[b.result.toLowerCase()] || 'var(--accent)';
+    const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+    return `<div class="element-badge">
+      <span class="elem-dot" style="background:${ca}"></span>${cap(b.a)}
+      <span class="arrow">+</span>
+      <span class="elem-dot" style="background:${cb}"></span>${cap(b.b)}
+      <span class="arrow">=</span>
+      <span class="elem-dot" style="background:${cr}"></span>${cap(b.result)}
+    </div>`;
+  }).join('');
+}
+
+// ---------------------------------------------------------------------------
+// Optimal Mod Order
+// ---------------------------------------------------------------------------
+async function runOptimalOrder() {
+  const weapon = document.getElementById('weapon-select').value;
+  const enemy = document.getElementById('enemy-select').value;
+  const mods = getSelectedMods();
+  if (!weapon || !enemy || mods.length < 2) return;
+
+  const btn = document.getElementById('optimal-btn');
+  btn.disabled = true;
+  btn.textContent = 'Optimizing…';
+
+  try {
+    const critMode = document.getElementById('crit-mode').value;
+    const headshot = document.getElementById('headshot-cb').checked;
+    const viralStacks = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
+    const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
+
+    const resp = await fetch('/api/optimal-order', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks}),
     });
-
-    const btn = document.createElement('button');
-    btn.textContent = '✕';
-    btn.title = 'Clear slot';
-    btn.onclick = () => {
-      sel.value = '';
-      refreshModDropdowns();
+    if (!resp.ok) throw new Error('Failed');
+    const data = await resp.json();
+    if (data.optimal_mods) {
+      // Rebuild modSlots preserving empty slots
+      const newSlots = ['','','','','','','',''];
+      data.optimal_mods.forEach((name, i) => { newSlots[i] = name; });
+      modSlots = newSlots;
+      renderModCards();
+      initSortable();
       updateModdedStats();
-    };
-
-    div.appendChild(sel);
-    div.appendChild(btn);
-    list.appendChild(div);
+    }
+  } catch(e) {
+    // silent
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Optimal Mod Order';
+    updateOptimalBtn();
   }
 }
 
@@ -283,31 +516,12 @@ function getCompatibleModTypes(weapon) {
   return types;
 }
 
-function buildModOptions(compatibleTypes) {
-  const filtered = compatibleTypes
-    ? allMods.filter(m => compatibleTypes.has(m.type))
-    : allMods;
-  return '<option value="">(empty)</option>' +
-    filtered.map(m => `<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
-}
-
-// Rebuild all existing mod slot dropdowns to match the new weapon
-function refreshModDropdowns() {
-  const weapon = getCurrentWeapon();
-  const types = getCompatibleModTypes(weapon);
-  document.querySelectorAll('#mods-list select').forEach(sel => {
-    const current = sel.value;
-    sel.innerHTML = buildModOptions(weapon ? types : null);
-    if (current && Array.from(sel.options).some(o => o.value === current)) {
-      sel.value = current;
-    }
-  });
-}
+// (buildModOptions and refreshModDropdowns removed — replaced by card grid + picker)
 
 function onWeaponChange() {
-  refreshModDropdowns();
   showWeaponStats(getCurrentWeapon());
   updateModdedStats();
+  updateOptimalBtn();
 }
 
 // ---------------------------------------------------------------------------
@@ -465,8 +679,7 @@ async function _doUpdateModdedStats() {
   const weapon = getCurrentWeapon();
   if (!weapon) return;
 
-  const mods = Array.from(document.querySelectorAll('#mods-list select'))
-    .map(s => s.value).filter(Boolean);
+  const mods = getSelectedMods();
 
   try {
     const resp = await fetch('/api/modded-weapon', {
@@ -639,8 +852,7 @@ function setupSearch(inputId, selectId, getNames, onChange) {
 async function runCalculation() {
   const weapon = document.getElementById('weapon-select').value;
   const enemy  = document.getElementById('enemy-select').value;
-  const mods   = Array.from(document.querySelectorAll('#mods-list select'))
-                   .map(s => s.value).filter(Boolean);
+  const mods   = getSelectedMods();
   const critMode    = document.getElementById('crit-mode').value;
   const headshot    = document.getElementById('headshot-cb').checked;
   const viralStacks     = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
@@ -820,5 +1032,6 @@ function showResults(data) {
 }
 </script>
 <div id="tt"></div>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 </body>
 </html>
