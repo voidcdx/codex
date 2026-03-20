@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Warframe Damage Calculator</title>
   <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 </head>
 <body>
 <header>
@@ -156,22 +157,20 @@ const TOOLTIPS = {
 let _currentMultishot = 1.0;
 
 function initTooltips() {
-  const tip = document.getElementById('tt');
-  if (!tip) return;
   document.querySelectorAll('[data-tooltip]').forEach(el => {
-    if (el._ttBound) return;
-    el._ttBound = true;
-    el.addEventListener('mouseenter', e => {
-      const text = TOOLTIPS[e.currentTarget.dataset.tooltip];
-      if (!text) return;
-      tip.textContent = text;
-      tip.classList.add('visible');
-    });
-    el.addEventListener('mousemove', e => {
-      tip.style.left = (e.clientX + 14) + 'px';
-      tip.style.top  = (e.clientY + 14) + 'px';
-    });
-    el.addEventListener('mouseleave', () => tip.classList.remove('visible'));
+    if (el._tippyBound) return;
+    const text = TOOLTIPS[el.dataset.tooltip];
+    if (!text) return;
+    el._tippyBound = true;
+    if (typeof tippy === 'function') {
+      tippy(el, {
+        content: text,
+        placement: 'top',
+        theme: 'warframe',
+        delay: [200, 0],
+        maxWidth: 280,
+      });
+    }
   });
 }
 
@@ -1031,7 +1030,9 @@ function showResults(data) {
   initTooltips();
 }
 </script>
-<div id="tt"></div>
+<!-- Tippy.js handles tooltips now -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
 </body>
 </html>

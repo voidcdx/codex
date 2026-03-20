@@ -559,26 +559,20 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
   margin-bottom: 12px;
 }
 
-/* ── Tooltip (legacy — will be replaced by Tippy.js) ─ */
-#tt {
-  position: fixed;
-  z-index: 9999;
-  background: rgba(26, 26, 46, 0.95);
+/* ── Tippy.js Warframe Theme ─────────────────────────── */
+.tippy-box[data-theme~='warframe'] {
+  background: rgba(20, 20, 35, 0.95);
   backdrop-filter: blur(8px);
   color: #c8c8d8;
-  border: 1px solid rgba(58, 58, 90, 0.6);
+  border: 1px solid rgba(196, 154, 31, 0.25);
   border-radius: var(--radius-sm);
-  padding: 7px 11px;
   font-size: 12px;
-  max-width: 240px;
   line-height: 1.5;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-  white-space: normal;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
-#tt.visible { opacity: 1; }
+.tippy-box[data-theme~='warframe'] .tippy-arrow {
+  color: rgba(20, 20, 35, 0.95);
+}
 .stat-label[data-tooltip] {
   cursor: default;
   border-bottom: 1px dotted var(--text-dim);
