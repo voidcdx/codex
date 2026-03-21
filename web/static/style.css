@@ -997,3 +997,20 @@ select option {
   .mod-card { min-height: 72px; }
   .riven-stat-select { font-size: 13px !important; }
 }
+@media (max-width: 520px) {
+  .mod-picker-overlay { align-items: flex-end; }
+  .riven-modal {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100vw;
+    border-radius: 14px 14px 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .riven-modal-left {
+    width: 100%;
+    height: 140px;
+    flex-shrink: 0;
+  }
+  .riven-modal-right { padding: 20px 16px 16px; }
+}
