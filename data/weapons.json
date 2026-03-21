@@ -71,7 +71,7 @@
     "class": "Sword and Shield",
     "family": "Ack & Brunt",
     "max_rank": 30.0,
-    "image": "Ack&Brunt.png"
+    "image": "Ack-&-Brunt.png"
   },
   "Amanata": {
     "name": "Amanata",
@@ -320,7 +320,7 @@
     "class": "Fist",
     "family": "Ankyros",
     "max_rank": 30.0,
-    "image": "AnkyrosPrime.png"
+    "image": "Ankyros-Prime.png"
   },
   "Arca Titron": {
     "name": "Arca Titron",
@@ -369,7 +369,7 @@
     "class": "Hammer",
     "family": "Arca Titron",
     "max_rank": 30.0,
-    "image": "ArcaTitron.png"
+    "image": "Arca-Titron.png"
   },
   "Argo & Vel": {
     "name": "Argo & Vel",
@@ -442,7 +442,7 @@
     "class": "Sword and Shield",
     "family": "Argo & Vel",
     "max_rank": 30.0,
-    "image": "Argo&Vel.png"
+    "image": "Argo-&-Vel.png"
   },
   "Arum Spinosa": {
     "name": "Arum Spinosa",
@@ -524,7 +524,7 @@
     "class": "Warfan",
     "family": "Arum Spinosa",
     "max_rank": 30.0,
-    "image": "ArumSpinosa.png"
+    "image": "Arum-Spinosa.png"
   },
   "Atterax": {
     "name": "Atterax",
@@ -722,7 +722,7 @@
     "class": "Staff",
     "family": "Bo",
     "max_rank": 30.0,
-    "image": "BoPrime.png"
+    "image": "Bo-Prime.png"
   },
   "Boltace": {
     "name": "Boltace",
@@ -822,7 +822,7 @@
     "class": "Staff",
     "family": "Broken Scepter",
     "max_rank": 30.0,
-    "image": "BrokenScepter.png"
+    "image": "Broken-Scepter.png"
   },
   "Broken War": {
     "name": "Broken War",
@@ -872,7 +872,7 @@
     "class": "Sword",
     "family": "Broken War",
     "max_rank": 30.0,
-    "image": "BrokenWar.png"
+    "image": "Broken-War.png"
   },
   "Cadus": {
     "name": "Cadus",
@@ -1121,7 +1121,7 @@
     "class": "Dagger",
     "family": "Ceramic Dagger",
     "max_rank": 30.0,
-    "image": "CeramicDagger.png"
+    "image": "Ceramic-Dagger.png"
   },
   "Cerata": {
     "name": "Cerata",
@@ -1303,7 +1303,7 @@
     "class": "Blade and Whip",
     "family": "Lacera",
     "max_rank": 30.0,
-    "image": "CetiLacera.png"
+    "image": "Ceti-Lacera.png"
   },
   "Cobra & Crane": {
     "name": "Cobra & Crane",
@@ -1352,7 +1352,7 @@
     "class": "Sword and Shield",
     "family": "Cobra & Crane",
     "max_rank": 30.0,
-    "image": "Cobra&Crane.png"
+    "image": "Cobra-&-Crane.png"
   },
   "Cobra & Crane Prime": {
     "name": "Cobra & Crane Prime",
@@ -1401,7 +1401,7 @@
     "class": "Sword and Shield",
     "family": "Cobra & Crane",
     "max_rank": 30.0,
-    "image": "Cobra&CranePrime.png"
+    "image": "Cobra-&-Crane-Prime.png"
   },
   "Coda Caustacyst": {
     "name": "Coda Caustacyst",
@@ -1476,7 +1476,7 @@
     "class": "Scythe",
     "family": "Caustacyst",
     "max_rank": 40.0,
-    "image": "CodaCaustacyst.png"
+    "image": "Coda-Caustacyst.png"
   },
   "Coda Hirudo": {
     "name": "Coda Hirudo",
@@ -1526,7 +1526,7 @@
     "class": "Sparring",
     "family": "Hirudo",
     "max_rank": 40.0,
-    "image": "CodaHirudo.png"
+    "image": "Coda-Hirudo.png"
   },
   "Coda Mire": {
     "name": "Coda Mire",
@@ -1579,7 +1579,7 @@
     "class": "Sword",
     "family": "Mire",
     "max_rank": 40.0,
-    "image": "CodaMire.png"
+    "image": "Coda-Mire.png"
   },
   "Coda Motovore": {
     "name": "Coda Motovore",
@@ -1633,7 +1633,7 @@
     "class": "Hammer",
     "family": "Motovore",
     "max_rank": 40.0,
-    "image": "CodaMotovore.png"
+    "image": "Coda-Motovore.png"
   },
   "Coda Pathocyst": {
     "name": "Coda Pathocyst",
@@ -1762,7 +1762,7 @@
     "class": "Glaive",
     "family": "Pathocyst",
     "max_rank": 40.0,
-    "image": "CodaPathocyst.png"
+    "image": "Coda-Pathocyst.png"
   },
   "Corufell": {
     "name": "Corufell",
@@ -1923,7 +1923,7 @@
     "class": "Sword",
     "family": "Dakra Prime",
     "max_rank": 30.0,
-    "image": "DakraPrime.png"
+    "image": "Dakra-Prime.png"
   },
   "Dark Dagger": {
     "name": "Dark Dagger",
@@ -1975,7 +1975,7 @@
     "class": "Dagger",
     "family": "Dark Dagger",
     "max_rank": 30.0,
-    "image": "DarkDagger.png"
+    "image": "Dark-Dagger.png"
   },
   "Dark Split-Sword (Dual Swords)": {
     "name": "Dark Split-Sword (Dual Swords)",
@@ -2027,7 +2027,7 @@
     "class": "Dual Swords",
     "family": "Dark Split-Sword (Dual Swords)",
     "max_rank": 30.0,
-    "image": "DarkSplitSwordDualSwords.png"
+    "image": "Dark-Split-Sword-(Dual-Swords).png"
   },
   "Dark Split-Sword (Heavy Blade)": {
     "name": "Dark Split-Sword (Heavy Blade)",
@@ -2079,7 +2079,7 @@
     "class": "Heavy Blade",
     "family": "Dark Split-Sword (Heavy Blade)",
     "max_rank": 30.0,
-    "image": "DarkSplitSwordHeavyBlade.png"
+    "image": "Dark-Split-Sword-(Heavy-Blade).png"
   },
   "Dark Sword": {
     "name": "Dark Sword",
@@ -2131,7 +2131,7 @@
     "class": "Sword",
     "family": "Dark Sword",
     "max_rank": 30.0,
-    "image": "DarkSword.png"
+    "image": "Dark-Sword.png"
   },
   "Desert Wind": {
     "name": "Desert Wind",
@@ -2176,7 +2176,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "DesertWind.png"
+    "image": "Desert-Wind.png"
   },
   "Desert Wind Prime": {
     "name": "Desert Wind Prime",
@@ -2221,7 +2221,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "DesertWind.png"
+    "image": "Desert-Wind-Prime.png"
   },
   "Destreza": {
     "name": "Destreza",
@@ -2321,7 +2321,7 @@
     "class": "Rapier",
     "family": "Destreza",
     "max_rank": 30.0,
-    "image": "DestrezaPrime.png"
+    "image": "Destreza-Prime.png"
   },
   "Dex Dakra": {
     "name": "Dex Dakra",
@@ -2371,7 +2371,7 @@
     "class": "Dual Swords",
     "family": "Dex Dakra",
     "max_rank": 30.0,
-    "image": "DexDakra.png"
+    "image": "Dex-Dakra.png"
   },
   "Dex Nikana": {
     "name": "Dex Nikana",
@@ -2421,7 +2421,7 @@
     "class": "Nikana",
     "family": "Nikana",
     "max_rank": 30.0,
-    "image": "DexNikana.png"
+    "image": "Dex-Nikana.png"
   },
   "Diwata": {
     "name": "Diwata",
@@ -2471,7 +2471,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "DiwataPrime.png"
+    "image": "Diwata-Prime.png"
   },
   "Dorrclave": {
     "name": "Dorrclave",
@@ -2569,7 +2569,7 @@
     "class": "Nikana",
     "family": "Dragon Nikana",
     "max_rank": 30.0,
-    "image": "DragonNikana.png"
+    "image": "Dragon-Nikana.png"
   },
   "Dual Cleavers": {
     "name": "Dual Cleavers",
@@ -2619,7 +2619,7 @@
     "class": "Dual Swords",
     "family": "Dual Cleavers",
     "max_rank": 30.0,
-    "image": "DualCleavers.png"
+    "image": "Dual-Cleavers.png"
   },
   "Dual Ether": {
     "name": "Dual Ether",
@@ -2669,7 +2669,7 @@
     "class": "Dual Swords",
     "family": "Dual Ether",
     "max_rank": 30.0,
-    "image": "DualEther.png"
+    "image": "Dual-Ether.png"
   },
   "Dual Heat Swords": {
     "name": "Dual Heat Swords",
@@ -2719,7 +2719,7 @@
     "class": "Dual Swords",
     "family": "Dual Heat Swords",
     "max_rank": 30.0,
-    "image": "DualHeatSwords.png"
+    "image": "Dual-Heat-Swords.png"
   },
   "Dual Ichor": {
     "name": "Dual Ichor",
@@ -2772,7 +2772,7 @@
     "class": "Dual Swords",
     "family": "Dual Ichor",
     "max_rank": 30.0,
-    "image": "DualIchor.png"
+    "image": "Dual-Ichor.png"
   },
   "Dual Kamas": {
     "name": "Dual Kamas",
@@ -2822,7 +2822,7 @@
     "class": "Dual Swords",
     "family": "Dual Kamas",
     "max_rank": 30.0,
-    "image": "DualKamas.png"
+    "image": "Dual-Kamas.png"
   },
   "Dual Kamas Prime": {
     "name": "Dual Kamas Prime",
@@ -2872,7 +2872,7 @@
     "class": "Dual Swords",
     "family": "Dual Kamas",
     "max_rank": 30.0,
-    "image": "DualKamasPrime.png"
+    "image": "Dual-Kamas-Prime.png"
   },
   "Dual Keres": {
     "name": "Dual Keres",
@@ -2922,7 +2922,7 @@
     "class": "Dual Swords",
     "family": "Dual Keres",
     "max_rank": 30.0,
-    "image": "DualKeres.png"
+    "image": "Dual-Keres.png"
   },
   "Dual Keres Prime": {
     "name": "Dual Keres Prime",
@@ -2972,7 +2972,7 @@
     "class": "Dual Swords",
     "family": "Dual Keres",
     "max_rank": 30.0,
-    "image": "DualKeresPrime.png"
+    "image": "Dual-Keres-Prime.png"
   },
   "Dual Raza": {
     "name": "Dual Raza",
@@ -3022,7 +3022,7 @@
     "class": "Dual Swords",
     "family": "Dual Raza",
     "max_rank": 30.0,
-    "image": "DualRaza.png"
+    "image": "Dual-Raza.png"
   },
   "Dual Skana": {
     "name": "Dual Skana",
@@ -3072,7 +3072,7 @@
     "class": "Dual Swords",
     "family": "Dual Skana",
     "max_rank": 30.0,
-    "image": "DualSkana.png"
+    "image": "Dual-Skana.png"
   },
   "Dual Viciss": {
     "name": "Dual Viciss",
@@ -3124,7 +3124,7 @@
     "class": "Dual Swords",
     "family": "Dual Viciss",
     "max_rank": 30.0,
-    "image": "DualViciss.png"
+    "image": "Dual-Viciss.png"
   },
   "Dual Zoren": {
     "name": "Dual Zoren",
@@ -3174,7 +3174,7 @@
     "class": "Dual Swords",
     "family": "Dual Zoren",
     "max_rank": 30.0,
-    "image": "DualZoren.png"
+    "image": "Dual-Zoren.png"
   },
   "Dual Zoren Prime": {
     "name": "Dual Zoren Prime",
@@ -3224,7 +3224,7 @@
     "class": "Dual Swords",
     "family": "Dual Zoren",
     "max_rank": 30.0,
-    "image": "DualZorenPrime.png"
+    "image": "Dual-Zoren-Prime.png"
   },
   "Edun": {
     "name": "Edun",
@@ -3446,7 +3446,7 @@
     "class": "Dual Daggers",
     "family": "Ether Daggers",
     "max_rank": 30.0,
-    "image": "EtherDaggers.png"
+    "image": "Ether-Daggers.png"
   },
   "Ether Reaper": {
     "name": "Ether Reaper",
@@ -3496,7 +3496,7 @@
     "class": "Scythe",
     "family": "Ether Reaper",
     "max_rank": 30.0,
-    "image": "EtherReaper.png"
+    "image": "Ether-Reaper.png"
   },
   "Ether Sword": {
     "name": "Ether Sword",
@@ -3546,7 +3546,7 @@
     "class": "Sword",
     "family": "Ether Sword",
     "max_rank": 30.0,
-    "image": "EtherSword.png"
+    "image": "Ether-Sword.png"
   },
   "Exalted Blade": {
     "name": "Exalted Blade",
@@ -3593,7 +3593,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "ExaltedBladeWeapon.png"
+    "image": "Exalted-Blade.png"
   },
   "Exalted Prime Blade": {
     "name": "Exalted Prime Blade",
@@ -3640,7 +3640,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "ExaltedPrimeBlade.png"
+    "image": "Exalted-Prime-Blade.png"
   },
   "Exalted Umbra Blade": {
     "name": "Exalted Umbra Blade",
@@ -3687,7 +3687,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "ExaltedUmbraBlade.png"
+    "image": "Exalted-Umbra-Blade.png"
   },
   "Falcor": {
     "name": "Falcor",
@@ -3916,7 +3916,7 @@
     "class": "Dual Daggers",
     "family": "Fang",
     "max_rank": 30.0,
-    "image": "FangPrime.png"
+    "image": "Fang-Prime.png"
   },
   "Fragor": {
     "name": "Fragor",
@@ -4016,7 +4016,7 @@
     "class": "Hammer",
     "family": "Fragor",
     "max_rank": 30.0,
-    "image": "FragorPrime.png"
+    "image": "Fragor-Prime.png"
   },
   "Furax": {
     "name": "Furax",
@@ -4116,7 +4116,7 @@
     "class": "Fist",
     "family": "Furax",
     "max_rank": 30.0,
-    "image": "FuraxWraith.png"
+    "image": "Furax-Wraith.png"
   },
   "Galariak Prime": {
     "name": "Galariak Prime",
@@ -4166,7 +4166,7 @@
     "class": "Scythe",
     "family": "Galariak Prime",
     "max_rank": 30.0,
-    "image": "GalariakPrime.png"
+    "image": "Galariak-Prime.png"
   },
   "Galatine": {
     "name": "Galatine",
@@ -4266,7 +4266,7 @@
     "class": "Heavy Blade",
     "family": "Galatine",
     "max_rank": 30.0,
-    "image": "GalatinePrime.png"
+    "image": "Galatine-Prime.png"
   },
   "Galvacord": {
     "name": "Galvacord",
@@ -4368,7 +4368,7 @@
     "slot": "Melee",
     "class": "Claws",
     "max_rank": 30.0,
-    "image": "GarudaPrimeTalons.png"
+    "image": "Garuda-Prime-Talons.png"
   },
   "Garuda Talons": {
     "name": "Garuda Talons",
@@ -4417,7 +4417,7 @@
     "slot": "Melee",
     "class": "Claws",
     "max_rank": 30.0,
-    "image": "GarudaTalons.png"
+    "image": "Garuda-Talons.png"
   },
   "Gazal Machete": {
     "name": "Gazal Machete",
@@ -4467,7 +4467,7 @@
     "class": "Machete",
     "family": "Gazal Machete",
     "max_rank": 30.0,
-    "image": "GazalMachete.png"
+    "image": "Gazal-Machete.png"
   },
   "Ghoulsaw": {
     "name": "Ghoulsaw",
@@ -4757,7 +4757,7 @@
     "class": "Glaive",
     "family": "Glaive",
     "max_rank": 30.0,
-    "image": "GlaivePrime.png"
+    "image": "Glaive-Prime.png"
   },
   "Gram": {
     "name": "Gram",
@@ -4857,7 +4857,7 @@
     "class": "Heavy Blade",
     "family": "Gram",
     "max_rank": 30.0,
-    "image": "GramPrime.png"
+    "image": "Gram-Prime.png"
   },
   "Guandao": {
     "name": "Guandao",
@@ -4957,7 +4957,7 @@
     "class": "Polearm",
     "family": "Guandao",
     "max_rank": 30.0,
-    "image": "GuandaoPrime.png"
+    "image": "Guandao-Prime.png"
   },
   "Gunsen": {
     "name": "Gunsen",
@@ -5057,7 +5057,7 @@
     "class": "Warfan",
     "family": "Gunsen",
     "max_rank": 30.0,
-    "image": "GunsenPrime.png"
+    "image": "Gunsen-Prime.png"
   },
   "Halikar": {
     "name": "Halikar",
@@ -5297,7 +5297,7 @@
     "class": "Glaive",
     "family": "Halikar",
     "max_rank": 30.0,
-    "image": "HalikarWraith.png"
+    "image": "Halikar-Wraith.png"
   },
   "Hate": {
     "name": "Hate",
@@ -5473,7 +5473,7 @@
     "class": "Dagger",
     "family": "Heat Dagger",
     "max_rank": 30.0,
-    "image": "HeatDagger.png"
+    "image": "Heat-Dagger.png"
   },
   "Heat Sword": {
     "name": "Heat Sword",
@@ -5523,7 +5523,7 @@
     "class": "Sword",
     "family": "Heat Sword",
     "max_rank": 30.0,
-    "image": "HeatSword.png"
+    "image": "Heat-Sword.png"
   },
   "Heliocor": {
     "name": "Heliocor",
@@ -5780,7 +5780,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "IronStaff.png"
+    "image": "Iron-Staff.png"
   },
   "Iron Staff Prime": {
     "name": "Iron Staff Prime",
@@ -5826,7 +5826,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "IronStaffPrime.png"
+    "image": "Iron-Staff-Prime.png"
   },
   "Jat Kittag": {
     "name": "Jat Kittag",
@@ -5876,7 +5876,7 @@
     "class": "Hammer",
     "family": "Jat Kittag",
     "max_rank": 30.0,
-    "image": "JatKittag.png"
+    "image": "Jat-Kittag.png"
   },
   "Jat Kusar": {
     "name": "Jat Kusar",
@@ -5929,7 +5929,7 @@
     "class": "Blade and Whip",
     "family": "Jat Kusar",
     "max_rank": 30.0,
-    "image": "JatKusar.png"
+    "image": "Jat-Kusar.png"
   },
   "Jaw Sword": {
     "name": "Jaw Sword",
@@ -5979,7 +5979,7 @@
     "class": "Sword",
     "family": "Jaw Sword",
     "max_rank": 30.0,
-    "image": "JawSword.png"
+    "image": "Jaw-Sword.png"
   },
   "Kama": {
     "name": "Kama",
@@ -6135,7 +6135,7 @@
     "class": "Dagger",
     "family": "Karyst",
     "max_rank": 30.0,
-    "image": "KarystPrime.png"
+    "image": "Karyst-Prime.png"
   },
   "Keratinos": {
     "name": "Keratinos",
@@ -6478,7 +6478,7 @@
     "class": "Glaive",
     "family": "Kestrel",
     "max_rank": 30.0,
-    "image": "KestrelPrime.png"
+    "image": "Kestrel-Prime.png"
   },
   "Kogake": {
     "name": "Kogake",
@@ -6578,7 +6578,7 @@
     "class": "Sparring",
     "family": "Kogake",
     "max_rank": 30.0,
-    "image": "KogakePrime.png"
+    "image": "Kogake-Prime.png"
   },
   "Korrudo": {
     "name": "Korrudo",
@@ -6892,7 +6892,7 @@
     "class": "Tonfa",
     "family": "Kronen",
     "max_rank": 30.0,
-    "image": "KronenPrime.png"
+    "image": "Kronen-Prime.png"
   },
   "Kuva Shildeg": {
     "name": "Kuva Shildeg",
@@ -6942,7 +6942,7 @@
     "class": "Hammer",
     "family": "Kuva Shildeg",
     "max_rank": 40.0,
-    "image": "KuvaShildeg.png"
+    "image": "Kuva-Shildeg.png"
   },
   "Lacera": {
     "name": "Lacera",
@@ -7019,7 +7019,7 @@
     "class": "Exalted Weapon",
     "family": "Landslide Fists",
     "max_rank": 30.0,
-    "image": "Landslide130xWhite.png"
+    "image": "Landslide-Fists.png"
   },
   "Landslide Fists Prime": {
     "name": "Landslide Fists Prime",
@@ -7043,7 +7043,7 @@
     "class": "Exalted Weapon",
     "family": "Landslide Fists",
     "max_rank": 30.0,
-    "image": "Landslide130xWhite.png"
+    "image": "Landslide-Fists-Prime.png"
   },
   "Lecta": {
     "name": "Lecta",
@@ -7194,7 +7194,7 @@
     "class": "Staff",
     "family": "Bo",
     "max_rank": 30.0,
-    "image": "MK1-Bo.png"
+    "image": "Mk1-Bo.png"
   },
   "Mk1-Furax": {
     "name": "Mk1-Furax",
@@ -7244,7 +7244,7 @@
     "class": "Fist",
     "family": "Furax",
     "max_rank": 30.0,
-    "image": "MK1-Furax.png"
+    "image": "Mk1-Furax.png"
   },
   "Machete": {
     "name": "Machete",
@@ -7344,7 +7344,7 @@
     "class": "Machete",
     "family": "Machete",
     "max_rank": 30.0,
-    "image": "MacheteWraith.png"
+    "image": "Machete-Wraith.png"
   },
   "Magistar": {
     "name": "Magistar",
@@ -7492,7 +7492,7 @@
     "class": "Heavy Blade",
     "family": "Masseter",
     "max_rank": 30.0,
-    "image": "MasseterPrime.png"
+    "image": "Masseter-Prime.png"
   },
   "Mios": {
     "name": "Mios",
@@ -7645,7 +7645,7 @@
     "class": "Dual Swords",
     "family": "Nami Skyla",
     "max_rank": 30.0,
-    "image": "NamiSkyla.png"
+    "image": "Nami-Skyla.png"
   },
   "Nami Skyla Prime": {
     "name": "Nami Skyla Prime",
@@ -7695,7 +7695,7 @@
     "class": "Dual Swords",
     "family": "Nami Skyla",
     "max_rank": 30.0,
-    "image": "NamiSkylaPrime.png"
+    "image": "Nami-Skyla-Prime.png"
   },
   "Nami Solo": {
     "name": "Nami Solo",
@@ -7745,7 +7745,7 @@
     "class": "Machete",
     "family": "Nami Solo",
     "max_rank": 30.0,
-    "image": "NamiSolo.png"
+    "image": "Nami-Solo.png"
   },
   "Nepheri": {
     "name": "Nepheri",
@@ -7908,7 +7908,7 @@
     "class": "Nikana",
     "family": "Nikana",
     "max_rank": 30.0,
-    "image": "NikanaPrime.png"
+    "image": "Nikana-Prime.png"
   },
   "Ninkondi": {
     "name": "Ninkondi",
@@ -8012,7 +8012,7 @@
     "class": "Nunchaku",
     "family": "Ninkondi",
     "max_rank": 30.0,
-    "image": "NinkondiPrime.png"
+    "image": "Ninkondi-Prime.png"
   },
   "Obex": {
     "name": "Obex",
@@ -8262,7 +8262,7 @@
     "class": "Dual Daggers",
     "family": "Okina",
     "max_rank": 30.0,
-    "image": "OkinaPrime.png"
+    "image": "Okina-Prime.png"
   },
   "Orthos": {
     "name": "Orthos",
@@ -8362,7 +8362,7 @@
     "class": "Polearm",
     "family": "Orthos",
     "max_rank": 30.0,
-    "image": "OrthosPrime.png"
+    "image": "Orthos-Prime.png"
   },
   "Orvius": {
     "name": "Orvius",
@@ -8542,7 +8542,7 @@
     "class": "Sword",
     "family": "Pangolin Sword",
     "max_rank": 30.0,
-    "image": "PangolinPrime.png"
+    "image": "Pangolin-Prime.png"
   },
   "Pangolin Sword": {
     "name": "Pangolin Sword",
@@ -8592,7 +8592,7 @@
     "class": "Sword",
     "family": "Pangolin Sword",
     "max_rank": 30.0,
-    "image": "PangolinSword.png"
+    "image": "Pangolin-Sword.png"
   },
   "Paracesis": {
     "name": "Paracesis",
@@ -8874,7 +8874,7 @@
     "class": "Sword",
     "family": "Plasma Sword",
     "max_rank": 30.0,
-    "image": "PlasmaSword.png"
+    "image": "Plasma-Sword.png"
   },
   "Praedos": {
     "name": "Praedos",
@@ -8974,7 +8974,7 @@
     "class": "Dual Swords",
     "family": "Dual Cleavers",
     "max_rank": 30.0,
-    "image": "PrismaDualCleavers.png"
+    "image": "Prisma-Dual-Cleavers.png"
   },
   "Prisma Machete": {
     "name": "Prisma Machete",
@@ -9024,7 +9024,7 @@
     "class": "Machete",
     "family": "Machete",
     "max_rank": 30.0,
-    "image": "PrismaMachete.png"
+    "image": "Prisma-Machete.png"
   },
   "Prisma Obex": {
     "name": "Prisma Obex",
@@ -9074,7 +9074,7 @@
     "class": "Sparring",
     "family": "Obex",
     "max_rank": 30.0,
-    "image": "PrismaObex.png"
+    "image": "Prisma-Obex.png"
   },
   "Prisma Ohma": {
     "name": "Prisma Ohma",
@@ -9126,7 +9126,7 @@
     "class": "Tonfa",
     "family": "Ohma",
     "max_rank": 30.0,
-    "image": "PrismaOhma.png"
+    "image": "Prisma-Ohma.png"
   },
   "Prisma Skana": {
     "name": "Prisma Skana",
@@ -9176,7 +9176,7 @@
     "class": "Sword",
     "family": "Skana",
     "max_rank": 30.0,
-    "image": "PrismaSkana.png"
+    "image": "Prisma-Skana.png"
   },
   "Prova": {
     "name": "Prova",
@@ -9278,7 +9278,7 @@
     "class": "Machete",
     "family": "Prova",
     "max_rank": 30.0,
-    "image": "ProvaVandal.png"
+    "image": "Prova-Vandal.png"
   },
   "Pulmonars": {
     "name": "Pulmonars",
@@ -9534,7 +9534,7 @@
     "class": "Warfan",
     "family": "Quassus",
     "max_rank": 30.0,
-    "image": "QuassusPrime.png"
+    "image": "Quassus-Prime.png"
   },
   "Rakta Dark Dagger": {
     "name": "Rakta Dark Dagger",
@@ -9586,7 +9586,7 @@
     "class": "Dagger",
     "family": "Dark Dagger",
     "max_rank": 30.0,
-    "image": "RaktaDarkDagger.png"
+    "image": "Rakta-Dark-Dagger.png"
   },
   "Reaper Prime": {
     "name": "Reaper Prime",
@@ -9636,7 +9636,7 @@
     "class": "Scythe",
     "family": "Reaper Prime",
     "max_rank": 30.0,
-    "image": "ReaperPrime.png"
+    "image": "Reaper-Prime.png"
   },
   "Redeemer": {
     "name": "Redeemer",
@@ -9758,7 +9758,7 @@
     "class": "Gunblade",
     "family": "Redeemer",
     "max_rank": 30.0,
-    "image": "RedeemerPrime.png"
+    "image": "Redeemer-Prime.png"
   },
   "Ripkas": {
     "name": "Ripkas",
@@ -10007,7 +10007,7 @@
     "class": "Hammer",
     "family": "Magistar",
     "max_rank": 30.0,
-    "image": "SanctiMagistar.png"
+    "image": "Sancti-Magistar.png"
   },
   "Sarofang": {
     "name": "Sarofang",
@@ -10220,7 +10220,7 @@
     "class": "Heavy Blade",
     "family": "Scindo",
     "max_rank": 30.0,
-    "image": "ScindoPrime.png"
+    "image": "Scindo-Prime.png"
   },
   "Scoliac": {
     "name": "Scoliac",
@@ -10322,7 +10322,7 @@
     "class": "Whip",
     "family": "Lecta",
     "max_rank": 30.0,
-    "image": "SecuraLecta.png"
+    "image": "Secura-Lecta.png"
   },
   "Serro": {
     "name": "Serro",
@@ -10420,7 +10420,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "ShadowClaws.png"
+    "image": "Shadow-Claws.png"
   },
   "Shadow Claws Prime": {
     "name": "Shadow Claws Prime",
@@ -10467,7 +10467,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "ShadowClawsPrime.png"
+    "image": "Shadow-Claws-Prime.png"
   },
   "Shaku": {
     "name": "Shaku",
@@ -10549,7 +10549,7 @@
     "class": "Exalted Weapon",
     "family": "Shattered Lash",
     "max_rank": 30.0,
-    "image": "ShatteredLash130xWhite.png"
+    "image": "Shattered-Lash.png"
   },
   "Shattered Lash Prime": {
     "name": "Shattered Lash Prime",
@@ -10583,7 +10583,7 @@
     "class": "Exalted Weapon",
     "family": "Shattered Lash",
     "max_rank": 30.0,
-    "image": "ShatteredLash130xWhite.png"
+    "image": "Shattered-Lash-Prime.png"
   },
   "Sheev": {
     "name": "Sheev",
@@ -10760,7 +10760,7 @@
     "class": "Sword and Shield",
     "family": "Sigma & Octantis",
     "max_rank": 30.0,
-    "image": "Sigma&Octantis.png"
+    "image": "Sigma-&-Octantis.png"
   },
   "Silva & Aegis": {
     "name": "Silva & Aegis",
@@ -10808,7 +10808,7 @@
     "class": "Sword and Shield",
     "family": "Silva & Aegis",
     "max_rank": 30.0,
-    "image": "Silva&Aegis.png"
+    "image": "Silva-&-Aegis.png"
   },
   "Silva & Aegis Prime": {
     "name": "Silva & Aegis Prime",
@@ -10856,7 +10856,7 @@
     "class": "Sword and Shield",
     "family": "Silva & Aegis",
     "max_rank": 30.0,
-    "image": "Silva&AegisPrime.png"
+    "image": "Silva-&-Aegis-Prime.png"
   },
   "Skana": {
     "name": "Skana",
@@ -10956,7 +10956,7 @@
     "class": "Sword",
     "family": "Skana",
     "max_rank": 30.0,
-    "image": "SkanaPrime.png"
+    "image": "Skana-Prime.png"
   },
   "Skiajati": {
     "name": "Skiajati",
@@ -11215,7 +11215,7 @@
     "class": "Dual Nikanas",
     "family": "Sun & Moon",
     "max_rank": 30.0,
-    "image": "Sun&Moon.png"
+    "image": "Sun-&-Moon.png"
   },
   "Syam": {
     "name": "Syam",
@@ -11386,7 +11386,7 @@
     "class": "Hammer",
     "family": "Heliocor",
     "max_rank": 30.0,
-    "image": "SynoidHeliocor.png"
+    "image": "Synoid-Heliocor.png"
   },
   "Tak & Lug": {
     "name": "Tak & Lug",
@@ -11435,7 +11435,7 @@
     "class": "Sword and Shield",
     "family": "Tak & Lug",
     "max_rank": 30.0,
-    "image": "Tak&Lug.png"
+    "image": "Tak-&-Lug.png"
   },
   "Tatsu": {
     "name": "Tatsu",
@@ -11563,7 +11563,7 @@
     "class": "Two-Handed Nikana",
     "family": "Tatsu",
     "max_rank": 30.0,
-    "image": "TatsuPrime.png"
+    "image": "Tatsu-Prime.png"
   },
   "Tekko": {
     "name": "Tekko",
@@ -11663,7 +11663,7 @@
     "class": "Fist",
     "family": "Tekko",
     "max_rank": 30.0,
-    "image": "TekkoPrime.png"
+    "image": "Tekko-Prime.png"
   },
   "Telos Boltace": {
     "name": "Telos Boltace",
@@ -11725,7 +11725,7 @@
     "class": "Tonfa",
     "family": "Boltace",
     "max_rank": 30.0,
-    "image": "TelosBoltace.png"
+    "image": "Telos-Boltace.png"
   },
   "Tenet Agendus": {
     "name": "Tenet Agendus",
@@ -11787,7 +11787,7 @@
     "class": "Sword and Shield",
     "family": "Tenet Agendus",
     "max_rank": 40.0,
-    "image": "TenetAgendus.png"
+    "image": "Tenet-Agendus.png"
   },
   "Tenet Exec": {
     "name": "Tenet Exec",
@@ -11836,7 +11836,7 @@
     "class": "Heavy Blade",
     "family": "Tenet Exec",
     "max_rank": 40.0,
-    "image": "TenetExec.png"
+    "image": "Tenet-Exec.png"
   },
   "Tenet Grigori": {
     "name": "Tenet Grigori",
@@ -11899,7 +11899,7 @@
     "class": "Scythe",
     "family": "Tenet Grigori",
     "max_rank": 40.0,
-    "image": "TenetGrigori.png"
+    "image": "Tenet-Grigori.png"
   },
   "Tenet Livia": {
     "name": "Tenet Livia",
@@ -11949,7 +11949,7 @@
     "class": "Two-Handed Nikana",
     "family": "Tenet Livia",
     "max_rank": 40.0,
-    "image": "TenetLivia.png"
+    "image": "Tenet-Livia.png"
   },
   "Thalys": {
     "name": "Thalys",
@@ -12098,7 +12098,7 @@
     "class": "Staff",
     "family": "Tipedo",
     "max_rank": 30.0,
-    "image": "TipedoPrime.png"
+    "image": "Tipedo-Prime.png"
   },
   "Tonbo": {
     "name": "Tonbo",
@@ -12250,7 +12250,7 @@
     "class": "Dual Swords",
     "family": "Twin Basolk",
     "max_rank": 30.0,
-    "image": "TwinBasolk.png"
+    "image": "Twin-Basolk.png"
   },
   "Twin Krohkur": {
     "name": "Twin Krohkur",
@@ -12300,7 +12300,7 @@
     "class": "Dual Swords",
     "family": "Twin Krohkur",
     "max_rank": 30.0,
-    "image": "TwinKrohkur.png"
+    "image": "Twin-Krohkur.png"
   },
   "Valkyr Prime Talons": {
     "name": "Valkyr Prime Talons",
@@ -12347,7 +12347,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "ValkyrTalons.png"
+    "image": "Valkyr-Prime-Talons.png"
   },
   "Valkyr Talons": {
     "name": "Valkyr Talons",
@@ -12394,7 +12394,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "ValkyrTalons.png"
+    "image": "Valkyr-Talons.png"
   },
   "Vastilok": {
     "name": "Vastilok",
@@ -12506,7 +12506,7 @@
     "class": "Polearm",
     "family": "Sydon",
     "max_rank": 30.0,
-    "image": "VaykorSydon.png"
+    "image": "Vaykor-Sydon.png"
   },
   "Venato": {
     "name": "Venato",
@@ -12606,7 +12606,7 @@
     "class": "Scythe",
     "family": "Venato",
     "max_rank": 30.0,
-    "image": "VenatoPrime.png"
+    "image": "Venato-Prime.png"
   },
   "Venka": {
     "name": "Venka",
@@ -12706,7 +12706,7 @@
     "class": "Claws",
     "family": "Venka",
     "max_rank": 30.0,
-    "image": "VenkaPrime.png"
+    "image": "Venka-Prime.png"
   },
   "Verdilac": {
     "name": "Verdilac",
@@ -12898,7 +12898,7 @@
     "class": "Bayonet",
     "family": "Vinquibus",
     "max_rank": 30.0,
-    "image": "Vinquibus.png"
+    "image": "Vinquibus-(Melee).png"
   },
   "Vitrica": {
     "name": "Vitrica",
@@ -13061,7 +13061,7 @@
     "class": "Hammer",
     "family": "Volnus",
     "max_rank": 30.0,
-    "image": "VolnusPrime.png"
+    "image": "Volnus-Prime.png"
   },
   "War": {
     "name": "War",
@@ -13137,7 +13137,7 @@
     "class": "Exalted Weapon",
     "family": "Whipclaw",
     "max_rank": 30.0,
-    "image": "Whipclaw130xWhite.png"
+    "image": "Whipclaw.png"
   },
   "Whipclaw Prime": {
     "name": "Whipclaw Prime",
@@ -13163,7 +13163,7 @@
     "class": "Exalted Weapon",
     "family": "Whipclaw",
     "max_rank": 30.0,
-    "image": "Whipclaw130xWhite.png"
+    "image": "Whipclaw-Prime.png"
   },
   "Wolf Sledge": {
     "name": "Wolf Sledge",
@@ -13248,7 +13248,7 @@
     "class": "Hammer",
     "family": "Wolf Sledge",
     "max_rank": 30.0,
-    "image": "WolfSledge.png"
+    "image": "Wolf-Sledge.png"
   },
   "Xoris": {
     "name": "Xoris",
@@ -13547,7 +13547,7 @@
     "trigger": "Auto",
     "family": "Acceltra",
     "max_rank": 30.0,
-    "image": "AcceltraPrime.png"
+    "image": "Acceltra-Prime.png"
   },
   "Aeolak": {
     "name": "Aeolak",
@@ -13790,7 +13790,7 @@
     "trigger": "Auto / Active",
     "family": "Alternox",
     "max_rank": 30.0,
-    "image": "AlternoxPrime.png"
+    "image": "Alternox-Prime.png"
   },
   "Ambassador": {
     "name": "Ambassador",
@@ -13902,7 +13902,7 @@
     "trigger": "Semi-Auto",
     "family": "Arca Plasmor",
     "max_rank": 30.0,
-    "image": "ArcaPlasmor.png"
+    "image": "Arca-Plasmor.png"
   },
   "Argonak": {
     "name": "Argonak",
@@ -14037,7 +14037,7 @@
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "ArtemisBowWeapon.png"
+    "image": "Artemis-Bow.png"
   },
   "Artemis Bow Prime": {
     "name": "Artemis Bow Prime",
@@ -14127,7 +14127,7 @@
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "ArtemisBowPrimeWeapon.png"
+    "image": "Artemis-Bow-Prime.png"
   },
   "Astilla": {
     "name": "Astilla",
@@ -14211,7 +14211,7 @@
     "trigger": "Auto",
     "family": "Astilla",
     "max_rank": 30.0,
-    "image": "AstillaPrime.png"
+    "image": "Astilla-Prime.png"
   },
   "Attica": {
     "name": "Attica",
@@ -14444,7 +14444,7 @@
     "trigger": "Auto",
     "family": "Baza",
     "max_rank": 30.0,
-    "image": "BazaPrime.png"
+    "image": "Baza-Prime.png"
   },
   "Boar": {
     "name": "Boar",
@@ -14530,7 +14530,7 @@
     "trigger": "Auto",
     "family": "Boar",
     "max_rank": 30.0,
-    "image": "BoarPrime.png"
+    "image": "Boar-Prime.png"
   },
   "Boltor": {
     "name": "Boltor",
@@ -14619,7 +14619,7 @@
     "trigger": "Auto",
     "family": "Boltor",
     "max_rank": 30.0,
-    "image": "BoltorPrime.png"
+    "image": "Boltor-Prime.png"
   },
   "Braton": {
     "name": "Braton",
@@ -14731,7 +14731,7 @@
     "trigger": "Auto",
     "family": "Braton",
     "max_rank": 30.0,
-    "image": "BratonPrime.png"
+    "image": "Braton-Prime.png"
   },
   "Braton Vandal": {
     "name": "Braton Vandal",
@@ -14787,7 +14787,7 @@
     "trigger": "Auto",
     "family": "Braton",
     "max_rank": 30.0,
-    "image": "BratonVandal.png"
+    "image": "Braton-Vandal.png"
   },
   "Bubonico": {
     "name": "Bubonico",
@@ -14952,7 +14952,7 @@
     "trigger": "Burst / Auto",
     "family": "Burston",
     "max_rank": 30.0,
-    "image": "BurstonPrime.png"
+    "image": "Burston-Prime.png"
   },
   "Buzlok": {
     "name": "Buzlok",
@@ -15036,7 +15036,7 @@
     "trigger": "Active",
     "family": "Penta",
     "max_rank": 30.0,
-    "image": "CarminePenta.png"
+    "image": "Carmine-Penta.png"
   },
   "Cedo": {
     "name": "Cedo",
@@ -15140,7 +15140,7 @@
     "trigger": "Auto / Semi",
     "family": "Cedo",
     "max_rank": 30.0,
-    "image": "CedoPrime.png"
+    "image": "Cedo-Prime.png"
   },
   "Cernos": {
     "name": "Cernos",
@@ -15230,7 +15230,7 @@
     "trigger": "Charge",
     "family": "Cernos",
     "max_rank": 30.0,
-    "image": "CernosPrime.png"
+    "image": "Cernos-Prime.png"
   },
   "Cinta": {
     "name": "Cinta",
@@ -15326,7 +15326,7 @@
     "trigger": "Semi-Auto",
     "family": "Bassocyst",
     "max_rank": 40.0,
-    "image": "CodaBassocyst.png"
+    "image": "Coda-Bassocyst.png"
   },
   "Coda Hema": {
     "name": "Coda Hema",
@@ -15356,7 +15356,7 @@
     "trigger": "Burst",
     "family": "Hema",
     "max_rank": 40.0,
-    "image": "CodaHema.png"
+    "image": "Coda-Hema.png"
   },
   "Coda Sporothrix": {
     "name": "Coda Sporothrix",
@@ -15402,7 +15402,7 @@
     "trigger": "Semi-Auto",
     "family": "Sporothrix",
     "max_rank": 40.0,
-    "image": "CodaSporothrix.png"
+    "image": "Coda-Sporothrix.png"
   },
   "Coda Synapse": {
     "name": "Coda Synapse",
@@ -15432,7 +15432,7 @@
     "trigger": "Held",
     "family": "Synapse",
     "max_rank": 40.0,
-    "image": "CodaSynapse.png"
+    "image": "Coda-Synapse.png"
   },
   "Convectrix": {
     "name": "Convectrix",
@@ -15585,7 +15585,7 @@
     "trigger": "Semi-Auto",
     "family": "Corinth",
     "max_rank": 30.0,
-    "image": "CorinthPrime.png"
+    "image": "Corinth-Prime.png"
   },
   "Daikyu": {
     "name": "Daikyu",
@@ -15662,7 +15662,7 @@
     "trigger": "Charge",
     "family": "Daikyu",
     "max_rank": 30.0,
-    "image": "DaikyuPrime.png"
+    "image": "Daikyu-Prime.png"
   },
   "Dera": {
     "name": "Dera",
@@ -15758,7 +15758,7 @@
     "trigger": "Auto",
     "family": "Dera",
     "max_rank": 30.0,
-    "image": "DeraVandal.png"
+    "image": "Dera-Vandal.png"
   },
   "Dex Sybaris": {
     "name": "Dex Sybaris",
@@ -15803,7 +15803,7 @@
     "trigger": "Burst",
     "family": "Sybaris",
     "max_rank": 30.0,
-    "image": "DexSybaris.png"
+    "image": "Dex-Sybaris.png"
   },
   "Drakgoon": {
     "name": "Drakgoon",
@@ -15957,7 +15957,7 @@
     "trigger": "Auto / Charge",
     "family": "EFV-5Jupiter",
     "max_rank": 30.0,
-    "image": "EFV-5Jupiter.png"
+    "image": "EFV-5-Jupiter.png"
   },
   "Evensong": {
     "name": "Evensong",
@@ -16191,7 +16191,7 @@
     "trigger": "Held",
     "family": "Flux Rifle",
     "max_rank": 30.0,
-    "image": "FluxRifle.png"
+    "image": "Flux-Rifle.png"
   },
   "Fulmin": {
     "name": "Fulmin",
@@ -16285,7 +16285,7 @@
     "trigger": "Auto / Semi",
     "family": "Fulmin",
     "max_rank": 30.0,
-    "image": "FulminPrime.png"
+    "image": "Fulmin-Prime.png"
   },
   "Glaxion": {
     "name": "Glaxion",
@@ -16345,7 +16345,7 @@
     "trigger": "Held",
     "family": "Glaxion",
     "max_rank": 30.0,
-    "image": "GlaxionVandal.png"
+    "image": "Glaxion-Vandal.png"
   },
   "Gorgon": {
     "name": "Gorgon",
@@ -16457,7 +16457,7 @@
     "trigger": "Auto-Spool",
     "family": "Gorgon",
     "max_rank": 30.0,
-    "image": "GorgonWraith.png"
+    "image": "Gorgon-Wraith.png"
   },
   "Gotva Prime": {
     "name": "Gotva Prime",
@@ -16487,7 +16487,7 @@
     "trigger": "Auto",
     "family": "Gotva",
     "max_rank": 30.0,
-    "image": "GotvaPrime.png"
+    "image": "Gotva-Prime.png"
   },
   "Grakata": {
     "name": "Grakata",
@@ -16804,7 +16804,7 @@
     "trigger": "Held",
     "family": "Ignis",
     "max_rank": 30.0,
-    "image": "IgnisWraith.png"
+    "image": "Ignis-Wraith.png"
   },
   "Javlok": {
     "name": "Javlok",
@@ -16933,7 +16933,7 @@
     "trigger": "Auto",
     "family": "Karak",
     "max_rank": 30.0,
-    "image": "KarakWraith.png"
+    "image": "Karak-Wraith.png"
   },
   "Kohm": {
     "name": "Kohm",
@@ -17083,7 +17083,7 @@
     "trigger": "Charge",
     "family": "Kuva Bramma",
     "max_rank": 40.0,
-    "image": "KuvaBramma.png"
+    "image": "Kuva-Bramma.png"
   },
   "Kuva Chakkhurr": {
     "name": "Kuva Chakkhurr",
@@ -17128,7 +17128,7 @@
     "trigger": "Semi-Auto",
     "family": "Kuva Chakkhurr",
     "max_rank": 40.0,
-    "image": "KuvaChakkhurr.png"
+    "image": "Kuva-Chakkhurr.png"
   },
   "Kuva Drakgoon": {
     "name": "Kuva Drakgoon",
@@ -17173,7 +17173,7 @@
     "trigger": "Charge",
     "family": "Drakgoon",
     "max_rank": 40.0,
-    "image": "KuvaDrakgoon.png"
+    "image": "Kuva-Drakgoon.png"
   },
   "Kuva Hek": {
     "name": "Kuva Hek",
@@ -17218,7 +17218,7 @@
     "trigger": "Semi-Auto",
     "family": "Hek",
     "max_rank": 40.0,
-    "image": "KuvaHek.png"
+    "image": "Kuva-Hek.png"
   },
   "Kuva Hind": {
     "name": "Kuva Hind",
@@ -17276,7 +17276,7 @@
     "trigger": "Burst / Semi / Auto",
     "family": "Hind",
     "max_rank": 40.0,
-    "image": "KuvaHind.png"
+    "image": "Kuva-Hind.png"
   },
   "Kuva Karak": {
     "name": "Kuva Karak",
@@ -17308,7 +17308,7 @@
     "trigger": "Auto",
     "family": "Karak",
     "max_rank": 40.0,
-    "image": "KuvaKarak.png"
+    "image": "Kuva-Karak.png"
   },
   "Kuva Kohm": {
     "name": "Kuva Kohm",
@@ -17353,7 +17353,7 @@
     "trigger": "Auto-Spool",
     "family": "Kohm",
     "max_rank": 40.0,
-    "image": "KuvaKohm.png"
+    "image": "Kuva-Kohm.png"
   },
   "Kuva Ogris": {
     "name": "Kuva Ogris",
@@ -17399,7 +17399,7 @@
     "trigger": "Semi-Auto",
     "family": "Ogris",
     "max_rank": 40.0,
-    "image": "KuvaOgris.png"
+    "image": "Kuva-Ogris.png"
   },
   "Kuva Quartakk": {
     "name": "Kuva Quartakk",
@@ -17444,7 +17444,7 @@
     "trigger": "Auto / Burst",
     "family": "Quartakk",
     "max_rank": 40.0,
-    "image": "KuvaQuartakk.png"
+    "image": "Kuva-Quartakk.png"
   },
   "Kuva Sobek": {
     "name": "Kuva Sobek",
@@ -17476,7 +17476,7 @@
     "trigger": "Auto",
     "family": "Sobek",
     "max_rank": 40.0,
-    "image": "KuvaSobek.png"
+    "image": "Kuva-Sobek.png"
   },
   "Kuva Tonkor": {
     "name": "Kuva Tonkor",
@@ -17521,7 +17521,7 @@
     "trigger": "Semi-Auto",
     "family": "Tonkor",
     "max_rank": 40.0,
-    "image": "KuvaTonkor.png"
+    "image": "Kuva-Tonkor.png"
   },
   "Kuva Zarr": {
     "name": "Kuva Zarr",
@@ -17597,7 +17597,7 @@
     "trigger": "Semi-Auto",
     "family": "Zarr",
     "max_rank": 40.0,
-    "image": "KuvaZarr.png"
+    "image": "Kuva-Zarr.png"
   },
   "Lanka": {
     "name": "Lanka",
@@ -17749,7 +17749,7 @@
     "trigger": "Semi-Auto",
     "family": "Latron",
     "max_rank": 30.0,
-    "image": "LatronPrime.png"
+    "image": "Latron-Prime.png"
   },
   "Latron Wraith": {
     "name": "Latron Wraith",
@@ -17806,7 +17806,7 @@
     "trigger": "Semi-Auto",
     "family": "Latron",
     "max_rank": 30.0,
-    "image": "LatronWraith.png"
+    "image": "Latron-Wraith.png"
   },
   "Lenz": {
     "name": "Lenz",
@@ -17985,7 +17985,7 @@
     "trigger": "Auto",
     "family": "Braton",
     "max_rank": 30.0,
-    "image": "Braton.png"
+    "image": "Mk1-Braton.png"
   },
   "Mk1-Paris": {
     "name": "Mk1-Paris",
@@ -18044,7 +18044,7 @@
     "trigger": "Charge",
     "family": "Paris",
     "max_rank": 30.0,
-    "image": "Paris.png"
+    "image": "Mk1-Paris.png"
   },
   "Mk1-Strun": {
     "name": "Mk1-Strun",
@@ -18102,7 +18102,7 @@
     "trigger": "Semi-Auto",
     "family": "Strun",
     "max_rank": 30.0,
-    "image": "Strun.png"
+    "image": "Mk1-Strun.png"
   },
   "Miter": {
     "name": "Miter",
@@ -18227,7 +18227,7 @@
     "trigger": "Charge",
     "family": "Mutalist Cernos",
     "max_rank": 30.0,
-    "image": "MutalistCernos.png"
+    "image": "Mutalist-Cernos.png"
   },
   "Mutalist Quanta": {
     "name": "Mutalist Quanta",
@@ -18281,7 +18281,7 @@
     "trigger": "Auto / Semi",
     "family": "Mutalist Quanta",
     "max_rank": 30.0,
-    "image": "MutalistQuanta.png"
+    "image": "Mutalist-Quanta.png"
   },
   "Nagantaka": {
     "name": "Nagantaka",
@@ -18371,7 +18371,7 @@
     "trigger": "Semi / Mag Burst",
     "family": "Nagantaka",
     "max_rank": 30.0,
-    "image": "NagantakaPrime.png"
+    "image": "Nagantaka-Prime.png"
   },
   "Nataruk": {
     "name": "Nataruk",
@@ -18640,7 +18640,7 @@
     "trigger": "Charge",
     "family": "Opticor",
     "max_rank": 30.0,
-    "image": "OpticorVandal.png"
+    "image": "Opticor-Vandal.png"
   },
   "Panthera": {
     "name": "Panthera",
@@ -18739,7 +18739,7 @@
     "trigger": "Auto / Held",
     "family": "Panthera",
     "max_rank": 30.0,
-    "image": "PantheraPrime.png"
+    "image": "Panthera-Prime.png"
   },
   "Paracyst": {
     "name": "Paracyst",
@@ -18908,7 +18908,7 @@
     "trigger": "Charge",
     "family": "Paris",
     "max_rank": 30.0,
-    "image": "ParisPrime.png"
+    "image": "Paris-Prime.png"
   },
   "Penta": {
     "name": "Penta",
@@ -19165,7 +19165,7 @@
     "trigger": "Held / Charge",
     "family": "Phantasma",
     "max_rank": 30.0,
-    "image": "PhantasmaPrime.png"
+    "image": "Phantasma-Prime.png"
   },
   "Phenmor": {
     "name": "Phenmor",
@@ -19266,7 +19266,7 @@
     "trigger": "Auto-Spool",
     "family": "Gorgon",
     "max_rank": 30.0,
-    "image": "PrismaGorgon.png"
+    "image": "Prisma-Gorgon.png"
   },
   "Prisma Grakata": {
     "name": "Prisma Grakata",
@@ -19298,7 +19298,7 @@
     "trigger": "Auto",
     "family": "Grakata",
     "max_rank": 30.0,
-    "image": "PrismaGrakata.png"
+    "image": "Prisma-Grakata.png"
   },
   "Prisma Grinlok": {
     "name": "Prisma Grinlok",
@@ -19330,7 +19330,7 @@
     "trigger": "Semi-Auto",
     "family": "Grinlok",
     "max_rank": 30.0,
-    "image": "PrismaGrinlok.png"
+    "image": "Prisma-Grinlok.png"
   },
   "Prisma Lenz": {
     "name": "Prisma Lenz",
@@ -19382,7 +19382,7 @@
     "trigger": "Charge",
     "family": "Lenz",
     "max_rank": 30.0,
-    "image": "PrismaLenz.png"
+    "image": "Prisma-Lenz.png"
   },
   "Prisma Tetra": {
     "name": "Prisma Tetra",
@@ -19413,7 +19413,7 @@
     "trigger": "Auto",
     "family": "Tetra",
     "max_rank": 30.0,
-    "image": "PrismaTetra.png"
+    "image": "Prisma-Tetra.png"
   },
   "Proboscis Cernos": {
     "name": "Proboscis Cernos",
@@ -19470,7 +19470,7 @@
     "trigger": "Charge",
     "family": "Proboscis Cernos",
     "max_rank": 30.0,
-    "image": "ProboscisCernos.png"
+    "image": "Proboscis-Cernos.png"
   },
   "Purgator 1": {
     "name": "Purgator 1",
@@ -19501,7 +19501,7 @@
     "trigger": "Semi-Auto",
     "family": "Purgator 1",
     "max_rank": 30.0,
-    "image": "Purgator1.png"
+    "image": "Purgator-1.png"
   },
   "Quanta": {
     "name": "Quanta",
@@ -19625,7 +19625,7 @@
     "trigger": "Held / Semi",
     "family": "Quanta",
     "max_rank": 30.0,
-    "image": "QuantaVandal.png"
+    "image": "Quanta-Vandal.png"
   },
   "Quartakk": {
     "name": "Quartakk",
@@ -19751,7 +19751,7 @@
     "trigger": "Charge",
     "family": "Cernos",
     "max_rank": 30.0,
-    "image": "RaktaCernos.png"
+    "image": "Rakta-Cernos.png"
   },
   "Rauta": {
     "name": "Rauta",
@@ -19878,7 +19878,7 @@
     "trigger": "Semi-Auto",
     "family": "Rubico",
     "max_rank": 30.0,
-    "image": "RubicoPrime.png"
+    "image": "Rubico-Prime.png"
   },
   "Sancti Tigris": {
     "name": "Sancti Tigris",
@@ -19910,7 +19910,7 @@
     "trigger": "Duplex",
     "family": "Tigris",
     "max_rank": 30.0,
-    "image": "SanctiTigris.png"
+    "image": "Sancti-Tigris.png"
   },
   "Scourge": {
     "name": "Scourge",
@@ -20040,7 +20040,7 @@
     "trigger": "Auto",
     "family": "Scourge",
     "max_rank": 30.0,
-    "image": "ScourgePrime.png"
+    "image": "Scourge-Prime.png"
   },
   "Secura Penta": {
     "name": "Secura Penta",
@@ -20081,7 +20081,7 @@
     "trigger": "Active",
     "family": "Penta",
     "max_rank": 30.0,
-    "image": "SecuraPenta.png"
+    "image": "Secura-Penta.png"
   },
   "Shedu": {
     "name": "Shedu",
@@ -20237,7 +20237,7 @@
     "trigger": "Semi-Auto",
     "family": "Snipetron",
     "max_rank": 30.0,
-    "image": "SnipetronVandal.png"
+    "image": "Snipetron-Vandal.png"
   },
   "Sobek": {
     "name": "Sobek",
@@ -20359,7 +20359,7 @@
     "trigger": "Auto-Spool",
     "family": "Soma",
     "max_rank": 30.0,
-    "image": "SomaPrime.png"
+    "image": "Soma-Prime.png"
   },
   "Sporothrix": {
     "name": "Sporothrix",
@@ -20584,7 +20584,7 @@
     "trigger": "Auto / Semi",
     "family": "Stradavar",
     "max_rank": 30.0,
-    "image": "StradavarPrime.png"
+    "image": "Stradavar-Prime.png"
   },
   "Strun": {
     "name": "Strun",
@@ -20700,7 +20700,7 @@
     "trigger": "Semi-Auto",
     "family": "Strun",
     "max_rank": 30.0,
-    "image": "StrunPrime.png"
+    "image": "Strun-Prime.png"
   },
   "Strun Wraith": {
     "name": "Strun Wraith",
@@ -20758,7 +20758,7 @@
     "trigger": "Semi-Auto",
     "family": "Strun",
     "max_rank": 30.0,
-    "image": "StrunWraith.png"
+    "image": "Strun-Wraith.png"
   },
   "Supra": {
     "name": "Supra",
@@ -20822,7 +20822,7 @@
     "trigger": "Auto-Spool",
     "family": "Supra",
     "max_rank": 30.0,
-    "image": "SupraVandal.png"
+    "image": "Supra-Vandal.png"
   },
   "Sybaris": {
     "name": "Sybaris",
@@ -20912,7 +20912,7 @@
     "trigger": "Burst",
     "family": "Sybaris",
     "max_rank": 30.0,
-    "image": "SybarisPrime.png"
+    "image": "Sybaris-Prime.png"
   },
   "Synapse": {
     "name": "Synapse",
@@ -21004,7 +21004,7 @@
     "trigger": "Active",
     "family": "Simulor",
     "max_rank": 30.0,
-    "image": "SynoidSimulor.png"
+    "image": "Synoid-Simulor.png"
   },
   "Telos Boltor": {
     "name": "Telos Boltor",
@@ -21048,7 +21048,7 @@
     "trigger": "Auto",
     "family": "Boltor",
     "max_rank": 30.0,
-    "image": "TelosBoltor.png"
+    "image": "Telos-Boltor.png"
   },
   "Tenet Arca Plasmor": {
     "name": "Tenet Arca Plasmor",
@@ -21078,7 +21078,7 @@
     "trigger": "Semi-Auto",
     "family": "Arca Plasmor",
     "max_rank": 40.0,
-    "image": "TenetArcaPlasmor.png"
+    "image": "Tenet-Arca-Plasmor.png"
   },
   "Tenet Envoy": {
     "name": "Tenet Envoy",
@@ -21119,7 +21119,7 @@
     "trigger": "Auto",
     "family": "Tenet Envoy",
     "max_rank": 40.0,
-    "image": "TenetEnvoy.png"
+    "image": "Tenet-Envoy.png"
   },
   "Tenet Ferrox": {
     "name": "Tenet Ferrox",
@@ -21188,7 +21188,7 @@
     "trigger": "Charged Auto",
     "family": "Ferrox",
     "max_rank": 40.0,
-    "image": "TenetFerrox.png"
+    "image": "Tenet-Ferrox.png"
   },
   "Tenet Flux Rifle": {
     "name": "Tenet Flux Rifle",
@@ -21219,7 +21219,7 @@
     "trigger": "Auto",
     "family": "Flux Rifle",
     "max_rank": 40.0,
-    "image": "TenetFluxRifle.png"
+    "image": "Tenet-Flux-Rifle.png"
   },
   "Tenet Glaxion": {
     "name": "Tenet Glaxion",
@@ -21249,7 +21249,7 @@
     "trigger": "Held",
     "family": "Glaxion",
     "max_rank": 40.0,
-    "image": "TenetGlaxion.png"
+    "image": "Tenet-Glaxion.png"
   },
   "Tenet Tetra": {
     "name": "Tenet Tetra",
@@ -21303,7 +21303,7 @@
     "trigger": "Auto / Semi",
     "family": "Tetra",
     "max_rank": 40.0,
-    "image": "TenetTetra.png"
+    "image": "Tenet-Tetra.png"
   },
   "Tenora": {
     "name": "Tenora",
@@ -21393,7 +21393,7 @@
     "trigger": "Auto-Spool / Charge",
     "family": "Tenora",
     "max_rank": 30.0,
-    "image": "TenoraPrime.png"
+    "image": "Tenora-Prime.png"
   },
   "Tetra": {
     "name": "Tetra",
@@ -21546,7 +21546,7 @@
     "trigger": "Burst / Semi / Auto",
     "family": "Tiberon",
     "max_rank": 30.0,
-    "image": "TiberonPrime.png"
+    "image": "Tiberon-Prime.png"
   },
   "Tigris": {
     "name": "Tigris",
@@ -21610,7 +21610,7 @@
     "trigger": "Duplex",
     "family": "Tigris",
     "max_rank": 30.0,
-    "image": "TigrisPrime.png"
+    "image": "Tigris-Prime.png"
   },
   "Tonkor": {
     "name": "Tonkor",
@@ -21833,7 +21833,7 @@
     "trigger": "Auto / Semi",
     "family": "Trumna",
     "max_rank": 30.0,
-    "image": "TrumnaPrime.png"
+    "image": "Trumna-Prime.png"
   },
   "Vaykor Hek": {
     "name": "Vaykor Hek",
@@ -21865,7 +21865,7 @@
     "trigger": "Semi-Auto",
     "family": "Hek",
     "max_rank": 30.0,
-    "image": "VaykorHek.png"
+    "image": "Vaykor-Hek.png"
   },
   "Vadarya Prime": {
     "name": "Vadarya Prime",
@@ -21895,7 +21895,7 @@
     "trigger": "Charge",
     "family": "Vadarya Prime",
     "max_rank": 30.0,
-    "image": "VadaryaPrime.png"
+    "image": "Vadarya-Prime.png"
   },
   "Vectis": {
     "name": "Vectis",
@@ -21959,7 +21959,7 @@
     "trigger": "Semi-Auto",
     "family": "Vectis",
     "max_rank": 30.0,
-    "image": "VectisPrime.png"
+    "image": "Vectis-Prime.png"
   },
   "Veldt": {
     "name": "Veldt",
@@ -22022,7 +22022,7 @@
     "trigger": "Semi-Auto",
     "family": "Vinquibus",
     "max_rank": 30.0,
-    "image": "Vinquibus.png"
+    "image": "Vinquibus-(Primary).png"
   },
   "Vulkar": {
     "name": "Vulkar",
@@ -22085,7 +22085,7 @@
     "trigger": "Semi-Auto",
     "family": "Vulkar",
     "max_rank": 30.0,
-    "image": "VulkarWraith.png"
+    "image": "Vulkar-Wraith.png"
   },
   "Zarr": {
     "name": "Zarr",
@@ -22283,7 +22283,7 @@
     "trigger": "Auto",
     "family": "Zhuge",
     "max_rank": 30.0,
-    "image": "ZhugePrime.png"
+    "image": "Zhuge-Prime.png"
   },
   "Acrid": {
     "name": "Acrid",
@@ -22420,7 +22420,7 @@
     "trigger": "Auto",
     "family": "Afuris",
     "max_rank": 30.0,
-    "image": "AfurisPrime.png"
+    "image": "Afuris-Prime.png"
   },
   "Akarius": {
     "name": "Akarius",
@@ -22502,7 +22502,7 @@
     "trigger": "Burst",
     "family": "Akarius",
     "max_rank": 30.0,
-    "image": "AkariusPrime.png"
+    "image": "Akarius-Prime.png"
   },
   "Akbolto": {
     "name": "Akbolto",
@@ -22565,7 +22565,7 @@
     "trigger": "Semi-Auto",
     "family": "Akbolto",
     "max_rank": 30.0,
-    "image": "AkboltoPrime.png"
+    "image": "Akbolto-Prime.png"
   },
   "Akbronco": {
     "name": "Akbronco",
@@ -22629,7 +22629,7 @@
     "trigger": "Semi-Auto",
     "family": "Akbronco",
     "max_rank": 30.0,
-    "image": "AkbroncoPrime.png"
+    "image": "Akbronco-Prime.png"
   },
   "Akjagara": {
     "name": "Akjagara",
@@ -22693,7 +22693,7 @@
     "trigger": "Burst",
     "family": "Akjagara",
     "max_rank": 30.0,
-    "image": "AkjagaraPrime.png"
+    "image": "Akjagara-Prime.png"
   },
   "Aklato": {
     "name": "Aklato",
@@ -22789,7 +22789,7 @@
     "trigger": "Semi-Auto",
     "family": "Aklex",
     "max_rank": 30.0,
-    "image": "AklexPrime.png"
+    "image": "Aklex-Prime.png"
   },
   "Akmagnus": {
     "name": "Akmagnus",
@@ -22853,7 +22853,7 @@
     "trigger": "Semi-Auto",
     "family": "Akmagnus",
     "max_rank": 30.0,
-    "image": "AkmagnusPrime.png"
+    "image": "Akmagnus-Prime.png"
   },
   "Aksomati": {
     "name": "Aksomati",
@@ -22917,7 +22917,7 @@
     "trigger": "Auto-Spool",
     "family": "Aksomati",
     "max_rank": 30.0,
-    "image": "AksomatiPrime.png"
+    "image": "Aksomati-Prime.png"
   },
   "Akstiletto": {
     "name": "Akstiletto",
@@ -22981,7 +22981,7 @@
     "trigger": "Auto",
     "family": "Akstiletto",
     "max_rank": 30.0,
-    "image": "AkstilettoPrime.png"
+    "image": "Akstiletto-Prime.png"
   },
   "Akvasto": {
     "name": "Akvasto",
@@ -23045,7 +23045,7 @@
     "trigger": "Semi-Auto",
     "family": "Akvasto",
     "max_rank": 30.0,
-    "image": "AkvastoPrime.png"
+    "image": "Akvasto-Prime.png"
   },
   "Akzani": {
     "name": "Akzani",
@@ -23160,7 +23160,7 @@
     "trigger": "Semi-Auto",
     "family": "Arca Scisco",
     "max_rank": 30.0,
-    "image": "ArcaScisco.png"
+    "image": "Arca-Scisco.png"
   },
   "Athodai": {
     "name": "Athodai",
@@ -23347,7 +23347,7 @@
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "BalefireCharger.png"
+    "image": "Balefire-Charger.png"
   },
   "Balefire Charger Prime": {
     "name": "Balefire Charger Prime",
@@ -23396,7 +23396,7 @@
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "BalefireChargerPrime.png"
+    "image": "Balefire-Charger-Prime.png"
   },
   "Ballistica": {
     "name": "Ballistica",
@@ -23486,7 +23486,7 @@
     "trigger": "Charge",
     "family": "Ballistica",
     "max_rank": 30.0,
-    "image": "BallisticaPrime.png"
+    "image": "Ballistica-Prime.png"
   },
   "Bolto": {
     "name": "Bolto",
@@ -23639,7 +23639,7 @@
     "trigger": "Semi-Auto",
     "family": "Bronco",
     "max_rank": 30.0,
-    "image": "BroncoPrime.png"
+    "image": "Bronco-Prime.png"
   },
   "Cantare": {
     "name": "Cantare",
@@ -23902,7 +23902,7 @@
     "trigger": "Held",
     "family": "Catabolyst",
     "max_rank": 40.0,
-    "image": "CodaCatabolyst.png"
+    "image": "Coda-Catabolyst.png"
   },
   "Coda Pox": {
     "name": "Coda Pox",
@@ -23943,7 +23943,7 @@
     "trigger": "Auto",
     "family": "Pox",
     "max_rank": 40.0,
-    "image": "CodaPox.png"
+    "image": "Coda-Pox.png"
   },
   "Coda Tysis": {
     "name": "Coda Tysis",
@@ -23986,7 +23986,7 @@
     "trigger": "Semi-Auto",
     "family": "Tysis",
     "max_rank": 40.0,
-    "image": "CodaTysis.png"
+    "image": "Coda-Tysis.png"
   },
   "Cyanex": {
     "name": "Cyanex",
@@ -24192,7 +24192,7 @@
     "trigger": "Auto",
     "family": "Afuris",
     "max_rank": 30.0,
-    "image": "DexFuris.png"
+    "image": "Dex-Furis.png"
   },
   "Dex Pixia": {
     "name": "Dex Pixia",
@@ -24221,7 +24221,7 @@
     "class": "Exalted Weapon",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "DexPixia.png"
+    "image": "Dex-Pixia.png"
   },
   "Dex Pixia Prime": {
     "name": "Dex Pixia Prime",
@@ -24250,7 +24250,7 @@
     "class": "Exalted Weapon",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "DexPixiaPrime.png"
+    "image": "Dex-Pixia-Prime.png"
   },
   "Dual Cestra": {
     "name": "Dual Cestra",
@@ -24281,7 +24281,7 @@
     "trigger": "Auto",
     "family": "Dual Cestra",
     "max_rank": 30.0,
-    "image": "DualCestra.png"
+    "image": "Dual-Cestra.png"
   },
   "Dual Coda Torxica": {
     "name": "Dual Coda Torxica",
@@ -24312,7 +24312,7 @@
     "trigger": "Auto",
     "family": "Dual Torxica",
     "max_rank": 40.0,
-    "image": "DualCodaTorxica.png"
+    "image": "Dual-Coda-Torxica.png"
   },
   "Dual Toxocyst": {
     "name": "Dual Toxocyst",
@@ -24357,7 +24357,7 @@
     "trigger": "Semi-Auto",
     "family": "Dual Toxocyst",
     "max_rank": 30.0,
-    "image": "DualToxocyst.png"
+    "image": "Dual-Toxocyst.png"
   },
   "EFV-8 Mars": {
     "name": "EFV-8 Mars",
@@ -24410,7 +24410,7 @@
     "trigger": "Semi-Auto / Charge",
     "family": "EFV-8 Mars",
     "max_rank": 30.0,
-    "image": "EFV-8Mars.png"
+    "image": "EFV-8-Mars.png"
   },
   "Embolist": {
     "name": "Embolist",
@@ -24552,7 +24552,7 @@
     "trigger": "Semi / Charge",
     "family": "Epitaph",
     "max_rank": 30.0,
-    "image": "EpitaphPrime.png"
+    "image": "Epitaph-Prime.png"
   },
   "Euphona Prime": {
     "name": "Euphona Prime",
@@ -24597,7 +24597,7 @@
     "trigger": "Semi-Auto",
     "family": "Euphona Prime",
     "max_rank": 30.0,
-    "image": "EuphonaPrime.png"
+    "image": "Euphona-Prime.png"
   },
   "Furis": {
     "name": "Furis",
@@ -24900,7 +24900,7 @@
     "trigger": "Auto",
     "family": "Hikou",
     "max_rank": 30.0,
-    "image": "HikouPrime.png"
+    "image": "Hikou-Prime.png"
   },
   "Hystrix": {
     "name": "Hystrix",
@@ -25042,7 +25042,7 @@
     "trigger": "Auto",
     "family": "Hystrix",
     "max_rank": 30.0,
-    "image": "HystrixPrime.png"
+    "image": "Hystrix-Prime.png"
   },
   "Knell": {
     "name": "Knell",
@@ -25106,7 +25106,7 @@
     "trigger": "Auto",
     "family": "Knell",
     "max_rank": 30.0,
-    "image": "KnellPrime.png"
+    "image": "Knell-Prime.png"
   },
   "Kohmak": {
     "name": "Kohmak",
@@ -25233,7 +25233,7 @@
     "trigger": "Auto",
     "family": "Kompressa",
     "max_rank": 30.0,
-    "image": "KompressaPrime.png"
+    "image": "Kompressa-Prime.png"
   },
   "Kraken": {
     "name": "Kraken",
@@ -25405,7 +25405,7 @@
     "trigger": "Semi-Auto",
     "family": "Brakk",
     "max_rank": 40.0,
-    "image": "KuvaBrakk.png"
+    "image": "Kuva-Brakk.png"
   },
   "Kuva Kraken": {
     "name": "Kuva Kraken",
@@ -25450,7 +25450,7 @@
     "trigger": "Burst / Mag Burst",
     "family": "Kraken",
     "max_rank": 40.0,
-    "image": "KuvaKraken.png"
+    "image": "Kuva-Kraken.png"
   },
   "Kuva Nukor": {
     "name": "Kuva Nukor",
@@ -25480,7 +25480,7 @@
     "trigger": "Held",
     "family": "Nukor",
     "max_rank": 40.0,
-    "image": "KuvaNukor.png"
+    "image": "Kuva-Nukor.png"
   },
   "Kuva Seer": {
     "name": "Kuva Seer",
@@ -25523,7 +25523,7 @@
     "trigger": "Semi-Auto",
     "family": "Seer",
     "max_rank": 40.0,
-    "image": "KuvaSeer.png"
+    "image": "Kuva-Seer.png"
   },
   "Kuva Twin Stubbas": {
     "name": "Kuva Twin Stubbas",
@@ -25555,7 +25555,7 @@
     "trigger": "Auto",
     "family": "Kuva Twin Stubbas",
     "max_rank": 40.0,
-    "image": "KuvaTwinStubbas.png"
+    "image": "Kuva-Twin-Stubbas.png"
   },
   "Laetum": {
     "name": "Laetum",
@@ -25698,7 +25698,7 @@
     "trigger": "Semi-Auto",
     "family": "Lato",
     "max_rank": 30.0,
-    "image": "LatoPrime.png"
+    "image": "Lato-Prime.png"
   },
   "Lato Vandal": {
     "name": "Lato Vandal",
@@ -25743,7 +25743,7 @@
     "trigger": "Semi-Auto",
     "family": "Lato",
     "max_rank": 30.0,
-    "image": "LatoVandal.png"
+    "image": "Lato-Vandal.png"
   },
   "Lex": {
     "name": "Lex",
@@ -25835,7 +25835,7 @@
     "trigger": "Semi-Auto",
     "family": "Lex",
     "max_rank": 30.0,
-    "image": "LexPrime.png"
+    "image": "Lex-Prime.png"
   },
   "Mk1-Furis": {
     "name": "Mk1-Furis",
@@ -25878,7 +25878,7 @@
     "trigger": "Auto",
     "family": "Furis",
     "max_rank": 30.0,
-    "image": "Furis.png"
+    "image": "Mk1-Furis.png"
   },
   "Mk1-Kunai": {
     "name": "Mk1-Kunai",
@@ -25923,7 +25923,7 @@
     "trigger": "Auto",
     "family": "Kunai",
     "max_rank": 30.0,
-    "image": "Kunai.png"
+    "image": "Mk1-Kunai.png"
   },
   "Magnus": {
     "name": "Magnus",
@@ -25987,7 +25987,7 @@
     "trigger": "Semi-Auto",
     "family": "Magnus",
     "max_rank": 30.0,
-    "image": "MagnusPrime.png"
+    "image": "Magnus-Prime.png"
   },
   "Mara Detron": {
     "name": "Mara Detron",
@@ -26017,7 +26017,7 @@
     "trigger": "Semi-Auto",
     "family": "Detron",
     "max_rank": 30.0,
-    "image": "MaraDetron.png"
+    "image": "Mara-Detron.png"
   },
   "Marelok": {
     "name": "Marelok",
@@ -26305,7 +26305,7 @@
     "trigger": "Semi-Auto / Mag Burst",
     "family": "Pandero",
     "max_rank": 30.0,
-    "image": "PanderoPrime.png"
+    "image": "Pandero-Prime.png"
   },
   "Plinx": {
     "name": "Plinx",
@@ -26431,7 +26431,7 @@
     "trigger": "Charge",
     "family": "Angstrum",
     "max_rank": 30.0,
-    "image": "PrismaAngstrum.png"
+    "image": "Prisma-Angstrum.png"
   },
   "Prisma Twin Gremlins": {
     "name": "Prisma Twin Gremlins",
@@ -26463,7 +26463,7 @@
     "trigger": "Auto",
     "family": "Twin Gremlins",
     "max_rank": 30.0,
-    "image": "PrismaTwinGremlins.png"
+    "image": "Prisma-Twin-Gremlins.png"
   },
   "Pyrana": {
     "name": "Pyrana",
@@ -26527,7 +26527,7 @@
     "trigger": "Auto",
     "family": "Pyrana",
     "max_rank": 30.0,
-    "image": "PyranaPrime.png"
+    "image": "Pyrana-Prime.png"
   },
   "Quatz": {
     "name": "Quatz",
@@ -26623,7 +26623,7 @@
     "trigger": "Burst / Charge",
     "family": "Ballistica",
     "max_rank": 30.0,
-    "image": "RaktaBallistica.png"
+    "image": "Rakta-Ballistica.png"
   },
   "Regulators": {
     "name": "Regulators",
@@ -26681,7 +26681,7 @@
     "class": "Exalted Weapon",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "RegulatorsPrime.png"
+    "image": "Regulators-Prime.png"
   },
   "Sagek Prime": {
     "name": "Sagek Prime",
@@ -26712,7 +26712,7 @@
     "class": "Pistol",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "SagekPrime.png"
+    "image": "Sagek-Prime.png"
   },
   "Sancti Castanas": {
     "name": "Sancti Castanas",
@@ -26753,7 +26753,7 @@
     "trigger": "Active",
     "family": "Castanas",
     "max_rank": 30.0,
-    "image": "SanctiCastanas.png"
+    "image": "Sancti-Castanas.png"
   },
   "Scyotid": {
     "name": "Scyotid",
@@ -26828,7 +26828,7 @@
     "trigger": "Auto-Spool",
     "family": "Dual Cestra",
     "max_rank": 30.0,
-    "image": "SecuraDualCestra.png"
+    "image": "Secura-Dual-Cestra.png"
   },
   "Seer": {
     "name": "Seer",
@@ -27017,7 +27017,7 @@
     "trigger": "Burst",
     "family": "Sicarus",
     "max_rank": 30.0,
-    "image": "SicarusPrime.png"
+    "image": "Sicarus-Prime.png"
   },
   "Sonicor": {
     "name": "Sonicor",
@@ -27120,7 +27120,7 @@
     "trigger": "Held",
     "family": "Spectra",
     "max_rank": 30.0,
-    "image": "SpectraVandal.png"
+    "image": "Spectra-Vandal.png"
   },
   "Spira": {
     "name": "Spira",
@@ -27184,7 +27184,7 @@
     "trigger": "Auto",
     "family": "Spira",
     "max_rank": 30.0,
-    "image": "SpiraPrime.png"
+    "image": "Spira-Prime.png"
   },
   "Staticor": {
     "name": "Staticor",
@@ -27372,7 +27372,7 @@
     "trigger": "Held",
     "family": "Gammacor",
     "max_rank": 30.0,
-    "image": "SynoidGammacor.png"
+    "image": "Synoid-Gammacor.png"
   },
   "Talons": {
     "name": "Talons",
@@ -27444,7 +27444,7 @@
     "trigger": "Semi-Auto",
     "family": "Akbolto",
     "max_rank": 30.0,
-    "image": "TelosAkbolto.png"
+    "image": "Telos-Akbolto.png"
   },
   "Tenet Cycron": {
     "name": "Tenet Cycron",
@@ -27474,7 +27474,7 @@
     "trigger": "Held",
     "family": "Cycron",
     "max_rank": 40.0,
-    "image": "TenetCycron.png"
+    "image": "Tenet-Cycron.png"
   },
   "Tenet Detron": {
     "name": "Tenet Detron",
@@ -27515,7 +27515,7 @@
     "trigger": "Semi-Auto / Mag Burst",
     "family": "Detron",
     "max_rank": 40.0,
-    "image": "TenetDetron.png"
+    "image": "Tenet-Detron.png"
   },
   "Tenet Diplos": {
     "name": "Tenet Diplos",
@@ -27560,7 +27560,7 @@
     "trigger": "Auto / Burst",
     "family": "Tenet Diplos",
     "max_rank": 40.0,
-    "image": "TenetDiplos.png"
+    "image": "Tenet-Diplos.png"
   },
   "Tenet Plinx": {
     "name": "Tenet Plinx",
@@ -27615,7 +27615,7 @@
     "trigger": "Semi / Charge",
     "family": "Plinx",
     "max_rank": 40.0,
-    "image": "TenetPlinx.png"
+    "image": "Tenet-Plinx.png"
   },
   "Tenet Spirex": {
     "name": "Tenet Spirex",
@@ -27660,7 +27660,7 @@
     "trigger": "Semi-Auto",
     "family": "Tenet Spirex",
     "max_rank": 40.0,
-    "image": "TenetSpirex.png"
+    "image": "Tenet-Spirex.png"
   },
   "Twin Grakatas": {
     "name": "Twin Grakatas",
@@ -27692,7 +27692,7 @@
     "trigger": "Auto",
     "family": "Twin Grakatas",
     "max_rank": 30.0,
-    "image": "TwinGrakatas.png"
+    "image": "Twin-Grakatas.png"
   },
   "Twin Gremlins": {
     "name": "Twin Gremlins",
@@ -27724,7 +27724,7 @@
     "trigger": "Auto",
     "family": "Twin Gremlins",
     "max_rank": 30.0,
-    "image": "TwinGremlins.png"
+    "image": "Twin-Gremlins.png"
   },
   "Twin Kohmak": {
     "name": "Twin Kohmak",
@@ -27769,7 +27769,7 @@
     "trigger": "Auto-Spool",
     "family": "Twin Kohmak",
     "max_rank": 30.0,
-    "image": "TwinKohmak.png"
+    "image": "Twin-Kohmak.png"
   },
   "Twin Rogga": {
     "name": "Twin Rogga",
@@ -27801,7 +27801,7 @@
     "trigger": "Semi-Auto",
     "family": "Twin Rogga",
     "max_rank": 30.0,
-    "image": "TwinRogga.png"
+    "image": "Twin-Rogga.png"
   },
   "Twin Vipers": {
     "name": "Twin Vipers",
@@ -27833,7 +27833,7 @@
     "trigger": "Auto",
     "family": "Twin Vipers",
     "max_rank": 30.0,
-    "image": "TwinVipers.png"
+    "image": "Twin-Vipers.png"
   },
   "Twin Vipers Wraith": {
     "name": "Twin Vipers Wraith",
@@ -27865,7 +27865,7 @@
     "trigger": "Auto",
     "family": "Twin Vipers",
     "max_rank": 30.0,
-    "image": "TwinVipersWraith.png"
+    "image": "Twin-Vipers-Wraith.png"
   },
   "Tysis": {
     "name": "Tysis",
@@ -27998,7 +27998,7 @@
     "trigger": "Semi-Auto",
     "family": "Vasto",
     "max_rank": 30.0,
-    "image": "VastoPrime.png"
+    "image": "Vasto-Prime.png"
   },
   "Vaykor Marelok": {
     "name": "Vaykor Marelok",
@@ -28030,7 +28030,7 @@
     "trigger": "Semi-Auto",
     "family": "Marelok",
     "max_rank": 30.0,
-    "image": "VaykorMarelok.png"
+    "image": "Vaykor-Marelok.png"
   },
   "Velox": {
     "name": "Velox",
@@ -28094,7 +28094,7 @@
     "trigger": "Auto",
     "family": "Velox",
     "max_rank": 30.0,
-    "image": "VeloxPrime.png"
+    "image": "Velox-Prime.png"
   },
   "Vesper 77": {
     "name": "Vesper 77",
@@ -28125,7 +28125,7 @@
     "trigger": "Semi-Auto",
     "family": "Vesper 77",
     "max_rank": 30.0,
-    "image": "Vesper77.png"
+    "image": "Vesper-77.png"
   },
   "Viper": {
     "name": "Viper",
@@ -28189,7 +28189,7 @@
     "trigger": "Auto",
     "family": "Viper",
     "max_rank": 30.0,
-    "image": "ViperWraith.png"
+    "image": "Viper-Wraith.png"
   },
   "Zakti": {
     "name": "Zakti",
@@ -28273,7 +28273,7 @@
     "trigger": "Semi-Auto",
     "family": "Zakti",
     "max_rank": 30.0,
-    "image": "ZaktiPrime.png"
+    "image": "Zakti-Prime.png"
   },
   "Zylok": {
     "name": "Zylok",
@@ -28383,7 +28383,7 @@
     "trigger": "Duplex",
     "family": "Zylok",
     "max_rank": 30.0,
-    "image": "ZylokPrime.png"
+    "image": "Zylok-Prime.png"
   },
   "Zymos": {
     "name": "Zymos",
