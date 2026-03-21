@@ -40,18 +40,16 @@
     <!-- Riven Builder Modal -->
     <div class="mod-picker-overlay" id="riven-picker-overlay">
       <div class="riven-modal">
-        <div class="riven-modal-header">
-          <div class="riven-modal-header-left">
-            <span class="riven-modal-icon">⬡</span>
-            <h3>Riven Mod</h3>
-          </div>
-          <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
+        <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
+        <div class="riven-modal-left">
+          <img id="riven-art" class="riven-art-img" src="" alt="">
         </div>
-        <div class="riven-modal-body">
+        <div class="riven-modal-right">
+          <h2 class="riven-modal-title">Create riven</h2>
           <div id="riven-rows"></div>
-          <div class="riven-action-row">
-            <button class="btn-riven-apply" onclick="applyRiven()">Apply</button>
-            <button class="btn-riven-clear" onclick="clearRiven()">Clear</button>
+          <button class="btn-riven-apply" onclick="applyRiven()">Add riven</button>
+          <div class="riven-modal-desc">
+            Build full builds to test your riven mod. The effect of mod dependent on the rest of your build.
           </div>
         </div>
       </div>
@@ -1236,6 +1234,9 @@ function openRivenBuilder() {
     rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 0}
   );
   renderRivenRows();
+  const weaponName = document.getElementById('weapon-select')?.value || '';
+  const art = document.getElementById('riven-art');
+  if (art) art.src = weaponName ? `/static/images/weapons/${weaponName}.png` : '';
   document.getElementById('riven-picker-overlay').classList.add('active');
 }
 
@@ -1293,12 +1294,10 @@ function renderRivenRows() {
           `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
         ).join('')}
       </select>
-      <div class="riven-input-wrap">
-        <input type="number" class="riven-stat-input" step="0.1" value="${s.pct || ''}"
-          placeholder="0"
-          onchange="onRivenDraftChange(${i},'pct',this.value)"
-          oninput="onRivenDraftChange(${i},'pct',this.value)">
-      </div>
+      <input type="number" class="riven-stat-input" step="0.1" value="${s.pct || ''}"
+        placeholder="0"
+        onchange="onRivenDraftChange(${i},'pct',this.value)"
+        oninput="onRivenDraftChange(${i},'pct',this.value)">
       <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">×</button>
     </div>
   `).join('');
