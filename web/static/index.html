@@ -399,6 +399,18 @@ function updateElementBadges() {
     }
   });
 
+  // Append weapon's innate primary elements at slot 8 (after all 8 mod slots)
+  const weaponData = getCurrentWeapon();
+  if (weaponData) {
+    const atk = getSelectedAttackData(weaponData);
+    const bd = ((atk || weaponData).base_damage) || {};
+    Object.keys(bd).forEach(k => {
+      if (PRIMARY_ELEMENTS.has(k) && bd[k] > 0) {
+        elemQueue.push({ element: k, slotIdx: 8 });
+      }
+    });
+  }
+
   // Combine in order (same as combiner.py logic)
   const badges = [];
   const used = new Set();
@@ -610,6 +622,7 @@ function onWeaponChange() {
   showWeaponStats(weapon);
   updateModdedStats();
   updateOptimalBtn();
+  updateElementBadges();
 }
 
 function updateAttackSelector(weapon) {
@@ -624,6 +637,7 @@ function selectAttack(name) {
   selectedAttack = name;
   showWeaponStats(getCurrentWeapon());
   updateModdedStats();
+  updateElementBadges();
 }
 
 function getSelectedAttackData(weapon) {
