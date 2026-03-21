@@ -802,6 +802,7 @@ select option {
 }
 .riven-stat-select {
   flex: 1;
+  min-width: 0;
   height: 36px;
   padding: 0 10px;
   background: var(--surface);
@@ -809,7 +810,7 @@ select option {
   border-radius: 6px;
   color: var(--text);
   font-size: 14px;
-  appearance: auto;
+  appearance: none;
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -818,6 +819,7 @@ select option {
   border-color: rgba(155, 109, 208, 0.7);
 }
 .riven-stat-input {
+  flex: 0 0 56px;
   width: 56px;
   height: 36px;
   padding: 0 8px;
