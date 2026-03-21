@@ -296,6 +296,8 @@ _RIVEN_STAT_MAP: dict[str, str] = {
     "viral":          "viral",
 }
 
+RIVEN_STAT_NAMES: frozenset[str] = frozenset(_RIVEN_STAT_MAP)
+
 _RIVEN_ELEM_TYPES: dict[str, DamageType] = {
     "heat":        DamageType.HEAT,
     "cold":        DamageType.COLD,

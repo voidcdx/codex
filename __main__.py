@@ -4,6 +4,7 @@ python -m dc — Warframe Damage Calculator CLI
 Usage:
   python -m dc "Soma Prime" "Serration" "Split Chamber" vs "Heavy Gunner"
   python -m dc "Soma Prime" "Serration" vs "Heavy Gunner" --crit average
+  python -m dc "Soma Prime" vs "Heavy Gunner" --viral 5 --procs
   python -m dc --list-weapons
   python -m dc --list-mods
   python -m dc --list-enemies
@@ -19,8 +20,8 @@ _project_root = Path(__file__).parent
 if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
-from src.calculator import DamageCalculator, calculate_crit_multiplier
-from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, make_riven_mod
+from src.calculator import DamageCalculator, calculate_crit_multiplier, VIRAL_STACK_MULTIPLIERS
+from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, make_riven_mod, RIVEN_STAT_NAMES
 
 
 def _parse_riven_arg(riven_str: str) -> list[dict]:
@@ -31,7 +32,12 @@ def _parse_riven_arg(riven_str: str) -> list[dict]:
         if ":" not in pair:
             continue
         key, _, val = pair.partition(":")
-        stats.append({"stat": key.strip(), "value": float(val.strip())})
+        key = key.strip()
+        if key not in RIVEN_STAT_NAMES:
+            valid = ", ".join(sorted(RIVEN_STAT_NAMES))
+            print(f"Warning: unknown riven stat '{key}' — ignored. Valid: {valid}")
+            continue
+        stats.append({"stat": key, "value": float(val.strip())})
     return stats
 
 
@@ -43,6 +49,9 @@ def _print_results(
     headshot: bool,
     attack_name: str | None = None,
     riven_str: str | None = None,
+    viral_stacks: int = 0,
+    corrosive_stacks: int = 0,
+    show_procs: bool = False,
 ) -> None:
     weapon = load_weapon(weapon_name, attack_name=attack_name)
     mods   = [load_mod(m) for m in mod_names]
@@ -62,6 +71,8 @@ def _print_results(
         enemy=enemy,
         crit_multiplier=crit_mult,
         is_crit_headshot=headshot,
+        viral_stacks=viral_stacks,
+        corrosive_stacks=corrosive_stacks,
     )
 
     total = sum(result.values())
@@ -81,7 +92,12 @@ def _print_results(
     print(f"Crit   : {crit_mode}  CC={total_cc*100:.1f}%  CM={total_cm:.1f}x"
           f"  eff={crit_mult:.3f}x")
     if headshot:
-        print(f"         (headshot — crit multiplier doubled)")
+        print(f"         (headshot: body part ×2; crit shots also double crit multiplier)")
+    if viral_stacks > 0:
+        vmult = VIRAL_STACK_MULTIPLIERS.get(min(viral_stacks, 10), 1.0)
+        print(f"Viral  : {viral_stacks} stack{'s' if viral_stacks != 1 else ''}  (×{vmult})")
+    if corrosive_stacks > 0:
+        print(f"Corros.: {corrosive_stacks} stack{'s' if corrosive_stacks != 1 else ''}")
     print()
     print(f"{'Damage type':<18} {'Final damage':>14}")
     print("-" * 34)
@@ -89,6 +105,34 @@ def _print_results(
         print(f"  {dtype.name:<16} {val:>14.4f}")
     print("-" * 34)
     print(f"  {'TOTAL':<16} {total:>14.4f}")
+
+    if show_procs:
+        procs = calc.calculate_procs(
+            weapon=weapon,
+            mods=mods,
+            enemy=enemy,
+            crit_multiplier=crit_mult,
+            is_crit_headshot=headshot,
+        )
+        _PROC_LABELS = {
+            "slash":       "Slash (Bleed)",
+            "heat":        "Heat  (Burn) ",
+            "gas":         "Gas   (Cloud)",
+            "toxin":       "Toxin (Poison)",
+            "electricity": "Elec. (Arc)  ",
+        }
+        active = [(k, v) for k, v in procs.items() if v["active"]]
+        if active:
+            print()
+            print(f"{'Status procs':<22} {'per tick':>10} {'total (6t)':>12}")
+            print("-" * 46)
+            for key, p in active:
+                label = _PROC_LABELS.get(key, key)
+                print(f"  {label:<20} {p['damage_per_tick']:>10.4f} {p['total_damage']:>12.4f}")
+        else:
+            print()
+            print("  (no active status procs)")
+
     print()
 
 
@@ -103,11 +147,17 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--crit", choices=["average", "guaranteed", "max"],
                         default="average", help="Crit mode (default: average)")
     parser.add_argument("--headshot", action="store_true",
-                        help="Apply headshot (doubles crit mult)")
+                        help="Apply headshot (body part ×2; doubles crit mult on crit shots)")
     parser.add_argument("--attack", default=None,
                         help='Attack mode to use (e.g. "Rocket Explosion"). Defaults to first.')
     parser.add_argument("--riven", default=None,
                         help='Riven stats as "stat:value,..." e.g. "damage:0.658,crit_chance:0.469"')
+    parser.add_argument("--viral", type=int, default=0, metavar="N",
+                        help="Viral stacks on enemy (0–10, default: 0)")
+    parser.add_argument("--corrosive", type=int, default=0, metavar="N",
+                        help="Corrosive stacks on enemy (0–10, default: 0)")
+    parser.add_argument("--procs", action="store_true",
+                        help="Show status proc damage per tick and total")
     parser.add_argument("args", nargs="*",
                         help='"WeaponName" [ModName ...] [vs EnemyName]')
 
@@ -151,7 +201,13 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(1)
 
     try:
-        _print_results(weapon_name, mod_names, enemy_name, ns.crit, ns.headshot, ns.attack, ns.riven)
+        _print_results(
+            weapon_name, mod_names, enemy_name, ns.crit, ns.headshot,
+            ns.attack, ns.riven,
+            viral_stacks=max(0, min(10, ns.viral)),
+            corrosive_stacks=max(0, min(10, ns.corrosive)),
+            show_procs=ns.procs,
+        )
     except KeyError as e:
         print(f"Error: {e}")
         sys.exit(1)
