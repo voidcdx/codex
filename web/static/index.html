@@ -665,7 +665,7 @@ function showWeaponStats(weapon) {
   const attackTabsHtml = hasMultiAttack
     ? `<div class="attack-tabs">${weapon.attacks.map(a =>
         `<button class="attack-tab${a.name === selectedAttack ? ' active' : ''}"
-          onclick="selectAttack(${JSON.stringify(a.name)})">${esc(a.name)}</button>`
+          onclick="selectAttack(this.dataset.name)" data-name="${esc(a.name)}">${esc(a.name)}</button>`
       ).join('')}</div>`
     : '';
 
