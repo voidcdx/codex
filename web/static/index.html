@@ -343,7 +343,7 @@ function clearModSlot(i) {
 }
 
 function getSelectedMods() {
-  const specials = [auraSlot, exilusSlot].filter(Boolean);
+  const specials = [stanceSlot, exilusSlot].filter(Boolean);
   return [...specials, ...modSlots.filter(n => n && n !== '__riven__')];
 }
 
@@ -369,9 +369,9 @@ function openModPicker(slotIndex) {
 }
 
 function openSpecialPicker(kind) {
-  _pickerSlot = kind; // 'aura' or 'exilus'
+  _pickerSlot = kind; // 'stance' or 'exilus'
   document.getElementById('picker-slot-num').textContent =
-    kind === 'aura' ? 'Aura / Stance' : 'Exilus';
+    kind === 'stance' ? 'Stance' : 'Exilus';
   const overlay = document.getElementById('mod-picker-overlay');
   overlay.classList.add('active');
   const search = document.getElementById('mod-picker-search');
@@ -390,8 +390,8 @@ function renderPickerList(query) {
   const types = getCompatibleModTypes(weapon);
   const q = query.toLowerCase();
   let filtered;
-  if (_pickerSlot === 'aura') {
-    filtered = allMods.filter(m => m.type === 'Aura')
+  if (_pickerSlot === 'stance') {
+    filtered = allMods.filter(m => m.type === 'Stance')
       .filter(m => !q || m.name.toLowerCase().includes(q));
   } else if (_pickerSlot === 'exilus') {
     const exilusSet = getExilusSet();
@@ -418,8 +418,8 @@ function renderPickerList(query) {
 
 function selectPickerMod(el) {
   if (_pickerSlot === -1) return;
-  if (_pickerSlot === 'aura') {
-    auraSlot = el.dataset.mod;
+  if (_pickerSlot === 'stance') {
+    stanceSlot = el.dataset.mod;
     closeModPicker();
     renderSpecialSlots();
   } else if (_pickerSlot === 'exilus') {
@@ -694,6 +694,10 @@ function getCompatibleModTypes(weapon) {
 
 function onWeaponChange() {
   selectedAttack = null;
+  // Stance slot is melee-only — clear if switching to a ranged weapon
+  if (stanceSlot && !isMeleeWeapon()) {
+    stanceSlot = '';
+  }
   // Exilus set is weapon-type-specific — clear exilus if it no longer applies
   if (exilusSlot && !getExilusSet().has(exilusSlot)) {
     exilusSlot = '';
@@ -1095,9 +1099,9 @@ const RIVEN_STAT_OPTIONS = [
 ];
 
 // ---------------------------------------------------------------------------
-// Special Slots (Aura / Exilus)
+// Special Slots (Stance / Exilus)
 // ---------------------------------------------------------------------------
-let auraSlot   = '';
+let stanceSlot = '';
 let exilusSlot = '';
 
 const EXILUS_PRIMARY = new Set([
@@ -1125,6 +1129,16 @@ const EXILUS_MELEE = new Set([
   'Tether Grenades',
 ]);
 
+function isMeleeWeapon() {
+  const w = getCurrentWeapon();
+  if (!w) return false;
+  const types = getCompatibleModTypes(w);
+  return types.has('Melee') || [...types].some(t =>
+    ['Daggers','Dual Daggers','Dual Swords','Swords','Hammers','Fists','Polearms',
+     'Scythes','Whips','Claws','Heavy Blade','Blade And Whip','Machetes',
+     'Nunchaku','Gunblade','Thrown Melee'].includes(t));
+}
+
 function getExilusSet() {
   const w = getCurrentWeapon();
   if (!w) return new Set([...EXILUS_PRIMARY, ...EXILUS_SECONDARY, ...EXILUS_MELEE]);
@@ -1139,15 +1153,19 @@ function getExilusSet() {
 
 function renderSpecialSlots() {
   const container = document.getElementById('special-slots');
-  const makeCard = (kind, slotName, label, colorClass) => {
+  const melee = isMeleeWeapon();
+  const hasWeapon = !!getCurrentWeapon();
+  const stanceDisabled = hasWeapon && !melee;
+
+  const makeCard = (kind, slotName, label, colorClass, icon, disabled) => {
     const card = document.createElement('div');
-    card.className = `mod-card special-slot ${colorClass}`;
-    card.onclick = () => openSpecialPicker(kind);
-    if (slotName) {
+    card.className = `mod-card special-slot ${colorClass}${disabled ? ' disabled' : ''}`;
+    if (!disabled) card.onclick = () => openSpecialPicker(kind);
+    if (slotName && !disabled) {
       const mod = allMods.find(m => m.name === slotName);
       const polIcon = mod ? polaritySVG(mod.polarity) : '';
       card.innerHTML = `
-        <button class="mod-clear" onclick="event.stopPropagation();clear${kind === 'aura' ? 'Aura' : 'Exilus'}()" title="Remove">&times;</button>
+        <button class="mod-clear" onclick="event.stopPropagation();clear${kind === 'stance' ? 'Stance' : 'Exilus'}()" title="Remove">&times;</button>
         ${polIcon}
         <div class="special-slot-label">${label}</div>
         <div class="mod-name">${esc(slotName)}</div>`;
@@ -1155,17 +1173,17 @@ function renderSpecialSlots() {
       card.classList.add('empty');
       card.innerHTML = `
         <div class="special-slot-label">${label}</div>
-        <div class="add-icon">+</div>`;
+        <div class="special-slot-icon">${icon}</div>`;
     }
     return card;
   };
   container.innerHTML = '';
-  container.appendChild(makeCard('aura',   auraSlot,   'Aura',   'aura-slot'));
-  container.appendChild(makeCard('exilus', exilusSlot, 'Exilus', 'exilus-slot'));
+  container.appendChild(makeCard('stance', stanceSlot, 'Stance', 'stance-slot', '⚔', stanceDisabled));
+  container.appendChild(makeCard('exilus', exilusSlot, 'Exilus', 'exilus-slot', '✦', false));
 }
 
-function clearAura() {
-  auraSlot = '';
+function clearStance() {
+  stanceSlot = '';
   renderSpecialSlots();
   updateModdedStats();
 }

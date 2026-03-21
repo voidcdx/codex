@@ -861,7 +861,11 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
 }
 .panel { animation: fadeIn 0.3s ease; }
 
-/* ── Special Slots (Aura / Exilus) ───────────────────── */
+/* ── Special Slots (Stance / Exilus) ─────────────────── */
+@keyframes slot-shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
 .special-slots-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -870,7 +874,6 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
 }
 .special-slot {
   position: relative;
-  min-height: 68px;
   cursor: pointer;
   justify-content: center;
 }
@@ -882,17 +885,51 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: 700;
-  opacity: 0.7;
+  opacity: 0.85;
 }
-.aura-slot::before   { background: linear-gradient(90deg, #1a5fa0, #6ab4ff, #1a5fa0) !important; }
-.exilus-slot::before { background: linear-gradient(90deg, #1e6b3e, #6fcf97, #1e6b3e) !important; }
-.aura-slot   { border-color: rgba(106,180,255,0.25) !important; }
-.exilus-slot { border-color: rgba(111,207,151,0.25) !important; }
-.aura-slot:hover   { border-color: rgba(106,180,255,0.7) !important; box-shadow: 0 0 12px rgba(106,180,255,0.15) !important; }
-.exilus-slot:hover { border-color: rgba(111,207,151,0.7) !important; box-shadow: 0 0 12px rgba(111,207,151,0.15) !important; }
-.aura-slot .special-slot-label   { color: #6ab4ff; }
-.exilus-slot .special-slot-label { color: #6fcf97; }
-.special-slot.empty .add-icon { font-size: 16px; color: var(--text-dim); }
+.special-slot-icon {
+  font-size: 22px;
+  line-height: 1;
+  margin-top: 4px;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+.special-slot:hover:not(.disabled) .special-slot-icon { opacity: 0.9; }
+
+/* Stance — gold sword */
+.stance-slot::before {
+  background: linear-gradient(90deg, #6b3d00, #f5c842, #fff6aa, #f5c842, #6b3d00) !important;
+  background-size: 200% auto !important;
+  animation: slot-shimmer 4s linear infinite;
+}
+.stance-slot { border-color: rgba(245,200,66,0.3) !important; }
+.stance-slot:hover:not(.disabled) {
+  border-color: rgba(245,200,66,0.75) !important;
+  box-shadow: 0 0 16px rgba(245,200,66,0.2) !important;
+}
+.stance-slot .special-slot-label { color: #f5c842; }
+
+/* Exilus — teal circuit */
+.exilus-slot::before {
+  background: linear-gradient(90deg, #064040, #4ecdc4, #a8f5f0, #4ecdc4, #064040) !important;
+  background-size: 200% auto !important;
+  animation: slot-shimmer 4s linear infinite;
+}
+.exilus-slot { border-color: rgba(78,205,196,0.3) !important; }
+.exilus-slot:hover {
+  border-color: rgba(78,205,196,0.75) !important;
+  box-shadow: 0 0 16px rgba(78,205,196,0.2) !important;
+}
+.exilus-slot .special-slot-label { color: #4ecdc4; }
+
+/* Disabled state (stance on ranged weapon) */
+.special-slot.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: not-allowed;
+  animation: none;
+}
+.special-slot.disabled::before { animation: none; }
 
 /* ── Responsive ─────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -938,5 +975,4 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
     gap: 6px;
   }
   .mod-card { min-height: 72px; }
-  .special-slot { min-height: 60px; }
 }
