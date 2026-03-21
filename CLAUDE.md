@@ -57,6 +57,14 @@ __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guarant
 ## 128 Tests Passing
 `pytest` — all pass. Run before committing.
 
+## Riven Mod Builder (Web UI)
+- **Slot:** Purple card in the mod grid. Clicking opens a two-column modal.
+- **Modal state:** `rivenDraft[]` — 4 rows, each `{stat, pct}`. Rendered by `renderRivenModal()`.
+- **Stat select:** Populated from `RIVEN_STATS` constant. Empty option = "no stat" (row inactive).
+- **% input:** `type="number"`, range `min="-999" max="9999"`. `maxlength` doesn't work on number inputs — 4-char cap enforced via `oninput` slice: `if(this.value.length>4)this.value=this.value.slice(0,4)`.
+- **Clear row:** `×` button calls `clearRivenRow(i)` → sets row to `{stat:'', pct:''}`.
+- **Apply:** `buildRivenFromDraft()` converts draft to a Mod-compatible object → `equippedMods['riven']`. Card shows stat count badge.
+
 ## Multi-Attack System
 Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Rocket Explosion; Torid: Grenade Impact + Poison Cloud + Incarnon Form). Each attack has its own damage, crit, status, fire rate, and shot type.
 
