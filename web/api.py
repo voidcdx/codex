@@ -244,6 +244,18 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     base_total = weapon.total_base_damage
     modded_total = sum(modded_dmg_dict.values())
 
+    # Quantized base: each IPS/innate type at 0% damage bonus — actual in-game unmodded values
+    quantized_base_dict: dict[str, float] = {}
+    for dt, v in weapon.base_damage.items():
+        q = quantize(float(v), base_damage)
+        if q != 0.0:
+            quantized_base_dict[dt.name.lower()] = q
+    for c in weapon.innate_elements:
+        key = c.type.name.lower()
+        q = quantize(quantized_base_dict.get(key, 0.0) + c.amount, base_damage)
+        if q != 0.0:
+            quantized_base_dict[key] = q
+
     # Base fire rate from selected attack
     if weapon.attacks:
         att_name = req.attack or ""
@@ -258,6 +270,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     return {
         "base_damage":  base_dmg_dict,
         "base_total":   round(base_total, 4),
+        "quantized_base_damage": quantized_base_dict,
         "modded_damage": modded_dmg_dict,
         "modded_total":  round(modded_total, 4),
         "base_cc":  base_cc,

@@ -882,8 +882,10 @@ async function _doUpdateModdedStats() {
 
     // Update damage table
     const atkData = getSelectedAttackData(weapon);
-    const hasAnyMods = mods.length > 0 || !!getRivenSpec();
-    renderDamageTable(atkData ? atkData.base_damage : weapon.base_damage, hasAnyMods ? data : null);
+    const qBase = data.quantized_base_damage || (atkData ? atkData.base_damage : weapon.base_damage);
+    const moddedDiffers = data && JSON.stringify(data.modded_damage) !== JSON.stringify(data.quantized_base_damage);
+    const hasAnyMods = (mods.length > 0 || !!getRivenSpec()) && moddedDiffers;
+    renderDamageTable(qBase, hasAnyMods ? data : null);
 
     // Update crit/status stat blocks
     const hasMods = hasAnyMods;
