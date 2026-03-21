@@ -20,7 +20,7 @@ def _health_f2(delta: float, eximus: bool = False) -> float:
     """Above ΔLevel 80.
     Eximus units use a different power law (fitted from two wiki data points)."""
     if eximus:
-        return 1.0 + 2.615361 * delta ** 1.077514
+        return 1.0 + 2.615360685677324 * delta ** 1.0775143361894326
     return 1.0 + 10.7332 * delta ** 0.72
 
 
@@ -41,7 +41,7 @@ def overguard_at_level(delta: float) -> float:
     Coefficients fitted from two wiki data points (delta=199 and delta=599)."""
     if delta <= 0:
         return 12.0
-    return 12.0 * (1.0 + 10.822554 * delta ** 1.369401)
+    return 12.0 * (1.0 + 10.822554211507594 * delta ** 1.3694013966775684)
 
 
 def armor_at_level(base_armor: float, delta: float) -> float:
