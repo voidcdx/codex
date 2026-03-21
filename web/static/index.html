@@ -17,12 +17,13 @@
     <!-- Weapon -->
     <div class="panel" style="margin-bottom:16px">
       <h2>Weapon</h2>
-      <div class="search-wrap">
-        <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…">
-        <button class="search-clear" onclick="clearSearch('weapon-search')" title="Clear">×</button>
+      <div class="combobox-wrap" id="weapon-combobox">
+        <div class="search-wrap">
+          <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…" autocomplete="off">
+          <button class="search-clear" onclick="clearCombobox('weapon')" title="Clear">×</button>
+        </div>
+        <div class="combobox-dropdown" id="weapon-dropdown"></div>
       </div>
-      <label for="weapon-select">Weapon</label>
-      <select id="weapon-select" size="1"></select>
     </div>
 
     <!-- Mods — 2×4 card grid -->
@@ -69,12 +70,13 @@
     <!-- Enemy -->
     <div class="panel" style="margin-bottom:16px">
       <h2>Enemy</h2>
-      <div class="search-wrap">
-        <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…">
-        <button class="search-clear" onclick="clearSearch('enemy-search')" title="Clear">×</button>
+      <div class="combobox-wrap" id="enemy-combobox">
+        <div class="search-wrap">
+          <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…" autocomplete="off">
+          <button class="search-clear" onclick="clearCombobox('enemy')" title="Clear">×</button>
+        </div>
+        <div class="combobox-dropdown" id="enemy-dropdown"></div>
       </div>
-      <label for="enemy-select">Enemy</label>
-      <select id="enemy-select" size="1"></select>
     </div>
 
     <!-- Hit Options -->
@@ -203,34 +205,40 @@ function initTooltips() {
   });
 }
 
+let weaponCombo = null;
+let enemyCombo = null;
+
 async function loadData() {
   [allWeapons, allMods, allEnemies] = await Promise.all([
     fetch('/api/weapons').then(r => r.json()),
     fetch('/api/mods').then(r => r.json()),
     fetch('/api/enemies').then(r => r.json()),
   ]);
-  populateSelect('weapon-select', allWeapons.map(w => w.name));
-  populateSelect('enemy-select', allEnemies.map(e => e.name));
 
-  document.getElementById('weapon-select').addEventListener('change', onWeaponChange);
-  document.getElementById('enemy-select').addEventListener('change', () => { showEnemyStats(getCurrentEnemy()); });
+  weaponCombo = setupCombobox('weapon-search', 'weapon-dropdown',
+    allWeapons.map(w => w.name),
+    () => onWeaponChange()
+  );
+  enemyCombo = setupCombobox('enemy-search', 'enemy-dropdown',
+    allEnemies.map(e => e.name),
+    () => { showEnemyStats(getCurrentEnemy()); }
+  );
 
   initModGrid();
 
-  // Default selections for quick testing
-  setSelectValue('weapon-select', 'Soma Prime');
-  setSelectValue('enemy-select', 'Heavy Gunner');
+  weaponCombo.set('Soma Prime');
+  enemyCombo.set('Heavy Gunner');
   onWeaponChange();
   showEnemyStats(getCurrentEnemy());
 }
 
 function getCurrentWeapon() {
-  const name = document.getElementById('weapon-select').value;
+  const name = document.getElementById('weapon-search').value;
   return allWeapons.find(x => x.name === name) || null;
 }
 
 function getCurrentEnemy() {
-  const name = document.getElementById('enemy-select').value;
+  const name = document.getElementById('enemy-search').value;
   return allEnemies.find(x => x.name === name) || null;
 }
 
@@ -1094,12 +1102,7 @@ function fmtNum(n) {
   return n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 }
 
-// Search/filter selects
-document.addEventListener('DOMContentLoaded', () => {
-  setupSearch('weapon-search', 'weapon-select', () => allWeapons.map(w => w.name), onWeaponChange);
-  setupSearch('enemy-search', 'enemy-select', () => allEnemies.map(e => e.name), () => showEnemyStats(getCurrentEnemy()));
-  loadData();
-});
+document.addEventListener('DOMContentLoaded', () => { loadData(); });
 
 function setupSearch(inputId, selectId, getNames, onChange) {
   const el = document.getElementById(inputId);
@@ -1110,6 +1113,63 @@ function setupSearch(inputId, selectId, getNames, onChange) {
     if (onChange) onChange();
     toggleSearchClear(this);
   });
+}
+
+function setupCombobox(inputId, dropdownId, items, onSelect) {
+  const input = document.getElementById(inputId);
+  const dropdown = document.getElementById(dropdownId);
+  let ignoreBlur = false;
+
+  function renderDropdown(q) {
+    const lq = q.toLowerCase();
+    const matches = q ? items.filter(n => n.toLowerCase().includes(lq)) : items;
+    const shown = matches.slice(0, 120);
+    dropdown.innerHTML = shown.map(n =>
+      `<div class="combobox-item" tabindex="-1" data-value="${n.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${n.replace(/&/g,'&amp;')}</div>`
+    ).join('');
+    if (matches.length > 120) {
+      dropdown.insertAdjacentHTML('beforeend',
+        `<div class="combobox-hint">${matches.length} results — type to narrow</div>`);
+    }
+    dropdown.classList.toggle('open', shown.length > 0);
+  }
+
+  function commit(name) {
+    input.value = name;
+    dropdown.classList.remove('open');
+    toggleSearchClear(input);
+    if (onSelect) onSelect(name);
+  }
+
+  input.addEventListener('focus', () => renderDropdown(input.value));
+  input.addEventListener('input', () => { toggleSearchClear(input); renderDropdown(input.value); });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { dropdown.classList.remove('open'); input.blur(); }
+    if (e.key === 'Enter') { const first = dropdown.querySelector('.combobox-item'); if (first) commit(first.dataset.value); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); dropdown.querySelector('.combobox-item')?.focus(); }
+  });
+  input.addEventListener('blur', () => { if (!ignoreBlur) setTimeout(() => dropdown.classList.remove('open'), 150); });
+
+  dropdown.addEventListener('mousedown', () => { ignoreBlur = true; });
+  dropdown.addEventListener('mouseup',   () => { ignoreBlur = false; });
+  dropdown.addEventListener('click', e => { const item = e.target.closest('.combobox-item'); if (item) commit(item.dataset.value); });
+  dropdown.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { const item = e.target.closest('.combobox-item'); if (item) commit(item.dataset.value); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); e.target.nextElementSibling?.focus(); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); (e.target.previousElementSibling?.classList.contains('combobox-item') ? e.target.previousElementSibling : input)?.focus(); }
+    if (e.key === 'Escape') { dropdown.classList.remove('open'); input.focus(); }
+  });
+
+  return { set: commit };
+}
+
+function clearCombobox(which) {
+  const input = document.getElementById(`${which}-search`);
+  const dropdown = document.getElementById(`${which}-dropdown`);
+  input.value = '';
+  dropdown.classList.remove('open');
+  toggleSearchClear(input);
+  input.focus();
 }
 
 function toggleSearchClear(input) {
@@ -1367,8 +1427,8 @@ document.addEventListener('click', e => {
 // Calculate
 // ---------------------------------------------------------------------------
 async function runCalculation() {
-  const weapon = document.getElementById('weapon-select').value;
-  const enemy  = document.getElementById('enemy-select').value;
+  const weapon = document.getElementById('weapon-search').value;
+  const enemy  = document.getElementById('enemy-search').value;
   const mods   = getSelectedMods();
   const critMode    = document.getElementById('crit-mode').value;
   const headshot    = document.getElementById('headshot-cb').checked;
