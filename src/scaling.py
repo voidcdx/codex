@@ -17,9 +17,11 @@ def _health_f1(delta: float) -> float:
 
 
 def _health_f2(delta: float, eximus: bool = False) -> float:
-    """Above ΔLevel 80. Eximus units use a higher coefficient (~1.617×)."""
-    coeff = 17.3542 if eximus else 10.7332
-    return 1.0 + coeff * delta ** 0.72
+    """Above ΔLevel 80.
+    Eximus units use a different power law (fitted from two wiki data points)."""
+    if eximus:
+        return 1.0 + 2.615361 * delta ** 1.077514
+    return 1.0 + 10.7332 * delta ** 0.72
 
 
 def health_multiplier(delta: float, eximus: bool = False) -> float:
@@ -35,11 +37,11 @@ def health_multiplier(delta: float, eximus: bool = False) -> float:
 
 
 def overguard_at_level(delta: float) -> float:
-    """Overguard scales linearly with ΔLevel (not the health power law).
-    Base overguard = 12. Coefficient backcalculated from wiki data."""
+    """Overguard base = 12, scales as its own power law (separate from health).
+    Coefficients fitted from two wiki data points (delta=199 and delta=599)."""
     if delta <= 0:
         return 12.0
-    return 12.0 * (1.0 + 76.477 * delta)
+    return 12.0 * (1.0 + 10.822554 * delta ** 1.369401)
 
 
 def armor_at_level(base_armor: float, delta: float) -> float:
