@@ -42,16 +42,8 @@
       <div class="riven-modal">
         <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
         <div class="riven-modal-left">
-          <div id="riven-art" class="riven-art-img riven-art-ph">
-            <svg viewBox="0 0 64 64" width="64" height="64" fill="none"
-                 xmlns="http://www.w3.org/2000/svg" style="opacity:.18">
-              <rect x="2" y="2" width="60" height="60" rx="8"
-                    stroke="#9b6dd0" stroke-width="2" stroke-dasharray="6 4"/>
-              <circle cx="22" cy="22" r="6" stroke="#9b6dd0" stroke-width="2"/>
-              <path d="M4 44 L20 28 L34 40 L44 30 L60 44"
-                    stroke="#9b6dd0" stroke-width="2" stroke-linejoin="round"/>
-            </svg>
-          </div>
+          <img id="riven-art" class="riven-art-img" src="" alt=""
+               onerror="this.style.display='none'">
         </div>
         <div class="riven-modal-right">
           <h2 class="riven-modal-title">Create riven</h2>
@@ -1277,9 +1269,12 @@ function openRivenBuilder() {
     rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 0}
   );
   renderRivenRows();
-  const weaponName = document.getElementById('weapon-select')?.value || '';
   const art = document.getElementById('riven-art');
-  if (art) art.src = weaponName ? `/static/images/weapons/${weaponName}.png` : '';
+  const currentWeapon = getCurrentWeapon();
+  if (art) {
+    art.style.display = '';
+    art.src = currentWeapon?.image ? `/static/images/weapons/${currentWeapon.image}` : '';
+  }
   document.getElementById('riven-picker-overlay').classList.add('active');
 }
 

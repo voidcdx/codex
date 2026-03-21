@@ -71,7 +71,7 @@ def get_weapons() -> list[dict]:
             "mastery_req":      entry.get("mastery_req", 0),
             "riven_disposition": entry.get("riven_disposition", None),
             "base_damage":      first_damage,
-            "image":            entry.get("image", ""),
+            "image":            name.replace(' ', '-').replace('&', 'and') + '.png',
             "attacks": [
                 {
                     "name": a.get("name", ""),

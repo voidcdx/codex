@@ -886,8 +886,6 @@ select option {
 }
 .btn-riven-reset:hover { background: rgba(155, 109, 208, 0.28); }
 
-/* Image placeholder */
-.riven-art-ph { display: flex; align-items: center; justify-content: center; }
 
 /* ── Animations ─────────────────────────────────────── */
 @keyframes fadeIn {
