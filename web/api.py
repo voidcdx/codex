@@ -5,12 +5,11 @@ Endpoints:
   GET  /api/weapons          → list of weapon names + basic stats
   GET  /api/mods             → list of mod names + types
   GET  /api/enemies          → list of enemy names + factions
+  POST /api/modded-weapon    → modded weapon stats
   POST /api/calculate        → full damage calculation
-  POST /api/optimal-order    → find mod order maximising damage vs enemy
 """
 from __future__ import annotations
 
-import itertools
 import sys
 from pathlib import Path
 
@@ -364,99 +363,6 @@ def calculate(req: CalcRequest) -> dict:
         "modded_ms":     round(modded_ms, 6),
     }
 
-
-# ---------------------------------------------------------------------------
-# Optimal mod order endpoint
-# ---------------------------------------------------------------------------
-
-class OptimalOrderRequest(BaseModel):
-    weapon:           str
-    mods:             list[str] = []
-    enemy:            str
-    attack:           str | None = None
-    crit_mode:        str  = "average"
-    headshot:         bool = False
-    viral_stacks:     int  = 0
-    corrosive_stacks: int  = 0
-    riven:            RivenSpec | None = None
-
-
-@app.post("/api/optimal-order")
-def optimal_order(req: OptimalOrderRequest) -> dict:
-    try:
-        weapon = load_weapon(req.weapon, attack_name=req.attack)
-    except KeyError as e:
-        raise HTTPException(400, str(e))
-
-    try:
-        enemy = load_enemy(req.enemy, headshot=req.headshot)
-    except KeyError:
-        raise HTTPException(400, f"Unknown enemy: {req.enemy!r}")
-
-    # Load only non-empty slots
-    slots: list[tuple[int, str]] = [(i, n) for i, n in enumerate(req.mods) if n]
-    loaded: list[tuple[int, str, object]] = []
-    for i, name in slots:
-        try:
-            loaded.append((i, name, load_mod(name)))
-        except KeyError:
-            raise HTTPException(400, f"Unknown mod: {name!r}")
-    if req.riven:
-        riven_mod = make_riven_mod([s.model_dump() for s in req.riven.stats])
-        loaded.append((len(req.mods), "Riven", riven_mod))
-
-    # Identify primary-elemental mods
-    elem_entries = [
-        (i, name, mod)
-        for i, name, mod in loaded
-        if any(c.type in PRIMARY_ELEMENTS for c in mod.elemental_bonuses)
-    ]
-
-    if len(elem_entries) <= 1:
-        return {"optimal_mods": list(req.mods)}
-
-    crit_mult = calculate_crit_multiplier(
-        weapon.crit_chance,
-        weapon.crit_multiplier,
-        mode=req.crit_mode,
-    )
-
-    # Build a base slot dict: position → (name, mod)
-    base_slots: dict[int, tuple[str, object]] = {i: (n, m) for i, n, m in loaded}
-    elem_positions = [i for i, _, _ in elem_entries]
-    elem_pairs     = [(n, m) for _, n, m in elem_entries]
-
-    best_total = -1.0
-    best_mods  = list(req.mods)
-
-    for perm in itertools.permutations(elem_pairs):
-        # Substitute permuted elemental mods back into their original positions
-        trial = dict(base_slots)
-        for pos, (name, mod) in zip(elem_positions, perm):
-            trial[pos] = (name, mod)
-
-        ordered_mods = [trial[i][1] for i in sorted(trial)]
-
-        calc   = DamageCalculator()
-        result = calc.calculate(
-            weapon=weapon,
-            mods=ordered_mods,
-            enemy=enemy,
-            crit_multiplier=crit_mult,
-            is_crit_headshot=req.headshot,
-            viral_stacks=req.viral_stacks,
-            corrosive_stacks=req.corrosive_stacks,
-        )
-        total = sum(result.values())
-
-        if total > best_total:
-            best_total = total
-            # Reconstruct full 8-slot list preserving empty slots
-            best_mods = list(req.mods)
-            for pos, (name, _) in zip(elem_positions, perm):
-                best_mods[pos] = name
-
-    return {"optimal_mods": best_mods}
 
 
 # ---------------------------------------------------------------------------

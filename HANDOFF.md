@@ -22,7 +22,7 @@ Web UI fully functional with dark theme, mod card grid, special slots, and weapo
 - `enemies.json` — 983 enemies — faction, health/armor type, base_armor, head_multiplier
 
 ### Web (`web/`)
-- `api.py` — FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/optimal-order
+- `api.py` — FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate
 - `static/index.html` — dark SPA:
   - Weapon picker with image + attack tab buttons (multi-attack weapons show per-attack stats)
   - 2×4 mod card grid with searchable mod picker popup
@@ -33,7 +33,6 @@ Web UI fully functional with dark theme, mod card grid, special slots, and weapo
   - Enemy picker with faction/type display
   - Live stats panel: modded base damage, DPS (burst + sustained), crit stats, element badges
   - Damage breakdown table + status proc DPS
-  - Optimal Mod Order button
 
 ### CLI
 - `python -m dc "Soma Prime" "Serration" vs "Heavy Gunner" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]`

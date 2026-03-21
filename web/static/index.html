@@ -35,7 +35,6 @@
       </div>
       <div id="element-badges" class="element-badges"></div>
 
-      <button class="btn-optimal" id="optimal-btn" onclick="runOptimalOrder()" disabled>Optimal Mod Order</button>
     </div>
 
     <!-- Mod Picker Modal -->
@@ -220,7 +219,7 @@ async function loadData() {
   populateSelect('enemy-select', allEnemies.map(e => e.name));
 
   document.getElementById('weapon-select').addEventListener('change', onWeaponChange);
-  document.getElementById('enemy-select').addEventListener('change', () => { showEnemyStats(getCurrentEnemy()); updateOptimalBtn(); });
+  document.getElementById('enemy-select').addEventListener('change', () => { showEnemyStats(getCurrentEnemy()); });
 
   initModGrid();
 
@@ -272,7 +271,7 @@ function initModGrid() {
   renderModCards();
   renderSpecialSlots();
   initSortable();
-  updateOptimalBtn();
+
 }
 
 function renderModCards() {
@@ -347,7 +346,7 @@ function clearModSlot(i) {
   renderModCards();
   initSortable();
   updateModdedStats();
-  updateOptimalBtn();
+
 }
 
 function getSelectedMods() {
@@ -355,12 +354,6 @@ function getSelectedMods() {
   return [...specials, ...modSlots.filter(n => n && n !== '__riven__')];
 }
 
-function updateOptimalBtn() {
-  const btn = document.getElementById('optimal-btn');
-  const weapon = getCurrentWeapon();
-  const enemy = document.getElementById('enemy-select').value;
-  btn.disabled = !(weapon && enemy && getSelectedMods().length > 1);
-}
 
 // ---------------------------------------------------------------------------
 // Mod Picker
@@ -447,7 +440,7 @@ function selectPickerMod(el) {
     initSortable();
   }
   updateModdedStats();
-  updateOptimalBtn();
+
 }
 
 // Close picker on outside click
@@ -605,49 +598,6 @@ function drawElementArcs(combos) {
 
 window.addEventListener('resize', () => updateElementBadges());
 
-// ---------------------------------------------------------------------------
-// Optimal Mod Order
-// ---------------------------------------------------------------------------
-async function runOptimalOrder() {
-  const weapon = document.getElementById('weapon-select').value;
-  const enemy = document.getElementById('enemy-select').value;
-  const mods = getSelectedMods();
-  if (!weapon || !enemy || mods.length < 2) return;
-
-  const btn = document.getElementById('optimal-btn');
-  btn.disabled = true;
-  btn.textContent = 'Optimizing…';
-
-  try {
-    const critMode = document.getElementById('crit-mode').value;
-    const headshot = document.getElementById('headshot-cb').checked;
-    const viralStacks = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
-    const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
-
-    const resp = await fetch('/api/optimal-order', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, attack: selectedAttack, riven: getRivenSpec()}),
-    });
-    if (!resp.ok) throw new Error('Failed');
-    const data = await resp.json();
-    if (data.optimal_mods) {
-      // Rebuild modSlots preserving empty slots
-      const newSlots = ['','','','','','','',''];
-      data.optimal_mods.forEach((name, i) => { newSlots[i] = name; });
-      modSlots = newSlots;
-      renderModCards();
-      initSortable();
-      updateModdedStats();
-    }
-  } catch(e) {
-    // silent
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Optimal Mod Order';
-    updateOptimalBtn();
-  }
-}
 
 // Returns the set of mod types compatible with the given weapon
 function getCompatibleModTypes(weapon) {
@@ -724,7 +674,7 @@ function onWeaponChange() {
   showWeaponStats(weapon);
   renderSpecialSlots();
   updateModdedStats();
-  updateOptimalBtn();
+
   updateElementBadges();
 }
 
