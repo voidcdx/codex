@@ -20,10 +20,6 @@
       <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…">
       <label for="weapon-select">Weapon</label>
       <select id="weapon-select" size="1"></select>
-      <div id="attack-selector-wrap" style="display:none;margin-top:8px">
-        <label for="attack-select">Attack Mode</label>
-        <select id="attack-select" size="1"></select>
-      </div>
     </div>
 
     <!-- Mods — 2×4 card grid -->
@@ -608,6 +604,7 @@ function getCompatibleModTypes(weapon) {
 // (buildModOptions and refreshModDropdowns removed — replaced by card grid + picker)
 
 function onWeaponChange() {
+  selectedAttack = null;
   const weapon = getCurrentWeapon();
   updateAttackSelector(weapon);
   showWeaponStats(weapon);
@@ -616,23 +613,17 @@ function onWeaponChange() {
 }
 
 function updateAttackSelector(weapon) {
-  const wrap = document.getElementById('attack-selector-wrap');
-  const sel = document.getElementById('attack-select');
   if (!weapon || !weapon.attacks || weapon.attacks.length <= 1) {
-    wrap.style.display = 'none';
     selectedAttack = null;
-    return;
+  } else {
+    selectedAttack = selectedAttack || weapon.attacks[0].name;
   }
-  sel.innerHTML = weapon.attacks.map(a =>
-    `<option value="${esc(a.name)}">${esc(a.name)}${a.shot_type ? ' (' + esc(a.shot_type) + ')' : ''}</option>`
-  ).join('');
-  selectedAttack = weapon.attacks[0].name;
-  wrap.style.display = 'block';
-  sel.onchange = () => {
-    selectedAttack = sel.value;
-    showWeaponStats(weapon);
-    updateModdedStats();
-  };
+}
+
+function selectAttack(name) {
+  selectedAttack = name;
+  showWeaponStats(getCurrentWeapon());
+  updateModdedStats();
 }
 
 function getSelectedAttackData(weapon) {
@@ -670,8 +661,17 @@ function showWeaponStats(weapon) {
         <div class="weapon-stats-sub">${esc(sub)}</div>
        </div>`;
 
+  const hasMultiAttack = weapon.attacks && weapon.attacks.length > 1;
+  const attackTabsHtml = hasMultiAttack
+    ? `<div class="attack-tabs">${weapon.attacks.map(a =>
+        `<button class="attack-tab${a.name === selectedAttack ? ' active' : ''}"
+          onclick="selectAttack(${JSON.stringify(a.name)})">${esc(a.name)}</button>`
+      ).join('')}</div>`
+    : '';
+
   document.getElementById('weapon-stats-content').innerHTML = `
     ${imgHtml}
+    ${attackTabsHtml}
     <div class="stat-rows">
       <div class="stat-row">
         <div class="stat-block">
