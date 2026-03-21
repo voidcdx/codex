@@ -23,6 +23,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 import math
+from pydantic import Field
 from src.calculator import DamageCalculator, calculate_crit_multiplier
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
@@ -32,6 +33,7 @@ from src.loader import (
 )
 from src.models import DamageComponent
 from src.quantizer import quantize
+from src.scaling import scale_enemy_stats
 
 app = FastAPI(title="Warframe Damage Calculator", version="1.0.0")
 
@@ -134,6 +136,7 @@ def get_enemies() -> list[dict]:
             "base_armor":     entry.get("base_armor", 0),
             "base_health":    entry.get("base_health", 0),
             "base_shield":    entry.get("base_shield", 0),
+            "base_level":     entry.get("base_level", 1),
             "head_multiplier": entry.get("head_multiplier", 1),
         })
     return sorted(out, key=lambda x: x["name"])
@@ -314,6 +317,9 @@ class CalcRequest(BaseModel):
     headshot:     bool = False
     viral_stacks: int = 0           # 0–10
     corrosive_stacks: int = 0      # 0–10
+    enemy_level:  int = Field(default=1, ge=1, le=9999)
+    steel_path:   bool = False
+    eximus:       bool = False
     riven:        RivenSpec | None = None
 
 
@@ -364,6 +370,9 @@ def calculate(req: CalcRequest) -> dict:
         is_crit_headshot=req.headshot,
         viral_stacks=req.viral_stacks,
         corrosive_stacks=req.corrosive_stacks,
+        enemy_level=req.enemy_level,
+        steel_path=req.steel_path,
+        eximus=req.eximus,
     )
     procs = calc.calculate_procs(
         weapon=weapon,
@@ -395,6 +404,29 @@ def calculate(req: CalcRequest) -> dict:
         "modded_ms":     round(modded_ms, 6),
     }
 
+
+
+# ---------------------------------------------------------------------------
+# Scaled enemy stats endpoint
+# ---------------------------------------------------------------------------
+
+class ScaleRequest(BaseModel):
+    enemy:      str
+    level:      int  = Field(default=1, ge=1, le=9999)
+    steel_path: bool = False
+    eximus:     bool = False
+
+
+@app.post("/api/scaled-enemy")
+def scaled_enemy(req: ScaleRequest) -> dict:
+    try:
+        e = load_enemy(req.enemy)
+    except KeyError:
+        raise HTTPException(400, f"Unknown enemy: {req.enemy!r}")
+    return scale_enemy_stats(
+        e.base_health, e.base_shield, e.base_armor,
+        e.base_level, req.level, req.steel_path, req.eximus,
+    )
 
 
 # ---------------------------------------------------------------------------

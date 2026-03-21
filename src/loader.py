@@ -404,6 +404,9 @@ def load_enemy(name: str, headshot: bool = False) -> Enemy:
         armor_type=armor_type,
         base_armor=float(entry.get("base_armor") or 0.0),
         body_part_multiplier=body_part_mult,
+        base_level=int(entry.get("base_level") or 1),
+        base_health=float(entry.get("base_health") or 0.0),
+        base_shield=float(entry.get("base_shield") or 0.0),
     )
 
 

@@ -77,6 +77,15 @@
         </div>
         <div class="combobox-dropdown" id="enemy-dropdown"></div>
       </div>
+      <div class="enemy-level-row">
+        <div style="display:flex;flex-direction:column">
+          <label for="enemy-level">Level</label>
+          <input type="number" id="enemy-level" min="1" max="9999" value="1" style="width:72px">
+        </div>
+        <button class="toggle-btn" id="steel-path-btn" onclick="toggleSteelPath()">Steel Path</button>
+        <button class="toggle-btn" id="eximus-btn" onclick="toggleEximus()">Eximus</button>
+      </div>
+      <div id="enemy-scaled-stats" class="enemy-scaled-stats"></div>
     </div>
 
     <!-- Hit Options -->
@@ -217,7 +226,11 @@ async function loadData() {
 
   weaponCombo = setupCombobox('weapon-search', 'weapon-dropdown',
     allWeapons.map(w => w.name),
-    () => onWeaponChange()
+    () => onWeaponChange(),
+    name => {
+      const w = allWeapons.find(x => x.name === name);
+      return w?.image ? `/static/images/weapons/${w.image}` : '';
+    }
   );
   enemyCombo = setupCombobox('enemy-search', 'enemy-dropdown',
     allEnemies.map(e => e.name),
@@ -1020,7 +1033,11 @@ async function _doUpdateModdedStats() {
 // ---------------------------------------------------------------------------
 function showEnemyStats(enemy) {
   const panel = document.getElementById('enemy-stats-panel');
-  if (!enemy) { panel.style.display = 'none'; return; }
+  if (!enemy) { panel.style.display = 'none'; document.getElementById('enemy-scaled-stats').innerHTML = ''; return; }
+
+  // Reset level input to enemy's base level when a new enemy is selected
+  const lvlInput = document.getElementById('enemy-level');
+  if (lvlInput) lvlInput.value = enemy.base_level || 1;
 
   const fmt = (v, suffix) => v != null && v !== 0 ? v + (suffix || '') : '—';
   // Handles underscore-separated strings like "infested_flesh" → "Infested Flesh"
@@ -1072,6 +1089,53 @@ function showEnemyStats(enemy) {
     </div>
   `;
   panel.style.display = 'block';
+  refreshEnemyScaling();
+}
+
+// ---------------------------------------------------------------------------
+// Enemy level scaling controls
+// ---------------------------------------------------------------------------
+let steelPathOn = false;
+let eximusOn    = false;
+
+function toggleSteelPath() {
+  steelPathOn = !steelPathOn;
+  document.getElementById('steel-path-btn').classList.toggle('active', steelPathOn);
+  refreshEnemyScaling();
+}
+
+function toggleEximus() {
+  eximusOn = !eximusOn;
+  document.getElementById('eximus-btn').classList.toggle('active', eximusOn);
+  refreshEnemyScaling();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('enemy-level').addEventListener('input', refreshEnemyScaling);
+});
+
+async function refreshEnemyScaling() {
+  const enemy = getCurrentEnemy();
+  const container = document.getElementById('enemy-scaled-stats');
+  if (!enemy) { container.innerHTML = ''; return; }
+  const level = parseInt(document.getElementById('enemy-level').value) || 1;
+  try {
+    const r = await fetch('/api/scaled-enemy', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ enemy: enemy.name, level, steel_path: steelPathOn, eximus: eximusOn }),
+    });
+    const d = await r.json();
+    const fmt = v => v > 0 ? Math.round(v).toLocaleString() : '—';
+    const lvlLabel = steelPathOn ? `${level} <span style="color:var(--accent);font-size:10px">(+100 SP = ${d.level})</span>` : String(d.level);
+    container.innerHTML = `
+      <div class="scaled-stat-block">Lvl <span>${lvlLabel}</span></div>
+      <div class="scaled-stat-block">HP <span>${fmt(d.health)}</span></div>
+      <div class="scaled-stat-block">Shield <span>${fmt(d.shield)}</span></div>
+      <div class="scaled-stat-block">Armor <span>${fmt(d.armor)}</span></div>
+      ${eximusOn ? `<div class="scaled-stat-block">Overguard <span>${fmt(d.overguard)}</span></div>` : ''}
+    `;
+  } catch { container.innerHTML = ''; }
 }
 
 // ---------------------------------------------------------------------------
@@ -1115,22 +1179,42 @@ function setupSearch(inputId, selectId, getNames, onChange) {
   });
 }
 
-function setupCombobox(inputId, dropdownId, items, onSelect) {
+function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl = null) {
   const input = document.getElementById(inputId);
   const dropdown = document.getElementById(dropdownId);
   let ignoreBlur = false;
+
+  // Portal: move dropdown to body so it escapes any panel stacking context
+  // (backdrop-filter on .panel creates a stacking context that clips z-index)
+  document.body.appendChild(dropdown);
+  dropdown.style.position = 'fixed';
+
+  function positionDropdown() {
+    const r = input.closest('.search-wrap').getBoundingClientRect();
+    dropdown.style.top   = r.bottom + 'px';
+    dropdown.style.left  = r.left   + 'px';
+    dropdown.style.width = r.width  + 'px';
+  }
+  window.addEventListener('scroll', () => { if (dropdown.classList.contains('open')) positionDropdown(); }, true);
+  window.addEventListener('resize', () => { if (dropdown.classList.contains('open')) positionDropdown(); });
+
+  function esc(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
 
   function renderDropdown(q) {
     const lq = q.toLowerCase();
     const matches = q ? items.filter(n => n.toLowerCase().includes(lq)) : items;
     const shown = matches.slice(0, 120);
-    dropdown.innerHTML = shown.map(n =>
-      `<div class="combobox-item" tabindex="-1" data-value="${n.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${n.replace(/&/g,'&amp;')}</div>`
-    ).join('');
+    dropdown.innerHTML = shown.map(n => {
+      const imgTag = getImageUrl
+        ? `<img class="combobox-img" src="${getImageUrl(n)}" alt="" onerror="this.style.display='none'">`
+        : '';
+      return `<div class="combobox-item" tabindex="-1" data-value="${esc(n)}">${imgTag}${n.replace(/&/g,'&amp;')}</div>`;
+    }).join('');
     if (matches.length > 120) {
       dropdown.insertAdjacentHTML('beforeend',
         `<div class="combobox-hint">${matches.length} results — type to narrow</div>`);
     }
+    positionDropdown();
     dropdown.classList.toggle('open', shown.length > 0);
   }
 
@@ -1448,7 +1532,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, attack: selectedAttack, riven: getRivenSpec()}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
     });
     const data = await resp.json();
     if (!resp.ok) {

@@ -195,12 +195,16 @@ select option {
   font-size: 16px;
   line-height: 1;
   cursor: pointer;
-  padding: 2px 6px;
+  padding: 0;
+  width: 22px;
+  height: 22px;
   display: none;
+  align-items: center;
+  justify-content: center;
   transition: color 0.15s;
 }
 .search-clear:hover { color: var(--text); }
-.search-wrap.has-value .search-clear { display: block; }
+.search-wrap.has-value .search-clear { display: flex; }
 
 .search-input {
   width: 100%;
@@ -225,28 +229,36 @@ select option {
 .combobox-wrap .search-input { margin-bottom: 0; }
 .combobox-dropdown {
   display: none;
-  position: absolute;
-  top: calc(100% - 8px);
-  left: 0; right: 0;
+  /* position: fixed + top/left/width set by JS (portal to body) */
   background: var(--surface-solid);
   border: 1px solid var(--accent);
   border-top: none;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   max-height: 220px;
   overflow-y: auto;
-  z-index: 200;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  z-index: 9999;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
 }
 .combobox-dropdown.open { display: block; }
 .combobox-item {
-  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text);
   outline: none;
 }
 .combobox-item:hover,
 .combobox-item:focus { background: var(--accent-glow); color: var(--accent); }
+.combobox-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
 .combobox-hint {
   padding: 6px 10px;
   font-size: 11px;
@@ -254,6 +266,42 @@ select option {
   border-top: 1px solid var(--border);
   text-align: center;
 }
+
+/* ── Enemy Level Controls ───────────────────────────── */
+.enemy-level-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.enemy-level-row label { font-size: 11px; color: var(--text-dim); margin-bottom: 2px; }
+.toggle-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.toggle-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+.enemy-scaled-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 8px;
+  margin-top: 8px;
+}
+.scaled-stat-block {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.scaled-stat-block span { color: var(--text); font-weight: 600; }
 
 /* ── Options Row ────────────────────────────────────── */
 .options-row {
@@ -1031,7 +1079,7 @@ select option {
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
 
-  .combobox-item { font-size: 16px; padding: 10px 12px; }
+  .combobox-item { font-size: 16px !important; padding: 10px 12px; }
 
 }
 @media (max-width: 480px) {

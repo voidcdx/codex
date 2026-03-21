@@ -4,6 +4,7 @@ from src.enums import DamageType, HealthType, ArmorType, FactionType
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.quantizer import quantize, quantize_components
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
+from src.scaling import scale_enemy_stats
 
 # ---------------------------------------------------------------------------
 # Damage type effectiveness table (Update 36.0+: Vulnerable=1.5, Resistant=0.5)
@@ -220,6 +221,9 @@ class DamageCalculator:
         is_crit_headshot: bool = False,  # doubles crit multiplier on headshots
         viral_stacks: int = 0,          # 0–10 Viral status stacks on the enemy
         corrosive_stacks: int = 0,     # 0–10 Corrosive status stacks on the enemy
+        enemy_level: int = 1,          # target enemy level (1–9999)
+        steel_path: bool = False,      # Steel Path: +100 level, ×2.5 HP/shields
+        eximus: bool = False,          # Eximus unit
     ) -> dict[DamageType, float]:
         """Return final per-type damage values after the full pipeline."""
         base_damage = weapon.total_base_damage
@@ -314,10 +318,15 @@ class DamageCalculator:
         ]
 
         # --- Step 4: Armor mitigation [math.floor] ---
+        # Level scaling is applied first, then Corrosive strip.
         # Corrosive stacks reduce enemy armor: stack 1 = 26%, each additional = +6%, cap 80%.
         # Formula: armor × (1 − min(0.80, 0.20 + 0.06 × stacks))
         # Source: wiki.warframe.com/w/Damage/Corrosive_Damage
-        armor = enemy.base_armor
+        scaled = scale_enemy_stats(
+            enemy.base_health, enemy.base_shield, enemy.base_armor,
+            enemy.base_level, enemy_level, steel_path, eximus,
+        )
+        armor = scaled["armor"]
         if corrosive_stacks > 0:
             corrosive_reduction = min(0.80, 0.20 + 0.06 * corrosive_stacks)
             armor = armor * (1.0 - corrosive_reduction)
