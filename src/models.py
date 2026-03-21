@@ -54,6 +54,7 @@ class Mod:
     multishot_bonus: float = 0.0                 # additive, e.g. 1.65 for Split Chamber
     status_damage_bonus: float = 0.0             # additive, e.g. 0.90 for Pistol Elementalist
     fire_rate_bonus: float = 0.0                 # additive, e.g. -0.20 for Critical Delay
+    magazine_bonus: float = 0.0                  # additive, e.g. 0.90 for Ammo Drum
 
 
 @dataclass

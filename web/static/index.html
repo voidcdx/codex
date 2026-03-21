@@ -780,7 +780,8 @@ function showWeaponStats(weapon) {
         </div>
         <div class="stat-block">
           <div class="stat-label" data-tooltip="magazine">Magazine</div>
-          <div class="stat-value">${fmt(weapon.magazine)}</div>
+          <div class="stat-value" id="sv-mag">${fmt(weapon.magazine)}</div>
+          <div class="stat-modded" id="sm-mag" style="display:none"></div>
         </div>
         <div class="stat-block">
           <div class="stat-label" data-tooltip="reload">Reload</div>
@@ -956,6 +957,20 @@ async function _doUpdateModdedStats() {
         smFR.style.display = 'block';
       } else {
         smFR.style.display = 'none';
+      }
+    }
+
+    const smMag = document.getElementById('sm-mag');
+    const svMag = document.getElementById('sv-mag');
+    if (smMag && svMag) {
+      const baseMag   = data.base_magazine   || 0;
+      const moddedMag = data.modded_magazine || 0;
+      if (baseMag > 0) svMag.textContent = fmt(baseMag);
+      if (hasMods && baseMag > 0 && moddedMag !== baseMag) {
+        smMag.textContent = '→ ' + moddedMag;
+        smMag.style.display = 'block';
+      } else {
+        smMag.style.display = 'none';
       }
     }
   } catch(e) {

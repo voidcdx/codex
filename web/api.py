@@ -185,6 +185,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     total_sc_bonus = sum(m.sc_bonus for m in mods)
     total_ms_bonus = sum(m.multishot_bonus for m in mods)
     total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
+    total_mag_bonus = sum(m.magazine_bonus for m in mods)
 
     # Build elemental components from mods + innate, then combine
     mod_elements: list[DamageComponent] = []
@@ -267,6 +268,11 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     else:
         base_fr = 0.0
 
+    # Base magazine from raw weapon data
+    raw_w = _raw_weapons().get(weapon.name, {})
+    base_mag = float(raw_w.get("magazine") or 0.0)
+    modded_mag = math.ceil(base_mag * (1.0 + total_mag_bonus)) if base_mag > 0 else 0
+
     return {
         "base_damage":  base_dmg_dict,
         "base_total":   round(base_total, 4),
@@ -283,6 +289,8 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "modded_multishot": round(1.0 + total_ms_bonus, 6),
         "base_fr":    round(base_fr, 4),
         "modded_fr":  round(base_fr * (1.0 + total_fr_bonus), 6),
+        "base_magazine":   base_mag,
+        "modded_magazine": modded_mag,
     }
 
 
