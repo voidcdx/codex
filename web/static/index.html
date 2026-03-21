@@ -393,6 +393,15 @@ function renderPickerList(query) {
   const weapon = getCurrentWeapon();
   const types = getCompatibleModTypes(weapon);
   const q = query.toLowerCase();
+
+  // Build set of mods already in use (excluding the slot currently being replaced)
+  const inUse = new Set();
+  if (_pickerSlot !== 'stance' && stanceSlot) inUse.add(stanceSlot);
+  if (_pickerSlot !== 'exilus' && exilusSlot) inUse.add(exilusSlot);
+  modSlots.forEach((name, i) => {
+    if (name && name !== '__riven__' && i !== _pickerSlot) inUse.add(name);
+  });
+
   let filtered;
   if (_pickerSlot === 'stance') {
     const NON_STANCE = new Set(['Aura','Railjack Aura','Warframe','Plexus','K-Drive',
@@ -400,14 +409,17 @@ function renderPickerList(query) {
       'Necramech','Archwing','Archgun','Archmelee']);
     filtered = allMods.filter(m => (m.base_drain || 0) < 0 && !NON_STANCE.has(m.type))
       .filter(m => weapon ? types.has(m.type) : true)
+      .filter(m => !inUse.has(m.name))
       .filter(m => !q || m.name.toLowerCase().includes(q));
   } else if (_pickerSlot === 'exilus') {
     const exilusSet = getExilusSet();
     filtered = allMods.filter(m => exilusSet.has(m.name))
+      .filter(m => !inUse.has(m.name))
       .filter(m => !q || m.name.toLowerCase().includes(q));
   } else {
     filtered = allMods
       .filter(m => weapon ? types.has(m.type) : true)
+      .filter(m => !inUse.has(m.name))
       .filter(m => !q || m.name.toLowerCase().includes(q));
   }
 
@@ -426,16 +438,23 @@ function renderPickerList(query) {
 
 function selectPickerMod(el) {
   if (_pickerSlot === -1) return;
+  const modName = el.dataset.mod;
+  // Prevent duplicates across all slots
+  const allSelected = getSelectedMods();
+  const currentInSlot = _pickerSlot === 'stance' ? stanceSlot
+    : _pickerSlot === 'exilus' ? exilusSlot
+    : modSlots[_pickerSlot];
+  if (modName !== currentInSlot && allSelected.includes(modName)) return;
   if (_pickerSlot === 'stance') {
-    stanceSlot = el.dataset.mod;
+    stanceSlot = modName;
     closeModPicker();
     renderSpecialSlots();
   } else if (_pickerSlot === 'exilus') {
-    exilusSlot = el.dataset.mod;
+    exilusSlot = modName;
     closeModPicker();
     renderSpecialSlots();
   } else {
-    modSlots[_pickerSlot] = el.dataset.mod;
+    modSlots[_pickerSlot] = modName;
     closeModPicker();
     renderModCards();
     initSortable();
