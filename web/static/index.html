@@ -17,7 +17,10 @@
     <!-- Weapon -->
     <div class="panel" style="margin-bottom:16px">
       <h2>Weapon</h2>
-      <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…">
+      <div class="search-wrap">
+        <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…">
+        <button class="search-clear" onclick="clearSearch('weapon-search')" title="Clear">×</button>
+      </div>
       <label for="weapon-select">Weapon</label>
       <select id="weapon-select" size="1"></select>
     </div>
@@ -40,7 +43,10 @@
       <div class="mod-picker">
         <div class="mod-picker-header">
           <h3>Select Mod — Slot <span id="picker-slot-num"></span></h3>
-          <input type="text" class="mod-picker-search" id="mod-picker-search" placeholder="Search mods…" autocomplete="off">
+          <div class="search-wrap">
+            <input type="text" class="mod-picker-search" id="mod-picker-search" placeholder="Search mods…" autocomplete="off">
+            <button class="search-clear" onclick="clearSearch('mod-picker-search')" title="Clear">×</button>
+          </div>
         </div>
         <div class="mod-picker-list" id="mod-picker-list"></div>
       </div>
@@ -60,10 +66,9 @@
           <div class="riven-stats-col">
             <div id="riven-rows"></div>
             <div class="riven-action-row">
-              <button class="btn-riven-apply" onclick="applyRiven()">Add riven</button>
-              <span class="riven-hint">Your riven added to other mods selection (in search as "riven")</span>
+              <button class="btn-riven-apply" onclick="applyRiven()">Add</button>
+              <button class="btn-riven-clear" onclick="clearRiven()">Clear</button>
             </div>
-            <div class="riven-info-box">Build full builds to test your riven mod. The effect of mod dependent on the rest of your build.</div>
           </div>
         </div>
       </div>
@@ -72,7 +77,10 @@
     <!-- Enemy -->
     <div class="panel" style="margin-bottom:16px">
       <h2>Enemy</h2>
-      <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…">
+      <div class="search-wrap">
+        <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…">
+        <button class="search-clear" onclick="clearSearch('enemy-search')" title="Clear">×</button>
+      </div>
       <label for="enemy-select">Enemy</label>
       <select id="enemy-select" size="1"></select>
     </div>
@@ -364,6 +372,7 @@ function openModPicker(slotIndex) {
   overlay.classList.add('active');
   const search = document.getElementById('mod-picker-search');
   search.value = '';
+  toggleSearchClear(search);
   search.focus();
   renderPickerList('');
 }
@@ -376,6 +385,7 @@ function openSpecialPicker(kind) {
   overlay.classList.add('active');
   const search = document.getElementById('mod-picker-search');
   search.value = '';
+  toggleSearchClear(search);
   search.focus();
   renderPickerList('');
 }
@@ -391,7 +401,11 @@ function renderPickerList(query) {
   const q = query.toLowerCase();
   let filtered;
   if (_pickerSlot === 'stance') {
-    filtered = allMods.filter(m => m.type === 'Stance')
+    const NON_STANCE = new Set(['Aura','Railjack Aura','Warframe','Plexus','K-Drive',
+      'Companion','Sentinel','MOA','Beast','Kubrow','Kavat','Vulpaphyla','Predasite',
+      'Necramech','Archwing','Archgun','Archmelee']);
+    filtered = allMods.filter(m => (m.base_drain || 0) < 0 && !NON_STANCE.has(m.type))
+      .filter(m => weapon ? types.has(m.type) : true)
       .filter(m => !q || m.name.toLowerCase().includes(q));
   } else if (_pickerSlot === 'exilus') {
     const exilusSet = getExilusSet();
@@ -447,7 +461,10 @@ document.addEventListener('click', e => {
 // Picker search
 document.addEventListener('DOMContentLoaded', () => {
   const search = document.getElementById('mod-picker-search');
-  if (search) search.addEventListener('input', function() { renderPickerList(this.value); });
+  if (search) search.addEventListener('input', function() {
+    renderPickerList(this.value);
+    toggleSearchClear(this);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -1074,12 +1091,26 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupSearch(inputId, selectId, getNames, onChange) {
-  document.getElementById(inputId).addEventListener('input', function() {
+  const el = document.getElementById(inputId);
+  el.addEventListener('input', function() {
     const q = this.value.toLowerCase();
     const names = getNames().filter(n => n.toLowerCase().includes(q));
     populateSelect(selectId, names);
     if (onChange) onChange();
+    toggleSearchClear(this);
   });
+}
+
+function toggleSearchClear(input) {
+  const wrap = input.closest('.search-wrap');
+  if (wrap) wrap.classList.toggle('has-value', input.value.length > 0);
+}
+
+function clearSearch(inputId) {
+  const el = document.getElementById(inputId);
+  el.value = '';
+  el.dispatchEvent(new Event('input'));
+  el.focus();
 }
 
 // ---------------------------------------------------------------------------
@@ -1265,10 +1296,11 @@ function applyRiven() {
 }
 
 function clearRiven() {
+  rivenDraft = [{stat:'',pct:150},{stat:'',pct:150},{stat:'',pct:150},{stat:'',pct:150}];
   rivenApplied = null;
   const idx = modSlots.indexOf('__riven__');
   if (idx >= 0) modSlots[idx] = '';
-  closeRivenBuilder();
+  renderRivenRows();
   renderModCards();
   initSortable();
   updateModdedStats();

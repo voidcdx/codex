@@ -180,6 +180,28 @@ select option {
   background: var(--surface-solid);
   color: var(--text);
 }
+/* ── Search wrap + clear button ─────────────────────── */
+.search-wrap { position: relative; }
+.search-wrap .search-input,
+.search-wrap .mod-picker-search { padding-right: 28px; width: 100%; box-sizing: border-box; }
+.search-clear {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  display: none;
+  transition: color 0.15s;
+}
+.search-clear:hover { color: var(--text); }
+.search-wrap.has-value .search-clear { display: block; }
+
 .search-input {
   width: 100%;
   background: var(--surface-solid);
@@ -793,13 +815,20 @@ select option {
 }
 .riven-stat-select {
   flex: 1;
+  min-width: 0;
   margin-bottom: 0;
   border: none;
   border-radius: 0;
   background: transparent;
-  padding: 9px 10px;
+  padding: 9px 28px 9px 10px;
   font-size: 13px;
   color: var(--text);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
 }
 .riven-stat-select:focus { box-shadow: none; border: none; }
 .riven-row-clear {
@@ -849,16 +878,18 @@ select option {
   flex-shrink: 0;
 }
 .btn-riven-apply:hover { background: #b07fe0; box-shadow: 0 0 12px var(--riven-glow); }
-.riven-hint { font-size: 12px; color: #6dbf6d; line-height: 1.4; }
-.riven-info-box {
-  background: rgba(255,255,255,0.05);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  font-size: 12px;
+.btn-riven-clear {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
   color: var(--text-dim);
-  line-height: 1.5;
-  margin-top: auto;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
 }
+.btn-riven-clear:hover { color: var(--text); background: rgba(255,255,255,0.1); }
 
 /* ── Animations ─────────────────────────────────────── */
 @keyframes fadeIn {
@@ -981,4 +1012,7 @@ select option {
     gap: 6px;
   }
   .mod-card { min-height: 72px; }
+  .riven-modal { width: 98vw; max-width: 98vw; }
+  .riven-stat-input { width: 52px !important; }
+  .riven-stat-select { font-size: 13px !important; }
 }
