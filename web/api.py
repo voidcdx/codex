@@ -188,6 +188,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
     total_mag_bonus = sum(m.magazine_bonus for m in mods)
     total_ammo_max_bonus = sum(m.ammo_max_bonus for m in mods)
+    total_reload_bonus = sum(m.reload_bonus for m in mods)
 
     # Build elemental components from mods + innate, then combine
     mod_elements: list[DamageComponent] = []
@@ -276,6 +277,8 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     modded_mag = math.ceil(base_mag * (1.0 + total_mag_bonus)) if base_mag > 0 else 0
     base_ammo_max = float(raw_w.get("max_ammo") or 0.0)
     modded_ammo_max = math.ceil(base_ammo_max * (1.0 + total_ammo_max_bonus)) if base_ammo_max > 0 else 0
+    base_reload = float(raw_w.get("reload") or 0.0)
+    modded_reload = round(base_reload / (1.0 + total_reload_bonus), 4) if total_reload_bonus and base_reload else base_reload
 
     return {
         "base_damage":  base_dmg_dict,
@@ -297,6 +300,8 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "modded_magazine": modded_mag,
         "base_ammo_max":   base_ammo_max,
         "modded_ammo_max": modded_ammo_max,
+        "base_reload":     base_reload,
+        "modded_reload":   modded_reload,
     }
 
 

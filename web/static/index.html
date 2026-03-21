@@ -792,7 +792,8 @@ function showWeaponStats(weapon) {
         </div>` : ''}
         <div class="stat-block">
           <div class="stat-label" data-tooltip="reload">Reload</div>
-          <div class="stat-value">${fmt(weapon.reload, 's')}</div>
+          <div class="stat-value" id="sv-reload">${fmt(weapon.reload, 's')}</div>
+          <div class="stat-modded" id="sm-reload" style="display:none"></div>
         </div>
         <div class="stat-block">
           <div class="stat-label" data-tooltip="multishot">Multishot</div>
@@ -947,12 +948,12 @@ async function _doUpdateModdedStats() {
     if (smMS) {
       const ms = data.modded_multishot || 1.0;
       _currentMultishot = ms;
-      if (hasMods && ms > 1.0001) {
+      if (hasSomeMods && ms > 1.0001) {
         smMS.textContent = '→ ' + ms.toFixed(2) + 'x';
         smMS.style.display = 'block';
       } else {
         smMS.style.display = 'none';
-        if (!hasMods) _currentMultishot = 1.0;
+        if (!hasSomeMods) _currentMultishot = 1.0;
       }
     }
 
@@ -960,11 +961,23 @@ async function _doUpdateModdedStats() {
     if (smFR) {
       const baseFr  = data.base_fr  || 0;
       const moddedFr = data.modded_fr || 0;
-      if (hasMods && baseFr > 0 && Math.abs(moddedFr - baseFr) > 0.001) {
+      if (hasSomeMods && baseFr > 0 && Math.abs(moddedFr - baseFr) > 0.001) {
         smFR.textContent = '→ ' + moddedFr.toFixed(2) + '/s';
         smFR.style.display = 'block';
       } else {
         smFR.style.display = 'none';
+      }
+    }
+
+    const smReload = document.getElementById('sm-reload');
+    if (smReload) {
+      const baseRel   = data.base_reload   || 0;
+      const moddedRel = data.modded_reload || 0;
+      if (hasSomeMods && baseRel > 0 && Math.abs(moddedRel - baseRel) > 0.001) {
+        smReload.textContent = '→ ' + moddedRel.toFixed(2) + 's';
+        smReload.style.display = 'block';
+      } else {
+        smReload.style.display = 'none';
       }
     }
 
