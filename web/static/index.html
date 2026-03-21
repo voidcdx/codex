@@ -31,18 +31,11 @@
       </div>
       <div id="element-badges" class="element-badges"></div>
 
-      <!-- Riven Mod Builder -->
-      <div id="riven-section" style="margin-top:12px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" id="riven-enabled" style="width:auto;margin:0" onchange="toggleRivenBuilder()">
-          <label for="riven-enabled" style="margin:0;cursor:pointer;font-weight:500">Riven Mod</label>
-        </div>
-        <div id="riven-builder" style="display:none;margin-top:10px">
-          <div id="riven-rows"></div>
-          <button id="riven-add-btn" onclick="addRivenStat()"
-            style="margin-top:6px;padding:4px 12px;font-size:0.8rem;background:var(--panel-bg);border:1px solid var(--border);color:var(--text-muted);border-radius:6px;cursor:pointer">
-            + Add Stat
-          </button>
+      <!-- Riven Slot — appears below the 8-slot grid as a special card -->
+      <div id="riven-slot" class="riven-card riven-empty" onclick="openRivenBuilder()">
+        <div class="riven-card-inner">
+          <div class="add-icon">⬡</div>
+          <div class="add-label">Add Riven</div>
         </div>
       </div>
 
@@ -57,6 +50,23 @@
           <input type="text" class="mod-picker-search" id="mod-picker-search" placeholder="Search mods…" autocomplete="off">
         </div>
         <div class="mod-picker-list" id="mod-picker-list"></div>
+      </div>
+    </div>
+
+    <!-- Riven Builder Modal -->
+    <div class="mod-picker-overlay" id="riven-picker-overlay">
+      <div class="mod-picker">
+        <div class="mod-picker-header">
+          <h3>Riven Mod</h3>
+        </div>
+        <div class="riven-builder-body">
+          <div id="riven-rows"></div>
+          <button class="btn-add-riven-stat" id="riven-add-btn" onclick="addRivenStat()">+ Add Stat</button>
+        </div>
+        <div class="riven-builder-footer">
+          <button class="btn-riven-clear" onclick="clearRiven()">Clear</button>
+          <button class="btn-riven-apply" onclick="applyRiven()">Apply</button>
+        </div>
       </div>
     </div>
 
@@ -1028,67 +1038,115 @@ const RIVEN_STAT_OPTIONS = [
   {value: 'toxin',         label: 'Toxin'},
 ];
 
-let rivenStats = []; // [{stat: "damage", pct: 150}, ...]
+// Committed Riven (applied to calculations). Null = no riven.
+let rivenApplied = null; // [{stat, pct}, ...]
+// Working copy while builder is open
+let rivenDraft = [];
 
-function toggleRivenBuilder() {
-  const enabled = document.getElementById('riven-enabled').checked;
-  document.getElementById('riven-builder').style.display = enabled ? 'block' : 'none';
-  if (enabled && rivenStats.length === 0) addRivenStat();
+function openRivenBuilder() {
+  rivenDraft = rivenApplied ? rivenApplied.map(s => ({...s})) : [{stat: '', pct: 150}];
+  renderRivenRows();
+  document.getElementById('riven-picker-overlay').classList.add('active');
+}
+
+function closeRivenBuilder() {
+  document.getElementById('riven-picker-overlay').classList.remove('active');
+}
+
+function applyRiven() {
+  const valid = rivenDraft.filter(s => s.stat);
+  rivenApplied = valid.length ? valid : null;
+  closeRivenBuilder();
+  renderRivenSlot();
   updateModdedStats();
+}
+
+function clearRiven() {
+  rivenDraft = [{stat: '', pct: 150}];
+  rivenApplied = null;
+  renderRivenRows();
+  renderRivenSlot();
+  updateModdedStats();
+  closeRivenBuilder();
 }
 
 function addRivenStat() {
-  if (rivenStats.length >= 4) return;
-  rivenStats.push({stat: '', pct: 150});
+  if (rivenDraft.length >= 4) return;
+  rivenDraft.push({stat: '', pct: 150});
   renderRivenRows();
-  if (rivenStats.length >= 4) document.getElementById('riven-add-btn').style.display = 'none';
+  document.getElementById('riven-add-btn').style.display = rivenDraft.length >= 4 ? 'none' : '';
 }
 
-function removeRivenStat(i) {
-  rivenStats.splice(i, 1);
+function removeRivenStatRow(i) {
+  rivenDraft.splice(i, 1);
+  if (rivenDraft.length === 0) rivenDraft.push({stat: '', pct: 150});
   renderRivenRows();
-  document.getElementById('riven-add-btn').style.display = 'inline-block';
-  updateModdedStats();
+  document.getElementById('riven-add-btn').style.display = rivenDraft.length >= 4 ? 'none' : '';
 }
 
-function onRivenStatChange(i, field, value) {
-  if (field === 'pct') rivenStats[i].pct = parseFloat(value) || 0;
-  else rivenStats[i].stat = value;
-  updateModdedStats();
+function onRivenDraftChange(i, field, value) {
+  if (field === 'pct') rivenDraft[i].pct = parseFloat(value) || 0;
+  else rivenDraft[i].stat = value;
 }
 
 function renderRivenRows() {
   const container = document.getElementById('riven-rows');
-  const opts = RIVEN_STAT_OPTIONS.map(o =>
-    `<option value="${esc(o.value)}">${esc(o.label)}</option>`
-  ).join('');
-  container.innerHTML = rivenStats.map((s, i) => `
-    <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
-      <select style="flex:1;padding:4px 6px;font-size:0.85rem"
-        onchange="onRivenStatChange(${i},'stat',this.value)">
+  container.innerHTML = rivenDraft.map((s, i) => `
+    <div class="riven-stat-row">
+      <select class="riven-stat-select" onchange="onRivenDraftChange(${i},'stat',this.value)">
         ${RIVEN_STAT_OPTIONS.map(o =>
           `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
         ).join('')}
       </select>
-      <input type="number" step="0.1" value="${s.pct}"
-        style="width:72px;padding:4px 6px;font-size:0.85rem;text-align:right"
-        onchange="onRivenStatChange(${i},'pct',this.value)"
-        oninput="onRivenStatChange(${i},'pct',this.value)">
-      <span style="font-size:0.8rem;color:var(--text-muted)">%</span>
-      <button onclick="removeRivenStat(${i})"
-        style="padding:2px 8px;background:none;border:1px solid var(--border);color:var(--text-muted);border-radius:4px;cursor:pointer;font-size:0.9rem">×</button>
+      <input type="number" class="riven-stat-input" step="0.1" value="${s.pct}"
+        onchange="onRivenDraftChange(${i},'pct',this.value)"
+        oninput="onRivenDraftChange(${i},'pct',this.value)">
+      <span class="riven-pct-label">%</span>
+      <button class="riven-remove-btn" onclick="removeRivenStatRow(${i})">×</button>
     </div>
   `).join('');
+  const addBtn = document.getElementById('riven-add-btn');
+  if (addBtn) addBtn.style.display = rivenDraft.length >= 4 ? 'none' : '';
+}
+
+function renderRivenSlot() {
+  const slot = document.getElementById('riven-slot');
+  if (!rivenApplied || !rivenApplied.length) {
+    slot.className = 'riven-card riven-empty';
+    slot.innerHTML = `<div class="riven-card-inner"><div class="add-icon">⬡</div><div class="add-label">Add Riven</div></div>`;
+  } else {
+    slot.className = 'riven-card riven-filled';
+    const STAT_LABELS = {
+      damage: 'DMG', multishot: 'MS', crit_chance: 'CC', crit_damage: 'CD',
+      status_chance: 'SC', fire_rate: 'FR', heat: 'Heat', cold: 'Cold',
+      electricity: 'Elec', toxin: 'Tox',
+    };
+    const lines = rivenApplied
+      .filter(s => s.stat)
+      .map(s => {
+        const sign = s.pct >= 0 ? '+' : '';
+        return `<div class="riven-stat-chip${s.pct < 0 ? ' neg' : ''}">${sign}${s.pct.toFixed(1)}% ${STAT_LABELS[s.stat] || s.stat}</div>`;
+      }).join('');
+    slot.innerHTML = `
+      <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">×</button>
+      <div class="riven-label">Riven</div>
+      <div class="riven-stat-chips">${lines}</div>`;
+  }
 }
 
 function getRivenSpec() {
-  const enabled = document.getElementById('riven-enabled')?.checked;
-  if (!enabled) return null;
-  const stats = rivenStats
-    .filter(s => s.stat)
-    .map(s => ({stat: s.stat, value: s.pct / 100}));
+  if (!rivenApplied || !rivenApplied.length) return null;
+  const stats = rivenApplied.filter(s => s.stat).map(s => ({stat: s.stat, value: s.pct / 100}));
   return stats.length ? {stats} : null;
 }
+
+// Close riven picker on backdrop click
+document.addEventListener('click', e => {
+  const overlay = document.getElementById('riven-picker-overlay');
+  if (overlay && overlay.classList.contains('active') && e.target === overlay) {
+    closeRivenBuilder();
+  }
+});
 
 // ---------------------------------------------------------------------------
 // Calculate
