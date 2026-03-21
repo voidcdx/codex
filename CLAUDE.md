@@ -152,6 +152,35 @@ Exception: Kuva/Tenet innate elements follow HCET priority (Heat > Cold > Electr
   1. Increases base damage by that percentage.
   2. Ignores that percentage of the armor value: `effective_armor = Armor × (1 − Modifier)`.
 
+## Enemy Level Scaling
+
+Formula source: [wiki.warframe.com/w/Enemy_Level_Scaling](https://wiki.warframe.com/w/Enemy_Level_Scaling) (community-derived).
+
+**ΔLevel** = `max(0, level - base_level)` where Steel Path adds 100 to the effective level.
+
+### Health / Shield Multiplier
+- **ΔLevel ≤ 70:** `f1(δ) = 1 + 0.015 × δ²`
+- **ΔLevel ≥ 80:** `f2(δ) = 1 + A × δ^B`
+  - Regular: A = 10.7332, B = 0.72
+  - Eximus: A = 2.615360685677324, B = 1.0775143361894326
+- **70 < ΔLevel < 80:** smoothstep blend between f1 and f2
+- **Steel Path:** ×2.5 multiplier applied to health and shields
+
+### Overguard (Eximus Only)
+- Base = 12, formula: `12 × (1 + 10.822554211507594 × δ^1.3694013966775684)`
+- Coefficients fitted from two wiki reference points (ΔLevel 199 and 599)
+- Reproduces wiki exactly: 182,638.43 at ΔLevel 199; 825,903.86 at ΔLevel 599
+
+### Armor Scaling
+- `base_armor × (1 + 0.005 × δ^1.75)`, hard-capped at 2700 (90% DR)
+
+### Implementation
+- `src/scaling.py` — all formulas; `scale_enemy_stats()` is the main entry point
+- `web/api.py` — `POST /api/scaled-enemy` → `{level, health, shield, armor, overguard}`
+- UI: enemy panel has Level input (1–9999), Steel Path toggle, Eximus toggle
+- Display uses `toFixed(2)` → `toLocaleString` to show decimals (e.g. `4,502,520.4`)
+- **Do not truncate coefficients** — 6-decimal rounding causes ~9 HP / ~2 OG drift vs wiki
+
 ## Damage Type Effectiveness (Update 36.0+)
 - **Vulnerable (+):** ×1.5
 - **Resistant (−):** ×0.5
