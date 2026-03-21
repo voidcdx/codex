@@ -24,20 +24,12 @@
 
     <!-- Mods — 2×4 card grid -->
     <div class="panel" style="margin-bottom:16px">
-      <h2>Mods (in slot order)</h2>
+      <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></h2>
       <div id="mod-grid-wrapper">
         <div id="mod-grid" class="mod-grid"></div>
         <svg id="element-arcs"></svg>
       </div>
       <div id="element-badges" class="element-badges"></div>
-
-      <!-- Riven Slot — appears below the 8-slot grid as a special card -->
-      <div id="riven-slot" class="riven-card riven-empty" onclick="openRivenBuilder()">
-        <div class="riven-card-inner">
-          <div class="add-icon">⬡</div>
-          <div class="add-label">Add Riven</div>
-        </div>
-      </div>
 
       <button class="btn-optimal" id="optimal-btn" onclick="runOptimalOrder()" disabled>Optimal Mod Order</button>
     </div>
@@ -55,17 +47,23 @@
 
     <!-- Riven Builder Modal -->
     <div class="mod-picker-overlay" id="riven-picker-overlay">
-      <div class="mod-picker">
-        <div class="mod-picker-header">
-          <h3>Riven Mod</h3>
+      <div class="riven-modal">
+        <div class="riven-modal-header">
+          <h3>Create riven</h3>
+          <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
         </div>
-        <div class="riven-builder-body">
-          <div id="riven-rows"></div>
-          <button class="btn-add-riven-stat" id="riven-add-btn" onclick="addRivenStat()">+ Add Stat</button>
-        </div>
-        <div class="riven-builder-footer">
-          <button class="btn-riven-clear" onclick="clearRiven()">Clear</button>
-          <button class="btn-riven-apply" onclick="applyRiven()">Apply</button>
+        <div class="riven-modal-body">
+          <div class="riven-img-placeholder" id="riven-img-area">
+            <!-- riven image frame — populated later -->
+          </div>
+          <div class="riven-stats-col">
+            <div id="riven-rows"></div>
+            <div class="riven-action-row">
+              <button class="btn-riven-apply" onclick="applyRiven()">Add riven</button>
+              <span class="riven-hint">Your riven added to other mods selection (in search as "riven")</span>
+            </div>
+            <div class="riven-info-box">Build full builds to test your riven mod. The effect of mod dependent on the rest of your build.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1038,13 +1036,14 @@ const RIVEN_STAT_OPTIONS = [
   {value: 'toxin',         label: 'Toxin'},
 ];
 
-// Committed Riven (applied to calculations). Null = no riven.
-let rivenApplied = null; // [{stat, pct}, ...]
-// Working copy while builder is open
-let rivenDraft = [];
+let rivenApplied = null; // [{stat, pct}, ...] — committed
+let rivenDraft   = [];   // working copy in modal
 
 function openRivenBuilder() {
-  rivenDraft = rivenApplied ? rivenApplied.map(s => ({...s})) : [{stat: '', pct: 150}];
+  // Always present 4 rows
+  rivenDraft = Array.from({length: 4}, (_, i) =>
+    rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 150}
+  );
   renderRivenRows();
   document.getElementById('riven-picker-overlay').classList.add('active');
 }
@@ -1057,31 +1056,20 @@ function applyRiven() {
   const valid = rivenDraft.filter(s => s.stat);
   rivenApplied = valid.length ? valid : null;
   closeRivenBuilder();
-  renderRivenSlot();
+  renderRivenCard();
   updateModdedStats();
 }
 
 function clearRiven() {
-  rivenDraft = [{stat: '', pct: 150}];
   rivenApplied = null;
-  renderRivenRows();
-  renderRivenSlot();
+  renderRivenCard();
   updateModdedStats();
   closeRivenBuilder();
 }
 
-function addRivenStat() {
-  if (rivenDraft.length >= 4) return;
-  rivenDraft.push({stat: '', pct: 150});
+function clearRivenRow(i) {
+  rivenDraft[i] = {stat: '', pct: 150};
   renderRivenRows();
-  document.getElementById('riven-add-btn').style.display = rivenDraft.length >= 4 ? 'none' : '';
-}
-
-function removeRivenStatRow(i) {
-  rivenDraft.splice(i, 1);
-  if (rivenDraft.length === 0) rivenDraft.push({stat: '', pct: 150});
-  renderRivenRows();
-  document.getElementById('riven-add-btn').style.display = rivenDraft.length >= 4 ? 'none' : '';
 }
 
 function onRivenDraftChange(i, field, value) {
@@ -1098,40 +1086,40 @@ function renderRivenRows() {
           `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
         ).join('')}
       </select>
-      <input type="number" class="riven-stat-input" step="0.1" value="${s.pct}"
+      <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">×</button>
+      <input type="number" class="riven-stat-input" step="1" value="${s.pct}"
         onchange="onRivenDraftChange(${i},'pct',this.value)"
         oninput="onRivenDraftChange(${i},'pct',this.value)">
-      <span class="riven-pct-label">%</span>
-      <button class="riven-remove-btn" onclick="removeRivenStatRow(${i})">×</button>
     </div>
   `).join('');
-  const addBtn = document.getElementById('riven-add-btn');
-  if (addBtn) addBtn.style.display = rivenDraft.length >= 4 ? 'none' : '';
 }
 
-function renderRivenSlot() {
-  const slot = document.getElementById('riven-slot');
-  if (!rivenApplied || !rivenApplied.length) {
-    slot.className = 'riven-card riven-empty';
-    slot.innerHTML = `<div class="riven-card-inner"><div class="add-icon">⬡</div><div class="add-label">Add Riven</div></div>`;
-  } else {
-    slot.className = 'riven-card riven-filled';
-    const STAT_LABELS = {
-      damage: 'DMG', multishot: 'MS', crit_chance: 'CC', crit_damage: 'CD',
-      status_chance: 'SC', fire_rate: 'FR', heat: 'Heat', cold: 'Cold',
-      electricity: 'Elec', toxin: 'Tox',
-    };
-    const lines = rivenApplied
-      .filter(s => s.stat)
-      .map(s => {
-        const sign = s.pct >= 0 ? '+' : '';
-        return `<div class="riven-stat-chip${s.pct < 0 ? ' neg' : ''}">${sign}${s.pct.toFixed(1)}% ${STAT_LABELS[s.stat] || s.stat}</div>`;
-      }).join('');
-    slot.innerHTML = `
-      <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">×</button>
-      <div class="riven-label">Riven</div>
-      <div class="riven-stat-chips">${lines}</div>`;
-  }
+// Renders / removes the riven card in the mod grid (9th card)
+function renderRivenCard() {
+  const grid = document.getElementById('mod-grid');
+  const existing = grid.querySelector('.riven-mod-card');
+  if (existing) existing.remove();
+  if (!rivenApplied || !rivenApplied.length) return;
+
+  const STAT_LABELS = {
+    damage:'DMG', multishot:'MS', crit_chance:'CC', crit_damage:'CD',
+    status_chance:'SC', fire_rate:'FR', heat:'Heat', cold:'Cold',
+    electricity:'Elec', toxin:'Tox',
+  };
+  const lines = rivenApplied
+    .filter(s => s.stat)
+    .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${STAT_LABELS[s.stat] || s.stat}</div>`)
+    .join('');
+
+  const card = document.createElement('div');
+  card.className = 'mod-card riven-mod-card';
+  card.onclick = openRivenBuilder;
+  card.innerHTML = `
+    <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">×</button>
+    <div class="riven-card-icon">⬡</div>
+    <div class="mod-name" style="color:var(--riven)">Riven</div>
+    <div class="riven-card-stats">${lines}</div>`;
+  grid.appendChild(card);
 }
 
 function getRivenSpec() {
@@ -1140,12 +1128,11 @@ function getRivenSpec() {
   return stats.length ? {stats} : null;
 }
 
-// Close riven picker on backdrop click
+// Close on backdrop click
 document.addEventListener('click', e => {
   const overlay = document.getElementById('riven-picker-overlay');
-  if (overlay && overlay.classList.contains('active') && e.target === overlay) {
+  if (overlay && overlay.classList.contains('active') && e.target === overlay)
     closeRivenBuilder();
-  }
 });
 
 // ---------------------------------------------------------------------------
