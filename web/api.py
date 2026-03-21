@@ -426,6 +426,7 @@ def scaled_enemy(req: ScaleRequest) -> dict:
     return scale_enemy_stats(
         e.base_health, e.base_shield, e.base_armor,
         e.base_level, req.level, req.steel_path, req.eximus,
+        faction=e.faction,
     )
 
 

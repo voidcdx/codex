@@ -158,29 +158,48 @@ Formula source: [wiki.warframe.com/w/Enemy_Level_Scaling](https://wiki.warframe.
 
 **ΔLevel** = `max(0, level - base_level)` where Steel Path adds 100 to the effective level.
 
-### Health / Shield Multiplier
-- **ΔLevel ≤ 70:** `f1(δ) = 1 + 0.015 × δ²`
-- **ΔLevel ≥ 80:** `f2(δ) = 1 + A × δ^B`
-  - Regular: A = 10.7332, B = 0.72
-  - Eximus: A = 2.615360685677324, B = 1.0775143361894326
-- **70 < ΔLevel < 80:** smoothstep blend between f1 and f2
+### Health Multiplier (per-faction)
+Smoothstep blend 70–80. `f1(δ) = 1 + A1×δ^e1`, `f2(δ) = 1 + A2×δ^e2`.
+
+| Faction | A1 | e1 | A2 | e2 |
+|---|---|---|---|---|
+| Grineer / Scaldra | 0.015 | 2.12 | 10.7332 | 0.72 |
+| Corpus | 0.015 | 2.12 | 13.4165 | 0.55 |
+| Infested | 0.0225 | 2.12 | 16.1 | 0.72 |
+| Corrupted | 0.015 | 2.10 | 10.7332 | 0.685 |
+| Murmur / Sentient / Unaffiliated | 0.015 | 2.0 | 10.7332 | 0.5 |
+| Techrot | 0.02 | 2.12 | 15.1 | 0.7 |
+
+### Shield Multiplier (per-faction)
+Same smoothstep structure. Factions not listed use Grineer coefficients.
+
+| Faction | A1 | e1 | A2 | e2 |
+|---|---|---|---|---|
+| Corpus | 0.02 | 1.76 | 2.0 | 0.76 |
+| Corrupted | 0.02 | 1.75 | 2.0 | 0.75 |
+| Grineer / Sentient | 0.02 | 1.75 | 1.6 | 0.75 |
+| Techrot | 0.02 | 1.76 | 3.5 | 0.76 |
+
 - **Steel Path:** ×2.5 multiplier applied to health and shields
 
 ### Overguard (Eximus Only)
 Two-regime smoothstep formula (source: wiki.warframe.com/w/Enemy_Level_Scaling):
 ```
+δ_OG  = level − 1  (fixed base of 1, NOT enemy base level)
 f1(δ) = 1 + 0.0015 × δ^4            (δ < 45)
 f2(δ) = 1 + 260 × δ^0.9             (δ > 50)
 T     = (δ - 45) / 5
 S2    = 3T² − 2T³                   (45 ≤ δ ≤ 50), else 0 or 1
 Overguard = 12 × [f1(δ)·(1 − S2) + f2(δ)·S2]
 ```
-Reference values: δ=0 → 12.0 | δ=10 → 1,812.0 | δ=45 → 73,823.25 | δ=50 → ~105,592.8 | δ=199 → ~365,676 | δ=599 → ~985,000
-
-**NOTE:** `src/scaling.py` still uses the old single power-law fit — needs replacing with the above formula.
+Reference values: δ=0 → 12.0 | δ=10 → 192.0 | δ=45 → 73,823.25 | δ=50 → ~105,592.8 | δ=199 → ~365,676 | δ=599 → ~985,000
 
 ### Armor Scaling
-- `base_armor × (1 + 0.005 × δ^1.75)`, hard-capped at 2700 (90% DR)
+Two-regime smoothstep (70–80 transition), hard-capped at 2700 (90% DR):
+```
+f1(δ) = 1 + 0.005 × δ^1.75
+f2(δ) = 1 + 0.4   × δ^0.75
+```
 
 ### Implementation
 - `src/scaling.py` — all formulas; `scale_enemy_stats()` is the main entry point
