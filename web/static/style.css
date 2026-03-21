@@ -806,7 +806,6 @@ select option {
 .riven-stat-row {
   display: flex;
   align-items: stretch;
-  height: 36px;
   gap: 6px;
   border-left: 2px solid transparent;
   padding-left: 0;
@@ -819,9 +818,8 @@ select option {
 .riven-stat-select {
   flex: 1;
   min-width: 0;
-  height: 100%;
   box-sizing: border-box;
-  padding: 0 22px 0 8px;
+  padding: 6px 22px 6px 8px;
   margin-bottom: 0;
   font-size: 13px;
   border: 1px solid var(--border);
@@ -840,7 +838,6 @@ select option {
 .riven-input-wrap {
   position: relative;
   flex: 0 0 72px;
-  height: 100%;
 }
 .riven-input-wrap::after {
   content: '%';
@@ -854,9 +851,8 @@ select option {
 }
 .riven-stat-input {
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
-  padding: 0 18px 0 8px;
+  padding: 6px 18px 6px 8px;
   margin-bottom: 0;
   font-size: 13px;
   border: 1px solid var(--border);
@@ -872,7 +868,7 @@ select option {
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .riven-row-clear {
   flex: 0 0 28px;
-  height: 100%;
+  align-self: stretch;
   box-sizing: border-box;
   padding: 0;
   background: none;
@@ -1025,7 +1021,6 @@ select option {
   .mod-picker-search,
   .riven-stat-select,
   .riven-stat-input { font-size: 16px !important; }
-  .riven-stat-row { height: 44px; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item { touch-action: manipulation; }
