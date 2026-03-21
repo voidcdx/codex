@@ -816,7 +816,9 @@ select option {
 }
 .riven-row-clear:hover { color: var(--bad); }
 .riven-stat-input {
+  flex: 0 0 44px;
   width: 44px;
+  min-width: 0;
   margin-bottom: 0;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -824,7 +826,6 @@ select option {
   padding: 6px 4px;
   font-size: 12px;
   text-align: center;
-  flex-shrink: 0;
   color: var(--text);
 }
 .riven-stat-input:focus { box-shadow: none; }
