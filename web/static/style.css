@@ -805,38 +805,25 @@ select option {
 
 .riven-stat-row {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  height: 36px;
   gap: 6px;
-  padding-left: 0;
   border-left: 2px solid transparent;
+  padding-left: 0;
   transition: border-color 0.15s, padding-left 0.15s;
 }
 .riven-stat-row.has-value {
   border-left-color: var(--riven);
   padding-left: 6px;
 }
-.riven-stat-num {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(155, 109, 208, 0.5);
-  background: rgba(155, 109, 208, 0.1);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 .riven-stat-select {
   flex: 1;
   min-width: 0;
+  height: 100%;
   box-sizing: border-box;
-  height: 32px;
   padding: 0 22px 0 8px;
   margin-bottom: 0;
   font-size: 13px;
-  line-height: 30px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface);
@@ -849,13 +836,13 @@ select option {
   cursor: pointer;
   transition: border-color 0.15s;
 }
-.riven-stat-select:focus { box-shadow: none; }
+.riven-stat-select:focus { outline: none; box-shadow: none; }
 .riven-input-wrap {
   position: relative;
-  flex: 0 0 54px;
+  flex: 0 0 72px;
+  height: 100%;
 }
-.riven-input-wrap::after {
-  content: '%';
+.riven-pct-sign {
   position: absolute;
   right: 7px;
   top: 50%;
@@ -865,24 +852,42 @@ select option {
   pointer-events: none;
 }
 .riven-stat-input {
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
-  height: 32px;
-  width: 54px;
-  padding: 0 18px 0 6px;
+  padding: 0 18px 0 8px;
   margin-bottom: 0;
   font-size: 13px;
-  line-height: 30px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--text);
-  text-align: center;
+  text-align: right;
   -moz-appearance: textfield;
   transition: border-color 0.15s;
 }
-.riven-stat-input:focus { box-shadow: none; }
+.riven-stat-input:focus { outline: none; box-shadow: none; }
 .riven-stat-input::-webkit-inner-spin-button,
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.riven-row-clear {
+  flex: 0 0 28px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.riven-row-clear:hover {
+  color: var(--text);
+  border-color: rgba(220, 80, 80, 0.5);
+  background: rgba(220, 80, 80, 0.08);
+}
 
 .riven-action-row {
   display: flex;
@@ -1018,7 +1023,8 @@ select option {
   .search-input,
   .mod-picker-search,
   .riven-stat-select,
-  .riven-stat-input { font-size: 16px !important; height: 40px !important; }
+  .riven-stat-input { font-size: 16px !important; }
+  .riven-stat-row { height: 44px; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item { touch-action: manipulation; }
@@ -1036,6 +1042,6 @@ select option {
   }
   .mod-card { min-height: 72px; }
   .riven-modal { width: 98vw; max-width: 98vw; }
-  .riven-stat-input { width: 52px !important; }
+  .riven-input-wrap { flex: 0 0 64px; }
   .riven-stat-select { font-size: 13px !important; }
 }

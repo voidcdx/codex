@@ -1292,19 +1292,26 @@ function renderRivenRows() {
   const container = document.getElementById('riven-rows');
   container.innerHTML = rivenDraft.map((s, i) => `
     <div class="riven-stat-row${s.stat ? ' has-value' : ''}">
-      <span class="riven-stat-num">0${i+1}</span>
       <select class="riven-stat-select" onchange="onRivenDraftChange(${i},'stat',this.value)">
         ${RIVEN_STAT_OPTIONS.map(o =>
           `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
         ).join('')}
       </select>
       <div class="riven-input-wrap">
-        <input type="number" class="riven-stat-input" step="1" value="${s.pct}"
+        <input type="number" class="riven-stat-input" step="0.1" value="${s.pct || ''}"
+          placeholder="0"
           onchange="onRivenDraftChange(${i},'pct',this.value)"
           oninput="onRivenDraftChange(${i},'pct',this.value)">
+        <span class="riven-pct-sign">%</span>
       </div>
+      <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">×</button>
     </div>
   `).join('');
+}
+
+function clearRivenRow(i) {
+  rivenDraft[i] = { stat: '', pct: 0 };
+  renderRivenRows();
 }
 
 
