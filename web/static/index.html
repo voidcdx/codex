@@ -981,7 +981,6 @@ async function _doUpdateModdedStats() {
     if (smMag && svMag) {
       const baseMag   = data.base_magazine   || 0;
       const moddedMag = data.modded_magazine || 0;
-      if (baseMag > 0) svMag.textContent = fmt(baseMag);
       if (hasSomeMods && baseMag > 0 && moddedMag !== baseMag) {
         smMag.textContent = '→ ' + moddedMag;
         smMag.style.display = 'block';
@@ -995,7 +994,6 @@ async function _doUpdateModdedStats() {
     if (smAmmo && svAmmo) {
       const baseAmmo   = data.base_ammo_max   || 0;
       const moddedAmmo = data.modded_ammo_max || 0;
-      if (baseAmmo > 0) svAmmo.textContent = fmt(baseAmmo);
       if (hasSomeMods && baseAmmo > 0 && moddedAmmo !== baseAmmo) {
         smAmmo.textContent = '→ ' + moddedAmmo;
         smAmmo.style.display = 'block';
