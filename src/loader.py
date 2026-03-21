@@ -261,6 +261,7 @@ def load_mod(name: str) -> Mod:
     status_damage_bonus = float(entry.get("status_damage_pct") or 0.0)
     fire_rate_bonus = float(entry.get("fire_rate_pct") or 0.0)
     magazine_bonus = float(entry.get("magazine_pct") or 0.0)
+    ammo_max_bonus = float(entry.get("ammo_max_pct") or 0.0)
 
     return Mod(
         name=name,
@@ -275,6 +276,7 @@ def load_mod(name: str) -> Mod:
         status_damage_bonus=status_damage_bonus,
         fire_rate_bonus=fire_rate_bonus,
         magazine_bonus=magazine_bonus,
+        ammo_max_bonus=ammo_max_bonus,
     )
 
 

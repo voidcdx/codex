@@ -158,6 +158,7 @@ def _parse_weapon(name: str, raw: dict) -> dict | None:
     TOP_STAT_KEYS = {
         "Magazine":    "magazine",
         "MagSize":     "magazine",
+        "AmmoMax":     "max_ammo",
         "Reload":      "reload",
         "Mastery":     "mastery_req",
         "MasteryReq":  "mastery_req",
@@ -274,8 +275,8 @@ MOD_EFFECT_PATTERNS: list[tuple[str, str]] = [
     # other stats
     (r"\+(\d+(?:\.\d+)?)%\s*(?:Fire\s+Rate|Attack\s+Speed)", "fire_rate_pct"),
     (r"\+(\d+(?:\.\d+)?)%\s*Multishot",                      "multishot_pct"),
-    (r"\+(\d+(?:\.\d+)?)%\s*(?:Magazine|Ammo\s+(?:Maximum|Capacity))",
-                                                              "magazine_pct"),
+    (r"\+(\d+(?:\.\d+)?)%\s*(?:Magazine(?:\s+Capacity)?)",   "magazine_pct"),
+    (r"\+(\d+(?:\.\d+)?)%\s*Ammo\s+Maximum",                "ammo_max_pct"),
 ]
 
 import re  # noqa: E402 (after dataclasses imports)

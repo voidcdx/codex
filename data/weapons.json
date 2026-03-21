@@ -71,7 +71,7 @@
     "class": "Sword and Shield",
     "family": "Ack & Brunt",
     "max_rank": 30.0,
-    "image": "Ack-&-Brunt.png"
+    "image": "Ack&Brunt.png"
   },
   "Amanata": {
     "name": "Amanata",
@@ -320,7 +320,7 @@
     "class": "Fist",
     "family": "Ankyros",
     "max_rank": 30.0,
-    "image": "Ankyros-Prime.png"
+    "image": "AnkyrosPrime.png"
   },
   "Arca Titron": {
     "name": "Arca Titron",
@@ -369,7 +369,7 @@
     "class": "Hammer",
     "family": "Arca Titron",
     "max_rank": 30.0,
-    "image": "Arca-Titron.png"
+    "image": "ArcaTitron.png"
   },
   "Argo & Vel": {
     "name": "Argo & Vel",
@@ -442,7 +442,7 @@
     "class": "Sword and Shield",
     "family": "Argo & Vel",
     "max_rank": 30.0,
-    "image": "Argo-&-Vel.png"
+    "image": "Argo&Vel.png"
   },
   "Arum Spinosa": {
     "name": "Arum Spinosa",
@@ -524,7 +524,7 @@
     "class": "Warfan",
     "family": "Arum Spinosa",
     "max_rank": 30.0,
-    "image": "Arum-Spinosa.png"
+    "image": "ArumSpinosa.png"
   },
   "Atterax": {
     "name": "Atterax",
@@ -722,7 +722,7 @@
     "class": "Staff",
     "family": "Bo",
     "max_rank": 30.0,
-    "image": "Bo-Prime.png"
+    "image": "BoPrime.png"
   },
   "Boltace": {
     "name": "Boltace",
@@ -822,7 +822,7 @@
     "class": "Staff",
     "family": "Broken Scepter",
     "max_rank": 30.0,
-    "image": "Broken-Scepter.png"
+    "image": "BrokenScepter.png"
   },
   "Broken War": {
     "name": "Broken War",
@@ -872,7 +872,7 @@
     "class": "Sword",
     "family": "Broken War",
     "max_rank": 30.0,
-    "image": "Broken-War.png"
+    "image": "BrokenWar.png"
   },
   "Cadus": {
     "name": "Cadus",
@@ -1121,7 +1121,7 @@
     "class": "Dagger",
     "family": "Ceramic Dagger",
     "max_rank": 30.0,
-    "image": "Ceramic-Dagger.png"
+    "image": "CeramicDagger.png"
   },
   "Cerata": {
     "name": "Cerata",
@@ -1303,7 +1303,7 @@
     "class": "Blade and Whip",
     "family": "Lacera",
     "max_rank": 30.0,
-    "image": "Ceti-Lacera.png"
+    "image": "CetiLacera.png"
   },
   "Cobra & Crane": {
     "name": "Cobra & Crane",
@@ -1352,7 +1352,7 @@
     "class": "Sword and Shield",
     "family": "Cobra & Crane",
     "max_rank": 30.0,
-    "image": "Cobra-&-Crane.png"
+    "image": "Cobra&Crane.png"
   },
   "Cobra & Crane Prime": {
     "name": "Cobra & Crane Prime",
@@ -1401,7 +1401,7 @@
     "class": "Sword and Shield",
     "family": "Cobra & Crane",
     "max_rank": 30.0,
-    "image": "Cobra-&-Crane-Prime.png"
+    "image": "Cobra&CranePrime.png"
   },
   "Coda Caustacyst": {
     "name": "Coda Caustacyst",
@@ -1476,7 +1476,7 @@
     "class": "Scythe",
     "family": "Caustacyst",
     "max_rank": 40.0,
-    "image": "Coda-Caustacyst.png"
+    "image": "CodaCaustacyst.png"
   },
   "Coda Hirudo": {
     "name": "Coda Hirudo",
@@ -1526,7 +1526,7 @@
     "class": "Sparring",
     "family": "Hirudo",
     "max_rank": 40.0,
-    "image": "Coda-Hirudo.png"
+    "image": "CodaHirudo.png"
   },
   "Coda Mire": {
     "name": "Coda Mire",
@@ -1579,7 +1579,7 @@
     "class": "Sword",
     "family": "Mire",
     "max_rank": 40.0,
-    "image": "Coda-Mire.png"
+    "image": "CodaMire.png"
   },
   "Coda Motovore": {
     "name": "Coda Motovore",
@@ -1633,7 +1633,7 @@
     "class": "Hammer",
     "family": "Motovore",
     "max_rank": 40.0,
-    "image": "Coda-Motovore.png"
+    "image": "CodaMotovore.png"
   },
   "Coda Pathocyst": {
     "name": "Coda Pathocyst",
@@ -1762,7 +1762,7 @@
     "class": "Glaive",
     "family": "Pathocyst",
     "max_rank": 40.0,
-    "image": "Coda-Pathocyst.png"
+    "image": "CodaPathocyst.png"
   },
   "Corufell": {
     "name": "Corufell",
@@ -1923,7 +1923,7 @@
     "class": "Sword",
     "family": "Dakra Prime",
     "max_rank": 30.0,
-    "image": "Dakra-Prime.png"
+    "image": "DakraPrime.png"
   },
   "Dark Dagger": {
     "name": "Dark Dagger",
@@ -1975,7 +1975,7 @@
     "class": "Dagger",
     "family": "Dark Dagger",
     "max_rank": 30.0,
-    "image": "Dark-Dagger.png"
+    "image": "DarkDagger.png"
   },
   "Dark Split-Sword (Dual Swords)": {
     "name": "Dark Split-Sword (Dual Swords)",
@@ -2027,7 +2027,7 @@
     "class": "Dual Swords",
     "family": "Dark Split-Sword (Dual Swords)",
     "max_rank": 30.0,
-    "image": "Dark-Split-Sword-(Dual-Swords).png"
+    "image": "DarkSplitSwordDualSwords.png"
   },
   "Dark Split-Sword (Heavy Blade)": {
     "name": "Dark Split-Sword (Heavy Blade)",
@@ -2079,7 +2079,7 @@
     "class": "Heavy Blade",
     "family": "Dark Split-Sword (Heavy Blade)",
     "max_rank": 30.0,
-    "image": "Dark-Split-Sword-(Heavy-Blade).png"
+    "image": "DarkSplitSwordHeavyBlade.png"
   },
   "Dark Sword": {
     "name": "Dark Sword",
@@ -2131,7 +2131,7 @@
     "class": "Sword",
     "family": "Dark Sword",
     "max_rank": 30.0,
-    "image": "Dark-Sword.png"
+    "image": "DarkSword.png"
   },
   "Desert Wind": {
     "name": "Desert Wind",
@@ -2176,7 +2176,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Desert-Wind.png"
+    "image": "DesertWind.png"
   },
   "Desert Wind Prime": {
     "name": "Desert Wind Prime",
@@ -2221,7 +2221,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Desert-Wind-Prime.png"
+    "image": "DesertWind.png"
   },
   "Destreza": {
     "name": "Destreza",
@@ -2321,7 +2321,7 @@
     "class": "Rapier",
     "family": "Destreza",
     "max_rank": 30.0,
-    "image": "Destreza-Prime.png"
+    "image": "DestrezaPrime.png"
   },
   "Dex Dakra": {
     "name": "Dex Dakra",
@@ -2371,7 +2371,7 @@
     "class": "Dual Swords",
     "family": "Dex Dakra",
     "max_rank": 30.0,
-    "image": "Dex-Dakra.png"
+    "image": "DexDakra.png"
   },
   "Dex Nikana": {
     "name": "Dex Nikana",
@@ -2421,7 +2421,7 @@
     "class": "Nikana",
     "family": "Nikana",
     "max_rank": 30.0,
-    "image": "Dex-Nikana.png"
+    "image": "DexNikana.png"
   },
   "Diwata": {
     "name": "Diwata",
@@ -2471,7 +2471,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Diwata-Prime.png"
+    "image": "DiwataPrime.png"
   },
   "Dorrclave": {
     "name": "Dorrclave",
@@ -2569,7 +2569,7 @@
     "class": "Nikana",
     "family": "Dragon Nikana",
     "max_rank": 30.0,
-    "image": "Dragon-Nikana.png"
+    "image": "DragonNikana.png"
   },
   "Dual Cleavers": {
     "name": "Dual Cleavers",
@@ -2619,7 +2619,7 @@
     "class": "Dual Swords",
     "family": "Dual Cleavers",
     "max_rank": 30.0,
-    "image": "Dual-Cleavers.png"
+    "image": "DualCleavers.png"
   },
   "Dual Ether": {
     "name": "Dual Ether",
@@ -2669,7 +2669,7 @@
     "class": "Dual Swords",
     "family": "Dual Ether",
     "max_rank": 30.0,
-    "image": "Dual-Ether.png"
+    "image": "DualEther.png"
   },
   "Dual Heat Swords": {
     "name": "Dual Heat Swords",
@@ -2719,7 +2719,7 @@
     "class": "Dual Swords",
     "family": "Dual Heat Swords",
     "max_rank": 30.0,
-    "image": "Dual-Heat-Swords.png"
+    "image": "DualHeatSwords.png"
   },
   "Dual Ichor": {
     "name": "Dual Ichor",
@@ -2772,7 +2772,7 @@
     "class": "Dual Swords",
     "family": "Dual Ichor",
     "max_rank": 30.0,
-    "image": "Dual-Ichor.png"
+    "image": "DualIchor.png"
   },
   "Dual Kamas": {
     "name": "Dual Kamas",
@@ -2822,7 +2822,7 @@
     "class": "Dual Swords",
     "family": "Dual Kamas",
     "max_rank": 30.0,
-    "image": "Dual-Kamas.png"
+    "image": "DualKamas.png"
   },
   "Dual Kamas Prime": {
     "name": "Dual Kamas Prime",
@@ -2872,7 +2872,7 @@
     "class": "Dual Swords",
     "family": "Dual Kamas",
     "max_rank": 30.0,
-    "image": "Dual-Kamas-Prime.png"
+    "image": "DualKamasPrime.png"
   },
   "Dual Keres": {
     "name": "Dual Keres",
@@ -2922,7 +2922,7 @@
     "class": "Dual Swords",
     "family": "Dual Keres",
     "max_rank": 30.0,
-    "image": "Dual-Keres.png"
+    "image": "DualKeres.png"
   },
   "Dual Keres Prime": {
     "name": "Dual Keres Prime",
@@ -2972,7 +2972,7 @@
     "class": "Dual Swords",
     "family": "Dual Keres",
     "max_rank": 30.0,
-    "image": "Dual-Keres-Prime.png"
+    "image": "DualKeresPrime.png"
   },
   "Dual Raza": {
     "name": "Dual Raza",
@@ -3022,7 +3022,7 @@
     "class": "Dual Swords",
     "family": "Dual Raza",
     "max_rank": 30.0,
-    "image": "Dual-Raza.png"
+    "image": "DualRaza.png"
   },
   "Dual Skana": {
     "name": "Dual Skana",
@@ -3072,7 +3072,7 @@
     "class": "Dual Swords",
     "family": "Dual Skana",
     "max_rank": 30.0,
-    "image": "Dual-Skana.png"
+    "image": "DualSkana.png"
   },
   "Dual Viciss": {
     "name": "Dual Viciss",
@@ -3124,7 +3124,7 @@
     "class": "Dual Swords",
     "family": "Dual Viciss",
     "max_rank": 30.0,
-    "image": "Dual-Viciss.png"
+    "image": "DualViciss.png"
   },
   "Dual Zoren": {
     "name": "Dual Zoren",
@@ -3174,7 +3174,7 @@
     "class": "Dual Swords",
     "family": "Dual Zoren",
     "max_rank": 30.0,
-    "image": "Dual-Zoren.png"
+    "image": "DualZoren.png"
   },
   "Dual Zoren Prime": {
     "name": "Dual Zoren Prime",
@@ -3224,7 +3224,7 @@
     "class": "Dual Swords",
     "family": "Dual Zoren",
     "max_rank": 30.0,
-    "image": "Dual-Zoren-Prime.png"
+    "image": "DualZorenPrime.png"
   },
   "Edun": {
     "name": "Edun",
@@ -3446,7 +3446,7 @@
     "class": "Dual Daggers",
     "family": "Ether Daggers",
     "max_rank": 30.0,
-    "image": "Ether-Daggers.png"
+    "image": "EtherDaggers.png"
   },
   "Ether Reaper": {
     "name": "Ether Reaper",
@@ -3496,7 +3496,7 @@
     "class": "Scythe",
     "family": "Ether Reaper",
     "max_rank": 30.0,
-    "image": "Ether-Reaper.png"
+    "image": "EtherReaper.png"
   },
   "Ether Sword": {
     "name": "Ether Sword",
@@ -3546,7 +3546,7 @@
     "class": "Sword",
     "family": "Ether Sword",
     "max_rank": 30.0,
-    "image": "Ether-Sword.png"
+    "image": "EtherSword.png"
   },
   "Exalted Blade": {
     "name": "Exalted Blade",
@@ -3593,7 +3593,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Exalted-Blade.png"
+    "image": "ExaltedBladeWeapon.png"
   },
   "Exalted Prime Blade": {
     "name": "Exalted Prime Blade",
@@ -3640,7 +3640,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Exalted-Prime-Blade.png"
+    "image": "ExaltedPrimeBlade.png"
   },
   "Exalted Umbra Blade": {
     "name": "Exalted Umbra Blade",
@@ -3687,7 +3687,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Exalted-Umbra-Blade.png"
+    "image": "ExaltedUmbraBlade.png"
   },
   "Falcor": {
     "name": "Falcor",
@@ -3916,7 +3916,7 @@
     "class": "Dual Daggers",
     "family": "Fang",
     "max_rank": 30.0,
-    "image": "Fang-Prime.png"
+    "image": "FangPrime.png"
   },
   "Fragor": {
     "name": "Fragor",
@@ -4016,7 +4016,7 @@
     "class": "Hammer",
     "family": "Fragor",
     "max_rank": 30.0,
-    "image": "Fragor-Prime.png"
+    "image": "FragorPrime.png"
   },
   "Furax": {
     "name": "Furax",
@@ -4116,7 +4116,7 @@
     "class": "Fist",
     "family": "Furax",
     "max_rank": 30.0,
-    "image": "Furax-Wraith.png"
+    "image": "FuraxWraith.png"
   },
   "Galariak Prime": {
     "name": "Galariak Prime",
@@ -4166,7 +4166,7 @@
     "class": "Scythe",
     "family": "Galariak Prime",
     "max_rank": 30.0,
-    "image": "Galariak-Prime.png"
+    "image": "GalariakPrime.png"
   },
   "Galatine": {
     "name": "Galatine",
@@ -4266,7 +4266,7 @@
     "class": "Heavy Blade",
     "family": "Galatine",
     "max_rank": 30.0,
-    "image": "Galatine-Prime.png"
+    "image": "GalatinePrime.png"
   },
   "Galvacord": {
     "name": "Galvacord",
@@ -4368,7 +4368,7 @@
     "slot": "Melee",
     "class": "Claws",
     "max_rank": 30.0,
-    "image": "Garuda-Prime-Talons.png"
+    "image": "GarudaPrimeTalons.png"
   },
   "Garuda Talons": {
     "name": "Garuda Talons",
@@ -4417,7 +4417,7 @@
     "slot": "Melee",
     "class": "Claws",
     "max_rank": 30.0,
-    "image": "Garuda-Talons.png"
+    "image": "GarudaTalons.png"
   },
   "Gazal Machete": {
     "name": "Gazal Machete",
@@ -4467,7 +4467,7 @@
     "class": "Machete",
     "family": "Gazal Machete",
     "max_rank": 30.0,
-    "image": "Gazal-Machete.png"
+    "image": "GazalMachete.png"
   },
   "Ghoulsaw": {
     "name": "Ghoulsaw",
@@ -4757,7 +4757,7 @@
     "class": "Glaive",
     "family": "Glaive",
     "max_rank": 30.0,
-    "image": "Glaive-Prime.png"
+    "image": "GlaivePrime.png"
   },
   "Gram": {
     "name": "Gram",
@@ -4857,7 +4857,7 @@
     "class": "Heavy Blade",
     "family": "Gram",
     "max_rank": 30.0,
-    "image": "Gram-Prime.png"
+    "image": "GramPrime.png"
   },
   "Guandao": {
     "name": "Guandao",
@@ -4957,7 +4957,7 @@
     "class": "Polearm",
     "family": "Guandao",
     "max_rank": 30.0,
-    "image": "Guandao-Prime.png"
+    "image": "GuandaoPrime.png"
   },
   "Gunsen": {
     "name": "Gunsen",
@@ -5057,7 +5057,7 @@
     "class": "Warfan",
     "family": "Gunsen",
     "max_rank": 30.0,
-    "image": "Gunsen-Prime.png"
+    "image": "GunsenPrime.png"
   },
   "Halikar": {
     "name": "Halikar",
@@ -5297,7 +5297,7 @@
     "class": "Glaive",
     "family": "Halikar",
     "max_rank": 30.0,
-    "image": "Halikar-Wraith.png"
+    "image": "HalikarWraith.png"
   },
   "Hate": {
     "name": "Hate",
@@ -5473,7 +5473,7 @@
     "class": "Dagger",
     "family": "Heat Dagger",
     "max_rank": 30.0,
-    "image": "Heat-Dagger.png"
+    "image": "HeatDagger.png"
   },
   "Heat Sword": {
     "name": "Heat Sword",
@@ -5523,7 +5523,7 @@
     "class": "Sword",
     "family": "Heat Sword",
     "max_rank": 30.0,
-    "image": "Heat-Sword.png"
+    "image": "HeatSword.png"
   },
   "Heliocor": {
     "name": "Heliocor",
@@ -5780,7 +5780,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Iron-Staff.png"
+    "image": "IronStaff.png"
   },
   "Iron Staff Prime": {
     "name": "Iron Staff Prime",
@@ -5826,7 +5826,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Iron-Staff-Prime.png"
+    "image": "IronStaffPrime.png"
   },
   "Jat Kittag": {
     "name": "Jat Kittag",
@@ -5876,7 +5876,7 @@
     "class": "Hammer",
     "family": "Jat Kittag",
     "max_rank": 30.0,
-    "image": "Jat-Kittag.png"
+    "image": "JatKittag.png"
   },
   "Jat Kusar": {
     "name": "Jat Kusar",
@@ -5929,7 +5929,7 @@
     "class": "Blade and Whip",
     "family": "Jat Kusar",
     "max_rank": 30.0,
-    "image": "Jat-Kusar.png"
+    "image": "JatKusar.png"
   },
   "Jaw Sword": {
     "name": "Jaw Sword",
@@ -5979,7 +5979,7 @@
     "class": "Sword",
     "family": "Jaw Sword",
     "max_rank": 30.0,
-    "image": "Jaw-Sword.png"
+    "image": "JawSword.png"
   },
   "Kama": {
     "name": "Kama",
@@ -6135,7 +6135,7 @@
     "class": "Dagger",
     "family": "Karyst",
     "max_rank": 30.0,
-    "image": "Karyst-Prime.png"
+    "image": "KarystPrime.png"
   },
   "Keratinos": {
     "name": "Keratinos",
@@ -6478,7 +6478,7 @@
     "class": "Glaive",
     "family": "Kestrel",
     "max_rank": 30.0,
-    "image": "Kestrel-Prime.png"
+    "image": "KestrelPrime.png"
   },
   "Kogake": {
     "name": "Kogake",
@@ -6578,7 +6578,7 @@
     "class": "Sparring",
     "family": "Kogake",
     "max_rank": 30.0,
-    "image": "Kogake-Prime.png"
+    "image": "KogakePrime.png"
   },
   "Korrudo": {
     "name": "Korrudo",
@@ -6892,7 +6892,7 @@
     "class": "Tonfa",
     "family": "Kronen",
     "max_rank": 30.0,
-    "image": "Kronen-Prime.png"
+    "image": "KronenPrime.png"
   },
   "Kuva Shildeg": {
     "name": "Kuva Shildeg",
@@ -6942,7 +6942,7 @@
     "class": "Hammer",
     "family": "Kuva Shildeg",
     "max_rank": 40.0,
-    "image": "Kuva-Shildeg.png"
+    "image": "KuvaShildeg.png"
   },
   "Lacera": {
     "name": "Lacera",
@@ -7019,7 +7019,7 @@
     "class": "Exalted Weapon",
     "family": "Landslide Fists",
     "max_rank": 30.0,
-    "image": "Landslide-Fists.png"
+    "image": "Landslide130xWhite.png"
   },
   "Landslide Fists Prime": {
     "name": "Landslide Fists Prime",
@@ -7043,7 +7043,7 @@
     "class": "Exalted Weapon",
     "family": "Landslide Fists",
     "max_rank": 30.0,
-    "image": "Landslide-Fists-Prime.png"
+    "image": "Landslide130xWhite.png"
   },
   "Lecta": {
     "name": "Lecta",
@@ -7194,7 +7194,7 @@
     "class": "Staff",
     "family": "Bo",
     "max_rank": 30.0,
-    "image": "Mk1-Bo.png"
+    "image": "MK1-Bo.png"
   },
   "Mk1-Furax": {
     "name": "Mk1-Furax",
@@ -7244,7 +7244,7 @@
     "class": "Fist",
     "family": "Furax",
     "max_rank": 30.0,
-    "image": "Mk1-Furax.png"
+    "image": "MK1-Furax.png"
   },
   "Machete": {
     "name": "Machete",
@@ -7344,7 +7344,7 @@
     "class": "Machete",
     "family": "Machete",
     "max_rank": 30.0,
-    "image": "Machete-Wraith.png"
+    "image": "MacheteWraith.png"
   },
   "Magistar": {
     "name": "Magistar",
@@ -7492,7 +7492,7 @@
     "class": "Heavy Blade",
     "family": "Masseter",
     "max_rank": 30.0,
-    "image": "Masseter-Prime.png"
+    "image": "MasseterPrime.png"
   },
   "Mios": {
     "name": "Mios",
@@ -7645,7 +7645,7 @@
     "class": "Dual Swords",
     "family": "Nami Skyla",
     "max_rank": 30.0,
-    "image": "Nami-Skyla.png"
+    "image": "NamiSkyla.png"
   },
   "Nami Skyla Prime": {
     "name": "Nami Skyla Prime",
@@ -7695,7 +7695,7 @@
     "class": "Dual Swords",
     "family": "Nami Skyla",
     "max_rank": 30.0,
-    "image": "Nami-Skyla-Prime.png"
+    "image": "NamiSkylaPrime.png"
   },
   "Nami Solo": {
     "name": "Nami Solo",
@@ -7745,7 +7745,7 @@
     "class": "Machete",
     "family": "Nami Solo",
     "max_rank": 30.0,
-    "image": "Nami-Solo.png"
+    "image": "NamiSolo.png"
   },
   "Nepheri": {
     "name": "Nepheri",
@@ -7908,7 +7908,7 @@
     "class": "Nikana",
     "family": "Nikana",
     "max_rank": 30.0,
-    "image": "Nikana-Prime.png"
+    "image": "NikanaPrime.png"
   },
   "Ninkondi": {
     "name": "Ninkondi",
@@ -8012,7 +8012,7 @@
     "class": "Nunchaku",
     "family": "Ninkondi",
     "max_rank": 30.0,
-    "image": "Ninkondi-Prime.png"
+    "image": "NinkondiPrime.png"
   },
   "Obex": {
     "name": "Obex",
@@ -8262,7 +8262,7 @@
     "class": "Dual Daggers",
     "family": "Okina",
     "max_rank": 30.0,
-    "image": "Okina-Prime.png"
+    "image": "OkinaPrime.png"
   },
   "Orthos": {
     "name": "Orthos",
@@ -8362,7 +8362,7 @@
     "class": "Polearm",
     "family": "Orthos",
     "max_rank": 30.0,
-    "image": "Orthos-Prime.png"
+    "image": "OrthosPrime.png"
   },
   "Orvius": {
     "name": "Orvius",
@@ -8542,7 +8542,7 @@
     "class": "Sword",
     "family": "Pangolin Sword",
     "max_rank": 30.0,
-    "image": "Pangolin-Prime.png"
+    "image": "PangolinPrime.png"
   },
   "Pangolin Sword": {
     "name": "Pangolin Sword",
@@ -8592,7 +8592,7 @@
     "class": "Sword",
     "family": "Pangolin Sword",
     "max_rank": 30.0,
-    "image": "Pangolin-Sword.png"
+    "image": "PangolinSword.png"
   },
   "Paracesis": {
     "name": "Paracesis",
@@ -8874,7 +8874,7 @@
     "class": "Sword",
     "family": "Plasma Sword",
     "max_rank": 30.0,
-    "image": "Plasma-Sword.png"
+    "image": "PlasmaSword.png"
   },
   "Praedos": {
     "name": "Praedos",
@@ -8974,7 +8974,7 @@
     "class": "Dual Swords",
     "family": "Dual Cleavers",
     "max_rank": 30.0,
-    "image": "Prisma-Dual-Cleavers.png"
+    "image": "PrismaDualCleavers.png"
   },
   "Prisma Machete": {
     "name": "Prisma Machete",
@@ -9024,7 +9024,7 @@
     "class": "Machete",
     "family": "Machete",
     "max_rank": 30.0,
-    "image": "Prisma-Machete.png"
+    "image": "PrismaMachete.png"
   },
   "Prisma Obex": {
     "name": "Prisma Obex",
@@ -9074,7 +9074,7 @@
     "class": "Sparring",
     "family": "Obex",
     "max_rank": 30.0,
-    "image": "Prisma-Obex.png"
+    "image": "PrismaObex.png"
   },
   "Prisma Ohma": {
     "name": "Prisma Ohma",
@@ -9126,7 +9126,7 @@
     "class": "Tonfa",
     "family": "Ohma",
     "max_rank": 30.0,
-    "image": "Prisma-Ohma.png"
+    "image": "PrismaOhma.png"
   },
   "Prisma Skana": {
     "name": "Prisma Skana",
@@ -9176,7 +9176,7 @@
     "class": "Sword",
     "family": "Skana",
     "max_rank": 30.0,
-    "image": "Prisma-Skana.png"
+    "image": "PrismaSkana.png"
   },
   "Prova": {
     "name": "Prova",
@@ -9278,7 +9278,7 @@
     "class": "Machete",
     "family": "Prova",
     "max_rank": 30.0,
-    "image": "Prova-Vandal.png"
+    "image": "ProvaVandal.png"
   },
   "Pulmonars": {
     "name": "Pulmonars",
@@ -9534,7 +9534,7 @@
     "class": "Warfan",
     "family": "Quassus",
     "max_rank": 30.0,
-    "image": "Quassus-Prime.png"
+    "image": "QuassusPrime.png"
   },
   "Rakta Dark Dagger": {
     "name": "Rakta Dark Dagger",
@@ -9586,7 +9586,7 @@
     "class": "Dagger",
     "family": "Dark Dagger",
     "max_rank": 30.0,
-    "image": "Rakta-Dark-Dagger.png"
+    "image": "RaktaDarkDagger.png"
   },
   "Reaper Prime": {
     "name": "Reaper Prime",
@@ -9636,7 +9636,7 @@
     "class": "Scythe",
     "family": "Reaper Prime",
     "max_rank": 30.0,
-    "image": "Reaper-Prime.png"
+    "image": "ReaperPrime.png"
   },
   "Redeemer": {
     "name": "Redeemer",
@@ -9758,7 +9758,7 @@
     "class": "Gunblade",
     "family": "Redeemer",
     "max_rank": 30.0,
-    "image": "Redeemer-Prime.png"
+    "image": "RedeemerPrime.png"
   },
   "Ripkas": {
     "name": "Ripkas",
@@ -10007,7 +10007,7 @@
     "class": "Hammer",
     "family": "Magistar",
     "max_rank": 30.0,
-    "image": "Sancti-Magistar.png"
+    "image": "SanctiMagistar.png"
   },
   "Sarofang": {
     "name": "Sarofang",
@@ -10220,7 +10220,7 @@
     "class": "Heavy Blade",
     "family": "Scindo",
     "max_rank": 30.0,
-    "image": "Scindo-Prime.png"
+    "image": "ScindoPrime.png"
   },
   "Scoliac": {
     "name": "Scoliac",
@@ -10322,7 +10322,7 @@
     "class": "Whip",
     "family": "Lecta",
     "max_rank": 30.0,
-    "image": "Secura-Lecta.png"
+    "image": "SecuraLecta.png"
   },
   "Serro": {
     "name": "Serro",
@@ -10420,7 +10420,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Shadow-Claws.png"
+    "image": "ShadowClaws.png"
   },
   "Shadow Claws Prime": {
     "name": "Shadow Claws Prime",
@@ -10467,7 +10467,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Shadow-Claws-Prime.png"
+    "image": "ShadowClawsPrime.png"
   },
   "Shaku": {
     "name": "Shaku",
@@ -10549,7 +10549,7 @@
     "class": "Exalted Weapon",
     "family": "Shattered Lash",
     "max_rank": 30.0,
-    "image": "Shattered-Lash.png"
+    "image": "ShatteredLash130xWhite.png"
   },
   "Shattered Lash Prime": {
     "name": "Shattered Lash Prime",
@@ -10583,7 +10583,7 @@
     "class": "Exalted Weapon",
     "family": "Shattered Lash",
     "max_rank": 30.0,
-    "image": "Shattered-Lash-Prime.png"
+    "image": "ShatteredLash130xWhite.png"
   },
   "Sheev": {
     "name": "Sheev",
@@ -10760,7 +10760,7 @@
     "class": "Sword and Shield",
     "family": "Sigma & Octantis",
     "max_rank": 30.0,
-    "image": "Sigma-&-Octantis.png"
+    "image": "Sigma&Octantis.png"
   },
   "Silva & Aegis": {
     "name": "Silva & Aegis",
@@ -10808,7 +10808,7 @@
     "class": "Sword and Shield",
     "family": "Silva & Aegis",
     "max_rank": 30.0,
-    "image": "Silva-&-Aegis.png"
+    "image": "Silva&Aegis.png"
   },
   "Silva & Aegis Prime": {
     "name": "Silva & Aegis Prime",
@@ -10856,7 +10856,7 @@
     "class": "Sword and Shield",
     "family": "Silva & Aegis",
     "max_rank": 30.0,
-    "image": "Silva-&-Aegis-Prime.png"
+    "image": "Silva&AegisPrime.png"
   },
   "Skana": {
     "name": "Skana",
@@ -10956,7 +10956,7 @@
     "class": "Sword",
     "family": "Skana",
     "max_rank": 30.0,
-    "image": "Skana-Prime.png"
+    "image": "SkanaPrime.png"
   },
   "Skiajati": {
     "name": "Skiajati",
@@ -11215,7 +11215,7 @@
     "class": "Dual Nikanas",
     "family": "Sun & Moon",
     "max_rank": 30.0,
-    "image": "Sun-&-Moon.png"
+    "image": "Sun&Moon.png"
   },
   "Syam": {
     "name": "Syam",
@@ -11386,7 +11386,7 @@
     "class": "Hammer",
     "family": "Heliocor",
     "max_rank": 30.0,
-    "image": "Synoid-Heliocor.png"
+    "image": "SynoidHeliocor.png"
   },
   "Tak & Lug": {
     "name": "Tak & Lug",
@@ -11435,7 +11435,7 @@
     "class": "Sword and Shield",
     "family": "Tak & Lug",
     "max_rank": 30.0,
-    "image": "Tak-&-Lug.png"
+    "image": "Tak&Lug.png"
   },
   "Tatsu": {
     "name": "Tatsu",
@@ -11563,7 +11563,7 @@
     "class": "Two-Handed Nikana",
     "family": "Tatsu",
     "max_rank": 30.0,
-    "image": "Tatsu-Prime.png"
+    "image": "TatsuPrime.png"
   },
   "Tekko": {
     "name": "Tekko",
@@ -11663,7 +11663,7 @@
     "class": "Fist",
     "family": "Tekko",
     "max_rank": 30.0,
-    "image": "Tekko-Prime.png"
+    "image": "TekkoPrime.png"
   },
   "Telos Boltace": {
     "name": "Telos Boltace",
@@ -11725,7 +11725,7 @@
     "class": "Tonfa",
     "family": "Boltace",
     "max_rank": 30.0,
-    "image": "Telos-Boltace.png"
+    "image": "TelosBoltace.png"
   },
   "Tenet Agendus": {
     "name": "Tenet Agendus",
@@ -11787,7 +11787,7 @@
     "class": "Sword and Shield",
     "family": "Tenet Agendus",
     "max_rank": 40.0,
-    "image": "Tenet-Agendus.png"
+    "image": "TenetAgendus.png"
   },
   "Tenet Exec": {
     "name": "Tenet Exec",
@@ -11836,7 +11836,7 @@
     "class": "Heavy Blade",
     "family": "Tenet Exec",
     "max_rank": 40.0,
-    "image": "Tenet-Exec.png"
+    "image": "TenetExec.png"
   },
   "Tenet Grigori": {
     "name": "Tenet Grigori",
@@ -11899,7 +11899,7 @@
     "class": "Scythe",
     "family": "Tenet Grigori",
     "max_rank": 40.0,
-    "image": "Tenet-Grigori.png"
+    "image": "TenetGrigori.png"
   },
   "Tenet Livia": {
     "name": "Tenet Livia",
@@ -11949,7 +11949,7 @@
     "class": "Two-Handed Nikana",
     "family": "Tenet Livia",
     "max_rank": 40.0,
-    "image": "Tenet-Livia.png"
+    "image": "TenetLivia.png"
   },
   "Thalys": {
     "name": "Thalys",
@@ -12098,7 +12098,7 @@
     "class": "Staff",
     "family": "Tipedo",
     "max_rank": 30.0,
-    "image": "Tipedo-Prime.png"
+    "image": "TipedoPrime.png"
   },
   "Tonbo": {
     "name": "Tonbo",
@@ -12250,7 +12250,7 @@
     "class": "Dual Swords",
     "family": "Twin Basolk",
     "max_rank": 30.0,
-    "image": "Twin-Basolk.png"
+    "image": "TwinBasolk.png"
   },
   "Twin Krohkur": {
     "name": "Twin Krohkur",
@@ -12300,7 +12300,7 @@
     "class": "Dual Swords",
     "family": "Twin Krohkur",
     "max_rank": 30.0,
-    "image": "Twin-Krohkur.png"
+    "image": "TwinKrohkur.png"
   },
   "Valkyr Prime Talons": {
     "name": "Valkyr Prime Talons",
@@ -12347,7 +12347,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Valkyr-Prime-Talons.png"
+    "image": "ValkyrTalons.png"
   },
   "Valkyr Talons": {
     "name": "Valkyr Talons",
@@ -12394,7 +12394,7 @@
     "slot": "Melee",
     "class": "Exalted Weapon",
     "max_rank": 30.0,
-    "image": "Valkyr-Talons.png"
+    "image": "ValkyrTalons.png"
   },
   "Vastilok": {
     "name": "Vastilok",
@@ -12506,7 +12506,7 @@
     "class": "Polearm",
     "family": "Sydon",
     "max_rank": 30.0,
-    "image": "Vaykor-Sydon.png"
+    "image": "VaykorSydon.png"
   },
   "Venato": {
     "name": "Venato",
@@ -12606,7 +12606,7 @@
     "class": "Scythe",
     "family": "Venato",
     "max_rank": 30.0,
-    "image": "Venato-Prime.png"
+    "image": "VenatoPrime.png"
   },
   "Venka": {
     "name": "Venka",
@@ -12706,7 +12706,7 @@
     "class": "Claws",
     "family": "Venka",
     "max_rank": 30.0,
-    "image": "Venka-Prime.png"
+    "image": "VenkaPrime.png"
   },
   "Verdilac": {
     "name": "Verdilac",
@@ -12898,7 +12898,7 @@
     "class": "Bayonet",
     "family": "Vinquibus",
     "max_rank": 30.0,
-    "image": "Vinquibus-(Melee).png"
+    "image": "Vinquibus.png"
   },
   "Vitrica": {
     "name": "Vitrica",
@@ -13061,7 +13061,7 @@
     "class": "Hammer",
     "family": "Volnus",
     "max_rank": 30.0,
-    "image": "Volnus-Prime.png"
+    "image": "VolnusPrime.png"
   },
   "War": {
     "name": "War",
@@ -13137,7 +13137,7 @@
     "class": "Exalted Weapon",
     "family": "Whipclaw",
     "max_rank": 30.0,
-    "image": "Whipclaw.png"
+    "image": "Whipclaw130xWhite.png"
   },
   "Whipclaw Prime": {
     "name": "Whipclaw Prime",
@@ -13163,7 +13163,7 @@
     "class": "Exalted Weapon",
     "family": "Whipclaw",
     "max_rank": 30.0,
-    "image": "Whipclaw-Prime.png"
+    "image": "Whipclaw130xWhite.png"
   },
   "Wolf Sledge": {
     "name": "Wolf Sledge",
@@ -13248,7 +13248,7 @@
     "class": "Hammer",
     "family": "Wolf Sledge",
     "max_rank": 30.0,
-    "image": "Wolf-Sledge.png"
+    "image": "WolfSledge.png"
   },
   "Xoris": {
     "name": "Xoris",
@@ -13497,6 +13497,7 @@
     "status_chance": 0.06,
     "fire_rate": 12.0,
     "magazine": 48.0,
+    "max_ammo": 96.0,
     "reload": 2.0,
     "mastery_req": 8.0,
     "riven_disposition": 0.65,
@@ -13539,6 +13540,7 @@
     "status_chance": 0.18,
     "fire_rate": 10.0,
     "magazine": 48.0,
+    "max_ammo": 96.0,
     "reload": 1.6,
     "mastery_req": 14.0,
     "riven_disposition": 0.55,
@@ -13547,7 +13549,7 @@
     "trigger": "Auto",
     "family": "Acceltra",
     "max_rank": 30.0,
-    "image": "Acceltra-Prime.png"
+    "image": "AcceltraPrime.png"
   },
   "Aeolak": {
     "name": "Aeolak",
@@ -13598,6 +13600,7 @@
     "status_chance": 0.33,
     "fire_rate": 6.0,
     "magazine": 40.0,
+    "max_ammo": 400.0,
     "reload": 2.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.2,
@@ -13654,6 +13657,7 @@
     "status_chance": 0.24,
     "fire_rate": 0.833,
     "magazine": 4.0,
+    "max_ammo": 12.0,
     "reload": 1.8,
     "mastery_req": 8.0,
     "riven_disposition": 1.05,
@@ -13718,6 +13722,7 @@
     "status_chance": 0.3,
     "fire_rate": 4.33,
     "magazine": 28.0,
+    "max_ammo": 540.0,
     "reload": 1.8,
     "mastery_req": 8.0,
     "riven_disposition": 1.15,
@@ -13782,6 +13787,7 @@
     "status_chance": 0.4,
     "fire_rate": 5.33,
     "magazine": 42.0,
+    "max_ammo": 540.0,
     "reload": 1.8,
     "mastery_req": 13.0,
     "riven_disposition": 0.5,
@@ -13790,7 +13796,7 @@
     "trigger": "Auto / Active",
     "family": "Alternox",
     "max_rank": 30.0,
-    "image": "Alternox-Prime.png"
+    "image": "AlternoxPrime.png"
   },
   "Ambassador": {
     "name": "Ambassador",
@@ -13834,6 +13840,7 @@
     "status_chance": 0.26,
     "fire_rate": 13.33,
     "magazine": 96.0,
+    "max_ammo": 960.0,
     "reload": 2.6,
     "mastery_req": 10.0,
     "riven_disposition": 1.15,
@@ -13864,6 +13871,7 @@
     "status_chance": 0.22,
     "fire_rate": 12.0,
     "magazine": 100.0,
+    "max_ammo": 700.0,
     "reload": 2.6,
     "mastery_req": 10.0,
     "riven_disposition": 0.85,
@@ -13894,6 +13902,7 @@
     "status_chance": 0.28,
     "fire_rate": 1.1,
     "magazine": 10.0,
+    "max_ammo": 50.0,
     "reload": 2.8,
     "mastery_req": 10.0,
     "riven_disposition": 0.95,
@@ -13902,7 +13911,7 @@
     "trigger": "Semi-Auto",
     "family": "Arca Plasmor",
     "max_rank": 30.0,
-    "image": "Arca-Plasmor.png"
+    "image": "ArcaPlasmor.png"
   },
   "Argonak": {
     "name": "Argonak",
@@ -13939,6 +13948,7 @@
     "status_chance": 0.19,
     "fire_rate": 4.33,
     "magazine": 43.0,
+    "max_ammo": 473.0,
     "reload": 2.4,
     "mastery_req": 7.0,
     "riven_disposition": 1.25,
@@ -14032,12 +14042,13 @@
     "status_chance": 0.2,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 0.0,
     "reload": 0.9,
     "slot": "Primary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "Artemis-Bow.png"
+    "image": "ArtemisBowWeapon.png"
   },
   "Artemis Bow Prime": {
     "name": "Artemis Bow Prime",
@@ -14122,12 +14133,13 @@
     "status_chance": 0.2,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 0.0,
     "reload": 0.9,
     "slot": "Primary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "Artemis-Bow-Prime.png"
+    "image": "ArtemisBowPrimeWeapon.png"
   },
   "Astilla": {
     "name": "Astilla",
@@ -14161,6 +14173,7 @@
     "status_chance": 0.33,
     "fire_rate": 4.33,
     "magazine": 16.0,
+    "max_ammo": 112.0,
     "reload": 2.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.25,
@@ -14203,6 +14216,7 @@
     "status_chance": 0.37,
     "fire_rate": 4.33,
     "magazine": 24.0,
+    "max_ammo": 120.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.15,
@@ -14211,7 +14225,7 @@
     "trigger": "Auto",
     "family": "Astilla",
     "max_rank": 30.0,
-    "image": "Astilla-Prime.png"
+    "image": "AstillaPrime.png"
   },
   "Attica": {
     "name": "Attica",
@@ -14235,6 +14249,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.67,
     "magazine": 20.0,
+    "max_ammo": 540.0,
     "reload": 2.83,
     "mastery_req": 7.0,
     "riven_disposition": 1.42,
@@ -14265,6 +14280,7 @@
     "status_chance": 0.18,
     "fire_rate": 10.0,
     "magazine": 40.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 12.0,
     "riven_disposition": 0.8,
@@ -14317,6 +14333,7 @@
     "status_chance": 0.29,
     "fire_rate": 12.0,
     "magazine": 21.0,
+    "max_ammo": 0.0,
     "reload": 2.5,
     "mastery_req": 11.0,
     "riven_disposition": 1.2,
@@ -14372,6 +14389,7 @@
     "status_chance": 0.18,
     "fire_rate": 2.5,
     "magazine": 60.0,
+    "max_ammo": 720.0,
     "reload": 2.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.1,
@@ -14404,6 +14422,7 @@
     "status_chance": 0.1,
     "fire_rate": 16.67,
     "magazine": 40.0,
+    "max_ammo": 800.0,
     "reload": 1.4,
     "mastery_req": 7.0,
     "riven_disposition": 1.05,
@@ -14436,6 +14455,7 @@
     "status_chance": 0.14,
     "fire_rate": 16.67,
     "magazine": 60.0,
+    "max_ammo": 840.0,
     "reload": 1.1,
     "mastery_req": 10.0,
     "riven_disposition": 1.0,
@@ -14444,7 +14464,7 @@
     "trigger": "Auto",
     "family": "Baza",
     "max_rank": 30.0,
-    "image": "Baza-Prime.png"
+    "image": "BazaPrime.png"
   },
   "Boar": {
     "name": "Boar",
@@ -14479,6 +14499,7 @@
     "status_chance": 0.075,
     "fire_rate": 4.17,
     "magazine": 20.0,
+    "max_ammo": 120.0,
     "reload": 2.7,
     "mastery_req": 2.0,
     "riven_disposition": 1.45,
@@ -14522,6 +14543,7 @@
     "status_chance": 0.1125,
     "fire_rate": 4.67,
     "magazine": 20.0,
+    "max_ammo": 120.0,
     "reload": 2.75,
     "mastery_req": 11.0,
     "riven_disposition": 1.34,
@@ -14530,7 +14552,7 @@
     "trigger": "Auto",
     "family": "Boar",
     "max_rank": 30.0,
-    "image": "Boar-Prime.png"
+    "image": "BoarPrime.png"
   },
   "Boltor": {
     "name": "Boltor",
@@ -14567,6 +14589,7 @@
     "status_chance": 0.14,
     "fire_rate": 8.75,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.6,
     "mastery_req": 2.0,
     "riven_disposition": 1.3,
@@ -14611,6 +14634,7 @@
     "status_chance": 0.34,
     "fire_rate": 10.0,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.4,
     "mastery_req": 13.0,
     "riven_disposition": 1.2,
@@ -14619,7 +14643,7 @@
     "trigger": "Auto",
     "family": "Boltor",
     "max_rank": 30.0,
-    "image": "Boltor-Prime.png"
+    "image": "BoltorPrime.png"
   },
   "Braton": {
     "name": "Braton",
@@ -14667,6 +14691,7 @@
     "status_chance": 0.06,
     "fire_rate": 8.75,
     "magazine": 45.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 0.0,
     "riven_disposition": 1.35,
@@ -14723,6 +14748,7 @@
     "status_chance": 0.26,
     "fire_rate": 9.58,
     "magazine": 75.0,
+    "max_ammo": 600.0,
     "reload": 2.15,
     "mastery_req": 8.0,
     "riven_disposition": 1.25,
@@ -14731,7 +14757,7 @@
     "trigger": "Auto",
     "family": "Braton",
     "max_rank": 30.0,
-    "image": "Braton-Prime.png"
+    "image": "BratonPrime.png"
   },
   "Braton Vandal": {
     "name": "Braton Vandal",
@@ -14779,6 +14805,7 @@
     "status_chance": 0.16,
     "fire_rate": 7.5,
     "magazine": 50.0,
+    "max_ammo": 550.0,
     "reload": 1.75,
     "mastery_req": 4.0,
     "riven_disposition": 1.3,
@@ -14787,7 +14814,7 @@
     "trigger": "Auto",
     "family": "Braton",
     "max_rank": 30.0,
-    "image": "Braton-Vandal.png"
+    "image": "BratonVandal.png"
   },
   "Bubonico": {
     "name": "Bubonico",
@@ -14836,6 +14863,7 @@
     "status_chance": 0.0929,
     "fire_rate": 3.83,
     "magazine": 27.0,
+    "max_ammo": 0.0,
     "reload": 4.5,
     "mastery_req": 13.0,
     "riven_disposition": 0.75,
@@ -14890,6 +14918,7 @@
     "status_chance": 0.18,
     "fire_rate": 5.0,
     "magazine": 45.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 0.0,
     "riven_disposition": 1.45,
@@ -14944,6 +14973,7 @@
     "status_chance": 0.3,
     "fire_rate": 5.0,
     "magazine": 45.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 12.0,
     "riven_disposition": 1.35,
@@ -14952,7 +14982,7 @@
     "trigger": "Burst / Auto",
     "family": "Burston",
     "max_rank": 30.0,
-    "image": "Burston-Prime.png"
+    "image": "BurstonPrime.png"
   },
   "Buzlok": {
     "name": "Buzlok",
@@ -14987,6 +15017,7 @@
     "status_chance": 0.21,
     "fire_rate": 6.25,
     "magazine": 50.0,
+    "max_ammo": 540.0,
     "reload": 3.0,
     "mastery_req": 11.0,
     "riven_disposition": 1.45,
@@ -15028,6 +15059,7 @@
     "status_chance": 0.1,
     "fire_rate": 2.7,
     "magazine": 10.0,
+    "max_ammo": 40.0,
     "reload": 2.5,
     "mastery_req": 6.0,
     "riven_disposition": 1.3,
@@ -15036,7 +15068,7 @@
     "trigger": "Active",
     "family": "Penta",
     "max_rank": 30.0,
-    "image": "Carmine-Penta.png"
+    "image": "CarminePenta.png"
   },
   "Cedo": {
     "name": "Cedo",
@@ -15080,6 +15112,7 @@
     "status_chance": 0.003,
     "fire_rate": 3.83,
     "magazine": 40.0,
+    "max_ammo": 200.0,
     "reload": 2.2,
     "mastery_req": 8.0,
     "riven_disposition": 0.65,
@@ -15132,6 +15165,7 @@
     "status_chance": 0.02,
     "fire_rate": 4.5,
     "magazine": 40.0,
+    "max_ammo": 200.0,
     "reload": 1.8,
     "mastery_req": 15.0,
     "riven_disposition": 0.55,
@@ -15140,7 +15174,7 @@
     "trigger": "Auto / Semi",
     "family": "Cedo",
     "max_rank": 30.0,
-    "image": "Cedo-Prime.png"
+    "image": "CedoPrime.png"
   },
   "Cernos": {
     "name": "Cernos",
@@ -15177,6 +15211,7 @@
     "status_chance": 0.18,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.6,
     "mastery_req": 6.0,
     "riven_disposition": 1.3,
@@ -15222,6 +15257,7 @@
     "status_chance": 0.3,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.65,
     "mastery_req": 12.0,
     "riven_disposition": 1.25,
@@ -15230,7 +15266,7 @@
     "trigger": "Charge",
     "family": "Cernos",
     "max_rank": 30.0,
-    "image": "Cernos-Prime.png"
+    "image": "CernosPrime.png"
   },
   "Cinta": {
     "name": "Cinta",
@@ -15276,6 +15312,7 @@
     "status_chance": 0.3,
     "fire_rate": 0.667,
     "magazine": 1.0,
+    "max_ammo": 60.0,
     "reload": 0.6,
     "mastery_req": 6.0,
     "riven_disposition": 1.25,
@@ -15318,6 +15355,7 @@
     "status_chance": 0.4,
     "fire_rate": 1.17,
     "magazine": 24.0,
+    "max_ammo": 96.0,
     "reload": 2.5,
     "mastery_req": 17.0,
     "riven_disposition": 0.6,
@@ -15326,7 +15364,7 @@
     "trigger": "Semi-Auto",
     "family": "Bassocyst",
     "max_rank": 40.0,
-    "image": "Coda-Bassocyst.png"
+    "image": "CodaBassocyst.png"
   },
   "Coda Hema": {
     "name": "Coda Hema",
@@ -15348,6 +15386,7 @@
     "status_chance": 0.3,
     "fire_rate": 5.33,
     "magazine": 72.0,
+    "max_ammo": 0.0,
     "reload": 2.0,
     "mastery_req": 17.0,
     "riven_disposition": 0.9,
@@ -15356,7 +15395,7 @@
     "trigger": "Burst",
     "family": "Hema",
     "max_rank": 40.0,
-    "image": "Coda-Hema.png"
+    "image": "CodaHema.png"
   },
   "Coda Sporothrix": {
     "name": "Coda Sporothrix",
@@ -15394,6 +15433,7 @@
     "status_chance": 0.55,
     "fire_rate": 1.83,
     "magazine": 11.0,
+    "max_ammo": 45.0,
     "reload": 2.5,
     "mastery_req": 17.0,
     "riven_disposition": 0.85,
@@ -15402,7 +15442,7 @@
     "trigger": "Semi-Auto",
     "family": "Sporothrix",
     "max_rank": 40.0,
-    "image": "Coda-Sporothrix.png"
+    "image": "CodaSporothrix.png"
   },
   "Coda Synapse": {
     "name": "Coda Synapse",
@@ -15424,6 +15464,7 @@
     "status_chance": 0.15,
     "fire_rate": 12.0,
     "magazine": 76.0,
+    "max_ammo": 540.0,
     "reload": 1.5,
     "mastery_req": 17.0,
     "riven_disposition": 0.85,
@@ -15432,7 +15473,7 @@
     "trigger": "Held",
     "family": "Synapse",
     "max_rank": 40.0,
-    "image": "Coda-Synapse.png"
+    "image": "CodaSynapse.png"
   },
   "Convectrix": {
     "name": "Convectrix",
@@ -15469,6 +15510,7 @@
     "status_chance": 0.45,
     "fire_rate": 12.0,
     "magazine": 70.0,
+    "max_ammo": 700.0,
     "reload": 2.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.46,
@@ -15523,6 +15565,7 @@
     "status_chance": 0.06,
     "fire_rate": 1.17,
     "magazine": 5.0,
+    "max_ammo": 135.0,
     "reload": 2.3,
     "mastery_req": 8.0,
     "riven_disposition": 1.15,
@@ -15577,6 +15620,7 @@
     "status_chance": 0.09,
     "fire_rate": 1.42,
     "magazine": 20.0,
+    "max_ammo": 120.0,
     "reload": 3.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.0,
@@ -15585,7 +15629,7 @@
     "trigger": "Semi-Auto",
     "family": "Corinth",
     "max_rank": 30.0,
-    "image": "Corinth-Prime.png"
+    "image": "CorinthPrime.png"
   },
   "Daikyu": {
     "name": "Daikyu",
@@ -15609,6 +15653,7 @@
     "status_chance": 0.46,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.6,
     "mastery_req": 10.0,
     "riven_disposition": 1.3,
@@ -15654,6 +15699,7 @@
     "status_chance": 0.5,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.6,
     "mastery_req": 15.0,
     "riven_disposition": 0.8,
@@ -15662,7 +15708,7 @@
     "trigger": "Charge",
     "family": "Daikyu",
     "max_rank": 30.0,
-    "image": "Daikyu-Prime.png"
+    "image": "DaikyuPrime.png"
   },
   "Dera": {
     "name": "Dera",
@@ -15702,6 +15748,7 @@
     "status_chance": 0.22,
     "fire_rate": 11.25,
     "magazine": 45.0,
+    "max_ammo": 540.0,
     "reload": 1.8,
     "mastery_req": 4.0,
     "riven_disposition": 1.4,
@@ -15750,6 +15797,7 @@
     "status_chance": 0.3,
     "fire_rate": 11.25,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 1.8,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -15758,7 +15806,7 @@
     "trigger": "Auto",
     "family": "Dera",
     "max_rank": 30.0,
-    "image": "Dera-Vandal.png"
+    "image": "DeraVandal.png"
   },
   "Dex Sybaris": {
     "name": "Dex Sybaris",
@@ -15795,6 +15843,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.33,
     "magazine": 14.0,
+    "max_ammo": 540.0,
     "reload": 1.5,
     "mastery_req": 7.0,
     "riven_disposition": 1.3,
@@ -15803,7 +15852,7 @@
     "trigger": "Burst",
     "family": "Sybaris",
     "max_rank": 30.0,
-    "image": "Dex-Sybaris.png"
+    "image": "DexSybaris.png"
   },
   "Drakgoon": {
     "name": "Drakgoon",
@@ -15840,6 +15889,7 @@
     "status_chance": 0.063,
     "fire_rate": 3.33,
     "magazine": 7.0,
+    "max_ammo": 120.0,
     "reload": 2.3,
     "mastery_req": 5.0,
     "riven_disposition": 1.4,
@@ -15900,6 +15950,7 @@
     "status_chance": 0.2,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.7,
     "mastery_req": 5.0,
     "riven_disposition": 1.3,
@@ -15949,6 +16000,7 @@
     "status_chance": 0.25,
     "fire_rate": 7.8334,
     "magazine": 65.0,
+    "max_ammo": 540.0,
     "reload": 2.5,
     "mastery_req": 14.0,
     "riven_disposition": 0.95,
@@ -15957,7 +16009,7 @@
     "trigger": "Auto / Charge",
     "family": "EFV-5Jupiter",
     "max_rank": 30.0,
-    "image": "EFV-5-Jupiter.png"
+    "image": "EFV-5Jupiter.png"
   },
   "Evensong": {
     "name": "Evensong",
@@ -16004,6 +16056,7 @@
     "status_chance": 0.38,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.6,
     "mastery_req": 10.0,
     "riven_disposition": 1.15,
@@ -16039,6 +16092,7 @@
     "status_chance": 0.36,
     "fire_rate": 3.33,
     "magazine": 1.0,
+    "max_ammo": 47.0,
     "reload": 1.6,
     "mastery_req": 8.0,
     "riven_disposition": 1.1,
@@ -16085,6 +16139,7 @@
     "status_chance": 0.055,
     "fire_rate": 3.0,
     "magazine": 6.0,
+    "max_ammo": 60.0,
     "reload": 3.7,
     "mastery_req": 14.0,
     "riven_disposition": 0.6,
@@ -16152,6 +16207,7 @@
     "status_chance": 0.1,
     "fire_rate": 1.33,
     "magazine": 10.0,
+    "max_ammo": 100.0,
     "reload": 1.8,
     "mastery_req": 14.0,
     "riven_disposition": 1.25,
@@ -16183,6 +16239,7 @@
     "status_chance": 0.24,
     "fire_rate": 12.0,
     "magazine": 50.0,
+    "max_ammo": 0.0,
     "reload": 2.25,
     "mastery_req": 6.0,
     "riven_disposition": 1.55,
@@ -16191,7 +16248,7 @@
     "trigger": "Held",
     "family": "Flux Rifle",
     "max_rank": 30.0,
-    "image": "Flux-Rifle.png"
+    "image": "FluxRifle.png"
   },
   "Fulmin": {
     "name": "Fulmin",
@@ -16230,6 +16287,7 @@
     "status_chance": 0.1,
     "fire_rate": 9.33,
     "magazine": 60.0,
+    "max_ammo": 0.0,
     "reload": 3.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.0,
@@ -16277,6 +16335,7 @@
     "status_chance": 0.1,
     "fire_rate": 9.33,
     "magazine": 80.0,
+    "max_ammo": 0.0,
     "reload": 2.7,
     "mastery_req": 12.0,
     "riven_disposition": 0.75,
@@ -16285,7 +16344,7 @@
     "trigger": "Auto / Semi",
     "family": "Fulmin",
     "max_rank": 30.0,
-    "image": "Fulmin-Prime.png"
+    "image": "FulminPrime.png"
   },
   "Glaxion": {
     "name": "Glaxion",
@@ -16307,6 +16366,7 @@
     "status_chance": 0.34,
     "fire_rate": 12.0,
     "magazine": 80.0,
+    "max_ammo": 720.0,
     "reload": 2.2,
     "mastery_req": 8.0,
     "riven_disposition": 1.3,
@@ -16337,6 +16397,7 @@
     "status_chance": 0.38,
     "fire_rate": 12.0,
     "magazine": 100.0,
+    "max_ammo": 800.0,
     "reload": 1.8,
     "mastery_req": 12.0,
     "riven_disposition": 1.25,
@@ -16345,7 +16406,7 @@
     "trigger": "Held",
     "family": "Glaxion",
     "max_rank": 30.0,
-    "image": "Glaxion-Vandal.png"
+    "image": "GlaxionVandal.png"
   },
   "Gorgon": {
     "name": "Gorgon",
@@ -16393,6 +16454,7 @@
     "status_chance": 0.09,
     "fire_rate": 12.5,
     "magazine": 90.0,
+    "max_ammo": 540.0,
     "reload": 4.2,
     "mastery_req": 3.0,
     "riven_disposition": 1.4,
@@ -16449,6 +16511,7 @@
     "status_chance": 0.21,
     "fire_rate": 13.33,
     "magazine": 90.0,
+    "max_ammo": 900.0,
     "reload": 3.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -16457,7 +16520,7 @@
     "trigger": "Auto-Spool",
     "family": "Gorgon",
     "max_rank": 30.0,
-    "image": "Gorgon-Wraith.png"
+    "image": "GorgonWraith.png"
   },
   "Gotva Prime": {
     "name": "Gotva Prime",
@@ -16479,6 +16542,7 @@
     "status_chance": 0.27,
     "fire_rate": 13.33,
     "magazine": 84.0,
+    "max_ammo": 840.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 0.85,
@@ -16487,7 +16551,7 @@
     "trigger": "Auto",
     "family": "Gotva",
     "max_rank": 30.0,
-    "image": "Gotva-Prime.png"
+    "image": "GotvaPrime.png"
   },
   "Grakata": {
     "name": "Grakata",
@@ -16511,6 +16575,7 @@
     "status_chance": 0.2,
     "fire_rate": 20.0,
     "magazine": 60.0,
+    "max_ammo": 750.0,
     "reload": 2.4,
     "mastery_req": 5.0,
     "riven_disposition": 1.35,
@@ -16543,6 +16608,7 @@
     "status_chance": 0.35,
     "fire_rate": 1.67,
     "magazine": 9.0,
+    "max_ammo": 540.0,
     "reload": 1.7,
     "mastery_req": 7.0,
     "riven_disposition": 1.3,
@@ -16588,6 +16654,7 @@
     "status_chance": 0.17,
     "fire_rate": 5.0,
     "magazine": 45.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.55,
@@ -16620,6 +16687,7 @@
     "status_chance": 0.107,
     "fire_rate": 2.17,
     "magazine": 4.0,
+    "max_ammo": 120.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.2,
@@ -16650,6 +16718,7 @@
     "status_chance": 0.25,
     "fire_rate": 5.0,
     "magazine": 60.0,
+    "max_ammo": 0.0,
     "reload": 2.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.3,
@@ -16692,6 +16761,7 @@
     "status_chance": 0.18,
     "fire_rate": 2.5,
     "magazine": 90.0,
+    "max_ammo": 540.0,
     "reload": 2.5,
     "mastery_req": 2.0,
     "riven_disposition": 1.2,
@@ -16736,6 +16806,7 @@
     "status_chance": 0.15,
     "fire_rate": 5.0,
     "magazine": 65.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 0.0,
     "riven_disposition": 1.42,
@@ -16766,6 +16837,7 @@
     "status_chance": 0.27,
     "fire_rate": 8.0,
     "magazine": 150.0,
+    "max_ammo": 150.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 0.65,
@@ -16796,6 +16868,7 @@
     "status_chance": 0.29,
     "fire_rate": 8.0,
     "magazine": 200.0,
+    "max_ammo": 200.0,
     "reload": 1.7,
     "mastery_req": 9.0,
     "riven_disposition": 0.6,
@@ -16804,7 +16877,7 @@
     "trigger": "Held",
     "family": "Ignis",
     "max_rank": 30.0,
-    "image": "Ignis-Wraith.png"
+    "image": "IgnisWraith.png"
   },
   "Javlok": {
     "name": "Javlok",
@@ -16861,6 +16934,7 @@
     "status_chance": 0.25,
     "fire_rate": 3.33,
     "magazine": 6.0,
+    "max_ammo": 150.0,
     "reload": 1.9,
     "mastery_req": 7.0,
     "riven_disposition": 1.3,
@@ -16893,6 +16967,7 @@
     "status_chance": 0.15,
     "fire_rate": 11.67,
     "magazine": 30.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 1.0,
     "riven_disposition": 1.35,
@@ -16925,6 +17000,7 @@
     "status_chance": 0.25,
     "fire_rate": 11.67,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.28,
@@ -16933,7 +17009,7 @@
     "trigger": "Auto",
     "family": "Karak",
     "max_rank": 30.0,
-    "image": "Karak-Wraith.png"
+    "image": "KarakWraith.png"
   },
   "Kohm": {
     "name": "Kohm",
@@ -16970,6 +17046,7 @@
     "status_chance": 0.75,
     "fire_rate": 0.7333,
     "magazine": 245.0,
+    "max_ammo": 960.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 1.3,
@@ -17012,6 +17089,7 @@
     "status_chance": 0.35,
     "fire_rate": 5.0,
     "magazine": 20.0,
+    "max_ammo": 40.0,
     "reload": 3.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.15,
@@ -17075,6 +17153,7 @@
     "status_chance": 0.21,
     "fire_rate": 0.667,
     "magazine": 1.0,
+    "max_ammo": 5.0,
     "reload": 0.6,
     "mastery_req": 15.0,
     "riven_disposition": 0.65,
@@ -17083,7 +17162,7 @@
     "trigger": "Charge",
     "family": "Kuva Bramma",
     "max_rank": 40.0,
-    "image": "Kuva-Bramma.png"
+    "image": "KuvaBramma.png"
   },
   "Kuva Chakkhurr": {
     "name": "Kuva Chakkhurr",
@@ -17120,6 +17199,7 @@
     "status_chance": 0.27,
     "fire_rate": 1.17,
     "magazine": 11.0,
+    "max_ammo": 55.0,
     "reload": 3.3,
     "mastery_req": 15.0,
     "riven_disposition": 0.95,
@@ -17128,7 +17208,7 @@
     "trigger": "Semi-Auto",
     "family": "Kuva Chakkhurr",
     "max_rank": 40.0,
-    "image": "Kuva-Chakkhurr.png"
+    "image": "KuvaChakkhurr.png"
   },
   "Kuva Drakgoon": {
     "name": "Kuva Drakgoon",
@@ -17165,6 +17245,7 @@
     "status_chance": 0.09,
     "fire_rate": 3.33,
     "magazine": 11.0,
+    "max_ammo": 120.0,
     "reload": 2.0,
     "mastery_req": 13.0,
     "riven_disposition": 1.15,
@@ -17173,7 +17254,7 @@
     "trigger": "Charge",
     "family": "Drakgoon",
     "max_rank": 40.0,
-    "image": "Kuva-Drakgoon.png"
+    "image": "KuvaDrakgoon.png"
   },
   "Kuva Hek": {
     "name": "Kuva Hek",
@@ -17210,6 +17291,7 @@
     "status_chance": 0.133,
     "fire_rate": 2.17,
     "magazine": 4.0,
+    "max_ammo": 120.0,
     "reload": 1.9,
     "mastery_req": 15.0,
     "riven_disposition": 1.0,
@@ -17218,7 +17300,7 @@
     "trigger": "Semi-Auto",
     "family": "Hek",
     "max_rank": 40.0,
-    "image": "Kuva-Hek.png"
+    "image": "KuvaHek.png"
   },
   "Kuva Hind": {
     "name": "Kuva Hind",
@@ -17268,6 +17350,7 @@
     "status_chance": 0.33,
     "fire_rate": 5.0,
     "magazine": 90.0,
+    "max_ammo": 540.0,
     "reload": 2.3,
     "mastery_req": 15.0,
     "riven_disposition": 1.1,
@@ -17276,7 +17359,7 @@
     "trigger": "Burst / Semi / Auto",
     "family": "Hind",
     "max_rank": 40.0,
-    "image": "Kuva-Hind.png"
+    "image": "KuvaHind.png"
   },
   "Kuva Karak": {
     "name": "Kuva Karak",
@@ -17300,6 +17383,7 @@
     "status_chance": 0.31,
     "fire_rate": 11.67,
     "magazine": 70.0,
+    "max_ammo": 540.0,
     "reload": 1.7,
     "mastery_req": 13.0,
     "riven_disposition": 1.05,
@@ -17308,7 +17392,7 @@
     "trigger": "Auto",
     "family": "Karak",
     "max_rank": 40.0,
-    "image": "Kuva-Karak.png"
+    "image": "KuvaKarak.png"
   },
   "Kuva Kohm": {
     "name": "Kuva Kohm",
@@ -17345,6 +17429,7 @@
     "status_chance": 0.9,
     "fire_rate": 0.8333,
     "magazine": 209.0,
+    "max_ammo": 836.0,
     "reload": 2.0,
     "mastery_req": 13.0,
     "riven_disposition": 0.9,
@@ -17353,7 +17438,7 @@
     "trigger": "Auto-Spool",
     "family": "Kohm",
     "max_rank": 40.0,
-    "image": "Kuva-Kohm.png"
+    "image": "KuvaKohm.png"
   },
   "Kuva Ogris": {
     "name": "Kuva Ogris",
@@ -17391,6 +17476,7 @@
     "status_chance": 0.47,
     "fire_rate": 1.5,
     "magazine": 3.0,
+    "max_ammo": 7.0,
     "reload": 2.1,
     "mastery_req": 15.0,
     "riven_disposition": 0.7,
@@ -17399,7 +17485,7 @@
     "trigger": "Semi-Auto",
     "family": "Ogris",
     "max_rank": 40.0,
-    "image": "Kuva-Ogris.png"
+    "image": "KuvaOgris.png"
   },
   "Kuva Quartakk": {
     "name": "Kuva Quartakk",
@@ -17436,6 +17522,7 @@
     "status_chance": 0.33,
     "fire_rate": 4.83,
     "magazine": 88.0,
+    "max_ammo": 880.0,
     "reload": 1.7,
     "mastery_req": 13.0,
     "riven_disposition": 1.1,
@@ -17444,7 +17531,7 @@
     "trigger": "Auto / Burst",
     "family": "Quartakk",
     "max_rank": 40.0,
-    "image": "Kuva-Quartakk.png"
+    "image": "KuvaQuartakk.png"
   },
   "Kuva Sobek": {
     "name": "Kuva Sobek",
@@ -17468,6 +17555,7 @@
     "status_chance": 0.21,
     "fire_rate": 2.5,
     "magazine": 20.0,
+    "max_ammo": 240.0,
     "reload": 2.1,
     "mastery_req": 15.0,
     "riven_disposition": 0.8,
@@ -17476,7 +17564,7 @@
     "trigger": "Auto",
     "family": "Sobek",
     "max_rank": 40.0,
-    "image": "Kuva-Sobek.png"
+    "image": "KuvaSobek.png"
   },
   "Kuva Tonkor": {
     "name": "Kuva Tonkor",
@@ -17513,6 +17601,7 @@
     "status_chance": 0.17,
     "fire_rate": 3.17,
     "magazine": 1.0,
+    "max_ammo": 30.0,
     "reload": 1.5,
     "mastery_req": 13.0,
     "riven_disposition": 0.9,
@@ -17521,7 +17610,7 @@
     "trigger": "Semi-Auto",
     "family": "Tonkor",
     "max_rank": 40.0,
-    "image": "Kuva-Tonkor.png"
+    "image": "KuvaTonkor.png"
   },
   "Kuva Zarr": {
     "name": "Kuva Zarr",
@@ -17589,6 +17678,7 @@
     "status_chance": 0.31,
     "fire_rate": 2.17,
     "magazine": 5.0,
+    "max_ammo": 5.0,
     "reload": 4.8,
     "mastery_req": 15.0,
     "riven_disposition": 0.7,
@@ -17597,7 +17687,7 @@
     "trigger": "Semi-Auto",
     "family": "Zarr",
     "max_rank": 40.0,
-    "image": "Kuva-Zarr.png"
+    "image": "KuvaZarr.png"
   },
   "Lanka": {
     "name": "Lanka",
@@ -17627,6 +17717,7 @@
     "crit_multiplier": 2.0,
     "status_chance": 0.25,
     "magazine": 10.0,
+    "max_ammo": 72.0,
     "reload": 2.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.05,
@@ -17684,6 +17775,7 @@
     "status_chance": 0.12,
     "fire_rate": 4.17,
     "magazine": 15.0,
+    "max_ammo": 540.0,
     "reload": 2.4,
     "mastery_req": 0.0,
     "riven_disposition": 1.4,
@@ -17741,6 +17833,7 @@
     "status_chance": 0.26,
     "fire_rate": 4.17,
     "magazine": 15.0,
+    "max_ammo": 540.0,
     "reload": 2.4,
     "mastery_req": 10.0,
     "riven_disposition": 1.3,
@@ -17749,7 +17842,7 @@
     "trigger": "Semi-Auto",
     "family": "Latron",
     "max_rank": 30.0,
-    "image": "Latron-Prime.png"
+    "image": "LatronPrime.png"
   },
   "Latron Wraith": {
     "name": "Latron Wraith",
@@ -17798,6 +17891,7 @@
     "status_chance": 0.14,
     "fire_rate": 5.0,
     "magazine": 15.0,
+    "max_ammo": 540.0,
     "reload": 2.4,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -17806,7 +17900,7 @@
     "trigger": "Semi-Auto",
     "family": "Latron",
     "max_rank": 30.0,
-    "image": "Latron-Wraith.png"
+    "image": "LatronWraith.png"
   },
   "Lenz": {
     "name": "Lenz",
@@ -17850,6 +17944,7 @@
     "status_chance": 0.05,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 6.0,
     "reload": 0.6,
     "mastery_req": 8.0,
     "riven_disposition": 1.05,
@@ -17924,6 +18019,7 @@
     "status_chance": 0.35,
     "fire_rate": 8.0,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "slot": "Primary",
     "class": "Exalted Weapon",
@@ -17977,6 +18073,7 @@
     "status_chance": 0.05,
     "fire_rate": 7.5,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 0.0,
     "riven_disposition": 1.35,
@@ -17985,7 +18082,7 @@
     "trigger": "Auto",
     "family": "Braton",
     "max_rank": 30.0,
-    "image": "Mk1-Braton.png"
+    "image": "Braton.png"
   },
   "Mk1-Paris": {
     "name": "Mk1-Paris",
@@ -18036,6 +18133,7 @@
     "status_chance": 0.15,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.55,
     "mastery_req": 0.0,
     "riven_disposition": 1.45,
@@ -18044,7 +18142,7 @@
     "trigger": "Charge",
     "family": "Paris",
     "max_rank": 30.0,
-    "image": "Mk1-Paris.png"
+    "image": "Paris.png"
   },
   "Mk1-Strun": {
     "name": "Mk1-Strun",
@@ -18094,6 +18192,7 @@
     "status_chance": 0.06,
     "fire_rate": 2.08,
     "magazine": 6.0,
+    "max_ammo": 120.0,
     "reload": 3.75,
     "mastery_req": 0.0,
     "riven_disposition": 1.45,
@@ -18102,7 +18201,7 @@
     "trigger": "Semi-Auto",
     "family": "Strun",
     "max_rank": 30.0,
-    "image": "Mk1-Strun.png"
+    "image": "Strun.png"
   },
   "Miter": {
     "name": "Miter",
@@ -18163,6 +18262,7 @@
     "status_chance": 0.2,
     "fire_rate": 2.5,
     "magazine": 20.0,
+    "max_ammo": 80.0,
     "reload": 2.0,
     "mastery_req": 6.0,
     "riven_disposition": 1.5,
@@ -18219,6 +18319,7 @@
     "status_chance": 0.49,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.6,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -18227,7 +18328,7 @@
     "trigger": "Charge",
     "family": "Mutalist Cernos",
     "max_rank": 30.0,
-    "image": "Mutalist-Cernos.png"
+    "image": "MutalistCernos.png"
   },
   "Mutalist Quanta": {
     "name": "Mutalist Quanta",
@@ -18273,6 +18374,7 @@
     "status_chance": 0.15,
     "fire_rate": 10.0,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 3.0,
     "mastery_req": 2.0,
     "riven_disposition": 1.5,
@@ -18281,7 +18383,7 @@
     "trigger": "Auto / Semi",
     "family": "Mutalist Quanta",
     "max_rank": 30.0,
-    "image": "Mutalist-Quanta.png"
+    "image": "MutalistQuanta.png"
   },
   "Nagantaka": {
     "name": "Nagantaka",
@@ -18318,6 +18420,7 @@
     "status_chance": 0.39,
     "fire_rate": 2.5,
     "magazine": 9.0,
+    "max_ammo": 540.0,
     "reload": 2.3,
     "mastery_req": 9.0,
     "riven_disposition": 1.3,
@@ -18363,6 +18466,7 @@
     "status_chance": 0.39,
     "fire_rate": 2.5,
     "magazine": 11.0,
+    "max_ammo": 540.0,
     "reload": 2.3,
     "mastery_req": 12.0,
     "riven_disposition": 1.15,
@@ -18371,7 +18475,7 @@
     "trigger": "Semi / Mag Burst",
     "family": "Nagantaka",
     "max_rank": 30.0,
-    "image": "Nagantaka-Prime.png"
+    "image": "NagantakaPrime.png"
   },
   "Nataruk": {
     "name": "Nataruk",
@@ -18418,6 +18522,7 @@
     "status_chance": 0.3,
     "fire_rate": 0.667,
     "magazine": 1.0,
+    "max_ammo": 0.0,
     "reload": 0.6,
     "mastery_req": 0.0,
     "riven_disposition": 0.65,
@@ -18461,6 +18566,7 @@
     "status_chance": 0.1,
     "fire_rate": 1.0,
     "magazine": 12.0,
+    "max_ammo": 0.0,
     "reload": 2.25,
     "slot": "Primary",
     "class": "Exalted Weapon",
@@ -18499,6 +18605,7 @@
     "status_chance": 0.35,
     "fire_rate": 1.5,
     "magazine": 5.0,
+    "max_ammo": 20.0,
     "reload": 2.5,
     "mastery_req": 9.0,
     "riven_disposition": 1.3,
@@ -18566,6 +18673,7 @@
     "status_chance": 0.2,
     "fire_rate": 1.0,
     "magazine": 5.0,
+    "max_ammo": 200.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.15,
@@ -18632,6 +18740,7 @@
     "status_chance": 0.3,
     "fire_rate": 2.0,
     "magazine": 8.0,
+    "max_ammo": 200.0,
     "reload": 1.4,
     "mastery_req": 14.0,
     "riven_disposition": 1.1,
@@ -18640,7 +18749,7 @@
     "trigger": "Charge",
     "family": "Opticor",
     "max_rank": 30.0,
-    "image": "Opticor-Vandal.png"
+    "image": "OpticorVandal.png"
   },
   "Panthera": {
     "name": "Panthera",
@@ -18677,6 +18786,7 @@
     "status_chance": 0.24,
     "fire_rate": 3.0,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.4,
@@ -18731,6 +18841,7 @@
     "status_chance": 0.3,
     "fire_rate": 3.67,
     "magazine": 80.0,
+    "max_ammo": 320.0,
     "reload": 2.4,
     "mastery_req": 14.0,
     "riven_disposition": 1.25,
@@ -18739,7 +18850,7 @@
     "trigger": "Auto / Held",
     "family": "Panthera",
     "max_rank": 30.0,
-    "image": "Panthera-Prime.png"
+    "image": "PantheraPrime.png"
   },
   "Paracyst": {
     "name": "Paracyst",
@@ -18782,6 +18893,7 @@
     "status_chance": 0.3,
     "fire_rate": 8.33,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.31,
@@ -18841,6 +18953,7 @@
     "status_chance": 0.1,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.65,
     "mastery_req": 0.0,
     "riven_disposition": 1.4,
@@ -18900,6 +19013,7 @@
     "status_chance": 0.2,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.7,
     "mastery_req": 8.0,
     "riven_disposition": 1.35,
@@ -18908,7 +19022,7 @@
     "trigger": "Charge",
     "family": "Paris",
     "max_rank": 30.0,
-    "image": "Paris-Prime.png"
+    "image": "ParisPrime.png"
   },
   "Penta": {
     "name": "Penta",
@@ -18941,6 +19055,7 @@
     "status_chance": 0.1,
     "fire_rate": 1.0,
     "magazine": 5.0,
+    "max_ammo": 20.0,
     "reload": 2.5,
     "mastery_req": 6.0,
     "riven_disposition": 1.35,
@@ -18973,6 +19088,7 @@
     "status_chance": 0.16,
     "fire_rate": 2.0,
     "magazine": 12.0,
+    "max_ammo": 24.0,
     "reload": 3.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.15,
@@ -19003,6 +19119,7 @@
     "status_chance": 0.155,
     "fire_rate": 12.0,
     "magazine": 90.0,
+    "max_ammo": 720.0,
     "reload": 2.0,
     "mastery_req": 11.0,
     "riven_disposition": 1.46,
@@ -19080,6 +19197,7 @@
     "status_chance": 0.222,
     "fire_rate": 12.0,
     "magazine": 11.0,
+    "max_ammo": 275.0,
     "reload": 0.5,
     "mastery_req": 9.0,
     "riven_disposition": 1.1,
@@ -19157,6 +19275,7 @@
     "status_chance": 0.222,
     "fire_rate": 12.0,
     "magazine": 11.0,
+    "max_ammo": 330.0,
     "reload": 0.5,
     "mastery_req": 14.0,
     "riven_disposition": 0.8,
@@ -19165,7 +19284,7 @@
     "trigger": "Held / Charge",
     "family": "Phantasma",
     "max_rank": 30.0,
-    "image": "Phantasma-Prime.png"
+    "image": "PhantasmaPrime.png"
   },
   "Phenmor": {
     "name": "Phenmor",
@@ -19202,6 +19321,7 @@
     "status_chance": 0.2,
     "fire_rate": 3.0,
     "magazine": 30.0,
+    "max_ammo": 540.0,
     "reload": 2.8,
     "mastery_req": 14.0,
     "riven_disposition": 0.6,
@@ -19258,6 +19378,7 @@
     "status_chance": 0.15,
     "fire_rate": 14.17,
     "magazine": 120.0,
+    "max_ammo": 840.0,
     "reload": 3.0,
     "mastery_req": 11.0,
     "riven_disposition": 1.3,
@@ -19266,7 +19387,7 @@
     "trigger": "Auto-Spool",
     "family": "Gorgon",
     "max_rank": 30.0,
-    "image": "Prisma-Gorgon.png"
+    "image": "PrismaGorgon.png"
   },
   "Prisma Grakata": {
     "name": "Prisma Grakata",
@@ -19290,6 +19411,7 @@
     "status_chance": 0.21,
     "fire_rate": 21.67,
     "magazine": 120.0,
+    "max_ammo": 1000.0,
     "reload": 2.0,
     "mastery_req": 11.0,
     "riven_disposition": 1.3,
@@ -19298,7 +19420,7 @@
     "trigger": "Auto",
     "family": "Grakata",
     "max_rank": 30.0,
-    "image": "Prisma-Grakata.png"
+    "image": "PrismaGrakata.png"
   },
   "Prisma Grinlok": {
     "name": "Prisma Grinlok",
@@ -19322,6 +19444,7 @@
     "status_chance": 0.37,
     "fire_rate": 1.67,
     "magazine": 21.0,
+    "max_ammo": 540.0,
     "reload": 1.7,
     "mastery_req": 11.0,
     "riven_disposition": 1.25,
@@ -19330,7 +19453,7 @@
     "trigger": "Semi-Auto",
     "family": "Grinlok",
     "max_rank": 30.0,
-    "image": "Prisma-Grinlok.png"
+    "image": "PrismaGrinlok.png"
   },
   "Prisma Lenz": {
     "name": "Prisma Lenz",
@@ -19374,6 +19497,7 @@
     "status_chance": 0.16,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 8.0,
     "reload": 0.6,
     "mastery_req": 12.0,
     "riven_disposition": 1.0,
@@ -19382,7 +19506,7 @@
     "trigger": "Charge",
     "family": "Lenz",
     "max_rank": 30.0,
-    "image": "Prisma-Lenz.png"
+    "image": "PrismaLenz.png"
   },
   "Prisma Tetra": {
     "name": "Prisma Tetra",
@@ -19405,6 +19529,7 @@
     "status_chance": 0.24,
     "fire_rate": 7.08,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.45,
@@ -19413,7 +19538,7 @@
     "trigger": "Auto",
     "family": "Tetra",
     "max_rank": 30.0,
-    "image": "Prisma-Tetra.png"
+    "image": "PrismaTetra.png"
   },
   "Proboscis Cernos": {
     "name": "Proboscis Cernos",
@@ -19462,6 +19587,7 @@
     "status_chance": 0.43,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 7.0,
     "reload": 0.6,
     "mastery_req": 15.0,
     "riven_disposition": 0.9,
@@ -19470,7 +19596,7 @@
     "trigger": "Charge",
     "family": "Proboscis Cernos",
     "max_rank": 30.0,
-    "image": "Proboscis-Cernos.png"
+    "image": "ProboscisCernos.png"
   },
   "Purgator 1": {
     "name": "Purgator 1",
@@ -19493,6 +19619,7 @@
     "status_chance": 0.19,
     "fire_rate": 1.5,
     "magazine": 9.0,
+    "max_ammo": 20.0,
     "reload": 2.7,
     "mastery_req": 14.0,
     "riven_disposition": 1.0,
@@ -19501,7 +19628,7 @@
     "trigger": "Semi-Auto",
     "family": "Purgator 1",
     "max_rank": 30.0,
-    "image": "Purgator-1.png"
+    "image": "Purgator1.png"
   },
   "Quanta": {
     "name": "Quanta",
@@ -19555,6 +19682,7 @@
     "status_chance": 0.24,
     "fire_rate": 12.0,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.4,
@@ -19617,6 +19745,7 @@
     "status_chance": 0.45,
     "fire_rate": 12.0,
     "magazine": 80.0,
+    "max_ammo": 560.0,
     "reload": 1.8,
     "mastery_req": 10.0,
     "riven_disposition": 1.4,
@@ -19625,7 +19754,7 @@
     "trigger": "Held / Semi",
     "family": "Quanta",
     "max_rank": 30.0,
-    "image": "Quanta-Vandal.png"
+    "image": "QuantaVandal.png"
   },
   "Quartakk": {
     "name": "Quartakk",
@@ -19649,6 +19778,7 @@
     "status_chance": 0.27,
     "fire_rate": 1.58,
     "magazine": 84.0,
+    "max_ammo": 840.0,
     "reload": 1.9,
     "mastery_req": 10.0,
     "riven_disposition": 1.25,
@@ -19698,6 +19828,7 @@
     "status_chance": 0.38,
     "fire_rate": 6.0,
     "magazine": 300.0,
+    "max_ammo": 900.0,
     "reload": 4.0,
     "mastery_req": 12.0,
     "riven_disposition": 1.15,
@@ -19743,6 +19874,7 @@
     "status_chance": 0.15,
     "fire_rate": 1.0,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 0.6,
     "mastery_req": 12.0,
     "riven_disposition": 1.25,
@@ -19751,7 +19883,7 @@
     "trigger": "Charge",
     "family": "Cernos",
     "max_rank": 30.0,
-    "image": "Rakta-Cernos.png"
+    "image": "RaktaCernos.png"
   },
   "Rauta": {
     "name": "Rauta",
@@ -19775,6 +19907,7 @@
     "status_chance": 0.12,
     "fire_rate": 0.8,
     "magazine": 4.0,
+    "max_ammo": 120.0,
     "reload": 1.2,
     "mastery_req": 8.0,
     "riven_disposition": 1.1,
@@ -19806,6 +19939,7 @@
     "status_chance": 0.16,
     "fire_rate": 8.0,
     "magazine": 200.0,
+    "max_ammo": 1000.0,
     "reload": 5.0,
     "mastery_req": 14.0,
     "riven_disposition": 0.9,
@@ -19838,6 +19972,7 @@
     "status_chance": 0.12,
     "fire_rate": 2.67,
     "magazine": 5.0,
+    "max_ammo": 72.0,
     "reload": 2.4,
     "mastery_req": 6.0,
     "riven_disposition": 0.95,
@@ -19870,6 +20005,7 @@
     "status_chance": 0.16,
     "fire_rate": 3.67,
     "magazine": 5.0,
+    "max_ammo": 72.0,
     "reload": 2.0,
     "mastery_req": 12.0,
     "riven_disposition": 0.7,
@@ -19878,7 +20014,7 @@
     "trigger": "Semi-Auto",
     "family": "Rubico",
     "max_rank": 30.0,
-    "image": "Rubico-Prime.png"
+    "image": "RubicoPrime.png"
   },
   "Sancti Tigris": {
     "name": "Sancti Tigris",
@@ -19902,6 +20038,7 @@
     "status_chance": 0.14,
     "fire_rate": 2.0,
     "magazine": 2.0,
+    "max_ammo": 120.0,
     "reload": 1.5,
     "mastery_req": 12.0,
     "riven_disposition": 1.0,
@@ -19910,7 +20047,7 @@
     "trigger": "Duplex",
     "family": "Tigris",
     "max_rank": 30.0,
-    "image": "Sancti-Tigris.png"
+    "image": "SanctiTigris.png"
   },
   "Scourge": {
     "name": "Scourge",
@@ -19967,6 +20104,7 @@
     "status_chance": 0.3,
     "fire_rate": 2.67,
     "magazine": 40.0,
+    "max_ammo": 200.0,
     "reload": 2.5,
     "mastery_req": 6.0,
     "riven_disposition": 1.2,
@@ -20032,6 +20170,7 @@
     "status_chance": 0.3,
     "fire_rate": 2.67,
     "magazine": 40.0,
+    "max_ammo": 360.0,
     "reload": 2.2,
     "mastery_req": 14.0,
     "riven_disposition": 1.1,
@@ -20040,7 +20179,7 @@
     "trigger": "Auto",
     "family": "Scourge",
     "max_rank": 30.0,
-    "image": "Scourge-Prime.png"
+    "image": "ScourgePrime.png"
   },
   "Secura Penta": {
     "name": "Secura Penta",
@@ -20073,6 +20212,7 @@
     "status_chance": 0.26,
     "fire_rate": 2.0,
     "magazine": 7.0,
+    "max_ammo": 28.0,
     "reload": 2.5,
     "mastery_req": 12.0,
     "riven_disposition": 1.3,
@@ -20081,7 +20221,7 @@
     "trigger": "Active",
     "family": "Penta",
     "max_rank": 30.0,
-    "image": "Secura-Penta.png"
+    "image": "SecuraPenta.png"
   },
   "Shedu": {
     "name": "Shedu",
@@ -20114,6 +20254,7 @@
     "status_chance": 0.23,
     "fire_rate": 2.5,
     "magazine": 7.0,
+    "max_ammo": 0.0,
     "reload": 1.25,
     "mastery_req": 13.0,
     "riven_disposition": 0.75,
@@ -20165,6 +20306,7 @@
     "status_chance": 0.3,
     "fire_rate": 3.0,
     "magazine": 8.0,
+    "max_ammo": 72.0,
     "reload": 3.0,
     "mastery_req": 5.0,
     "riven_disposition": 1.25,
@@ -20197,6 +20339,7 @@
     "status_chance": 0.12,
     "fire_rate": 2.0,
     "magazine": 4.0,
+    "max_ammo": 72.0,
     "reload": 3.5,
     "mastery_req": 0.0,
     "riven_disposition": 1.3,
@@ -20229,6 +20372,7 @@
     "status_chance": 0.16,
     "fire_rate": 2.0,
     "magazine": 6.0,
+    "max_ammo": 72.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 1.25,
@@ -20237,7 +20381,7 @@
     "trigger": "Semi-Auto",
     "family": "Snipetron",
     "max_rank": 30.0,
-    "image": "Snipetron-Vandal.png"
+    "image": "SnipetronVandal.png"
   },
   "Sobek": {
     "name": "Sobek",
@@ -20261,6 +20405,7 @@
     "status_chance": 0.162,
     "fire_rate": 2.5,
     "magazine": 20.0,
+    "max_ammo": 240.0,
     "reload": 2.7,
     "mastery_req": 7.0,
     "riven_disposition": 1.33,
@@ -20306,6 +20451,7 @@
     "status_chance": 0.07,
     "fire_rate": 15.0,
     "magazine": 100.0,
+    "max_ammo": 540.0,
     "reload": 3.0,
     "mastery_req": 6.0,
     "riven_disposition": 1.15,
@@ -20351,6 +20497,7 @@
     "status_chance": 0.1,
     "fire_rate": 15.0,
     "magazine": 200.0,
+    "max_ammo": 800.0,
     "reload": 3.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.1,
@@ -20359,7 +20506,7 @@
     "trigger": "Auto-Spool",
     "family": "Soma",
     "max_rank": 30.0,
-    "image": "Soma-Prime.png"
+    "image": "SomaPrime.png"
   },
   "Sporothrix": {
     "name": "Sporothrix",
@@ -20397,6 +20544,7 @@
     "status_chance": 0.53,
     "fire_rate": 1.83,
     "magazine": 9.0,
+    "max_ammo": 45.0,
     "reload": 2.7,
     "mastery_req": 13.0,
     "riven_disposition": 1.3,
@@ -20453,6 +20601,7 @@
     "status_chance": 0.22,
     "fire_rate": 6.0,
     "magazine": 40.0,
+    "max_ammo": 300.0,
     "reload": 1.4,
     "mastery_req": 10.0,
     "riven_disposition": 1.05,
@@ -20486,6 +20635,7 @@
     "status_chance": 0.22,
     "fire_rate": 3.0,
     "magazine": 12.0,
+    "max_ammo": 36.0,
     "reload": 2.4,
     "mastery_req": 8.0,
     "riven_disposition": 1.25,
@@ -20531,6 +20681,7 @@
     "status_chance": 0.12,
     "fire_rate": 10.0,
     "magazine": 65.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.1,
@@ -20576,6 +20727,7 @@
     "status_chance": 0.12,
     "fire_rate": 10.0,
     "magazine": 90.0,
+    "max_ammo": 720.0,
     "reload": 2.0,
     "mastery_req": 12.0,
     "riven_disposition": 1.1,
@@ -20584,7 +20736,7 @@
     "trigger": "Auto / Semi",
     "family": "Stradavar",
     "max_rank": 30.0,
-    "image": "Stradavar-Prime.png"
+    "image": "StradavarPrime.png"
   },
   "Strun": {
     "name": "Strun",
@@ -20634,6 +20786,7 @@
     "status_chance": 0.05,
     "fire_rate": 2.5,
     "magazine": 6.0,
+    "max_ammo": 120.0,
     "reload": 3.75,
     "mastery_req": 1.0,
     "riven_disposition": 1.4,
@@ -20692,6 +20845,7 @@
     "status_chance": 0.0667,
     "fire_rate": 3.33,
     "magazine": 10.0,
+    "max_ammo": 120.0,
     "reload": 4.6,
     "mastery_req": 14.0,
     "riven_disposition": 1.2,
@@ -20700,7 +20854,7 @@
     "trigger": "Semi-Auto",
     "family": "Strun",
     "max_rank": 30.0,
-    "image": "Strun-Prime.png"
+    "image": "StrunPrime.png"
   },
   "Strun Wraith": {
     "name": "Strun Wraith",
@@ -20750,6 +20904,7 @@
     "status_chance": 0.12,
     "fire_rate": 2.5,
     "magazine": 10.0,
+    "max_ammo": 120.0,
     "reload": 5.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.35,
@@ -20758,7 +20913,7 @@
     "trigger": "Semi-Auto",
     "family": "Strun",
     "max_rank": 30.0,
-    "image": "Strun-Wraith.png"
+    "image": "StrunWraith.png"
   },
   "Supra": {
     "name": "Supra",
@@ -20782,6 +20937,7 @@
     "status_chance": 0.3,
     "fire_rate": 12.5,
     "magazine": 180.0,
+    "max_ammo": 1080.0,
     "reload": 3.0,
     "mastery_req": 12.0,
     "riven_disposition": 1.1,
@@ -20814,6 +20970,7 @@
     "status_chance": 0.3,
     "fire_rate": 12.5,
     "magazine": 300.0,
+    "max_ammo": 1600.0,
     "reload": 3.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.0,
@@ -20822,7 +20979,7 @@
     "trigger": "Auto-Spool",
     "family": "Supra",
     "max_rank": 30.0,
-    "image": "Supra-Vandal.png"
+    "image": "SupraVandal.png"
   },
   "Sybaris": {
     "name": "Sybaris",
@@ -20859,6 +21016,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.33,
     "magazine": 10.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 1.3,
@@ -20904,6 +21062,7 @@
     "status_chance": 0.25,
     "fire_rate": 3.33,
     "magazine": 20.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 12.0,
     "riven_disposition": 1.2,
@@ -20912,7 +21071,7 @@
     "trigger": "Burst",
     "family": "Sybaris",
     "max_rank": 30.0,
-    "image": "Sybaris-Prime.png"
+    "image": "SybarisPrime.png"
   },
   "Synapse": {
     "name": "Synapse",
@@ -20934,6 +21093,7 @@
     "status_chance": 0.13,
     "fire_rate": 12.0,
     "magazine": 70.0,
+    "max_ammo": 540.0,
     "reload": 1.5,
     "mastery_req": 11.0,
     "riven_disposition": 1.31,
@@ -20996,6 +21156,7 @@
     "status_chance": 0.0,
     "fire_rate": 3.33,
     "magazine": 16.0,
+    "max_ammo": 96.0,
     "reload": 2.0,
     "mastery_req": 12.0,
     "riven_disposition": 1.2,
@@ -21004,7 +21165,7 @@
     "trigger": "Active",
     "family": "Simulor",
     "max_rank": 30.0,
-    "image": "Synoid-Simulor.png"
+    "image": "SynoidSimulor.png"
   },
   "Telos Boltor": {
     "name": "Telos Boltor",
@@ -21040,6 +21201,7 @@
     "status_chance": 0.16,
     "fire_rate": 9.33,
     "magazine": 90.0,
+    "max_ammo": 540.0,
     "reload": 2.4,
     "mastery_req": 12.0,
     "riven_disposition": 1.2,
@@ -21048,7 +21210,7 @@
     "trigger": "Auto",
     "family": "Boltor",
     "max_rank": 30.0,
-    "image": "Telos-Boltor.png"
+    "image": "TelosBoltor.png"
   },
   "Tenet Arca Plasmor": {
     "name": "Tenet Arca Plasmor",
@@ -21070,6 +21232,7 @@
     "status_chance": 0.34,
     "fire_rate": 1.0,
     "magazine": 10.0,
+    "max_ammo": 40.0,
     "reload": 3.0,
     "mastery_req": 16.0,
     "riven_disposition": 0.55,
@@ -21078,7 +21241,7 @@
     "trigger": "Semi-Auto",
     "family": "Arca Plasmor",
     "max_rank": 40.0,
-    "image": "Tenet-Arca-Plasmor.png"
+    "image": "TenetArcaPlasmor.png"
   },
   "Tenet Envoy": {
     "name": "Tenet Envoy",
@@ -21111,6 +21274,7 @@
     "status_chance": 0.24,
     "fire_rate": 0.83,
     "magazine": 8.0,
+    "max_ammo": 16.0,
     "reload": 4.0,
     "mastery_req": 16.0,
     "riven_disposition": 0.65,
@@ -21119,7 +21283,7 @@
     "trigger": "Auto",
     "family": "Tenet Envoy",
     "max_rank": 40.0,
-    "image": "Tenet-Envoy.png"
+    "image": "TenetEnvoy.png"
   },
   "Tenet Ferrox": {
     "name": "Tenet Ferrox",
@@ -21180,6 +21344,7 @@
     "status_chance": 0.26,
     "fire_rate": 2.67,
     "magazine": 20.0,
+    "max_ammo": 100.0,
     "reload": 1.8,
     "mastery_req": 16.0,
     "riven_disposition": 1.15,
@@ -21188,7 +21353,7 @@
     "trigger": "Charged Auto",
     "family": "Ferrox",
     "max_rank": 40.0,
-    "image": "Tenet-Ferrox.png"
+    "image": "TenetFerrox.png"
   },
   "Tenet Flux Rifle": {
     "name": "Tenet Flux Rifle",
@@ -21211,6 +21376,7 @@
     "status_chance": 0.26,
     "fire_rate": 15.0,
     "magazine": 120.0,
+    "max_ammo": 1200.0,
     "reload": 1.8,
     "mastery_req": 16.0,
     "riven_disposition": 1.15,
@@ -21219,7 +21385,7 @@
     "trigger": "Auto",
     "family": "Flux Rifle",
     "max_rank": 40.0,
-    "image": "Tenet-Flux-Rifle.png"
+    "image": "TenetFluxRifle.png"
   },
   "Tenet Glaxion": {
     "name": "Tenet Glaxion",
@@ -21241,6 +21407,7 @@
     "status_chance": 0.4,
     "fire_rate": 12.0,
     "magazine": 90.0,
+    "max_ammo": 810.0,
     "reload": 2.0,
     "mastery_req": 16.0,
     "riven_disposition": 0.65,
@@ -21249,7 +21416,7 @@
     "trigger": "Held",
     "family": "Glaxion",
     "max_rank": 40.0,
-    "image": "Tenet-Glaxion.png"
+    "image": "TenetGlaxion.png"
   },
   "Tenet Tetra": {
     "name": "Tenet Tetra",
@@ -21295,6 +21462,7 @@
     "status_chance": 0.3,
     "fire_rate": 5.0,
     "magazine": 80.0,
+    "max_ammo": 480.0,
     "reload": 2.2,
     "mastery_req": 16.0,
     "riven_disposition": 1.2,
@@ -21303,7 +21471,7 @@
     "trigger": "Auto / Semi",
     "family": "Tetra",
     "max_rank": 40.0,
-    "image": "Tenet-Tetra.png"
+    "image": "TenetTetra.png"
   },
   "Tenora": {
     "name": "Tenora",
@@ -21340,6 +21508,7 @@
     "status_chance": 0.16,
     "fire_rate": 11.67,
     "magazine": 150.0,
+    "max_ammo": 900.0,
     "reload": 2.5,
     "mastery_req": 10.0,
     "riven_disposition": 1.1,
@@ -21385,6 +21554,7 @@
     "status_chance": 0.24,
     "fire_rate": 12.67,
     "magazine": 200.0,
+    "max_ammo": 1000.0,
     "reload": 2.5,
     "mastery_req": 14.0,
     "riven_disposition": 1.05,
@@ -21393,7 +21563,7 @@
     "trigger": "Auto-Spool / Charge",
     "family": "Tenora",
     "max_rank": 30.0,
-    "image": "Tenora-Prime.png"
+    "image": "TenoraPrime.png"
   },
   "Tetra": {
     "name": "Tetra",
@@ -21416,6 +21586,7 @@
     "status_chance": 0.2,
     "fire_rate": 6.67,
     "magazine": 60.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 3.0,
     "riven_disposition": 1.5,
@@ -21448,6 +21619,7 @@
     "status_chance": 0.36,
     "fire_rate": 6.0,
     "magazine": 52.0,
+    "max_ammo": 540.0,
     "reload": 1.8,
     "mastery_req": 0.0,
     "riven_disposition": 1.0,
@@ -21480,6 +21652,7 @@
     "status_chance": 0.16,
     "fire_rate": 6.67,
     "magazine": 30.0,
+    "max_ammo": 540.0,
     "reload": 2.26,
     "mastery_req": 10.0,
     "riven_disposition": 1.1,
@@ -21538,6 +21711,7 @@
     "status_chance": 0.2,
     "fire_rate": 5.0,
     "magazine": 42.0,
+    "max_ammo": 540.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.0,
@@ -21546,7 +21720,7 @@
     "trigger": "Burst / Semi / Auto",
     "family": "Tiberon",
     "max_rank": 30.0,
-    "image": "Tiberon-Prime.png"
+    "image": "TiberonPrime.png"
   },
   "Tigris": {
     "name": "Tigris",
@@ -21570,6 +21744,7 @@
     "status_chance": 0.168,
     "fire_rate": 2.0,
     "magazine": 2.0,
+    "max_ammo": 120.0,
     "reload": 1.8,
     "mastery_req": 7.0,
     "riven_disposition": 1.1,
@@ -21602,6 +21777,7 @@
     "status_chance": 0.1125,
     "fire_rate": 2.0,
     "magazine": 2.0,
+    "max_ammo": 120.0,
     "reload": 1.8,
     "mastery_req": 13.0,
     "riven_disposition": 0.95,
@@ -21610,7 +21786,7 @@
     "trigger": "Duplex",
     "family": "Tigris",
     "max_rank": 30.0,
-    "image": "Tigris-Prime.png"
+    "image": "TigrisPrime.png"
   },
   "Tonkor": {
     "name": "Tonkor",
@@ -21643,6 +21819,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.17,
     "magazine": 1.0,
+    "max_ammo": 30.0,
     "reload": 1.7,
     "mastery_req": 5.0,
     "riven_disposition": 1.3,
@@ -21695,6 +21872,7 @@
     "status_chance": 0.23,
     "fire_rate": 1.5,
     "magazine": 5.0,
+    "max_ammo": 60.0,
     "reload": 1.7,
     "mastery_req": 4.0,
     "riven_disposition": 1.3,
@@ -21760,6 +21938,7 @@
     "status_chance": 0.3,
     "fire_rate": 4.67,
     "magazine": 200.0,
+    "max_ammo": 400.0,
     "reload": 5.0,
     "mastery_req": 13.0,
     "riven_disposition": 0.85,
@@ -21825,6 +22004,7 @@
     "status_chance": 0.34,
     "fire_rate": 4.67,
     "magazine": 250.0,
+    "max_ammo": 500.0,
     "reload": 4.0,
     "mastery_req": 15.0,
     "riven_disposition": 0.65,
@@ -21833,7 +22013,7 @@
     "trigger": "Auto / Semi",
     "family": "Trumna",
     "max_rank": 30.0,
-    "image": "Trumna-Prime.png"
+    "image": "TrumnaPrime.png"
   },
   "Vaykor Hek": {
     "name": "Vaykor Hek",
@@ -21857,6 +22037,7 @@
     "status_chance": 0.107,
     "fire_rate": 3.0,
     "magazine": 8.0,
+    "max_ammo": 120.0,
     "reload": 2.25,
     "mastery_req": 12.0,
     "riven_disposition": 1.15,
@@ -21865,7 +22046,7 @@
     "trigger": "Semi-Auto",
     "family": "Hek",
     "max_rank": 30.0,
-    "image": "Vaykor-Hek.png"
+    "image": "VaykorHek.png"
   },
   "Vadarya Prime": {
     "name": "Vadarya Prime",
@@ -21887,6 +22068,7 @@
     "status_chance": 0.18,
     "fire_rate": 2.8,
     "magazine": 16.0,
+    "max_ammo": 72.0,
     "reload": 2.6,
     "mastery_req": 15.0,
     "riven_disposition": 0.65,
@@ -21895,7 +22077,7 @@
     "trigger": "Charge",
     "family": "Vadarya Prime",
     "max_rank": 30.0,
-    "image": "Vadarya-Prime.png"
+    "image": "VadaryaPrime.png"
   },
   "Vectis": {
     "name": "Vectis",
@@ -21919,6 +22101,7 @@
     "status_chance": 0.3,
     "fire_rate": 1.5,
     "magazine": 1.0,
+    "max_ammo": 72.0,
     "reload": 1.0,
     "mastery_req": 2.0,
     "riven_disposition": 1.15,
@@ -21951,6 +22134,7 @@
     "status_chance": 0.3,
     "fire_rate": 2.67,
     "magazine": 2.0,
+    "max_ammo": 72.0,
     "reload": 0.85,
     "mastery_req": 14.0,
     "riven_disposition": 1.0,
@@ -21959,7 +22143,7 @@
     "trigger": "Semi-Auto",
     "family": "Vectis",
     "max_rank": 30.0,
-    "image": "Vectis-Prime.png"
+    "image": "VectisPrime.png"
   },
   "Veldt": {
     "name": "Veldt",
@@ -21983,6 +22167,7 @@
     "status_chance": 0.22,
     "fire_rate": 3.67,
     "magazine": 26.0,
+    "max_ammo": 546.0,
     "reload": 1.8,
     "mastery_req": 8.0,
     "riven_disposition": 1.3,
@@ -22014,6 +22199,7 @@
     "status_chance": 0.2,
     "fire_rate": 1.5,
     "magazine": 8.0,
+    "max_ammo": 80.0,
     "reload": 3.0,
     "mastery_req": 14.0,
     "riven_disposition": 0.5,
@@ -22022,7 +22208,7 @@
     "trigger": "Semi-Auto",
     "family": "Vinquibus",
     "max_rank": 30.0,
-    "image": "Vinquibus-(Primary).png"
+    "image": "Vinquibus.png"
   },
   "Vulkar": {
     "name": "Vulkar",
@@ -22046,6 +22232,7 @@
     "status_chance": 0.25,
     "fire_rate": 1.5,
     "magazine": 6.0,
+    "max_ammo": 72.0,
     "reload": 3.0,
     "mastery_req": 3.0,
     "riven_disposition": 1.45,
@@ -22077,6 +22264,7 @@
     "status_chance": 0.25,
     "fire_rate": 2.0,
     "magazine": 8.0,
+    "max_ammo": 72.0,
     "reload": 3.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.4,
@@ -22085,7 +22273,7 @@
     "trigger": "Semi-Auto",
     "family": "Vulkar",
     "max_rank": 30.0,
-    "image": "Vulkar-Wraith.png"
+    "image": "VulkarWraith.png"
   },
   "Zarr": {
     "name": "Zarr",
@@ -22153,6 +22341,7 @@
     "status_chance": 0.29,
     "fire_rate": 1.67,
     "magazine": 3.0,
+    "max_ammo": 60.0,
     "reload": 2.25,
     "mastery_req": 7.0,
     "riven_disposition": 1.15,
@@ -22198,6 +22387,7 @@
     "status_chance": 0.34,
     "fire_rate": 10.83,
     "magazine": 90.0,
+    "max_ammo": 540.0,
     "reload": 1.6,
     "mastery_req": 10.0,
     "riven_disposition": 1.1,
@@ -22230,6 +22420,7 @@
     "status_chance": 0.35,
     "fire_rate": 4.17,
     "magazine": 20.0,
+    "max_ammo": 540.0,
     "reload": 2.5,
     "mastery_req": 10.0,
     "riven_disposition": 1.2,
@@ -22275,6 +22466,7 @@
     "status_chance": 0.3,
     "fire_rate": 5.5,
     "magazine": 30.0,
+    "max_ammo": 270.0,
     "reload": 3.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.15,
@@ -22283,7 +22475,7 @@
     "trigger": "Auto",
     "family": "Zhuge",
     "max_rank": 30.0,
-    "image": "Zhuge-Prime.png"
+    "image": "ZhugePrime.png"
   },
   "Acrid": {
     "name": "Acrid",
@@ -22305,6 +22497,7 @@
     "status_chance": 0.1,
     "fire_rate": 5.0,
     "magazine": 15.0,
+    "max_ammo": 210.0,
     "reload": 1.2,
     "mastery_req": 7.0,
     "riven_disposition": 1.33,
@@ -22348,6 +22541,7 @@
     "status_chance": 0.19,
     "fire_rate": 2.0,
     "magazine": 2.0,
+    "max_ammo": 4.0,
     "reload": 1.3,
     "mastery_req": 11.0,
     "riven_disposition": 1.0,
@@ -22380,6 +22574,7 @@
     "status_chance": 0.12,
     "fire_rate": 12.5,
     "magazine": 70.0,
+    "max_ammo": 240.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.45,
@@ -22412,6 +22607,7 @@
     "status_chance": 0.3,
     "fire_rate": 12.5,
     "magazine": 80.0,
+    "max_ammo": 400.0,
     "reload": 1.2,
     "mastery_req": 12.0,
     "riven_disposition": 1.1,
@@ -22420,7 +22616,7 @@
     "trigger": "Auto",
     "family": "Afuris",
     "max_rank": 30.0,
-    "image": "Afuris-Prime.png"
+    "image": "AfurisPrime.png"
   },
   "Akarius": {
     "name": "Akarius",
@@ -22453,6 +22649,7 @@
     "status_chance": 0.28,
     "fire_rate": 4.33,
     "magazine": 10.0,
+    "max_ammo": 20.0,
     "reload": 3.4,
     "mastery_req": 8.0,
     "riven_disposition": 1.05,
@@ -22494,6 +22691,7 @@
     "status_chance": 0.34,
     "fire_rate": 3.667,
     "magazine": 8.0,
+    "max_ammo": 24.0,
     "reload": 2.4,
     "mastery_req": 14.0,
     "riven_disposition": 0.65,
@@ -22502,7 +22700,7 @@
     "trigger": "Burst",
     "family": "Akarius",
     "max_rank": 30.0,
-    "image": "Akarius-Prime.png"
+    "image": "AkariusPrime.png"
   },
   "Akbolto": {
     "name": "Akbolto",
@@ -22525,6 +22723,7 @@
     "status_chance": 0.022,
     "fire_rate": 4.5,
     "magazine": 30.0,
+    "max_ammo": 210.0,
     "reload": 2.6,
     "mastery_req": 8.0,
     "riven_disposition": 1.3,
@@ -22557,6 +22756,7 @@
     "status_chance": 0.14,
     "fire_rate": 5.0,
     "magazine": 40.0,
+    "max_ammo": 210.0,
     "reload": 1.3,
     "mastery_req": 13.0,
     "riven_disposition": 1.2,
@@ -22565,7 +22765,7 @@
     "trigger": "Semi-Auto",
     "family": "Akbolto",
     "max_rank": 30.0,
-    "image": "Akbolto-Prime.png"
+    "image": "AkboltoPrime.png"
   },
   "Akbronco": {
     "name": "Akbronco",
@@ -22589,6 +22789,7 @@
     "status_chance": 0.0314,
     "fire_rate": 5.0,
     "magazine": 4.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 2.0,
     "riven_disposition": 1.35,
@@ -22621,6 +22822,7 @@
     "status_chance": 0.1286,
     "fire_rate": 4.33,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 2.25,
     "mastery_req": 10.0,
     "riven_disposition": 1.3,
@@ -22629,7 +22831,7 @@
     "trigger": "Semi-Auto",
     "family": "Akbronco",
     "max_rank": 30.0,
-    "image": "Akbronco-Prime.png"
+    "image": "AkbroncoPrime.png"
   },
   "Akjagara": {
     "name": "Akjagara",
@@ -22653,6 +22855,7 @@
     "status_chance": 0.28,
     "fire_rate": 5.0,
     "magazine": 36.0,
+    "max_ammo": 210.0,
     "reload": 2.25,
     "mastery_req": 8.0,
     "riven_disposition": 1.1,
@@ -22685,6 +22888,7 @@
     "status_chance": 0.32,
     "fire_rate": 5.0,
     "magazine": 40.0,
+    "max_ammo": 320.0,
     "reload": 1.4,
     "mastery_req": 12.0,
     "riven_disposition": 1.0,
@@ -22693,7 +22897,7 @@
     "trigger": "Burst",
     "family": "Akjagara",
     "max_rank": 30.0,
-    "image": "Akjagara-Prime.png"
+    "image": "AkjagaraPrime.png"
   },
   "Aklato": {
     "name": "Aklato",
@@ -22717,6 +22921,7 @@
     "status_chance": 0.06,
     "fire_rate": 5.0,
     "magazine": 30.0,
+    "max_ammo": 210.0,
     "reload": 2.4,
     "mastery_req": 3.0,
     "riven_disposition": 1.52,
@@ -22749,6 +22954,7 @@
     "status_chance": 0.1,
     "fire_rate": 1.58,
     "magazine": 12.0,
+    "max_ammo": 210.0,
     "reload": 3.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.05,
@@ -22781,6 +22987,7 @@
     "status_chance": 0.25,
     "fire_rate": 2.67,
     "magazine": 16.0,
+    "max_ammo": 210.0,
     "reload": 3.0,
     "mastery_req": 15.0,
     "riven_disposition": 0.95,
@@ -22789,7 +22996,7 @@
     "trigger": "Semi-Auto",
     "family": "Aklex",
     "max_rank": 30.0,
-    "image": "Aklex-Prime.png"
+    "image": "AklexPrime.png"
   },
   "Akmagnus": {
     "name": "Akmagnus",
@@ -22813,6 +23020,7 @@
     "status_chance": 0.22,
     "fire_rate": 5.0,
     "magazine": 16.0,
+    "max_ammo": 210.0,
     "reload": 3.2,
     "mastery_req": 12.0,
     "riven_disposition": 1.35,
@@ -22845,6 +23053,7 @@
     "status_chance": 0.28,
     "fire_rate": 5.67,
     "magazine": 16.0,
+    "max_ammo": 210.0,
     "reload": 2.8,
     "mastery_req": 15.0,
     "riven_disposition": 1.1,
@@ -22853,7 +23062,7 @@
     "trigger": "Semi-Auto",
     "family": "Akmagnus",
     "max_rank": 30.0,
-    "image": "Akmagnus-Prime.png"
+    "image": "AkmagnusPrime.png"
   },
   "Aksomati": {
     "name": "Aksomati",
@@ -22877,6 +23086,7 @@
     "status_chance": 0.08,
     "fire_rate": 12.5,
     "magazine": 70.0,
+    "max_ammo": 420.0,
     "reload": 1.4,
     "mastery_req": 9.0,
     "riven_disposition": 1.25,
@@ -22909,6 +23119,7 @@
     "status_chance": 0.18,
     "fire_rate": 13.33,
     "magazine": 80.0,
+    "max_ammo": 880.0,
     "reload": 1.4,
     "mastery_req": 12.0,
     "riven_disposition": 1.05,
@@ -22917,7 +23128,7 @@
     "trigger": "Auto-Spool",
     "family": "Aksomati",
     "max_rank": 30.0,
-    "image": "Aksomati-Prime.png"
+    "image": "AksomatiPrime.png"
   },
   "Akstiletto": {
     "name": "Akstiletto",
@@ -22941,6 +23152,7 @@
     "status_chance": 0.18,
     "fire_rate": 10.0,
     "magazine": 28.0,
+    "max_ammo": 210.0,
     "reload": 1.1,
     "mastery_req": 8.0,
     "riven_disposition": 0.95,
@@ -22973,6 +23185,7 @@
     "status_chance": 0.3,
     "fire_rate": 7.08,
     "magazine": 40.0,
+    "max_ammo": 400.0,
     "reload": 1.1,
     "mastery_req": 10.0,
     "riven_disposition": 0.85,
@@ -22981,7 +23194,7 @@
     "trigger": "Auto",
     "family": "Akstiletto",
     "max_rank": 30.0,
-    "image": "Akstiletto-Prime.png"
+    "image": "AkstilettoPrime.png"
   },
   "Akvasto": {
     "name": "Akvasto",
@@ -23005,6 +23218,7 @@
     "status_chance": 0.12,
     "fire_rate": 3.33,
     "magazine": 12.0,
+    "max_ammo": 210.0,
     "reload": 1.6,
     "mastery_req": 8.0,
     "riven_disposition": 1.25,
@@ -23037,6 +23251,7 @@
     "status_chance": 0.22,
     "fire_rate": 3.33,
     "magazine": 12.0,
+    "max_ammo": 210.0,
     "reload": 1.4,
     "mastery_req": 12.0,
     "riven_disposition": 1.2,
@@ -23045,7 +23260,7 @@
     "trigger": "Semi-Auto",
     "family": "Akvasto",
     "max_rank": 30.0,
-    "image": "Akvasto-Prime.png"
+    "image": "AkvastoPrime.png"
   },
   "Akzani": {
     "name": "Akzani",
@@ -23069,6 +23284,7 @@
     "status_chance": 0.14,
     "fire_rate": 20.0,
     "magazine": 100.0,
+    "max_ammo": 400.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.52,
@@ -23121,6 +23337,7 @@
     "status_chance": 0.22,
     "fire_rate": 2.0,
     "magazine": 3.0,
+    "max_ammo": 18.0,
     "reload": 2.5,
     "mastery_req": 4.0,
     "riven_disposition": 1.35,
@@ -23152,6 +23369,7 @@
     "status_chance": 0.26,
     "fire_rate": 4.667,
     "magazine": 36.0,
+    "max_ammo": 288.0,
     "reload": 2.2,
     "mastery_req": 10.0,
     "riven_disposition": 1.1,
@@ -23160,7 +23378,7 @@
     "trigger": "Semi-Auto",
     "family": "Arca Scisco",
     "max_rank": 30.0,
-    "image": "Arca-Scisco.png"
+    "image": "ArcaScisco.png"
   },
   "Athodai": {
     "name": "Athodai",
@@ -23196,6 +23414,7 @@
     "status_chance": 0.08,
     "fire_rate": 5.0,
     "magazine": 24.0,
+    "max_ammo": 48.0,
     "reload": 2.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.05,
@@ -23248,6 +23467,7 @@
     "status_chance": 0.21,
     "fire_rate": 8.0,
     "magazine": 70.0,
+    "max_ammo": 350.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 0.95,
@@ -23290,6 +23510,7 @@
     "status_chance": 0.16,
     "fire_rate": 10.0,
     "magazine": 75.0,
+    "max_ammo": 525.0,
     "reload": 1.4,
     "mastery_req": 6.0,
     "riven_disposition": 1.25,
@@ -23342,12 +23563,13 @@
     "status_chance": 0.1,
     "fire_rate": 0.833,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "Balefire-Charger.png"
+    "image": "BalefireCharger.png"
   },
   "Balefire Charger Prime": {
     "name": "Balefire Charger Prime",
@@ -23391,12 +23613,13 @@
     "status_chance": 0.1,
     "fire_rate": 0.833,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Charge",
     "max_rank": 30.0,
-    "image": "Balefire-Charger-Prime.png"
+    "image": "BalefireChargerPrime.png"
   },
   "Ballistica": {
     "name": "Ballistica",
@@ -23433,6 +23656,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.33,
     "magazine": 16.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 2.0,
     "riven_disposition": 1.25,
@@ -23478,6 +23702,7 @@
     "status_chance": 0.15,
     "fire_rate": 3.33,
     "magazine": 32.0,
+    "max_ammo": 210.0,
     "reload": 1.2,
     "mastery_req": 14.0,
     "riven_disposition": 1.2,
@@ -23486,7 +23711,7 @@
     "trigger": "Charge",
     "family": "Ballistica",
     "max_rank": 30.0,
-    "image": "Ballistica-Prime.png"
+    "image": "BallisticaPrime.png"
   },
   "Bolto": {
     "name": "Bolto",
@@ -23509,6 +23734,7 @@
     "status_chance": 0.022,
     "fire_rate": 3.33,
     "magazine": 15.0,
+    "max_ammo": 210.0,
     "reload": 1.3,
     "mastery_req": 7.0,
     "riven_disposition": 1.51,
@@ -23541,6 +23767,7 @@
     "status_chance": 0.051,
     "fire_rate": 5.0,
     "magazine": 5.0,
+    "max_ammo": 210.0,
     "reload": 1.05,
     "mastery_req": 6.0,
     "riven_disposition": 1.25,
@@ -23586,6 +23813,7 @@
     "status_chance": 0.0943,
     "fire_rate": 4.0,
     "magazine": 2.0,
+    "max_ammo": 210.0,
     "reload": 1.05,
     "mastery_req": 0.0,
     "riven_disposition": 1.45,
@@ -23631,6 +23859,7 @@
     "status_chance": 0.1286,
     "fire_rate": 4.17,
     "magazine": 4.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.4,
@@ -23639,7 +23868,7 @@
     "trigger": "Semi-Auto",
     "family": "Bronco",
     "max_rank": 30.0,
-    "image": "Bronco-Prime.png"
+    "image": "BroncoPrime.png"
   },
   "Cantare": {
     "name": "Cantare",
@@ -23662,6 +23891,7 @@
     "status_chance": 0.22,
     "fire_rate": 3.33,
     "magazine": 6.0,
+    "max_ammo": 0.0,
     "reload": 1.2,
     "mastery_req": 10.0,
     "riven_disposition": 1.05,
@@ -23703,6 +23933,7 @@
     "status_chance": 0.22,
     "fire_rate": 3.33,
     "magazine": 2.0,
+    "max_ammo": 18.0,
     "reload": 1.0,
     "mastery_req": 3.0,
     "riven_disposition": 1.4,
@@ -23777,6 +24008,7 @@
     "status_chance": 0.43,
     "fire_rate": 12.0,
     "magazine": 31.0,
+    "max_ammo": 155.0,
     "reload": 1.7,
     "mastery_req": 11.0,
     "riven_disposition": 1.2,
@@ -23820,6 +24052,7 @@
     "status_chance": 0.2,
     "fire_rate": 8.33,
     "magazine": 60.0,
+    "max_ammo": 420.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.52,
@@ -23894,6 +24127,7 @@
     "status_chance": 0.5,
     "fire_rate": 12.0,
     "magazine": 37.0,
+    "max_ammo": 155.0,
     "reload": 1.7,
     "mastery_req": 17.0,
     "riven_disposition": 0.65,
@@ -23902,7 +24136,7 @@
     "trigger": "Held",
     "family": "Catabolyst",
     "max_rank": 40.0,
-    "image": "Coda-Catabolyst.png"
+    "image": "CodaCatabolyst.png"
   },
   "Coda Pox": {
     "name": "Coda Pox",
@@ -23935,6 +24169,7 @@
     "status_chance": 0.45,
     "fire_rate": 2.08,
     "magazine": 8.0,
+    "max_ammo": 40.0,
     "reload": 1.0,
     "mastery_req": 17.0,
     "riven_disposition": 0.9,
@@ -23943,7 +24178,7 @@
     "trigger": "Auto",
     "family": "Pox",
     "max_rank": 40.0,
-    "image": "Coda-Pox.png"
+    "image": "CodaPox.png"
   },
   "Coda Tysis": {
     "name": "Coda Tysis",
@@ -23978,6 +24213,7 @@
     "status_chance": 0.5,
     "fire_rate": 2.5,
     "magazine": 18.0,
+    "max_ammo": 210.0,
     "reload": 1.2,
     "mastery_req": 17.0,
     "riven_disposition": 0.85,
@@ -23986,7 +24222,7 @@
     "trigger": "Semi-Auto",
     "family": "Tysis",
     "max_rank": 40.0,
-    "image": "Coda-Tysis.png"
+    "image": "CodaTysis.png"
   },
   "Cyanex": {
     "name": "Cyanex",
@@ -24032,6 +24268,7 @@
     "status_chance": 0.32,
     "fire_rate": 4.67,
     "magazine": 11.0,
+    "max_ammo": 210.0,
     "reload": 2.2,
     "mastery_req": 8.0,
     "riven_disposition": 1.0,
@@ -24066,6 +24303,7 @@
     "status_chance": 0.3,
     "fire_rate": 12.0,
     "magazine": 40.0,
+    "max_ammo": 0.0,
     "reload": 2.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.2,
@@ -24122,6 +24360,7 @@
     "status_chance": 0.16,
     "fire_rate": 3.33,
     "magazine": 10.0,
+    "max_ammo": 210.0,
     "reload": 0.75,
     "mastery_req": 4.0,
     "riven_disposition": 1.3,
@@ -24152,6 +24391,7 @@
     "status_chance": 0.1286,
     "fire_rate": 3.33,
     "magazine": 5.0,
+    "max_ammo": 210.0,
     "reload": 1.05,
     "mastery_req": 6.0,
     "riven_disposition": 1.15,
@@ -24184,6 +24424,7 @@
     "status_chance": 0.28,
     "fire_rate": 20.0,
     "magazine": 100.0,
+    "max_ammo": 400.0,
     "reload": 2.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.39,
@@ -24192,7 +24433,7 @@
     "trigger": "Auto",
     "family": "Afuris",
     "max_rank": 30.0,
-    "image": "Dex-Furis.png"
+    "image": "DexFuris.png"
   },
   "Dex Pixia": {
     "name": "Dex Pixia",
@@ -24216,12 +24457,13 @@
     "status_chance": 0.25,
     "fire_rate": 5.83,
     "magazine": 60.0,
+    "max_ammo": 0.0,
     "reload": 0.3,
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "Dex-Pixia.png"
+    "image": "DexPixia.png"
   },
   "Dex Pixia Prime": {
     "name": "Dex Pixia Prime",
@@ -24245,12 +24487,13 @@
     "status_chance": 0.25,
     "fire_rate": 5.83,
     "magazine": 60.0,
+    "max_ammo": 0.0,
     "reload": 0.3,
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "Dex-Pixia-Prime.png"
+    "image": "DexPixiaPrime.png"
   },
   "Dual Cestra": {
     "name": "Dual Cestra",
@@ -24273,6 +24516,7 @@
     "status_chance": 0.2,
     "fire_rate": 18.75,
     "magazine": 120.0,
+    "max_ammo": 480.0,
     "reload": 3.5,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -24281,7 +24525,7 @@
     "trigger": "Auto",
     "family": "Dual Cestra",
     "max_rank": 30.0,
-    "image": "Dual-Cestra.png"
+    "image": "DualCestra.png"
   },
   "Dual Coda Torxica": {
     "name": "Dual Coda Torxica",
@@ -24304,6 +24548,7 @@
     "status_chance": 0.28,
     "fire_rate": 6.0,
     "magazine": 160.0,
+    "max_ammo": 480.0,
     "reload": 2.33,
     "mastery_req": 17.0,
     "riven_disposition": 0.55,
@@ -24312,7 +24557,7 @@
     "trigger": "Auto",
     "family": "Dual Torxica",
     "max_rank": 40.0,
-    "image": "Dual-Coda-Torxica.png"
+    "image": "DualCodaTorxica.png"
   },
   "Dual Toxocyst": {
     "name": "Dual Toxocyst",
@@ -24349,6 +24594,7 @@
     "status_chance": 0.37,
     "fire_rate": 1.0,
     "magazine": 12.0,
+    "max_ammo": 72.0,
     "reload": 2.35,
     "mastery_req": 11.0,
     "riven_disposition": 1.35,
@@ -24357,7 +24603,7 @@
     "trigger": "Semi-Auto",
     "family": "Dual Toxocyst",
     "max_rank": 30.0,
-    "image": "Dual-Toxocyst.png"
+    "image": "DualToxocyst.png"
   },
   "EFV-8 Mars": {
     "name": "EFV-8 Mars",
@@ -24402,6 +24648,7 @@
     "status_chance": 0.17,
     "fire_rate": 6.5,
     "magazine": 15.0,
+    "max_ammo": 210.0,
     "reload": 1.2,
     "mastery_req": 14.0,
     "riven_disposition": 0.95,
@@ -24410,7 +24657,7 @@
     "trigger": "Semi-Auto / Charge",
     "family": "EFV-8 Mars",
     "max_rank": 30.0,
-    "image": "EFV-8-Mars.png"
+    "image": "EFV-8Mars.png"
   },
   "Embolist": {
     "name": "Embolist",
@@ -24432,6 +24679,7 @@
     "status_chance": 0.41,
     "fire_rate": 8.0,
     "magazine": 33.0,
+    "max_ammo": 210.0,
     "reload": 1.3,
     "mastery_req": 9.0,
     "riven_disposition": 1.4,
@@ -24488,6 +24736,7 @@
     "status_chance": 0.04,
     "fire_rate": 1.5,
     "magazine": 1.0,
+    "max_ammo": 40.0,
     "reload": 0.6,
     "mastery_req": 8.0,
     "riven_disposition": 0.6,
@@ -24544,6 +24793,7 @@
     "status_chance": 0.14,
     "fire_rate": 1.75,
     "magazine": 1.0,
+    "max_ammo": 40.0,
     "reload": 0.6,
     "mastery_req": 14.0,
     "riven_disposition": 0.55,
@@ -24552,7 +24802,7 @@
     "trigger": "Semi / Charge",
     "family": "Epitaph",
     "max_rank": 30.0,
-    "image": "Epitaph-Prime.png"
+    "image": "EpitaphPrime.png"
   },
   "Euphona Prime": {
     "name": "Euphona Prime",
@@ -24589,6 +24839,7 @@
     "status_chance": 0.02,
     "fire_rate": 1.5,
     "magazine": 5.0,
+    "max_ammo": 40.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 0.95,
@@ -24597,7 +24848,7 @@
     "trigger": "Semi-Auto",
     "family": "Euphona Prime",
     "max_rank": 30.0,
-    "image": "Euphona-Prime.png"
+    "image": "EuphonaPrime.png"
   },
   "Furis": {
     "name": "Furis",
@@ -24632,6 +24883,7 @@
     "status_chance": 0.12,
     "fire_rate": 10.0,
     "magazine": 35.0,
+    "max_ammo": 210.0,
     "reload": 1.4,
     "mastery_req": 2.0,
     "riven_disposition": 1.35,
@@ -24675,6 +24927,7 @@
     "status_chance": 0.29,
     "fire_rate": 2.83,
     "magazine": 6.0,
+    "max_ammo": 72.0,
     "reload": 0.8,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -24727,6 +24980,7 @@
     "status_chance": 0.2,
     "fire_rate": 12.0,
     "magazine": 60.0,
+    "max_ammo": 240.0,
     "reload": 1.4,
     "mastery_req": 2.0,
     "riven_disposition": 1.15,
@@ -24768,6 +25022,7 @@
     "status_chance": 0.2,
     "fire_rate": 1.67,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "slot": "Secondary",
     "class": "Exalted Weapon",
@@ -24828,6 +25083,7 @@
     "status_chance": 0.26,
     "fire_rate": 1.5,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "mastery_req": 10.0,
     "riven_disposition": 0.6,
@@ -24860,6 +25116,7 @@
     "status_chance": 0.1,
     "fire_rate": 6.67,
     "magazine": 20.0,
+    "max_ammo": 210.0,
     "reload": 0.75,
     "mastery_req": 2.0,
     "riven_disposition": 1.3,
@@ -24892,6 +25149,7 @@
     "status_chance": 0.28,
     "fire_rate": 5.83,
     "magazine": 26.0,
+    "max_ammo": 210.0,
     "reload": 0.5,
     "mastery_req": 4.0,
     "riven_disposition": 1.25,
@@ -24900,7 +25158,7 @@
     "trigger": "Auto",
     "family": "Hikou",
     "max_rank": 30.0,
-    "image": "Hikou-Prime.png"
+    "image": "HikouPrime.png"
   },
   "Hystrix": {
     "name": "Hystrix",
@@ -24963,6 +25221,7 @@
     "status_chance": 0.1,
     "fire_rate": 7.0,
     "magazine": 16.0,
+    "max_ammo": 320.0,
     "reload": 1.7,
     "mastery_req": 7.0,
     "riven_disposition": 1.2,
@@ -25034,6 +25293,7 @@
     "status_chance": 0.2,
     "fire_rate": 7.0,
     "magazine": 16.0,
+    "max_ammo": 320.0,
     "reload": 1.6,
     "mastery_req": 12.0,
     "riven_disposition": 1.0,
@@ -25042,7 +25302,7 @@
     "trigger": "Auto",
     "family": "Hystrix",
     "max_rank": 30.0,
-    "image": "Hystrix-Prime.png"
+    "image": "HystrixPrime.png"
   },
   "Knell": {
     "name": "Knell",
@@ -25066,6 +25326,7 @@
     "status_chance": 0.05,
     "fire_rate": 4.0,
     "magazine": 1.0,
+    "max_ammo": 10.0,
     "reload": 2.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.25,
@@ -25098,6 +25359,7 @@
     "status_chance": 0.1,
     "fire_rate": 5.0,
     "magazine": 1.0,
+    "max_ammo": 20.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 0.85,
@@ -25106,7 +25368,7 @@
     "trigger": "Auto",
     "family": "Knell",
     "max_rank": 30.0,
-    "image": "Knell-Prime.png"
+    "image": "KnellPrime.png"
   },
   "Kohmak": {
     "name": "Kohmak",
@@ -25143,6 +25405,7 @@
     "status_chance": 0.69,
     "fire_rate": 1.0,
     "magazine": 40.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 1.35,
@@ -25184,6 +25447,7 @@
     "status_chance": 0.3,
     "fire_rate": 3.33,
     "magazine": 12.0,
+    "max_ammo": 144.0,
     "reload": 1.8,
     "mastery_req": 8.0,
     "riven_disposition": 1.15,
@@ -25225,6 +25489,7 @@
     "status_chance": 0.36,
     "fire_rate": 3.33,
     "magazine": 12.0,
+    "max_ammo": 144.0,
     "reload": 1.8,
     "mastery_req": 13.0,
     "riven_disposition": 0.6,
@@ -25233,7 +25498,7 @@
     "trigger": "Auto",
     "family": "Kompressa",
     "max_rank": 30.0,
-    "image": "Kompressa-Prime.png"
+    "image": "KompressaPrime.png"
   },
   "Kraken": {
     "name": "Kraken",
@@ -25257,6 +25522,7 @@
     "status_chance": 0.13,
     "fire_rate": 2.83,
     "magazine": 14.0,
+    "max_ammo": 210.0,
     "reload": 2.45,
     "mastery_req": 0.0,
     "riven_disposition": 1.53,
@@ -25320,6 +25586,7 @@
     "status_chance": 0.19,
     "fire_rate": 2.0,
     "magazine": 3.0,
+    "max_ammo": 15.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 1.3,
@@ -25365,6 +25632,7 @@
     "status_chance": 0.08,
     "fire_rate": 3.33,
     "magazine": 10.0,
+    "max_ammo": 210.0,
     "reload": 0.75,
     "mastery_req": 0.0,
     "riven_disposition": 1.51,
@@ -25397,6 +25665,7 @@
     "status_chance": 0.111,
     "fire_rate": 5.0,
     "magazine": 11.0,
+    "max_ammo": 210.0,
     "reload": 1.1,
     "mastery_req": 13.0,
     "riven_disposition": 0.9,
@@ -25405,7 +25674,7 @@
     "trigger": "Semi-Auto",
     "family": "Brakk",
     "max_rank": 40.0,
-    "image": "Kuva-Brakk.png"
+    "image": "KuvaBrakk.png"
   },
   "Kuva Kraken": {
     "name": "Kuva Kraken",
@@ -25442,6 +25711,7 @@
     "status_chance": 0.29,
     "fire_rate": 2.83,
     "magazine": 21.0,
+    "max_ammo": 210.0,
     "reload": 1.5,
     "mastery_req": 15.0,
     "riven_disposition": 1.1,
@@ -25450,7 +25720,7 @@
     "trigger": "Burst / Mag Burst",
     "family": "Kraken",
     "max_rank": 40.0,
-    "image": "Kuva-Kraken.png"
+    "image": "KuvaKraken.png"
   },
   "Kuva Nukor": {
     "name": "Kuva Nukor",
@@ -25472,6 +25742,7 @@
     "status_chance": 0.5,
     "fire_rate": 10.0,
     "magazine": 77.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 13.0,
     "riven_disposition": 0.5,
@@ -25480,7 +25751,7 @@
     "trigger": "Held",
     "family": "Nukor",
     "max_rank": 40.0,
-    "image": "Kuva-Nukor.png"
+    "image": "KuvaNukor.png"
   },
   "Kuva Seer": {
     "name": "Kuva Seer",
@@ -25515,6 +25786,7 @@
     "status_chance": 0.33,
     "fire_rate": 2.5,
     "magazine": 9.0,
+    "max_ammo": 27.0,
     "reload": 2.3,
     "mastery_req": 15.0,
     "riven_disposition": 1.1,
@@ -25523,7 +25795,7 @@
     "trigger": "Semi-Auto",
     "family": "Seer",
     "max_rank": 40.0,
-    "image": "Kuva-Seer.png"
+    "image": "KuvaSeer.png"
   },
   "Kuva Twin Stubbas": {
     "name": "Kuva Twin Stubbas",
@@ -25547,6 +25819,7 @@
     "status_chance": 0.31,
     "fire_rate": 10.0,
     "magazine": 114.0,
+    "max_ammo": 684.0,
     "reload": 2.7,
     "mastery_req": 13.0,
     "riven_disposition": 0.95,
@@ -25555,7 +25828,7 @@
     "trigger": "Auto",
     "family": "Kuva Twin Stubbas",
     "max_rank": 40.0,
-    "image": "Kuva-Twin-Stubbas.png"
+    "image": "KuvaTwinStubbas.png"
   },
   "Laetum": {
     "name": "Laetum",
@@ -25600,6 +25873,7 @@
     "status_chance": 0.22,
     "fire_rate": 2.5,
     "magazine": 12.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 0.5,
@@ -25645,6 +25919,7 @@
     "status_chance": 0.06,
     "fire_rate": 4.5,
     "magazine": 15.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 0.0,
     "riven_disposition": 1.4,
@@ -25690,6 +25965,7 @@
     "status_chance": 0.2,
     "fire_rate": 5.0,
     "magazine": 20.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.35,
@@ -25698,7 +25974,7 @@
     "trigger": "Semi-Auto",
     "family": "Lato",
     "max_rank": 30.0,
-    "image": "Lato-Prime.png"
+    "image": "LatoPrime.png"
   },
   "Lato Vandal": {
     "name": "Lato Vandal",
@@ -25735,6 +26011,7 @@
     "status_chance": 0.1,
     "fire_rate": 5.0,
     "magazine": 15.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -25743,7 +26020,7 @@
     "trigger": "Semi-Auto",
     "family": "Lato",
     "max_rank": 30.0,
-    "image": "Lato-Vandal.png"
+    "image": "LatoVandal.png"
   },
   "Lex": {
     "name": "Lex",
@@ -25781,6 +26058,7 @@
     "status_chance": 0.1,
     "fire_rate": 1.08,
     "magazine": 6.0,
+    "max_ammo": 210.0,
     "reload": 2.35,
     "mastery_req": 3.0,
     "riven_disposition": 1.25,
@@ -25827,6 +26105,7 @@
     "status_chance": 0.25,
     "fire_rate": 2.08,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 2.35,
     "mastery_req": 8.0,
     "riven_disposition": 1.2,
@@ -25835,7 +26114,7 @@
     "trigger": "Semi-Auto",
     "family": "Lex",
     "max_rank": 30.0,
-    "image": "Lex-Prime.png"
+    "image": "LexPrime.png"
   },
   "Mk1-Furis": {
     "name": "Mk1-Furis",
@@ -25870,6 +26149,7 @@
     "status_chance": 0.01,
     "fire_rate": 8.33,
     "magazine": 35.0,
+    "max_ammo": 210.0,
     "reload": 1.4,
     "mastery_req": 0.0,
     "riven_disposition": 1.4,
@@ -25878,7 +26158,7 @@
     "trigger": "Auto",
     "family": "Furis",
     "max_rank": 30.0,
-    "image": "Mk1-Furis.png"
+    "image": "Furis.png"
   },
   "Mk1-Kunai": {
     "name": "Mk1-Kunai",
@@ -25915,6 +26195,7 @@
     "status_chance": 0.025,
     "fire_rate": 3.33,
     "magazine": 10.0,
+    "max_ammo": 210.0,
     "reload": 0.75,
     "mastery_req": 0.0,
     "riven_disposition": 1.51,
@@ -25923,7 +26204,7 @@
     "trigger": "Auto",
     "family": "Kunai",
     "max_rank": 30.0,
-    "image": "Mk1-Kunai.png"
+    "image": "Kunai.png"
   },
   "Magnus": {
     "name": "Magnus",
@@ -25947,6 +26228,7 @@
     "status_chance": 0.22,
     "fire_rate": 4.33,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 1.8,
     "mastery_req": 10.0,
     "riven_disposition": 1.53,
@@ -25979,6 +26261,7 @@
     "status_chance": 0.28,
     "fire_rate": 5.0,
     "magazine": 8.0,
+    "max_ammo": 160.0,
     "reload": 1.6,
     "mastery_req": 14.0,
     "riven_disposition": 1.25,
@@ -25987,7 +26270,7 @@
     "trigger": "Semi-Auto",
     "family": "Magnus",
     "max_rank": 30.0,
-    "image": "Magnus-Prime.png"
+    "image": "MagnusPrime.png"
   },
   "Mara Detron": {
     "name": "Mara Detron",
@@ -26009,6 +26292,7 @@
     "status_chance": 0.1371,
     "fire_rate": 3.33,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 1.05,
     "mastery_req": 9.0,
     "riven_disposition": 1.15,
@@ -26017,7 +26301,7 @@
     "trigger": "Semi-Auto",
     "family": "Detron",
     "max_rank": 30.0,
-    "image": "Mara-Detron.png"
+    "image": "MaraDetron.png"
   },
   "Marelok": {
     "name": "Marelok",
@@ -26041,6 +26325,7 @@
     "status_chance": 0.3,
     "fire_rate": 2.0,
     "magazine": 6.0,
+    "max_ammo": 210.0,
     "reload": 1.667,
     "mastery_req": 7.0,
     "riven_disposition": 1.2,
@@ -26085,6 +26370,7 @@
     "status_chance": 0.25,
     "fire_rate": 1.5,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "slot": "Secondary",
     "class": "Exalted Weapon",
@@ -26112,6 +26398,7 @@
     "status_chance": 0.29,
     "fire_rate": 10.0,
     "magazine": 50.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.45,
@@ -26145,6 +26432,7 @@
     "status_chance": 0.24,
     "fire_rate": 12.0,
     "magazine": 60.0,
+    "max_ammo": 300.0,
     "reload": 1.6,
     "mastery_req": 8.0,
     "riven_disposition": 1.2,
@@ -26208,6 +26496,7 @@
     "status_chance": 0.22,
     "fire_rate": 1.4,
     "magazine": 20.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 0.8,
@@ -26253,6 +26542,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.0,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.2,
@@ -26297,6 +26587,7 @@
     "status_chance": 0.24,
     "fire_rate": 3.0,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.1,
@@ -26305,7 +26596,7 @@
     "trigger": "Semi-Auto / Mag Burst",
     "family": "Pandero",
     "max_rank": 30.0,
-    "image": "Pandero-Prime.png"
+    "image": "PanderoPrime.png"
   },
   "Plinx": {
     "name": "Plinx",
@@ -26330,6 +26621,7 @@
     "status_chance": 0.04,
     "fire_rate": 3.33,
     "magazine": 10.0,
+    "max_ammo": 0.0,
     "reload": 1.3,
     "mastery_req": 6.0,
     "riven_disposition": 1.2,
@@ -26371,6 +26663,7 @@
     "status_chance": 0.35,
     "fire_rate": 2.08,
     "magazine": 4.0,
+    "max_ammo": 20.0,
     "reload": 1.0,
     "mastery_req": 9.0,
     "riven_disposition": 1.2,
@@ -26423,6 +26716,7 @@
     "status_chance": 0.26,
     "fire_rate": 2.0,
     "magazine": 3.0,
+    "max_ammo": 18.0,
     "reload": 1.8,
     "mastery_req": 8.0,
     "riven_disposition": 1.3,
@@ -26431,7 +26725,7 @@
     "trigger": "Charge",
     "family": "Angstrum",
     "max_rank": 30.0,
-    "image": "Prisma-Angstrum.png"
+    "image": "PrismaAngstrum.png"
   },
   "Prisma Twin Gremlins": {
     "name": "Prisma Twin Gremlins",
@@ -26455,6 +26749,7 @@
     "status_chance": 0.23,
     "fire_rate": 8.83,
     "magazine": 70.0,
+    "max_ammo": 600.0,
     "reload": 0.9,
     "mastery_req": 11.0,
     "riven_disposition": 1.15,
@@ -26463,7 +26758,7 @@
     "trigger": "Auto",
     "family": "Twin Gremlins",
     "max_rank": 30.0,
-    "image": "Prisma-Twin-Gremlins.png"
+    "image": "PrismaTwinGremlins.png"
   },
   "Pyrana": {
     "name": "Pyrana",
@@ -26487,6 +26782,7 @@
     "status_chance": 0.025,
     "fire_rate": 4.17,
     "magazine": 10.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 12.0,
     "riven_disposition": 0.95,
@@ -26519,6 +26815,7 @@
     "status_chance": 0.036,
     "fire_rate": 4.0,
     "magazine": 12.0,
+    "max_ammo": 210.0,
     "reload": 1.6,
     "mastery_req": 13.0,
     "riven_disposition": 0.65,
@@ -26527,7 +26824,7 @@
     "trigger": "Auto",
     "family": "Pyrana",
     "max_rank": 30.0,
-    "image": "Pyrana-Prime.png"
+    "image": "PyranaPrime.png"
   },
   "Quatz": {
     "name": "Quatz",
@@ -26570,6 +26867,7 @@
     "status_chance": 0.27,
     "fire_rate": 15.0,
     "magazine": 72.0,
+    "max_ammo": 504.0,
     "reload": 2.7,
     "mastery_req": 9.0,
     "riven_disposition": 1.2,
@@ -26615,6 +26913,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.33,
     "magazine": 20.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 6.0,
     "riven_disposition": 1.2,
@@ -26623,7 +26922,7 @@
     "trigger": "Burst / Charge",
     "family": "Ballistica",
     "max_rank": 30.0,
-    "image": "Rakta-Ballistica.png"
+    "image": "RaktaBallistica.png"
   },
   "Regulators": {
     "name": "Regulators",
@@ -26647,6 +26946,7 @@
     "status_chance": 0.1,
     "fire_rate": 14.8,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "slot": "Secondary",
     "class": "Exalted Weapon",
@@ -26676,12 +26976,13 @@
     "status_chance": 0.1,
     "fire_rate": 14.8,
     "magazine": 0.0,
+    "max_ammo": 0.0,
     "reload": 0.0,
     "slot": "Secondary",
     "class": "Exalted Weapon",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "Regulators-Prime.png"
+    "image": "RegulatorsPrime.png"
   },
   "Sagek Prime": {
     "name": "Sagek Prime",
@@ -26705,6 +27006,7 @@
     "status_chance": 0.01,
     "fire_rate": 12.33,
     "magazine": 75.0,
+    "max_ammo": 450.0,
     "reload": 1.6,
     "mastery_req": 14.0,
     "riven_disposition": 0.5,
@@ -26712,7 +27014,7 @@
     "class": "Pistol",
     "trigger": "Auto",
     "max_rank": 30.0,
-    "image": "Sagek-Prime.png"
+    "image": "SagekPrime.png"
   },
   "Sancti Castanas": {
     "name": "Sancti Castanas",
@@ -26745,6 +27047,7 @@
     "status_chance": 0.34,
     "fire_rate": 3.33,
     "magazine": 2.0,
+    "max_ammo": 18.0,
     "reload": 1.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.35,
@@ -26753,7 +27056,7 @@
     "trigger": "Active",
     "family": "Castanas",
     "max_rank": 30.0,
-    "image": "Sancti-Castanas.png"
+    "image": "SanctiCastanas.png"
   },
   "Scyotid": {
     "name": "Scyotid",
@@ -26789,6 +27092,7 @@
     "status_chance": 0.18,
     "fire_rate": 2.4,
     "magazine": 40.0,
+    "max_ammo": 1.0,
     "reload": 1.6,
     "mastery_req": 12.0,
     "riven_disposition": 0.6,
@@ -26820,6 +27124,7 @@
     "status_chance": 0.28,
     "fire_rate": 12.5,
     "magazine": 120.0,
+    "max_ammo": 480.0,
     "reload": 3.5,
     "mastery_req": 10.0,
     "riven_disposition": 1.3,
@@ -26828,7 +27133,7 @@
     "trigger": "Auto-Spool",
     "family": "Dual Cestra",
     "max_rank": 30.0,
-    "image": "Secura-Dual-Cestra.png"
+    "image": "SecuraDualCestra.png"
   },
   "Seer": {
     "name": "Seer",
@@ -26852,6 +27157,7 @@
     "status_chance": 0.13,
     "fire_rate": 2.0,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 2.8,
     "mastery_req": 0.0,
     "riven_disposition": 1.5,
@@ -26919,6 +27225,7 @@
     "status_chance": 0.14,
     "fire_rate": 1.83,
     "magazine": 90.0,
+    "max_ammo": 180.0,
     "reload": 4.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.1,
@@ -26964,6 +27271,7 @@
     "status_chance": 0.06,
     "fire_rate": 3.5,
     "magazine": 15.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 3.0,
     "riven_disposition": 1.2,
@@ -27009,6 +27317,7 @@
     "status_chance": 0.2,
     "fire_rate": 5.0,
     "magazine": 24.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.15,
@@ -27017,7 +27326,7 @@
     "trigger": "Burst",
     "family": "Sicarus",
     "max_rank": 30.0,
-    "image": "Sicarus-Prime.png"
+    "image": "SicarusPrime.png"
   },
   "Sonicor": {
     "name": "Sonicor",
@@ -27050,6 +27359,7 @@
     "status_chance": 0.0,
     "fire_rate": 1.25,
     "magazine": 15.0,
+    "max_ammo": 150.0,
     "reload": 3.0,
     "mastery_req": 2.0,
     "riven_disposition": 1.15,
@@ -27081,6 +27391,7 @@
     "status_chance": 0.22,
     "fire_rate": 12.0,
     "magazine": 60.0,
+    "max_ammo": 360.0,
     "reload": 1.8,
     "mastery_req": 4.0,
     "riven_disposition": 1.49,
@@ -27112,6 +27423,7 @@
     "status_chance": 0.28,
     "fire_rate": 12.0,
     "magazine": 80.0,
+    "max_ammo": 400.0,
     "reload": 1.2,
     "mastery_req": 10.0,
     "riven_disposition": 1.45,
@@ -27120,7 +27432,7 @@
     "trigger": "Held",
     "family": "Spectra",
     "max_rank": 30.0,
-    "image": "Spectra-Vandal.png"
+    "image": "SpectraVandal.png"
   },
   "Spira": {
     "name": "Spira",
@@ -27144,6 +27456,7 @@
     "status_chance": 0.08,
     "fire_rate": 2.5,
     "magazine": 10.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.35,
@@ -27176,6 +27489,7 @@
     "status_chance": 0.14,
     "fire_rate": 3.33,
     "magazine": 12.0,
+    "max_ammo": 210.0,
     "reload": 0.75,
     "mastery_req": 10.0,
     "riven_disposition": 1.25,
@@ -27184,7 +27498,7 @@
     "trigger": "Auto",
     "family": "Spira",
     "max_rank": 30.0,
-    "image": "Spira-Prime.png"
+    "image": "SpiraPrime.png"
   },
   "Staticor": {
     "name": "Staticor",
@@ -27239,6 +27553,7 @@
     "status_chance": 0.28,
     "fire_rate": 3.5,
     "magazine": 48.0,
+    "max_ammo": 288.0,
     "reload": 1.5,
     "mastery_req": 10.0,
     "riven_disposition": 0.9,
@@ -27271,6 +27586,7 @@
     "status_chance": 0.13,
     "fire_rate": 6.33,
     "magazine": 57.0,
+    "max_ammo": 399.0,
     "reload": 1.3,
     "mastery_req": 7.0,
     "riven_disposition": 1.35,
@@ -27312,6 +27628,7 @@
     "status_chance": 0.0,
     "fire_rate": 4.0,
     "magazine": 20.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 2.0,
     "riven_disposition": 1.48,
@@ -27364,6 +27681,7 @@
     "status_chance": 0.28,
     "fire_rate": 12.0,
     "magazine": 80.0,
+    "max_ammo": 400.0,
     "reload": 1.8,
     "mastery_req": 7.0,
     "riven_disposition": 1.1,
@@ -27372,7 +27690,7 @@
     "trigger": "Held",
     "family": "Gammacor",
     "max_rank": 30.0,
-    "image": "Synoid-Gammacor.png"
+    "image": "SynoidGammacor.png"
   },
   "Talons": {
     "name": "Talons",
@@ -27405,6 +27723,7 @@
     "status_chance": 0.26,
     "fire_rate": 3.33,
     "magazine": 4.0,
+    "max_ammo": 12.0,
     "reload": 1.0,
     "mastery_req": 8.0,
     "riven_disposition": 1.44,
@@ -27436,6 +27755,7 @@
     "status_chance": 0.29,
     "fire_rate": 5.0,
     "magazine": 30.0,
+    "max_ammo": 210.0,
     "reload": 2.0,
     "mastery_req": 11.0,
     "riven_disposition": 1.25,
@@ -27444,7 +27764,7 @@
     "trigger": "Semi-Auto",
     "family": "Akbolto",
     "max_rank": 30.0,
-    "image": "Telos-Akbolto.png"
+    "image": "TelosAkbolto.png"
   },
   "Tenet Cycron": {
     "name": "Tenet Cycron",
@@ -27466,6 +27786,7 @@
     "status_chance": 0.4,
     "fire_rate": 12.0,
     "magazine": 40.0,
+    "max_ammo": 0.0,
     "reload": 1.5,
     "mastery_req": 14.0,
     "riven_disposition": 0.7,
@@ -27474,7 +27795,7 @@
     "trigger": "Held",
     "family": "Cycron",
     "max_rank": 40.0,
-    "image": "Tenet-Cycron.png"
+    "image": "TenetCycron.png"
   },
   "Tenet Detron": {
     "name": "Tenet Detron",
@@ -27507,6 +27828,7 @@
     "status_chance": 0.1,
     "fire_rate": 3.33,
     "magazine": 6.0,
+    "max_ammo": 210.0,
     "reload": 1.05,
     "mastery_req": 16.0,
     "riven_disposition": 0.95,
@@ -27515,7 +27837,7 @@
     "trigger": "Semi-Auto / Mag Burst",
     "family": "Detron",
     "max_rank": 40.0,
-    "image": "Tenet-Detron.png"
+    "image": "TenetDetron.png"
   },
   "Tenet Diplos": {
     "name": "Tenet Diplos",
@@ -27552,6 +27874,7 @@
     "status_chance": 0.14,
     "fire_rate": 9.67,
     "magazine": 92.0,
+    "max_ammo": 460.0,
     "reload": 2.8,
     "mastery_req": 16.0,
     "riven_disposition": 0.75,
@@ -27560,7 +27883,7 @@
     "trigger": "Auto / Burst",
     "family": "Tenet Diplos",
     "max_rank": 40.0,
-    "image": "Tenet-Diplos.png"
+    "image": "TenetDiplos.png"
   },
   "Tenet Plinx": {
     "name": "Tenet Plinx",
@@ -27607,6 +27930,7 @@
     "status_chance": 0.12,
     "fire_rate": 3.33,
     "magazine": 10.0,
+    "max_ammo": 0.0,
     "reload": 1.3,
     "mastery_req": 6.0,
     "riven_disposition": 0.8,
@@ -27615,7 +27939,7 @@
     "trigger": "Semi / Charge",
     "family": "Plinx",
     "max_rank": 40.0,
-    "image": "Tenet-Plinx.png"
+    "image": "TenetPlinx.png"
   },
   "Tenet Spirex": {
     "name": "Tenet Spirex",
@@ -27652,6 +27976,7 @@
     "status_chance": 0.4,
     "fire_rate": 2.33,
     "magazine": 8.0,
+    "max_ammo": 80.0,
     "reload": 2.4,
     "mastery_req": 14.0,
     "riven_disposition": 1.05,
@@ -27660,7 +27985,7 @@
     "trigger": "Semi-Auto",
     "family": "Tenet Spirex",
     "max_rank": 40.0,
-    "image": "Tenet-Spirex.png"
+    "image": "TenetSpirex.png"
   },
   "Twin Grakatas": {
     "name": "Twin Grakatas",
@@ -27684,6 +28009,7 @@
     "status_chance": 0.165,
     "fire_rate": 20.0,
     "magazine": 120.0,
+    "max_ammo": 1200.0,
     "reload": 3.0,
     "mastery_req": 9.0,
     "riven_disposition": 1.2,
@@ -27692,7 +28018,7 @@
     "trigger": "Auto",
     "family": "Twin Grakatas",
     "max_rank": 30.0,
-    "image": "Twin-Grakatas.png"
+    "image": "TwinGrakatas.png"
   },
   "Twin Gremlins": {
     "name": "Twin Gremlins",
@@ -27716,6 +28042,7 @@
     "status_chance": 0.15,
     "fire_rate": 5.0,
     "magazine": 30.0,
+    "max_ammo": 210.0,
     "reload": 1.1,
     "mastery_req": 5.0,
     "riven_disposition": 1.2,
@@ -27724,7 +28051,7 @@
     "trigger": "Auto",
     "family": "Twin Gremlins",
     "max_rank": 30.0,
-    "image": "Twin-Gremlins.png"
+    "image": "TwinGremlins.png"
   },
   "Twin Kohmak": {
     "name": "Twin Kohmak",
@@ -27761,6 +28088,7 @@
     "status_chance": 0.69,
     "fire_rate": 1.334,
     "magazine": 80.0,
+    "max_ammo": 240.0,
     "reload": 2.2,
     "mastery_req": 10.0,
     "riven_disposition": 1.25,
@@ -27769,7 +28097,7 @@
     "trigger": "Auto-Spool",
     "family": "Twin Kohmak",
     "max_rank": 30.0,
-    "image": "Twin-Kohmak.png"
+    "image": "TwinKohmak.png"
   },
   "Twin Rogga": {
     "name": "Twin Rogga",
@@ -27793,6 +28121,7 @@
     "status_chance": 0.066,
     "fire_rate": 2.5,
     "magazine": 2.0,
+    "max_ammo": 120.0,
     "reload": 1.5,
     "mastery_req": 9.0,
     "riven_disposition": 1.3,
@@ -27801,7 +28130,7 @@
     "trigger": "Semi-Auto",
     "family": "Twin Rogga",
     "max_rank": 30.0,
-    "image": "Twin-Rogga.png"
+    "image": "TwinRogga.png"
   },
   "Twin Vipers": {
     "name": "Twin Vipers",
@@ -27825,6 +28154,7 @@
     "status_chance": 0.11,
     "fire_rate": 25.0,
     "magazine": 28.0,
+    "max_ammo": 420.0,
     "reload": 2.0,
     "mastery_req": 5.0,
     "riven_disposition": 1.45,
@@ -27833,7 +28163,7 @@
     "trigger": "Auto",
     "family": "Twin Vipers",
     "max_rank": 30.0,
-    "image": "Twin-Vipers.png"
+    "image": "TwinVipers.png"
   },
   "Twin Vipers Wraith": {
     "name": "Twin Vipers Wraith",
@@ -27857,6 +28187,7 @@
     "status_chance": 0.09,
     "fire_rate": 25.0,
     "magazine": 40.0,
+    "max_ammo": 440.0,
     "reload": 2.0,
     "mastery_req": 7.0,
     "riven_disposition": 1.41,
@@ -27865,7 +28196,7 @@
     "trigger": "Auto",
     "family": "Twin Vipers",
     "max_rank": 30.0,
-    "image": "Twin-Vipers-Wraith.png"
+    "image": "TwinVipersWraith.png"
   },
   "Tysis": {
     "name": "Tysis",
@@ -27900,6 +28231,7 @@
     "status_chance": 0.5,
     "fire_rate": 2.5,
     "magazine": 11.0,
+    "max_ammo": 210.0,
     "reload": 1.2,
     "mastery_req": 9.0,
     "riven_disposition": 1.45,
@@ -27945,6 +28277,7 @@
     "status_chance": 0.08,
     "fire_rate": 2.5,
     "magazine": 6.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 4.0,
     "riven_disposition": 1.4,
@@ -27990,6 +28323,7 @@
     "status_chance": 0.22,
     "fire_rate": 2.5,
     "magazine": 6.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 10.0,
     "riven_disposition": 1.35,
@@ -27998,7 +28332,7 @@
     "trigger": "Semi-Auto",
     "family": "Vasto",
     "max_rank": 30.0,
-    "image": "Vasto-Prime.png"
+    "image": "VastoPrime.png"
   },
   "Vaykor Marelok": {
     "name": "Vaykor Marelok",
@@ -28022,6 +28356,7 @@
     "status_chance": 0.35,
     "fire_rate": 2.0,
     "magazine": 10.0,
+    "max_ammo": 210.0,
     "reload": 1.667,
     "mastery_req": 10.0,
     "riven_disposition": 1.1,
@@ -28030,7 +28365,7 @@
     "trigger": "Semi-Auto",
     "family": "Marelok",
     "max_rank": 30.0,
-    "image": "Vaykor-Marelok.png"
+    "image": "VaykorMarelok.png"
   },
   "Velox": {
     "name": "Velox",
@@ -28054,6 +28389,7 @@
     "status_chance": 0.22,
     "fire_rate": 15.0,
     "magazine": 62.0,
+    "max_ammo": 434.0,
     "reload": 2.6,
     "mastery_req": 8.0,
     "riven_disposition": 1.25,
@@ -28086,6 +28422,7 @@
     "status_chance": 0.32,
     "fire_rate": 17.0,
     "magazine": 70.0,
+    "max_ammo": 520.0,
     "reload": 2.6,
     "mastery_req": 13.0,
     "riven_disposition": 0.85,
@@ -28094,7 +28431,7 @@
     "trigger": "Auto",
     "family": "Velox",
     "max_rank": 30.0,
-    "image": "Velox-Prime.png"
+    "image": "VeloxPrime.png"
   },
   "Vesper 77": {
     "name": "Vesper 77",
@@ -28117,6 +28454,7 @@
     "status_chance": 0.26,
     "fire_rate": 2.08,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 2.35,
     "mastery_req": 14.0,
     "riven_disposition": 0.75,
@@ -28125,7 +28463,7 @@
     "trigger": "Semi-Auto",
     "family": "Vesper 77",
     "max_rank": 30.0,
-    "image": "Vesper-77.png"
+    "image": "Vesper77.png"
   },
   "Viper": {
     "name": "Viper",
@@ -28149,6 +28487,7 @@
     "status_chance": 0.11,
     "fire_rate": 14.38,
     "magazine": 14.0,
+    "max_ammo": 420.0,
     "reload": 0.7,
     "mastery_req": 4.0,
     "riven_disposition": 1.45,
@@ -28181,6 +28520,7 @@
     "status_chance": 0.09,
     "fire_rate": 14.38,
     "magazine": 20.0,
+    "max_ammo": 420.0,
     "reload": 0.8,
     "mastery_req": 4.0,
     "riven_disposition": 1.4,
@@ -28189,7 +28529,7 @@
     "trigger": "Auto",
     "family": "Viper",
     "max_rank": 30.0,
-    "image": "Viper-Wraith.png"
+    "image": "ViperWraith.png"
   },
   "Zakti": {
     "name": "Zakti",
@@ -28223,6 +28563,7 @@
     "status_chance": 0.2,
     "fire_rate": 5.0,
     "magazine": 3.0,
+    "max_ammo": 210.0,
     "reload": 0.8,
     "mastery_req": 10.0,
     "riven_disposition": 1.25,
@@ -28265,6 +28606,7 @@
     "status_chance": 0.42,
     "fire_rate": 5.0,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 1.0,
     "mastery_req": 14.0,
     "riven_disposition": 1.1,
@@ -28273,7 +28615,7 @@
     "trigger": "Semi-Auto",
     "family": "Zakti",
     "max_rank": 30.0,
-    "image": "Zakti-Prime.png"
+    "image": "ZaktiPrime.png"
   },
   "Zylok": {
     "name": "Zylok",
@@ -28320,6 +28662,7 @@
     "status_chance": 0.26,
     "fire_rate": 1.8,
     "magazine": 8.0,
+    "max_ammo": 210.0,
     "reload": 1.2,
     "mastery_req": 6.0,
     "riven_disposition": 1.25,
@@ -28375,6 +28718,7 @@
     "status_chance": 0.36,
     "fire_rate": 1.8,
     "magazine": 12.0,
+    "max_ammo": 210.0,
     "reload": 1.2,
     "mastery_req": 13.0,
     "riven_disposition": 0.85,
@@ -28383,7 +28727,7 @@
     "trigger": "Duplex",
     "family": "Zylok",
     "max_rank": 30.0,
-    "image": "Zylok-Prime.png"
+    "image": "ZylokPrime.png"
   },
   "Zymos": {
     "name": "Zymos",
@@ -28451,6 +28795,7 @@
     "status_chance": 0.3,
     "fire_rate": 1.33,
     "magazine": 17.0,
+    "max_ammo": 51.0,
     "reload": 3.2,
     "mastery_req": 11.0,
     "riven_disposition": 1.2,
@@ -28492,6 +28837,7 @@
     "status_chance": 0.26,
     "fire_rate": 8.0,
     "magazine": 16.0,
+    "max_ammo": 0.0,
     "reload": 1.2,
     "mastery_req": 14.0,
     "riven_disposition": 0.85,

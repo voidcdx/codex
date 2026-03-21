@@ -166,6 +166,7 @@ const TOOLTIPS = {
   'status':       'Chance per hit to apply a status proc — Slash bleed, Heat burn, Viral debuff, etc.',
   'fire-rate':    'Shots (or attacks) per second. Affects DPS but not per-hit damage.',
   'magazine':     'Rounds before a reload is required.',
+  'max-ammo':     'Maximum ammo reserve (excludes magazine).',
   'reload':       'Time in seconds to reload the weapon.',
   'multishot':    'Projectiles fired per trigger pull. Each projectile deals full damage and independently rolls status/crit. Base is 1.0 for all weapons.',
   'impact':       'Strong vs. Machinery, Robotic. Weak vs. Infested Sinew.',
@@ -783,6 +784,11 @@ function showWeaponStats(weapon) {
           <div class="stat-value" id="sv-mag">${fmt(weapon.magazine)}</div>
           <div class="stat-modded" id="sm-mag" style="display:none"></div>
         </div>
+        ${weapon.max_ammo ? `<div class="stat-block">
+          <div class="stat-label" data-tooltip="max-ammo">Max Ammo</div>
+          <div class="stat-value" id="sv-ammo">${fmt(weapon.max_ammo)}</div>
+          <div class="stat-modded" id="sm-ammo" style="display:none"></div>
+        </div>` : ''}
         <div class="stat-block">
           <div class="stat-label" data-tooltip="reload">Reload</div>
           <div class="stat-value">${fmt(weapon.reload, 's')}</div>
@@ -971,6 +977,20 @@ async function _doUpdateModdedStats() {
         smMag.style.display = 'block';
       } else {
         smMag.style.display = 'none';
+      }
+    }
+
+    const smAmmo = document.getElementById('sm-ammo');
+    const svAmmo = document.getElementById('sv-ammo');
+    if (smAmmo && svAmmo) {
+      const baseAmmo   = data.base_ammo_max   || 0;
+      const moddedAmmo = data.modded_ammo_max || 0;
+      if (baseAmmo > 0) svAmmo.textContent = fmt(baseAmmo);
+      if (hasMods && baseAmmo > 0 && moddedAmmo !== baseAmmo) {
+        smAmmo.textContent = '→ ' + moddedAmmo;
+        smAmmo.style.display = 'block';
+      } else {
+        smAmmo.style.display = 'none';
       }
     }
   } catch(e) {

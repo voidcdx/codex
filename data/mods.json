@@ -25,8 +25,7 @@
     "max_rank": 3,
     "base_drain": 6,
     "puncture_pct": 0.6,
-    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture",
-    "fire_rate_pct": 0.6
+    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture"
   },
   "Accelerated Deflection": {
     "name": "Accelerated Deflection",
@@ -45,8 +44,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate",
-    "fire_rate_pct": 0.4
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate"
   },
   "Accumulating Whipclaw": {
     "name": "Accumulating Whipclaw",
@@ -281,9 +279,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "slash_pct": 0.3,
-    "effect_raw": "+90% Melee Damage\r\n+30% <DT_SLASH_COLOR>Slash",
-    "damage_bonus_pct": 0.9
+    "slash_pct": 0.9,
+    "effect_raw": "+90% Melee Damage\r\n+30% <DT_SLASH_COLOR>Slash"
   },
   "Amar's Hatred": {
     "name": "Amar's Hatred",
@@ -425,7 +422,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "magazine_pct": 1.0,
+    "ammo_max_pct": 1.0,
     "effect_raw": "+100% Ammo Maximum"
   },
   "Ammo Drum": {
@@ -435,7 +432,7 @@
     "rarity": "Common",
     "max_rank": 5,
     "base_drain": 2,
-    "magazine_pct": 0.9,
+    "ammo_max_pct": 0.9,
     "effect_raw": "+90% Ammo Maximum"
   },
   "Ammo Stock": {
@@ -502,8 +499,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "fire_rate_pct": 0.9,
-    "effect_raw": "+90% Fire Rate\r\n-15% Damage",
-    "damage_bonus_pct": -0.15
+    "effect_raw": "+90% Fire Rate\r\n-15% Damage"
   },
   "Animal Instinct": {
     "name": "Animal Instinct",
@@ -1145,8 +1141,7 @@
     "max_rank": 10,
     "base_drain": 6,
     "crit_chance_pct": 3.3,
-    "effect_raw": "+330% Critical Chance\r\n+220% Critical Damage",
-    "crit_damage_pct": 2.2
+    "effect_raw": "+330% Critical Chance\r\n+220% Critical Damage"
   },
   "Biting Frost": {
     "name": "Biting Frost",
@@ -1221,8 +1216,7 @@
     "max_rank": 3,
     "base_drain": 6,
     "heat_pct": 0.6,
-    "effect_raw": "+60% Damage\r\n+60% <DT_FIRE_COLOR>Heat",
-    "damage_bonus_pct": 0.6
+    "effect_raw": "+60% Damage\r\n+60% <DT_FIRE_COLOR>Heat"
   },
   "Blazing Pillage": {
     "name": "Blazing Pillage",
@@ -1416,9 +1410,7 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Melee Damage\r\n+60% Status Damage",
-    "status_damage_pct": 0.6,
-    "damage_bonus_pct": 0.9
+    "effect_raw": "+90% Melee Damage\r\n+60% Status Damage"
   },
   "Boreal's Hatred": {
     "name": "Boreal's Hatred",
@@ -1518,8 +1510,8 @@
     "rarity": "Uncommon",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+385% Melee Damage\r\nConvert all base Physical Damage to <DT_IMPACT_COLOR>Impact Damage",
-    "damage_bonus_pct": 3.85
+    "impact_pct": 3.85,
+    "effect_raw": "+385% Melee Damage\r\nConvert all base Physical Damage to <DT_IMPACT_COLOR>Impact Damage"
   },
   "Bullet Dance": {
     "name": "Bullet Dance",
@@ -1548,8 +1540,7 @@
     "max_rank": 10,
     "base_drain": 4,
     "heat_pct": 3.3,
-    "effect_raw": "+330% <DT_FIRE_COLOR>Heat\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FIRE_COLOR>Heat damage",
-    "status_chance_pct": 3.3
+    "effect_raw": "+330% <DT_FIRE_COLOR>Heat\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FIRE_COLOR>Heat damage"
   },
   "Burning Hate": {
     "name": "Burning Hate",
@@ -1686,8 +1677,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "slash_pct": 0.9,
-    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance"
   },
   "Carnis Stinger": {
     "name": "Carnis Stinger",
@@ -1697,8 +1687,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "slash_pct": 0.9,
-    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance"
   },
   "Carving Mantis": {
     "name": "Carving Mantis",
@@ -1825,8 +1814,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
   },
   "Charged Chamber": {
     "name": "Charged Chamber",
@@ -1865,8 +1853,7 @@
     "max_rank": 10,
     "base_drain": 4,
     "cold_pct": 3.3,
-    "effect_raw": "+330% <DT_FREEZE_COLOR>Cold\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FREEZE_COLOR>Cold damage",
-    "status_chance_pct": 3.3
+    "effect_raw": "+330% <DT_FREEZE_COLOR>Cold\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FREEZE_COLOR>Cold damage"
   },
   "Chilling Globe": {
     "name": "Chilling Globe",
@@ -2256,8 +2243,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+30% Multishot",
-    "multishot_pct": 0.3
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+30% Multishot"
   },
   "Contamination Casing": {
     "name": "Contamination Casing",
@@ -2267,8 +2253,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
   },
   "Continuity": {
     "name": "Continuity",
@@ -2451,8 +2436,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
-    "fire_rate_pct": -0.2
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
   },
   "Creeping Terrify": {
     "name": "Creeping Terrify",
@@ -2507,8 +2491,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
-    "fire_rate_pct": -0.2
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
   },
   "Critical Delay": {
     "name": "Critical Delay",
@@ -2518,8 +2501,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)",
-    "fire_rate_pct": -0.2
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)"
   },
   "Critical Focus": {
     "name": "Critical Focus",
@@ -2539,8 +2521,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+60% Critical Chance",
-    "crit_chance_pct": 0.6
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+60% Critical Chance"
   },
   "Critical Mutation": {
     "name": "Critical Mutation",
@@ -2613,8 +2594,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
   },
   "Cryo Rounds": {
     "name": "Cryo Rounds",
@@ -2670,8 +2650,7 @@
     "rarity": "Uncommon",
     "max_rank": 10,
     "base_drain": 6,
-    "effect_raw": "+110% Melee Damage",
-    "damage_bonus_pct": 1.1
+    "effect_raw": "+110% Melee Damage"
   },
   "Cyclone Kraken": {
     "name": "Cyclone Kraken",
@@ -2910,8 +2889,8 @@
     "rarity": "Uncommon",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+385% Melee Damage\r\nConvert all base Physical Damage to <DT_PUNCTURE_COLOR>Puncture Damage",
-    "damage_bonus_pct": 3.85
+    "puncture_pct": 3.85,
+    "effect_raw": "+385% Melee Damage\r\nConvert all base Physical Damage to <DT_PUNCTURE_COLOR>Puncture Damage"
   },
   "Disarming Purity": {
     "name": "Disarming Purity",
@@ -3074,8 +3053,7 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+10s Combo Duration\r\n+40% Status Chance",
-    "status_chance_pct": 0.4
+    "effect_raw": "+10s Combo Duration\r\n+40% Status Chance"
   },
   "Drive-Duster": {
     "name": "Drive-Duster",
@@ -3277,8 +3255,7 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": -2,
-    "effect_raw": "Squad receives +60% Status Chance and Status Damage on Heavy Attacks, but lose 90 Shields per hit.",
-    "status_damage_pct": 0.6
+    "effect_raw": "Squad receives +60% Status Chance and Status Damage on Heavy Attacks, but lose 90 Shields per hit."
   },
   "Empowered Quiver": {
     "name": "Empowered Quiver",
@@ -3842,8 +3819,7 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 6,
-    "effect_raw": "+60% Projectile Speed\r\n-20% Damage",
-    "damage_bonus_pct": -0.2
+    "effect_raw": "+60% Projectile Speed\r\n-20% Damage"
   },
   "Ferocity": {
     "name": "Ferocity",
@@ -4001,8 +3977,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
   },
   "Flame Repellent": {
     "name": "Flame Repellent",
@@ -4021,7 +3996,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 2,
-    "magazine_pct": 0.1,
+    "ammo_max_pct": 0.1,
     "effect_raw": "+10% Ammo Maximum"
   },
   "Flawed Ammo Stock": {
@@ -4520,8 +4495,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% Status Chance"
   },
   "Flawed Metal Auger": {
     "name": "Flawed Metal Auger",
@@ -4647,8 +4621,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+80% Melee Damage",
-    "damage_bonus_pct": 0.8
+    "effect_raw": "+80% Melee Damage"
   },
   "Flawed Provoked": {
     "name": "Flawed Provoked",
@@ -4733,8 +4706,7 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% Status Chance"
   },
   "Flawed Rupture": {
     "name": "Flawed Rupture",
@@ -4800,7 +4772,7 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 2,
-    "magazine_pct": 0.12,
+    "ammo_max_pct": 0.12,
     "effect_raw": "+12% Ammo Maximum"
   },
   "Flawed Shredder": {
@@ -4840,8 +4812,7 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+12% Status Chance",
-    "status_chance_pct": 0.12
+    "effect_raw": "+12% Status Chance"
   },
   "Flawed Slip Magazine": {
     "name": "Flawed Slip Magazine",
@@ -4997,7 +4968,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 2,
-    "magazine_pct": 0.4,
+    "ammo_max_pct": 0.4,
     "effect_raw": "+40% Ammo Maximum"
   },
   "Flawed True Steel": {
@@ -5220,8 +5191,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "fire_rate_pct": 0.9,
-    "effect_raw": "+90% Fire Rate\r\n-15% Damage",
-    "damage_bonus_pct": -0.15
+    "effect_raw": "+90% Fire Rate\r\n-15% Damage"
   },
   "Freeze Force": {
     "name": "Freeze Force",
@@ -5249,8 +5219,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
   },
   "Frost Insulation": {
     "name": "Frost Insulation",
@@ -5269,8 +5238,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
   },
   "Frostbite": {
     "name": "Frostbite",
@@ -5280,8 +5248,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
   },
   "Full Capacity": {
     "name": "Full Capacity",
@@ -5422,8 +5389,7 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x.",
-    "status_chance_pct": 0.8
+    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
   },
   "Galvanized Chamber": {
     "name": "Galvanized Chamber",
@@ -5462,8 +5428,7 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x.",
-    "status_damage_pct": 0.8
+    "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x."
   },
   "Galvanized Hell": {
     "name": "Galvanized Hell",
@@ -5491,8 +5456,7 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x.",
-    "status_chance_pct": 0.8
+    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
   },
   "Galvanized Scope": {
     "name": "Galvanized Scope",
@@ -5511,8 +5475,7 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 14s. Stacks up to 3x.",
-    "status_chance_pct": 0.8
+    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 14s. Stacks up to 3x."
   },
   "Galvanized Steel": {
     "name": "Galvanized Steel",
@@ -5818,8 +5781,7 @@
     "max_rank": 3,
     "base_drain": 6,
     "crit_damage_pct": 0.6,
-    "effect_raw": "+60% Critical Damage\r\n+80% Status Chance",
-    "status_chance_pct": 0.8
+    "effect_raw": "+60% Critical Damage\r\n+80% Status Chance"
   },
   "Handspring": {
     "name": "Handspring",
@@ -6070,8 +6032,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
   },
   "Hit And Run": {
     "name": "Hit And Run",
@@ -6099,8 +6060,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_damage_pct": 0.6,
-    "effect_raw": "+60% Critical Damage\r\n-15% Damage",
-    "damage_bonus_pct": -0.15
+    "effect_raw": "+60% Critical Damage\r\n-15% Damage"
   },
   "Hollowed Bullets": {
     "name": "Hollowed Bullets",
@@ -6302,8 +6262,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
   },
   "Hysteria": {
     "name": "Hysteria",
@@ -6395,8 +6354,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+50% Status Damage",
-    "status_damage_pct": 0.5
+    "effect_raw": "+50% Status Damage"
   },
   "Immuno Shield": {
     "name": "Immuno Shield",
@@ -6481,8 +6439,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
   },
   "Infested Impedance": {
     "name": "Infested Impedance",
@@ -6601,8 +6558,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
   },
   "Iron Phoenix": {
     "name": "Iron Phoenix",
@@ -6721,8 +6677,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
   },
   "Jugulus Barbs": {
     "name": "Jugulus Barbs",
@@ -6732,8 +6687,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "puncture_pct": 0.9,
-    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance"
   },
   "Jugulus Carapace": {
     "name": "Jugulus Carapace",
@@ -6752,8 +6706,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "puncture_pct": 0.9,
-    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance"
   },
   "Juice": {
     "name": "Juice",
@@ -7000,8 +6953,7 @@
     "max_rank": 5,
     "base_drain": 6,
     "fire_rate_pct": 0.6,
-    "effect_raw": "+60% Fire Rate\r\n+60% Multishot",
-    "multishot_pct": 0.6
+    "effect_raw": "+60% Fire Rate\r\n+60% Multishot"
   },
   "Lie In Wait": {
     "name": "Lie In Wait",
@@ -7307,8 +7259,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
   },
   "Magnetic Capacity": {
     "name": "Magnetic Capacity",
@@ -7338,8 +7289,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage",
-    "crit_damage_pct": 0.4
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage"
   },
   "Magnetic Rush": {
     "name": "Magnetic Rush",
@@ -7349,8 +7299,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+20% Attack Speed",
-    "fire_rate_pct": 0.2
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+20% Attack Speed"
   },
   "Magnetic Strafe": {
     "name": "Magnetic Strafe",
@@ -7360,8 +7309,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate",
-    "fire_rate_pct": 0.4
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate"
   },
   "Magnetic Strike": {
     "name": "Magnetic Strike",
@@ -7389,8 +7337,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage",
-    "crit_damage_pct": 0.4
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage"
   },
   "Magnetized Cycle": {
     "name": "Magnetized Cycle",
@@ -7400,8 +7347,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate",
-    "fire_rate_pct": 0.3
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate"
   },
   "Magnetized Discharge": {
     "name": "Magnetized Discharge",
@@ -7468,8 +7414,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
   },
   "Manifold Bond": {
     "name": "Manifold Bond",
@@ -7551,8 +7496,7 @@
     "rarity": "Uncommon",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+330% Melee Damage",
-    "damage_bonus_pct": 3.3
+    "effect_raw": "+330% Melee Damage"
   },
   "Maximum Capacity": {
     "name": "Maximum Capacity",
@@ -7635,8 +7579,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+60% Heavy Attack Wind Up Speed",
-    "status_damage_pct": 0.9
+    "effect_raw": "+90% Status Damage\r\n+60% Heavy Attack Wind Up Speed"
   },
   "Melee Guidance": {
     "name": "Melee Guidance",
@@ -7654,8 +7597,7 @@
     "rarity": "Common",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance",
-    "status_chance_pct": 0.9
+    "effect_raw": "+90% Status Chance"
   },
   "Mending Shot": {
     "name": "Mending Shot",
@@ -7830,8 +7772,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% Status Chance"
   },
   "Molecular Conversion": {
     "name": "Molecular Conversion",
@@ -8969,8 +8910,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+60% Reload Speed",
-    "status_damage_pct": 0.9
+    "effect_raw": "+90% Status Damage\r\n+60% Reload Speed"
   },
   "Pistol Gambit": {
     "name": "Pistol Gambit",
@@ -8990,8 +8930,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
   },
   "Pistol Scavenger": {
     "name": "Pistol Scavenger",
@@ -9148,8 +9087,8 @@
     "rarity": "Uncommon",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+385% Melee Damage\r\nConvert all base Physical Damage to <DT_SLASH_COLOR>Slash Damage",
-    "damage_bonus_pct": 3.85
+    "slash_pct": 3.85,
+    "effect_raw": "+385% Melee Damage\r\nConvert all base Physical Damage to <DT_SLASH_COLOR>Slash Damage"
   },
   "Precision Intensify": {
     "name": "Precision Intensify",
@@ -9203,8 +9142,7 @@
     "rarity": "Common",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+120% Melee Damage",
-    "damage_bonus_pct": 1.2
+    "effect_raw": "+120% Melee Damage"
   },
   "Pressurized Magazine": {
     "name": "Pressurized Magazine",
@@ -9259,7 +9197,7 @@
     "rarity": "Legendary",
     "max_rank": 10,
     "base_drain": 0,
-    "magazine_pct": 1.65,
+    "ammo_max_pct": 1.65,
     "effect_raw": "+165% Ammo Maximum"
   },
   "Primed Ammo Stock": {
@@ -9676,8 +9614,7 @@
     "rarity": "Legendary",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+165% Melee Damage",
-    "damage_bonus_pct": 1.65
+    "effect_raw": "+165% Melee Damage"
   },
   "Primed Quickdraw": {
     "name": "Primed Quickdraw",
@@ -10203,8 +10140,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+80% Critical Damage",
-    "crit_damage_pct": 0.8
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+80% Critical Damage"
   },
   "Rage": {
     "name": "Rage",
@@ -10763,8 +10699,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance",
-    "status_chance_pct": 0.9
+    "effect_raw": "+90% Status Chance"
   },
   "Rifle Elementalist": {
     "name": "Rifle Elementalist",
@@ -10773,8 +10708,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+0.6 Punch Through",
-    "status_damage_pct": 0.9
+    "effect_raw": "+90% Status Damage\r\n+0.6 Punch Through"
   },
   "Rifle Scavenger": {
     "name": "Rifle Scavenger",
@@ -10820,8 +10754,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
   },
   "Rime Vault": {
     "name": "Rime Vault",
@@ -11006,8 +10939,7 @@
     "base_drain": 6,
     "faction_bonus": 0.33,
     "faction_target": "sentients",
-    "effect_raw": "+110% Melee Damage\r\nx1.33 Damage to Sentients",
-    "damage_bonus_pct": 1.1
+    "effect_raw": "+110% Melee Damage\r\nx1.33 Damage to Sentients"
   },
   "Sacrificial Steel": {
     "name": "Sacrificial Steel",
@@ -11018,8 +10950,7 @@
     "base_drain": 6,
     "faction_bonus": 0.33,
     "faction_target": "sentients",
-    "effect_raw": "+220% Critical Chance (x2 for Heavy Attacks)\r\nx1.33 Damage to Sentients",
-    "crit_chance_pct": 2.2
+    "effect_raw": "+220% Critical Chance (x2 for Heavy Attacks)\r\nx1.33 Damage to Sentients"
   },
   "Safeguard": {
     "name": "Safeguard",
@@ -11111,8 +11042,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "impact_pct": 0.9,
-    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance"
   },
   "Saxum Thorax": {
     "name": "Saxum Thorax",
@@ -11122,8 +11052,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "impact_pct": 0.9,
-    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance"
   },
   "Scan Aquatic Lifeforms": {
     "name": "Scan Aquatic Lifeforms",
@@ -11170,8 +11099,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
   },
   "Scavenge": {
     "name": "Scavenge",
@@ -11190,8 +11118,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
   },
   "Scourging Warheads": {
     "name": "Scourging Warheads",
@@ -11219,8 +11146,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
   },
   "Secondary Wind": {
     "name": "Secondary Wind",
@@ -11385,8 +11311,7 @@
     "max_rank": 10,
     "base_drain": 4,
     "toxin_pct": 3.3,
-    "effect_raw": "+330% <DT_POISON_COLOR>Toxin\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_POISON_COLOR>Toxin damage",
-    "status_chance_pct": 3.3
+    "effect_raw": "+330% <DT_POISON_COLOR>Toxin\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_POISON_COLOR>Toxin damage"
   },
   "Sequence Burn": {
     "name": "Sequence Burn",
@@ -11550,7 +11475,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "magazine_pct": 0.9,
+    "ammo_max_pct": 0.9,
     "effect_raw": "+90% Ammo Maximum"
   },
   "Shell Rush": {
@@ -11570,8 +11495,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
   },
   "Shelter": {
     "name": "Shelter",
@@ -11671,8 +11595,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
   },
   "Shock Trooper": {
     "name": "Shock Trooper",
@@ -11700,8 +11623,7 @@
     "max_rank": 10,
     "base_drain": 4,
     "electricity_pct": 3.3,
-    "effect_raw": "+330% <DT_ELECTRICITY_COLOR>Electricity\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_ELECTRICITY_COLOR>Electricity damage",
-    "status_chance_pct": 3.3
+    "effect_raw": "+330% <DT_ELECTRICITY_COLOR>Electricity\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_ELECTRICITY_COLOR>Electricity damage"
   },
   "Shocking Touch": {
     "name": "Shocking Touch",
@@ -11777,8 +11699,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "magazine_pct": 0.6,
-    "effect_raw": "+90% Status Damage\r\n+60% Magazine Capacity",
-    "status_damage_pct": 0.9
+    "effect_raw": "+90% Status Damage\r\n+60% Magazine Capacity"
   },
   "Shotgun Savvy": {
     "name": "Shotgun Savvy",
@@ -11787,8 +11708,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance",
-    "status_chance_pct": 0.9
+    "effect_raw": "+90% Status Chance"
   },
   "Shotgun Scavenger": {
     "name": "Shotgun Scavenger",
@@ -12213,9 +12133,7 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+100% Melee Damage\r\n-20% Attack Speed",
-    "damage_bonus_pct": 1.0,
-    "fire_rate_pct": -0.2
+    "effect_raw": "+100% Melee Damage\r\n-20% Attack Speed"
   },
   "Spontaneous Singularity": {
     "name": "Spontaneous Singularity",
@@ -12535,8 +12453,7 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 6,
-    "effect_raw": "+40% Reload Speed\r\n+30% Status Chance",
-    "status_chance_pct": 0.3
+    "effect_raw": "+40% Reload Speed\r\n+30% Status Chance"
   },
   "Sudden Impact": {
     "name": "Sudden Impact",
@@ -12545,8 +12462,7 @@
     "rarity": "Common",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% Status Chance"
   },
   "Sudden Justice": {
     "name": "Sudden Justice",
@@ -12620,8 +12536,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance",
-    "status_chance_pct": 0.9
+    "effect_raw": "+90% Status Chance"
   },
   "Surging Blades": {
     "name": "Surging Blades",
@@ -12868,8 +12783,7 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate",
-    "fire_rate_pct": -0.55
+    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate"
   },
   "Talsek-An": {
     "name": "Talsek-An",
@@ -13153,8 +13067,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
   },
   "Thief's Wit": {
     "name": "Thief's Wit",
@@ -13254,8 +13167,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
   },
   "Toxic Blight": {
     "name": "Toxic Blight",
@@ -13375,7 +13287,7 @@
     "rarity": "Common",
     "max_rank": 5,
     "base_drain": 2,
-    "magazine_pct": 0.9,
+    "ammo_max_pct": 0.9,
     "effect_raw": "+90% Ammo Maximum"
   },
   "Triple Tap": {
@@ -13753,8 +13665,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
   },
   "Venomous Clip": {
     "name": "Venomous Clip",
@@ -13819,8 +13730,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
   },
   "Vicious Spread": {
     "name": "Vicious Spread",
@@ -13942,8 +13852,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "fire_rate_pct": 0.9,
-    "effect_raw": "+90% Fire Rate (x2 for Bows)\r\n-15% Damage",
-    "damage_bonus_pct": -0.15
+    "effect_raw": "+90% Fire Rate (x2 for Bows)\r\n-15% Damage"
   },
   "Vile Discharge": {
     "name": "Vile Discharge",
@@ -13961,8 +13870,7 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)",
-    "fire_rate_pct": -0.36
+    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)"
   },
   "Viral Quills": {
     "name": "Viral Quills",
@@ -13981,8 +13889,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
   },
   "Vital Sense": {
     "name": "Vital Sense",
@@ -14084,8 +13991,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
   },
   "Voltage Sequence": {
     "name": "Voltage Sequence",
@@ -14113,8 +14019,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
-    "status_chance_pct": 0.6
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
   },
   "Vome": {
     "name": "Vome",
