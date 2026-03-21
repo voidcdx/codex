@@ -1215,7 +1215,7 @@ let rivenDraft   = [];   // working copy in modal
 function openRivenBuilder() {
   // Always present 4 rows
   rivenDraft = Array.from({length: 4}, (_, i) =>
-    rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 150}
+    rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 0}
   );
   renderRivenRows();
   document.getElementById('riven-picker-overlay').classList.add('active');
@@ -1246,7 +1246,7 @@ function applyRiven() {
 }
 
 function clearRiven() {
-  rivenDraft = [{stat:'',pct:150},{stat:'',pct:150},{stat:'',pct:150},{stat:'',pct:150}];
+  rivenDraft = [{stat:'',pct:0},{stat:'',pct:0},{stat:'',pct:0},{stat:'',pct:0}];
   rivenApplied = null;
   const idx = modSlots.indexOf('__riven__');
   if (idx >= 0) modSlots[idx] = '';
@@ -1257,7 +1257,7 @@ function clearRiven() {
 }
 
 function clearRivenRow(i) {
-  rivenDraft[i] = {stat: '', pct: 150};
+  rivenDraft[i] = {stat: '', pct: 0};
   renderRivenRows();
 }
 

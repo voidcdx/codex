@@ -731,8 +731,8 @@ select option {
   background: var(--surface-solid);
   border: 1px solid rgba(155, 109, 208, 0.3);
   border-radius: var(--radius);
-  width: 580px;
-  max-width: 95vw;
+  width: 560px;
+  max-width: calc(100vw - 32px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 .riven-modal-header {
@@ -762,8 +762,8 @@ select option {
 
 .riven-modal-body {
   display: flex;
-  gap: 20px;
-  padding: 20px;
+  gap: 16px;
+  padding: 16px;
 }
 
 /* Left column: image placeholder */
@@ -796,7 +796,7 @@ select option {
   border: none;
   border-radius: 0;
   background: transparent;
-  padding: 9px 28px 9px 10px;
+  padding: 7px 24px 7px 8px;
   font-size: 13px;
   color: var(--text);
   appearance: none;
@@ -813,20 +813,20 @@ select option {
   border-left: 1px solid var(--border);
   color: var(--text-dim);
   cursor: pointer;
-  padding: 9px 10px;
+  padding: 7px 8px;
   font-size: 14px;
   transition: color 0.15s;
   flex-shrink: 0;
 }
 .riven-row-clear:hover { color: var(--bad); }
 .riven-stat-input {
-  width: 64px;
+  width: 48px;
   margin-bottom: 0;
   border: none;
   border-left: 1px solid var(--border);
   border-radius: 0;
   background: transparent;
-  padding: 9px 8px;
+  padding: 7px 6px;
   font-size: 13px;
   text-align: center;
   flex-shrink: 0;
