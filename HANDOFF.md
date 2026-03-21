@@ -62,8 +62,8 @@ User has authoritative damage calculation docs (PDF). Share path → update `CLA
 ### ③ Helstrum / Tombfinger Missing
 Both are absent from `weapons.json`. `WEAPON_SPECIFIC_EXILUS` in `index.html` already lists them — they'll work once the weapon entries are added.
 
-### ④ Eximus Scaling Data Gap
-Overguard coefficients were fitted from two wiki reference points (ΔLevel 199 and 599 for Corrupted Heavy Gunner). More data points across enemy types would confirm whether the formula generalizes or if it's enemy-specific.
+### ④ Overguard Formula Needs Implementing
+The correct formula (from wiki.warframe.com/w/Enemy_Level_Scaling) is a two-regime smoothstep: `f1 = 1 + 0.0015×δ^4` (δ<45), `f2 = 1 + 260×δ^0.9` (δ>50), smoothstep blend at δ=45–50. `src/scaling.py` still uses the old single power-law fit with wrong coefficients. See CLAUDE.md Overguard section for full formula and reference values.
 
 ---
 

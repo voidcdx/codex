@@ -167,9 +167,17 @@ Formula source: [wiki.warframe.com/w/Enemy_Level_Scaling](https://wiki.warframe.
 - **Steel Path:** ×2.5 multiplier applied to health and shields
 
 ### Overguard (Eximus Only)
-- Base = 12, formula: `12 × (1 + 10.822554211507594 × δ^1.3694013966775684)`
-- Coefficients fitted from two wiki reference points (ΔLevel 199 and 599)
-- Reproduces wiki exactly: 182,638.43 at ΔLevel 199; 825,903.86 at ΔLevel 599
+Two-regime smoothstep formula (source: wiki.warframe.com/w/Enemy_Level_Scaling):
+```
+f1(δ) = 1 + 0.0015 × δ^4            (δ < 45)
+f2(δ) = 1 + 260 × δ^0.9             (δ > 50)
+T     = (δ - 45) / 5
+S2    = 3T² − 2T³                   (45 ≤ δ ≤ 50), else 0 or 1
+Overguard = 12 × [f1(δ)·(1 − S2) + f2(δ)·S2]
+```
+Reference values: δ=0 → 12.0 | δ=10 → 1,812.0 | δ=45 → 73,823.25 | δ=50 → ~105,592.8 | δ=199 → ~365,676 | δ=599 → ~985,000
+
+**NOTE:** `src/scaling.py` still uses the old single power-law fit — needs replacing with the above formula.
 
 ### Armor Scaling
 - `base_armor × (1 + 0.005 × δ^1.75)`, hard-capped at 2700 (90% DR)
