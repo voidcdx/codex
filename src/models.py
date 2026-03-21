@@ -53,6 +53,7 @@ class Mod:
     sc_bonus: float = 0.0                         # additive status chance, e.g. 0.9 for Rifle Aptitude
     multishot_bonus: float = 0.0                 # additive, e.g. 1.65 for Split Chamber
     status_damage_bonus: float = 0.0             # additive, e.g. 0.90 for Pistol Elementalist
+    fire_rate_bonus: float = 0.0                 # additive, e.g. -0.20 for Critical Delay
 
 
 @dataclass

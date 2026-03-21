@@ -708,6 +708,7 @@ function showWeaponStats(weapon) {
         <div class="stat-block">
           <div class="stat-label" data-tooltip="fire-rate">Fire Rate</div>
           <div class="stat-value">${fmt(atk ? atk.fire_rate : weapon.fire_rate)}</div>
+          <div class="stat-modded" id="sm-fr" style="display:none"></div>
         </div>
         <div class="stat-block">
           <div class="stat-label" data-tooltip="magazine">Magazine</div>
@@ -872,6 +873,18 @@ async function _doUpdateModdedStats() {
       } else {
         smMS.style.display = 'none';
         if (!hasMods) _currentMultishot = 1.0;
+      }
+    }
+
+    const smFR = document.getElementById('sm-fr');
+    if (smFR) {
+      const baseFr  = data.base_fr  || 0;
+      const moddedFr = data.modded_fr || 0;
+      if (hasMods && baseFr > 0 && Math.abs(moddedFr - baseFr) > 0.001) {
+        smFR.textContent = '→ ' + moddedFr.toFixed(2) + '/s';
+        smFR.style.display = 'block';
+      } else {
+        smFR.style.display = 'none';
       }
     }
   } catch(e) {

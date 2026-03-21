@@ -25,7 +25,8 @@
     "max_rank": 3,
     "base_drain": 6,
     "puncture_pct": 0.6,
-    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture"
+    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture",
+    "fire_rate_pct": 0.6
   },
   "Accelerated Deflection": {
     "name": "Accelerated Deflection",
@@ -44,7 +45,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate"
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate",
+    "fire_rate_pct": 0.4
   },
   "Accumulating Whipclaw": {
     "name": "Accumulating Whipclaw",
@@ -2437,7 +2439,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
+    "fire_rate_pct": -0.2
   },
   "Creeping Terrify": {
     "name": "Creeping Terrify",
@@ -2492,7 +2495,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
+    "fire_rate_pct": -0.2
   },
   "Critical Delay": {
     "name": "Critical Delay",
@@ -2502,7 +2506,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)"
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)",
+    "fire_rate_pct": -0.2
   },
   "Critical Focus": {
     "name": "Critical Focus",
@@ -6479,7 +6484,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 0,
-    "effect_raw": "Gain 15% Disinfection and gain 10,000 H\ufffdllars"
+    "effect_raw": "Gain 15% Disinfection and gain 10,000 H�llars"
   },
   "Insulation": {
     "name": "Insulation",
@@ -7313,7 +7318,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate",
+    "fire_rate_pct": 0.4
   },
   "Magnetic Strike": {
     "name": "Magnetic Strike",
@@ -7351,7 +7357,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate",
+    "fire_rate_pct": 0.3
   },
   "Magnetized Discharge": {
     "name": "Magnetized Discharge",
@@ -12791,7 +12798,8 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate"
+    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate",
+    "fire_rate_pct": -0.55
   },
   "Talsek-An": {
     "name": "Talsek-An",
@@ -13860,7 +13868,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "fire_rate_pct": 0.9,
-    "effect_raw": "+90% Fire Rate (x2 for Bows)\r\n-15% Damage"
+    "effect_raw": "+90% Fire Rate (x2 for Bows)\r\n-15% Damage",
+    "damage_bonus_pct": -0.15
   },
   "Vile Discharge": {
     "name": "Vile Discharge",
@@ -13878,7 +13887,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)"
+    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)",
+    "fire_rate_pct": -0.36
   },
   "Viral Quills": {
     "name": "Viral Quills",

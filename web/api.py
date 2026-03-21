@@ -173,6 +173,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     total_cd_bonus = sum(m.cd_bonus for m in mods)
     total_sc_bonus = sum(m.sc_bonus for m in mods)
     total_ms_bonus = sum(m.multishot_bonus for m in mods)
+    total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
 
     # Build elemental components from mods + innate, then combine
     mod_elements: list[DamageComponent] = []
@@ -232,6 +233,17 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     base_total = weapon.total_base_damage
     modded_total = sum(modded_dmg_dict.values())
 
+    # Base fire rate from selected attack
+    if weapon.attacks:
+        att_name = req.attack or ""
+        sel_atk = next(
+            (a for a in weapon.attacks if a.name.lower() == att_name.lower()),
+            weapon.attacks[0],
+        )
+        base_fr = sel_atk.fire_rate
+    else:
+        base_fr = 0.0
+
     return {
         "base_damage":  base_dmg_dict,
         "base_total":   round(base_total, 4),
@@ -245,6 +257,8 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "modded_sc": round(base_sc * (1.0 + total_sc_bonus), 6),
         "base_multishot":   1.0,
         "modded_multishot": round(1.0 + total_ms_bonus, 6),
+        "base_fr":    round(base_fr, 4),
+        "modded_fr":  round(base_fr * (1.0 + total_fr_bonus), 6),
     }
 
 
