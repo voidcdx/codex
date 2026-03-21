@@ -726,19 +726,50 @@ select option {
 .riven-card-stats { display: flex; flex-direction: column; gap: 1px; margin-top: 3px; }
 .riven-card-stat { font-size: 9px; color: var(--good); line-height: 1.4; }
 
-/* ── Riven Builder (inline) ──────────────────────────── */
-.riven-builder-inline {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
+/* ── Riven Modal ─────────────────────────────────────── */
+.riven-modal {
+  background: var(--surface-solid);
+  border-radius: var(--radius);
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+.riven-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.riven-modal-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--riven);
+  margin: 0;
+}
+.riven-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+.riven-modal-close:hover { color: var(--text); }
+.riven-modal-body {
+  padding: 12px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
+/* Stat rows — all children share an explicit 28px height */
 .riven-stat-row {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: 6px;
   border-left: 2px solid transparent;
   padding-left: 0;
@@ -751,9 +782,9 @@ select option {
 .riven-stat-select {
   flex: 1;
   min-width: 0;
+  height: 28px;
   box-sizing: border-box;
-  padding: 3px 22px 3px 8px;
-  margin-bottom: 0;
+  padding: 0 22px 0 8px;
   font-size: 13px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -771,6 +802,7 @@ select option {
 .riven-input-wrap {
   position: relative;
   flex: 0 0 72px;
+  height: 28px;
 }
 .riven-input-wrap::after {
   content: '%';
@@ -784,9 +816,9 @@ select option {
 }
 .riven-stat-input {
   width: 100%;
+  height: 28px;
   box-sizing: border-box;
-  padding: 3px 18px 3px 8px;
-  margin-bottom: 0;
+  padding: 0 18px 0 8px;
   font-size: 13px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -801,19 +833,16 @@ select option {
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .riven-row-clear {
   flex: 0 0 20px;
-  align-self: stretch;
+  height: 28px;
   padding: 0;
   background: none;
   border: none;
   color: var(--text-dim);
   font-size: 13px;
   cursor: pointer;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.15s;
 }
-.riven-row-clear:hover {
-  color: var(--text);
-  background: rgba(220, 80, 80, 0.1);
-}
+.riven-row-clear:hover { color: var(--text); }
 
 .riven-action-row {
   display: flex;
