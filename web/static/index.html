@@ -26,6 +26,7 @@
     <div class="panel" style="margin-bottom:16px">
       <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></h2>
       <div id="mod-grid-wrapper">
+        <div id="special-slots" class="special-slots-row"></div>
         <div id="mod-grid" class="mod-grid"></div>
         <svg id="element-arcs"></svg>
       </div>
@@ -261,6 +262,7 @@ function polaritySVG(polarity) {
 function initModGrid() {
   modSlots = ['','','','','','','',''];
   renderModCards();
+  renderSpecialSlots();
   initSortable();
   updateOptimalBtn();
 }
@@ -268,11 +270,28 @@ function initModGrid() {
 function renderModCards() {
   const grid = document.getElementById('mod-grid');
   grid.innerHTML = '';
+  const STAT_LABELS = {
+    damage:'DMG', multishot:'MS', crit_chance:'CC', crit_damage:'CD',
+    status_chance:'SC', fire_rate:'FR', heat:'Heat', cold:'Cold',
+    electricity:'Elec', toxin:'Tox',
+  };
   modSlots.forEach((modName, i) => {
     const card = document.createElement('div');
-    card.className = 'mod-card' + (modName ? '' : ' empty');
     card.dataset.slot = i;
-    if (modName) {
+
+    if (modName === '__riven__') {
+      card.className = 'mod-card riven-mod-card';
+      const lines = (rivenApplied || []).filter(s => s.stat)
+        .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${STAT_LABELS[s.stat] || s.stat}</div>`)
+        .join('');
+      card.innerHTML = `
+        <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">&times;</button>
+        <div class="riven-card-icon">⬡</div>
+        <div class="mod-name" style="color:var(--riven)">Riven</div>
+        <div class="riven-card-stats">${lines}</div>`;
+      card.onclick = openRivenBuilder;
+    } else if (modName) {
+      card.className = 'mod-card';
       const mod = allMods.find(m => m.name === modName);
       const rarity = mod ? (mod.rarity || '').toLowerCase() : '';
       if (rarity) card.classList.add('rarity-' + rarity);
@@ -286,6 +305,7 @@ function renderModCards() {
         <div class="slot-num">${i+1}</div>`;
       card.onclick = () => openModPicker(i);
     } else {
+      card.className = 'mod-card empty';
       card.innerHTML = `
         <div class="add-icon">+</div>
         <div class="add-label">Add Mod</div>
@@ -323,7 +343,8 @@ function clearModSlot(i) {
 }
 
 function getSelectedMods() {
-  return modSlots.filter(Boolean);
+  const specials = [auraSlot, exilusSlot].filter(Boolean);
+  return [...specials, ...modSlots.filter(n => n && n !== '__riven__')];
 }
 
 function updateOptimalBtn() {
@@ -347,6 +368,18 @@ function openModPicker(slotIndex) {
   renderPickerList('');
 }
 
+function openSpecialPicker(kind) {
+  _pickerSlot = kind; // 'aura' or 'exilus'
+  document.getElementById('picker-slot-num').textContent =
+    kind === 'aura' ? 'Aura / Stance' : 'Exilus';
+  const overlay = document.getElementById('mod-picker-overlay');
+  overlay.classList.add('active');
+  const search = document.getElementById('mod-picker-search');
+  search.value = '';
+  search.focus();
+  renderPickerList('');
+}
+
 function closeModPicker() {
   document.getElementById('mod-picker-overlay').classList.remove('active');
   _pickerSlot = -1;
@@ -356,9 +389,19 @@ function renderPickerList(query) {
   const weapon = getCurrentWeapon();
   const types = getCompatibleModTypes(weapon);
   const q = query.toLowerCase();
-  const filtered = allMods
-    .filter(m => weapon ? types.has(m.type) : true)
-    .filter(m => !q || m.name.toLowerCase().includes(q));
+  let filtered;
+  if (_pickerSlot === 'aura') {
+    filtered = allMods.filter(m => m.type === 'Aura')
+      .filter(m => !q || m.name.toLowerCase().includes(q));
+  } else if (_pickerSlot === 'exilus') {
+    const exilusSet = getExilusSet();
+    filtered = allMods.filter(m => exilusSet.has(m.name))
+      .filter(m => !q || m.name.toLowerCase().includes(q));
+  } else {
+    filtered = allMods
+      .filter(m => weapon ? types.has(m.type) : true)
+      .filter(m => !q || m.name.toLowerCase().includes(q));
+  }
 
   const list = document.getElementById('mod-picker-list');
   const RARITY_COLORS = { common: '#9e9e78', uncommon: '#6a8f47', rare: '#5a7cc4', legendary: '#c49a1f' };
@@ -374,11 +417,21 @@ function renderPickerList(query) {
 }
 
 function selectPickerMod(el) {
-  if (_pickerSlot < 0) return;
-  modSlots[_pickerSlot] = el.dataset.mod;
-  closeModPicker();
-  renderModCards();
-  initSortable();
+  if (_pickerSlot === -1) return;
+  if (_pickerSlot === 'aura') {
+    auraSlot = el.dataset.mod;
+    closeModPicker();
+    renderSpecialSlots();
+  } else if (_pickerSlot === 'exilus') {
+    exilusSlot = el.dataset.mod;
+    closeModPicker();
+    renderSpecialSlots();
+  } else {
+    modSlots[_pickerSlot] = el.dataset.mod;
+    closeModPicker();
+    renderModCards();
+    initSortable();
+  }
   updateModdedStats();
   updateOptimalBtn();
 }
@@ -641,9 +694,14 @@ function getCompatibleModTypes(weapon) {
 
 function onWeaponChange() {
   selectedAttack = null;
+  // Exilus set is weapon-type-specific — clear exilus if it no longer applies
+  if (exilusSlot && !getExilusSet().has(exilusSlot)) {
+    exilusSlot = '';
+  }
   const weapon = getCurrentWeapon();
   updateAttackSelector(weapon);
   showWeaponStats(weapon);
+  renderSpecialSlots();
   updateModdedStats();
   updateOptimalBtn();
   updateElementBadges();
@@ -1036,6 +1094,90 @@ const RIVEN_STAT_OPTIONS = [
   {value: 'toxin',         label: 'Toxin'},
 ];
 
+// ---------------------------------------------------------------------------
+// Special Slots (Aura / Exilus)
+// ---------------------------------------------------------------------------
+let auraSlot   = '';
+let exilusSlot = '';
+
+const EXILUS_PRIMARY = new Set([
+  'Ammo Drum','Shell Compression','Rifle Ammo Mutation','Primed Rifle Ammo Mutation',
+  'Shotgun Ammo Mutation','Primed Shotgun Ammo Mutation','Arrow Mutation',
+  'Sniper Ammo Mutation','Vigilante Supplies','Eagle Eye','Broad Eye','Overview',
+  'Aero Periphery','Ambush Optics','Agile Aim','Snap Shot','Aerial Ace',
+  'Gun Glide','Double-Barrel Drift','Stabilizer','Primed Stabilizer','Vile Precision',
+  'Guided Ordnance','Narrow Barrel','Hush','Silent Battery','Twitch','Soft Hands',
+  'Lock and Load','Tactical Reload','Terminal Velocity','Fatal Acceleration',
+  'Galvanized Acceleration','Mending Shot','Bhisaj-Bal','Sinister Reach',
+]);
+const EXILUS_SECONDARY = new Set([
+  'Trick Mag','Pistol Ammo Mutation','Primed Pistol Ammo Mutation','Air Recon',
+  'Hawk Eye','Spry Sights','Strafing Slide','Steady Hands','Primed Steady Hands',
+  'Targeting Subsystem','Suppress','Reflex Draw','Eject Magazine','Lethal Momentum',
+  'Energizing Shot','Ruinous Extension','Fass Canticle','Jahu Canticle',
+  'Khra Canticle','Lohk Canticle',
+]);
+const EXILUS_MELEE = new Set([
+  'Dispatch Overdrive','Electromagnetic Shielding','Focused Defense','Guardian Derision',
+  'Parry','Whirlwind',"Condition's Perfection","Discipline's Merit","Dreamer's Wrath",
+  "Master's Edge","Mentor's Legacy","Opportunity's Reach",'Adhesive Blast',
+  'Cautious Shot','Directed Convergence','Fomorian Accelerant','Kinetic Ricochet',
+  'Tether Grenades',
+]);
+
+function getExilusSet() {
+  const w = getCurrentWeapon();
+  if (!w) return new Set([...EXILUS_PRIMARY, ...EXILUS_SECONDARY, ...EXILUS_MELEE]);
+  const types = getCompatibleModTypes(w);
+  if (types.has('Melee') || [...types].some(t =>
+    ['Daggers','Dual Daggers','Dual Swords','Swords','Hammers','Fists','Polearms',
+     'Scythes','Whips','Claws','Heavy Blade','Blade And Whip','Machetes',
+     'Nunchaku','Gunblade','Thrown Melee'].includes(t))) return EXILUS_MELEE;
+  if (types.has('Pistol')) return EXILUS_SECONDARY;
+  return EXILUS_PRIMARY;
+}
+
+function renderSpecialSlots() {
+  const container = document.getElementById('special-slots');
+  const makeCard = (kind, slotName, label, colorClass) => {
+    const card = document.createElement('div');
+    card.className = `mod-card special-slot ${colorClass}`;
+    card.onclick = () => openSpecialPicker(kind);
+    if (slotName) {
+      const mod = allMods.find(m => m.name === slotName);
+      const polIcon = mod ? polaritySVG(mod.polarity) : '';
+      card.innerHTML = `
+        <button class="mod-clear" onclick="event.stopPropagation();clear${kind === 'aura' ? 'Aura' : 'Exilus'}()" title="Remove">&times;</button>
+        ${polIcon}
+        <div class="special-slot-label">${label}</div>
+        <div class="mod-name">${esc(slotName)}</div>`;
+    } else {
+      card.classList.add('empty');
+      card.innerHTML = `
+        <div class="special-slot-label">${label}</div>
+        <div class="add-icon">+</div>`;
+    }
+    return card;
+  };
+  container.innerHTML = '';
+  container.appendChild(makeCard('aura',   auraSlot,   'Aura',   'aura-slot'));
+  container.appendChild(makeCard('exilus', exilusSlot, 'Exilus', 'exilus-slot'));
+}
+
+function clearAura() {
+  auraSlot = '';
+  renderSpecialSlots();
+  updateModdedStats();
+}
+function clearExilus() {
+  exilusSlot = '';
+  renderSpecialSlots();
+  updateModdedStats();
+}
+
+// ---------------------------------------------------------------------------
+// Riven Builder
+// ---------------------------------------------------------------------------
 let rivenApplied = null; // [{stat, pct}, ...] — committed
 let rivenDraft   = [];   // working copy in modal
 
@@ -1056,15 +1198,30 @@ function applyRiven() {
   const valid = rivenDraft.filter(s => s.stat);
   rivenApplied = valid.length ? valid : null;
   closeRivenBuilder();
-  renderRivenCard();
+  if (rivenApplied) {
+    const existing = modSlots.indexOf('__riven__');
+    if (existing < 0) {
+      const empty = modSlots.indexOf('');
+      if (empty >= 0) modSlots[empty] = '__riven__';
+      else { alert('No empty mod slot — remove a mod first.'); return; }
+    }
+  } else {
+    const idx = modSlots.indexOf('__riven__');
+    if (idx >= 0) modSlots[idx] = '';
+  }
+  renderModCards();
+  initSortable();
   updateModdedStats();
 }
 
 function clearRiven() {
   rivenApplied = null;
-  renderRivenCard();
-  updateModdedStats();
+  const idx = modSlots.indexOf('__riven__');
+  if (idx >= 0) modSlots[idx] = '';
   closeRivenBuilder();
+  renderModCards();
+  initSortable();
+  updateModdedStats();
 }
 
 function clearRivenRow(i) {
@@ -1094,33 +1251,6 @@ function renderRivenRows() {
   `).join('');
 }
 
-// Renders / removes the riven card in the mod grid (9th card)
-function renderRivenCard() {
-  const grid = document.getElementById('mod-grid');
-  const existing = grid.querySelector('.riven-mod-card');
-  if (existing) existing.remove();
-  if (!rivenApplied || !rivenApplied.length) return;
-
-  const STAT_LABELS = {
-    damage:'DMG', multishot:'MS', crit_chance:'CC', crit_damage:'CD',
-    status_chance:'SC', fire_rate:'FR', heat:'Heat', cold:'Cold',
-    electricity:'Elec', toxin:'Tox',
-  };
-  const lines = rivenApplied
-    .filter(s => s.stat)
-    .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${STAT_LABELS[s.stat] || s.stat}</div>`)
-    .join('');
-
-  const card = document.createElement('div');
-  card.className = 'mod-card riven-mod-card';
-  card.onclick = openRivenBuilder;
-  card.innerHTML = `
-    <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">×</button>
-    <div class="riven-card-icon">⬡</div>
-    <div class="mod-name" style="color:var(--riven)">Riven</div>
-    <div class="riven-card-stats">${lines}</div>`;
-  grid.appendChild(card);
-}
 
 function getRivenSpec() {
   if (!rivenApplied || !rivenApplied.length) return null;

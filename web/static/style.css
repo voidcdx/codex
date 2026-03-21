@@ -179,9 +179,9 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
   background: var(--surface2);
   border: 1px solid var(--border);
   color: var(--text);
-  padding: 7px 10px;
+  padding: 8px 10px;
   border-radius: var(--radius-sm);
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 8px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -861,6 +861,39 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
 }
 .panel { animation: fadeIn 0.3s ease; }
 
+/* ── Special Slots (Aura / Exilus) ───────────────────── */
+.special-slots-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.special-slot {
+  position: relative;
+  min-height: 68px;
+  cursor: pointer;
+  justify-content: center;
+}
+.special-slot-label {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  opacity: 0.7;
+}
+.aura-slot::before   { background: linear-gradient(90deg, #1a5fa0, #6ab4ff, #1a5fa0) !important; }
+.exilus-slot::before { background: linear-gradient(90deg, #1e6b3e, #6fcf97, #1e6b3e) !important; }
+.aura-slot   { border-color: rgba(106,180,255,0.25) !important; }
+.exilus-slot { border-color: rgba(111,207,151,0.25) !important; }
+.aura-slot:hover   { border-color: rgba(106,180,255,0.7) !important; box-shadow: 0 0 12px rgba(106,180,255,0.15) !important; }
+.exilus-slot:hover { border-color: rgba(111,207,151,0.7) !important; box-shadow: 0 0 12px rgba(111,207,151,0.15) !important; }
+.aura-slot .special-slot-label   { color: #6ab4ff; }
+.exilus-slot .special-slot-label { color: #6fcf97; }
+.special-slot.empty .add-icon { font-size: 16px; color: var(--text-dim); }
+
 /* ── Responsive ─────────────────────────────────────── */
 @media (max-width: 768px) {
   .container {
@@ -879,7 +912,23 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
   .options-row { flex-direction: column; }
   header { padding: 10px 16px; }
   header h1 { font-size: 15px; }
-  .mod-picker { width: 95vw; }
+  .mod-picker { width: 95vw; max-height: 80vh; }
+
+  /* iOS: prevent auto-zoom on input focus (needs 16px+ to avoid it) */
+  select,
+  input[type=text],
+  input[type=number],
+  .search-input,
+  .mod-picker-search,
+  .riven-stat-select,
+  .riven-stat-input { font-size: 16px !important; }
+
+  /* Faster tap response, no 300ms double-tap delay */
+  button, .mod-card, .special-slot, .mod-picker-item { touch-action: manipulation; }
+
+  /* Riven modal stacks vertically on mobile */
+  .riven-modal-body { flex-direction: column; }
+  .riven-img-placeholder { width: 100%; height: 140px; min-width: unset; }
 }
 @media (max-width: 480px) {
   .breakdown-table .bar-cell { display: none; }
@@ -889,4 +938,5 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
     gap: 6px;
   }
   .mod-card { min-height: 72px; }
+  .special-slot { min-height: 60px; }
 }
