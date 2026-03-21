@@ -1125,10 +1125,29 @@ const EXILUS_SECONDARY = new Set([
 const EXILUS_MELEE = new Set([
   'Dispatch Overdrive','Electromagnetic Shielding','Focused Defense','Guardian Derision',
   'Parry','Whirlwind',"Condition's Perfection","Discipline's Merit","Dreamer's Wrath",
-  "Master's Edge","Mentor's Legacy","Opportunity's Reach",'Adhesive Blast',
-  'Cautious Shot','Directed Convergence','Fomorian Accelerant','Kinetic Ricochet',
-  'Tether Grenades',
+  "Master's Edge","Mentor's Legacy","Opportunity's Reach",
 ]);
+
+// Exilus mods that only appear for specific weapons
+const WEAPON_SPECIFIC_EXILUS = {
+  'Adhesive Blast': [
+    'Ogris','Penta','Secura Penta','Carmine Penta','Tenet Ferrox',
+    'Tenet Envoy','Tonkor','Torid','Zarr','Helstrum',
+  ],
+  'Cautious Shot': [
+    'Acceltra','Acceltra Prime','Aeolak','Afentis','Alternox','Ambassador',
+    'Battacor','Basmu','Evensong','Ferrox','Tenet Ferrox','Javlok','Komorex',
+    'Kuva Bramma','Kuva Chakkhurr','Lenz','Mutalist Quanta','Ogris','Kuva Ogris',
+    'Opticor','Opticor Vandal','Panthera Prime','Penta','Secura Penta',
+    'Proboscis Cernos','Scourge','Scourge Prime','Shedu','Simulor','Synoid Simulor',
+    'Sporothrix','Stahlta','Tenet Envoy','Tombfinger','Tonkor','Kuva Tonkor',
+    'Torid','Trumna','Trumna Prime','Zarr','Kuva Zarr','Zhuge Prime',
+  ],
+  'Directed Convergence': ['Supra','Supra Vandal'],
+  'Fomorian Accelerant': ['Drakgoon'],
+  'Kinetic Ricochet': ['Prisma Tetra','Tenet Tetra'],
+  'Tether Grenades': ['Secura Penta','Carmine Penta'],
+};
 
 function isMeleeWeapon() {
   const w = getCurrentWeapon();
@@ -1144,12 +1163,24 @@ function getExilusSet() {
   const w = getCurrentWeapon();
   if (!w) return new Set([...EXILUS_PRIMARY, ...EXILUS_SECONDARY, ...EXILUS_MELEE]);
   const types = getCompatibleModTypes(w);
+
+  let base;
   if (types.has('Melee') || [...types].some(t =>
     ['Daggers','Dual Daggers','Dual Swords','Swords','Hammers','Fists','Polearms',
      'Scythes','Whips','Claws','Heavy Blade','Blade And Whip','Machetes',
-     'Nunchaku','Gunblade','Thrown Melee'].includes(t))) return EXILUS_MELEE;
-  if (types.has('Pistol')) return EXILUS_SECONDARY;
-  return EXILUS_PRIMARY;
+     'Nunchaku','Gunblade','Thrown Melee'].includes(t))) {
+    base = new Set(EXILUS_MELEE);
+  } else if (types.has('Pistol')) {
+    base = new Set(EXILUS_SECONDARY);
+  } else {
+    base = new Set(EXILUS_PRIMARY);
+  }
+
+  // Add weapon-specific exilus mods for the selected weapon
+  for (const [modName, weapons] of Object.entries(WEAPON_SPECIFIC_EXILUS)) {
+    if (weapons.includes(w.name)) base.add(modName);
+  }
+  return base;
 }
 
 function renderSpecialSlots() {
