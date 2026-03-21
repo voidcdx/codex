@@ -842,7 +842,8 @@ select option {
   flex: 0 0 72px;
   height: 100%;
 }
-.riven-pct-sign {
+.riven-input-wrap::after {
+  content: '%';
   position: absolute;
   right: 7px;
   top: 50%;
