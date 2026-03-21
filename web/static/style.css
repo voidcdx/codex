@@ -819,7 +819,7 @@ select option {
   flex: 1;
   min-width: 0;
   box-sizing: border-box;
-  padding: 6px 22px 6px 8px;
+  padding: 3px 22px 3px 8px;
   margin-bottom: 0;
   font-size: 13px;
   border: 1px solid var(--border);
@@ -852,7 +852,7 @@ select option {
 .riven-stat-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 18px 6px 8px;
+  padding: 3px 18px 3px 8px;
   margin-bottom: 0;
   font-size: 13px;
   border: 1px solid var(--border);
@@ -867,23 +867,19 @@ select option {
 .riven-stat-input::-webkit-inner-spin-button,
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .riven-row-clear {
-  flex: 0 0 28px;
+  flex: 0 0 20px;
   align-self: stretch;
-  box-sizing: border-box;
   padding: 0;
   background: none;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border: none;
   color: var(--text-dim);
-  font-size: 16px;
-  line-height: 1;
+  font-size: 13px;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  transition: color 0.15s, background 0.15s;
 }
 .riven-row-clear:hover {
   color: var(--text);
-  border-color: rgba(220, 80, 80, 0.5);
-  background: rgba(220, 80, 80, 0.08);
+  background: rgba(220, 80, 80, 0.1);
 }
 
 .riven-action-row {
