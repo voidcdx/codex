@@ -35,6 +35,14 @@
       </div>
       <div id="element-badges" class="element-badges"></div>
 
+      <!-- Riven Builder (inline) -->
+      <div id="riven-builder" class="riven-builder-inline" style="display:none">
+        <div id="riven-rows"></div>
+        <div class="riven-action-row">
+          <button class="btn-riven-apply" onclick="applyRiven()">Apply</button>
+          <button class="btn-riven-clear" onclick="clearRiven()">Clear</button>
+        </div>
+      </div>
     </div>
 
     <!-- Mod Picker Modal -->
@@ -48,29 +56,6 @@
           </div>
         </div>
         <div class="mod-picker-list" id="mod-picker-list"></div>
-      </div>
-    </div>
-
-    <!-- Riven Builder Modal -->
-    <div class="mod-picker-overlay" id="riven-picker-overlay">
-      <div class="riven-modal">
-        <div class="riven-modal-header">
-          <div class="riven-modal-header-text">
-            <h3>Riven Mod</h3>
-            <p class="riven-modal-subtitle">Configure up to 4 stats</p>
-          </div>
-          <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
-        </div>
-        <div class="riven-modal-body">
-          <div class="riven-img-placeholder" id="riven-img-area"></div>
-          <div class="riven-stats-col">
-            <div id="riven-rows"></div>
-            <div class="riven-action-row">
-              <button class="btn-riven-apply" onclick="applyRiven()">Apply</button>
-              <button class="btn-riven-clear" onclick="clearRiven()">Clear</button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -1235,16 +1220,15 @@ let rivenApplied = null; // [{stat, pct}, ...] — committed
 let rivenDraft   = [];   // working copy in modal
 
 function openRivenBuilder() {
-  // Always present 4 rows
   rivenDraft = Array.from({length: 4}, (_, i) =>
     rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 0}
   );
   renderRivenRows();
-  document.getElementById('riven-picker-overlay').classList.add('active');
+  document.getElementById('riven-builder').style.display = '';
 }
 
 function closeRivenBuilder() {
-  document.getElementById('riven-picker-overlay').classList.remove('active');
+  document.getElementById('riven-builder').style.display = 'none';
 }
 
 function applyRiven() {
@@ -1319,13 +1303,6 @@ function getRivenSpec() {
   const stats = rivenApplied.filter(s => s.stat).map(s => ({stat: s.stat, value: s.pct / 100}));
   return stats.length ? {stats} : null;
 }
-
-// Close on backdrop click
-document.addEventListener('click', e => {
-  const overlay = document.getElementById('riven-picker-overlay');
-  if (overlay && overlay.classList.contains('active') && e.target === overlay)
-    closeRivenBuilder();
-});
 
 // ---------------------------------------------------------------------------
 // Calculate

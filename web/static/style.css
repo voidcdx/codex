@@ -726,82 +726,15 @@ select option {
 .riven-card-stats { display: flex; flex-direction: column; gap: 1px; margin-top: 3px; }
 .riven-card-stat { font-size: 9px; color: var(--good); line-height: 1.4; }
 
-/* ── Riven Modal ─────────────────────────────────────── */
-.riven-modal {
-  background: var(--surface-solid);
-  border: 1px solid rgba(155, 109, 208, 0.4);
-  border-radius: var(--radius);
-  width: 500px;
-  max-width: calc(100vw - 32px);
-  box-shadow: 0 0 0 1px rgba(155, 109, 208, 0.15), 0 24px 64px rgba(0, 0, 0, 0.7);
-  overflow: hidden;
-  position: relative;
-}
-.riven-modal::before {
-  content: '';
-  display: block;
-  height: 3px;
-  background: linear-gradient(90deg, #7b3fbf, #c49aff, #7b3fbf);
-}
-.riven-modal-header {
+/* ── Riven Builder (inline) ──────────────────────────── */
+.riven-builder-inline {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 20px 20px 16px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, rgba(155, 109, 208, 0.13) 0%, transparent 60%);
+  flex-direction: column;
+  gap: 8px;
 }
-.riven-modal-header-text { display: flex; flex-direction: column; gap: 3px; }
-.riven-modal-header h3 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--riven);
-  letter-spacing: 0.04em;
-}
-.riven-modal-subtitle {
-  font-size: 11px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin: 0;
-}
-.riven-modal-close {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: color 0.15s, background 0.15s;
-}
-.riven-modal-close:hover { color: var(--text); background: rgba(255, 255, 255, 0.08); }
-
-.riven-modal-body {
-  display: flex;
-  gap: 14px;
-  padding: 16px;
-}
-
-/* Left column: image placeholder */
-.riven-img-placeholder {
-  width: 130px;
-  min-width: 130px;
-  height: 220px;
-  background: rgba(155, 109, 208, 0.08);
-  border: 1px dashed rgba(155, 109, 208, 0.35);
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
-}
-
-/* Right column: stat rows + actions */
-.riven-stats-col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
 
 .riven-stat-row {
   display: flex;
@@ -1021,9 +954,6 @@ select option {
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item { touch-action: manipulation; }
 
-  /* Riven modal stacks vertically on mobile */
-  .riven-modal-body { flex-direction: column; }
-  .riven-img-placeholder { width: 100%; height: 160px; min-width: unset; }
 }
 @media (max-width: 480px) {
   .breakdown-table .bar-cell { display: none; }
@@ -1033,7 +963,6 @@ select option {
     gap: 6px;
   }
   .mod-card { min-height: 72px; }
-  .riven-modal { width: 98vw; max-width: 98vw; }
-  .riven-input-wrap { flex: 0 0 64px; }
+.riven-input-wrap { flex: 0 0 64px; }
   .riven-stat-select { font-size: 13px !important; }
 }
