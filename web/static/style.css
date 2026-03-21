@@ -731,7 +731,7 @@ select option {
   background: var(--surface-solid);
   border: 1px solid rgba(155, 109, 208, 0.3);
   border-radius: var(--radius);
-  width: 400px;
+  width: 460px;
   max-width: calc(100vw - 32px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
@@ -790,7 +790,8 @@ select option {
   min-width: 0;
   margin-bottom: 0;
   box-sizing: border-box;
-  height: 30px;
+  height: 32px;
+  line-height: 30px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -811,7 +812,8 @@ select option {
   min-width: 0;
   margin-bottom: 0;
   box-sizing: border-box;
-  height: 30px;
+  height: 32px;
+  line-height: 30px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
