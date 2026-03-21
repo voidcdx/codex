@@ -10953,7 +10953,8 @@
     "base_drain": 6,
     "faction_bonus": 0.33,
     "faction_target": "sentients",
-    "effect_raw": "+110% Melee Damage\r\nx1.33 Damage to Sentients"
+    "effect_raw": "+110% Melee Damage\r\nx1.33 Damage to Sentients",
+    "damage_bonus_pct": 1.1
   },
   "Sacrificial Steel": {
     "name": "Sacrificial Steel",
@@ -10964,7 +10965,8 @@
     "base_drain": 6,
     "faction_bonus": 0.33,
     "faction_target": "sentients",
-    "effect_raw": "+220% Critical Chance (x2 for Heavy Attacks)\r\nx1.33 Damage to Sentients"
+    "effect_raw": "+220% Critical Chance (x2 for Heavy Attacks)\r\nx1.33 Damage to Sentients",
+    "crit_chance_pct": 2.2
   },
   "Safeguard": {
     "name": "Safeguard",
