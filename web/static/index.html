@@ -41,11 +41,7 @@
     <div class="mod-picker-overlay" id="riven-picker-overlay">
       <div class="riven-modal">
         <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
-        <div class="riven-modal-left">
-          <img id="riven-art" class="riven-art-img" src="" alt=""
-               onerror="this.style.display='none'">
-        </div>
-        <div class="riven-modal-right">
+<div class="riven-modal-right">
           <h2 class="riven-modal-title">Create riven</h2>
           <div id="riven-rows"></div>
           <div class="riven-btn-row">
@@ -1282,13 +1278,7 @@ function openRivenBuilder() {
     rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 0}
   );
   renderRivenRows();
-  const art = document.getElementById('riven-art');
-  const currentWeapon = getCurrentWeapon();
-  if (art) {
-    art.style.display = '';
-    art.src = currentWeapon?.image ? `/static/images/weapons/${currentWeapon.image}` : '';
-  }
-  document.getElementById('riven-picker-overlay').classList.add('active');
+document.getElementById('riven-picker-overlay').classList.add('active');
 }
 
 function closeRivenBuilder() {
