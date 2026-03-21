@@ -914,10 +914,11 @@ async function _doUpdateModdedStats() {
 
     // Update damage table
     const atkData = getSelectedAttackData(weapon);
-    renderDamageTable(atkData ? atkData.base_damage : weapon.base_damage, mods.length > 0 ? data : null);
+    const hasAnyMods = mods.length > 0 || !!getRivenSpec();
+    renderDamageTable(atkData ? atkData.base_damage : weapon.base_damage, hasAnyMods ? data : null);
 
     // Update crit/status stat blocks
-    const hasMods = mods.length > 0;
+    const hasMods = hasAnyMods;
     const pct = v => (v * 100).toFixed(1) + '%';
 
     const smCC = document.getElementById('sm-cc');
