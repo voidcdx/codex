@@ -729,41 +729,64 @@ select option {
 /* ── Riven Modal ─────────────────────────────────────── */
 .riven-modal {
   background: var(--surface-solid);
-  border: 1px solid rgba(155, 109, 208, 0.3);
+  border: 1px solid rgba(155, 109, 208, 0.4);
   border-radius: var(--radius);
-  width: 460px;
+  width: 500px;
   max-width: calc(100vw - 32px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 1px rgba(155, 109, 208, 0.15), 0 24px 64px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  position: relative;
+}
+.riven-modal::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, #7b3fbf, #c49aff, #7b3fbf);
 }
 .riven-modal-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 16px 20px 14px;
+  padding: 20px 20px 16px;
   border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(155, 109, 208, 0.13) 0%, transparent 60%);
 }
+.riven-modal-header-text { display: flex; flex-direction: column; gap: 3px; }
 .riven-modal-header h3 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  color: var(--text);
-  letter-spacing: 0.02em;
+  color: var(--riven);
+  letter-spacing: 0.04em;
+}
+.riven-modal-subtitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
 }
 .riven-modal-close {
   background: none;
   border: none;
   color: var(--text-dim);
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1;
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  transition: color 0.15s;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
 }
-.riven-modal-close:hover { color: var(--text); }
+.riven-modal-close:hover { color: var(--text); background: rgba(255, 255, 255, 0.08); }
 
 .riven-modal-body {
   display: flex;
-  gap: 12px;
-  padding: 12px;
+  gap: 14px;
+  padding: 16px;
 }
 
 /* Left column: image placeholder */
@@ -771,19 +794,67 @@ select option {
   width: 130px;
   min-width: 130px;
   height: 220px;
-  background: rgba(155, 109, 208, 0.06);
-  border: 1px dashed rgba(155, 109, 208, 0.25);
+  background: rgba(155, 109, 208, 0.08);
+  border: 1px solid rgba(155, 109, 208, 0.35);
   border-radius: var(--radius);
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(155, 109, 208, 0.3);
+  text-transform: uppercase;
+  position: relative;
+}
+/* L-bracket corners */
+.riven-img-placeholder::before,
+.riven-img-placeholder::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(155, 109, 208, 0.55);
+  border-style: solid;
+}
+.riven-img-placeholder::before {
+  top: 6px; left: 6px;
+  border-width: 2px 0 0 2px;
+  border-radius: 2px 0 0 0;
+}
+.riven-img-placeholder::after {
+  bottom: 6px; right: 6px;
+  border-width: 0 2px 2px 0;
+  border-radius: 0 0 2px 0;
 }
 
 /* Right column: stat rows + actions */
-.riven-stats-col { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.riven-stats-col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
 
 .riven-stat-row {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding-left: 0;
+  border-left: 2px solid transparent;
+  transition: border-color 0.15s, padding-left 0.15s;
+}
+.riven-stat-row.has-value {
+  border-left-color: var(--riven);
+  padding-left: 6px;
+}
+.riven-stat-num {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(155, 109, 208, 0.5);
+  background: rgba(155, 109, 208, 0.1);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .riven-stat-select,
 .riven-stat-input {
@@ -809,9 +880,23 @@ select option {
   cursor: pointer;
 }
 .riven-stat-select:focus { box-shadow: none; }
+.riven-input-wrap {
+  position: relative;
+  flex: 0 0 54px;
+}
+.riven-input-wrap::after {
+  content: '%';
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--text-dim);
+  pointer-events: none;
+}
 .riven-stat-input {
-  flex: 0 0 50px;
-  width: 50px;
+  width: 54px;
+  padding-right: 18px;
   text-align: center;
   -moz-appearance: textfield;
 }
@@ -822,35 +907,32 @@ select option {
 .riven-action-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 4px;
+  gap: 10px;
+  margin-top: 8px;
 }
 .btn-riven-apply {
-  background: var(--riven);
+  flex: 1;
+  background: linear-gradient(135deg, #7b3fbf, var(--riven));
   border: none;
   color: #fff;
-  padding: 9px 20px;
+  padding: 11px;
   border-radius: var(--radius-sm);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s, box-shadow 0.15s;
-  flex-shrink: 0;
+  transition: box-shadow 0.15s, filter 0.15s;
 }
-.btn-riven-apply:hover { background: #b07fe0; box-shadow: 0 0 12px var(--riven-glow); }
+.btn-riven-apply:hover { box-shadow: 0 4px 18px rgba(155, 109, 208, 0.4); filter: brightness(1.1); }
 .btn-riven-clear {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
+  background: none;
+  border: none;
   color: var(--text-dim);
-  padding: 9px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
   cursor: pointer;
-  transition: color 0.15s, background 0.15s;
+  padding: 4px 2px;
+  transition: color 0.15s;
 }
-.btn-riven-clear:hover { color: var(--text); background: rgba(255,255,255,0.1); }
+.btn-riven-clear:hover { color: var(--text); }
 
 /* ── Animations ─────────────────────────────────────── */
 @keyframes fadeIn {

@@ -55,17 +55,18 @@
     <div class="mod-picker-overlay" id="riven-picker-overlay">
       <div class="riven-modal">
         <div class="riven-modal-header">
-          <h3>Create riven</h3>
+          <div class="riven-modal-header-text">
+            <h3>Riven Mod</h3>
+            <p class="riven-modal-subtitle">Configure up to 4 stats</p>
+          </div>
           <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
         </div>
         <div class="riven-modal-body">
-          <div class="riven-img-placeholder" id="riven-img-area">
-            <!-- riven image frame — populated later -->
-          </div>
+          <div class="riven-img-placeholder" id="riven-img-area">RIVEN</div>
           <div class="riven-stats-col">
             <div id="riven-rows"></div>
             <div class="riven-action-row">
-              <button class="btn-riven-apply" onclick="applyRiven()">Add</button>
+              <button class="btn-riven-apply" onclick="applyRiven()">Apply</button>
               <button class="btn-riven-clear" onclick="clearRiven()">Clear</button>
             </div>
           </div>
@@ -1269,15 +1270,18 @@ function onRivenDraftChange(i, field, value) {
 function renderRivenRows() {
   const container = document.getElementById('riven-rows');
   container.innerHTML = rivenDraft.map((s, i) => `
-    <div class="riven-stat-row">
+    <div class="riven-stat-row${s.stat ? ' has-value' : ''}">
+      <span class="riven-stat-num">0${i+1}</span>
       <select class="riven-stat-select" onchange="onRivenDraftChange(${i},'stat',this.value)">
         ${RIVEN_STAT_OPTIONS.map(o =>
           `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
         ).join('')}
       </select>
-      <input type="number" class="riven-stat-input" step="1" value="${s.pct}"
-        onchange="onRivenDraftChange(${i},'pct',this.value)"
-        oninput="onRivenDraftChange(${i},'pct',this.value)">
+      <div class="riven-input-wrap">
+        <input type="number" class="riven-stat-input" step="1" value="${s.pct}"
+          onchange="onRivenDraftChange(${i},'pct',this.value)"
+          oninput="onRivenDraftChange(${i},'pct',this.value)">
+      </div>
     </div>
   `).join('');
 }
