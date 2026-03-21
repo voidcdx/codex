@@ -42,10 +42,7 @@ Web UI fully functional with dark theme, mod card grid, special slots, and weapo
 
 ## Pending
 
-### ① Chat Interface (next session)
-Add an AI chat panel to the web UI. See CLAUDE.md § Chat Interface for full spec.
-
-### ② Replace Mad5cout Research Reference
+### ① Replace Mad5cout Research Reference
 User has authoritative damage calculation docs (PDF). Share path → update `CLAUDE.md` "Confirmed Order of Operations".
 
 ### ③ Enemy Data Gaps
