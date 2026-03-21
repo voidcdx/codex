@@ -50,7 +50,6 @@ scripts/
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/optimal-order
   static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input
-  chat.py           # (planned) AI chat backend — POST /api/chat; see § Chat Interface below
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]
 ```
@@ -157,42 +156,6 @@ Exception: Kuva/Tenet innate elements follow HCET priority (Heat > Cold > Electr
 
 ## Rules
 - Short answers only. Don't rewrite entire files — only the parts that need changing. Ask questions when uncertain.
-
-## Chat Interface
-
-An AI chat panel will be added to the web UI. Users can ask natural-language questions and get answers that are grounded in the current calculator context (selected weapon, mods, enemy, attack mode).
-
-### Architecture
-- **Backend:** `web/chat.py` — new FastAPI route `POST /api/chat`
-  - Accepts `{ messages: [{role, content}], context: {...} }` where `context` is the current calculator state (weapon name, attack, mods, enemy, results)
-  - Calls Claude API (`claude-haiku-4-5-20251001` for speed/cost) with a system prompt that includes the context and a Warframe damage mechanics reference
-  - Streams response back (SSE or chunked JSON)
-- **Frontend:** collapsible chat panel in `index.html`
-  - Floating button or bottom panel toggle
-  - Message history, user input, send button
-  - Injects current weapon/enemy/mod/result state into each request automatically
-  - Renders markdown in responses
-
-### System Prompt
-The system prompt must include:
-- Current weapon stats (name, attack, modded damage, DPS)
-- Current enemy (name, faction, armor, health type)
-- Current mod loadout
-- Current damage breakdown (if calculated)
-- Reference to the 6-step pipeline and quantization rules
-- Instruction: answer concisely, cite game mechanics, give build suggestions with specific mod names from `mods.json`
-
-### API Key
-Set `ANTHROPIC_API_KEY` environment variable. The backend reads it via `os.environ`. Never hardcode.
-
-### Suggested First Message
-When a weapon and enemy are selected but chat hasn't been opened yet, pre-populate with:
-> "You have [Weapon] modded with [Mods] against [Enemy]. What would you like to know?"
-
-### Do NOT
-- Stream full wiki pages into the prompt — summarize
-- Use tool use / function calling for the first version — keep it simple
-- Block the main thread — use `httpx.AsyncClient` for Claude API calls
 
 ## Critical Implementation Rules
 - **Rounding:** NEVER use the built-in `round()` function. All rounding must use the `warframe_round` utility (Decimal + ROUND_HALF_UP) to prevent Banker's Rounding errors.
