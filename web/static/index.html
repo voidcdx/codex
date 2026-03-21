@@ -1297,7 +1297,7 @@ function renderRivenRows() {
       <input type="number" class="riven-stat-input" step="0.1" value="${s.pct || ''}"
         placeholder="0" min="-999" max="9999"
         onchange="onRivenDraftChange(${i},'pct',this.value)"
-        oninput="onRivenDraftChange(${i},'pct',this.value)">
+        oninput="if(this.value.length>4)this.value=this.value.slice(0,4);onRivenDraftChange(${i},'pct',this.value)">
       <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">×</button>
     </div>
   `).join('');
