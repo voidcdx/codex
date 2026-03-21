@@ -29,7 +29,7 @@ from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
     _raw_enemies, _raw_mods, _raw_weapons,
     list_enemies, list_mods, list_weapons,
-    load_enemy, load_mod, load_weapon,
+    load_enemy, load_mod, load_weapon, make_riven_mod,
 )
 from src.models import DamageComponent
 from src.quantizer import quantize
@@ -143,10 +143,20 @@ def get_enemies() -> list[dict]:
 # Calculate endpoint
 # ---------------------------------------------------------------------------
 
+class RivenStat(BaseModel):
+    stat: str    # e.g. "damage", "crit_chance", "heat"
+    value: float # decimal fraction (0.658 = +65.8%)
+
+
+class RivenSpec(BaseModel):
+    stats: list[RivenStat]
+
+
 class ModdedWeaponRequest(BaseModel):
     weapon: str
     mods: list[str] = []
     attack: str | None = None
+    riven: RivenSpec | None = None
 
 
 @app.post("/api/modded-weapon")
@@ -162,6 +172,8 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
             mods.append(load_mod(mod_name))
         except KeyError:
             raise HTTPException(400, f"Unknown mod: {mod_name!r}")
+    if req.riven:
+        mods.append(make_riven_mod([s.model_dump() for s in req.riven.stats]))
 
     base_damage = weapon.total_base_damage
     base_cc = weapon.crit_chance
@@ -271,6 +283,7 @@ class CalcRequest(BaseModel):
     headshot:     bool = False
     viral_stacks: int = 0           # 0–10
     corrosive_stacks: int = 0      # 0–10
+    riven:        RivenSpec | None = None
 
 
 @app.post("/api/calculate")
@@ -286,6 +299,8 @@ def calculate(req: CalcRequest) -> dict:
             mods.append(load_mod(mod_name))
         except KeyError:
             raise HTTPException(400, f"Unknown mod: {mod_name!r}")
+    if req.riven:
+        mods.append(make_riven_mod([s.model_dump() for s in req.riven.stats]))
 
     try:
         enemy = load_enemy(req.enemy, headshot=req.headshot)
@@ -363,6 +378,7 @@ class OptimalOrderRequest(BaseModel):
     headshot:         bool = False
     viral_stacks:     int  = 0
     corrosive_stacks: int  = 0
+    riven:            RivenSpec | None = None
 
 
 @app.post("/api/optimal-order")
@@ -385,6 +401,9 @@ def optimal_order(req: OptimalOrderRequest) -> dict:
             loaded.append((i, name, load_mod(name)))
         except KeyError:
             raise HTTPException(400, f"Unknown mod: {name!r}")
+    if req.riven:
+        riven_mod = make_riven_mod([s.model_dump() for s in req.riven.stats])
+        loaded.append((len(req.mods), "Riven", riven_mod))
 
     # Identify primary-elemental mods
     elem_entries = [

@@ -276,6 +276,91 @@ def load_mod(name: str) -> Mod:
     )
 
 
+# Riven stat name → Mod field name (or elemental key for elemental bonuses)
+_RIVEN_STAT_MAP: dict[str, str] = {
+    "damage":         "damage_bonus",
+    "crit_chance":    "cc_bonus",
+    "crit_damage":    "cd_bonus",
+    "status_chance":  "sc_bonus",
+    "multishot":      "multishot_bonus",
+    "fire_rate":      "fire_rate_bonus",
+    "heat":           "heat",
+    "cold":           "cold",
+    "electricity":    "electricity",
+    "toxin":          "toxin",
+    "blast":          "blast",
+    "corrosive":      "corrosive",
+    "gas":            "gas",
+    "magnetic":       "magnetic",
+    "radiation":      "radiation",
+    "viral":          "viral",
+}
+
+_RIVEN_ELEM_TYPES: dict[str, DamageType] = {
+    "heat":        DamageType.HEAT,
+    "cold":        DamageType.COLD,
+    "electricity": DamageType.ELECTRICITY,
+    "toxin":       DamageType.TOXIN,
+    "blast":       DamageType.BLAST,
+    "corrosive":   DamageType.CORROSIVE,
+    "gas":         DamageType.GAS,
+    "magnetic":    DamageType.MAGNETIC,
+    "radiation":   DamageType.RADIATION,
+    "viral":       DamageType.VIRAL,
+}
+
+
+def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> Mod:
+    """Build a Mod from Riven stat definitions.
+
+    Each stat dict must have:
+        "stat":  one of the keys in _RIVEN_STAT_MAP (e.g. "damage", "heat")
+        "value": decimal fraction (e.g. 0.658 means +65.8%)
+
+    Unknown stat keys are silently ignored.
+    IPS buffs (impact/puncture/slash) are not yet supported.
+    """
+    damage_bonus = 0.0
+    cc_bonus = 0.0
+    cd_bonus = 0.0
+    sc_bonus = 0.0
+    multishot_bonus = 0.0
+    fire_rate_bonus = 0.0
+    elemental_bonuses: list[DamageComponent] = []
+
+    for entry in stats:
+        stat = str(entry.get("stat", "")).lower()
+        value = float(entry.get("value", 0.0))
+        mapped = _RIVEN_STAT_MAP.get(stat)
+        if mapped is None:
+            continue
+        if mapped in _RIVEN_ELEM_TYPES:
+            elemental_bonuses.append(DamageComponent(_RIVEN_ELEM_TYPES[mapped], value))
+        elif mapped == "damage_bonus":
+            damage_bonus += value
+        elif mapped == "cc_bonus":
+            cc_bonus += value
+        elif mapped == "cd_bonus":
+            cd_bonus += value
+        elif mapped == "sc_bonus":
+            sc_bonus += value
+        elif mapped == "multishot_bonus":
+            multishot_bonus += value
+        elif mapped == "fire_rate_bonus":
+            fire_rate_bonus += value
+
+    return Mod(
+        name=name,
+        damage_bonus=damage_bonus,
+        elemental_bonuses=elemental_bonuses,
+        cc_bonus=cc_bonus,
+        cd_bonus=cd_bonus,
+        sc_bonus=sc_bonus,
+        multishot_bonus=multishot_bonus,
+        fire_rate_bonus=fire_rate_bonus,
+    )
+
+
 def load_enemy(name: str, headshot: bool = False) -> Enemy:
     """Load an enemy by exact name.
 

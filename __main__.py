@@ -20,7 +20,19 @@ if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
 from src.calculator import DamageCalculator, calculate_crit_multiplier
-from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons
+from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, make_riven_mod
+
+
+def _parse_riven_arg(riven_str: str) -> list[dict]:
+    """Parse '--riven damage:0.658,crit_chance:0.469' into stat dicts."""
+    stats = []
+    for pair in riven_str.split(","):
+        pair = pair.strip()
+        if ":" not in pair:
+            continue
+        key, _, val = pair.partition(":")
+        stats.append({"stat": key.strip(), "value": float(val.strip())})
+    return stats
 
 
 def _print_results(
@@ -30,9 +42,12 @@ def _print_results(
     crit_mode: str,
     headshot: bool,
     attack_name: str | None = None,
+    riven_str: str | None = None,
 ) -> None:
     weapon = load_weapon(weapon_name, attack_name=attack_name)
     mods   = [load_mod(m) for m in mod_names]
+    if riven_str:
+        mods.append(make_riven_mod(_parse_riven_arg(riven_str)))
     enemy  = load_enemy(enemy_name, headshot=headshot)
 
     # Crit stats come directly from the selected attack on the weapon
@@ -57,7 +72,10 @@ def _print_results(
     print(f"\nWeapon : {weapon.name}")
     if len(weapon.attacks) > 1:
         print(f"Attack : {selected_attack_name}")
-    print(f"Mods   : {', '.join(mod_names) if mod_names else '(none)'}")
+    mod_display = ', '.join(mod_names) if mod_names else ''
+    if riven_str:
+        mod_display = (mod_display + ', Riven').lstrip(', ')
+    print(f"Mods   : {mod_display or '(none)'}")
     print(f"Enemy  : {enemy.name}  [{enemy.faction.name}, {enemy.armor_type.name} armor,"
           f" {enemy.base_armor:.0f} base armor]")
     print(f"Crit   : {crit_mode}  CC={total_cc*100:.1f}%  CM={total_cm:.1f}x"
@@ -88,6 +106,8 @@ def main(argv: list[str] | None = None) -> None:
                         help="Apply headshot (doubles crit mult)")
     parser.add_argument("--attack", default=None,
                         help='Attack mode to use (e.g. "Rocket Explosion"). Defaults to first.')
+    parser.add_argument("--riven", default=None,
+                        help='Riven stats as "stat:value,..." e.g. "damage:0.658,crit_chance:0.469"')
     parser.add_argument("args", nargs="*",
                         help='"WeaponName" [ModName ...] [vs EnemyName]')
 
@@ -131,7 +151,7 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(1)
 
     try:
-        _print_results(weapon_name, mod_names, enemy_name, ns.crit, ns.headshot, ns.attack)
+        _print_results(weapon_name, mod_names, enemy_name, ns.crit, ns.headshot, ns.attack, ns.riven)
     except KeyError as e:
         print(f"Error: {e}")
         sys.exit(1)
