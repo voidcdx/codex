@@ -247,7 +247,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     # Quantized base: each IPS/innate type at 0% damage bonus — actual in-game unmodded values
     quantized_base_dict: dict[str, float] = {}
     for dt, v in weapon.base_damage.items():
-        q = quantize(float(v), base_damage)
+        q = quantize(float(math.floor(v)), base_damage)
         if q != 0.0:
             quantized_base_dict[dt.name.lower()] = q
     for c in weapon.innate_elements:
