@@ -80,6 +80,7 @@ def get_weapons() -> list[dict]:
                     "crit_chance": a.get("crit_chance", 0),
                     "crit_multiplier": a.get("crit_multiplier", 1),
                     "status_chance": a.get("status_chance", 0),
+                    "fire_rate": a.get("fire_rate", 0),
                 }
                 for a in attacks
             ],

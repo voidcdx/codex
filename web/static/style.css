@@ -221,6 +221,18 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
 }
 .mod-slot button:hover { border-color: var(--bad); color: var(--bad); }
 
+/* ── Mod Grid Wrapper + SVG Arcs ────────────────────── */
+#mod-grid-wrapper { position: relative; }
+#element-arcs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 10;
+}
+
 /* ── 2×4 Mod Card Grid (new) ────────────────────────── */
 .mod-grid {
   display: grid;
@@ -310,6 +322,16 @@ select:focus, input[type=text]:focus, input[type=number]:focus {
 }
 .mod-card:hover .mod-clear { opacity: 1; }
 .mod-card .mod-clear:hover { color: var(--bad); }
+.mod-card .mod-polarity {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1;
+  pointer-events: none;
+}
+.mod-card:hover .mod-polarity { color: rgba(255, 255, 255, 0.5); }
+.polarity-icon { display: block; }
 .mod-card .slot-num {
   position: absolute;
   bottom: 3px;
