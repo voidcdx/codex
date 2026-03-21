@@ -803,18 +803,6 @@ select option {
   cursor: pointer;
 }
 .riven-stat-select:focus { box-shadow: none; }
-.riven-row-clear {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  padding: 4px;
-  font-size: 13px;
-  line-height: 1;
-  transition: color 0.15s;
-  flex-shrink: 0;
-}
-.riven-row-clear:hover { color: var(--bad); }
 .riven-stat-input {
   flex: 0 0 44px;
   width: 44px;
@@ -827,8 +815,11 @@ select option {
   font-size: 12px;
   text-align: center;
   color: var(--text);
+  -moz-appearance: textfield;
 }
 .riven-stat-input:focus { box-shadow: none; }
+.riven-stat-input::-webkit-inner-spin-button,
+.riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
 .riven-action-row {
   display: flex;

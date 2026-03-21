@@ -1275,7 +1275,6 @@ function renderRivenRows() {
           `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
         ).join('')}
       </select>
-      <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">×</button>
       <input type="number" class="riven-stat-input" step="1" value="${s.pct}"
         onchange="onRivenDraftChange(${i},'pct',this.value)"
         oninput="onRivenDraftChange(${i},'pct',this.value)">
