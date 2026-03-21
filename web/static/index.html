@@ -42,14 +42,23 @@
       <div class="riven-modal">
         <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
         <div class="riven-modal-left">
-          <img id="riven-art" class="riven-art-img" src="" alt="">
+          <div id="riven-art" class="riven-art-img riven-art-ph">
+            <svg viewBox="0 0 64 64" width="64" height="64" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" style="opacity:.18">
+              <rect x="2" y="2" width="60" height="60" rx="8"
+                    stroke="#9b6dd0" stroke-width="2" stroke-dasharray="6 4"/>
+              <circle cx="22" cy="22" r="6" stroke="#9b6dd0" stroke-width="2"/>
+              <path d="M4 44 L20 28 L34 40 L44 30 L60 44"
+                    stroke="#9b6dd0" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
         </div>
         <div class="riven-modal-right">
           <h2 class="riven-modal-title">Create riven</h2>
           <div id="riven-rows"></div>
-          <button class="btn-riven-apply" onclick="applyRiven()">Add riven</button>
-          <div class="riven-modal-desc">
-            Build full builds to test your riven mod. The effect of mod dependent on the rest of your build.
+          <div class="riven-btn-row">
+            <button class="btn-riven-apply" onclick="applyRiven()">Add</button>
+            <button class="btn-riven-reset" onclick="clearRiven();closeRivenBuilder()">Reset</button>
           </div>
         </div>
       </div>
@@ -910,6 +919,7 @@ async function _doUpdateModdedStats() {
 
     // Update crit/status stat blocks
     const hasMods = hasAnyMods;
+    const hasSomeMods = mods.length > 0 || !!getRivenSpec();
     const pct = v => (v * 100).toFixed(1) + '%';
 
     const smCC = document.getElementById('sm-cc');
@@ -972,7 +982,7 @@ async function _doUpdateModdedStats() {
       const baseMag   = data.base_magazine   || 0;
       const moddedMag = data.modded_magazine || 0;
       if (baseMag > 0) svMag.textContent = fmt(baseMag);
-      if (hasMods && baseMag > 0 && moddedMag !== baseMag) {
+      if (hasSomeMods && baseMag > 0 && moddedMag !== baseMag) {
         smMag.textContent = '→ ' + moddedMag;
         smMag.style.display = 'block';
       } else {
@@ -986,7 +996,7 @@ async function _doUpdateModdedStats() {
       const baseAmmo   = data.base_ammo_max   || 0;
       const moddedAmmo = data.modded_ammo_max || 0;
       if (baseAmmo > 0) svAmmo.textContent = fmt(baseAmmo);
-      if (hasMods && baseAmmo > 0 && moddedAmmo !== baseAmmo) {
+      if (hasSomeMods && baseAmmo > 0 && moddedAmmo !== baseAmmo) {
         smAmmo.textContent = '→ ' + moddedAmmo;
         smAmmo.style.display = 'block';
       } else {

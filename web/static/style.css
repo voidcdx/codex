@@ -852,7 +852,11 @@ select option {
 }
 .riven-row-clear:hover { color: #f44336; }
 
-/* Add riven button */
+/* Riven action buttons row */
+.riven-btn-row { display: flex; gap: 8px; }
+.riven-btn-row .btn-riven-apply { flex: 1; }
+
+/* Add button */
 .btn-riven-apply {
   height: 40px;
   background: linear-gradient(135deg, #7b3fbf, var(--riven));
@@ -867,15 +871,23 @@ select option {
 }
 .btn-riven-apply:hover { box-shadow: 0 4px 18px rgba(155, 109, 208, 0.4); filter: brightness(1.1); }
 
-/* Description */
-.riven-modal-desc {
-  background: rgba(0, 0, 0, 0.3);
+/* Reset button */
+.btn-riven-reset {
+  flex: 1;
+  height: 40px;
+  background: rgba(155, 109, 208, 0.15);
+  border: 1px solid rgba(155, 109, 208, 0.35);
   border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.5;
+  color: var(--riven);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
 }
+.btn-riven-reset:hover { background: rgba(155, 109, 208, 0.28); }
+
+/* Image placeholder */
+.riven-art-ph { display: flex; align-items: center; justify-content: center; }
 
 /* ── Animations ─────────────────────────────────────── */
 @keyframes fadeIn {
