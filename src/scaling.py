@@ -16,21 +16,30 @@ def _health_f1(delta: float) -> float:
     return 1.0 + 0.015 * delta ** 2
 
 
-def _health_f2(delta: float) -> float:
-    """Above ΔLevel 80. Coefficient community-derived from wiki content."""
-    return 1.0 + 10.7332 * delta ** 0.72
+def _health_f2(delta: float, eximus: bool = False) -> float:
+    """Above ΔLevel 80. Eximus units use a higher coefficient (~1.617×)."""
+    coeff = 17.3542 if eximus else 10.7332
+    return 1.0 + coeff * delta ** 0.72
 
 
-def health_multiplier(delta: float) -> float:
+def health_multiplier(delta: float, eximus: bool = False) -> float:
     """Health/shield multiplier for a given level difference from base."""
     if delta <= 0:
         return 1.0
     if delta <= 70:
         return _health_f1(delta)
     if delta >= 80:
-        return _health_f2(delta)
+        return _health_f2(delta, eximus)
     t = (delta - 70) / 10.0
-    return _health_f1(delta) + (_health_f2(delta) - _health_f1(delta)) * _smoothstep(t)
+    return _health_f1(delta) + (_health_f2(delta, eximus) - _health_f1(delta)) * _smoothstep(t)
+
+
+def overguard_at_level(delta: float) -> float:
+    """Overguard scales linearly with ΔLevel (not the health power law).
+    Base overguard = 12. Coefficient backcalculated from wiki data."""
+    if delta <= 0:
+        return 12.0
+    return 12.0 * (1.0 + 76.477 * delta)
 
 
 def armor_at_level(base_armor: float, delta: float) -> float:
@@ -65,12 +74,12 @@ def scale_enemy_stats(
         shield_mult *= 2.5
 
     delta = max(0, level - base_level)
-    h_mult = health_multiplier(delta) * health_mult
+    h_mult = health_multiplier(delta, eximus) * health_mult
     s_mult = health_multiplier(delta) * shield_mult
     armor = armor_at_level(base_armor, delta)
     health = base_health * h_mult
     shield = base_shield * s_mult
-    overguard = 12.0 * health_multiplier(delta) if eximus else 0.0
+    overguard = overguard_at_level(delta) if eximus else 0.0
 
     return {
         "level":     level,
