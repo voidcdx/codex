@@ -905,3 +905,94 @@ class TestCCProcs:
             assert procs[key]["damage_per_tick"] == 0.0
             assert procs[key]["total_damage"] == 0.0
             assert procs[key]["ticks"] == 0
+
+
+# ---------------------------------------------------------------------------
+# TestComboCounter — melee combo multiplier in Step 1
+# Weapon: 100 Slash, no mods, no-armor enemy.
+# combo_mult = 1 + 0.5 * floor(hits / 5)
+# ---------------------------------------------------------------------------
+
+def _combo_weapon():
+    return Weapon(name="Test", base_damage={DamageType.SLASH: 100.0})
+
+def _no_armor_enemy():
+    return Enemy(
+        name="Test",
+        faction=FactionType.NONE,
+        health_type=HealthType.FLESH,
+        armor_type=ArmorType.NONE,
+        base_armor=0.0,
+    )
+
+
+class TestComboCounter:
+    def test_combo_0_is_baseline(self):
+        r = calc.calculate(_combo_weapon(), [], _no_armor_enemy(), combo_counter=0)
+        assert r[DamageType.SLASH] == 100.0
+
+    def test_combo_4_still_baseline(self):
+        # floor(4/5) = 0 → ×1.0
+        r = calc.calculate(_combo_weapon(), [], _no_armor_enemy(), combo_counter=4)
+        assert r[DamageType.SLASH] == 100.0
+
+    def test_combo_5_is_1_5x(self):
+        # floor(5/5) = 1 → ×1.5 → floor(100*1.5)=150 → quantize(150,100)=150
+        r = calc.calculate(_combo_weapon(), [], _no_armor_enemy(), combo_counter=5)
+        assert r[DamageType.SLASH] == 150.0
+
+    def test_combo_9_still_1_5x(self):
+        r = calc.calculate(_combo_weapon(), [], _no_armor_enemy(), combo_counter=9)
+        assert r[DamageType.SLASH] == 150.0
+
+    def test_combo_10_is_2x(self):
+        # floor(10/5) = 2 → ×2.0 → 200
+        r = calc.calculate(_combo_weapon(), [], _no_armor_enemy(), combo_counter=10)
+        assert r[DamageType.SLASH] == 200.0
+
+    def test_combo_stacks_with_damage_mod(self):
+        # Serration +165%, combo=5 → floor(100*(1+1.65)*1.5)=floor(397.5)=397
+        # quantize(397,100): 397/3.125=127.04→127→127*3.125=396.875 → warframe_round=397
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        r = calc.calculate(_combo_weapon(), [serration], _no_armor_enemy(), combo_counter=5)
+        assert r[DamageType.SLASH] == 397.0
+
+
+# ---------------------------------------------------------------------------
+# TestConditionOverload — additive +80% per unique status type on enemy
+# ---------------------------------------------------------------------------
+
+class TestConditionOverload:
+    _co_mod = Mod(name="Condition Overload", condition_overload_bonus=0.80)
+
+    def test_zero_statuses_no_bonus(self):
+        r = calc.calculate(_combo_weapon(), [self._co_mod], _no_armor_enemy(), unique_statuses=0)
+        assert r[DamageType.SLASH] == 100.0
+
+    def test_one_status_plus_80pct(self):
+        # floor(100*(1+0.80))=180 → quantize(180,100)=181.25 → warframe_round=181
+        r = calc.calculate(_combo_weapon(), [self._co_mod], _no_armor_enemy(), unique_statuses=1)
+        assert r[DamageType.SLASH] == 181.0
+
+    def test_three_statuses_plus_240pct(self):
+        # floor(100*(1+2.40))=340 → quantize(340,100)=340.625 → warframe_round=341
+        r = calc.calculate(_combo_weapon(), [self._co_mod], _no_armor_enemy(), unique_statuses=3)
+        assert r[DamageType.SLASH] == 341.0
+
+    def test_co_additive_with_serration(self):
+        # Serration+1.65 + CO 2 statuses → total_dmg=1.65, co=1.60
+        # combo_mult=1.0
+        # floor(100*(1+1.65+1.60))=floor(425)=425 → quantize(425,100)=425 → =425
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        r = calc.calculate(_combo_weapon(), [serration, self._co_mod], _no_armor_enemy(),
+                           unique_statuses=2)
+        assert r[DamageType.SLASH] == 425.0
+
+    def test_co_plus_combo_combined(self):
+        # CO 2 statuses + Serration + combo=5:
+        # floor(100*(1+1.65+1.60)*1.5)=floor(637.5)=637
+        # quantize(637,100): 637/3.125=203.84→204→204*3.125=637.5 → warframe_round=638
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        r = calc.calculate(_combo_weapon(), [serration, self._co_mod], _no_armor_enemy(),
+                           combo_counter=5, unique_statuses=2)
+        assert r[DamageType.SLASH] == 638.0

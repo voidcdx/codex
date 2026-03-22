@@ -112,6 +112,14 @@
           <label for="corrosive-stacks">Corrosive Stacks</label>
           <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:64px">
         </div>
+        <div title="Melee only: consecutive hit count (×1.5 at 5, ×2.0 at 10, …)">
+          <label for="combo-counter">Combo (hits)</label>
+          <input type="number" id="combo-counter" min="0" max="12000" value="0" style="width:72px">
+        </div>
+        <div title="Unique proc types on enemy — used by Condition Overload (+80% per type)">
+          <label for="unique-statuses">Active Statuses</label>
+          <input type="number" id="unique-statuses" min="0" max="10" value="0" style="width:64px">
+        </div>
       </div>
     </div>
 
@@ -1555,6 +1563,8 @@ async function runCalculation() {
   const headshot    = document.getElementById('headshot-cb').checked;
   const viralStacks     = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
   const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
+  const comboCounter    = parseInt(document.getElementById('combo-counter').value, 10) || 0;
+  const uniqueStatuses  = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
 
   if (!weapon || !enemy) {
     showError('Please select a weapon and enemy.');
@@ -1569,7 +1579,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
     });
     const data = await resp.json();
     if (!resp.ok) {

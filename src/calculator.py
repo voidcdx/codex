@@ -184,12 +184,18 @@ class DamageCalculator:
         enemy_level: int = 1,          # target enemy level (1–9999)
         steel_path: bool = False,      # Steel Path: +100 level, ×2.5 HP/shields
         eximus: bool = False,          # Eximus unit
+        combo_counter: int = 0,        # melee combo hit count; mult = 1 + 0.5×floor(count/5)
+        unique_statuses: int = 0,      # unique active status types on enemy (for Condition Overload)
     ) -> dict[DamageType, float]:
         """Return final per-trigger damage values after the full pipeline (includes multishot)."""
         base_damage = weapon.total_base_damage
 
         # --- Collect mod bonuses ---
         total_damage_bonus = sum(m.damage_bonus for m in mods)
+        # Condition Overload: additive +N% per unique status type on enemy
+        co_total = sum(m.condition_overload_bonus for m in mods) * unique_statuses
+        # Combo counter: multiplicative melee bonus, 1 + 0.5×floor(hits/5)
+        combo_mult = 1.0 + 0.5 * math.floor(combo_counter / 5)
         faction_bonus = sum(
             m.faction_bonus for m in mods
             if m.faction_type == enemy.faction
@@ -252,7 +258,7 @@ class DamageCalculator:
         # --- Step 1: Apply damage mods → modded base, then quantize ---
         modded: list[DamageComponent] = []
         for comp in all_components:
-            raw = math.floor(comp.amount * (1.0 + total_damage_bonus))
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + co_total) * combo_mult)
             q = quantize(float(raw), base_damage)
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
