@@ -135,7 +135,7 @@ def _print_results(
             "electricity": "Elec. (Arc)  ",
         }
         _CC_LABELS = {
-            "viral":     "Viral (Health Amp)",
+            "viral":     "Viral (Health)",
             "magnetic":  "Magnetic (Shield) ",
             "radiation": "Radiation (Confuse)",
             "blast":     "Blast (Accuracy)  ",
