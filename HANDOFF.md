@@ -1,72 +1,65 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**164 tests passing.** Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS.
-Web UI fully functional: dark theme, mod card grid, special slots, weapon images, riven mod builder, enemy level scaler, alchemy mixer.
+**205 tests passing.** Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Web UI fully functional: dark theme, mod card grid, special slots, weapon images, riven mod builder, enemy level scaler, alchemy mixer.
 
-## Branch
-`claude/continue-handoff-rKTj3` — push all work here.
+Branch: `claude/review-documentation-DmcrV`
 
-## Architecture
-```
-src/
-  enums.py        — DamageType, FactionType, HealthType, ArmorType
-  models.py       — Weapon, WeaponAttack, Mod, Enemy, DamageComponent dataclasses
-  quantizer.py    — quantize() pure function
-  combiner.py     — elemental combination by mod slot order
-  calculator.py   — 6-step pipeline + crit + armor + faction + Viral + calculate_procs()
-  scaling.py      — enemy level scaling (health/shield/armor/overguard)
-  loader.py       — load_weapon/mod/enemy from JSON
-web/
-  api.py          — FastAPI endpoints
-  static/index.html  — SPA (all UI + JS)
-  static/style.css   — dark theme
-data/
-  weapons.json    — 588 weapons (multi-attack)
-  mods.json       — 1534 mods
-  enemies.json    — 983 enemies
-```
+---
 
-## What Was Done Last Session (2026-03-22)
+## What Was Done This Session
 
-### 1. Viral CC Proc Label / Effect Text
-Renamed the Viral proc label from `"Viral (Health)"` → `"Viral Health Vulnr."` across all three surfaces:
-- `src/calculator.py` (~line 478): effect string `"Health Vulnr. ×1.75–×4.25"` (removed dev-note `(use viral_stacks param)`)
-- `__main__.py` (~line 140): `_CC_LABELS["viral"]`
-- `web/static/index.html` (~line 1859): `CC_PROC_LABELS.viral`
+### 1. Missing secondary stat fields patched in `data/mods.json`
+`scripts/fix_secondary_stats.py` — 109 field assignments across 9 stat types:
 
-### 2. Combo Counter Hidden for Non-Melee Weapons
-Combo counter is a melee-only mechanic. The input was always visible and its value was sent to the backend for any weapon type. Fixed in `onWeaponChange()` (`index.html` ~line 772):
-- Added `id="combo-div"` to the container div (line 143)
-- `isMeleeWeapon()` (already existed, ~line 1428) now controls `comboDiv.style.display`
-- Resets to tier 1 when switching to a non-melee weapon (ensures `combo_counter: 0` in POST body)
+| Field | Count | Examples |
+|---|---|---|
+| `status_chance_pct` | 62 | Voltaic Strike, Malignant Force, Rifle Aptitude |
+| `reload_speed_pct` | 15 | Chilling Reload (+40%), Burdened Magazine (−18%) |
+| `magazine_pct` | 10 | Ice Storm (+40%), Depleted Reload (−60%) |
+| `damage_bonus_pct` | 7 | Blaze (+60%), Vile Acceleration (−15%), Hollow Point |
+| `status_damage_pct` | 6 | Boreal's Contempt, Elementalist series |
+| `crit_damage_pct` | 4 | Bite (+220%), Magnetic Might (+40%) |
+| `crit_chance_pct` | 2 | Critical Meltdown (+60%), Sacrificial Steel (+220%) |
+| `multishot_pct` | 2 | Lethal Torrent (+60%), Containment Breach (+30%) |
+| `ammo_max_pct` | 1 | Draining Gloom (−60%) |
 
-### 3. Combo Counter Max Clamped via oninput
-The `max` attribute only controls spinner arrows — manual keyboard entry could exceed 12/13. Added `oninput` handler to the input (line 145):
-```
-oninput="if(+this.value>+this.max)this.value=this.max;if(+this.value<1)this.value=1"
-```
-Uses `+this.max` so it automatically respects the dynamic 12 (default) / 13 (Venka Prime) cap set by `onWeaponChange()`.
+Root cause: mods whose primary stat was already set were silently missing secondary/penalty stats because the parser only wrote the primary. The loader defaulted missing fields to 0, so live stats never updated for those mods.
 
-## Critical Naming Trap
-`PRIMARY_ELEMENTS` is **already declared** as a `const Set` at line ~566 (used by the element combiner UI). The alchemy mixer uses `ALCH_PRIMARY` (array). **Never rename it to `PRIMARY_ELEMENTS`** — the duplicate `const` causes a `SyntaxError` that silently kills all JavaScript on the page.
+Script logic: skips conditional effects ("while aiming", "on kill", "per combo", "for Xs", "for each"), companion mod types (Kavat/Kubrow/Hound/Predasite/Vulpaphyla/MOA), and ability augments.
 
-## Other Critical Rules
-- `getCompatibleModTypes(weapon)` takes a weapon object, returns a `Set` — use `.has()` not `.includes()`
-- `getCurrentWeapon()` returns the currently selected weapon object
-- NEVER use `round()` — always use `warframe_round` (Decimal + ROUND_HALF_UP)
-- `armor_type` field is inert post-Update 36; don't add armor-type logic
-- All damage type effectiveness is faction-based (see `FACTION_EFFECTIVENESS` in calculator.py and index.html)
+### 2. Conclave (PVP-only) mods removed from `data/mods.json`
+22 mods removed total:
+- **21 fighting form mods** — shared `"Fighting form devised for Conclave."` in `effect_raw`.
+- **Prize Kill** — no Conclave marker in data; identified manually. PVP survival mod with zero weapon stat fields.
 
-## Running the App
+`data/mods.json` now contains **1,512 mods** (was 1,534).
+
+---
+
+## Known Gaps / Next Candidates
+
+### Kuva/Tenet bonus element %
+Each Kuva/Tenet weapon has a bonus elemental damage % (e.g. 25–60% Heat on Kuva Bramma). The % is in `weapons.json` but **not applied in the damage pipeline**. Requires `bonus_element_pct` flowing through `load_weapon()` and added to the appropriate primary element bucket before combination.
+
+### Weapon Arcanes
+Deadhead, Merciless, Cascadia Flare — stack-based bonuses tied to kill/headshot triggers. Not implemented.
+
+### More Conclave mods
+Prize Kill had no Conclave text in data. More PVP-only mods may exist without the "Fighting form" phrase. Cross-reference wiki's Conclave mod category to find them.
+
+---
+
+## Data Counts
+- `data/weapons.json` — 588 weapons
+- `data/mods.json` — 1,512 mods
+- `data/enemies.json` — 983 enemies
+
+## Scripts
+- `scripts/fix_secondary_stats.py` — secondary stat patcher; kept for re-use when data is refreshed
+- `scripts/fix_fire_rate_mods.py` — fire rate patcher (previous session, same pattern)
+
+## Tests
 ```bash
-pip install fastapi uvicorn
-python run_web.py        # http://localhost:8000
-pytest                   # 164 tests, all pass
+pytest   # 205 passing — run before every commit
 ```
-
-## Possible Next Tasks
-- UI improvements: weapon/mod comparison mode, filter by slot/class
-- Additional damage mechanics: kuva/tenet weapon bonuses, galvanized mods
-- More body part data for enemies (currently only head multiplier stored)
-- CLI: `--list-attacks WEAPON` flag to enumerate attack modes

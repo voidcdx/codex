@@ -42,7 +42,7 @@ tests/
   test_scaling.py     # enemy level scaling: health/shield/armor/overguard per faction
 data/
   weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
-  mods.json         # 1534 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus
+  mods.json         # 1512 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus; Conclave mods excluded
   enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, base_level, base_health, base_shield, head_multiplier
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
@@ -283,6 +283,21 @@ These are crowd-control or debuff effects — no tick damage. Return `{active, e
 ## Damage Type Effectiveness (Update 36.0+)
 - **Vulnerable (+):** ×1.5
 - **Resistant (−):** ×0.5
+
+## Data Quality Notes
+
+### mods.json — secondary stat fields
+Many mods have a primary stat (e.g. an elemental%) and secondary weapon stats (e.g. reload speed, magazine, status chance) that are **only** in `effect_raw` unless explicitly parsed. `scripts/fix_secondary_stats.py` was used to backfill 109 such fields across 9 stat types. Re-run it if `data/mods.json` is ever regenerated from scratch.
+
+Fields read by `loader.py` from each mod entry:
+`damage_bonus_pct`, `crit_chance_pct`, `crit_damage_pct`, `status_chance_pct`, `multishot_pct`, `status_damage_pct`, `fire_rate_pct`, `magazine_pct`, `ammo_max_pct`, `reload_speed_pct`, `condition_overload_pct`
+
+### mods.json — Conclave (PVP) mods
+22 Conclave-only mods have been removed. They have no effect in PVE damage calculation. The 21 fighting form mods were identified by `"Fighting form devised for Conclave."` in `effect_raw`. Prize Kill was removed manually (no marker in data). If regenerating data from wiki, these must be excluded again — or filtered at load time by checking the wiki's Conclave category.
+
+### Known unimplemented data
+- **Kuva/Tenet bonus element %** — stored in `weapons.json` per weapon but not yet applied in the pipeline. Bonus elemental damage (25–60%) should be added to the appropriate primary element bucket before combination.
+- **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare etc. Stack-based bonuses not modelled.
 
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.
