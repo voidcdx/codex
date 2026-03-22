@@ -1040,7 +1040,7 @@ function showEnemyStats(enemy) {
   if (lvlInput) {
     const bl = enemy.base_level || 1;
     lvlInput.min = bl;
-    lvlInput.value = Math.max(parseInt(lvlInput.value) || bl, bl);
+    lvlInput.value = bl;
   }
 
   const fmt = (v, suffix) => v != null && v !== 0 ? v + (suffix || '') : '—';
