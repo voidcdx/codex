@@ -814,7 +814,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   padding: 0 2px;
   line-height: 1;
 }
-.btn-alchemy-mixer .riven-alchemy-icon { opacity: 0.8; transition: opacity 0.2s; }
+.btn-alchemy-mixer .riven-alchemy-icon { width: 20px; height: 20px; vertical-align: middle; display: inline-block; opacity: 0.8; transition: opacity 0.2s; }
 .btn-alchemy-mixer:hover .riven-alchemy-icon { opacity: 1; }
 
 /* ── Purple + button in heading ─────────────────────── */
