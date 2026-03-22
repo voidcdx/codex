@@ -9868,15 +9868,6 @@
     "base_drain": 6,
     "effect_raw": "Prismatic Gem Augment: The gem now attaches to your free-moving companion. \r\nPassive : +50% Prismatic Gem Duration."
   },
-  "Prize Kill": {
-    "name": "Prize Kill",
-    "type": "Shotgun",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n-100% Shield Recharge Delay for 10s\r\n-25% from Health Orbs"
-  },
   "Proboscis": {
     "name": "Proboscis",
     "type": "Helminth Charger",
