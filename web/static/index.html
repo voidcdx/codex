@@ -245,8 +245,14 @@ async function loadData() {
     fetch('/api/enemies').then(r => r.json()),
   ]);
 
+  const HIDDEN_WEAPON_CLASSES = new Set(['Exalted Weapon']);
+  const HIDDEN_WEAPON_NAMES  = new Set(['Garuda Talons', 'Garuda Prime Talons']);
+  const visibleWeapons = allWeapons.filter(w =>
+    !HIDDEN_WEAPON_CLASSES.has(w.class) && !HIDDEN_WEAPON_NAMES.has(w.name)
+  );
+
   weaponCombo = setupCombobox('weapon-search', 'weapon-dropdown',
-    allWeapons.map(w => w.name),
+    visibleWeapons.map(w => w.name),
     () => onWeaponChange(),
     name => {
       const w = allWeapons.find(x => x.name === name);
