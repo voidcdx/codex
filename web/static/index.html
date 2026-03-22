@@ -28,7 +28,18 @@
 
     <!-- Mods — 2×4 card grid -->
     <div class="panel" style="margin-bottom:16px">
-      <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 30" fill="#C2A24F"><path fill-rule="evenodd" d="M8,0 H12 L12,2 L15,5 L17,9 V23 L13,27 L10,30 L7,27 L3,23 V9 L5,5 L8,2 Z M6.5,4.5 H13.5 V6 H6.5 Z M10,12 L13,16 L10,20 L7,16 Z"/></svg>+</button></h2>
+      <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
+  <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
+  <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="12" cy="20.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="3.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="20.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <path d="M12,5.5 L18,16.5 L6,16.5 Z" fill="none" stroke="#D4A843" stroke-width="1.1" stroke-linejoin="round"/>
+  <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
+  <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+  <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+</svg>+</button></h2>
       <div id="mod-grid-wrapper">
         <div id="special-slots" class="special-slots-row"></div>
         <div id="mod-grid" class="mod-grid"></div>
@@ -207,17 +218,17 @@ const TOOLTIPS = {
   'reload':       'Time in seconds to reload the weapon.',
   'multishot':    'Projectiles fired per trigger pull. Each projectile deals full damage and independently rolls status/crit. Base is 1.0 for all weapons.',
   'impact':       'Strong vs. Machinery, Robotic. Weak vs. Infested Sinew.',
-  'puncture':     'Strong vs. Armor, Fossilized. Weak vs. Infested Flesh.',
-  'slash':        'Strong vs. Cloned Flesh, Infested. Weak vs. Robotic, Machinery. Procs a bleed DoT that bypasses armor.',
-  'heat':         'Strong vs. Cloned Flesh, Infested Flesh. Weak vs. Robotic. Procs a burn DoT.',
-  'cold':         'Strong vs. Shields, Proto Shields. Weak vs. Infested. Procs a slow.',
-  'electricity':  'Strong vs. Robotic, Machinery. Weak vs. Alloy Armor. Procs a chain stun.',
-  'toxin':        'Strong vs. Cloned Flesh, Fossilized. Weak vs. Robotic, Machinery. Procs a poison DoT that bypasses shields.',
-  'blast':        'Heat + Cold. Strong vs. Machinery, Fossilized. Weak vs. Alloy Armor. Procs a knockback.',
-  'corrosive':    'Electricity + Toxin. Strong vs. Ferrite Armor, Fossilized. Weak vs. Proto Shields. Permanently strips armor stacks.',
-  'gas':          'Heat + Toxin. Strong vs. Infested Flesh. Weak vs. Robotic, Machinery. Procs a toxic cloud AoE.',
-  'magnetic':     'Cold + Electricity. Strong vs. Shields, Proto Shields. Weak vs. Alloy Armor. Procs a shield drain.',
-  'radiation':    'Heat + Electricity. Strong vs. Alloy Armor, Robotic. Weak vs. Ferrite Armor, Infested. Procs confusion (enemies attack each other).',
+  'puncture':     'Strong vs. Corpus, Corrupted/Orokin. No DoT.',
+  'slash':        'Strong vs. Infested, Narmer. Procs a bleed DoT that bypasses armor.',
+  'heat':         'Strong vs. Infested. Resistant: Kuva Grineer. Procs a burn DoT.',
+  'cold':         'Strong vs. Sentient. Resistant: Techrot. Procs a slow.',
+  'electricity':  'Strong vs. Corpus Amalgam, Murmur, Anarchs. Procs a chain stun.',
+  'toxin':        'Strong vs. Narmer. Procs a poison DoT that bypasses shields.',
+  'blast':        'Heat + Cold. Strong vs. Deimos Infested. Resistant: Corpus Amalgam. Procs a knockback.',
+  'corrosive':    'Electricity + Toxin. Strong vs. Grineer, Scaldra. Resistant: Sentient. Permanently strips armor stacks.',
+  'gas':          'Heat + Toxin. Strong vs. Deimos Infested, Techrot. Resistant: Scaldra. Procs a toxic cloud AoE.',
+  'magnetic':     'Cold + Electricity. Strong vs. Corpus, Techrot. Resistant: Narmer. Procs a shield drain.',
+  'radiation':    'Heat + Electricity. Strong vs. Sentient, Murmur. Resistant: Corrupted, Anarchs. Procs confusion (enemies attack each other).',
   'viral':        'Cold + Toxin. Strong vs. Cloned Flesh, Flesh. Weak vs. Robotic, Machinery. Procs a health debuff (×4.25 damage to health at 10 stacks).',
   'void':         'Dealt by Operator amps and select weapons. No special armor/health interactions.',
 };

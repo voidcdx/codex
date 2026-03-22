@@ -404,11 +404,11 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .mod-card.empty:hover .add-icon { color: var(--accent2); }
 .btn-add-riven .riven-alchemy-icon {
-  width: 11px;
-  height: auto;
+  width: 14px;
+  height: 14px;
   vertical-align: middle;
   margin-right: 3px;
-  opacity: 0.75;
+  opacity: 0.8;
   transition: opacity 0.2s;
 }
 .btn-add-riven:hover .riven-alchemy-icon { opacity: 1; }
