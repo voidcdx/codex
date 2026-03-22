@@ -293,7 +293,7 @@ Fields read by `loader.py` from each mod entry:
 `damage_bonus_pct`, `crit_chance_pct`, `crit_damage_pct`, `status_chance_pct`, `multishot_pct`, `status_damage_pct`, `fire_rate_pct`, `magazine_pct`, `ammo_max_pct`, `reload_speed_pct`, `condition_overload_pct`
 
 ### mods.json — Conclave (PVP) mods
-22 Conclave-only mods have been removed. They have no effect in PVE damage calculation. The 21 fighting form mods were identified by `"Fighting form devised for Conclave."` in `effect_raw`. Prize Kill was removed manually (no marker in data). If regenerating data from wiki, these must be excluded again — or filtered at load time by checking the wiki's Conclave category.
+Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mods()` via the `/PvPMods/` substring in `InternalName`. This removes ~129 mods. Dual-use mods (diamond icon, `Conclave=True` but no `/PvPMods/`) such as Eagle Eye are retained.
 
 ### Known unimplemented data
 - **Kuva/Tenet bonus element %** — stored in `weapons.json` per weapon but not yet applied in the pipeline. Bonus elemental damage (25–60%) should be added to the appropriate primary element bucket before combination.
