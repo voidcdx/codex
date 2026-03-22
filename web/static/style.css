@@ -770,6 +770,9 @@ select option {
 /* ── Misc ───────────────────────────────────────────── */
 .ms-note { font-size: 12px; color: var(--text-dim); display: block; margin-top: 6px; }
 .ms-note strong { color: var(--accent2); }
+.eff-badge { font-size: 0.68rem; font-weight: 700; padding: 1px 4px; border-radius: 3px; margin-left: 5px; vertical-align: middle; }
+.eff-vuln  { background: #1a3a1a; color: #4caf50; }
+.eff-res   { background: #3a1a1a; color: #f44336; }
 
 /* ── Scrollbar ──────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
