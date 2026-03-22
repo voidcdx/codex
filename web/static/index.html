@@ -167,6 +167,27 @@ const ELEM_COLORS = {
   void:        '#9060ff',
 };
 
+// Faction damage-type effectiveness (Update 36.0+)
+// Keys mirror enemies.json faction strings; values map damage type → multiplier
+const FACTION_EFFECTIVENESS = {
+  grineer:         { impact:1.5, corrosive:1.5 },
+  kuva_grineer:    { impact:1.5, heat:0.5, corrosive:1.5 },
+  corpus:          { puncture:1.5, magnetic:1.5 },
+  corpus_amalgam:  { electricity:1.5, blast:0.5, magnetic:1.5 },
+  infested:        { slash:1.5, heat:1.5 },
+  infestation:     { slash:1.5, heat:1.5 },
+  deimos_infested: { blast:1.5, gas:1.5, viral:0.5 },
+  corrupted:       { puncture:1.5, radiation:0.5, viral:1.5 },
+  orokin:          { puncture:1.5, radiation:0.5, viral:1.5 },
+  sentient:        { cold:1.5, corrosive:0.5, radiation:1.5 },
+  narmer:          { slash:1.5, toxin:1.5, magnetic:0.5 },
+  themurmur:       { electricity:1.5, radiation:1.5, viral:0.5 },
+  murmur:          { electricity:1.5, radiation:1.5, viral:0.5 },
+  scaldra:         { impact:1.5, corrosive:1.5, gas:0.5 },
+  techrot:         { cold:0.5, gas:1.5, magnetic:1.5 },
+  anarchs:         { impact:1.5, electricity:1.5, radiation:0.5 },
+};
+
 // Tooltip text map
 const TOOLTIPS = {
   'crit-chance':  'Chance per hit to deal a critical strike. 100–200% = guaranteed Tier 1 + chance at Tier 2, etc.',
@@ -1587,14 +1608,21 @@ function showResults(data) {
     data.corrosive_stacks > 0 ? `Corrosive: ${data.corrosive_stacks} stacks (−${Math.min(80, 20 + 6*data.corrosive_stacks)}% armor)` : null,
   ].filter(Boolean).join(' &nbsp;|&nbsp; ');
 
+  const _effEnemy = getCurrentEnemy();
+  const _factionMap = _effEnemy ? (FACTION_EFFECTIVENESS[_effEnemy.faction.toLowerCase()] || {}) : {};
+
   const rows = entries.map(([type, val]) => {
     const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
     const key  = type.toLowerCase();
     const color = ELEM_COLORS[key] || 'var(--accent)';
     const dot = `<span class="elem-dot" style="background:${color}"></span>`;
     const ttAttr = TOOLTIPS[key] ? ` data-tooltip="${key}"` : '';
+    const eff = _factionMap[key];
+    const effBadge = eff === 1.5 ? '<span class="eff-badge eff-vuln">+50%</span>'
+                   : eff === 0.5 ? '<span class="eff-badge eff-res">−50%</span>'
+                   : '';
     return `<tr>
-      <td${ttAttr}>${dot}${type}</td>
+      <td${ttAttr}>${dot}${type}${effBadge}</td>
       <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div></td>
       <td>${val.toFixed(2)}</td>
     </tr>`;
