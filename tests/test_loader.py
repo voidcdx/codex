@@ -166,3 +166,95 @@ class TestListFunctions:
     def test_list_enemies_count(self):
         # Should have a substantial enemy database
         assert len(list_enemies()) > 100
+
+
+# ---------------------------------------------------------------------------
+# Galvanized mod loading
+# ---------------------------------------------------------------------------
+
+class TestGalvanizedModLoading:
+    def test_chamber_multishot_base(self):
+        m = load_mod("Galvanized Chamber")
+        assert abs(m.multishot_bonus - 0.80) < 1e-6
+
+    def test_chamber_galv_fields(self):
+        m = load_mod("Galvanized Chamber")
+        assert m.galv_kill_stat == "multishot_bonus"
+        assert abs(m.galv_kill_pct - 0.30) < 1e-6
+        assert m.galv_max_stacks == 5
+
+    def test_diffusion_galv_fields(self):
+        m = load_mod("Galvanized Diffusion")
+        assert m.galv_kill_stat == "multishot_bonus"
+        assert abs(m.galv_kill_pct - 0.30) < 1e-6
+        assert m.galv_max_stacks == 4
+
+    def test_hell_galv_fields(self):
+        m = load_mod("Galvanized Hell")
+        assert m.galv_kill_stat == "multishot_bonus"
+        assert abs(m.galv_kill_pct - 0.30) < 1e-6
+        assert m.galv_max_stacks == 4
+
+    def test_aptitude_base_sc(self):
+        m = load_mod("Galvanized Aptitude")
+        assert abs(m.sc_bonus - 0.80) < 1e-6
+
+    def test_aptitude_galv_fields(self):
+        m = load_mod("Galvanized Aptitude")
+        assert m.galv_kill_stat == "aptitude_damage_bonus"
+        assert abs(m.galv_kill_pct - 0.40) < 1e-6
+        assert m.galv_max_stacks == 2
+
+    def test_savvy_galv_fields(self):
+        m = load_mod("Galvanized Savvy")
+        assert m.galv_kill_stat == "aptitude_damage_bonus"
+        assert abs(m.galv_kill_pct - 0.40) < 1e-6
+        assert m.galv_max_stacks == 2
+
+    def test_shot_galv_fields(self):
+        m = load_mod("Galvanized Shot")
+        assert m.galv_kill_stat == "aptitude_damage_bonus"
+        assert abs(m.galv_kill_pct - 0.40) < 1e-6
+        assert m.galv_max_stacks == 3
+
+    def test_scope_cc_base(self):
+        m = load_mod("Galvanized Scope")
+        assert abs(m.cc_bonus - 1.20) < 1e-6
+
+    def test_scope_galv_fields(self):
+        m = load_mod("Galvanized Scope")
+        assert m.galv_kill_stat == "cc_bonus"
+        assert abs(m.galv_kill_pct - 0.40) < 1e-6
+        assert m.galv_max_stacks == 5
+
+    def test_crosshairs_galv_fields(self):
+        m = load_mod("Galvanized Crosshairs")
+        assert m.galv_kill_stat == "cc_bonus"
+        assert abs(m.galv_kill_pct - 0.40) < 1e-6
+        assert m.galv_max_stacks == 5
+
+    def test_steel_cc_base(self):
+        m = load_mod("Galvanized Steel")
+        assert abs(m.cc_bonus - 1.10) < 1e-6
+
+    def test_steel_galv_fields(self):
+        m = load_mod("Galvanized Steel")
+        assert m.galv_kill_stat == "cd_bonus"
+        assert abs(m.galv_kill_pct - 0.30) < 1e-6
+        assert m.galv_max_stacks == 4
+
+    def test_elementalist_status_damage_base(self):
+        m = load_mod("Galvanized Elementalist")
+        assert abs(m.status_damage_bonus - 0.80) < 1e-6
+
+    def test_elementalist_galv_fields(self):
+        m = load_mod("Galvanized Elementalist")
+        assert m.galv_kill_stat == "sc_bonus"
+        assert abs(m.galv_kill_pct - 0.30) < 1e-6
+        assert m.galv_max_stacks == 4
+
+    def test_non_galvanized_mod_has_no_galv_fields(self):
+        m = load_mod("Serration")
+        assert m.galv_kill_stat == ""
+        assert m.galv_kill_pct == 0.0
+        assert m.galv_max_stacks == 0

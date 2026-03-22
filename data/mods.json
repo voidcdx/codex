@@ -5394,6 +5394,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_chance_pct": 0.8,
+    "galv_kill_stat": "aptitude_damage_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 2,
     "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
   },
   "Galvanized Chamber": {
@@ -5404,6 +5408,9 @@
     "max_rank": 10,
     "base_drain": 6,
     "multishot_pct": 0.8,
+    "galv_kill_stat": "multishot_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 5,
     "effect_raw": "+80% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 5x."
   },
   "Galvanized Crosshairs": {
@@ -5414,6 +5421,9 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.2,
+    "galv_kill_stat": "cc_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 5,
     "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x."
   },
   "Galvanized Diffusion": {
@@ -5424,6 +5434,9 @@
     "max_rank": 10,
     "base_drain": 4,
     "multishot_pct": 1.1,
+    "galv_kill_stat": "multishot_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x."
   },
   "Galvanized Elementalist": {
@@ -5433,6 +5446,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_damage_pct": 0.8,
+    "galv_kill_stat": "sc_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x."
   },
   "Galvanized Hell": {
@@ -5443,6 +5460,9 @@
     "max_rank": 10,
     "base_drain": 6,
     "multishot_pct": 1.1,
+    "galv_kill_stat": "multishot_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x."
   },
   "Galvanized Reflex": {
@@ -5461,6 +5481,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_chance_pct": 0.8,
+    "galv_kill_stat": "aptitude_damage_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 2,
     "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
   },
   "Galvanized Scope": {
@@ -5471,6 +5495,9 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.2,
+    "galv_kill_stat": "cc_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 5,
     "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x."
   },
   "Galvanized Shot": {
@@ -5480,6 +5507,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_chance_pct": 0.8,
+    "galv_kill_stat": "aptitude_damage_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 3,
     "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 14s. Stacks up to 3x."
   },
   "Galvanized Steel": {
@@ -5490,6 +5521,9 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.1,
+    "galv_kill_stat": "cd_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+110% Critical Chance (x2 for Heavy Attacks)\r\nOn Melee Kill:\r\n+30% Critical Damage for 20s. Stacks up to 4x."
   },
   "Gastro": {
