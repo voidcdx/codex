@@ -329,6 +329,10 @@ def _parse_mod(raw: dict) -> dict | None:
     if not name:
         return None
 
+    # Skip Conclave-exclusive (wings icon) mods — identified by /PvPMods/ in InternalName
+    if "/PvPMods/" in (raw.get("InternalName") or ""):
+        return None
+
     max_rank = raw.get("MaxRank") or raw.get("fusionLimit") or 0
 
     out: dict = {
