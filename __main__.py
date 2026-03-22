@@ -8,6 +8,7 @@ Usage:
   python -m dc --list-weapons
   python -m dc --list-mods
   python -m dc --list-enemies
+  python -m dc --list-body-parts "Heavy Gunner"
 """
 from __future__ import annotations
 
@@ -21,7 +22,7 @@ if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
 from src.calculator import DamageCalculator, calculate_crit_multiplier, VIRAL_STACK_MULTIPLIERS
-from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, make_riven_mod, RIVEN_STAT_NAMES
+from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, make_riven_mod, RIVEN_STAT_NAMES
 
 
 def _parse_riven_arg(riven_str: str) -> list[dict]:
@@ -176,6 +177,8 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--list-weapons",  action="store_true", help="List all weapon names")
     parser.add_argument("--list-mods",     action="store_true", help="List all mod names")
     parser.add_argument("--list-enemies",  action="store_true", help="List all enemy names")
+    parser.add_argument("--list-body-parts", default=None, metavar="ENEMY",
+                        help="List body parts and multipliers for an enemy")
     parser.add_argument("--crit", choices=["average", "guaranteed", "max"],
                         default="average", help="Crit mode (default: average)")
     parser.add_argument("--body-part", default="Body", metavar="PART",
@@ -214,6 +217,16 @@ def main(argv: list[str] | None = None) -> None:
     if ns.list_enemies:
         for name in list_enemies():
             print(name)
+        return
+
+    if ns.list_body_parts:
+        try:
+            parts = list_body_parts(ns.list_body_parts)
+        except KeyError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
+        for part, mult in parts.items():
+            print(f"{part}: ×{mult}")
         return
 
     args: list[str] = ns.args
