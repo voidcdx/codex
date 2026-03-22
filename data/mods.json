@@ -662,15 +662,6 @@
     "heat_pct": 1.0,
     "effect_raw": "+100% Health\r\nStatus Effects from abilities that deal <DT_FIRE_COLOR>Heat Damage will be applied twice."
   },
-  "Argent Scourge": {
-    "name": "Argent Scourge",
-    "type": "Polearms",
-    "polarity": "Zenurik",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Argon Plating": {
     "name": "Argon Plating",
     "type": "Archwing",
@@ -1158,15 +1149,6 @@
     "base_drain": 6,
     "crit_chance_pct": 2.0,
     "effect_raw": "Frost gains +200% Critical Chance and +200% Critical Damage against frozen enemies."
-  },
-  "Biting Piranha": {
-    "name": "Biting Piranha",
-    "type": "Dual Daggers",
-    "polarity": "Unairu",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Blackout Pulse": {
     "name": "Blackout Pulse",
@@ -1781,15 +1763,6 @@
     "max_rank": 10,
     "base_drain": 0,
     "effect_raw": "+100% chance to reduce the Stagger effect from self-imposed Radial Attacks"
-  },
-  "Celestial Nightfall": {
-    "name": "Celestial Nightfall",
-    "type": "Glaives",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Celestial Stomp": {
     "name": "Celestial Stomp",
@@ -2428,24 +2401,6 @@
     "base_drain": 2,
     "effect_raw": "20% of Damage converted into <DT_IMPACT_COLOR>Impact"
   },
-  "Crashing Havoc": {
-    "name": "Crashing Havoc",
-    "type": "Hammers",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
-  "Crashing Timber": {
-    "name": "Crashing Timber",
-    "type": "Staves",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Creeping Bullseye": {
     "name": "Creeping Bullseye",
     "type": "Pistol",
@@ -2638,15 +2593,6 @@
     "base_drain": 4,
     "damage_bonus_pct": 2.4,
     "effect_raw": "+60% Melee Damage per Status Type affecting the target\r\nNon-Critical hits deal +240% damage"
-  },
-  "Cunning Aspect": {
-    "name": "Cunning Aspect",
-    "type": "Rapiers",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Cunning Drift": {
     "name": "Cunning Drift",
@@ -2980,15 +2926,6 @@
     "max_rank": 5,
     "base_drain": 0,
     "effect_raw": "Fabricate 3 Specters that fight for 30s. Each deals 85% of the Hound's damage and cannot use Abilities."
-  },
-  "Dividing Blades": {
-    "name": "Dividing Blades",
-    "type": "Dual Swords",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Dizzying Rounds": {
     "name": "Dizzying Rounds",
@@ -3825,15 +3762,6 @@
     "max_rank": 3,
     "base_drain": 6,
     "effect_raw": "Teleport Augment: Teleport will perform a Finisher on the target, dealing 200% Extra Damage. 50% of Energy cost is refunded on a kill."
-  },
-  "Fateful Truth": {
-    "name": "Fateful Truth",
-    "type": "Nikanas",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Fear Sense": {
     "name": "Fear Sense",
@@ -6958,15 +6886,6 @@
     "crit_chance_pct": 1.2,
     "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 9s"
   },
-  "Lashing Coil": {
-    "name": "Lashing Coil",
-    "type": "Whips",
-    "polarity": "Zenurik",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Lashta-Vak": {
     "name": "Lashta-Vak",
     "type": "Antique",
@@ -6975,15 +6894,6 @@
     "max_rank": 5,
     "base_drain": 0,
     "effect_raw": "Void Sling emits a pulse that breaks Containers within 12 m\r\n+2m bonus for each Mod from a unique School"
-  },
-  "Last Herald": {
-    "name": "Last Herald",
-    "type": "Sword And Shield",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Lasting Covenant": {
     "name": "Lasting Covenant",
@@ -7304,15 +7214,6 @@
     "max_rank": 0,
     "base_drain": 0,
     "effect_raw": "Ensures transmuted mod is of Madurai polarity and eliminates credit cost."
-  },
-  "Mafic Rain": {
-    "name": "Mafic Rain",
-    "type": "Nunchaku",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Mag Locks": {
     "name": "Mag Locks",
@@ -8477,15 +8378,6 @@
     "puncture_pct": 0.9,
     "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture"
   },
-  "Noble Cadence": {
-    "name": "Noble Cadence",
-    "type": "Heavy Blade",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "North Wind": {
     "name": "North Wind",
     "type": "Melee",
@@ -8914,15 +8806,6 @@
     "base_drain": 6,
     "puncture_pct": 1.2,
     "effect_raw": "+120% <DT_PUNCTURE_COLOR>Puncture"
-  },
-  "Piercing Fury": {
-    "name": "Piercing Fury",
-    "type": "Daggers",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Piercing Hit": {
     "name": "Piercing Hit",
@@ -10133,15 +10016,6 @@
     "base_drain": 6,
     "effect_raw": "Fire Walker Augment: Accumulate 250% of the damage Fire Walker deals, unleashing it in a trail of fire that lasts 10s."
   },
-  "Quaking Hand": {
-    "name": "Quaking Hand",
-    "type": "Fists",
-    "polarity": "Unairu",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Quasar Drill": {
     "name": "Quasar Drill",
     "type": "Archgun",
@@ -10625,15 +10499,6 @@
     "slash_pct": 0.18,
     "effect_raw": "+18% to Bullet Jump\r\n+18% Aim Glide/Wall Latch Duration\r\n+60% <DT_SLASH_COLOR>Slash on Bullet Jump"
   },
-  "Rending Wind": {
-    "name": "Rending Wind",
-    "type": "Machetes",
-    "polarity": "Zenurik",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Repair Dispensary": {
     "name": "Repair Dispensary",
     "type": "Protea",
@@ -10938,15 +10803,6 @@
     "base_drain": 2,
     "effect_raw": "+10% Mobility\r\n-30 Shield Capacity"
   },
-  "Rising Steel": {
-    "name": "Rising Steel",
-    "type": "Swords",
-    "polarity": "Unairu",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Rising Storm": {
     "name": "Rising Storm",
     "type": "Ash",
@@ -11202,15 +11058,6 @@
     "max_rank": 3,
     "base_drain": 0,
     "effect_raw": "Reveals resource containers and mineral deposits within 60m. Automatically breaks containers and collects resources every 3s."
-  },
-  "Scarlet Hurricane": {
-    "name": "Scarlet Hurricane",
-    "type": "Claws",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Scattered Justice": {
     "name": "Scattered Justice",
@@ -11494,15 +11341,6 @@
     "base_drain": 4,
     "damage_bonus_pct": 1.65,
     "effect_raw": "+165% Damage"
-  },
-  "Shadow Harvest": {
-    "name": "Shadow Harvest",
-    "type": "Scythes",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Shadow Haze": {
     "name": "Shadow Haze",
@@ -12397,15 +12235,6 @@
     "base_drain": -2,
     "effect_raw": "Squad receives +25% Armor"
   },
-  "Star Divide": {
-    "name": "Star Divide",
-    "type": "Tonfas",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Stasis Field": {
     "name": "Stasis Field",
     "type": "MOA",
@@ -12906,15 +12735,6 @@
     "magazine_pct": 0.6,
     "effect_raw": "+60% Magazine Capacity\r\n-30% Reload Speed",
     "reload_speed_pct": -0.3
-  },
-  "Tainted Hydra": {
-    "name": "Tainted Hydra",
-    "type": "Blade And Whip",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Tainted Mag": {
     "name": "Tainted Mag",
@@ -13859,15 +13679,6 @@
     "max_rank": 3,
     "base_drain": 6,
     "effect_raw": "Vex Armor Augment: Taking 150 Damage will trigger a 9m burst. Shield damage will cause a <DT_PUNCTURE_COLOR>Puncture Status effect while Health damage will cause a <DT_EXPLOSION_COLOR>Blast Status effect."
-  },
-  "Vicious Approach": {
-    "name": "Vicious Approach",
-    "type": "Sparring",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Vicious Bond": {
     "name": "Vicious Bond",
