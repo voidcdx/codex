@@ -459,7 +459,7 @@ function renderPickerList(query) {
       .filter(m => !q || m.name.toLowerCase().includes(q));
   } else {
     filtered = allMods
-      .filter(m => weapon ? types.has(m.type) : true)
+      .filter(m => types.has(m.type))
       .filter(m => !inUse.has(m.name))
       .filter(m => !q || m.name.toLowerCase().includes(q));
   }
@@ -722,6 +722,14 @@ function getCompatibleModTypes(weapon) {
 
 function onWeaponChange() {
   selectedAttack = null;
+  const weapon = getCurrentWeapon();
+  const compatTypes = getCompatibleModTypes(weapon);
+  // Clear regular mod slots that are no longer compatible with the new weapon
+  modSlots = modSlots.map(name => {
+    if (!name || name === '__riven__') return name;
+    const mod = allMods.find(m => m.name === name);
+    return (mod && compatTypes.has(mod.type)) ? name : '';
+  });
   // Stance slot is melee-only — clear if switching to a ranged weapon
   if (stanceSlot && !isMeleeWeapon()) {
     stanceSlot = '';
@@ -730,7 +738,6 @@ function onWeaponChange() {
   if (exilusSlot && !getExilusSet().has(exilusSlot)) {
     exilusSlot = '';
   }
-  const weapon = getCurrentWeapon();
   updateAttackSelector(weapon);
   showWeaponStats(weapon);
   renderSpecialSlots();
