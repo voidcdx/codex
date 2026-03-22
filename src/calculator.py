@@ -178,13 +178,14 @@ class DamageCalculator:
         enemy: Enemy,
         crit_multiplier: float = 1.0,   # pass calculate_crit_multiplier() result
         is_crit_headshot: bool = False,  # doubles crit multiplier on headshots
+        multishot: float = 1.0,         # total projectiles per trigger (1 + Σ multishot mods)
         viral_stacks: int = 0,          # 0–10 Viral status stacks on the enemy
         corrosive_stacks: int = 0,     # 0–10 Corrosive status stacks on the enemy
         enemy_level: int = 1,          # target enemy level (1–9999)
         steel_path: bool = False,      # Steel Path: +100 level, ×2.5 HP/shields
         eximus: bool = False,          # Eximus unit
     ) -> dict[DamageType, float]:
-        """Return final per-type damage values after the full pipeline."""
+        """Return final per-trigger damage values after the full pipeline (includes multishot)."""
         base_damage = weapon.total_base_damage
 
         # --- Collect mod bonuses ---
@@ -309,6 +310,10 @@ class DamageCalculator:
         viral_mult = VIRAL_STACK_MULTIPLIERS.get(min(viral_stacks, 10), 1.0)
         if viral_mult != 1.0:
             final = {dtype: float(math.floor(v * viral_mult)) for dtype, v in final.items()}
+
+        # --- Multishot: multiply all damage by projectile count ---
+        if multishot != 1.0:
+            final = {dtype: v * multishot for dtype, v in final.items()}
 
         return final
 

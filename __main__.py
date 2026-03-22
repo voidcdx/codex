@@ -63,6 +63,7 @@ def _print_results(
     total_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
     total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods)
     crit_mult = calculate_crit_multiplier(total_cc, total_cm, mode=crit_mode)
+    modded_ms = 1.0 + sum(m.multishot_bonus for m in mods)
 
     calc = DamageCalculator()
     result = calc.calculate(
@@ -71,6 +72,7 @@ def _print_results(
         enemy=enemy,
         crit_multiplier=crit_mult,
         is_crit_headshot=headshot,
+        multishot=modded_ms,
         viral_stacks=viral_stacks,
         corrosive_stacks=corrosive_stacks,
     )
@@ -99,7 +101,8 @@ def _print_results(
     if corrosive_stacks > 0:
         print(f"Corros.: {corrosive_stacks} stack{'s' if corrosive_stacks != 1 else ''}")
     print()
-    print(f"{'Damage type':<18} {'Final damage':>14}")
+    trigger_label = "Per-trigger" if modded_ms > 1.0001 else "Per-hit"
+    print(f"{'Damage type':<18} {trigger_label + ' damage':>14}")
     print("-" * 34)
     for dtype, val in sorted(result.items(), key=lambda kv: kv[1], reverse=True):
         print(f"  {dtype.name:<16} {val:>14.4f}")
