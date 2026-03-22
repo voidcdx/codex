@@ -51,13 +51,13 @@ scripts/
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
-  static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input
+  static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input, Galv. Stacks input
   static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"]
 ```
 
-## 177 Tests Passing
+## 205 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Web UI Notes
@@ -73,6 +73,9 @@ Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from
 
 ### Combo Counter
 Melee-only mechanic. `onWeaponChange()` hides `#combo-div` and resets to tier 1 for non-melee weapons (uses existing `isMeleeWeapon()`). Range: 1–12 for all weapons, 1–13 for Venka Prime. `oninput` clamp enforces the cap against manual keyboard entry.
+
+### Galvanized Stacks
+`#galv-stacks` input (range 0–5, default 0). Shown in the mod panel whenever any equipped mod has `galv_kill_stat` set. Sent as `galvanized_stacks: int` in POST bodies to `/api/calculate` and `/api/modded-weapon`. The server caps effective stacks per-mod via `galv_max_stacks`.
 
 ## Riven Mod Builder (Web UI)
 - **Slot:** Purple card in the mod grid. Clicking opens a two-column modal.
@@ -102,6 +105,22 @@ Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Roc
 **CLI:** `--attack "Rocket Explosion"` flag (must come before or after all positional args due to argparse).
 
 **API:** POST endpoints (`/api/calculate`, `/api/modded-weapon`) accept optional `"attack"` field. `GET /api/weapons` returns per-weapon `attacks[]` with per-attack stats.
+
+## Galvanized Mods
+
+Three extra fields on the `Mod` dataclass (default to empty/0 for non-galvanized mods):
+
+| Field | Type | Values |
+|---|---|---|
+| `galv_kill_stat` | `str` | `"multishot_bonus"` \| `"cc_bonus"` \| `"cd_bonus"` \| `"sc_bonus"` \| `"aptitude_damage_bonus"` \| `""` |
+| `galv_kill_pct` | `float` | Per-stack bonus (e.g. `0.20` = +20% per stack) |
+| `galv_max_stacks` | `int` | Mod-specific cap (typically 4 or 5) |
+
+**Stack injection:** `calculate()` and `calculate_procs()` accept `galvanized_stacks: int = 0`. For each equipped galvanized mod, effective stacks = `min(galvanized_stacks, mod.galv_max_stacks)`.
+
+**Aptitude-style** (`galv_kill_stat == "aptitude_damage_bonus"`): bonus = `galv_kill_pct × stacks × unique_statuses`, added to `damage_bonus` in Step 1.
+
+**CC/CD/multishot/SC styles**: bonuses are pre-computed in `api.py` before calling `calculate()` — they augment the relevant `Weapon` fields directly.
 
 ## Confirmed Order of Operations (from wiki research)
 Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research):
