@@ -28,7 +28,7 @@
 
     <!-- Mods — 2×4 card grid -->
     <div class="panel" style="margin-bottom:16px">
-      <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></h2>
+      <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 30" fill="#C2A24F"><path fill-rule="evenodd" d="M8,0 H12 L12,2 L15,5 L17,9 V23 L13,27 L10,30 L7,27 L3,23 V9 L5,5 L8,2 Z M6.5,4.5 H13.5 V6 H6.5 Z M10,12 L13,16 L10,20 L7,16 Z"/></svg>+</button></h2>
       <div id="mod-grid-wrapper">
         <div id="special-slots" class="special-slots-row"></div>
         <div id="mod-grid" class="mod-grid"></div>
@@ -359,9 +359,6 @@ function renderModCards() {
     } else {
       card.className = 'mod-card empty';
       card.innerHTML = `
-        <svg class="add-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 30" fill="#C2A24F">
-          <path fill-rule="evenodd" d="M8,0 H12 L12,2 L15,5 L17,9 V23 L13,27 L10,30 L7,27 L3,23 V9 L5,5 L8,2 Z M6.5,4.5 H13.5 V6 H6.5 Z M10,12 L13,16 L10,20 L7,16 Z"/>
-        </svg>
         <div class="add-icon">+</div>
         <div class="add-label">Add Mod</div>
         <div class="slot-num">${i+1}</div>`;
