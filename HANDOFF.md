@@ -1,7 +1,7 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**128 tests passing.** Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs + DPS.
+**154 tests passing.** Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs + DPS.
 Web UI fully functional with dark theme, mod card grid, special slots, weapon images, riven mod builder, and enemy level scaler.
 
 ---
@@ -51,8 +51,28 @@ Web UI fully functional with dark theme, mod card grid, special slots, weapon im
 
 ---
 
-## Pending
+## Recent Changes (this session)
 
+### Faction Effectiveness Badges
+- `FACTION_EFFECTIVENESS` JS constant added to `index.html` — mirrors `src/calculator.py` table, keyed by raw faction string (including aliases: `infestation`, `orokin`, `themurmur`)
+- Results breakdown table now shows `+50%` (green) / `−50%` (red) badges per damage type based on the selected enemy's faction
+- CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`
+
+### Armor Type Removed from Enemy Panel
+- `Armor Type` row removed from `showEnemyStats()` — inert post-Update 36, was misleading
+
+### Exalted / Warframe-Exclusive Weapons Hidden from Weapon Picker
+- `visibleWeapons` filter added in `loadData()`: excludes `class === 'Exalted Weapon'` and Garuda Talons / Garuda Prime Talons
+- `allWeapons` array retains full data for future use
+
+### Mod Slot Compatibility Enforced on Weapon Switch
+- `onWeaponChange()` now clears any mod slots whose `mod.type` is not in `getCompatibleModTypes()` for the new weapon
+- Mod picker `types.has(m.type)` filter no longer falls back to showing all mods when weapon is null
+- Fixes: weapon-specific mods (e.g. Bhisaj-Bal/Paris Prime) no longer persist after switching weapons
+
+---
+
+## Pending
 
 ### ② ~~Enemy Data Gaps~~ — Resolved
 Update 36 (Jade Shadows, June 18 2024) removed Ferrite/Alloy armor types entirely. Armor now provides flat DR only; all damage type modifiers are faction-based (already implemented). The old `ARMOR_TYPE_MODIFIERS` Damage 2.0 table has been removed from `calculator.py`. `health_type` / `armor_type` fields in `enemies.json` are retained as inert metadata.

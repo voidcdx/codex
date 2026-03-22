@@ -50,12 +50,24 @@ scripts/
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate
   static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input
+  static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]
 ```
 
-## 157 Tests Passing
+## 154 Tests Passing
 `pytest` — all pass. Run before committing.
+
+## Web UI Notes
+
+### Faction Effectiveness Badges
+Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `index.html` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
+
+### Weapon Picker Filtering
+Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from the weapon search combobox via `visibleWeapons` filter in `loadData()`. `allWeapons` retains full data.
+
+### Mod Slot Compatibility
+`onWeaponChange()` clears any mod slots whose `mod.type` is not in `getCompatibleModTypes()` for the new weapon. Mod picker always enforces type compatibility — no fallback to showing all mods.
 
 ## Riven Mod Builder (Web UI)
 - **Slot:** Purple card in the mod grid. Clicking opens a two-column modal.
@@ -203,7 +215,7 @@ f2(δ) = 1 + 0.4   × δ^0.75
 ### Implementation
 - `src/scaling.py` — all formulas; `scale_enemy_stats()` is the main entry point
 - `web/api.py` — `POST /api/scaled-enemy` → `{level, health, shield, armor, overguard}`
-- UI: enemy panel has Level input (1–9999), Steel Path toggle, Eximus toggle
+- UI: enemy panel shows faction, health type (armor type hidden — inert post-Update 36), Level input (1–9999), Steel Path toggle, Eximus toggle
 - Display uses `toFixed(2)` → `toLocaleString` to show decimals (e.g. `4,502,520.4`)
 - **Do not truncate coefficients** — 6-decimal rounding causes ~9 HP / ~2 OG drift vs wiki
 
