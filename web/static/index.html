@@ -1490,7 +1490,7 @@ function clearExilus() {
 // ---------------------------------------------------------------------------
 // Alchemy Mixer
 // ---------------------------------------------------------------------------
-const PRIMARY_ELEMENTS = ['heat', 'cold', 'electricity', 'toxin'];
+const ALCH_PRIMARY = ['heat', 'cold', 'electricity', 'toxin'];
 let alchSelected = [];
 let _alchMergeTimer = null;
 
@@ -1512,7 +1512,7 @@ function closeAlchemyMixer() {
 
 function renderAlchPicker() {
   const el = document.getElementById('alchemy-picker');
-  el.innerHTML = PRIMARY_ELEMENTS.map(e => {
+  el.innerHTML = ALCH_PRIMARY.map(e => {
     const color = ELEM_COLORS[e] || '#fff';
     const sel = alchSelected.includes(e);
     return `<button class="alchemy-elem-btn${sel ? ' selected' : ''}"
@@ -1587,9 +1587,9 @@ function triggerAlchMerge(a, b) {
 
 function showAlchModSuggestions(a, b) {
   const modsEl = document.getElementById('alchemy-mods');
-  const compatible = getCompatibleModTypes();
+  const compatible = getCompatibleModTypes(getCurrentWeapon());
   const relevant = allMods.filter(m =>
-    compatible.includes(m.type) &&
+    compatible.has(m.type) &&
     (m.primary_element === a || m.primary_element === b)
   );
   if (!relevant.length) {
