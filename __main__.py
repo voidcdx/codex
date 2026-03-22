@@ -46,7 +46,7 @@ def _print_results(
     mod_names: list[str],
     enemy_name: str,
     crit_mode: str,
-    headshot: bool,
+    body_part: str = "Body",
     attack_name: str | None = None,
     riven_str: str | None = None,
     viral_stacks: int = 0,
@@ -59,7 +59,7 @@ def _print_results(
     mods   = [load_mod(m) for m in mod_names]
     if riven_str:
         mods.append(make_riven_mod(_parse_riven_arg(riven_str)))
-    enemy  = load_enemy(enemy_name, headshot=headshot)
+    enemy  = load_enemy(enemy_name, body_part=body_part)
 
     # Crit stats come directly from the selected attack on the weapon
     total_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
@@ -73,7 +73,7 @@ def _print_results(
         mods=mods,
         enemy=enemy,
         crit_multiplier=crit_mult,
-        is_crit_headshot=headshot,
+        is_crit_headshot=(body_part != "Body"),
         multishot=modded_ms,
         viral_stacks=viral_stacks,
         corrosive_stacks=corrosive_stacks,
@@ -97,8 +97,9 @@ def _print_results(
           f" {enemy.base_armor:.0f} base armor]")
     print(f"Crit   : {crit_mode}  CC={total_cc*100:.1f}%  CM={total_cm:.1f}x"
           f"  eff={crit_mult:.3f}x")
-    if headshot:
-        print(f"         (headshot: body part ×2; crit shots also double crit multiplier)")
+    if body_part != "Body":
+        mult = enemy.body_parts.get(body_part, 1.0)
+        print(f"         ({body_part}: ×{mult} body part; crit shots also double crit multiplier)")
     if viral_stacks > 0:
         vmult = VIRAL_STACK_MULTIPLIERS.get(min(viral_stacks, 10), 1.0)
         print(f"Viral  : {viral_stacks} stack{'s' if viral_stacks != 1 else ''}  (×{vmult})")
@@ -125,7 +126,7 @@ def _print_results(
             mods=mods,
             enemy=enemy,
             crit_multiplier=crit_mult,
-            is_crit_headshot=headshot,
+            is_crit_headshot=(body_part != "Body"),
         )
         _DOT_LABELS = {
             "slash":       "Slash (Bleed)",
@@ -177,8 +178,10 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--list-enemies",  action="store_true", help="List all enemy names")
     parser.add_argument("--crit", choices=["average", "guaranteed", "max"],
                         default="average", help="Crit mode (default: average)")
+    parser.add_argument("--body-part", default="Body", metavar="PART",
+                        help='Body part to target (e.g. "Head", "Body"). Default: Body')
     parser.add_argument("--headshot", action="store_true",
-                        help="Apply headshot (body part ×2; doubles crit mult on crit shots)")
+                        help="Alias for --body-part Head")
     parser.add_argument("--attack", default=None,
                         help='Attack mode to use (e.g. "Rocket Explosion"). Defaults to first.')
     parser.add_argument("--riven", default=None,
@@ -236,8 +239,9 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(1)
 
     try:
+        effective_part = "Head" if ns.headshot else ns.body_part
         _print_results(
-            weapon_name, mod_names, enemy_name, ns.crit, ns.headshot,
+            weapon_name, mod_names, enemy_name, ns.crit, effective_part,
             ns.attack, ns.riven,
             viral_stacks=max(0, min(10, ns.viral)),
             corrosive_stacks=max(0, min(10, ns.corrosive)),

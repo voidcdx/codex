@@ -128,9 +128,9 @@
             <option value="max">Max Crit</option>
           </select>
         </div>
-        <div style="display:flex;align-items:center;gap:6px;padding-top:18px">
-          <input type="checkbox" id="headshot-cb" style="width:auto;margin:0">
-          <label for="headshot-cb" style="margin:0;cursor:pointer">Headshot</label>
+        <div>
+          <label for="body-part-select">Body Part</label>
+          <select id="body-part-select"><option value="Body">Body</option></select>
         </div>
         <div>
           <label for="viral-stacks">Viral Stacks</label>
@@ -1117,11 +1117,26 @@ function showEnemyStats(enemy) {
   // Handles underscore-separated strings like "infested_flesh" → "Infested Flesh"
   const cap = s => s ? s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '—';
 
-  const headRow = enemy.head_multiplier && enemy.head_multiplier !== 1
+  // Populate body-part dropdown from enemy.body_parts
+  const bpSelect = document.getElementById('body-part-select');
+  if (bpSelect && enemy.body_parts) {
+    const prevVal = bpSelect.value;
+    bpSelect.innerHTML = '';
+    for (const [part, mult] of Object.entries(enemy.body_parts)) {
+      const opt = document.createElement('option');
+      opt.value = part;
+      opt.textContent = mult !== 1.0 ? `${part} (×${mult})` : part;
+      bpSelect.appendChild(opt);
+    }
+    bpSelect.value = (enemy.body_parts[prevVal] != null) ? prevVal : 'Body';
+  }
+
+  const headMult = enemy.body_parts && enemy.body_parts['Head'];
+  const headRow = headMult && headMult !== 1
     ? `<div class="stat-row">
         <div class="stat-block" style="flex:2">
           <div class="stat-label">Head Multiplier</div>
-          <div class="stat-value">${enemy.head_multiplier}×</div>
+          <div class="stat-value">${headMult}×</div>
         </div>
        </div>`
     : '';
@@ -1745,7 +1760,7 @@ async function runCalculation() {
   const enemy  = document.getElementById('enemy-search').value;
   const mods   = getSelectedMods();
   const critMode    = document.getElementById('crit-mode').value;
-  const headshot    = document.getElementById('headshot-cb').checked;
+  const bodyPart    = document.getElementById('body-part-select').value || 'Body';
   const viralStacks     = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
   const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
   const comboTier       = Math.max(1, parseInt(document.getElementById('combo-counter').value, 10) || 1);
@@ -1765,7 +1780,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
     });
     const data = await resp.json();
     if (!resp.ok) {
@@ -1808,7 +1823,7 @@ function showResults(data) {
     `Weapon: ${data.weapon}`,
     `Mods: ${data.mods.length ? data.mods.join(', ') : '(none)'}`,
     `Enemy: ${data.enemy}`,
-    `Crit: ${data.crit_mode} — ×${data.crit_multiplier.toFixed(3)}${data.headshot ? ' (headshot)' : ''}`,
+    `Crit: ${data.crit_mode} — ×${data.crit_multiplier.toFixed(3)}${data.body_part && data.body_part !== 'Body' ? ` (${data.body_part})` : ''}`,
     data.viral_stacks > 0 ? `Viral: ${data.viral_stacks} stacks (×${[1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4.25][data.viral_stacks-1]})` : null,
     data.corrosive_stacks > 0 ? `Corrosive: ${data.corrosive_stacks} stacks (−${Math.min(80, 20 + 6*data.corrosive_stacks)}% armor)` : null,
   ].filter(Boolean).join(' &nbsp;|&nbsp; ');
