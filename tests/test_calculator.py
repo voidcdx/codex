@@ -118,7 +118,7 @@ class TestSteps2And3:
 
 # ---------------------------------------------------------------------------
 # M9 — Steps 4-5: Damage type effectiveness + armor mitigation
-# Braton Slash=24, Serration(+165%), Grineer FLESH + 300 Ferrite armor
+# Braton Slash=24, Serration(+165%), Grineer FLESH + 300 armor
 # Step1 Slash quantized = 63.75
 # Step2 no headshot: round(63.75 * 1.0) = 64 (round to nearest int)
 # Step3 no faction: floor(64 * 1.0) = 64
@@ -216,40 +216,27 @@ class TestNagantakaPrimeIntegration:
 
 # ---------------------------------------------------------------------------
 # calculate_armor_multiplier unit tests
+# Post-Update 36 (Jade Shadows): flat DR only — no armor-type modifiers.
+# DR = armor / (armor + 300), capped at 2700 (90% DR).
 # ---------------------------------------------------------------------------
 class TestCalculateArmorMultiplier:
-    def test_no_armor_type_returns_one(self):
-        assert calculate_armor_multiplier(300.0, DamageType.SLASH, ArmorType.NONE) == pytest.approx(1.0)
-
     def test_zero_armor_returns_one(self):
-        assert calculate_armor_multiplier(0.0, DamageType.SLASH, ArmorType.FERRITE) == pytest.approx(1.0)
+        assert calculate_armor_multiplier(0.0) == pytest.approx(1.0)
 
-    def test_neutral_type_300_ferrite(self):
-        # Slash vs Ferrite: no armor_mod, no damage_mod
-        # effective_armor=300, DR=300/600=0.5 → passes 0.5
-        assert calculate_armor_multiplier(300.0, DamageType.SLASH, ArmorType.FERRITE) == pytest.approx(0.5)
+    def test_negative_armor_returns_one(self):
+        assert calculate_armor_multiplier(-10.0) == pytest.approx(1.0)
 
-    def test_corrosive_vs_ferrite_ignores_75_percent_armor(self):
-        # armor_mod=0.75 → effective=300*0.25=75; DR=75/375=0.2 → passes 0.8
-        # damage_mod=0.5 → final = 0.8 * 1.5 = 1.2
-        assert calculate_armor_multiplier(300.0, DamageType.CORROSIVE, ArmorType.FERRITE) == pytest.approx(1.2)
-
-    def test_puncture_vs_ferrite_ignores_50_percent_armor(self):
-        # armor_mod=0.5 → effective=300*0.5=150; DR=150/450=1/3 → passes 2/3
-        # damage_mod=0.5 → final = (2/3) * 1.5 = 1.0
-        assert calculate_armor_multiplier(300.0, DamageType.PUNCTURE, ArmorType.FERRITE) == pytest.approx(1.0)
+    def test_300_armor_flat_dr(self):
+        # DR = 300/(300+300) = 0.5 → passes 0.5
+        assert calculate_armor_multiplier(300.0) == pytest.approx(0.5)
 
     def test_armor_capped_at_2700(self):
         # 9999 armor → clamped to 2700; DR=2700/3000=0.9 → passes 0.1
-        assert calculate_armor_multiplier(9999.0, DamageType.SLASH, ArmorType.FERRITE) == pytest.approx(0.1)
+        assert calculate_armor_multiplier(9999.0) == pytest.approx(0.1)
 
-    def test_blast_vs_ferrite_damage_penalty(self):
-        # armor_mod=0.0, damage_mod=-0.5 → effective=300, passes 0.5; final=0.5*0.5=0.25
-        assert calculate_armor_multiplier(300.0, DamageType.BLAST, ArmorType.FERRITE) == pytest.approx(0.25)
-
-    def test_radiation_vs_alloy_ignores_75_percent_armor(self):
-        # armor_mod=0.75 → effective=300*0.25=75; passes 0.8; damage_mod=0.5 → 1.2
-        assert calculate_armor_multiplier(300.0, DamageType.RADIATION, ArmorType.ALLOY) == pytest.approx(1.2)
+    def test_600_armor(self):
+        # DR = 600/(600+300) = 2/3 → passes 1/3 ≈ 0.333...
+        assert calculate_armor_multiplier(600.0) == pytest.approx(300.0 / 900.0)
 
 
 # ---------------------------------------------------------------------------
@@ -698,7 +685,7 @@ class TestCorrosiveStrip:
         """0 stacks = no armor reduction; baseline reference."""
         # Impact=60, Serration(+165%): floor(60*2.65)=159; quantize→159.375; round→159
         # Impact vs GRINEER ×1.5: floor(159*1.5)=floor(238.5)=238
-        # IMPACT vs Ferrite: armor_mod=0, damage_mod=0; DR=300/600=0.5; floor(238*0.5)=119
+        # Flat DR=300/600=0.5; floor(238*0.5)=119
         result = calc.calculate(
             self._impact_weapon(), [serration()], self._ferrite_enemy(),
             corrosive_stacks=0,

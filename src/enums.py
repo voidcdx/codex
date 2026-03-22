@@ -57,6 +57,8 @@ class HealthType(Enum):
 
 
 class ArmorType(Enum):
+    # Post-Update 36 (Jade Shadows): Ferrite/Alloy no longer affect damage calculations.
+    # Armor provides flat DR only. These values are retained as metadata from enemies.json.
     NONE = auto()
-    FERRITE = auto()
-    ALLOY = auto()
+    FERRITE = auto()   # metadata only — not used in damage pipeline
+    ALLOY = auto()     # metadata only — not used in damage pipeline

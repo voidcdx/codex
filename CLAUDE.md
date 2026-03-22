@@ -91,7 +91,7 @@ Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5co
 **Viral stack multipliers** (0 stacks = ×1.0, max 10 stacks = ×4.25):
 `{1:1.75, 2:2.0, 3:2.25, 4:2.5, 5:2.75, 6:3.0, 7:3.25, 8:3.5, 9:3.75, 10:4.25}`
 
-**Armor Mitigation** = `300 / (300 + effective_armor)`
+**Armor Mitigation** = `300 / (300 + min(armor, 2700))` — flat DR, no per-type modifiers (Update 36+).
 **Faction mods apply LAST** — multiplicative `(1 + bonus)` after armor mitigation.
 **Faction/Damage mods** do NOT affect quantization scale — they are simple multipliers on already-quantized values.
 
@@ -145,12 +145,11 @@ Exception: Kuva/Tenet innate elements follow HCET priority (Heat > Cold > Electr
 - **Secondary (combined) innate elements** (e.g. Magnetic on Kuva Nukor) are a fixed bucket — they cannot be uncombined or combined further with anything else. They are passed through directly to the damage output.
 - **Quantization order:** Combine raw bonus percentages first → calculate raw damage → then apply `quantize_damage()` to the final combined total. Never quantize individual primaries before combining.
 
-## Enemy Armor (Post-June 2024)
+## Enemy Armor (Post-Update 36: Jade Shadows, June 18 2024)
 - **Hard Cap:** Enemy armor is hard-capped at 2,700 (90% DR).
-- **Armor Scaling:** `DR = Armor / (Armor + 300)`
-- **Type Modifiers:** A damage type bonus against armor (e.g. Corrosive vs. Ferrite) does two things:
-  1. Increases base damage by that percentage.
-  2. Ignores that percentage of the armor value: `effective_armor = Armor × (1 − Modifier)`.
+- **Armor Scaling:** `DR = Armor / (Armor + 300)` — flat, no per-type modifiers.
+- **No armor-type modifiers:** Update 36 removed Ferrite/Alloy armor types. Armor provides flat DR only. All damage type bonuses/penalties are faction-based (see Faction Effectiveness table).
+- `armor_type` field in `enemies.json` and `ArmorType` enum are retained as inert metadata.
 
 ## Enemy Level Scaling
 

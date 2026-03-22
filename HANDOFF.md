@@ -56,8 +56,8 @@ Web UI fully functional with dark theme, mod card grid, special slots, weapon im
 ### ① Authoritative Damage Docs
 User has authoritative damage calculation docs (PDF). Share path → update `CLAUDE.md` "Confirmed Order of Operations".
 
-### ② Enemy Data Gaps
-`health_type` / `armor_type` are faction-inferred defaults, not per-enemy. Corpus Amalgams, Liches, etc. may differ. A manual override table in `enemies.json` would fix edge cases.
+### ② ~~Enemy Data Gaps~~ — Resolved
+Update 36 (Jade Shadows, June 18 2024) removed Ferrite/Alloy armor types entirely. Armor now provides flat DR only; all damage type modifiers are faction-based (already implemented). The old `ARMOR_TYPE_MODIFIERS` Damage 2.0 table has been removed from `calculator.py`. `health_type` / `armor_type` fields in `enemies.json` are retained as inert metadata.
 
 ---
 

@@ -1,6 +1,6 @@
 import math
 from decimal import Decimal
-from src.enums import DamageType, ArmorType, FactionType
+from src.enums import DamageType, FactionType
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.quantizer import quantize, quantize_components
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
@@ -64,27 +64,6 @@ FACTION_EFFECTIVENESS: dict[tuple[FactionType, DamageType], float] = {
     (FactionType.MURMUR,         DamageType.VIRAL): 0.5,
 }
 
-
-# ---------------------------------------------------------------------------
-# Armor type modifiers: (ArmorType, DamageType) → (armor_mod, damage_mod)
-# armor_mod: fraction of armor ignored (effective_armor = armor × (1 − armor_mod))
-# damage_mod: additive damage bonus (e.g. 0.5 → ×1.5, -0.5 → ×0.5)
-# Omitted entries: (0.0, 0.0) — no armor ignore, neutral damage
-# ---------------------------------------------------------------------------
-ARMOR_TYPE_MODIFIERS: dict[tuple[ArmorType, DamageType], tuple[float, float]] = {
-    # Ferrite Armor (Grineer)
-    (ArmorType.FERRITE, DamageType.PUNCTURE):  (0.5,  0.5),
-    (ArmorType.FERRITE, DamageType.CORROSIVE): (0.75, 0.5),
-    (ArmorType.FERRITE, DamageType.BLAST):     (0.0, -0.5),
-    (ArmorType.FERRITE, DamageType.RADIATION): (0.0, -0.5),
-    # Alloy Armor (Corpus/Corrupted)
-    (ArmorType.ALLOY, DamageType.PUNCTURE):    (0.5,  0.5),
-    (ArmorType.ALLOY, DamageType.COLD):        (0.0,  0.5),
-    (ArmorType.ALLOY, DamageType.RADIATION):   (0.75, 0.5),
-    (ArmorType.ALLOY, DamageType.ELECTRICITY): (0.0, -0.5),
-    (ArmorType.ALLOY, DamageType.MAGNETIC):    (0.0, -0.5),
-    (ArmorType.ALLOY, DamageType.BLAST):       (0.0, -0.5),
-}
 
 
 # ---------------------------------------------------------------------------
@@ -165,27 +144,18 @@ def calculate_crit_multiplier(
     raise ValueError(f"Unknown mode {mode!r}. Use 'average', 'guaranteed', or 'max'.")
 
 
-def calculate_armor_multiplier(
-    armor: float,
-    damage_type: DamageType,
-    armor_type: ArmorType,
-) -> float:
-    """Damage fraction passing through armor, per-type.
+def calculate_armor_multiplier(armor: float) -> float:
+    """Damage fraction passing through armor (Update 36+: flat DR only).
 
-    Applies type-specific armor ignore and damage bonus, then clamps to the
-    2,700 armor cap before computing DR = armor / (armor + 300).
+    Post-Update 36 (Jade Shadows): Ferrite/Alloy armor types no longer exist.
+    Armor provides flat damage reduction only: DR = armor / (armor + 300),
+    capped at 2,700 armor (90% DR). All damage type modifiers are faction-based.
     Returns 1.0 when there is no armor.
     """
-    if armor_type == ArmorType.NONE or armor == 0.0:
+    if armor <= 0.0:
         return 1.0
-    armor_mod, damage_mod = ARMOR_TYPE_MODIFIERS.get((armor_type, damage_type), (0.0, 0.0))
-    d_armor = Decimal(str(armor))
-    d_armor_mod = Decimal(str(armor_mod))
-    d_damage_mod = Decimal(str(damage_mod))
-    effective_armor = d_armor * (Decimal('1') - d_armor_mod)
-    clamped_armor = max(Decimal('0'), min(Decimal('2700'), effective_armor))
-    armor_multiplier = Decimal('1') - (clamped_armor / (clamped_armor + Decimal('300')))
-    return float(armor_multiplier * (Decimal('1') + d_damage_mod))
+    clamped = min(2700.0, armor)
+    return 300.0 / (300.0 + clamped)
 
 
 class DamageCalculator:
@@ -325,7 +295,7 @@ class DamageCalculator:
             if c.type in (DamageType.TRUE, DamageType.VOID):
                 after_armor[c.type] = float(c.amount)
                 continue
-            mult = calculate_armor_multiplier(armor, c.type, enemy.armor_type)
+            mult = calculate_armor_multiplier(armor)
             value = math.floor(c.amount * mult)
             if value > 0:
                 after_armor[c.type] = float(value)
