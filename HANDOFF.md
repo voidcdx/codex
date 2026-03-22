@@ -59,9 +59,6 @@ User has authoritative damage calculation docs (PDF). Share path → update `CLA
 ### ② Enemy Data Gaps
 `health_type` / `armor_type` are faction-inferred defaults, not per-enemy. Corpus Amalgams, Liches, etc. may differ. A manual override table in `enemies.json` would fix edge cases.
 
-### ③ Overguard Formula Needs Implementing
-The correct formula (from wiki.warframe.com/w/Enemy_Level_Scaling) is a two-regime smoothstep: `f1 = 1 + 0.0015×δ^4` (δ<45), `f2 = 1 + 260×δ^0.9` (δ>50), smoothstep blend at δ=45–50. `src/scaling.py` still uses the old single power-law fit with wrong coefficients. See CLAUDE.md Overguard section for full formula and reference values.
-
 ---
 
 ## Key Architecture Notes
