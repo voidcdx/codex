@@ -800,9 +800,25 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 /* ── Riven purple accent ────────────────────────────── */
 :root { --riven: #9b6dd0; --riven-glow: rgba(155, 109, 208, 0.2); }
 
+/* ── Mod panel heading actions (alchemy + riven buttons) ── */
+.mod-panel-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-alchemy-mixer {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+.btn-alchemy-mixer .riven-alchemy-icon { opacity: 0.8; transition: opacity 0.2s; }
+.btn-alchemy-mixer:hover .riven-alchemy-icon { opacity: 1; }
+
 /* ── Purple + button in heading ─────────────────────── */
 .btn-add-riven {
-  margin-left: auto;
   background: none;
   border: none;
   color: var(--riven);
@@ -1125,4 +1141,137 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     flex-shrink: 0;
   }
   .riven-modal-right { padding: 20px 16px 16px; }
+}
+
+/* ── Alchemy Mixer Modal ─────────────────────────────── */
+.alchemy-modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px 28px;
+  width: 420px;
+  max-width: 95vw;
+  position: relative;
+  animation: rivenModalIn 0.18s ease;
+  text-align: center;
+}
+.alchemy-modal-title { margin: 0 0 4px; font-size: 16px; letter-spacing: 1px; }
+.alchemy-hint { margin: 0 0 16px; font-size: 12px; color: var(--text-dim); }
+
+/* Element picker */
+.alchemy-element-picker {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.alchemy-elem-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.alchemy-elem-btn:hover { transform: scale(1.05); }
+.alchemy-elem-btn.selected { transform: scale(1.1); }
+
+/* Animation stage */
+.alchemy-stage {
+  position: relative;
+  width: 200px;
+  height: 90px;
+  margin: 14px auto 8px;
+}
+.alchemy-orb {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: background 0.3s, opacity 0.3s;
+  box-shadow: 0 0 14px currentColor;
+}
+.alchemy-orb.visible { opacity: 0.85; }
+.alchemy-orb-left  { left: 16px; }
+.alchemy-orb-right { right: 16px; }
+
+.alchemy-stage.swirling .alchemy-orb-left  { animation: alch-swirl-left  1.2s ease-in-out infinite alternate; }
+.alchemy-stage.swirling .alchemy-orb-right { animation: alch-swirl-right 1.2s ease-in-out infinite alternate; }
+.alchemy-stage.merging  .alchemy-orb-left  { animation: alch-merge-left  0.5s ease-in forwards; }
+.alchemy-stage.merging  .alchemy-orb-right { animation: alch-merge-right 0.5s ease-in forwards; }
+
+@keyframes alch-swirl-left  { from { left: 16px; } to { left: 44px; } }
+@keyframes alch-swirl-right { from { right: 16px; } to { right: 44px; } }
+@keyframes alch-merge-left  { to { left: 82px;  opacity: 0; transform: translateY(-50%) scale(1.5); } }
+@keyframes alch-merge-right { to { right: 82px; opacity: 0; transform: translateY(-50%) scale(1.5); } }
+
+/* Flash burst */
+.alchemy-result-flash {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.alchemy-result-flash.pop { animation: alch-flash-pop 0.45s ease-out forwards; }
+@keyframes alch-flash-pop {
+  0%   { transform: translate(-50%,-50%) scale(0);   opacity: 1; }
+  55%  { transform: translate(-50%,-50%) scale(1.7);  opacity: 0.8; }
+  100% { transform: translate(-50%,-50%) scale(2.6);  opacity: 0; }
+}
+
+/* Result label */
+.alchemy-result {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  min-height: 30px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px currentColor;
+}
+
+/* Mod suggestion chips */
+.alchemy-mods {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  min-height: 28px;
+}
+.alchemy-mods-label {
+  width: 100%;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.alchemy-mod-chip {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 4px;
+  padding: 3px 9px;
+  font-size: 11px;
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.alchemy-mod-chip .chip-elem {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }

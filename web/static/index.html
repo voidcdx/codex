@@ -28,7 +28,7 @@
 
     <!-- Mods — 2×4 card grid -->
     <div class="panel" style="margin-bottom:16px">
-      <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <h2>Mods (in slot order)<span class="mod-panel-actions"><button class="btn-alchemy-mixer" onclick="openAlchemyMixer()" title="Alchemy Mixer"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
   <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
   <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
   <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
@@ -39,7 +39,7 @@
   <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
   <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
   <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
-</svg>+</button></h2>
+</svg></button><button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></span></h2>
       <div id="mod-grid-wrapper">
         <div id="special-slots" class="special-slots-row"></div>
         <div id="mod-grid" class="mod-grid"></div>
@@ -61,6 +61,23 @@
             <button class="btn-riven-reset" onclick="clearRiven();closeRivenBuilder()">Reset</button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Alchemy Mixer Modal -->
+    <div class="mod-picker-overlay" id="alchemy-mixer-overlay">
+      <div class="alchemy-modal">
+        <button class="riven-modal-close" onclick="closeAlchemyMixer()">×</button>
+        <h2 class="alchemy-modal-title">Alchemy Mixer</h2>
+        <p class="alchemy-hint">Select two primary elements to combine</p>
+        <div class="alchemy-element-picker" id="alchemy-picker"></div>
+        <div class="alchemy-stage" id="alchemy-stage">
+          <div class="alchemy-orb alchemy-orb-left" id="alchemy-orb-left"></div>
+          <div class="alchemy-orb alchemy-orb-right" id="alchemy-orb-right"></div>
+          <div class="alchemy-result-flash" id="alchemy-flash"></div>
+        </div>
+        <div class="alchemy-result" id="alchemy-result"></div>
+        <div class="alchemy-mods" id="alchemy-mods"></div>
       </div>
     </div>
 
@@ -1470,6 +1487,124 @@ function clearExilus() {
 }
 
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Alchemy Mixer
+// ---------------------------------------------------------------------------
+const PRIMARY_ELEMENTS = ['heat', 'cold', 'electricity', 'toxin'];
+let alchSelected = [];
+let _alchMergeTimer = null;
+
+function openAlchemyMixer() {
+  alchSelected = [];
+  clearTimeout(_alchMergeTimer);
+  renderAlchPicker();
+  resetAlchStage();
+  document.getElementById('alchemy-result').textContent = '';
+  document.getElementById('alchemy-result').style.color = '';
+  document.getElementById('alchemy-mods').innerHTML = '';
+  document.getElementById('alchemy-mixer-overlay').classList.add('active');
+}
+
+function closeAlchemyMixer() {
+  clearTimeout(_alchMergeTimer);
+  document.getElementById('alchemy-mixer-overlay').classList.remove('active');
+}
+
+function renderAlchPicker() {
+  const el = document.getElementById('alchemy-picker');
+  el.innerHTML = PRIMARY_ELEMENTS.map(e => {
+    const color = ELEM_COLORS[e] || '#fff';
+    const sel = alchSelected.includes(e);
+    return `<button class="alchemy-elem-btn${sel ? ' selected' : ''}"
+      style="color:${color};border-color:${sel ? color : 'transparent'};box-shadow:${sel ? `0 0 12px ${color}` : 'none'}"
+      onclick="selectAlchElem('${e}')">${e}</button>`;
+  }).join('');
+}
+
+function selectAlchElem(elem) {
+  clearTimeout(_alchMergeTimer);
+  if (alchSelected.includes(elem)) {
+    alchSelected = alchSelected.filter(e => e !== elem);
+  } else if (alchSelected.length < 2) {
+    alchSelected.push(elem);
+  } else {
+    alchSelected[1] = elem;
+  }
+  renderAlchPicker();
+  updateAlchStage();
+}
+
+function resetAlchStage() {
+  const stage = document.getElementById('alchemy-stage');
+  stage.className = 'alchemy-stage';
+  ['alchemy-orb-left', 'alchemy-orb-right'].forEach(id => {
+    const o = document.getElementById(id);
+    o.className = 'alchemy-orb ' + id;
+    o.style.background = '';
+  });
+  document.getElementById('alchemy-flash').className = 'alchemy-result-flash';
+  document.getElementById('alchemy-flash').style.background = '';
+}
+
+function updateAlchStage() {
+  resetAlchStage();
+  document.getElementById('alchemy-result').textContent = '';
+  document.getElementById('alchemy-mods').innerHTML = '';
+  const [a, b] = alchSelected;
+  if (a) {
+    const lo = document.getElementById('alchemy-orb-left');
+    lo.style.background = ELEM_COLORS[a] || '#fff';
+    lo.classList.add('visible');
+  }
+  if (b) {
+    const ro = document.getElementById('alchemy-orb-right');
+    ro.style.background = ELEM_COLORS[b] || '#fff';
+    ro.classList.add('visible');
+  }
+  if (a && b) {
+    document.getElementById('alchemy-stage').classList.add('swirling');
+    _alchMergeTimer = setTimeout(() => triggerAlchMerge(a, b), 900);
+  }
+}
+
+function triggerAlchMerge(a, b) {
+  const stage = document.getElementById('alchemy-stage');
+  stage.classList.remove('swirling');
+  stage.classList.add('merging');
+  const key = `${a}+${b}`;
+  const result = ELEM_COMBOS[key] || ELEM_COMBOS[`${b}+${a}`] || null;
+  const resultColor = result ? (ELEM_COLORS[result.toLowerCase()] || '#fff') : '#aaa';
+  setTimeout(() => {
+    const flash = document.getElementById('alchemy-flash');
+    flash.style.background = resultColor;
+    flash.classList.add('pop');
+    const resultEl = document.getElementById('alchemy-result');
+    resultEl.textContent = result || '(no combination)';
+    resultEl.style.color = resultColor;
+    showAlchModSuggestions(a, b);
+  }, 480);
+}
+
+function showAlchModSuggestions(a, b) {
+  const modsEl = document.getElementById('alchemy-mods');
+  const compatible = getCompatibleModTypes();
+  const relevant = allMods.filter(m =>
+    compatible.includes(m.type) &&
+    (m.primary_element === a || m.primary_element === b)
+  );
+  if (!relevant.length) {
+    modsEl.innerHTML = '<span style="color:var(--text-dim);font-size:12px">No mods found for current weapon type</span>';
+    return;
+  }
+  const label = '<div class="alchemy-mods-label">Mods that provide these elements</div>';
+  const chips = relevant.map(m => {
+    const color = ELEM_COLORS[m.primary_element] || '#fff';
+    return `<span class="alchemy-mod-chip"><span class="chip-elem" style="background:${color}"></span>${m.name}</span>`;
+  }).join('');
+  modsEl.innerHTML = label + chips;
+}
+
+// ---------------------------------------------------------------------------
 // Riven Builder
 // ---------------------------------------------------------------------------
 let rivenApplied = null; // [{stat, pct}, ...] — committed
@@ -1560,9 +1695,12 @@ function getRivenSpec() {
 
 // Close riven modal on backdrop click
 document.addEventListener('click', e => {
-  const overlay = document.getElementById('riven-picker-overlay');
-  if (overlay && overlay.classList.contains('active') && e.target === overlay)
+  const riven = document.getElementById('riven-picker-overlay');
+  if (riven && riven.classList.contains('active') && e.target === riven)
     closeRivenBuilder();
+  const alch = document.getElementById('alchemy-mixer-overlay');
+  if (alch && alch.classList.contains('active') && e.target === alch)
+    closeAlchemyMixer();
 });
 
 // ---------------------------------------------------------------------------
