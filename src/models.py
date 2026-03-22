@@ -68,6 +68,7 @@ class Enemy:
     armor_type: ArmorType
     base_armor: float = 0.0
     body_part_multiplier: float = 1.0
+    body_parts: dict = field(default_factory=lambda: {"Body": 1.0})
     base_level: int = 1
     base_health: float = 0.0
     base_shield: float = 0.0

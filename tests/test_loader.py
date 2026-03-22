@@ -115,6 +115,17 @@ class TestLoadEnemy:
         e = load_enemy("Heavy Gunner", headshot=True)
         assert e.body_part_multiplier == 3.0
 
+    def test_body_part_head_uses_head_multiplier(self):
+        e = load_enemy("Heavy Gunner", body_part="Head")
+        assert e.body_part_multiplier == 3.0
+
+    def test_body_parts_dict_populated(self):
+        e = load_enemy("Heavy Gunner")
+        assert "Body" in e.body_parts
+        assert "Head" in e.body_parts
+        assert e.body_parts["Body"] == 1.0
+        assert e.body_parts["Head"] == 3.0
+
     def test_case_insensitive_enemy(self):
         e = load_enemy("heavy gunner")
         assert e.name == "Heavy Gunner"

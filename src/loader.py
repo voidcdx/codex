@@ -371,13 +371,14 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
     )
 
 
-def load_enemy(name: str, headshot: bool = False) -> Enemy:
+def load_enemy(name: str, body_part: str = "Body", headshot: bool = False) -> Enemy:
     """Load an enemy by exact name.
 
     Args:
-        name:     Exact enemy name (case-insensitive fallback).
-        headshot: If True, use the head multiplier as body_part_multiplier.
-                  Default False (body shot = multiplier 1.0).
+        name:      Exact enemy name (case-insensitive fallback).
+        body_part: Name of the body part to target (e.g. "Head", "Body").
+                   Defaults to "Body" (multiplier 1.0).
+        headshot:  Deprecated alias for body_part="Head".
 
     Raises KeyError if not found.
     """
@@ -396,8 +397,16 @@ def load_enemy(name: str, headshot: bool = False) -> Enemy:
     health_type  = _HEALTH_TYPE.get(entry.get("health_type", "").lower(), HealthType.FLESH)
     armor_type   = _ARMOR_TYPE.get(entry.get("armor_type", "").lower(), ArmorType.NONE)
 
-    head_mult = float(entry.get("head_multiplier") or 1.0)
-    body_part_mult = head_mult if headshot else 1.0
+    # Build body_parts dict — supports both new body_parts key and legacy head_multiplier
+    raw_parts = entry.get("body_parts")
+    if raw_parts:
+        body_parts = {k: float(v) for k, v in raw_parts.items()}
+    else:
+        hm = float(entry.get("head_multiplier") or 1.0)
+        body_parts = {"Body": 1.0, "Head": hm}
+
+    effective_part = "Head" if headshot else body_part
+    body_part_mult = body_parts.get(effective_part, 1.0)
 
     return Enemy(
         name=name,
@@ -406,6 +415,7 @@ def load_enemy(name: str, headshot: bool = False) -> Enemy:
         armor_type=armor_type,
         base_armor=float(entry.get("base_armor") or 0.0),
         body_part_multiplier=body_part_mult,
+        body_parts=body_parts,
         base_level=int(entry.get("base_level") or 1),
         base_health=float(entry.get("base_health") or 0.0),
         base_shield=float(entry.get("base_shield") or 0.0),

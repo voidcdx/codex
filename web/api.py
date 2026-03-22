@@ -137,7 +137,7 @@ def get_enemies() -> list[dict]:
             "base_health":    entry.get("base_health", 0),
             "base_shield":    entry.get("base_shield", 0),
             "base_level":     entry.get("base_level", 1),
-            "head_multiplier": entry.get("head_multiplier", 1),
+            "body_parts":      entry.get("body_parts", {"Body": 1.0, "Head": 1.0}),
         })
     return sorted(out, key=lambda x: x["name"])
 
@@ -314,7 +314,8 @@ class CalcRequest(BaseModel):
     enemy:        str
     attack:       str | None = None
     crit_mode:    str = "average"   # "average" | "guaranteed" | "max"
-    headshot:     bool = False
+    body_part:    str = "Body"
+    headshot:     bool = False      # deprecated alias for body_part="Head"
     viral_stacks: int = 0           # 0–10
     corrosive_stacks: int = 0      # 0–10
     enemy_level:  int = Field(default=1, ge=1, le=9999)
@@ -341,8 +342,9 @@ def calculate(req: CalcRequest) -> dict:
     if req.riven:
         mods.append(make_riven_mod([s.model_dump() for s in req.riven.stats]))
 
+    effective_part = "Head" if req.headshot else req.body_part
     try:
-        enemy = load_enemy(req.enemy, headshot=req.headshot)
+        enemy = load_enemy(req.enemy, body_part=effective_part)
     except KeyError:
         raise HTTPException(400, f"Unknown enemy: {req.enemy!r}")
 
@@ -369,7 +371,7 @@ def calculate(req: CalcRequest) -> dict:
         mods=mods,
         enemy=enemy,
         crit_multiplier=crit_mult,
-        is_crit_headshot=req.headshot,
+        is_crit_headshot=(effective_part != "Body"),
         multishot=modded_ms,
         viral_stacks=req.viral_stacks,
         corrosive_stacks=req.corrosive_stacks,
@@ -384,7 +386,7 @@ def calculate(req: CalcRequest) -> dict:
         mods=mods,
         enemy=enemy,
         crit_multiplier=crit_mult,
-        is_crit_headshot=req.headshot,
+        is_crit_headshot=(effective_part != "Body"),
     )
 
     breakdown = {dtype.name: val for dtype, val in result.items()}
@@ -396,7 +398,7 @@ def calculate(req: CalcRequest) -> dict:
         "enemy":         enemy.name,
         "crit_mode":     req.crit_mode,
         "crit_multiplier": crit_mult,
-        "headshot":      req.headshot,
+        "body_part":     effective_part,
         "viral_stacks":    req.viral_stacks,
         "corrosive_stacks": req.corrosive_stacks,
         "breakdown":     breakdown,
