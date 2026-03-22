@@ -70,6 +70,9 @@ Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from
 ### Mod Slot Compatibility
 `onWeaponChange()` clears any mod slots whose `mod.type` is not in `getCompatibleModTypes()` for the new weapon. Mod picker always enforces type compatibility — no fallback to showing all mods.
 
+### Combo Counter
+Melee-only mechanic. `onWeaponChange()` hides `#combo-div` and resets to tier 1 for non-melee weapons (uses existing `isMeleeWeapon()`). Range: 1–12 for all weapons, 1–13 for Venka Prime. `oninput` clamp enforces the cap against manual keyboard entry.
+
 ## Riven Mod Builder (Web UI)
 - **Slot:** Purple card in the mod grid. Clicking opens a two-column modal.
 - **Modal state:** `rivenDraft[]` — 4 rows, each `{stat, pct}`. Rendered by `renderRivenModal()`.
@@ -248,7 +251,7 @@ These are crowd-control or debuff effects — no tick damage. Return `{active, e
 
 | Key | Effect |
 |---|---|
-| `viral` | Health ×1.75–×4.25 (modeled via `viral_stacks` param in main pipeline) |
+| `viral` | Health Vulnr. ×1.75–×4.25 |
 | `magnetic` | +100% shield/OG dmg; forced Elec proc on shield break |
 | `radiation` | Confuses enemy to attack allies for 12s |
 | `blast` | −30% accuracy (up to −75%); detonates at 10 stacks |
