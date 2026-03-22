@@ -1035,9 +1035,13 @@ function showEnemyStats(enemy) {
   const panel = document.getElementById('enemy-stats-panel');
   if (!enemy) { panel.style.display = 'none'; document.getElementById('enemy-scaled-stats').innerHTML = ''; return; }
 
-  // Reset level input to enemy's base level when a new enemy is selected
+  // Set min to enemy's base level; keep current value if already valid, else clamp
   const lvlInput = document.getElementById('enemy-level');
-  if (lvlInput) lvlInput.value = enemy.base_level || 1;
+  if (lvlInput) {
+    const bl = enemy.base_level || 1;
+    lvlInput.min = bl;
+    lvlInput.value = Math.max(parseInt(lvlInput.value) || bl, bl);
+  }
 
   const fmt = (v, suffix) => v != null && v !== 0 ? v + (suffix || '') : '—';
   // Handles underscore-separated strings like "infested_flesh" → "Infested Flesh"
@@ -1118,7 +1122,7 @@ async function refreshEnemyScaling() {
   const enemy = getCurrentEnemy();
   const container = document.getElementById('enemy-scaled-stats');
   if (!enemy) { container.innerHTML = ''; return; }
-  const level = parseInt(document.getElementById('enemy-level').value) || 1;
+  const level = Math.max(parseInt(document.getElementById('enemy-level').value) || 1, enemy.base_level || 1);
   try {
     const r = await fetch('/api/scaled-enemy', {
       method: 'POST',
