@@ -1,0 +1,60 @@
+Warframe Damage Calculation Wiki — Quantization Scale Analysis
+=============================================================
+
+QUESTION
+--------
+Does the wiki define "base damage" (for the quantization scale) as the weapon's
+total base damage across all pellets, or the per-pellet amount? Is there any
+worked example involving a shotgun, multishot weapon, or pellet count?
+
+
+SCALE FORMULA (wiki line 172)
+------------------------------
+    Scale = Modded Base Damage / 32
+
+
+QUANTIZATION FORMULA (wiki line 174)
+--------------------------------------
+    Quantized Damage Type Value = Round(Total Damage Type Value / Scale) × Scale
+
+
+WORKED EXAMPLE (wiki lines 176-178)
+-------------------------------------
+Setup:
+  "if you have a weapon with a listed damage distribution of
+   30 Impact, 30 Puncture, and 40 Slash, the total damage is 100."
+
+Scale:
+  "The value of a scale will then be 100 ÷ 32 = 3.125."
+
+Per-type quantization:
+  Impact:   30 ÷ 3.125 = 9.6  → rounds to 10  → 10 × 3.125 = 31.25
+  Puncture: 30 ÷ 3.125 = 9.6  → rounds to 10  → 10 × 3.125 = 31.25
+  Slash:    40 ÷ 3.125 = 12.8 → rounds to 13  → 13 × 3.125 = 40.625
+
+Against a Charger (+50% Slash, Infested health):
+  31.25 + 31.25 + 40.625 × 1.5 = 123.4375  (displayed as 123)
+
+
+SHOTGUN / PELLET COUNT / MULTISHOT — SEARCH RESULT
+----------------------------------------------------
+No matches found for: pellet, per-pellet, shotgun, Sobek, Tigris,
+Arca Plasmor, or any formula dividing by pellet count.
+
+The only multishot reference in the file is in the Arsenal display formula:
+  Arsenal Total Damage = Base Damage × [...] × [Base weapon multishot × (1 + Multishot Bonuses)]
+This is explicitly for the Arsenal stat display, NOT for quantization.
+
+
+CONCLUSION
+----------
+The wiki defines "base damage" as the weapon's TOTAL listed damage (the sum
+shown in the Arsenal, e.g. 100 in the example). There is no per-pellet
+distinction anywhere in the quantization section.
+
+The scale is always:
+    Scale = total modded base damage / 32
+
+No division by pellet count. No shotgun example. The current calculator
+implementation (using the weapon's total base damage as the quantization
+denominator) is consistent with the wiki documentation.
