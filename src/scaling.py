@@ -11,7 +11,7 @@ from src.enums import FactionType
 # f1(δ) = 1 + f1_A * δ^f1_exp   (δ < 70)
 # f2(δ) = 1 + f2_A * δ^f2_exp   (δ > 80)
 _HEALTH_COEFFS: dict[str, tuple[float, float, float, float]] = {
-    "grineer":  (0.015,  2.12, 10.7332, 0.72),
+    "grineer":  (0.015,  2.12, 10.7332, 0.8990),  # 0.8990 empirically derived from wiki data (was 0.72)
     "corpus":   (0.015,  2.12, 13.4165, 0.55),
     "infested": (0.0225, 2.12, 16.1,    0.72),
     "corrupted":(0.015,  2.10, 10.7332, 0.685),
@@ -80,14 +80,13 @@ def shield_multiplier(delta: float, faction: FactionType = FactionType.GRINEER) 
     return _blend(f1, f2, delta)
 
 
-def overguard_at_level(level: int) -> float:
-    """Overguard for an Eximus unit at the given level.
+def overguard_at_level(delta: float) -> float:
+    """Overguard for an Eximus unit given ΔLevel = target_level − enemy_base_level.
 
-    Base Overguard = 12. δ_OG = level − 1 (fixed base of 1, not enemy base level).
-    Two-regime smoothstep blend over δ_OG 45–50.
+    Base Overguard = 12. Two-regime smoothstep blend over δ 45–50.
     """
     BASE_OG = 12.0
-    d = max(0.0, float(level) - 1.0)
+    d = max(0.0, float(delta))
     f1 = 1.0 + 0.0015 * d ** 4
     f2 = 1.0 + 260.0  * d ** 0.9
     return BASE_OG * _blend(f1, f2, d, lo=45.0, hi=50.0)
@@ -162,7 +161,9 @@ def scale_enemy_stats(
         has_shield_or_armor = base_shield > 0 or base_armor > 0
         floor = _eximus_health_floor(base_health, level, has_shield_or_armor)
         health = max(health, floor * sp_mult)
-        overguard = overguard_at_level(level)
+        # OG uses target_level (no SP +100) minus enemy base_level as delta
+        delta_og = max(0, target_level - base_level)
+        overguard = overguard_at_level(delta_og)
     else:
         overguard = 0.0
 

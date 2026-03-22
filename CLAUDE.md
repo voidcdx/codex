@@ -54,7 +54,7 @@ run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]
 ```
 
-## 128 Tests Passing
+## 157 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Riven Mod Builder (Web UI)
@@ -163,7 +163,7 @@ Smoothstep blend 70–80. `f1(δ) = 1 + A1×δ^e1`, `f2(δ) = 1 + A2×δ^e2`.
 
 | Faction | A1 | e1 | A2 | e2 |
 |---|---|---|---|---|
-| Grineer / Scaldra | 0.015 | 2.12 | 10.7332 | 0.72 |
+| Grineer / Scaldra | 0.015 | 2.12 | 10.7332 | 0.8990 |
 | Corpus | 0.015 | 2.12 | 13.4165 | 0.55 |
 | Infested | 0.0225 | 2.12 | 16.1 | 0.72 |
 | Corrupted | 0.015 | 2.10 | 10.7332 | 0.685 |
@@ -185,7 +185,7 @@ Same smoothstep structure. Factions not listed use Grineer coefficients.
 ### Overguard (Eximus Only)
 Two-regime smoothstep formula (source: wiki.warframe.com/w/Enemy_Level_Scaling):
 ```
-δ_OG  = level − 1  (fixed base of 1, NOT enemy base level)
+δ_OG  = target_level − enemy_base_level  (same delta as health; SP +100 NOT added for OG)
 f1(δ) = 1 + 0.0015 × δ^4            (δ < 45)
 f2(δ) = 1 + 260 × δ^0.9             (δ > 50)
 T     = (δ - 45) / 5

@@ -18,37 +18,35 @@ from src.scaling import (
 # ---------------------------------------------------------------------------
 
 class TestOverguard:
-    def test_level_1_base_value(self):
-        # δ_OG = 0 → f1 = 1 + 0.0015*0^4 = 1 → 12 * 1 = 12
-        assert overguard_at_level(1) == pytest.approx(12.0)
+    def test_delta_0_base_value(self):
+        # δ=0 → f1 = 1 → 12 * 1 = 12
+        assert overguard_at_level(0) == pytest.approx(12.0)
 
-    def test_level_11(self):
-        # δ_OG = 10 → f1 = 1 + 0.0015*10^4 = 1 + 15 = 16 → 12*16 = 192
-        # (CLAUDE.md listed 1812 which was from the old power-law fit — incorrect)
-        assert overguard_at_level(11) == pytest.approx(192.0)
+    def test_delta_10(self):
+        # δ=10 → f1 = 1 + 0.0015*10^4 = 16 → 12*16 = 192
+        assert overguard_at_level(10) == pytest.approx(192.0)
 
-    def test_level_46(self):
-        # δ_OG = 45 → f1 = 1 + 0.0015*45^4 = 6151.9375 → 12*6151.9375 = 73823.25
-        assert overguard_at_level(46) == pytest.approx(73823.25)
+    def test_delta_45(self):
+        # δ=45 → f1 = 1 + 0.0015*45^4 = 6151.9375 → 12*6151.9375 = 73823.25
+        assert overguard_at_level(45) == pytest.approx(73823.25)
 
-    def test_level_51_uses_f2(self):
-        # δ_OG = 50 → fully f2 territory: 1 + 260*50^0.9
-        import math
+    def test_delta_50_uses_f2(self):
+        # δ=50 → fully f2: 1 + 260*50^0.9
         d = 50.0
         expected = 12.0 * (1.0 + 260.0 * d ** 0.9)
-        assert overguard_at_level(51) == pytest.approx(expected, rel=1e-6)
+        assert overguard_at_level(50) == pytest.approx(expected, rel=1e-6)
 
-    def test_level_200_reference(self):
-        # δ_OG=199 → ~365,676 per CLAUDE.md
-        assert overguard_at_level(200) == pytest.approx(365676.0, rel=0.01)
+    def test_delta_199_reference(self):
+        # δ=199 → ~365,676 per CLAUDE.md
+        assert overguard_at_level(199) == pytest.approx(365676.0, rel=0.01)
 
-    def test_level_600_reference(self):
-        # δ_OG=599 → ~985,000 per CLAUDE.md
-        assert overguard_at_level(600) == pytest.approx(985000.0, rel=0.01)
+    def test_delta_599_reference(self):
+        # δ=599 → ~985,000 per CLAUDE.md
+        assert overguard_at_level(599) == pytest.approx(985000.0, rel=0.01)
 
     def test_increases_monotonically(self):
-        levels = [1, 10, 25, 45, 48, 50, 100, 200]
-        values = [overguard_at_level(lv) for lv in levels]
+        deltas = [0, 9, 24, 44, 47, 49, 99, 199]
+        values = [overguard_at_level(d) for d in deltas]
         assert all(values[i] < values[i+1] for i in range(len(values)-1))
 
 
@@ -168,3 +166,15 @@ class TestScaleEnemyStats:
     def test_armor_hard_cap(self):
         result = scale_enemy_stats(100.0, 0.0, 5000.0, 1, 9999, faction=FactionType.GRINEER)
         assert result["armor"] == pytest.approx(2700.0)
+
+    def test_grineer_power_carrier_lv500_sp_eximus(self):
+        # Reference: wiki.warframe.com — Grineer Power Carrier lv500 +SP Eximus
+        # base_health=650, base_armor=100, base_level=15, faction=Grineer
+        result = scale_enemy_stats(
+            650.0, 0.0, 100.0, 15, 500,
+            steel_path=True, eximus=True,
+            faction=FactionType.GRINEER,
+        )
+        assert result["health"]    == pytest.approx(5_361_635.79, rel=0.001)
+        assert result["armor"]     == pytest.approx(2700.0)
+        assert result["overguard"] == pytest.approx(815_320.85,   rel=0.001)
