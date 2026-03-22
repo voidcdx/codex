@@ -53,6 +53,16 @@ Web UI fully functional with dark theme, mod card grid, special slots, weapon im
 
 ## Recent Changes (this session)
 
+### GitHub Actions Auto-Merge
+- `.github/workflows/merge-claude-to-codex.yml` added
+- Triggers on any push to `claude/**` branch
+- Automatically merges into `codex` using `github-actions[bot]` — no manual steps needed
+- Confirmed working (ran successfully in 4s on first trigger)
+
+### Per-Trigger DPS in Damage Breakdown
+- `api.py` `/api/calculate` now returns `total_per_trigger` and `breakdown_per_trigger` (damage × multishot)
+- `index.html` breakdown table shows per-trigger column alongside per-hit
+
 ### Faction Effectiveness Badges
 - `FACTION_EFFECTIVENESS` JS constant added to `index.html` — mirrors `src/calculator.py` table, keyed by raw faction string (including aliases: `infestation`, `orokin`, `themurmur`)
 - Results breakdown table now shows `+50%` (green) / `−50%` (red) badges per damage type based on the selected enemy's faction
