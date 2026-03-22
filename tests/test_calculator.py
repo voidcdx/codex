@@ -74,34 +74,34 @@ class TestStep1ModdedBaseDamage:
         # Step1: floor(24*2.65)=63; quantize: round(63/1.875)*1.875=34*1.875=63.75
         # Step2 body_part=1.0: round(63.75)=64
         # Step3 no faction: floor(64*1.0)=64
-        # Step4 Slash vs FLESH ×1.5: floor(64*1.5)=floor(96.0)=96
-        # Step5 no armor → 96
-        assert result[DamageType.SLASH] == pytest.approx(96.0)
+        # Step4 Slash vs GRINEER neutral ×1.0: floor(64*1.0)=64
+        # Step5 no armor → 64
+        assert result[DamageType.SLASH] == pytest.approx(64.0)
 
     def test_no_mods_returns_quantized_base(self):
         """With no mods, damage_bonus=0, so modded=base, just quantized."""
         result = calc.calculate(braton(), [], grineer_flesh_no_armor())
         # Slash=24, base=60, scale=1.875
         # round(24/1.875)*1.875 = round(12.8)*1.875 = 13*1.875 = 24.375
-        # vs FLESH: floor(24.375 * 1.5) = floor(36.5625) = 36
-        assert result[DamageType.SLASH] == pytest.approx(36.0)
+        # round(24.375) = 24; Slash vs GRINEER neutral ×1.0: 24
+        assert result[DamageType.SLASH] == pytest.approx(24.0)
 
 
 # ---------------------------------------------------------------------------
 # M8 — Steps 2-3: Body part multiplier + faction
 # Braton Slash=24, Serration(+165%), headshot=2×, Bane of Grineer(+30%)
 # Step1 Slash quantized = 63.75
-# Step2 body part: round(63.75 * 2.0) = round(127.5) = 128  (Python banker's rounding → 128)
+# Step2 body part: round(63.75 * 2.0) = round(127.5) = 128  (ROUND_HALF_UP)
 # Step3 faction: floor(128 * 1.30) = floor(166.4) = 166
-# Step4 type (Slash vs FLESH ×1.5): floor(166 * 1.5) = floor(249.0) = 249
-# Step5 no armor → 249
+# Step4 type (Slash vs GRINEER neutral ×1.0): floor(166 * 1.0) = 166
+# Step5 no armor → 166
 # ---------------------------------------------------------------------------
 class TestSteps2And3:
     def test_headshot_faction(self):
         enemy = grineer_flesh_no_armor()
         enemy.body_part_multiplier = 2.0
         result = calc.calculate(braton(), [serration(), bane_grineer()], enemy)
-        assert result[DamageType.SLASH] == pytest.approx(249.0)
+        assert result[DamageType.SLASH] == pytest.approx(166.0)
 
     def test_faction_mod_wrong_faction_not_applied(self):
         """Bane of Grineer should have no effect on a Corpus enemy."""
@@ -122,13 +122,13 @@ class TestSteps2And3:
 # Step1 Slash quantized = 63.75
 # Step2 no headshot: round(63.75 * 1.0) = 64 (round to nearest int)
 # Step3 no faction: floor(64 * 1.0) = 64
-# Step4 Slash vs FLESH ×1.5: floor(64 * 1.5) = floor(96.0) = 96
-# Step5 armor 300/(300+300)=0.5: floor(96 * 0.5) = 48
+# Step4 Slash vs GRINEER neutral ×1.0: floor(64 * 1.0) = 64
+# Step5 armor 300/(300+300)=0.5: floor(64 * 0.5) = 32
 # ---------------------------------------------------------------------------
 class TestSteps4And5:
     def test_armor_mitigation(self):
         result = calc.calculate(braton(), [serration()], grineer_flesh_300_armor())
-        assert result[DamageType.SLASH] == pytest.approx(48.0)
+        assert result[DamageType.SLASH] == pytest.approx(32.0)
 
     def test_true_damage_bypasses_armor(self):
         weapon = Weapon(
@@ -327,16 +327,16 @@ class TestBaneMods:
         # Step1: quantize(24, 60) = round(24/1.875)*1.875 = 13*1.875 = 24.375
         # Step2: round(24.375*1.0) = 24
         # Step3: floor(24 * 1.30) = floor(31.2) = 31
-        # Step4: Slash vs FLESH ×1.5 → floor(31*1.5) = floor(46.5) = 46
-        # Step5: no armor → 46
+        # Step4: Slash vs GRINEER neutral ×1.0 → 31
+        # Step5: no armor → 31
         result = calc.calculate(braton(), [BANE_MODS["Bane of Grineer"]], grineer_flesh_no_armor())
-        assert result[DamageType.SLASH] == pytest.approx(46.0)
+        assert result[DamageType.SLASH] == pytest.approx(31.0)
 
     def test_primed_bane_applied_in_pipeline(self):
         # Same as above but +55%: floor(24 * 1.55) = floor(37.2) = 37
-        # Step4: floor(37*1.5) = floor(55.5) = 55
+        # Step4: Slash vs GRINEER neutral ×1.0 → 37
         result = calc.calculate(braton(), [BANE_MODS["Primed Bane of Grineer"]], grineer_flesh_no_armor())
-        assert result[DamageType.SLASH] == pytest.approx(55.0)
+        assert result[DamageType.SLASH] == pytest.approx(37.0)
 
     def test_wrong_faction_bane_not_applied(self):
         # Bane of Corpus on Grineer enemy → no bonus
@@ -361,11 +361,10 @@ class TestViralStackMultipliers:
         assert result_0 == result_no
 
     def test_10_stacks_multiplier(self):
-        # Braton Slash=24 vs FLESH (no armor, no mods)
-        # Before Viral: Step3 Slash ×1.5 → floor(24*1.5)=36; Step4 no armor→36; Step5 no faction→36
-        # Viral ×4.25: floor(36 * 4.25) = floor(153.0) = 153
+        # Braton Slash=24 vs GRINEER (no armor, no mods)
+        # Slash vs GRINEER neutral ×1.0 → 24; Viral ×4.25: floor(24 * 4.25) = 102
         result = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=10)
-        assert result[DamageType.SLASH] == pytest.approx(153.0)
+        assert result[DamageType.SLASH] == pytest.approx(102.0)
 
     def test_stacks_capped_at_10(self):
         result_10  = calc.calculate(braton(), [], grineer_flesh_no_armor(), viral_stacks=10)
@@ -395,7 +394,8 @@ class TestSecondaryElementalMods:
         )
         result = calc.calculate(weapon, [magnetic_mod], enemy)
         assert DamageType.MAGNETIC in result
-        assert result[DamageType.MAGNETIC] == pytest.approx(36.0)
+        # Magnetic vs CORPUS = 1.5; quantized magnetic = 35.625 → round = 36 → floor(36*1.5) = 54
+        assert result[DamageType.MAGNETIC] == pytest.approx(54.0)
 
     def test_blast_mod_applies(self):
         weapon = Weapon(
@@ -470,8 +470,8 @@ class TestCalculateProcs:
         procs = calc.calculate_procs(weapon, [], self._braton_no_armor())
         assert procs["heat"]["active"] is True
         assert procs["heat"]["ticks"] == 6
-        # total_step2 ~120; heat_eff vs FLESH = 1.5; DPT = floor(120*0.5*1.5) = 90
-        assert procs["heat"]["damage_per_tick"] == pytest.approx(90.0)
+        # total_step2 ~120; heat_eff vs GRINEER = 1.0 (neutral); DPT = floor(120*0.5*1.0) = 60
+        assert procs["heat"]["damage_per_tick"] == pytest.approx(60.0)
 
     def test_gas_proc_inactive_without_gas(self):
         procs = calc.calculate_procs(braton(), [], self._braton_no_armor())
@@ -591,8 +591,8 @@ class TestToxinProc:
         assert procs["toxin"]["active"] is False
 
     def test_toxin_proc_active_with_innate_toxin(self):
-        """Slash=60 + Toxin=60 innate; total_step2=120; toxin_eff vs FLESH=1.5
-        DPT = floor(120 * 0.5 * 1.5) = floor(90.0) = 90; 6 ticks → total=540
+        """Slash=60 + Toxin=60 innate; total_step2=120; toxin_eff vs CORPUS=1.0 (neutral)
+        DPT = floor(120 * 0.5 * 1.0) = floor(60.0) = 60; 6 ticks → total=360
         """
         weapon = Weapon(
             name="Toxin Test",
@@ -602,8 +602,8 @@ class TestToxinProc:
         procs = calc.calculate_procs(weapon, [], self._flesh_enemy())
         assert procs["toxin"]["active"] is True
         assert procs["toxin"]["ticks"] == 6
-        assert procs["toxin"]["damage_per_tick"] == pytest.approx(90.0)
-        assert procs["toxin"]["total_damage"] == pytest.approx(540.0)
+        assert procs["toxin"]["damage_per_tick"] == pytest.approx(60.0)
+        assert procs["toxin"]["total_damage"] == pytest.approx(360.0)
 
     def test_toxin_proc_faction_double_dip(self):
         """Bane of Corpus (+30%) applies twice: DPT × 1.30² = DPT × 1.69."""
@@ -614,8 +614,8 @@ class TestToxinProc:
         )
         bane_corpus = Mod(name="Bane of Corpus", faction_bonus=0.30, faction_type=FactionType.CORPUS)
         procs = calc.calculate_procs(weapon, [bane_corpus], self._flesh_enemy())
-        # total_step2=120; DPT = floor(120 * 0.5 * 1.5 * 1.69) = floor(152.1) = 152
-        assert procs["toxin"]["damage_per_tick"] == pytest.approx(152.0)
+        # total_step2=120; toxin_eff vs CORPUS=1.0; DPT = floor(120 * 0.5 * 1.0 * 1.69) = floor(101.4) = 101
+        assert procs["toxin"]["damage_per_tick"] == pytest.approx(101.0)
 
 
 # ---------------------------------------------------------------------------
@@ -638,8 +638,8 @@ class TestElectricityProc:
         assert procs["electricity"]["active"] is False
 
     def test_electricity_proc_active_with_innate_electricity(self):
-        """Slash=60 + Electricity=60 innate; total_step2=120; elec_eff vs ROBOTIC=1.5
-        DPT = floor(120 * 0.5 * 1.5) = floor(90.0) = 90; 6 ticks → total=540
+        """Slash=60 + Electricity=60 innate; total_step2=120; elec_eff vs CORPUS=1.0 (neutral)
+        DPT = floor(120 * 0.5 * 1.0) = floor(60.0) = 60; 6 ticks → total=360
         """
         weapon = Weapon(
             name="Electricity Test",
@@ -649,8 +649,8 @@ class TestElectricityProc:
         procs = calc.calculate_procs(weapon, [], self._robotic_enemy())
         assert procs["electricity"]["active"] is True
         assert procs["electricity"]["ticks"] == 6
-        assert procs["electricity"]["damage_per_tick"] == pytest.approx(90.0)
-        assert procs["electricity"]["total_damage"] == pytest.approx(540.0)
+        assert procs["electricity"]["damage_per_tick"] == pytest.approx(60.0)
+        assert procs["electricity"]["total_damage"] == pytest.approx(360.0)
 
     def test_electricity_proc_neutral_vs_flesh(self):
         """Electricity effectiveness vs FLESH is neutral (1.0).
@@ -697,33 +697,33 @@ class TestCorrosiveStrip:
     def test_zero_stacks_no_change(self):
         """0 stacks = no armor reduction; baseline reference."""
         # Impact=60, Serration(+165%): floor(60*2.65)=159; quantize→159.375; round→159
-        # vs FLESH eff=0.5: floor(159*0.5)=79; IMPACT vs Ferrite: armor_mod=0, damage_mod=0
-        # armor_mult = 1-(300/(300+300)) = 0.5; floor(79*0.5)=39
+        # Impact vs GRINEER ×1.5: floor(159*1.5)=floor(238.5)=238
+        # IMPACT vs Ferrite: armor_mod=0, damage_mod=0; DR=300/600=0.5; floor(238*0.5)=119
         result = calc.calculate(
             self._impact_weapon(), [serration()], self._ferrite_enemy(),
             corrosive_stacks=0,
         )
-        assert result[DamageType.IMPACT] == pytest.approx(39.0)
+        assert result[DamageType.IMPACT] == pytest.approx(119.0)
 
     def test_five_stacks_50pct_strip(self):
         """5 stacks: reduction = 0.20+0.06×5 = 0.50 → armor 300→150.
-        armor_mult = 1-(150/(150+300)) = 0.666...; floor(79*0.666...)=52
+        Impact vs GRINEER ×1.5 → 238; armor_mult = 1-(150/450) = 0.666...; floor(238*0.666...)=158
         """
         result = calc.calculate(
             self._impact_weapon(), [serration()], self._ferrite_enemy(),
             corrosive_stacks=5,
         )
-        assert result[DamageType.IMPACT] == pytest.approx(52.0)
+        assert result[DamageType.IMPACT] == pytest.approx(158.0)
 
     def test_ten_stacks_80pct_cap(self):
         """10 stacks: reduction capped at 0.80 → armor 300→60.
-        armor_mult = 1-(60/(60+300)) = 0.8333...; floor(79*0.8333...)=65
+        Impact vs GRINEER ×1.5 → 238; armor_mult = 1-(60/360) = 0.8333...; floor(238*0.8333...)=198
         """
         result = calc.calculate(
             self._impact_weapon(), [serration()], self._ferrite_enemy(),
             corrosive_stacks=10,
         )
-        assert result[DamageType.IMPACT] == pytest.approx(65.0)
+        assert result[DamageType.IMPACT] == pytest.approx(198.0)
 
     def test_cap_at_80pct(self):
         """14 stacks should give same result as 10 stacks (cap enforced at 80%)."""

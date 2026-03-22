@@ -1,78 +1,67 @@
 import math
 from decimal import Decimal
-from src.enums import DamageType, HealthType, ArmorType, FactionType
+from src.enums import DamageType, ArmorType, FactionType
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.quantizer import quantize, quantize_components
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.scaling import scale_enemy_stats
 
 # ---------------------------------------------------------------------------
-# Damage type effectiveness table (Update 36.0+: Vulnerable=1.5, Resistant=0.5)
-# Key: (HealthType, DamageType) → multiplier; omitted entries are 1.0 (neutral)
-# Source: wiki.warframe.com/w/Damage
+# Damage type effectiveness table (Update 36.0+)
+# Key: (FactionType, DamageType) → multiplier
+# Omitted entries = 1.0 (neutral). Vulnerable=×1.5, Resistant=×0.5
+# Source: wiki.warframe.com/w/Damage/Overview (extracted 2026-03-21)
 # ---------------------------------------------------------------------------
-EFFECTIVENESS: dict[tuple[HealthType, DamageType], float] = {
-    # --- FLESH (Grineer/Corpus humanoids) ---
-    (HealthType.FLESH, DamageType.SLASH):       1.5,
-    (HealthType.FLESH, DamageType.TOXIN):       1.5,
-    (HealthType.FLESH, DamageType.HEAT):        1.5,
-    (HealthType.FLESH, DamageType.IMPACT):      0.5,
-    (HealthType.FLESH, DamageType.GAS):         1.5,
-    (HealthType.FLESH, DamageType.VIRAL):       1.5,
-
-    # --- ROBOTIC ---
-    (HealthType.ROBOTIC, DamageType.PUNCTURE):  1.5,
-    (HealthType.ROBOTIC, DamageType.ELECTRICITY): 1.5,
-    (HealthType.ROBOTIC, DamageType.RADIATION): 1.5,
-    (HealthType.ROBOTIC, DamageType.SLASH):     0.5,
-    (HealthType.ROBOTIC, DamageType.TOXIN):     0.5,
-
-    # --- SHIELDS (Corpus) ---
-    (HealthType.SHIELDS, DamageType.IMPACT):    1.5,
-    (HealthType.SHIELDS, DamageType.MAGNETIC):  1.5,
-    (HealthType.SHIELDS, DamageType.COLD):      1.5,
-    (HealthType.SHIELDS, DamageType.TOXIN):     0.5,
-    (HealthType.SHIELDS, DamageType.ELECTRICITY): 0.5,
-
-    # --- PROTO_SHIELDS (Corpus elite) ---
-    (HealthType.PROTO_SHIELDS, DamageType.PUNCTURE): 1.5,
-    (HealthType.PROTO_SHIELDS, DamageType.CORROSIVE): 1.5,
-    (HealthType.PROTO_SHIELDS, DamageType.IMPACT):   0.5,
-    (HealthType.PROTO_SHIELDS, DamageType.COLD):     0.5,
-    (HealthType.PROTO_SHIELDS, DamageType.MAGNETIC):  0.5,
-
-    # --- FERRITE_ARMOR (Grineer) ---
-    (HealthType.FERRITE_ARMOR, DamageType.PUNCTURE):  1.5,
-    (HealthType.FERRITE_ARMOR, DamageType.CORROSIVE): 1.5,
-    (HealthType.FERRITE_ARMOR, DamageType.BLAST):     0.5,
-    (HealthType.FERRITE_ARMOR, DamageType.RADIATION): 0.5,
-
-    # --- ALLOY_ARMOR (Corpus/Corrupted) ---
-    (HealthType.ALLOY_ARMOR, DamageType.PUNCTURE):   1.5,
-    (HealthType.ALLOY_ARMOR, DamageType.COLD):       1.5,
-    (HealthType.ALLOY_ARMOR, DamageType.RADIATION):  1.5,
-    (HealthType.ALLOY_ARMOR, DamageType.ELECTRICITY): 0.5,
-    (HealthType.ALLOY_ARMOR, DamageType.MAGNETIC):   0.5,
-    (HealthType.ALLOY_ARMOR, DamageType.BLAST):      0.5,
-
-    # --- INFESTED_FLESH ---
-    (HealthType.INFESTED_FLESH, DamageType.SLASH):   1.5,
-    (HealthType.INFESTED_FLESH, DamageType.HEAT):    1.5,
-    (HealthType.INFESTED_FLESH, DamageType.GAS):     1.5,
-    (HealthType.INFESTED_FLESH, DamageType.COLD):    0.5,
-    (HealthType.INFESTED_FLESH, DamageType.ELECTRICITY): 0.5,
-
-    # --- FOSSILIZED (Infested heavy) ---
-    (HealthType.FOSSILIZED, DamageType.BLAST):       1.5,
-    (HealthType.FOSSILIZED, DamageType.CORROSIVE):   1.5,
-    (HealthType.FOSSILIZED, DamageType.COLD):        0.5,
-    (HealthType.FOSSILIZED, DamageType.TOXIN):       0.5,
-
-    # --- SINEW (Infested runner) ---
-    (HealthType.SINEW, DamageType.PUNCTURE):         1.5,
-    (HealthType.SINEW, DamageType.RADIATION):        1.5,
-    (HealthType.SINEW, DamageType.SLASH):            0.5,
-    (HealthType.SINEW, DamageType.IMPACT):           0.5,
+FACTION_EFFECTIVENESS: dict[tuple[FactionType, DamageType], float] = {
+    # ── Impact ──────────────────────────────────────────────────────────────
+    (FactionType.GRINEER,        DamageType.IMPACT): 1.5,
+    (FactionType.KUVA_GRINEER,   DamageType.IMPACT): 1.5,
+    (FactionType.SCALDRA,        DamageType.IMPACT): 1.5,
+    (FactionType.ANARCHS,        DamageType.IMPACT): 1.5,
+    # ── Puncture ─────────────────────────────────────────────────────────────
+    (FactionType.CORPUS,         DamageType.PUNCTURE): 1.5,
+    (FactionType.CORRUPTED,      DamageType.PUNCTURE): 1.5,
+    # ── Slash ────────────────────────────────────────────────────────────────
+    (FactionType.INFESTED,       DamageType.SLASH): 1.5,
+    (FactionType.NARMER,         DamageType.SLASH): 1.5,
+    # ── Cold ─────────────────────────────────────────────────────────────────
+    (FactionType.SENTIENT,       DamageType.COLD): 1.5,
+    (FactionType.TECHROT,        DamageType.COLD): 0.5,
+    # ── Electricity ──────────────────────────────────────────────────────────
+    (FactionType.CORPUS_AMALGAM, DamageType.ELECTRICITY): 1.5,
+    (FactionType.MURMUR,         DamageType.ELECTRICITY): 1.5,
+    (FactionType.ANARCHS,        DamageType.ELECTRICITY): 1.5,
+    # ── Heat ─────────────────────────────────────────────────────────────────
+    (FactionType.KUVA_GRINEER,   DamageType.HEAT): 0.5,
+    (FactionType.INFESTED,       DamageType.HEAT): 1.5,
+    # ── Toxin ────────────────────────────────────────────────────────────────
+    (FactionType.NARMER,         DamageType.TOXIN): 1.5,
+    # ── Blast ────────────────────────────────────────────────────────────────
+    (FactionType.CORPUS_AMALGAM, DamageType.BLAST): 0.5,
+    (FactionType.DEIMOS_INFESTED,DamageType.BLAST): 1.5,
+    # ── Corrosive ────────────────────────────────────────────────────────────
+    (FactionType.GRINEER,        DamageType.CORROSIVE): 1.5,
+    (FactionType.KUVA_GRINEER,   DamageType.CORROSIVE): 1.5,
+    (FactionType.SENTIENT,       DamageType.CORROSIVE): 0.5,
+    (FactionType.SCALDRA,        DamageType.CORROSIVE): 1.5,
+    # ── Gas ──────────────────────────────────────────────────────────────────
+    (FactionType.DEIMOS_INFESTED,DamageType.GAS): 1.5,
+    (FactionType.SCALDRA,        DamageType.GAS): 0.5,
+    (FactionType.TECHROT,        DamageType.GAS): 1.5,
+    # ── Magnetic ─────────────────────────────────────────────────────────────
+    (FactionType.CORPUS,         DamageType.MAGNETIC): 1.5,
+    (FactionType.CORPUS_AMALGAM, DamageType.MAGNETIC): 1.5,
+    (FactionType.NARMER,         DamageType.MAGNETIC): 0.5,
+    (FactionType.TECHROT,        DamageType.MAGNETIC): 1.5,
+    # ── Radiation ────────────────────────────────────────────────────────────
+    (FactionType.CORRUPTED,      DamageType.RADIATION): 0.5,
+    (FactionType.SENTIENT,       DamageType.RADIATION): 1.5,
+    (FactionType.MURMUR,         DamageType.RADIATION): 1.5,
+    (FactionType.ANARCHS,        DamageType.RADIATION): 0.5,
+    # ── Viral ────────────────────────────────────────────────────────────────
+    (FactionType.DEIMOS_INFESTED,DamageType.VIRAL): 0.5,
+    (FactionType.CORRUPTED,      DamageType.VIRAL): 1.5,
+    (FactionType.MURMUR,         DamageType.VIRAL): 0.5,
 }
 
 
@@ -312,7 +301,7 @@ class DamageCalculator:
         after_type: list[DamageComponent] = [
             DamageComponent(
                 c.type,
-                math.floor(c.amount * self._type_multiplier(c.type, enemy.health_type))
+                math.floor(c.amount * self._type_multiplier(c.type, enemy.faction))
             )
             for c in after_bodypart
         ]
@@ -450,7 +439,7 @@ class DamageCalculator:
         slash_dpt = total_step2 * 0.35 * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
         heat_active = DamageType.HEAT in types_present
-        heat_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.HEAT), 1.0)
+        heat_eff = FACTION_EFFECTIVENESS.get((enemy.faction, DamageType.HEAT), 1.0)
         heat_dpt = total_step2 * 0.50 * heat_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
         # Gas Cloud: ignores elemental/physical mods; scales with Gas mods, faction (×2),
@@ -476,7 +465,7 @@ class DamageCalculator:
         # Bypasses shields. Faction double-dips.
         # Source: wiki.warframe.com/w/Damage/Toxin_Damage
         toxin_active = DamageType.TOXIN in types_present
-        toxin_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.TOXIN), 1.0)
+        toxin_eff = FACTION_EFFECTIVENESS.get((enemy.faction, DamageType.TOXIN), 1.0)
         toxin_dpt = total_step2 * 0.50 * toxin_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
         # Electricity (Tesla Chain): 50% of total step-2 damage × Electricity effectiveness.
@@ -485,7 +474,7 @@ class DamageCalculator:
         # Multi-target chaining to other enemies is out of scope for this single-target calc.
         # Source: wiki.warframe.com/w/Damage/Electricity_Damage
         elec_active = DamageType.ELECTRICITY in types_present
-        elec_eff = EFFECTIVENESS.get((enemy.health_type, DamageType.ELECTRICITY), 1.0)
+        elec_eff = FACTION_EFFECTIVENESS.get((enemy.faction, DamageType.ELECTRICITY), 1.0)
         elec_dpt = total_step2 * 0.50 * elec_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
         return {
@@ -497,5 +486,5 @@ class DamageCalculator:
         }
 
     # ------------------------------------------------------------------
-    def _type_multiplier(self, dtype: DamageType, health: HealthType) -> float:
-        return EFFECTIVENESS.get((health, dtype), 1.0)
+    def _type_multiplier(self, dtype: DamageType, faction: FactionType) -> float:
+        return FACTION_EFFECTIVENESS.get((faction, dtype), 1.0)

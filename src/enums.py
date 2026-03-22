@@ -40,6 +40,7 @@ class FactionType(Enum):
     ZARIMAN = auto()            # Zariman / Angels of Zariman
     SCALDRA = auto()            # Jade Shadows / Technocyte
     TECHROT = auto()            # 1999 update
+    ANARCHS = auto()            # 1999 update sub-faction
     NONE = auto()
 
 
