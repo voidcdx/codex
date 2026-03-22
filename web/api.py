@@ -368,6 +368,7 @@ def calculate(req: CalcRequest) -> dict:
         enemy=enemy,
         crit_multiplier=crit_mult,
         is_crit_headshot=req.headshot,
+        multishot=modded_ms,
         viral_stacks=req.viral_stacks,
         corrosive_stacks=req.corrosive_stacks,
         enemy_level=req.enemy_level,
@@ -383,12 +384,9 @@ def calculate(req: CalcRequest) -> dict:
     )
 
     breakdown = {dtype.name: val for dtype, val in result.items()}
-total = sum(result.values())
-total_per_trigger = total * modded_ms
-breakdown_per_trigger = {k: v * modded_ms for k, v in breakdown.items()}
+    total = sum(result.values())
 
-return {
-
+    return {
         "weapon":        weapon.name,
         "mods":          req.mods,
         "enemy":         enemy.name,
@@ -398,9 +396,7 @@ return {
         "viral_stacks":    req.viral_stacks,
         "corrosive_stacks": req.corrosive_stacks,
         "breakdown":     breakdown,
-        "breakdown_per_trigger": breakdown_per_trigger,
         "total":         total,
-        "total_per_trigger": total_per_trigger,
         "procs":         procs,
         "fire_rate":     fire_rate,
         "magazine":      magazine,

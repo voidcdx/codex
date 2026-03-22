@@ -1639,7 +1639,7 @@ function showResults(data) {
 
   const ms = _currentMultishot;
   const msNote = ms > 1.0001
-    ? `<span class="ms-note">Per-projectile damage. ×${ms.toFixed(2)} multishot → <strong>${(data.total * ms).toFixed(2)}</strong> effective per trigger</span>`
+    ? `<span class="ms-note">Per-trigger damage (includes ×${ms.toFixed(2)} multishot)</span>`
     : '';
 
   // Status procs section
@@ -1676,9 +1676,9 @@ function showResults(data) {
     const ms  = data.modded_ms || 1.0;
     const sc  = data.modded_sc || 0.0;
 
-    const burstDps     = data.total * ms * fr;
+    const burstDps     = data.total * fr;
     const sustainedDps = (rel > 0 && mag > 1)
-      ? data.total * ms * mag / (mag / fr + rel)
+      ? data.total * mag / (mag / fr + rel)
       : null;
 
     const procsPerSec = sc * ms * fr;
@@ -1706,7 +1706,7 @@ function showResults(data) {
       <table class="breakdown-table">
         <thead><tr><th>Metric</th><th></th><th>DPS</th></tr></thead>
         <tbody>
-          <tr><td>Burst DPS</td><td style="font-size:0.75rem;color:var(--text-muted)">×${ms.toFixed(2)} multishot × ${fr}/s</td><td>${fmtNum(burstDps)}</td></tr>
+          <tr><td>Burst DPS</td><td style="font-size:0.75rem;color:var(--text-muted)">${ms > 1.0001 ? `×${ms.toFixed(2)} multishot × ` : ''}${fr}/s</td><td>${fmtNum(burstDps)}</td></tr>
           ${sustainedDps != null ? `<tr><td>Sustained DPS</td><td style="font-size:0.75rem;color:var(--text-muted)">${rel}s reload / ${mag} mag</td><td>${fmtNum(sustainedDps)}</td></tr>` : ''}
           ${procDpsRows}
         </tbody>

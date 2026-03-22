@@ -794,3 +794,47 @@ class TestMakeRivenMod:
         # quantize: scale = 100/32 = 3.125; round(330/3.125)=round(105.6)=106 → 106*3.125=331.25
         # Actually let's just verify total > 300 and is float
         assert result[DamageType.SLASH] > 300.0
+
+
+# ---------------------------------------------------------------------------
+# Multishot — DamageCalculator.calculate() applies multishot multiplier
+# ---------------------------------------------------------------------------
+class TestMultishot:
+    def _weapon(self):
+        return Weapon(
+            name="Test",
+            base_damage={DamageType.IMPACT: 30.0, DamageType.SLASH: 30.0},
+        )
+
+    def _enemy(self):
+        return Enemy(
+            name="Mob",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+            base_armor=0.0,
+            body_part_multiplier=1.0,
+        )
+
+    def test_multishot_default_is_1x(self):
+        """Default multishot=1.0 returns same values as no-multishot call."""
+        r1 = calc.calculate(self._weapon(), [], self._enemy())
+        r2 = calc.calculate(self._weapon(), [], self._enemy(), multishot=1.0)
+        assert r1 == r2
+
+    def test_multishot_doubles_all_types(self):
+        """multishot=2.0 doubles every damage type."""
+        r1 = calc.calculate(self._weapon(), [], self._enemy())
+        r2 = calc.calculate(self._weapon(), [], self._enemy(), multishot=2.0)
+        for dtype in r1:
+            assert r2[dtype] == pytest.approx(r1[dtype] * 2.0)
+
+    def test_multishot_split_chamber(self):
+        """Split Chamber (multishot_bonus=0.65) → modded_ms=1.65 scales total correctly."""
+        mods = [Mod(name="Split Chamber", multishot_bonus=0.65)]
+        modded_ms = 1.0 + sum(m.multishot_bonus for m in mods)
+        r_base = calc.calculate(self._weapon(), [], self._enemy())
+        r_ms   = calc.calculate(self._weapon(), mods, self._enemy(), multishot=modded_ms)
+        total_base = sum(r_base.values())
+        total_ms   = sum(r_ms.values())
+        assert total_ms == pytest.approx(total_base * 1.65)
