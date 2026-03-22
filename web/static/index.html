@@ -148,6 +148,10 @@
           <label for="unique-statuses">Active Statuses</label>
           <input type="number" id="unique-statuses" min="0" max="10" value="0" style="width:48px">
         </div>
+        <div title="Galvanized mod kill-stacks active (0 = base stats only, max 5)">
+          <label for="galv-stacks">Galv. Stacks</label>
+          <input type="number" id="galv-stacks" min="0" max="5" value="0" style="width:48px">
+        </div>
       </div>
     </div>
 
@@ -990,7 +994,7 @@ async function _doUpdateModdedStats() {
     const resp = await fetch('/api/modded-weapon', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec() }),
+      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec(), galvanized_stacks: parseInt(document.getElementById('galv-stacks').value, 10) || 0 }),
     });
     if (!resp.ok) return;
     const data = await resp.json();
@@ -1771,6 +1775,7 @@ async function runCalculation() {
   const comboTier       = Math.max(1, parseInt(document.getElementById('combo-counter').value, 10) || 1);
   const comboCounter    = (comboTier - 1) * 10; // tier → raw hits: tier=1→0 (×1), tier=12→110 (×12)
   const uniqueStatuses  = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
+  const galvStacks      = parseInt(document.getElementById('galv-stacks').value, 10) || 0;
 
   if (!weapon || !enemy) {
     showError('Please select a weapon and enemy.');
@@ -1785,7 +1790,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
     });
     const data = await resp.json();
     if (!resp.ok) {
@@ -1831,6 +1836,7 @@ function showResults(data) {
     `Crit: ${data.crit_mode} — ×${data.crit_multiplier.toFixed(3)}${data.body_part && data.body_part !== 'Body' ? ` (${data.body_part})` : ''}`,
     data.viral_stacks > 0 ? `Viral: ${data.viral_stacks} stacks (×${[1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4.25][data.viral_stacks-1]})` : null,
     data.corrosive_stacks > 0 ? `Corrosive: ${data.corrosive_stacks} stacks (−${Math.min(80, 20 + 6*data.corrosive_stacks)}% armor)` : null,
+    data.galvanized_stacks > 0 ? `Galv. Stacks: ${data.galvanized_stacks}` : null,
   ].filter(Boolean).join(' &nbsp;|&nbsp; ');
 
   const _effEnemy = getCurrentEnemy();

@@ -264,6 +264,9 @@ def load_mod(name: str) -> Mod:
     ammo_max_bonus = float(entry.get("ammo_max_pct") or 0.0)
     reload_bonus = float(entry.get("reload_speed_pct") or 0.0)
     condition_overload_bonus = float(entry.get("condition_overload_pct") or 0.0)
+    galv_kill_stat  = str(entry.get("galv_kill_stat")  or "")
+    galv_kill_pct   = float(entry.get("galv_kill_pct")  or 0.0)
+    galv_max_stacks = int(entry.get("galv_max_stacks")  or 0)
 
     return Mod(
         name=name,
@@ -281,6 +284,9 @@ def load_mod(name: str) -> Mod:
         ammo_max_bonus=ammo_max_bonus,
         reload_bonus=reload_bonus,
         condition_overload_bonus=condition_overload_bonus,
+        galv_kill_stat=galv_kill_stat,
+        galv_kill_pct=galv_kill_pct,
+        galv_max_stacks=galv_max_stacks,
     )
 
 

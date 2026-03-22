@@ -996,3 +996,137 @@ class TestConditionOverload:
         r = calc.calculate(_combo_weapon(), [serration, self._co_mod], _no_armor_enemy(),
                            combo_counter=5, unique_statuses=2)
         assert r[DamageType.SLASH] == 638.0
+
+
+# ---------------------------------------------------------------------------
+# Galvanized mod kill-stack tests
+# ---------------------------------------------------------------------------
+
+class TestGalvanizedStacks:
+    """Tests for galvanized mod kill-stack support.
+
+    Uses the same 100-Slash weapon and no-armor enemy as TestConditionOverload.
+    scale = 100/32 = 3.125
+    """
+    _aptitude_mod = Mod(
+        name="Galvanized Aptitude",
+        galv_kill_stat="aptitude_damage_bonus",
+        galv_kill_pct=0.40,
+        galv_max_stacks=2,
+    )
+    _chamber_mod = Mod(
+        name="Galvanized Chamber",
+        multishot_bonus=0.80,
+        galv_kill_stat="multishot_bonus",
+        galv_kill_pct=0.30,
+        galv_max_stacks=5,
+    )
+    _scope_mod = Mod(
+        name="Galvanized Scope",
+        cc_bonus=1.20,
+        galv_kill_stat="cc_bonus",
+        galv_kill_pct=0.40,
+        galv_max_stacks=5,
+    )
+    _steel_mod = Mod(
+        name="Galvanized Steel",
+        cc_bonus=1.10,
+        galv_kill_stat="cd_bonus",
+        galv_kill_pct=0.30,
+        galv_max_stacks=4,
+    )
+
+    # --- Aptitude: damage per status type per stack ---
+
+    def test_aptitude_zero_stacks_no_change(self):
+        # galv_aptitude_total = 0.40 * min(0,2) * 2 = 0 → floor(100*1.0)=100 → quantize=100
+        r = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=2, galvanized_stacks=0)
+        assert r[DamageType.SLASH] == 100.0
+
+    def test_aptitude_one_stack_two_statuses(self):
+        # galv_aptitude_total = 0.40 * 1 * 2 = 0.80
+        # floor(100 * (1.0 + 0.80)) = 180
+        # quantize(180, 100): 180/3.125=57.6→58→58*3.125=181.25→warframe_round=181
+        r = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=2, galvanized_stacks=1)
+        assert r[DamageType.SLASH] == 181.0
+
+    def test_aptitude_two_stacks_three_statuses(self):
+        # galv_aptitude_total = 0.40 * 2 * 3 = 2.40
+        # floor(100 * (1.0 + 2.40)) = 340
+        # quantize(340, 100): 340/3.125=108.8→109→109*3.125=340.625→warframe_round=341
+        r = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=3, galvanized_stacks=2)
+        assert r[DamageType.SLASH] == 341.0
+
+    def test_aptitude_stack_cap_enforced(self):
+        # stacks=10 but max=2 → effective=2; same result as stacks=2, 1 status
+        # galv_aptitude_total = 0.40 * 2 * 1 = 0.80
+        # floor(100*(1.0+0.80))=180 → quantize→181
+        r10 = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                             unique_statuses=1, galvanized_stacks=10)
+        r2  = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                             unique_statuses=1, galvanized_stacks=2)
+        assert r10[DamageType.SLASH] == r2[DamageType.SLASH]
+
+    def test_aptitude_additive_with_serration(self):
+        # Serration+1.65, aptitude 1 stack 1 status: galv=0.40*1*1=0.40
+        # total_dmg_bonus = 1.65 + 0.40 = 2.05
+        # floor(100 * (1.0 + 2.05)) = floor(305) = 305
+        # quantize(305, 100): 305/3.125=97.6→98→98*3.125=306.25→warframe_round=306
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        r = calc.calculate(_combo_weapon(), [serration, self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=1, galvanized_stacks=1)
+        assert r[DamageType.SLASH] == 306.0
+
+    # --- Multishot: pre-computed via multishot parameter ---
+
+    def test_chamber_base_multishot(self):
+        # At 0 stacks: total_ms = 1 + 0.80 = 1.80; damage × 1.80 = 100 × 1.80 = 180
+        ms = 1.0 + self._chamber_mod.multishot_bonus  # base only, 0 stacks
+        r = calc.calculate(_combo_weapon(), [self._chamber_mod], _no_armor_enemy(), multishot=ms)
+        assert r[DamageType.SLASH] == pytest.approx(180.0)
+
+    def test_chamber_five_stacks_multishot(self):
+        # At 5 stacks: galv_ms = 0.30*5 = 1.50; total_ms = 1 + 0.80 + 1.50 = 3.30
+        galv_stacks = 5
+        galv_ms = self._chamber_mod.galv_kill_pct * min(galv_stacks, self._chamber_mod.galv_max_stacks)
+        ms = 1.0 + self._chamber_mod.multishot_bonus + galv_ms
+        assert ms == pytest.approx(3.30)
+        r = calc.calculate(_combo_weapon(), [self._chamber_mod], _no_armor_enemy(), multishot=ms)
+        assert r[DamageType.SLASH] == pytest.approx(100.0 * 3.30)
+
+    def test_chamber_stack_cap_five(self):
+        # stacks=10, cap=5 → same as stacks=5
+        ms_cap = 1.0 + self._chamber_mod.multishot_bonus + self._chamber_mod.galv_kill_pct * 5
+        ms_over = 1.0 + self._chamber_mod.multishot_bonus + self._chamber_mod.galv_kill_pct * min(10, self._chamber_mod.galv_max_stacks)
+        assert ms_cap == pytest.approx(ms_over)
+
+    # --- CC: galv_cc pre-computed and added to base_cc ---
+
+    def test_scope_galv_cc_accumulates(self):
+        # 3 stacks: galv_cc = 0.40 * 3 = 1.20
+        galv_stacks = 3
+        galv_cc = self._scope_mod.galv_kill_pct * min(galv_stacks, self._scope_mod.galv_max_stacks)
+        assert galv_cc == pytest.approx(1.20)
+
+    def test_scope_stack_cap_five(self):
+        # stacks=10 → capped at 5 → galv_cc = 0.40*5 = 2.00
+        galv_cc_capped = self._scope_mod.galv_kill_pct * min(10, self._scope_mod.galv_max_stacks)
+        galv_cc_exact  = self._scope_mod.galv_kill_pct * 5
+        assert galv_cc_capped == pytest.approx(galv_cc_exact)
+
+    # --- CD: galv_cd pre-computed and added to base_cm ---
+
+    def test_steel_galv_cd_four_stacks(self):
+        # 4 stacks (cap): galv_cd = 0.30 * 4 = 1.20
+        galv_stacks = 4
+        galv_cd = self._steel_mod.galv_kill_pct * min(galv_stacks, self._steel_mod.galv_max_stacks)
+        assert galv_cd == pytest.approx(1.20)
+
+    def test_steel_stack_cap_enforced(self):
+        # stacks=99 → capped at 4
+        galv_cd_over = self._steel_mod.galv_kill_pct * min(99, self._steel_mod.galv_max_stacks)
+        galv_cd_cap  = self._steel_mod.galv_kill_pct * 4
+        assert galv_cd_over == pytest.approx(galv_cd_cap)

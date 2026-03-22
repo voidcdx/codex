@@ -159,6 +159,7 @@ class ModdedWeaponRequest(BaseModel):
     weapon: str
     mods: list[str] = []
     attack: str | None = None
+    galvanized_stacks: int = Field(default=0, ge=0, le=5)
     riven: RivenSpec | None = None
 
 
@@ -183,11 +184,21 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     base_cm = weapon.crit_multiplier
     base_sc = weapon.status_chance
 
+    galv_stacks = req.galvanized_stacks
+    galv_cc_bonus = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                        for m in mods if m.galv_kill_stat == "cc_bonus")
+    galv_cd_bonus = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                        for m in mods if m.galv_kill_stat == "cd_bonus")
+    galv_ms_bonus = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                        for m in mods if m.galv_kill_stat == "multishot_bonus")
+    galv_sc_bonus = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                        for m in mods if m.galv_kill_stat == "sc_bonus")
+
     total_damage_bonus = sum(m.damage_bonus for m in mods)
-    total_cc_bonus = sum(m.cc_bonus for m in mods)
-    total_cd_bonus = sum(m.cd_bonus for m in mods)
-    total_sc_bonus = sum(m.sc_bonus for m in mods)
-    total_ms_bonus = sum(m.multishot_bonus for m in mods)
+    total_cc_bonus = sum(m.cc_bonus for m in mods) + galv_cc_bonus
+    total_cd_bonus = sum(m.cd_bonus for m in mods) + galv_cd_bonus
+    total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc_bonus
+    total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms_bonus
     total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
     total_mag_bonus = sum(m.magazine_bonus for m in mods)
     total_ammo_max_bonus = sum(m.ammo_max_bonus for m in mods)
@@ -323,6 +334,7 @@ class CalcRequest(BaseModel):
     eximus:       bool = False
     combo_counter: int = 0         # melee combo hit count
     unique_statuses: int = 0       # unique active status types (Condition Overload)
+    galvanized_stacks: int = Field(default=0, ge=0, le=5)   # 0–5 galvanized kill-stacks
     riven:        RivenSpec | None = None
 
 
@@ -351,8 +363,18 @@ def calculate(req: CalcRequest) -> dict:
     if req.crit_mode not in ("average", "guaranteed", "max"):
         raise HTTPException(400, f"crit_mode must be average/guaranteed/max")
 
-    base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
-    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods)
+    galv_stacks = req.galvanized_stacks
+    galv_cc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                  for m in mods if m.galv_kill_stat == "cc_bonus")
+    galv_cd = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                  for m in mods if m.galv_kill_stat == "cd_bonus")
+    galv_ms = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                  for m in mods if m.galv_kill_stat == "multishot_bonus")
+    galv_sc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
+                  for m in mods if m.galv_kill_stat == "sc_bonus")
+
+    base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + galv_cc
+    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + galv_cd
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
     raw_w = _raw_weapons().get(weapon.name, {})
@@ -360,8 +382,8 @@ def calculate(req: CalcRequest) -> dict:
     magazine    = float(raw_w.get("magazine")   or 1.0)
     reload_time = float(raw_w.get("reload")     or 0.0)
     base_sc     = weapon.status_chance
-    total_sc_bonus = sum(m.sc_bonus for m in mods)
-    total_ms_bonus = sum(m.multishot_bonus for m in mods)
+    total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc
+    total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms
     modded_sc   = base_sc * (1.0 + total_sc_bonus)
     modded_ms   = 1.0 + total_ms_bonus
 
@@ -380,6 +402,7 @@ def calculate(req: CalcRequest) -> dict:
         eximus=req.eximus,
         combo_counter=req.combo_counter,
         unique_statuses=req.unique_statuses,
+        galvanized_stacks=galv_stacks,
     )
     procs = calc.calculate_procs(
         weapon=weapon,
@@ -387,6 +410,8 @@ def calculate(req: CalcRequest) -> dict:
         enemy=enemy,
         crit_multiplier=crit_mult,
         is_crit_headshot=(effective_part != "Body"),
+        unique_statuses=req.unique_statuses,
+        galvanized_stacks=galv_stacks,
     )
 
     breakdown = {dtype.name: val for dtype, val in result.items()}
@@ -401,6 +426,7 @@ def calculate(req: CalcRequest) -> dict:
         "body_part":     effective_part,
         "viral_stacks":    req.viral_stacks,
         "corrosive_stacks": req.corrosive_stacks,
+        "galvanized_stacks": galv_stacks,
         "breakdown":     breakdown,
         "total":         total,
         "procs":         procs,

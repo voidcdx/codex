@@ -186,6 +186,7 @@ class DamageCalculator:
         eximus: bool = False,          # Eximus unit
         combo_counter: int = 0,        # melee combo hit count; mult = 1 + 0.5×floor(count/5)
         unique_statuses: int = 0,      # unique active status types on enemy (for Condition Overload)
+        galvanized_stacks: int = 0,    # 0–5 galvanized mod kill-stacks active
     ) -> dict[DamageType, float]:
         """Return final per-trigger damage values after the full pipeline (includes multishot)."""
         base_damage = weapon.total_base_damage
@@ -194,6 +195,12 @@ class DamageCalculator:
         total_damage_bonus = sum(m.damage_bonus for m in mods)
         # Condition Overload: additive +N% per unique status type on enemy
         co_total = sum(m.condition_overload_bonus for m in mods) * unique_statuses
+        # Galvanized Aptitude/Savvy/Shot: +galv_kill_pct% damage per unique status type per stack
+        galv_aptitude_total = sum(
+            m.galv_kill_pct * min(galvanized_stacks, m.galv_max_stacks) * unique_statuses
+            for m in mods
+            if m.galv_kill_stat == "aptitude_damage_bonus"
+        )
         # Combo counter: multiplicative melee bonus, 1 + 0.5×floor(hits/5)
         combo_mult = 1.0 + 0.5 * math.floor(combo_counter / 5)
         faction_bonus = sum(
@@ -258,7 +265,7 @@ class DamageCalculator:
         # --- Step 1: Apply damage mods → modded base, then quantize ---
         modded: list[DamageComponent] = []
         for comp in all_components:
-            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + co_total) * combo_mult)
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + co_total + galv_aptitude_total) * combo_mult)
             q = quantize(float(raw), base_damage)
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
@@ -331,6 +338,8 @@ class DamageCalculator:
         enemy: Enemy,
         crit_multiplier: float = 1.0,
         is_crit_headshot: bool = False,
+        unique_statuses: int = 0,
+        galvanized_stacks: int = 0,
     ) -> dict[str, dict]:
         """Compute Slash (Bleed), Heat (Burn), Gas (Cloud), Toxin (Poison), and Electricity (Arc) proc damage per tick and total.
 
@@ -342,6 +351,12 @@ class DamageCalculator:
         base_damage = weapon.total_base_damage
 
         total_damage_bonus = sum(m.damage_bonus for m in mods)
+        galv_aptitude_total = sum(
+            m.galv_kill_pct * min(galvanized_stacks, m.galv_max_stacks) * unique_statuses
+            for m in mods
+            if m.galv_kill_stat == "aptitude_damage_bonus"
+        )
+        total_damage_bonus += galv_aptitude_total
         faction_bonus = sum(
             m.faction_bonus for m in mods
             if m.faction_type == enemy.faction
