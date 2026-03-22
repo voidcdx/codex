@@ -33,29 +33,30 @@ src/
   combiner.py       # elemental combination by mod slot order; innate primary/secondary split
   calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks + calculate_procs()
   loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot + attack selection
+  scaling.py        # enemy level scaling: health/shield/armor/overguard formulas
 tests/
   test_quantization.py
   test_combiner.py
   test_loader.py
-  test_calculator.py  # M7–M13: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
+  test_calculator.py  # M7–M13 + TestCCProcs: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
 data/
   weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
   mods.json         # 1534 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus
-  enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, head_multiplier
+  enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, base_level, base_health, base_shield, head_multiplier
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
   parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json (multi-attack aware)
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 web/
-  api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate
+  api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
   static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input
   static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]
 ```
 
-## 154 Tests Passing
+## 164 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Web UI Notes
@@ -218,6 +219,33 @@ f2(δ) = 1 + 0.4   × δ^0.75
 - UI: enemy panel shows faction, health type (armor type hidden — inert post-Update 36), Level input (1–9999), Steel Path toggle, Eximus toggle
 - Display uses `toFixed(2)` → `toLocaleString` to show decimals (e.g. `4,502,520.4`)
 - **Do not truncate coefficients** — 6-decimal rounding causes ~9 HP / ~2 OG drift vs wiki
+
+## Status Procs (`calculate_procs()`)
+
+Two proc categories, both returned in `procs` dict from `/api/calculate`:
+
+### DoT Procs (damage_per_tick > 0, ticks = 6)
+| Key | Damage | Notes |
+|---|---|---|
+| `slash` | 35% of step-2 total | Faction double-dips |
+| `heat` | 50% of step-2 total | Faction double-dips; type eff. applied |
+| `gas` | 50% of base × damage bonus × gas mod bonus | Faction double-dips; crit + body part applied |
+| `toxin` | 50% of step-2 total | Faction double-dips; type eff. applied |
+| `electricity` | 50% of step-2 total | Faction double-dips; type eff. applied |
+
+### CC / Debuff Procs (damage_per_tick = 0, ticks = 0)
+These are crowd-control or debuff effects — no tick damage. Return `{active, effect, damage_per_tick:0, ticks:0, total_damage:0}`.
+
+| Key | Effect |
+|---|---|
+| `viral` | Health ×1.75–×4.25 (modeled via `viral_stacks` param in main pipeline) |
+| `magnetic` | +100% shield/OG dmg; forced Elec proc on shield break |
+| `radiation` | Confuses enemy to attack allies for 12s |
+| `blast` | −30% accuracy (up to −75%); detonates at 10 stacks |
+| `cold` | −50% speed (up to −90%); +0.1 flat crit damage |
+
+**Web UI:** DoT procs → "Status Procs" table (per-tick / total columns). CC procs → separate "CC / Debuff Procs" table (effect text column). DPS proc loop skips CC procs (no damage contribution).
+**CLI `--procs`:** DoT procs shown in left table; CC procs shown in separate section with effect text.
 
 ## Damage Type Effectiveness (Update 36.0+)
 - **Vulnerable (+):** ×1.5
