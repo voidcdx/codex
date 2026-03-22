@@ -24,6 +24,20 @@
         </div>
         <div class="combobox-dropdown" id="weapon-dropdown"></div>
       </div>
+      <div id="bonus-element-div" style="display:none; margin-top:10px">
+        <label style="font-size:.85rem;color:#aaa">Bonus Element (Kuva / Tenet)</label>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <select id="bonus-element-type" onchange="updateModdedStats();updateElementBadges()">
+            <option value="heat">Heat</option>
+            <option value="cold">Cold</option>
+            <option value="electricity">Electricity</option>
+            <option value="toxin">Toxin</option>
+          </select>
+          <input type="number" id="bonus-element-pct" min="25" max="60" value="25" style="width:52px"
+                 oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
+          <span style="color:#aaa">%</span>
+        </div>
+      </div>
     </div>
 
     <!-- Mods — 2×4 card grid -->
@@ -315,6 +329,15 @@ function getCurrentWeapon() {
 function getCurrentEnemy() {
   const name = document.getElementById('enemy-search').value;
   return allEnemies.find(x => x.name === name) || null;
+}
+
+function getBonusElement() {
+  const div = document.getElementById('bonus-element-div');
+  if (!div || div.style.display === 'none') return {};
+  return {
+    bonus_element: document.getElementById('bonus-element-type').value,
+    bonus_element_pct: (parseFloat(document.getElementById('bonus-element-pct').value) || 25) / 100.0,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -783,6 +806,17 @@ function onWeaponChange() {
   comboInput.max = (weapon && weapon.name === 'Venka Prime') ? 13 : 12;
   if (parseInt(comboInput.value) > parseInt(comboInput.max)) comboInput.value = comboInput.max;
 
+  // Bonus element selector: visible only for Kuva/Tenet weapons
+  const bonusDiv = document.getElementById('bonus-element-div');
+  if (bonusDiv) {
+    const isKT = weapon && (weapon.name.startsWith('Kuva ') || weapon.name.startsWith('Tenet '));
+    bonusDiv.style.display = isKT ? '' : 'none';
+    if (!isKT) {
+      document.getElementById('bonus-element-type').value = 'heat';
+      document.getElementById('bonus-element-pct').value = 25;
+    }
+  }
+
   updateAttackSelector(weapon);
   showWeaponStats(weapon);
   renderSpecialSlots();
@@ -994,7 +1028,7 @@ async function _doUpdateModdedStats() {
     const resp = await fetch('/api/modded-weapon', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec(), galvanized_stacks: parseInt(document.getElementById('galv-stacks').value, 10) || 0 }),
+      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec(), galvanized_stacks: parseInt(document.getElementById('galv-stacks').value, 10) || 0, ...getBonusElement() }),
     });
     if (!resp.ok) return;
     const data = await resp.json();
@@ -1790,7 +1824,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, ...getBonusElement()}),
     });
     const data = await resp.json();
     if (!resp.ok) {

@@ -23,7 +23,15 @@ if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
 from src.calculator import DamageCalculator, calculate_crit_multiplier, VIRAL_STACK_MULTIPLIERS
+from src.enums import DamageType
 from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, list_attacks, make_riven_mod, RIVEN_STAT_NAMES
+
+_BONUS_ELEM_CLI: dict[str, DamageType] = {
+    "heat":        DamageType.HEAT,
+    "cold":        DamageType.COLD,
+    "electricity": DamageType.ELECTRICITY,
+    "toxin":       DamageType.TOXIN,
+}
 
 
 def _parse_riven_arg(riven_str: str) -> list[dict]:
@@ -56,8 +64,13 @@ def _print_results(
     combo_counter: int = 0,
     unique_statuses: int = 0,
     show_procs: bool = False,
+    bonus_element_type: DamageType | None = None,
+    bonus_element_pct: float = 0.0,
 ) -> None:
     weapon = load_weapon(weapon_name, attack_name=attack_name)
+    if bonus_element_type is not None and bonus_element_pct > 0.0:
+        weapon.bonus_element_type = bonus_element_type
+        weapon.bonus_element_pct = bonus_element_pct
     mods   = [load_mod(m) for m in mod_names]
     if riven_str:
         mods.append(make_riven_mod(_parse_riven_arg(riven_str)))
@@ -202,6 +215,9 @@ def main(argv: list[str] | None = None) -> None:
                         help="Unique active status types on enemy (0–10, for Condition Overload)")
     parser.add_argument("--procs", action="store_true",
                         help="Show status proc damage per tick and total")
+    parser.add_argument("--bonus-element", default=None, metavar="ELEMENT:PCT",
+                        help='Kuva/Tenet bonus element, e.g. "heat:50" for +50%% Heat. '
+                             'Elements: heat, cold, electricity, toxin')
     parser.add_argument("args", nargs="*",
                         help='"WeaponName" [ModName ...] [vs EnemyName]')
 
@@ -271,6 +287,19 @@ def main(argv: list[str] | None = None) -> None:
         print("Error: specify an enemy with  vs <EnemyName>")
         sys.exit(1)
 
+    # Parse --bonus-element "heat:50"
+    bet: DamageType | None = None
+    bpct: float = 0.0
+    if ns.bonus_element:
+        parts = ns.bonus_element.split(":", 1)
+        if len(parts) == 2:
+            bet = _BONUS_ELEM_CLI.get(parts[0].strip().lower())
+            if bet is None:
+                print(f"Warning: unknown bonus element '{parts[0]}' — ignored. "
+                      f"Valid: heat, cold, electricity, toxin")
+            else:
+                bpct = float(parts[1].strip()) / 100.0
+
     try:
         effective_part = "Head" if ns.headshot else ns.body_part
         _print_results(
@@ -281,6 +310,8 @@ def main(argv: list[str] | None = None) -> None:
             combo_counter=max(0, ns.combo),
             unique_statuses=max(0, min(10, ns.statuses)),
             show_procs=ns.procs,
+            bonus_element_type=bet,
+            bonus_element_pct=bpct,
         )
     except KeyError as e:
         print(f"Error: {e}")

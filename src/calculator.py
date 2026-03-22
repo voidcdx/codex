@@ -240,6 +240,11 @@ class DamageCalculator:
             for c in weapon.innate_elements
             if c.type not in PRIMARY_ELEMENTS
         ]
+        # Kuva/Tenet bonus element: player-chosen primary, treated as last innate primary
+        if weapon.bonus_element_type is not None and weapon.bonus_element_pct > 0.0:
+            scaled_innate_primary.append(
+                DamageComponent(weapon.bonus_element_type, base_damage * weapon.bonus_element_pct)
+            )
 
         combined_elements = combine_elements(
             scaled_mod_elements,
@@ -387,6 +392,12 @@ class DamageCalculator:
             for c in weapon.innate_elements
             if c.type not in PRIMARY_ELEMENTS
         ]
+        # Kuva/Tenet bonus element: player-chosen primary, treated as last innate primary
+        if weapon.bonus_element_type is not None and weapon.bonus_element_pct > 0.0:
+            scaled_innate_primary.append(
+                DamageComponent(weapon.bonus_element_type, base_damage * weapon.bonus_element_pct)
+            )
+
         combined_elements = combine_elements(
             scaled_mod_elements,
             scaled_innate_primary,

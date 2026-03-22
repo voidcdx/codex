@@ -1130,3 +1130,64 @@ class TestGalvanizedStacks:
         galv_cd_over = self._steel_mod.galv_kill_pct * min(99, self._steel_mod.galv_max_stacks)
         galv_cd_cap  = self._steel_mod.galv_kill_pct * 4
         assert galv_cd_over == pytest.approx(galv_cd_cap)
+
+
+# ---------------------------------------------------------------------------
+# Kuva/Tenet bonus element
+# ---------------------------------------------------------------------------
+
+class TestBonusElement:
+    """Kuva/Tenet bonus element: player-chosen primary added before combination."""
+
+    def test_bonus_heat_no_mods(self):
+        """50% Heat bonus on a 100-damage weapon → Heat component = 50."""
+        # base_damage=100, scale=100/32=3.125
+        # bonus heat amount = 100 * 0.50 = 50.0
+        # quantize(50, 100): 50/3.125=16 → 16*3.125=50.0
+        # Step1 no mods: floor(50*1.0)=50; quantize(50,100)=50.0
+        # Step2 body=1.0, no crit: wr(50)=50
+        # Steps 3-5 neutral, no armor → 50
+        weapon = Weapon(
+            name="Kuva Test",
+            base_damage={DamageType.IMPACT: 100.0},
+            is_kuva_tenet=True,
+            bonus_element_type=DamageType.HEAT,
+            bonus_element_pct=0.50,
+        )
+        enemy = Enemy("Test", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+        result = calc.calculate(weapon, [], enemy)
+        assert result[DamageType.IMPACT] == pytest.approx(100.0)
+        assert result[DamageType.HEAT]   == pytest.approx(50.0)
+
+    def test_bonus_element_combines_with_toxin_mod(self):
+        """Kuva 50% Cold bonus + Toxin mod (90%) → Viral combination."""
+        # Toxin mod occupies slot 0; Cold innate goes last → Toxin+Cold = Viral
+        weapon = Weapon(
+            name="Kuva Test2",
+            base_damage={DamageType.IMPACT: 100.0},
+            is_kuva_tenet=True,
+            bonus_element_type=DamageType.COLD,
+            bonus_element_pct=0.50,
+        )
+        toxin_mod = Mod(
+            name="Pathogen Rounds",
+            elemental_bonuses=[DamageComponent(DamageType.TOXIN, 0.90)],
+        )
+        enemy = Enemy("Test", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+        result = calc.calculate(weapon, [toxin_mod], enemy)
+        assert DamageType.VIRAL in result
+        assert DamageType.COLD  not in result
+        assert DamageType.TOXIN not in result
+
+    def test_bonus_element_absent_when_zero_pct(self):
+        """bonus_element_pct=0 must not add any elemental component."""
+        weapon = Weapon(
+            name="Kuva Test3",
+            base_damage={DamageType.IMPACT: 100.0},
+            is_kuva_tenet=True,
+            bonus_element_type=DamageType.HEAT,
+            bonus_element_pct=0.0,
+        )
+        enemy = Enemy("Test", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+        result = calc.calculate(weapon, [], enemy)
+        assert DamageType.HEAT not in result
