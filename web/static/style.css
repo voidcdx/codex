@@ -1184,34 +1184,34 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 /* Animation stage */
 .alchemy-stage {
   position: relative;
-  width: 200px;
-  height: 90px;
+  width: 280px;
+  height: 110px;
   margin: 14px auto 8px;
 }
 .alchemy-orb {
   position: absolute;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   top: 50%;
   transform: translateY(-50%);
   opacity: 0;
   transition: background 0.3s, opacity 0.3s;
-  box-shadow: 0 0 14px currentColor;
+  box-shadow: 0 0 18px currentColor;
 }
 .alchemy-orb.visible { opacity: 0.85; }
-.alchemy-orb-left  { left: 16px; }
-.alchemy-orb-right { right: 16px; }
+.alchemy-orb-left  { left: 20px; }
+.alchemy-orb-right { right: 20px; }
 
 .alchemy-stage.swirling .alchemy-orb-left  { animation: alch-swirl-left  1.2s ease-in-out infinite alternate; }
 .alchemy-stage.swirling .alchemy-orb-right { animation: alch-swirl-right 1.2s ease-in-out infinite alternate; }
 .alchemy-stage.merging  .alchemy-orb-left  { animation: alch-merge-left  0.5s ease-in forwards; }
 .alchemy-stage.merging  .alchemy-orb-right { animation: alch-merge-right 0.5s ease-in forwards; }
 
-@keyframes alch-swirl-left  { from { left: 16px; } to { left: 44px; } }
-@keyframes alch-swirl-right { from { right: 16px; } to { right: 44px; } }
-@keyframes alch-merge-left  { to { left: 82px;  opacity: 0; transform: translateY(-50%) scale(1.5); } }
-@keyframes alch-merge-right { to { right: 82px; opacity: 0; transform: translateY(-50%) scale(1.5); } }
+@keyframes alch-swirl-left  { from { left: 20px; } to { left: 58px; } }
+@keyframes alch-swirl-right { from { right: 20px; } to { right: 58px; } }
+@keyframes alch-merge-left  { to { left: 118px;  opacity: 0; transform: translateY(-50%) scale(1.5); } }
+@keyframes alch-merge-right { to { right: 118px; opacity: 0; transform: translateY(-50%) scale(1.5); } }
 
 /* Flash burst */
 .alchemy-result-flash {
@@ -1275,3 +1275,19 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   border-radius: 50%;
   flex-shrink: 0;
 }
+.alch-equip-btn {
+  display: block;
+  margin: 12px auto 0;
+  padding: 6px 18px;
+  background: rgba(212,168,67,0.12);
+  border: 1px solid #D4A843;
+  border-radius: 5px;
+  color: #D4A843;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.alch-equip-btn:hover { background: rgba(212,168,67,0.24); }
