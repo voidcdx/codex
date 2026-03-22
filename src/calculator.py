@@ -475,7 +475,7 @@ class DamageCalculator:
             "electricity": _proc(elec_active, elec_dpt, 6),
             # CC / debuff procs — no damage ticks
             "viral":     _cc_proc(DamageType.VIRAL in types_present,
-                                  "Health \u00d71.75\u2013\u00d74.25 (use viral_stacks param)"),
+                                  "Health Vulnr. \u00d71.75\u2013\u00d74.25"),
             "magnetic":  _cc_proc(DamageType.MAGNETIC in types_present,
                                   "+100% shield/OG dmg; forced Elec proc on shield break"),
             "radiation": _cc_proc(DamageType.RADIATION in types_present,

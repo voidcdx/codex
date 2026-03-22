@@ -1856,7 +1856,7 @@ function showResults(data) {
   // Status procs section
   const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)', gas: 'Gas (Cloud)', toxin: 'Toxin (Poison)', electricity: 'Electricity (Arc)' };
   const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat, gas: ELEM_COLORS.gas, toxin: ELEM_COLORS.toxin, electricity: ELEM_COLORS.electricity };
-  const CC_PROC_LABELS = { viral: 'Viral (Health)', magnetic: 'Magnetic (Shield)', radiation: 'Radiation (Confuse)', blast: 'Blast (Accuracy)', cold: 'Cold (Freeze)' };
+  const CC_PROC_LABELS = { viral: 'Viral Health Vulnr.', magnetic: 'Magnetic (Shield)', radiation: 'Radiation (Confuse)', blast: 'Blast (Accuracy)', cold: 'Cold (Freeze)' };
   const CC_PROC_COLORS = { viral: ELEM_COLORS.viral, magnetic: ELEM_COLORS.magnetic, radiation: ELEM_COLORS.radiation, blast: ELEM_COLORS.blast, cold: ELEM_COLORS.cold };
   let procsHtml = '';
   if (data.procs) {
