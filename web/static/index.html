@@ -140,7 +140,7 @@
           <label for="corrosive-stacks">Corrosive Stacks</label>
           <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:48px">
         </div>
-        <div title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
+        <div id="combo-div" title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
           <label for="combo-counter">Combo</label>
           <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:48px">
         </div>
@@ -769,8 +769,13 @@ function onWeaponChange() {
   if (exilusSlot && !getExilusSet().has(exilusSlot)) {
     exilusSlot = '';
   }
+  // Combo counter is melee-only — hide for ranged weapons and reset to tier 1
+  const comboInput  = document.getElementById('combo-counter');
+  const comboDiv    = document.getElementById('combo-div');
+  const meleeWeapon = isMeleeWeapon();
+  comboDiv.style.display = meleeWeapon ? '' : 'none';
+  if (!meleeWeapon) comboInput.value = 1;
   // Update combo max: Venka Prime can reach 13x; all other weapons cap at 12x
-  const comboInput = document.getElementById('combo-counter');
   comboInput.max = (weapon && weapon.name === 'Venka Prime') ? 13 : 12;
   if (parseInt(comboInput.value) > parseInt(comboInput.max)) comboInput.value = comboInput.max;
 
