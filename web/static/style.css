@@ -303,13 +303,18 @@ select option {
 }
 .scaled-stat-block span { color: var(--text); font-weight: 600; }
 
+/* ── Number input — hide spin buttons globally ───────── */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
 /* ── Options Row ────────────────────────────────────── */
 .options-row {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   margin-bottom: 12px;
 }
-.options-row > div { flex: 1; }
+.options-row > div { flex: 0 0 auto; }
 
 /* ── Legacy Mod Slots (select-based, will be replaced) */
 .mods-list { margin-bottom: 4px; }
