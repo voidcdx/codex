@@ -410,6 +410,15 @@ class DamageCalculator:
                 "total_damage": float(math.floor(dpt) * ticks) if active else 0.0,
             }
 
+        def _cc_proc(active: bool, effect: str) -> dict:
+            return {
+                "active": active,
+                "effect": effect,
+                "damage_per_tick": 0.0,
+                "ticks": 0,
+                "total_damage": 0.0,
+            }
+
         slash_active = DamageType.SLASH in types_present
         slash_dpt = total_step2 * 0.35 * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
 
@@ -458,6 +467,17 @@ class DamageCalculator:
             "gas":         _proc(gas_active, gas_dpt, 6),
             "toxin":       _proc(toxin_active, toxin_dpt, 6),
             "electricity": _proc(elec_active, elec_dpt, 6),
+            # CC / debuff procs — no damage ticks
+            "viral":     _cc_proc(DamageType.VIRAL in types_present,
+                                  "Health \u00d71.75\u2013\u00d74.25 (use viral_stacks param)"),
+            "magnetic":  _cc_proc(DamageType.MAGNETIC in types_present,
+                                  "+100% shield/OG dmg; forced Elec proc on shield break"),
+            "radiation": _cc_proc(DamageType.RADIATION in types_present,
+                                  "Confuses enemy to attack allies for 12s"),
+            "blast":     _cc_proc(DamageType.BLAST in types_present,
+                                  "\u221230% accuracy (up to \u221275%); detonates at 10 stacks"),
+            "cold":      _cc_proc(DamageType.COLD in types_present,
+                                  "\u221250% speed (up to \u221290%); +0.1 flat crit damage"),
         }
 
     # ------------------------------------------------------------------

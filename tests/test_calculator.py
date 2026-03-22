@@ -838,3 +838,70 @@ class TestMultishot:
         total_base = sum(r_base.values())
         total_ms   = sum(r_ms.values())
         assert total_ms == pytest.approx(total_base * 1.65)
+
+
+# ---------------------------------------------------------------------------
+# CC/Debuff procs — Viral, Magnetic, Radiation, Blast, Cold
+# These are non-DoT effects; damage_per_tick and total_damage are always 0.
+# ---------------------------------------------------------------------------
+class TestCCProcs:
+    def _enemy(self):
+        return Enemy(
+            name="Mob",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+            base_armor=0.0,
+            body_part_multiplier=1.0,
+        )
+
+    def _weapon_with(self, dtype: DamageType):
+        return Weapon(
+            name="Test",
+            innate_elements=[DamageComponent(dtype, 60.0)],
+            base_damage={DamageType.IMPACT: 60.0},
+        )
+
+    def test_viral_active_when_viral_present(self):
+        procs = calc.calculate_procs(self._weapon_with(DamageType.VIRAL), [], self._enemy())
+        assert procs["viral"]["active"] is True
+
+    def test_viral_inactive_without_viral(self):
+        weapon = Weapon(name="Test", base_damage={DamageType.IMPACT: 60.0})
+        procs = calc.calculate_procs(weapon, [], self._enemy())
+        assert procs["viral"]["active"] is False
+
+    def test_magnetic_active_when_magnetic_present(self):
+        procs = calc.calculate_procs(self._weapon_with(DamageType.MAGNETIC), [], self._enemy())
+        assert procs["magnetic"]["active"] is True
+
+    def test_radiation_active_when_radiation_present(self):
+        procs = calc.calculate_procs(self._weapon_with(DamageType.RADIATION), [], self._enemy())
+        assert procs["radiation"]["active"] is True
+
+    def test_blast_active_when_blast_present(self):
+        procs = calc.calculate_procs(self._weapon_with(DamageType.BLAST), [], self._enemy())
+        assert procs["blast"]["active"] is True
+
+    def test_cold_active_when_cold_present(self):
+        procs = calc.calculate_procs(self._weapon_with(DamageType.COLD), [], self._enemy())
+        assert procs["cold"]["active"] is True
+
+    def test_cc_procs_have_zero_damage(self):
+        """All CC procs always return 0 damage regardless of weapon/mods."""
+        weapon = Weapon(
+            name="Test",
+            innate_elements=[
+                DamageComponent(DamageType.VIRAL, 60.0),
+                DamageComponent(DamageType.MAGNETIC, 60.0),
+                DamageComponent(DamageType.RADIATION, 60.0),
+                DamageComponent(DamageType.BLAST, 60.0),
+                DamageComponent(DamageType.COLD, 60.0),
+            ],
+            base_damage={DamageType.IMPACT: 60.0},
+        )
+        procs = calc.calculate_procs(weapon, [], self._enemy())
+        for key in ("viral", "magnetic", "radiation", "blast", "cold"):
+            assert procs[key]["damage_per_tick"] == 0.0
+            assert procs[key]["total_damage"] == 0.0
+            assert procs[key]["ticks"] == 0
