@@ -142,7 +142,7 @@
         </div>
         <div id="combo-div" title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
           <label for="combo-counter">Combo</label>
-          <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:48px">
+          <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:48px" oninput="if(+this.value>+this.max)this.value=this.max;if(+this.value<1)this.value=1">
         </div>
         <div title="Unique proc types on enemy — used by Condition Overload (+80% per type)">
           <label for="unique-statuses">Active Statuses</label>
