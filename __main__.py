@@ -51,6 +51,8 @@ def _print_results(
     riven_str: str | None = None,
     viral_stacks: int = 0,
     corrosive_stacks: int = 0,
+    combo_counter: int = 0,
+    unique_statuses: int = 0,
     show_procs: bool = False,
 ) -> None:
     weapon = load_weapon(weapon_name, attack_name=attack_name)
@@ -75,6 +77,8 @@ def _print_results(
         multishot=modded_ms,
         viral_stacks=viral_stacks,
         corrosive_stacks=corrosive_stacks,
+        combo_counter=combo_counter,
+        unique_statuses=unique_statuses,
     )
 
     total = sum(result.values())
@@ -100,6 +104,12 @@ def _print_results(
         print(f"Viral  : {viral_stacks} stack{'s' if viral_stacks != 1 else ''}  (×{vmult})")
     if corrosive_stacks > 0:
         print(f"Corros.: {corrosive_stacks} stack{'s' if corrosive_stacks != 1 else ''}")
+    if combo_counter > 0:
+        import math as _math
+        cmult = 1.0 + 0.5 * _math.floor(combo_counter / 5)
+        print(f"Combo  : {combo_counter} hits  (×{cmult:.2f})")
+    if unique_statuses > 0:
+        print(f"CO     : {unique_statuses} unique status type{'s' if unique_statuses != 1 else ''} on enemy")
     print()
     trigger_label = "Per-trigger" if modded_ms > 1.0001 else "Per-hit"
     print(f"{'Damage type':<18} {trigger_label + ' damage':>14}")
@@ -177,6 +187,10 @@ def main(argv: list[str] | None = None) -> None:
                         help="Viral stacks on enemy (0–10, default: 0)")
     parser.add_argument("--corrosive", type=int, default=0, metavar="N",
                         help="Corrosive stacks on enemy (0–10, default: 0)")
+    parser.add_argument("--combo", type=int, default=0, metavar="N",
+                        help="Melee combo hit count (0–12000, default: 0)")
+    parser.add_argument("--statuses", type=int, default=0, metavar="N",
+                        help="Unique active status types on enemy (0–10, for Condition Overload)")
     parser.add_argument("--procs", action="store_true",
                         help="Show status proc damage per tick and total")
     parser.add_argument("args", nargs="*",
@@ -227,6 +241,8 @@ def main(argv: list[str] | None = None) -> None:
             ns.attack, ns.riven,
             viral_stacks=max(0, min(10, ns.viral)),
             corrosive_stacks=max(0, min(10, ns.corrosive)),
+            combo_counter=max(0, ns.combo),
+            unique_statuses=max(0, min(10, ns.statuses)),
             show_procs=ns.procs,
         )
     except KeyError as e:

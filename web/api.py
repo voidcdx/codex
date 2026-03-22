@@ -320,6 +320,8 @@ class CalcRequest(BaseModel):
     enemy_level:  int = Field(default=1, ge=1, le=9999)
     steel_path:   bool = False
     eximus:       bool = False
+    combo_counter: int = 0         # melee combo hit count
+    unique_statuses: int = 0       # unique active status types (Condition Overload)
     riven:        RivenSpec | None = None
 
 
@@ -374,6 +376,8 @@ def calculate(req: CalcRequest) -> dict:
         enemy_level=req.enemy_level,
         steel_path=req.steel_path,
         eximus=req.eximus,
+        combo_counter=req.combo_counter,
+        unique_statuses=req.unique_statuses,
     )
     procs = calc.calculate_procs(
         weapon=weapon,

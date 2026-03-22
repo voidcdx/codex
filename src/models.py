@@ -57,6 +57,7 @@ class Mod:
     magazine_bonus: float = 0.0                  # additive, e.g. 0.60 for Ammo Stock (clip size)
     ammo_max_bonus: float = 0.0                  # additive, e.g. 0.90 for Ammo Drum (reserve)
     reload_bonus: float = 0.0                    # additive, e.g. 0.30 for Fast Hands
+    condition_overload_bonus: float = 0.0        # additive per unique status on enemy (Condition Overload)
 
 
 @dataclass

@@ -2149,6 +2149,7 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 10,
+    "condition_overload_pct": 0.80,
     "effect_raw": "+80% Melee Damage per Status Type affecting the target"
   },
   "Condition's Perfection": {

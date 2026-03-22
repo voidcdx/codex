@@ -263,6 +263,7 @@ def load_mod(name: str) -> Mod:
     magazine_bonus = float(entry.get("magazine_pct") or 0.0)
     ammo_max_bonus = float(entry.get("ammo_max_pct") or 0.0)
     reload_bonus = float(entry.get("reload_speed_pct") or 0.0)
+    condition_overload_bonus = float(entry.get("condition_overload_pct") or 0.0)
 
     return Mod(
         name=name,
@@ -279,6 +280,7 @@ def load_mod(name: str) -> Mod:
         magazine_bonus=magazine_bonus,
         ammo_max_bonus=ammo_max_bonus,
         reload_bonus=reload_bonus,
+        condition_overload_bonus=condition_overload_bonus,
     )
 
 
