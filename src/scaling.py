@@ -105,28 +105,34 @@ def armor_at_level(base_armor: float, delta: float) -> float:
     return min(2700.0, scaled)
 
 
-def _eximus_health_floor(base_health: float, level: int, has_shield_or_armor: bool) -> float:
-    """Piecewise Eximus base health floor (wiki 2.1 — Eximus section).
+def _eximus_piecewise(delta: float) -> float:
+    """Shared piecewise multiplier for eximus health and shield base increases.
 
-    Applied on top of faction health scaling: take max(faction_scaled, floor).
-    Uses absolute level (not ΔLevel).
+    Uses ΔLevel (target_level − base_level), not absolute level.
+    Breakpoints match the wiki's eximus health/shield base increase table.
+    """
+    x = delta
+    if x <= 15:  return 1.0
+    if x <= 25:  return 1.0  + (x - 15) * 0.025
+    if x <= 35:  return 1.25 + (x - 25) * 0.125
+    if x <= 50:  return 2.5  + (x - 35) * (2.0 / 15.0)
+    if x <= 100: return 4.5  + (x - 50) * 0.03
+    return 6.0
+
+
+def _eximus_base_health(base_health: float, delta: float, has_shield_or_armor: bool) -> float:
+    """Effective base health for an Eximus unit before faction scaling.
+
+    factor=0.25 (has shield or armor), factor=0.375 (no shield/armor).
+    pool = base_health + 900.  Result = max(base_health, factor * pool * piecewise).
     """
     factor = 0.25 if has_shield_or_armor else 0.375
-    pool = base_health + 900.0
-    x = level
-    if x <= 15:
-        piecewise = 1.0
-    elif x <= 25:
-        piecewise = 1.0 + 0.025 * (x - 15)
-    elif x <= 35:
-        piecewise = 1.25 + 0.125 * (x - 25)
-    elif x <= 50:
-        piecewise = 2.5 + (2.0 / 15.0) * (x - 35)
-    elif x <= 100:
-        piecewise = 4.5 + 0.03 * (x - 50)
-    else:
-        piecewise = 6.0
-    return max(base_health * 1.1, factor * pool * piecewise)
+    return max(base_health, factor * (base_health + 900.0) * _eximus_piecewise(delta))
+
+
+def _eximus_base_shield(base_shield: float, delta: float) -> float:
+    """Effective base shield for an Eximus unit before faction scaling."""
+    return base_shield * _eximus_piecewise(delta)
 
 
 def scale_enemy_stats(
@@ -158,11 +164,11 @@ def scale_enemy_stats(
 
     if eximus:
         has_shield_or_armor = base_shield > 0 or base_armor > 0
-        floor = _eximus_health_floor(base_health, level, has_shield_or_armor)
-        health = max(health, floor * sp_mult)
-        # OG uses target_level (no SP +100) minus enemy base_level as delta
-        delta_og = max(0, target_level - base_level)
-        overguard = overguard_at_level(delta_og)
+        eff_base_h = _eximus_base_health(base_health, delta, has_shield_or_armor)
+        eff_base_s = _eximus_base_shield(base_shield, delta)
+        health = eff_base_h * health_multiplier(delta, faction) * sp_mult
+        shield = eff_base_s * shield_multiplier(delta, faction) * sp_mult
+        overguard = overguard_at_level(delta)
     else:
         overguard = 0.0
 

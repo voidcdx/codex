@@ -176,6 +176,6 @@ class TestScaleEnemyStats:
             steel_path=True, eximus=True,
             faction=FactionType.GRINEER,
         )
-        assert result["health"]    == pytest.approx(1_498_951.94, rel=0.001)
+        assert result["health"]    == pytest.approx(5_361_635.79, rel=0.001)
         assert result["armor"]     == pytest.approx(2700.0)
         assert result["overguard"] == pytest.approx(815_320.85,   rel=0.001)

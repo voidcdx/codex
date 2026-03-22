@@ -1134,7 +1134,7 @@ async function refreshEnemyScaling() {
       if (v <= 0) return '—';
       return Number(v.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits: 2});
     };
-    const lvlLabel = steelPathOn ? `${level} <span style="color:var(--accent);font-size:10px">(+100 SP = ${d.level})</span>` : String(d.level);
+    const lvlLabel = steelPathOn ? `${level} <span style="color:var(--accent);font-size:10px">(SP ×2.5)</span>` : String(d.level);
     container.innerHTML = `
       <div class="scaled-stat-block">Lvl <span>${lvlLabel}</span></div>
       <div class="scaled-stat-block">HP <span>${fmt(d.health)}</span></div>
