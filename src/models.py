@@ -31,6 +31,8 @@ class Weapon:
     base_damage: dict[DamageType, float]          # IPS + any fixed elemental (from selected attack)
     innate_elements: list[DamageComponent] = field(default_factory=list)
     is_kuva_tenet: bool = False
+    bonus_element_type: DamageType | None = None  # player-chosen element (Heat/Cold/Electricity/Toxin)
+    bonus_element_pct: float = 0.0               # 0.25–0.60; bonus = total_base_damage × pct
     attacks: list[WeaponAttack] = field(default_factory=list)
     crit_chance: float = 0.0
     crit_multiplier: float = 1.0

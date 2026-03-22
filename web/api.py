@@ -155,12 +155,19 @@ class RivenSpec(BaseModel):
     stats: list[RivenStat]
 
 
+_BONUS_ELEM_MAP: dict[str, str] = {
+    "heat": "HEAT", "cold": "COLD", "electricity": "ELECTRICITY", "toxin": "TOXIN",
+}
+
+
 class ModdedWeaponRequest(BaseModel):
     weapon: str
     mods: list[str] = []
     attack: str | None = None
     galvanized_stacks: int = Field(default=0, ge=0, le=5)
     riven: RivenSpec | None = None
+    bonus_element: str | None = None      # "heat" | "cold" | "electricity" | "toxin"
+    bonus_element_pct: float = 0.0        # 0.25–0.60
 
 
 @app.post("/api/modded-weapon")
@@ -169,6 +176,12 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         weapon = load_weapon(req.weapon, attack_name=req.attack)
     except KeyError as e:
         raise HTTPException(400, str(e))
+    if req.bonus_element and req.bonus_element_pct > 0.0:
+        from src.enums import DamageType as _DT
+        _bet_name = _BONUS_ELEM_MAP.get(req.bonus_element.lower())
+        if _bet_name:
+            weapon.bonus_element_type = _DT[_bet_name]
+            weapon.bonus_element_pct = req.bonus_element_pct
 
     mods = []
     for mod_name in req.mods:
@@ -336,6 +349,8 @@ class CalcRequest(BaseModel):
     unique_statuses: int = 0       # unique active status types (Condition Overload)
     galvanized_stacks: int = Field(default=0, ge=0, le=5)   # 0–5 galvanized kill-stacks
     riven:        RivenSpec | None = None
+    bonus_element: str | None = None    # "heat" | "cold" | "electricity" | "toxin"
+    bonus_element_pct: float = 0.0      # 0.25–0.60
 
 
 @app.post("/api/calculate")
@@ -344,6 +359,12 @@ def calculate(req: CalcRequest) -> dict:
         weapon = load_weapon(req.weapon, attack_name=req.attack)
     except KeyError as e:
         raise HTTPException(400, str(e))
+    if req.bonus_element and req.bonus_element_pct > 0.0:
+        from src.enums import DamageType as _DT
+        _bet_name = _BONUS_ELEM_MAP.get(req.bonus_element.lower())
+        if _bet_name:
+            weapon.bonus_element_type = _DT[_bet_name]
+            weapon.bonus_element_pct = req.bonus_element_pct
 
     mods = []
     for mod_name in req.mods:
