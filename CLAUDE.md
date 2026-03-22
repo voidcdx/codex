@@ -78,6 +78,16 @@ Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from
 - **Clear row:** `×` button calls `clearRivenRow(i)` → sets row to `{stat:'', pct:''}`.
 - **Apply:** `buildRivenFromDraft()` converts draft to a Mod-compatible object → `equippedMods['riven']`. Card shows stat count badge.
 
+## Alchemy Mixer (Web UI)
+- **Button:** Gold Orokin seal SVG (`btn-alchemy-mixer`) in the mod panel heading, left of the purple Riven `+`. Both wrapped in `span.mod-panel-actions` (flex, gap 10px).
+- **Modal:** `#alchemy-mixer-overlay` — same `.mod-picker-overlay` backdrop pattern as Riven modal.
+- **Flow:** Pick two primary elements → colored orbs appear → swirl animation → merge → flash burst → combined element name shown in its color → mod chips filtered by weapon type.
+- **State:** `alchSelected[]` (0–2 items). `_alchMergeTimer` holds the setTimeout ref so it can be cancelled on deselect.
+- **Animation:** CSS-only. `.alchemy-stage.swirling` triggers `alch-swirl-left/right` keyframes; `.merging` triggers `alch-merge-left/right`; flash uses `alch-flash-pop`. No canvas or libraries.
+- **Mod suggestions:** `showAlchModSuggestions(a, b)` filters `allMods` using `getCompatibleModTypes(getCurrentWeapon())` (returns a `Set`) and matches `m.primary_element === a || b`.
+- **Critical naming:** The existing `PRIMARY_ELEMENTS` const (line ~566) is a `Set` used by the combiner. The alchemy mixer uses `ALCH_PRIMARY` (array) to avoid redeclaration conflict.
+- **Tooltips:** All 9 elemental tooltips updated to faction-based text (Update 36) — no Ferrite/Alloy Armor references remain.
+
 ## Multi-Attack System
 Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Rocket Explosion; Torid: Grenade Impact + Poison Cloud + Incarnon Form). Each attack has its own damage, crit, status, fire rate, and shot type.
 
