@@ -432,3 +432,8 @@ def list_mods() -> list[str]:
 
 def list_enemies() -> list[str]:
     return sorted(_raw_enemies().keys())
+
+
+def list_body_parts(enemy_name: str) -> dict[str, float]:
+    """Return the body_parts dict for the named enemy (case-insensitive)."""
+    return load_enemy(enemy_name).body_parts
