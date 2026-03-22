@@ -39,6 +39,7 @@ tests/
   test_combiner.py
   test_loader.py
   test_calculator.py  # M7–M13 + TestCCProcs: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
+  test_scaling.py     # enemy level scaling: health/shield/armor/overguard per faction
 data/
   weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
   mods.json         # 1534 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus
@@ -53,10 +54,10 @@ web/
   static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input
   static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
 run_web.py          # python run_web.py → dev server on port 8000
-__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]
+__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"]
 ```
 
-## 164 Tests Passing
+## 177 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Web UI Notes

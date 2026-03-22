@@ -9,6 +9,7 @@ Usage:
   python -m dc --list-mods
   python -m dc --list-enemies
   python -m dc --list-body-parts "Heavy Gunner"
+  python -m dc --list-attacks "Acceltra Prime"
 """
 from __future__ import annotations
 
@@ -22,7 +23,7 @@ if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
 from src.calculator import DamageCalculator, calculate_crit_multiplier, VIRAL_STACK_MULTIPLIERS
-from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, make_riven_mod, RIVEN_STAT_NAMES
+from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, list_attacks, make_riven_mod, RIVEN_STAT_NAMES
 
 
 def _parse_riven_arg(riven_str: str) -> list[dict]:
@@ -179,6 +180,8 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--list-enemies",  action="store_true", help="List all enemy names")
     parser.add_argument("--list-body-parts", default=None, metavar="ENEMY",
                         help="List body parts and multipliers for an enemy")
+    parser.add_argument("--list-attacks", default=None, metavar="WEAPON",
+                        help="List all attack modes for a weapon")
     parser.add_argument("--crit", choices=["average", "guaranteed", "max"],
                         default="average", help="Crit mode (default: average)")
     parser.add_argument("--body-part", default="Body", metavar="PART",
@@ -227,6 +230,23 @@ def main(argv: list[str] | None = None) -> None:
             sys.exit(1)
         for part, mult in parts.items():
             print(f"{part}: ×{mult}")
+        return
+
+    if ns.list_attacks:
+        try:
+            attacks = list_attacks(ns.list_attacks)
+        except KeyError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
+        if len(attacks) == 1:
+            print(f"{attacks[0]['name']}  (only attack)")
+        else:
+            print(f"{'Attack':<30} {'CC%':>6} {'CM':>6} {'SC%':>6} {'FR':>6}  Shot")
+            print("-" * 65)
+            for a in attacks:
+                print(f"  {a['name']:<28} {a['crit_chance']*100:>5.1f}%"
+                      f" {a['crit_multiplier']:>5.1f}x {a['status_chance']*100:>5.1f}%"
+                      f" {a['fire_rate']:>5.1f}  {a['shot_type']}")
         return
 
     args: list[str] = ns.args

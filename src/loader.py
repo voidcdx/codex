@@ -437,3 +437,23 @@ def list_enemies() -> list[str]:
 def list_body_parts(enemy_name: str) -> dict[str, float]:
     """Return the body_parts dict for the named enemy (case-insensitive)."""
     return load_enemy(enemy_name).body_parts
+
+
+def list_attacks(weapon_name: str) -> list[dict]:
+    """Return attack info for the named weapon (case-insensitive).
+
+    Each entry: {"name": str, "crit_chance": float, "crit_multiplier": float,
+                 "status_chance": float, "fire_rate": float, "shot_type": str}
+    """
+    weapon = load_weapon(weapon_name)
+    return [
+        {
+            "name": a.name,
+            "crit_chance": a.crit_chance,
+            "crit_multiplier": a.crit_multiplier,
+            "status_chance": a.status_chance,
+            "fire_rate": a.fire_rate,
+            "shot_type": a.shot_type,
+        }
+        for a in weapon.attacks
+    ]
