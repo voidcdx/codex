@@ -94,31 +94,31 @@
       <div class="options-row">
         <div>
           <label for="crit-mode">Hit Type</label>
-          <select id="crit-mode">
-            <option value="average">Average (Expected)</option>
+          <select id="crit-mode" style="width:auto">
+            <option value="average">Average</option>
             <option value="guaranteed">Guaranteed Crit</option>
-            <option value="max">Maximum Crit</option>
+            <option value="max">Max Crit</option>
           </select>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;padding-top:18px">
+        <div style="display:flex;align-items:center;gap:6px;padding-top:18px">
           <input type="checkbox" id="headshot-cb" style="width:auto;margin:0">
           <label for="headshot-cb" style="margin:0;cursor:pointer">Headshot</label>
         </div>
         <div>
           <label for="viral-stacks">Viral Stacks</label>
-          <input type="number" id="viral-stacks" min="0" max="10" value="0" style="width:64px">
+          <input type="number" id="viral-stacks" min="0" max="10" value="0" style="width:48px">
         </div>
         <div>
           <label for="corrosive-stacks">Corrosive Stacks</label>
-          <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:64px">
+          <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:48px">
         </div>
-        <div title="Melee only: consecutive hit count (×1.5 at 5, ×2.0 at 10, …)">
-          <label for="combo-counter">Combo (hits)</label>
-          <input type="number" id="combo-counter" min="0" max="12000" value="0" style="width:72px">
+        <div title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
+          <label for="combo-counter">Combo</label>
+          <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:48px">
         </div>
         <div title="Unique proc types on enemy — used by Condition Overload (+80% per type)">
           <label for="unique-statuses">Active Statuses</label>
-          <input type="number" id="unique-statuses" min="0" max="10" value="0" style="width:64px">
+          <input type="number" id="unique-statuses" min="0" max="10" value="0" style="width:48px">
         </div>
       </div>
     </div>
@@ -273,11 +273,6 @@ async function loadData() {
   );
 
   initModGrid();
-
-  weaponCombo.set('Soma Prime');
-  enemyCombo.set('Heavy Gunner');
-  onWeaponChange();
-  showEnemyStats(getCurrentEnemy());
 }
 
 function getCurrentWeapon() {
@@ -746,6 +741,11 @@ function onWeaponChange() {
   if (exilusSlot && !getExilusSet().has(exilusSlot)) {
     exilusSlot = '';
   }
+  // Update combo max: Venka Prime can reach 13x; all other weapons cap at 12x
+  const comboInput = document.getElementById('combo-counter');
+  comboInput.max = (weapon && weapon.name === 'Venka Prime') ? 13 : 12;
+  if (parseInt(comboInput.value) > parseInt(comboInput.max)) comboInput.value = comboInput.max;
+
   updateAttackSelector(weapon);
   showWeaponStats(weapon);
   renderSpecialSlots();
@@ -1340,11 +1340,11 @@ const EXILUS_PRIMARY = new Set([
   'Ammo Drum','Shell Compression','Rifle Ammo Mutation','Primed Rifle Ammo Mutation',
   'Shotgun Ammo Mutation','Primed Shotgun Ammo Mutation','Arrow Mutation',
   'Sniper Ammo Mutation','Vigilante Supplies','Eagle Eye','Broad Eye','Overview',
-  'Aero Periphery','Ambush Optics','Agile Aim','Snap Shot','Aerial Ace',
+  'Aero Periphery','Agile Aim','Snap Shot','Aerial Ace',
   'Gun Glide','Double-Barrel Drift','Stabilizer','Primed Stabilizer','Vile Precision',
   'Guided Ordnance','Narrow Barrel','Hush','Silent Battery','Twitch','Soft Hands',
   'Lock and Load','Tactical Reload','Terminal Velocity','Fatal Acceleration',
-  'Galvanized Acceleration','Mending Shot','Bhisaj-Bal','Sinister Reach',
+  'Galvanized Acceleration','Mending Shot','Sinister Reach',
 ]);
 const EXILUS_SECONDARY = new Set([
   'Trick Mag','Pistol Ammo Mutation','Primed Pistol Ammo Mutation','Air Recon',
@@ -1361,6 +1361,8 @@ const EXILUS_MELEE = new Set([
 
 // Exilus mods that only appear for specific weapons
 const WEAPON_SPECIFIC_EXILUS = {
+  'Ambush Optics': ['Rubico','Rubico Prime'],
+  'Bhisaj-Bal': ['Paris Prime'],
   'Adhesive Blast': [
     'Ogris','Penta','Secura Penta','Carmine Penta','Tenet Ferrox',
     'Tenet Envoy','Tonkor','Torid','Zarr',
@@ -1563,7 +1565,8 @@ async function runCalculation() {
   const headshot    = document.getElementById('headshot-cb').checked;
   const viralStacks     = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
   const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
-  const comboCounter    = parseInt(document.getElementById('combo-counter').value, 10) || 0;
+  const comboTier       = Math.max(1, parseInt(document.getElementById('combo-counter').value, 10) || 1);
+  const comboCounter    = (comboTier - 1) * 10; // tier → raw hits: tier=1→0 (×1), tier=12→110 (×12)
   const uniqueStatuses  = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
 
   if (!weapon || !enemy) {
