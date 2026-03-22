@@ -156,14 +156,14 @@ Exception: Kuva/Tenet innate elements follow HCET priority (Heat > Cold > Electr
 
 Formula source: [wiki.warframe.com/w/Enemy_Level_Scaling](https://wiki.warframe.com/w/Enemy_Level_Scaling) (community-derived).
 
-**ΔLevel** = `max(0, level - base_level)` where Steel Path adds 100 to the effective level.
+**ΔLevel** = `max(0, level - base_level)`. Steel Path applies a ×2.5 multiplier to health and shields only — it does **not** add +100 to the level used in the formula.
 
 ### Health Multiplier (per-faction)
 Smoothstep blend 70–80. `f1(δ) = 1 + A1×δ^e1`, `f2(δ) = 1 + A2×δ^e2`.
 
 | Faction | A1 | e1 | A2 | e2 |
 |---|---|---|---|---|
-| Grineer / Scaldra | 0.015 | 2.12 | 10.7332 | 0.8990 |
+| Grineer / Scaldra | 0.015 | 2.12 | 10.7332 | 0.72   |
 | Corpus | 0.015 | 2.12 | 13.4165 | 0.55 |
 | Infested | 0.0225 | 2.12 | 16.1 | 0.72 |
 | Corrupted | 0.015 | 2.10 | 10.7332 | 0.685 |

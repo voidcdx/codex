@@ -146,11 +146,12 @@ class TestScaleEnemyStats:
         assert result["shield"] == pytest.approx(50.0)
         assert result["overguard"] == pytest.approx(0.0)
 
-    def test_steel_path_adds_100_and_multiplies(self):
+    def test_steel_path_multiplies_health_and_shields(self):
         base = scale_enemy_stats(100.0, 50.0, 0.0, 1, 1, faction=FactionType.GRINEER)
         sp   = scale_enemy_stats(100.0, 50.0, 0.0, 1, 1, steel_path=True, faction=FactionType.GRINEER)
-        assert sp["level"] == 101
-        assert sp["health"] > base["health"]
+        assert sp["level"] == 1       # SP does not offset level in the formula
+        assert sp["health"]  == pytest.approx(base["health"]  * 2.5)
+        assert sp["shield"]  == pytest.approx(base["shield"]  * 2.5)
 
     def test_eximus_has_overguard(self):
         result = scale_enemy_stats(100.0, 0.0, 0.0, 1, 1, eximus=True, faction=FactionType.GRINEER)
@@ -175,6 +176,6 @@ class TestScaleEnemyStats:
             steel_path=True, eximus=True,
             faction=FactionType.GRINEER,
         )
-        assert result["health"]    == pytest.approx(5_361_635.79, rel=0.001)
+        assert result["health"]    == pytest.approx(1_498_951.94, rel=0.001)
         assert result["armor"]     == pytest.approx(2700.0)
         assert result["overguard"] == pytest.approx(815_320.85,   rel=0.001)

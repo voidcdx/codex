@@ -11,7 +11,7 @@ from src.enums import FactionType
 # f1(δ) = 1 + f1_A * δ^f1_exp   (δ < 70)
 # f2(δ) = 1 + f2_A * δ^f2_exp   (δ > 80)
 _HEALTH_COEFFS: dict[str, tuple[float, float, float, float]] = {
-    "grineer":  (0.015,  2.12, 10.7332, 0.8990),  # 0.8990 empirically derived from wiki data (was 0.72)
+    "grineer":  (0.015,  2.12, 10.7332, 0.72),
     "corpus":   (0.015,  2.12, 13.4165, 0.55),
     "infested": (0.0225, 2.12, 16.1,    0.72),
     "corrupted":(0.015,  2.10, 10.7332, 0.685),
@@ -148,7 +148,6 @@ def scale_enemy_stats(
     sp_mult = 1.0
 
     if steel_path:
-        level += 100
         sp_mult = 2.5
 
     delta = max(0, level - base_level)
