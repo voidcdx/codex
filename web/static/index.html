@@ -1645,11 +1645,14 @@ function showResults(data) {
   // Status procs section
   const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)', gas: 'Gas (Cloud)', toxin: 'Toxin (Poison)', electricity: 'Electricity (Arc)' };
   const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat, gas: ELEM_COLORS.gas, toxin: ELEM_COLORS.toxin, electricity: ELEM_COLORS.electricity };
+  const CC_PROC_LABELS = { viral: 'Viral (Health Amp)', magnetic: 'Magnetic (Shield)', radiation: 'Radiation (Confuse)', blast: 'Blast (Accuracy)', cold: 'Cold (Freeze)' };
+  const CC_PROC_COLORS = { viral: ELEM_COLORS.viral, magnetic: ELEM_COLORS.magnetic, radiation: ELEM_COLORS.radiation, blast: ELEM_COLORS.blast, cold: ELEM_COLORS.cold };
   let procsHtml = '';
   if (data.procs) {
-    const activeProcs = Object.entries(data.procs).filter(([, p]) => p.active);
-    if (activeProcs.length) {
-      const procRows = activeProcs.map(([key, p]) => {
+    const activeDot = Object.entries(data.procs).filter(([k, p]) => p.active && k in PROC_LABELS);
+    const activeCc  = Object.entries(data.procs).filter(([k, p]) => p.active && k in CC_PROC_LABELS);
+    if (activeDot.length) {
+      const procRows = activeDot.map(([key, p]) => {
         const color = PROC_COLORS[key] || 'var(--accent)';
         const dot = `<span class="elem-dot" style="background:${color}"></span>`;
         return `<tr>
@@ -1658,11 +1661,27 @@ function showResults(data) {
           <td>${p.total_damage.toFixed(2)}</td>
         </tr>`;
       }).join('');
-      procsHtml = `
+      procsHtml += `
         <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">Status Procs (if triggered)</h4>
         <table class="breakdown-table">
           <thead><tr><th>Proc</th><th>Per Tick</th><th>Total (6 ticks)</th></tr></thead>
           <tbody>${procRows}</tbody>
+        </table>`;
+    }
+    if (activeCc.length) {
+      const ccRows = activeCc.map(([key, p]) => {
+        const color = CC_PROC_COLORS[key] || 'var(--accent)';
+        const dot = `<span class="elem-dot" style="background:${color}"></span>`;
+        return `<tr>
+          <td>${dot}${CC_PROC_LABELS[key] || key}</td>
+          <td colspan="2" style="color:var(--text-muted);font-size:0.85em">${p.effect}</td>
+        </tr>`;
+      }).join('');
+      procsHtml += `
+        <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">CC / Debuff Procs (if triggered)</h4>
+        <table class="breakdown-table">
+          <thead><tr><th>Proc</th><th colspan="2">Effect</th></tr></thead>
+          <tbody>${ccRows}</tbody>
         </table>`;
     }
   }
@@ -1686,7 +1705,7 @@ function showResults(data) {
     let totalProcDps = 0;
     if (data.procs) {
       for (const [key, p] of Object.entries(data.procs)) {
-        if (!p.active || procsPerSec <= 0) continue;
+        if (!p.active || procsPerSec <= 0 || !(key in PROC_LABELS)) continue;
         const pdps = p.damage_per_tick * procsPerSec;
         totalProcDps += pdps;
         const label = PROC_LABELS[key] || key;

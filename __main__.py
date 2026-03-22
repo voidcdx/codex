@@ -117,22 +117,40 @@ def _print_results(
             crit_multiplier=crit_mult,
             is_crit_headshot=headshot,
         )
-        _PROC_LABELS = {
+        _DOT_LABELS = {
             "slash":       "Slash (Bleed)",
             "heat":        "Heat  (Burn) ",
             "gas":         "Gas   (Cloud)",
             "toxin":       "Toxin (Poison)",
             "electricity": "Elec. (Arc)  ",
         }
-        active = [(k, v) for k, v in procs.items() if v["active"]]
-        if active:
+        _CC_LABELS = {
+            "viral":     "Viral (Health Amp)",
+            "magnetic":  "Magnetic (Shield) ",
+            "radiation": "Radiation (Confuse)",
+            "blast":     "Blast (Accuracy)  ",
+            "cold":      "Cold  (Freeze)    ",
+        }
+        dot_active = [(k, v) for k, v in procs.items() if v["active"] and k in _DOT_LABELS]
+        cc_active  = [(k, v) for k, v in procs.items() if v["active"] and k in _CC_LABELS]
+
+        if dot_active:
             print()
-            print(f"{'Status procs':<22} {'per tick':>10} {'total (6t)':>12}")
+            print(f"{'Status procs (DoT)':<22} {'per tick':>10} {'total (6t)':>12}")
             print("-" * 46)
-            for key, p in active:
-                label = _PROC_LABELS.get(key, key)
+            for key, p in dot_active:
+                label = _DOT_LABELS[key]
                 print(f"  {label:<20} {p['damage_per_tick']:>10.4f} {p['total_damage']:>12.4f}")
-        else:
+
+        if cc_active:
+            print()
+            print(f"{'Status CC/Debuffs':<28} {'Effect'}")
+            print("-" * 70)
+            for key, p in cc_active:
+                label = _CC_LABELS[key]
+                print(f"  {label:<26} {p['effect']}")
+
+        if not dot_active and not cc_active:
             print()
             print("  (no active status procs)")
 
