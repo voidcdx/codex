@@ -1,54 +1,35 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**210 tests passing.** Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Web UI fully functional: dark theme, mod card grid, special slots, weapon images, riven mod builder (now with IPS stats), enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks input.
+**210 tests passing.** Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Web UI fully functional: dark theme, mod card grid, special slots, weapon images, riven mod builder (with IPS stats), enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks input.
 
-Branch: `claude/continue-handoff-RsV91`
+Branch: `claude/continue-handoff-FSGRD`
 
 ---
 
 ## What Was Done This Session
 
-### 1. IPS mod buffs implemented end-to-end
-Mods like Rupture (+Impact%), Piercing Hit (+Puncture%), Jagged Edge (+Slash%) — 61 mods total — were parsed from `mods.json` but silently ignored by the damage pipeline.
+### 1. Banner — iterated and reverted
+Attempted two banner approaches:
+1. Flanking SVG wings flanking an `<h1>` in the header — broke on mobile (wings stacked vertically at narrow widths)
+2. Full-width `.site-hero` hero banner (`viewBox="0 0 900 80"`) with VOID ◈ CODEX composition, corner brackets, trace lines, central Orokin medallion — removed by user request
 
-**Changes:**
-- `src/models.py` — `ips_bonuses: list[DamageComponent]` field added to `Mod`
-- `src/loader.py` — `_IPS_FIELD` map reads `impact_pct`/`puncture_pct`/`slash_pct`; `_RIVEN_IPS_TYPES` added so Rivens can roll IPS stats; stale "not yet supported" comment removed
-- `src/calculator.py` — `ips_bonus` lookup pre-computed per-type in both `calculate()` and `calculate_procs()` Step 1; IPS bonus stacks additively with general damage bonus for its type only
-- `tests/test_calculator.py` — 2 new `TestIPSModBuffs` cases verify per-type selectivity and stacking
-- `web/static/index.html` — Impact/Puncture/Slash added to Riven stat dropdown and `STAT_LABELS`
+**Net result:** Both removed. Header is now a minimal compact sticky nav: `<span class="nav-brand">Void Codex</span>` + nav links. No decorative SVG in the header.
 
-**Formula:** `Modded X = floor(Base X × (1 + Σdamage_mods + Σx_mods + CO + galv) × combo)`
-
-### 2. Reproducible data pipeline (`scripts/fix_galv_stats.py`)
-Galvanized mod fields (`galv_kill_stat`, `galv_kill_pct`, `galv_max_stacks`) were manually added to `mods.json` and would be lost on any rescrape. `fix_galv_stats.py` re-applies all 10 galvanized mod entries in one step.
-
-**Full regeneration sequence (now documented in CLAUDE.md):**
-```bash
-python scripts/parse_wiki_data.py
-python scripts/fix_secondary_stats.py
-python scripts/fix_galv_stats.py
-```
-
-### 3. Conclave mod filtering automated
-`parse_wiki_data.py` now filters `/PvPMods/` entries automatically via `InternalName`. Removes ~129 Conclave-exclusive mods. `mods.json` is down to 1,405 mods (was 1,534).
-
-### 4. Kuva/Tenet bonus element — confirmed already implemented
-Feature was fully wired (loader heuristic → calculator injection → API fields → UI selector). Removed stale CLAUDE.md note claiming it was unimplemented.
+**CSS state:** `.banner-lockup` and `.banner-wing` rules removed. `.nav-brand` added. Header padding reduced to `9px 24px`.
 
 ---
 
 ## Known Gaps / Next Candidates
 
 ### Condition Overload (medium effort)
-`condition_overload_pct` is parsed from mods and stored in `Mod.condition_overload_bonus`, but the CO multiplier in `calculator.py` uses `unique_statuses` passed in by the caller — and the API/CLI never pass actual unique status counts. The field is plumbed but the caller-side wiring is missing. Also: CO's exact interaction with other damage bonuses needs wiki verification.
-
-### IPS mod buffs on Riven — API not wired
-The Riven builder UI now sends IPS stat keys (`"impact"`, `"puncture"`, `"slash"`) to the API. `make_riven_mod()` in `loader.py` now builds them into `ips_bonuses`. No additional wiring needed — the API sends `riven: {stats: [...]}` which goes through `make_riven_mod()` already.
+`condition_overload_pct` is parsed from mods and stored in `Mod.condition_overload_bonus`, but the CO multiplier in `calculator.py` uses `unique_statuses` passed in by the caller — and the API/CLI never pass actual unique status counts. Field is plumbed but caller-side wiring is missing. Also: CO's exact interaction with other damage bonuses needs wiki verification.
 
 ### Weapon Arcanes
 Deadhead, Merciless, Cascadia Flare — stack-based bonuses tied to kill/headshot triggers. Not modelled.
+
+### Header / Branding
+User is not happy with the current plain header but no direction was settled on this session. Needs a design that works on both desktop and mobile.
 
 ---
 

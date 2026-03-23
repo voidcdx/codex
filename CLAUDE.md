@@ -62,6 +62,9 @@ __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guarant
 
 ## Web UI Notes
 
+### Header / Nav
+`<header>` is a compact sticky bar: `<span class="nav-brand">Void Codex</span>` + nav links (Damage Calculator / Live Data). No decorative SVG. CSS: `.nav-brand` (12px, uppercase, dimmed gold). The header has had multiple banner attempts this session — all removed. Future banner work should be mobile-first (≤375px) and not use flanking SVG wings in a flex row.
+
 ### Faction Effectiveness Badges
 Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `index.html` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
 
