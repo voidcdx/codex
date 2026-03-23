@@ -83,20 +83,13 @@
       </div>
     </div>
 
-    <!-- Alchemy Mixer Modal -->
+    <!-- Alchemy Guide Modal -->
     <div class="mod-picker-overlay" id="alchemy-mixer-overlay">
       <div class="alchemy-modal">
         <button class="riven-modal-close" onclick="closeAlchemyMixer()">×</button>
-        <h2 class="alchemy-modal-title">Alchemy Mixer</h2>
-        <p class="alchemy-hint">Select two primary elements to combine</p>
-        <div class="alchemy-element-picker" id="alchemy-picker"></div>
-        <div class="alchemy-stage" id="alchemy-stage">
-          <div class="alchemy-orb alchemy-orb-left" id="alchemy-orb-left"></div>
-          <div class="alchemy-orb alchemy-orb-right" id="alchemy-orb-right"></div>
-          <div class="alchemy-result-flash" id="alchemy-flash"></div>
-        </div>
-        <div class="alchemy-result" id="alchemy-result"></div>
-        <div class="alchemy-mods" id="alchemy-mods"></div>
+        <h2 class="alchemy-modal-title">Alchemy Guide</h2>
+        <div class="alchemy-palette" id="alchemy-palette"></div>
+        <div class="alchemy-suggestions" id="alchemy-suggestions"></div>
       </div>
     </div>
 
@@ -1753,154 +1746,203 @@ function clearExilus() {
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-// Alchemy Mixer
+// Alchemy Guide
 // ---------------------------------------------------------------------------
 const ALCH_PRIMARY = ['heat', 'cold', 'electricity', 'toxin'];
-let alchSelected = [];
-let _alchMergeTimer = null;
+const ALCH_COMBINED = ['blast', 'corrosive', 'gas', 'magnetic', 'radiation', 'viral'];
+const ALCH_RECIPES = {
+  blast: ['heat', 'cold'],       corrosive: ['electricity', 'toxin'],
+  gas: ['heat', 'toxin'],        magnetic: ['cold', 'electricity'],
+  radiation: ['heat', 'electricity'], viral: ['cold', 'toxin'],
+};
+const ALCH_ELEM_PCT_FIELD = {
+  heat: 'heat_pct', cold: 'cold_pct', electricity: 'electricity_pct', toxin: 'toxin_pct',
+  blast: 'blast_pct', corrosive: 'corrosive_pct', gas: 'gas_pct',
+  magnetic: 'magnetic_pct', radiation: 'radiation_pct', viral: 'viral_pct',
+};
+const ALCH_SECONDARY_STATS = [
+  { field: 'status_chance_pct', label: 'SC' },
+  { field: 'damage_bonus_pct',  label: 'DMG' },
+  { field: 'fire_rate_pct',     label: 'FR' },
+  { field: 'crit_damage_pct',   label: 'CD' },
+  { field: 'multishot_pct',     label: 'MS' },
+  { field: 'reload_speed_pct',  label: 'Reload' },
+];
+
+let alchSelected = null;
 
 function openAlchemyMixer() {
-  alchSelected = [];
-  clearTimeout(_alchMergeTimer);
-
-  // Pre-select innate primary elements from the current weapon
-  const weapon = getCurrentWeapon();
-  if (weapon) {
-    const atk = getSelectedAttackData(weapon);
-    const bd = ((atk || weapon).base_damage) || {};
-    for (const k of ALCH_PRIMARY) {
-      if (bd[k] > 0 && alchSelected.length < 2) alchSelected.push(k);
-    }
-  }
-
+  alchSelected = null;
   document.getElementById('alchemy-mixer-overlay').classList.add('active');
-  renderAlchPicker();
-  updateAlchStage(); // handles reset, orbs, and animation if 2 selected
+  renderAlchPalette();
+  document.getElementById('alchemy-suggestions').innerHTML =
+    '<p style="color:var(--text-dim);font-size:12px;text-align:center;padding:24px 0">Select an element above to see mods</p>';
 }
 
 function closeAlchemyMixer() {
-  clearTimeout(_alchMergeTimer);
   document.getElementById('alchemy-mixer-overlay').classList.remove('active');
 }
 
-function renderAlchPicker() {
-  const el = document.getElementById('alchemy-picker');
-  el.innerHTML = ALCH_PRIMARY.map(e => {
-    const color = ELEM_COLORS[e] || '#fff';
-    const sel = alchSelected.includes(e);
-    return `<button class="alchemy-elem-btn${sel ? ' selected' : ''}"
-      style="color:${color};border-color:${sel ? color : 'transparent'};box-shadow:${sel ? `0 0 12px ${color}` : 'none'}"
-      onclick="selectAlchElem('${e}')">${e}</button>`;
-  }).join('');
+function renderAlchPalette() {
+  const el = document.getElementById('alchemy-palette');
+  const mkRow = (elems, label) => {
+    const pills = elems.map(e => {
+      const color = ELEM_COLORS[e] || '#fff';
+      const active = alchSelected === e;
+      return `<button class="alchemy-elem-pill${active ? ' active' : ''}"
+        style="color:${color};border-color:${active ? color : 'rgba(255,255,255,0.1)'}"
+        onclick="selectAlchElem('${e}')">${e}</button>`;
+    }).join('');
+    return `<div class="alchemy-palette-label">${label}</div><div class="alchemy-palette-row">${pills}</div>`;
+  };
+  el.innerHTML = mkRow(ALCH_PRIMARY, 'Primary') + mkRow(ALCH_COMBINED, 'Combined');
 }
 
 function selectAlchElem(elem) {
-  clearTimeout(_alchMergeTimer);
-  if (alchSelected.includes(elem)) {
-    alchSelected = alchSelected.filter(e => e !== elem);
-  } else if (alchSelected.length < 2) {
-    alchSelected.push(elem);
-  } else {
-    alchSelected[1] = elem;
-  }
-  renderAlchPicker();
-  updateAlchStage();
+  alchSelected = elem;
+  renderAlchPalette();
+  renderAlchSuggestions(elem);
 }
 
-function resetAlchStage() {
-  const stage = document.getElementById('alchemy-stage');
-  stage.className = 'alchemy-stage';
-  ['alchemy-orb-left', 'alchemy-orb-right'].forEach(id => {
-    const o = document.getElementById(id);
-    o.className = 'alchemy-orb ' + id;
-    o.style.background = '';
-  });
-  document.getElementById('alchemy-flash').className = 'alchemy-result-flash';
-  document.getElementById('alchemy-flash').style.background = '';
+function alchModRow(mod, elemField) {
+  const pct = mod[elemField] || 0;
+  const pctStr = pct ? `+${Math.round(pct * 100)}%` : '';
+  const elemName = elemField.replace('_pct', '');
+  const color = ELEM_COLORS[elemName] || '#fff';
+
+  let badge = '';
+  if (mod.name.startsWith('Primed ')) {
+    badge = '<span class="alch-tier-badge alch-tier-primed">PRIMED</span>';
+  } else if (mod.name.startsWith('Galvanized ')) {
+    badge = '<span class="alch-tier-badge alch-tier-galv">GALV</span>';
+  }
+
+  const secondaryBadges = ALCH_SECONDARY_STATS
+    .filter(s => mod[s.field] > 0)
+    .map(s => `<span class="alch-stat-pill">+${Math.round(mod[s.field] * 100)}% ${s.label}</span>`)
+    .join('');
+
+  const equipped = modSlots.includes(mod.name);
+  const noSlots = modSlots.indexOf('') === -1;
+  const disabledAttr = (equipped || noSlots) ? `disabled title="${equipped ? 'Already equipped' : 'No empty slots'}"` : '';
+
+  return `<div class="alch-mod-row">
+    ${dmgIcon(elemName, 10)}
+    <span class="alch-mod-name">${esc(mod.name)}</span>
+    ${badge}
+    <span class="alch-mod-stats"><span class="alch-mod-pct" style="color:${color}">${pctStr}</span>${secondaryBadges}</span>
+    <button class="alch-add-btn" ${disabledAttr} onclick="addAlchMod(${JSON.stringify(mod.name)})">+</button>
+  </div>`;
 }
 
-function updateAlchStage() {
-  resetAlchStage();
-  document.getElementById('alchemy-result').textContent = '';
-  document.getElementById('alchemy-mods').innerHTML = '';
-  const [a, b] = alchSelected;
-  if (a) {
-    const lo = document.getElementById('alchemy-orb-left');
-    lo.style.background = ELEM_COLORS[a] || '#fff';
-    lo.classList.add('visible');
-  }
-  if (b) {
-    const ro = document.getElementById('alchemy-orb-right');
-    ro.style.background = ELEM_COLORS[b] || '#fff';
-    ro.classList.add('visible');
-  }
-  if (a && b) {
-    document.getElementById('alchemy-stage').classList.add('swirling');
-    _alchMergeTimer = setTimeout(() => triggerAlchMerge(a, b), 900);
-  }
-}
-
-function triggerAlchMerge(a, b) {
-  const stage = document.getElementById('alchemy-stage');
-  stage.classList.remove('swirling');
-  stage.classList.add('merging');
-  const key = `${a}+${b}`;
-  const result = ELEM_COMBOS[key] || ELEM_COMBOS[`${b}+${a}`] || null;
-  const resultColor = result ? (ELEM_COLORS[result.toLowerCase()] || '#fff') : '#aaa';
-  setTimeout(() => {
-    const flash = document.getElementById('alchemy-flash');
-    flash.style.background = resultColor;
-    flash.classList.add('pop');
-    const resultEl = document.getElementById('alchemy-result');
-    resultEl.textContent = result || '(no combination)';
-    resultEl.style.color = resultColor;
-    showAlchModSuggestions(a, b);
-  }, 480);
-}
-
-let _alchRelevantMods = [];
-
-function showAlchModSuggestions(a, b) {
-  const modsEl = document.getElementById('alchemy-mods');
+function renderAlchSuggestions(elem) {
+  const el = document.getElementById('alchemy-suggestions');
   const compatible = getCompatibleModTypes(getCurrentWeapon());
-  _alchRelevantMods = allMods.filter(m =>
-    compatible.has(m.type) &&
-    (m.primary_element === a || m.primary_element === b)
-  );
-  if (!_alchRelevantMods.length) {
-    modsEl.innerHTML = '<span style="color:var(--text-dim);font-size:12px">No mods found for current weapon type</span>';
-    return;
+  const isPrimary = ALCH_PRIMARY.includes(elem);
+  const elemField = ALCH_ELEM_PCT_FIELD[elem];
+  const color = ELEM_COLORS[elem] || '#fff';
+
+  if (isPrimary) {
+    const mods = allMods
+      .filter(m => m.primary_element === elem && compatible.has(m.type))
+      .sort((a, b) => (b[elemField] || 0) - (a[elemField] || 0));
+    if (!mods.length) {
+      el.innerHTML = `<p style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px 0">No ${elem} mods for this weapon type</p>`;
+      return;
+    }
+    const cap = elem.charAt(0).toUpperCase() + elem.slice(1);
+    el.innerHTML = `<div class="alch-section-label" style="border-top:none;margin-top:0">${dmgIcon(elem, 10)} ${cap} Mods</div>` +
+      mods.map(m => alchModRow(m, elemField)).join('');
+  } else {
+    const [recipeA, recipeB] = ALCH_RECIPES[elem];
+    const fieldA = ALCH_ELEM_PCT_FIELD[recipeA];
+    const fieldB = ALCH_ELEM_PCT_FIELD[recipeB];
+    const colorA = ELEM_COLORS[recipeA] || '#fff';
+    const colorB = ELEM_COLORS[recipeB] || '#fff';
+
+    const directMods = allMods
+      .filter(m => (m[elemField] || 0) > 0 && compatible.has(m.type))
+      .sort((a, b) => (b[elemField] || 0) - (a[elemField] || 0));
+
+    const modsA = allMods
+      .filter(m => m.primary_element === recipeA && compatible.has(m.type))
+      .sort((a, b) => (b[fieldA] || 0) - (a[fieldA] || 0));
+    const modsB = allMods
+      .filter(m => m.primary_element === recipeB && compatible.has(m.type))
+      .sort((a, b) => (b[fieldB] || 0) - (a[fieldB] || 0));
+
+    let html = '';
+
+    if (directMods.length) {
+      const cap = elem.charAt(0).toUpperCase() + elem.slice(1);
+      html += `<div class="alch-section-label" style="border-top:none;margin-top:0">${dmgIcon(elem, 10)} Direct ${cap} Mods</div>`;
+      html += directMods.map(m => alchModRow(m, elemField)).join('');
+    }
+
+    html += `<div class="alch-section-label${directMods.length ? '' : ' alch-section-first'}">
+      Build with ${dmgIcon(recipeA, 10)}<span style="color:${colorA}">${recipeA}</span>
+      + ${dmgIcon(recipeB, 10)}<span style="color:${colorB}">${recipeB}</span>
+    </div>`;
+
+    if (!modsA.length && !modsB.length) {
+      html += `<p style="color:var(--text-dim);font-size:12px;text-align:center;padding:12px 0">No primary mods for this weapon type</p>`;
+    } else {
+      const colA = `<div>
+        <div class="alch-col-header" style="color:${colorA}">${dmgIcon(recipeA, 9)} ${recipeA}</div>
+        ${modsA.length ? modsA.map(m => alchModRow(m, fieldA)).join('') : '<span style="color:var(--text-dim);font-size:11px">—</span>'}
+      </div>`;
+      const colB = `<div>
+        <div class="alch-col-header" style="color:${colorB}">${dmgIcon(recipeB, 9)} ${recipeB}</div>
+        ${modsB.length ? modsB.map(m => alchModRow(m, fieldB)).join('') : '<span style="color:var(--text-dim);font-size:11px">—</span>'}
+      </div>`;
+      html += `<div class="alch-pair-cols">${colA}${colB}</div>`;
+
+      const canPair = modsA.length > 0 && modsB.length > 0 && modSlots.filter(s => !s).length >= 2;
+      html += `<button class="alch-pair-btn" ${canPair ? '' : 'disabled'} onclick="addAlchPair('${recipeA}','${recipeB}')">Add Best Pair</button>`;
+    }
+
+    el.innerHTML = html;
   }
-  const label = '<div class="alchemy-mods-label">Mods that provide these elements</div>';
-  const chips = _alchRelevantMods.map(m => {
-    const color = ELEM_COLORS[m.primary_element] || '#fff';
-    return `<span class="alchemy-mod-chip">${dmgIcon(m.primary_element, 10)}${m.name}</span>`;
-  }).join('');
-  // Show equip button only if there are empty slots and at least 2 elements selected
-  const emptySlots = modSlots.filter(s => !s).length;
-  const equipBtn = emptySlots > 0
-    ? `<button class="alch-equip-btn" onclick="equipAlchMods()">Equip These Mods</button>`
-    : '';
-  modsEl.innerHTML = label + chips + equipBtn;
 }
 
-function equipAlchMods() {
-  const [a, b] = alchSelected;
-  if (!a) return;
-  const alreadyEquipped = new Set(getSelectedMods());
-  const elems = b ? [a, b] : [a];
-  for (const elem of elems) {
-    const mod = _alchRelevantMods.find(m => m.primary_element === elem && !alreadyEquipped.has(m.name));
+function addAlchMod(modName) {
+  const slot = modSlots.indexOf('');
+  if (slot < 0) return;
+  modSlots[slot] = modName;
+  renderModCards();
+  initSortable();
+  updateModdedStats();
+  if (alchSelected) renderAlchSuggestions(alchSelected);
+}
+
+function addAlchPair(elemA, elemB) {
+  const compatible = getCompatibleModTypes(getCurrentWeapon());
+  const fieldA = ALCH_ELEM_PCT_FIELD[elemA];
+  const fieldB = ALCH_ELEM_PCT_FIELD[elemB];
+  const equipped = new Set(modSlots.filter(Boolean));
+
+  const bestA = allMods
+    .filter(m => m.primary_element === elemA && compatible.has(m.type) && !equipped.has(m.name))
+    .sort((a, b) => (b[fieldA] || 0) - (a[fieldA] || 0))[0];
+  const bestB = allMods
+    .filter(m => m.primary_element === elemB && compatible.has(m.type) && !equipped.has(m.name))
+    .sort((a, b) => (b[fieldB] || 0) - (a[fieldB] || 0))[0];
+
+  let added = 0;
+  for (const mod of [bestA, bestB]) {
     if (!mod) continue;
     const slot = modSlots.indexOf('');
     if (slot < 0) break;
     modSlots[slot] = mod.name;
-    alreadyEquipped.add(mod.name);
+    equipped.add(mod.name);
+    added++;
   }
-  renderModCards();
-  initSortable();
-  updateModdedStats();
-  closeAlchemyMixer();
+  if (added > 0) {
+    renderModCards();
+    initSortable();
+    updateModdedStats();
+    closeAlchemyMixer();
+  }
 }
 
 // ---------------------------------------------------------------------------

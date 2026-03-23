@@ -1163,158 +1163,166 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .riven-modal-right { padding: 20px 16px 16px; }
 }
 
-/* ── Alchemy Mixer Modal ─────────────────────────────── */
+/* ── Alchemy Guide Modal ─────────────────────────────── */
 .alchemy-modal {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 24px 28px 28px;
-  width: 420px;
+  padding: 20px 22px 22px;
+  width: 560px;
   max-width: 95vw;
   position: relative;
   animation: rivenModalIn 0.18s ease;
-  text-align: center;
 }
-.alchemy-modal-title { margin: 0 0 4px; font-size: 16px; letter-spacing: 1px; }
-.alchemy-hint { margin: 0 0 16px; font-size: 12px; color: var(--text-dim); }
+.alchemy-modal-title { margin: 0 0 14px; font-size: 15px; letter-spacing: 1px; }
 
-/* Element picker */
-.alchemy-element-picker {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 4px;
-}
-.alchemy-elem-btn {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  background: rgba(255,255,255,0.05);
-  cursor: pointer;
+/* Element palette */
+.alchemy-palette { margin-bottom: 12px; }
+.alchemy-palette-label {
   font-size: 10px;
-  font-weight: 700;
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  margin-bottom: 5px;
+  margin-top: 8px;
 }
-.alchemy-elem-btn:hover { transform: scale(1.05); }
-.alchemy-elem-btn.selected { transform: scale(1.1); }
-
-/* Animation stage */
-.alchemy-stage {
-  position: relative;
-  width: 280px;
-  height: 110px;
-  margin: 14px auto 8px;
+.alchemy-palette-label:first-child { margin-top: 0; }
+.alchemy-palette-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.alchemy-elem-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  transition: border-color 0.12s, background 0.12s;
 }
-.alchemy-orb {
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: background 0.3s, opacity 0.3s;
-  box-shadow: 0 0 18px currentColor;
+.alchemy-elem-pill:hover { background: rgba(255,255,255,0.08); }
+.alchemy-elem-pill.active { background: rgba(255,255,255,0.1); }
+
+/* Suggestions panel */
+.alchemy-suggestions {
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 2px;
 }
-.alchemy-orb.visible { opacity: 0.85; }
-.alchemy-orb-left  { left: 20px; }
-.alchemy-orb-right { right: 20px; }
-
-.alchemy-stage.swirling .alchemy-orb-left  { animation: alch-swirl-left  1.2s ease-in-out infinite alternate; }
-.alchemy-stage.swirling .alchemy-orb-right { animation: alch-swirl-right 1.2s ease-in-out infinite alternate; }
-.alchemy-stage.merging  .alchemy-orb-left  { animation: alch-merge-left  0.5s ease-in forwards; }
-.alchemy-stage.merging  .alchemy-orb-right { animation: alch-merge-right 0.5s ease-in forwards; }
-
-@keyframes alch-swirl-left  { from { left: 20px; } to { left: 58px; } }
-@keyframes alch-swirl-right { from { right: 20px; } to { right: 58px; } }
-@keyframes alch-merge-left  { to { left: 118px;  opacity: 0; transform: translateY(-50%) scale(1.5); } }
-@keyframes alch-merge-right { to { right: 118px; opacity: 0; transform: translateY(-50%) scale(1.5); } }
-
-/* Flash burst */
-.alchemy-result-flash {
-  position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-}
-.alchemy-result-flash.pop { animation: alch-flash-pop 0.45s ease-out forwards; }
-@keyframes alch-flash-pop {
-  0%   { transform: translate(-50%,-50%) scale(0);   opacity: 1; }
-  55%  { transform: translate(-50%,-50%) scale(1.7);  opacity: 0.8; }
-  100% { transform: translate(-50%,-50%) scale(2.6);  opacity: 0; }
-}
-
-/* Result label */
-.alchemy-result {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  min-height: 30px;
+.alch-section-label {
+  font-size: 10px;
+  color: var(--text-dim);
   text-transform: uppercase;
-  text-shadow: 0 0 12px currentColor;
-}
-
-/* Mod suggestion chips */
-.alchemy-mods {
-  margin-top: 16px;
+  letter-spacing: 0.5px;
+  padding: 8px 0 5px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
   display: flex;
+  align-items: center;
+  gap: 4px;
   flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  min-height: 28px;
 }
-.alchemy-mods-label {
-  width: 100%;
-  font-size: 11px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
+.alch-section-first { border-top: none; margin-top: 0; }
+.alch-col-header {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  padding: 0 0 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-.alchemy-mod-chip {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.13);
-  border-radius: 4px;
-  padding: 3px 9px;
-  font-size: 11px;
-  color: var(--text-dim);
-  display: inline-flex;
+.alch-pair-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+.alch-mod-row {
+  display: flex;
   align-items: center;
   gap: 5px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 2px;
 }
-.alchemy-mod-chip .chip-elem {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.alch-mod-row:hover { background: rgba(255,255,255,0.06); }
+.alch-mod-name {
+  flex: 1;
+  font-size: 11px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.alch-tier-badge {
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+.alch-tier-primed { background: rgba(212,168,67,0.15); color: #D4A843; }
+.alch-tier-galv   { background: rgba(64,200,200,0.15); color: #40c8c8; }
+.alch-mod-stats {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   flex-shrink: 0;
 }
-.alchemy-mod-chip .dmg-icon {
-  margin-right: 3px;
-  flex-shrink: 0;
+.alch-mod-pct {
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 34px;
+  text-align: right;
 }
-.alch-equip-btn {
+.alch-stat-pill {
+  font-size: 9px;
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  padding: 1px 4px;
+  white-space: nowrap;
+}
+.alch-add-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background 0.12s;
+}
+.alch-add-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+.alch-add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.alch-pair-btn {
   display: block;
-  margin: 12px auto 0;
-  padding: 6px 18px;
-  background: rgba(212,168,67,0.12);
+  margin: 10px auto 2px;
+  padding: 5px 16px;
+  background: rgba(212,168,67,0.1);
   border: 1px solid #D4A843;
   border-radius: 5px;
   color: #D4A843;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.15s;
 }
-.alch-equip-btn:hover { background: rgba(212,168,67,0.24); }
+.alch-pair-btn:hover:not(:disabled) { background: rgba(212,168,67,0.22); }
+.alch-pair-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* ── User Guide Modal ───────────────────────────────────── */
 .guide-modal {
