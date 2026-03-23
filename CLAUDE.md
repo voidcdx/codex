@@ -77,7 +77,7 @@ handoff.md          # session handoff notes for next Claude instance
 ## Versioning
 `src/version.py` is the single source of truth:
 ```python
-APP_VERSION       = "0.2.0"          # semver — bump before shipping features
+APP_VERSION       = "0.2.1"          # semver — bump before shipping features
 GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are refreshed
 ```
 - `GET /api/version` returns `{"app": APP_VERSION, "game_data": GAME_DATA_VERSION}`
@@ -93,7 +93,7 @@ GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are 
 `<header>` is a compact sticky bar: `<span class="nav-brand">Void Codex</span>` + nav links (Damage Calculator / Live Data). No decorative SVG. CSS: `.nav-brand` (12px, uppercase, dimmed gold). The header has had multiple banner attempts this session — all removed. Future banner work should be mobile-first (≤375px) and not use flanking SVG wings in a flex row.
 
 ### Faction Effectiveness Badges
-Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `index.html` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
+Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `web/static/js/constants.js` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
 
 ### Weapon Picker Filtering
 Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from the weapon search combobox via `visibleWeapons` filter in `loadData()`. `allWeapons` retains full data.
