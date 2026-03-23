@@ -390,7 +390,7 @@ function renderModCards() {
     if (modName === '__riven__') {
       card.className = 'mod-card riven-mod-card';
       const lines = (rivenApplied || []).filter(s => s.stat)
-        .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${STAT_LABELS[s.stat] || s.stat}</div>`)
+        .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${esc(STAT_LABELS[s.stat] || s.stat)}</div>`)
         .join('');
       card.innerHTML = `
         <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">&times;</button>
