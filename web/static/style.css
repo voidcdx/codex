@@ -1165,19 +1165,26 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 
 /* ── Alchemy Guide Modal ─────────────────────────────── */
 .alchemy-modal {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  background: rgba(10, 12, 22, 0.82);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 14px;
   padding: 20px 22px 22px;
   width: 560px;
   max-width: 95vw;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.07);
   animation: rivenModalIn 0.18s ease;
 }
 .alchemy-modal-title { margin: 0 0 14px; font-size: 15px; letter-spacing: 1px; }
 
 /* Element palette */
-.alchemy-palette { margin-bottom: 12px; }
+.alchemy-palette { margin-bottom: 12px; flex-shrink: 0; }
 .alchemy-palette-label {
   font-size: 10px;
   color: var(--text-dim);
@@ -1198,17 +1205,28 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   font-weight: 600;
   text-transform: capitalize;
   letter-spacing: 0.3px;
-  transition: border-color 0.12s, background 0.12s;
+  transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
 }
-.alchemy-elem-pill:hover { background: rgba(255,255,255,0.08); }
-.alchemy-elem-pill.active { background: rgba(255,255,255,0.1); }
+.alchemy-elem-pill:hover {
+  background: rgba(255,255,255,0.10);
+  box-shadow: 0 0 6px currentColor;
+}
+.alchemy-elem-pill.active {
+  background: rgba(255,255,255,0.13);
+  box-shadow: 0 0 10px currentColor;
+}
 
 /* Suggestions panel */
 .alchemy-suggestions {
-  max-height: 360px;
+  flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 2px;
+  min-height: 0;
 }
+.alchemy-suggestions::-webkit-scrollbar { width: 4px; }
+.alchemy-suggestions::-webkit-scrollbar-track { background: transparent; }
+.alchemy-suggestions::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
 .alch-section-label {
   font-size: 10px;
   color: var(--text-dim);
@@ -1241,14 +1259,20 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .alch-mod-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 5px;
-  padding: 4px 6px;
-  border-radius: 4px;
-  background: rgba(255,255,255,0.02);
-  margin-bottom: 2px;
+  padding: 5px 6px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  margin-bottom: 3px;
+  transition: background 0.12s, border-color 0.12s;
 }
-.alch-mod-row:hover { background: rgba(255,255,255,0.06); }
+.alch-mod-row:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.09);
+}
 .alch-mod-name {
   flex: 1;
   font-size: 11px;
@@ -1267,32 +1291,35 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .alch-tier-primed { background: rgba(212,168,67,0.15); color: #D4A843; }
 .alch-tier-galv   { background: rgba(64,200,200,0.15); color: #40c8c8; }
-.alch-mod-stats {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  flex-shrink: 0;
-}
 .alch-mod-pct {
   font-size: 11px;
   font-weight: 600;
+  flex-shrink: 0;
   min-width: 34px;
   text-align: right;
 }
+.alch-hover-stats {
+  width: 100%;
+  display: none;
+  gap: 3px;
+  flex-wrap: wrap;
+  padding: 3px 0 1px 16px;
+}
+.alch-mod-row:hover .alch-hover-stats { display: flex; }
 .alch-stat-pill {
   font-size: 9px;
-  color: var(--text-dim);
+  color: var(--elem-color, var(--text-dim));
   background: rgba(255,255,255,0.06);
   border-radius: 3px;
-  padding: 1px 4px;
+  padding: 1px 5px;
   white-space: nowrap;
 }
 .alch-add-btn {
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  border: 1px solid var(--border);
-  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
   color: var(--text);
   font-size: 14px;
   cursor: pointer;
@@ -1302,16 +1329,19 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   justify-content: center;
   flex-shrink: 0;
   padding: 0;
-  transition: background 0.12s;
+  transition: background 0.12s, border-color 0.12s;
 }
-.alch-add-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+.alch-add-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+}
 .alch-add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .alch-pair-btn {
   display: block;
   margin: 10px auto 2px;
   padding: 5px 16px;
   background: rgba(212,168,67,0.1);
-  border: 1px solid #D4A843;
+  border: 1px solid rgba(212,168,67,0.4);
   border-radius: 5px;
   color: #D4A843;
   font-size: 11px;
@@ -1319,6 +1349,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: pointer;
+  backdrop-filter: blur(4px);
   transition: background 0.15s;
 }
 .alch-pair-btn:hover:not(:disabled) { background: rgba(212,168,67,0.22); }
