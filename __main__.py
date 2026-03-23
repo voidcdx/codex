@@ -22,6 +22,8 @@ _project_root = Path(__file__).parent
 if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
+from src.version import APP_VERSION, GAME_DATA_VERSION
+
 from src.buffs import BUFF_PRESETS, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet, VIRAL_STACK_MULTIPLIERS
 from src.enums import DamageType
@@ -244,7 +246,11 @@ def _print_results(
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="python -m dc",
-        description="Warframe 100% Accurate Damage Calculator",
+        description="Warframe Damage Calculator",
+    )
+    parser.add_argument(
+        "--version", action="version",
+        version=f"Void Codex v{APP_VERSION} · {GAME_DATA_VERSION}",
     )
     parser.add_argument("--list-weapons",  action="store_true", help="List all weapon names")
     parser.add_argument("--list-mods",     action="store_true", help="List all mod names")
