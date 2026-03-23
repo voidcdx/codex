@@ -42,7 +42,7 @@ tests/
   test_scaling.py     # enemy level scaling: health/shield/armor/overguard per faction
 data/
   weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
-  mods.json         # 1512 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus; Conclave mods excluded
+  mods.json         # 1405 mods — damage%, elemental%, ips%, cc/cd/sc/multishot, faction bonus; Conclave mods excluded
   enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, base_level, base_health, base_shield, head_multiplier
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
@@ -57,7 +57,7 @@ run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"]
 ```
 
-## 205 Tests Passing
+## 210 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Web UI Notes
@@ -294,7 +294,7 @@ python scripts/fix_galv_stats.py
 ```
 
 Fields read by `loader.py` from each mod entry:
-`damage_bonus_pct`, `crit_chance_pct`, `crit_damage_pct`, `status_chance_pct`, `multishot_pct`, `status_damage_pct`, `fire_rate_pct`, `magazine_pct`, `ammo_max_pct`, `reload_speed_pct`, `condition_overload_pct`
+`damage_bonus_pct`, `impact_pct`, `puncture_pct`, `slash_pct`, `crit_chance_pct`, `crit_damage_pct`, `status_chance_pct`, `multishot_pct`, `status_damage_pct`, `fire_rate_pct`, `magazine_pct`, `ammo_max_pct`, `reload_speed_pct`, `condition_overload_pct`
 
 ### mods.json — Conclave (PVP) mods
 Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mods()` via the `/PvPMods/` substring in `InternalName`. This removes ~129 mods. Dual-use mods (diamond icon, `Conclave=True` but no `/PvPMods/`) such as Eagle Eye are retained.
