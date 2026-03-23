@@ -300,7 +300,6 @@ Fields read by `loader.py` from each mod entry:
 Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mods()` via the `/PvPMods/` substring in `InternalName`. This removes ~129 mods. Dual-use mods (diamond icon, `Conclave=True` but no `/PvPMods/`) such as Eagle Eye are retained.
 
 ### Known unimplemented data
-- **Kuva/Tenet bonus element %** — stored in `weapons.json` per weapon but not yet applied in the pipeline. Bonus elemental damage (25–60%) should be added to the appropriate primary element bucket before combination.
 - **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare etc. Stack-based bonuses not modelled.
 
 ## Coding Standards
