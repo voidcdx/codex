@@ -1,27 +1,29 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Two-part session: (1) versioning + changelog, (2) JS extraction from index.html.
+Three-part session: (1) versioning + changelog infrastructure, (2) JS extraction from index.html into 8 separate files, (3) patch version bump to v0.2.1 + changelog entry for the refactor.
 No logic changes; all 256 pytest tests still pass.
 
 ---
 
-## Changes made
+## Changes made this session
 
-### 1. Version bump to v0.2.0
+### 1. Version bump to v0.2.1
+- `src/version.py`: `APP_VERSION` → `"0.2.1"` (patch — internal refactor, no user-facing changes)
+
+### 2. Changelog entry for v0.2.1
+- `CHANGELOG.md`: new `[0.2.1]` entry added above `[0.2.0]`
+- `web/static/js/constants.js`: new entry prepended to `CHANGELOG_ENTRIES` (powers the "What's New" modal)
+- Entry text: "Web interface JavaScript reorganised into separate, focused modules for improved maintainability and long-term reliability"
+
+### 3. Version bump to v0.2.0 (previous session work — already committed)
 - `src/version.py`: `APP_VERSION` → `"0.2.0"`
-- Guide modal footer placeholder updated to match
+- `CHANGELOG.md`: Keep a Changelog format, two entries: v0.2.0 and v0.1.0
+- "What's New" nav button + `#changelog-overlay` glassmorphism modal in Web UI
+- `CHANGELOG_ENTRIES` constant in `constants.js` rendered by `renderChangelog()`
+- CSS: `.changelog-modal*` classes in `style.css` with responsive rules
 
-### 2. CHANGELOG.md (new file, repo root)
-- Keep a Changelog format + SemVer
-- Two entries: v0.2.0 and v0.1.0
-
-### 3. "What's New" modal (Web UI)
-- Nav button, `#changelog-overlay`, glassmorphism modal
-- `CHANGELOG_ENTRIES` constant rendered by `renderChangelog()`
-- CSS in `style.css`: `.changelog-modal*` classes with responsive rules
-
-### 4. JS extraction — index.html split into 8 files
+### 4. JS extraction — index.html split into 8 files (previous session work — already committed)
 `index.html` reduced from ~2,450 lines to ~360 (HTML-only, no inline JS).
 All JavaScript moved to `web/static/js/` with `<script defer>` tags in `<head>`.
 
@@ -39,7 +41,7 @@ All JavaScript moved to `web/static/js/` with `<script defer>` tags in `<head>`.
 **Key architecture notes:**
 - No bundler — plain `<script defer>` tags execute in document order
 - All functions/variables on `window` scope (unchanged from before)
-- CDN scripts (SortableJS, Popper, Tippy) moved to `<head>` with `defer`, before app scripts
+- CDN scripts (SortableJS, Popper, Tippy) in `<head>` with `defer`, before app scripts
 - `constants.js` must load first (declares all shared mutable state)
 - `app.js` must load last (bootstrap)
 
@@ -47,7 +49,7 @@ All JavaScript moved to `web/static/js/` with `<script defer>` tags in `<head>`.
 
 ## Current state
 - Branch: `claude/review-handoff-pjWUR`
-- Version: `0.2.0`
+- Version: `0.2.1`
 - Game data: Update 41 — The Old Peace
 - Tests: 256 passing
 
@@ -55,11 +57,12 @@ All JavaScript moved to `web/static/js/` with `<script defer>` tags in `<head>`.
 
 ## Start-of-session checklist for next Claude
 
-> **Ask the user two things:**
-> 1. "Should I bump the version in `src/version.py`? Current version is `0.2.0`."
+> **Ask the user two things before touching any code:**
+> 1. "Should I bump the version in `src/version.py`? Current version is `0.2.1`."
 > 2. "Should this session's changes be tracked in the changelog?"
 >
 > Do NOT auto-bump the version or add changelog entries without explicit confirmation.
+> When confirming a changelog entry, update BOTH `CHANGELOG.md` (repo root) AND `CHANGELOG_ENTRIES` in `web/static/js/constants.js`.
 
 - [ ] Run `pytest` — confirm 256 passing before touching anything
 - [ ] Check `git log --oneline -5` to orient on recent commits
