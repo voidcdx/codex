@@ -120,7 +120,7 @@
         <div class="guide-modal-header">
           <div>
             <p class="guide-modal-title">Void Codex — User Guide</p>
-            <p class="guide-modal-subtitle">100% accurate Warframe damage calculator · wiki.warframe.com formulas</p>
+            <p class="guide-modal-subtitle">Warframe damage calculator · wiki.warframe.com formulas</p>
           </div>
           <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeGuide()">×</button>
         </div>
@@ -226,6 +226,11 @@
             <li><strong>Kill Time section</strong> — shots to kill, burst TTK, and sustained TTK based on the scaled enemy HP at the selected level.</li>
           </ul>
 
+          <div class="guide-modal-version">
+            <span id="guide-app-ver">Void Codex v0.1.0</span>
+            <span class="footer-sep">·</span>
+            <span id="guide-game-ver">Game data: Update 41 — The Old Peace</span>
+          </div>
         </div>
         </div>
       </div>
@@ -1474,7 +1479,13 @@ function fmtNum(n) {
   return n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 }
 
-document.addEventListener('DOMContentLoaded', () => { loadData(); });
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  fetch('/api/version').then(r => r.json()).then(v => {
+    document.getElementById('guide-app-ver').textContent  = `Void Codex v${v.app}`;
+    document.getElementById('guide-game-ver').textContent = `Game data: ${v.game_data}`;
+  }).catch(() => {});
+});
 
 function setupSearch(inputId, selectId, getNames, onChange) {
   const el = document.getElementById(inputId);

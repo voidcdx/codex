@@ -39,12 +39,22 @@ from src.loader import (
 from src.models import Buff, DamageComponent
 from src.quantizer import quantize
 from src.scaling import scale_enemy_stats
+from src.version import APP_VERSION, GAME_DATA_VERSION
 
-app = FastAPI(title="Warframe Damage Calculator", version="1.0.0")
+app = FastAPI(title="Warframe Damage Calculator", version=APP_VERSION)
 
 # Serve static files (HTML/CSS/JS/images)
 _static = Path(__file__).parent / "static"
 app.mount("/static", StaticFiles(directory=str(_static)), name="static")
+
+
+# ---------------------------------------------------------------------------
+# Version
+# ---------------------------------------------------------------------------
+
+@app.get("/api/version")
+def get_version() -> dict:
+    return {"app": APP_VERSION, "game_data": GAME_DATA_VERSION}
 
 
 # ---------------------------------------------------------------------------

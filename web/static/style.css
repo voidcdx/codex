@@ -1365,6 +1365,16 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   margin: 0;
   letter-spacing: 0.04em;
 }
+.guide-modal-version {
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+.footer-sep { margin: 0 8px; opacity: 0.35; }
 .guide-content h3 {
   font-size: 11px;
   text-transform: uppercase;
