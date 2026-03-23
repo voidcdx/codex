@@ -828,6 +828,17 @@ function drawElementArcs(combos) {
   svg.setAttribute('width', wrap.offsetWidth);
   svg.setAttribute('height', grid.offsetHeight + arcSpace);
 
+  // Pre-compute per-row-band local indices so arcs from different rows
+  // don't stack extra vertical offset on top of each other.
+  const bandCounters = {};
+  const localIdxArr = combos.map(combo => {
+    const band = Math.floor(Math.max(combo.slotA < 0 ? 0 : combo.slotA,
+                                      combo.slotB < 0 ? 0 : combo.slotB) / 2);
+    const li = bandCounters[band] || 0;
+    bandCounters[band] = li + 1;
+    return li;
+  });
+
   combos.forEach((combo, idx) => {
     if (combo.slotA < 0 || combo.slotB < 0) return;
     const cardA = grid.children[combo.slotA];
@@ -841,7 +852,7 @@ function drawElementArcs(combos) {
     const bx = rectB.left - wrapRect.left + rectB.width / 2;
     const by = rectB.top - wrapRect.top + rectB.height;
     const mx = (ax + bx) / 2;
-    const my = Math.max(ay, by) + 18 + idx * 28;
+    const my = Math.max(ay, by) + 18 + localIdxArr[idx] * 28;
     const color = ELEM_COLORS[combo.result.toLowerCase()] || 'var(--accent)';
 
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
