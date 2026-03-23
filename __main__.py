@@ -273,8 +273,9 @@ def main(argv: list[str] | None = None) -> None:
                         help="Unique active status types on enemy (0–10, for Condition Overload)")
     parser.add_argument("--procs", action="store_true",
                         help="Show status proc damage per tick and total")
-    parser.add_argument("--buff", action="append", default=[], metavar="NAME[:STRENGTH]",
+    parser.add_argument("--buff", action="append", default=[], metavar="NAME[:STRENGTH][:s]",
                         help='Warframe ability buff, e.g. "roar" or "roar:1.5" (150%% strength). '
+                             'Append ":s" for subsumed (Helminth) base values, e.g. "roar:1.5:s". '
                              'Repeat for multiple buffs. Valid: ' + ', '.join(sorted(BUFF_PRESETS.keys())))
     parser.add_argument("--bonus-element", default=None, metavar="ELEMENT:PCT",
                         help='Kuva/Tenet bonus element, e.g. "heat:50" for +50%% Heat. '
@@ -363,14 +364,21 @@ def main(argv: list[str] | None = None) -> None:
             else:
                 bpct = float(parts[1].strip()) / 100.0
 
-    # Parse --buff "roar:1.5" flags
+    # Parse --buff "roar:1.5" or "roar:1.5:s" flags
     buff_list: list[Buff] = []
     for buff_arg in ns.buff:
-        parts = buff_arg.split(":", 1)
+        parts = buff_arg.split(":")
         buff_name = parts[0].strip()
-        buff_strength = float(parts[1].strip()) if len(parts) == 2 else 1.0
+        buff_strength = 1.0
+        subsumed = False
+        for part in parts[1:]:
+            p = part.strip().lower()
+            if p == "s" or p == "subsumed":
+                subsumed = True
+            else:
+                buff_strength = float(p)
         try:
-            buff_list.append(make_buff(buff_name, buff_strength))
+            buff_list.append(make_buff(buff_name, buff_strength, subsumed=subsumed))
         except KeyError as e:
             print(f"Error: {e}")
             sys.exit(1)

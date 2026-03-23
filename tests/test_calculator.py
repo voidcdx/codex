@@ -1433,3 +1433,36 @@ class TestMakeBuffPresets:
         r2 = make_buff("roar", 2.0)
         assert r2.faction_damage_bonus == pytest.approx(r1.faction_damage_bonus * 2.0)
 
+    def test_subsumed_roar(self):
+        """Subsumed Roar base is 30% (vs 50% original)."""
+        orig = make_buff("roar", 1.0)
+        sub = make_buff("roar", 1.0, subsumed=True)
+        assert orig.faction_damage_bonus == pytest.approx(0.50)
+        assert sub.faction_damage_bonus == pytest.approx(0.30)
+
+    def test_subsumed_eclipse(self):
+        """Subsumed Eclipse base is 30% (vs 200% original)."""
+        orig = make_buff("eclipse", 1.0)
+        sub = make_buff("eclipse", 1.0, subsumed=True)
+        assert orig.damage_multiplier == pytest.approx(2.00)
+        assert sub.damage_multiplier == pytest.approx(0.30)
+
+    def test_subsumed_nourish(self):
+        """Subsumed Nourish base is 45% (vs 75% original)."""
+        orig = make_buff("nourish", 1.0)
+        sub = make_buff("nourish", 1.0, subsumed=True)
+        assert orig.elemental_bonus == pytest.approx(0.75)
+        assert sub.elemental_bonus == pytest.approx(0.45)
+
+    def test_subsumed_xatas_whisper(self):
+        """Xata's Whisper is not reduced when subsumed (26% both)."""
+        orig = make_buff("xatas_whisper", 1.0)
+        sub = make_buff("xatas_whisper", 1.0, subsumed=True)
+        assert orig.elemental_bonus == pytest.approx(0.26)
+        assert sub.elemental_bonus == pytest.approx(0.26)
+
+    def test_subsumed_with_strength(self):
+        """Subsumed Roar at 200% strength → 0.30 × 2.0 = 0.60."""
+        sub = make_buff("roar", 2.0, subsumed=True)
+        assert sub.faction_damage_bonus == pytest.approx(0.60)
+

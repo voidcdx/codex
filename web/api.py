@@ -155,6 +155,7 @@ def get_enemies() -> list[dict]:
 class BuffSpec(BaseModel):
     name: str            # preset key, e.g. "roar", "eclipse"
     strength: float = 1.0  # ability strength multiplier (1.0 = 100%)
+    subsumed: bool = False  # True for Helminth (subsumed) reduced base values
 
 
 @app.get("/api/buffs")
@@ -411,7 +412,7 @@ def calculate(req: CalcRequest) -> dict:
     buff_objects: list[Buff] = []
     for bs in req.buffs:
         try:
-            buff_objects.append(make_buff(bs.name, bs.strength))
+            buff_objects.append(make_buff(bs.name, bs.strength, subsumed=bs.subsumed))
         except KeyError as e:
             raise HTTPException(400, str(e))
 
