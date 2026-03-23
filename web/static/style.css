@@ -95,8 +95,7 @@ header {
   background: var(--surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -104,12 +103,38 @@ header {
   top: 0;
   z-index: 100;
 }
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(232, 185, 35, 0.55) 25%,
+    rgba(232, 185, 35, 0.55) 75%,
+    transparent
+  );
+  pointer-events: none;
+}
 header h1 {
   font-size: 18px;
   color: var(--accent2);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  text-shadow: 0 0 20px var(--accent-glow);
+  text-shadow: 0 0 18px rgba(232, 185, 35, 0.6), 0 0 40px rgba(232, 185, 35, 0.2);
+}
+/* ── Banner Lockup ──────────────────────────────────── */
+.banner-lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.banner-wing {
+  flex-shrink: 0;
+  opacity: 0.92;
 }
 
 /* ── Layout ─────────────────────────────────────────── */
