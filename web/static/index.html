@@ -89,7 +89,7 @@
         <button class="riven-modal-close" onclick="closeAlchemyMixer()">×</button>
         <div class="alchemy-modal-header">
           <h2 class="alchemy-modal-title">Alchemy Guide</h2>
-          <button class="alch-clear-btn" onclick="clearAlchMods()" title="Remove all alchemy mods from slots">Clear mods</button>
+          <button class="alch-clear-btn" onclick="clearAlchMods()" title="Remove all alchemy mods from slots">Clear Mods</button>
         </div>
         <div class="alchemy-palette" id="alchemy-palette"></div>
         <div class="alchemy-suggestions" id="alchemy-suggestions"></div>
@@ -344,7 +344,7 @@ const ELEM_COLORS = {
   toxin:       '#60d030',
   blast:       '#ffd040',
   corrosive:   '#a0e040',
-  gas:         '#c0e040',
+  gas:         '#00c8a0',
   magnetic:    '#c060f0',
   radiation:   '#f0a020',
   viral:       '#f060a0',
@@ -1812,7 +1812,7 @@ function selectAlchElem(elem) {
 
 function alchModRow(mod, elemField) {
   const pct = mod[elemField] || 0;
-  const pctStr = pct ? `+${Math.round(pct * 100)}%` : '';
+  const pctStr = pct ? `+${Math.round(pct * 100)}` : '';
   const elemName = elemField.replace('_pct', '');
   const color = ELEM_COLORS[elemName] || '#fff';
 
