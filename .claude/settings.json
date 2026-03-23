@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/handoff-reminder.sh"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
