@@ -1429,10 +1429,15 @@ function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
     if (item) commit(item.dataset.value);
   });
 
-  // Touch selection
+  // Touch selection — only commit if finger didn't scroll (< 10px movement)
+  let _touchStartY = 0;
+  dropdown.addEventListener('touchstart', e => { _touchStartY = e.touches[0].clientY; }, { passive: true });
   dropdown.addEventListener('touchend', e => {
     const item = e.target.closest('.combobox-item');
-    if (item) { e.preventDefault(); commit(item.dataset.value); }
+    if (item && Math.abs(e.changedTouches[0].clientY - _touchStartY) < 10) {
+      e.preventDefault();
+      commit(item.dataset.value);
+    }
   });
 
   // Close on click outside
