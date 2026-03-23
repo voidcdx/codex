@@ -58,6 +58,7 @@ web/
                    #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
+CHANGELOG.md        # Keep a Changelog format — user-facing version history
 handoff.md          # session handoff notes for next Claude instance
 ```
 
@@ -67,13 +68,14 @@ handoff.md          # session handoff notes for next Claude instance
 ## Versioning
 `src/version.py` is the single source of truth:
 ```python
-APP_VERSION       = "0.1.0"          # semver — bump before shipping features
+APP_VERSION       = "0.2.0"          # semver — bump before shipping features
 GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are refreshed
 ```
 - `GET /api/version` returns `{"app": APP_VERSION, "game_data": GAME_DATA_VERSION}`
 - CLI `--version` prints `Void Codex v{APP_VERSION} · {GAME_DATA_VERSION}`
 - Guide modal footer shows both strings (fetched on DOMContentLoaded)
 - **At the start of each new session, ask the user if the version should be bumped.**
+- **Changelog:** When bumping the version, update both `CHANGELOG.md` (repo root) and the `CHANGELOG_ENTRIES` JS constant in `web/static/index.html` (powers the "What's New" modal in the Web UI).
 
 ## Web UI Notes
 
