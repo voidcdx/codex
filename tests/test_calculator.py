@@ -1466,3 +1466,101 @@ class TestMakeBuffPresets:
         sub = make_buff("roar", 2.0, subsumed=True)
         assert sub.faction_damage_bonus == pytest.approx(0.60)
 
+    def test_xatas_separate_instance(self):
+        """Xata's Whisper has separate_instance=True."""
+        xata = make_buff("xatas_whisper", 1.0)
+        assert xata.separate_instance is True
+
+    def test_nourish_not_separate_instance(self):
+        """Nourish has separate_instance=False (adds to current hit)."""
+        nourish = make_buff("nourish", 1.0)
+        assert nourish.separate_instance is False
+
+
+class TestXatasWhisperBuff:
+    """Xata's Whisper: Void is a separate damage instance.
+
+    Double-dips on faction mods (Banes) and headshot multiplier.
+    Void bypasses armor.
+    """
+
+    def test_xatas_basic_void_damage(self):
+        """Xata's Whisper adds Void damage as separate entry in result.
+
+        Braton (60 base) + Serration (165%) + Xata's Whisper (26%):
+        Void raw = floor(60 × 0.26 × 2.65) = floor(41.34) = 41
+        quantize(41, 60): scale=1.875, 41/1.875=21.866→22, 22×1.875 = 41.25
+        Step 2: warframe_round(41.25 × 1.0 × 1.0) = 41
+        """
+        xata = make_buff("xatas_whisper", 1.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        assert DamageType.VOID in result
+        assert result[DamageType.VOID] == pytest.approx(41.0)
+        # IPS values should be unaffected by Xata's (not mixed in)
+        result_no_buff = calc.calculate(braton(), [serration()], grineer_flesh_no_armor())
+        assert result[DamageType.SLASH] == result_no_buff[DamageType.SLASH]
+        assert result[DamageType.IMPACT] == result_no_buff[DamageType.IMPACT]
+        assert result[DamageType.PUNCTURE] == result_no_buff[DamageType.PUNCTURE]
+
+    def test_xatas_faction_double_dip(self):
+        """Void double-dips on faction mods: (1 + faction_bonus)².
+
+        Main hit uses (1 + 0.30), Void uses (1 + 0.30)² = 1.69.
+        Void Step 1: quantize(floor(60×0.26×2.65), 60) = 41.25
+        Void Step 2: warframe_round(41.25) = 41
+        Void Step 5: floor(41 × 1.69) = floor(69.29) = 69
+        """
+        xata = make_buff("xatas_whisper", 1.0)
+        result = calc.calculate(
+            braton(), [serration(), bane_grineer()], grineer_flesh_no_armor(), buffs=[xata],
+        )
+        assert result[DamageType.VOID] == pytest.approx(69.0)
+
+    def test_xatas_headshot_double_dip(self):
+        """Void double-dips on headshot: body_part_mult².
+
+        With headshot (body_part=2.0): main gets ×2, Void gets ×4.
+        """
+        xata = make_buff("xatas_whisper", 1.0)
+        enemy_head = Enemy(
+            name="Lancer Head", faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH, armor_type=ArmorType.NONE,
+            base_armor=0.0, body_part_multiplier=2.0,
+        )
+        result_body = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        result_head = calc.calculate(braton(), [serration()], enemy_head, buffs=[xata])
+        # Main IPS headshot ratio should be ~2.0
+        slash_ratio = result_head[DamageType.SLASH] / result_body[DamageType.SLASH]
+        assert slash_ratio == pytest.approx(2.0, abs=0.05)
+        # Void headshot ratio should be ~4.0 (double-dip)
+        void_ratio = result_head[DamageType.VOID] / result_body[DamageType.VOID]
+        assert void_ratio == pytest.approx(4.0, abs=0.1)
+
+    def test_xatas_bypasses_armor(self):
+        """Void damage ignores armor (separate instance still bypasses)."""
+        xata = make_buff("xatas_whisper", 1.0)
+        result_no_armor = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        result_armor = calc.calculate(braton(), [serration()], grineer_flesh_300_armor(), buffs=[xata])
+        # Void should be identical regardless of armor
+        assert result_armor[DamageType.VOID] == result_no_armor[DamageType.VOID]
+
+    def test_xatas_not_in_proc_pool(self):
+        """Xata's Void doesn't contribute to proc pool (separate instance)."""
+        xata = make_buff("xatas_whisper", 1.0)
+        procs = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        procs_no_buff = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor())
+        # Slash proc damage should be identical — Void doesn't inflate step-2 total
+        assert procs["slash"]["damage_per_tick"] == procs_no_buff["slash"]["damage_per_tick"]
+
+    def test_nourish_still_inline(self):
+        """Nourish (Viral) adds to current hit — not separate instance."""
+        nourish = make_buff("nourish", 1.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[nourish])
+        # Viral should appear in result
+        assert DamageType.VIRAL in result
+        # Nourish should inflate total damage (it's part of the weapon pool)
+        result_no = calc.calculate(braton(), [serration()], grineer_flesh_no_armor())
+        total_with = sum(result.values())
+        total_without = sum(result_no.values())
+        assert total_with > total_without
+

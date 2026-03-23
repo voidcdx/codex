@@ -31,7 +31,7 @@ def _eclipse(s: float, subsumed: bool = False) -> Buff:
 
 def _xatas_whisper(s: float, subsumed: bool = False) -> Buff:
     base = _XATAS_WHISPER_BASE[1] if subsumed else _XATAS_WHISPER_BASE[0]
-    return Buff("Xata's Whisper", elemental_type=DamageType.VOID, elemental_bonus=base * s)
+    return Buff("Xata's Whisper", elemental_type=DamageType.VOID, elemental_bonus=base * s, separate_instance=True)
 
 
 def _nourish(s: float, subsumed: bool = False) -> Buff:

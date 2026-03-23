@@ -57,7 +57,7 @@ run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"]
 ```
 
-## 235 Tests Passing
+## 248 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Web UI Notes
@@ -315,7 +315,8 @@ Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mo
 |---|---|---|---|
 | Faction-type | Roar | Step 5 — additive with Bane mods | Double-dips on DoT procs |
 | General multiplier | Eclipse | Step 5.5 — separate multiplicative after faction | No double-dip |
-| Elemental addition | Xata's Whisper (Void), Nourish (Viral) | Step 1 — adds elemental damage | Adds to modded damage |
+| Separate instance | Xata's Whisper (Void) | Independent hit — double-dips faction mods + headshot | Not in proc pool |
+| Elemental addition | Nourish (Viral) | Step 1 — adds elemental damage to current hit | Adds to modded damage |
 
 ### Usage
 - **CLI:** `--buff roar` or `--buff roar:1.5` (150% ability strength). Repeat for multiple buffs.

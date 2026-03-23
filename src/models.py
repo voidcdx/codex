@@ -75,13 +75,15 @@ class Buff:
     Each buff category applies at a different pipeline step:
     - faction_damage_bonus: Step 5, additive with Bane mods, double-dips on procs (Roar)
     - damage_multiplier: Step 5.5, separate multiplicative, no double-dip (Eclipse)
-    - elemental_type/bonus: Step 1, adds elemental damage as fraction of base (Xata's Whisper, Nourish)
+    - elemental_type/bonus: Step 1, adds elemental damage as fraction of base (Nourish)
+    - separate_instance: separate damage instance, double-dips faction + headshot (Xata's Whisper)
     """
     name: str
     faction_damage_bonus: float = 0.0   # additive with Bane mods (Roar)
     damage_multiplier: float = 0.0      # multiplicative step (Eclipse)
     elemental_type: DamageType | None = None  # element to add (Xata's Whisper, Nourish)
     elemental_bonus: float = 0.0        # fraction of base damage
+    separate_instance: bool = False     # True = separate hit, double-dips faction + headshot (Xata's)
 
 
 @dataclass
