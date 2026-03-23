@@ -214,10 +214,6 @@ class DamageCalculator:
         for b in _buffs:
             if b.damage_multiplier != 0.0:
                 buff_damage_mult *= (1.0 + b.damage_multiplier)
-        buff_sonar_mult = 1.0
-        for b in _buffs:
-            if b.sonar_multiplier != 0.0:
-                buff_sonar_mult *= (1.0 + b.sonar_multiplier)
 
         # --- Collect mod bonuses ---
         total_damage_bonus = sum(m.damage_bonus for m in mods)
@@ -295,12 +291,10 @@ class DamageCalculator:
 
         all_components = ips_components + elemental_components
 
-        # --- Buff elemental additions (Xata's Whisper, Toxic Lash, Nourish, Volt Shield) ---
+        # --- Buff elemental additions (Xata's Whisper, Nourish) ---
         for b in _buffs:
             if b.elemental_type is not None and b.elemental_bonus > 0.0:
                 all_components.append(DamageComponent(b.elemental_type, base_damage * b.elemental_bonus))
-            if b.electricity_bonus > 0.0:
-                all_components.append(DamageComponent(DamageType.ELECTRICITY, base_damage * b.electricity_bonus))
 
         # --- Step 1: Apply damage mods → modded base, then quantize ---
         # IPS-specific bonuses (e.g. Rupture +Impact%, Jagged Edge +Slash%) stack additively
@@ -322,7 +316,7 @@ class DamageCalculator:
         effective_crit = crit_multiplier
         if is_crit_headshot and enemy.body_part_multiplier > 1.0:
             effective_crit = 1.0 + (crit_multiplier - 1.0) * 2.0
-        combined_mult = enemy.body_part_multiplier * buff_sonar_mult * effective_crit
+        combined_mult = enemy.body_part_multiplier * effective_crit
         from src.quantizer import warframe_round as _wr
         after_bodypart: list[DamageComponent] = [
             DamageComponent(c.type, _wr(c.amount * combined_mult))
@@ -408,10 +402,6 @@ class DamageCalculator:
         for b in _buffs:
             if b.damage_multiplier != 0.0:
                 buff_damage_mult *= (1.0 + b.damage_multiplier)
-        buff_sonar_mult = 1.0
-        for b in _buffs:
-            if b.sonar_multiplier != 0.0:
-                buff_sonar_mult *= (1.0 + b.sonar_multiplier)
 
         base_damage = weapon.total_base_damage
 
@@ -477,12 +467,10 @@ class DamageCalculator:
         ]
         all_components = ips_components + elemental_components
 
-        # Buff elemental additions (Xata's Whisper, Toxic Lash, Nourish, Volt Shield)
+        # Buff elemental additions (Xata's Whisper, Nourish)
         for b in _buffs:
             if b.elemental_type is not None and b.elemental_bonus > 0.0:
                 all_components.append(DamageComponent(b.elemental_type, base_damage * b.elemental_bonus))
-            if b.electricity_bonus > 0.0:
-                all_components.append(DamageComponent(DamageType.ELECTRICITY, base_damage * b.electricity_bonus))
 
         ips_bonus: dict[DamageType, float] = {}
         for m in mods:
@@ -500,7 +488,7 @@ class DamageCalculator:
         effective_crit = crit_multiplier
         if is_crit_headshot and enemy.body_part_multiplier > 1.0:
             effective_crit = 1.0 + (crit_multiplier - 1.0) * 2.0
-        combined_mult = enemy.body_part_multiplier * buff_sonar_mult * effective_crit
+        combined_mult = enemy.body_part_multiplier * effective_crit
         after_step2: list[DamageComponent] = [
             DamageComponent(c.type, _wr(c.amount * combined_mult))
             for c in modded
