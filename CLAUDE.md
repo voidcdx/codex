@@ -34,6 +34,7 @@ src/
   calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks + calculate_procs()
   loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot + attack selection
   scaling.py        # enemy level scaling: health/shield/armor/overguard formulas
+  version.py        # APP_VERSION, GAME_DATA_VERSION — single source of truth
 tests/
   test_quantization.py
   test_combiner.py
@@ -50,15 +51,27 @@ scripts/
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 web/
-  api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
+  api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
   static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input, Galv. Stacks input
   static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
 run_web.py          # python run_web.py → dev server on port 8000
-__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"]
+__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
+handoff.md          # session handoff notes for next Claude instance
 ```
 
-## 248 Tests Passing
+## 256 Tests Passing
 `pytest` — all pass. Run before committing.
+
+## Versioning
+`src/version.py` is the single source of truth:
+```python
+APP_VERSION       = "0.1.0"          # semver — bump before shipping features
+GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are refreshed
+```
+- `GET /api/version` returns `{"app": APP_VERSION, "game_data": GAME_DATA_VERSION}`
+- CLI `--version` prints `Void Codex v{APP_VERSION} · {GAME_DATA_VERSION}`
+- Guide modal footer shows both strings (fetched on DOMContentLoaded)
+- **At the start of each new session, ask the user if the version should be bumped.**
 
 ## Web UI Notes
 
@@ -86,6 +99,9 @@ Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from
 
 ### Combo Counter
 Melee-only mechanic. `onWeaponChange()` hides `#combo-div` and resets to tier 1 for non-melee weapons (uses existing `isMeleeWeapon()`). Range: 1–12 for all weapons, 1–13 for Venka Prime. `oninput` clamp enforces the cap against manual keyboard entry.
+
+### Input / Focus Styling
+All inputs (`input[type=number]`, `input[type=text]`, `select`) and search boxes (`.search-input`, `.mod-picker-search`) share the same base style: `var(--surface-solid)` background, `var(--border)` border. On `:focus`, border becomes `rgba(255,255,255,0.25)` with a faint `rgba(255,255,255,0.06)` glow — **not** `var(--accent)` (gold). Riven modal inputs (`.riven-stat-select`, `.riven-stat-input`) keep their purple focus (`rgba(155,109,208,0.7)`) intentionally.
 
 ### Galvanized Stacks
 `#galv-stacks` input (range 0–5, default 0). Shown in the mod panel whenever any equipped mod has `galv_kill_stat` set. Sent as `galvanized_stacks: int` in POST bodies to `/api/calculate` and `/api/modded-weapon`. The server caps effective stacks per-mod via `galv_max_stacks`.
