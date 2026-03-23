@@ -469,6 +469,8 @@ function initSortable() {
   if (_sortableInstance) _sortableInstance.destroy();
   _sortableInstance = new Sortable(grid, {
     animation: 200,
+    delay: 150,
+    delayOnTouchOnly: true,
     ghostClass: 'sortable-ghost',
     chosenClass: 'sortable-chosen',
     onEnd(evt) {
