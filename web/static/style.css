@@ -246,43 +246,33 @@ select option {
 .combobox-wrap .search-input { margin-bottom: 0; }
 .combobox-dropdown {
   display: none;
-  /* position: fixed + top/left/width set by JS (portal to body) */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   background: var(--surface-solid);
-  border: 1px solid var(--accent);
+  border: 1px solid var(--border);
   border-top: none;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  max-height: 220px;
+  max-height: 240px;
   overflow-y: auto;
-  z-index: 9999;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  z-index: 100;
 }
 .combobox-dropdown.open { display: block; }
 .combobox-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   padding: 6px 10px;
   cursor: pointer;
   font-size: 12px;
   color: var(--text);
-  outline: none;
 }
-.combobox-item:hover,
-.combobox-item:focus { background: var(--accent-glow); color: var(--accent); }
-.combobox-img {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  flex-shrink: 0;
-  border-radius: 3px;
+.combobox-item:hover, .combobox-item.active {
+  background: var(--accent-glow);
+  color: var(--accent);
 }
-.combobox-hint {
-  padding: 6px 10px;
-  font-size: 11px;
-  color: var(--text-dim);
-  border-top: 1px solid var(--border);
-  text-align: center;
-}
+.combobox-img { width: 22px; height: 22px; object-fit: contain; vertical-align: middle; margin-right: 6px; border-radius: 3px; }
+.combobox-hint { padding: 6px 10px; font-size: 11px; color: var(--text-dim); text-align: center; }
 
 /* ── Enemy Level Controls ───────────────────────────── */
 .enemy-level-row {
