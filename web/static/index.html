@@ -87,7 +87,10 @@
     <div class="mod-picker-overlay" id="alchemy-mixer-overlay">
       <div class="alchemy-modal">
         <button class="riven-modal-close" onclick="closeAlchemyMixer()">×</button>
-        <h2 class="alchemy-modal-title">Alchemy Guide</h2>
+        <div class="alchemy-modal-header">
+          <h2 class="alchemy-modal-title">Alchemy Guide</h2>
+          <button class="alch-clear-btn" onclick="clearAlchMods()" title="Remove all alchemy mods from slots">Clear mods</button>
+        </div>
         <div class="alchemy-palette" id="alchemy-palette"></div>
         <div class="alchemy-suggestions" id="alchemy-suggestions"></div>
       </div>
@@ -1927,6 +1930,15 @@ function removeAlchMod(modName) {
   const slot = modSlots.indexOf(modName);
   if (slot < 0) return;
   modSlots[slot] = '';
+  renderModCards();
+  initSortable();
+  updateModdedStats();
+  if (alchSelected) renderAlchSuggestions(alchSelected);
+}
+
+function clearAlchMods() {
+  const alchNames = new Set(allMods.filter(m => m.primary_element).map(m => m.name));
+  modSlots = modSlots.map(slot => alchNames.has(slot) ? '' : slot);
   renderModCards();
   initSortable();
   updateModdedStats();
