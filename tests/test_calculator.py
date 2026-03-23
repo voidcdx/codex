@@ -1389,6 +1389,60 @@ class TestEclipseBuff:
         procs_yes = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
         assert procs_yes["slash"]["damage_per_tick"] == pytest.approx(procs_no["slash"]["damage_per_tick"] * 3.0)
 
+    def test_eclipse_strength_200pct(self):
+        """Eclipse original at 200% strength: +400% damage (×5 total).
+
+        Slash = 64, eclipse mult = 1 + 2.0×2.0 = 5.0 → floor(64 × 5.0) = 320
+        """
+        eclipse = make_buff("eclipse", 2.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(320.0)
+
+    def test_eclipse_strength_300pct(self):
+        """Eclipse original at 300% strength: +600% damage (×7 total).
+
+        Slash = 64, eclipse mult = 1 + 2.0×3.0 = 7.0 → floor(64 × 7.0) = 448
+        """
+        eclipse = make_buff("eclipse", 3.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(448.0)
+
+    def test_eclipse_subsumed_100pct(self):
+        """Eclipse subsumed at 100% strength: +30% damage (×1.30 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30 = 1.30 → floor(64 × 1.30) = 83
+        """
+        eclipse = make_buff("eclipse", 1.0, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(83.0)
+
+    def test_eclipse_subsumed_150pct(self):
+        """Eclipse subsumed at 150% strength: +45% damage (×1.45 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30×1.5 = 1.45 → floor(64 × 1.45) = 92
+        """
+        eclipse = make_buff("eclipse", 1.5, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(92.0)
+
+    def test_eclipse_subsumed_200pct(self):
+        """Eclipse subsumed at 200% strength: +60% damage (×1.60 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30×2.0 = 1.60 → floor(64 × 1.60) = 102
+        """
+        eclipse = make_buff("eclipse", 2.0, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(102.0)
+
+    def test_eclipse_subsumed_300pct(self):
+        """Eclipse subsumed at 300% strength: +90% damage (×1.90 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30×3.0 = 1.90 → floor(64 × 1.90) = 121
+        """
+        eclipse = make_buff("eclipse", 3.0, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(121.0)
+
 
 class TestBuffStacking:
     """Multiple buffs stack correctly."""
