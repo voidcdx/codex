@@ -14,6 +14,7 @@
     <a href="/" style="color:var(--accent2);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid var(--border-highlight)">Damage Calculator</a>
     <a href="/live" style="color:var(--text-dim);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid transparent;transition:color .15s" onmouseover="this.style.color='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)'">Live Data</a>
     <button onclick="openGuide()" style="background:none;border:1px solid var(--border-highlight);color:var(--text-dim);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--accent2)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)';this.style.borderColor='var(--border-highlight)'">Guide</button>
+    <button onclick="openChangelog()" style="background:none;border:1px solid var(--border-highlight);color:var(--text-dim);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--accent2)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)';this.style.borderColor='var(--border-highlight)'">What's New</button>
   </nav>
 </header>
 
@@ -223,12 +224,26 @@
           </ul>
 
           <div class="guide-modal-version">
-            <span id="guide-app-ver">Void Codex v0.1.0</span>
+            <span id="guide-app-ver">Void Codex v0.2.0</span>
             <span class="footer-sep">·</span>
             <span id="guide-game-ver">Game data: Update 41 — The Old Peace</span>
           </div>
         </div>
         </div>
+      </div>
+    </div>
+
+    <!-- What's New Modal -->
+    <div class="mod-picker-overlay" id="changelog-overlay">
+      <div class="changelog-modal">
+        <div class="changelog-modal-header">
+          <div>
+            <p class="changelog-modal-title">What's New</p>
+            <p class="changelog-modal-subtitle">Version history and release notes</p>
+          </div>
+          <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeChangelog()">×</button>
+        </div>
+        <div class="changelog-modal-body" id="changelog-body"></div>
       </div>
     </div>
 
@@ -2045,10 +2060,80 @@ document.addEventListener('click', e => {
   const guide = document.getElementById('guide-overlay');
   if (guide && guide.classList.contains('active') && e.target === guide)
     closeGuide();
+  const cl = document.getElementById('changelog-overlay');
+  if (cl && cl.classList.contains('active') && e.target === cl)
+    closeChangelog();
 });
 
 function openGuide()  { document.getElementById('guide-overlay').classList.add('active'); }
 function closeGuide() { document.getElementById('guide-overlay').classList.remove('active'); }
+
+// ---------------------------------------------------------------------------
+// What's New (Changelog)
+// ---------------------------------------------------------------------------
+const CHANGELOG_ENTRIES = [
+  {
+    version: '0.2.0',
+    date: '2026-03-23',
+    sections: [
+      { heading: 'Added', items: [
+        'Redesigned Alchemy Guide with a glassmorphism modal, detailed mod rows with stat pills, and an equip/unequip toggle',
+        'Element effect data now included in the mods API for richer mod information display',
+      ]},
+      { heading: 'Improved', items: [
+        'Alchemy Guide responsiveness: mobile centering, scroll containment, and a dedicated "Clear Mods" action',
+        'Gas element colour updated to teal for improved visual clarity',
+      ]},
+      { heading: 'Fixed', items: [
+        'Text overflow in the damage breakdown table on narrow screens',
+      ]},
+    ],
+  },
+  {
+    version: '0.1.0',
+    date: 'Initial Release',
+    sections: [
+      { heading: 'Added', items: [
+        'Full damage calculation pipeline with quantization, critical hits, armor mitigation, faction modifiers, and Viral stack scaling',
+        'Elemental combination system respecting mod slot order',
+        'Status proc modeling: damage-over-time and crowd-control/debuff effects',
+        'Multi-attack weapon support with per-attack stat selection',
+        'Galvanized mod stack scaling',
+        'Warframe ability buff integration (Roar, Eclipse, Xata\u2019s Whisper, Nourish)',
+        'Per-faction enemy level scaling for health, shields, armor, and overguard',
+        'Web interface, command-line tool, and API backend',
+        'Launch dataset: 588 weapons, 1,405 mods, 983 enemies',
+      ]},
+    ],
+  },
+];
+
+function renderChangelog() {
+  const body = document.getElementById('changelog-body');
+  if (!body) return;
+  let html = '';
+  for (const entry of CHANGELOG_ENTRIES) {
+    html += `<div class="changelog-entry">`;
+    html += `<div class="changelog-version-row"><span class="changelog-ver">v${entry.version}</span><span class="changelog-date">${entry.date}</span></div>`;
+    for (const sec of entry.sections) {
+      html += `<h4 class="changelog-section-heading">${sec.heading}</h4><ul class="changelog-list">`;
+      for (const item of sec.items) {
+        html += `<li>${item}</li>`;
+      }
+      html += `</ul>`;
+    }
+    html += `</div>`;
+  }
+  body.innerHTML = html;
+}
+
+function openChangelog() {
+  renderChangelog();
+  document.getElementById('changelog-overlay').classList.add('active');
+}
+function closeChangelog() {
+  document.getElementById('changelog-overlay').classList.remove('active');
+}
 
 // ---------------------------------------------------------------------------
 // Warframe Buffs
