@@ -199,6 +199,15 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.2.1',
+    date: '2026-03-23',
+    sections: [
+      { heading: 'Improved', items: [
+        'Web interface JavaScript reorganised into separate, focused modules for improved maintainability and long-term reliability',
+      ]},
+    ],
+  },
+  {
     version: '0.2.0',
     date: '2026-03-23',
     sections: [
