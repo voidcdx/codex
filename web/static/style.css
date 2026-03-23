@@ -182,10 +182,10 @@ select, input[type=text], input[type=number] {
   color: var(--text);
   -webkit-appearance: none;
   appearance: none;
-  padding: 8px 10px;
+  padding: 5px 8px;
   border-radius: var(--radius-sm);
-  font-size: 13px;
-  margin-bottom: 12px;
+  font-size: 12px;
+  margin-bottom: 8px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -228,10 +228,10 @@ select option {
   background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text);
-  padding: 8px 10px;
+  padding: 5px 8px;
   border-radius: var(--radius-sm);
-  font-size: 13px;
-  margin-bottom: 8px;
+  font-size: 12px;
+  margin-bottom: 6px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -537,9 +537,9 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text);
-  padding: 8px 10px;
+  padding: 5px 8px;
   border-radius: var(--radius-sm);
-  font-size: 13px;
+  font-size: 12px;
   outline: none;
   margin-bottom: 0;
 }
@@ -945,13 +945,13 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-select {
   flex: 1;
   min-width: 0;
-  height: 36px;
-  padding: 0 10px;
+  height: 30px;
+  padding: 0 8px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text);
-  font-size: 14px;
+  font-size: 12px;
   appearance: none;
   box-sizing: border-box;
   cursor: pointer;
@@ -963,13 +963,13 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-input {
   flex: 0 0 56px;
   width: 56px;
-  height: 36px;
+  height: 30px;
   padding: 0 8px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text);
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
   box-sizing: border-box;
   -moz-appearance: textfield;
@@ -1133,12 +1133,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .search-input,
   .mod-picker-search,
   .riven-stat-select,
-  .riven-stat-input { font-size: 16px !important; }
+  .riven-stat-input { font-size: 16px !important; padding: 5px 8px !important; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
 
-  .combobox-item { font-size: 16px !important; padding: 10px 12px; }
+  .combobox-item { font-size: 16px !important; padding: 8px 10px; }
 
 }
 @media (max-width: 480px) {
