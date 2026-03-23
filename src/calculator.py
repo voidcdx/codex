@@ -364,6 +364,8 @@ class DamageCalculator:
         base_damage = weapon.total_base_damage
 
         total_damage_bonus = sum(m.damage_bonus for m in mods)
+        # Condition Overload: additive +N% per unique status type on enemy
+        co_total = sum(m.condition_overload_bonus for m in mods) * unique_statuses
         galv_aptitude_total = sum(
             m.galv_kill_pct * min(galvanized_stacks, m.galv_max_stacks) * unique_statuses
             for m in mods
@@ -431,7 +433,7 @@ class DamageCalculator:
         modded: list[DamageComponent] = []
         for comp in all_components:
             type_specific = ips_bonus.get(comp.type, 0.0)
-            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + type_specific))
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + type_specific + co_total))
             q = quantize(float(raw), base_damage)
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
@@ -483,7 +485,7 @@ class DamageCalculator:
         )
         gas_dpt = (
             weapon.total_base_damage
-            * (1.0 + total_damage_bonus)
+            * (1.0 + total_damage_bonus + co_total)
             * (1.0 + faction_bonus) ** 2
             * 0.5
             * (1.0 + total_gas_bonus)

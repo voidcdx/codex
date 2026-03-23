@@ -997,6 +997,24 @@ class TestConditionOverload:
                            combo_counter=5, unique_statuses=2)
         assert r[DamageType.SLASH] == 638.0
 
+    # --- Proc damage scaling with CO ---
+
+    def test_proc_zero_statuses_baseline(self):
+        # 100 Slash, no CO bonus → step2=100, slash_dpt = floor(100*0.35) = 35
+        procs = calc.calculate_procs(_combo_weapon(), [self._co_mod], _no_armor_enemy(),
+                                     unique_statuses=0)
+        assert procs["slash"]["damage_per_tick"] == 35.0
+
+    def test_proc_two_statuses_scales(self):
+        # CO 2 statuses → co_total=1.60
+        # Step 1: floor(100*(1+1.60))=260, quantize(260,100)=259.375
+        # Step 2: warframe_round(259.375)=259
+        # Slash dpt: floor(259*0.35) = floor(90.65) = 90
+        procs = calc.calculate_procs(_combo_weapon(), [self._co_mod], _no_armor_enemy(),
+                                     unique_statuses=2)
+        assert procs["slash"]["damage_per_tick"] == 90.0
+        assert procs["slash"]["total_damage"] == 90.0 * 6
+
 
 # ---------------------------------------------------------------------------
 # Galvanized mod kill-stack tests
