@@ -71,6 +71,16 @@ Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to da
 ### Weapon Picker Filtering
 Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from the weapon search combobox via `visibleWeapons` filter in `loadData()`. `allWeapons` retains full data.
 
+### Combobox (Weapon + Enemy Search)
+`setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl)` — bare-bones implementation, intentionally simple. Key behaviours:
+- **No portal** — dropdown is `position: absolute` inside `.combobox-wrap`. No JS repositioning.
+- **`_confirmed`** — tracks last committed selection inside the closure. On focus, input is cleared for a new search. On close-without-commit (Escape / click-outside), `_confirmed` is restored to the input so the stats panel stays populated.
+- **Z-index** — `.panel.combobox-open` lifts the parent panel (`z-index: 50`) when open, escaping the `backdrop-filter` stacking context that traps child z-indices.
+- **Scroll** — `overscroll-behavior: contain` on `.combobox-dropdown` prevents scroll bleed to page. `-webkit-overflow-scrolling: touch` for iOS.
+- **Selection** — `mousedown` + `e.preventDefault()` (desktop); `touchend` + `e.preventDefault()` (mobile).
+- **Close** — `mousedown` outside only. No `touchstart` listener (it caused scroll collapse).
+- **X button** — dispatches `combobox-clear` custom event to reset `_confirmed` without calling `onSelect`, so stats panel persists after clearing.
+
 ### Mod Slot Compatibility
 `onWeaponChange()` clears any mod slots whose `mod.type` is not in `getCompatibleModTypes()` for the new weapon. Mod picker always enforces type compatibility — no fallback to showing all mods.
 
