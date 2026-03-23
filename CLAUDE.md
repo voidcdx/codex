@@ -75,6 +75,7 @@ GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are 
 - CLI `--version` prints `Void Codex v{APP_VERSION} · {GAME_DATA_VERSION}`
 - Guide modal footer shows both strings (fetched on DOMContentLoaded)
 - **At the start of each new session, ask the user if the version should be bumped.**
+- **At the start of each new session, ask the user if this session's changes should be tracked in the changelog.** Do NOT automatically add changelog entries — only update when the user confirms. Not every session warrants a changelog update.
 - **Changelog:** When bumping the version, update both `CHANGELOG.md` (repo root) and the `CHANGELOG_ENTRIES` JS constant in `web/static/index.html` (powers the "What's New" modal in the Web UI).
 
 ## Web UI Notes
