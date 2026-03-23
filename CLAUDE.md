@@ -287,7 +287,11 @@ These are crowd-control or debuff effects — no tick damage. Return `{active, e
 ## Data Quality Notes
 
 ### mods.json — secondary stat fields
-Many mods have a primary stat (e.g. an elemental%) and secondary weapon stats (e.g. reload speed, magazine, status chance) that are **only** in `effect_raw` unless explicitly parsed. `scripts/fix_secondary_stats.py` was used to backfill 109 such fields across 9 stat types. Re-run it if `data/mods.json` is ever regenerated from scratch.
+Many mods have a primary stat (e.g. an elemental%) and secondary weapon stats (e.g. reload speed, magazine, status chance) that are **only** in `effect_raw` unless explicitly parsed. `scripts/fix_secondary_stats.py` was used to backfill 109 such fields across 9 stat types. After regenerating `mods.json`, run both patch scripts in order:
+```bash
+python scripts/fix_secondary_stats.py
+python scripts/fix_galv_stats.py
+```
 
 Fields read by `loader.py` from each mod entry:
 `damage_bonus_pct`, `crit_chance_pct`, `crit_damage_pct`, `status_chance_pct`, `multishot_pct`, `status_damage_pct`, `fire_rate_pct`, `magazine_pct`, `ammo_max_pct`, `reload_speed_pct`, `condition_overload_pct`
