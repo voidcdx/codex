@@ -1366,6 +1366,8 @@ function setupSearch(inputId, selectId, getNames, onChange) {
 function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
   const input = document.getElementById(inputId);
   const dropdown = document.getElementById(dropdownId);
+  const panel = input.closest('.panel');
+  let _confirmed = '';   // last committed selection
 
   function esc(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
 
@@ -1388,21 +1390,28 @@ function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
   }
 
   function commit(name) {
+    _confirmed = name;
     input.value = name;
     close();
     toggleSearchClear(input);
     if (onSelect) onSelect(name);
   }
 
-  const panel = input.closest('.panel');
-
   function close() {
+    // Restore last confirmed name if user abandoned a search
+    if (input.value !== _confirmed) {
+      input.value = _confirmed;
+      toggleSearchClear(input);
+    }
     dropdown.classList.remove('open');
     if (panel) panel.classList.remove('combobox-open');
   }
 
-  input.addEventListener('focus', () => render(input.value));
+  // Focus: clear input so user can type a new search immediately
+  input.addEventListener('focus', () => { input.value = ''; toggleSearchClear(input); render(''); });
   input.addEventListener('input', () => { toggleSearchClear(input); render(input.value); });
+  // combobox-clear: reset confirmed state without calling onSelect (used by X button)
+  input.addEventListener('combobox-clear', () => { _confirmed = ''; });
   input.addEventListener('keydown', e => {
     if (e.key === 'Escape') { close(); input.blur(); }
     if (e.key === 'Enter') {
@@ -1435,6 +1444,7 @@ function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
 function clearCombobox(which) {
   const input = document.getElementById(`${which}-search`);
   const dropdown = document.getElementById(`${which}-dropdown`);
+  input.dispatchEvent(new CustomEvent('combobox-clear'));
   input.value = '';
   dropdown.classList.remove('open');
   toggleSearchClear(input);
