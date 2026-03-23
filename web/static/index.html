@@ -13,6 +13,7 @@
   <nav style="display:flex;align-items:center;gap:6px;margin-left:auto">
     <a href="/" style="color:var(--accent2);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid var(--border-highlight)">Damage Calculator</a>
     <a href="/live" style="color:var(--text-dim);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid transparent;transition:color .15s" onmouseover="this.style.color='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)'">Live Data</a>
+    <button onclick="openGuide()" style="background:none;border:1px solid var(--border-highlight);color:var(--text-dim);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--accent2)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)';this.style.borderColor='var(--border-highlight)'">Guide</button>
   </nav>
 </header>
 
@@ -110,6 +111,138 @@
           </div>
         </div>
         <div class="mod-picker-list" id="mod-picker-list"></div>
+      </div>
+    </div>
+
+    <!-- User Guide Modal -->
+    <div class="mod-picker-overlay" id="guide-overlay">
+      <div class="guide-modal">
+        <button class="riven-modal-close" onclick="closeGuide()">×</button>
+        <p class="guide-modal-title">Void Codex — User Guide</p>
+        <p class="guide-modal-subtitle">100% accurate Warframe damage calculator · wiki.warframe.com formulas</p>
+        <div class="guide-content">
+
+          <h3>Quick Start</h3>
+          <ol style="padding-left:18px;margin:6px 0 10px;font-size:13px;color:var(--text-dim);line-height:1.65">
+            <li>Search and select a <strong style="color:var(--text)">Weapon</strong> in the top-left panel.</li>
+            <li>Equip mods by clicking any mod card slot. Drag cards to reorder them.</li>
+            <li>Search and select an <strong style="color:var(--text)">Enemy</strong>. Set its level, Steel Path, and Eximus state if needed.</li>
+            <li>Adjust <strong style="color:var(--text)">Hit Options</strong> (crit mode, body part, status stacks, etc.).</li>
+            <li>Click <strong style="color:var(--text)">Calculate</strong>. Results appear on the right.</li>
+          </ol>
+
+          <h3>Weapon Selector</h3>
+          <p>Type any part of a weapon name to search. Exalted weapons and Garuda Talons are hidden.</p>
+          <ul>
+            <li><strong>Attack tabs</strong> — weapons with multiple fire modes (e.g. Acceltra Prime's Rocket Impact vs Explosion, Torid's Grenade vs Cloud) show tabs below the weapon name. Each tab has its own damage, crit, status, and fire rate.</li>
+            <li><strong>Kuva / Tenet bonus element</strong> — a bonus element row appears automatically for Kuva and Tenet weapons. Pick the element type (Heat / Cold / Electricity / Toxin) and the bonus percentage (25–60%). The bonus is treated as an innate secondary element and combines with mod elements using HCET priority.</li>
+          </ul>
+
+          <h3>Mod Slots</h3>
+          <p>The mod panel has up to <strong>10 slots</strong>: 8 regular + 1 Stance (melee only) + 1 Exilus.</p>
+          <table>
+            <tr><th>Slot</th><th>What goes there</th></tr>
+            <tr><td>Regular (×8)</td><td>Any damage, elemental, IPS, crit, multishot, fire rate, reload, magazine, status, or faction mod compatible with the weapon type.</td></tr>
+            <tr><td>Stance ⚔</td><td>Melee stance mods only (shown for melee weapons). Provides combo multiplier bonuses and attack combos.</td></tr>
+            <tr><td>Exilus ✦</td><td>Utility mods: ammo drum, mutation, magazine, air recon, etc. The list is weapon-type-specific. Weapon-specific exilus mods (e.g. Ambush Optics for Rubico) only appear when that weapon is selected.</td></tr>
+            <tr><td>Riven ◆</td><td>Built via the Riven Builder (see below). Purple diamond card. Stats are fully custom.</td></tr>
+          </table>
+          <p>Drag mod cards left or right to reorder them. <strong>Slot order controls elemental combination priority</strong> — the top-left slot pairs with the next available element first.</p>
+
+          <h3>Elemental Combining</h3>
+          <p>Four primary elements (Heat, Cold, Electricity, Toxin) combine in mod-slot order to produce combined elements. Visual arc lines and badges below the mod grid show the active combos live.</p>
+          <table>
+            <tr><th>Combined</th><th>Recipe</th></tr>
+            <tr><td>Blast</td><td>Heat + Cold</td></tr>
+            <tr><td>Corrosive</td><td>Electricity + Toxin</td></tr>
+            <tr><td>Gas</td><td>Heat + Toxin</td></tr>
+            <tr><td>Magnetic</td><td>Cold + Electricity</td></tr>
+            <tr><td>Radiation</td><td>Heat + Electricity</td></tr>
+            <tr><td>Viral</td><td>Cold + Toxin</td></tr>
+          </table>
+          <p>A weapon's innate primary elements slot in <em>after</em> all mod slots (slot 9). Exception: Kuva/Tenet innate elements follow HCET priority (Heat → Cold → Electricity → Toxin) and merge with a matching mod slot if one exists. Secondary (combined) innate elements (e.g. Magnetic on Kuva Nukor) are a fixed bucket — they cannot be further combined.</p>
+
+          <h3>Riven Builder</h3>
+          <p>Click the purple <code>+</code> button in the mod panel header to open the Riven Builder.</p>
+          <ul>
+            <li>Up to <strong>4 stat rows</strong>. Each row: pick a stat from the dropdown, enter a % value (negative for penalties, e.g. <code>−50</code> for Recoil).</li>
+            <li>Click <strong>Add</strong> to equip the riven. The purple diamond card appears in the mod grid and shows each stat.</li>
+            <li>Click the card again (or re-open the builder) to edit. <strong>Reset</strong> clears all rows.</li>
+            <li>Available stats: Damage, Multishot, Crit Chance, Crit Damage, Status Chance, Fire Rate, Heat, Cold, Electricity, Toxin, Impact, Puncture, Slash.</li>
+          </ul>
+
+          <h3>Alchemy Mixer</h3>
+          <p>Click the gold seal icon in the mod panel header to open the Alchemy Mixer — a visual tool for exploring elemental combinations.</p>
+          <ul>
+            <li>Select two primary elements. An animated merge shows the result with its color and name.</li>
+            <li>Below the animation, compatible elemental mods for the selected weapon type are listed as chips.</li>
+            <li><strong>Equip These Mods</strong> fills empty mod slots with the suggested mods.</li>
+          </ul>
+
+          <h3>Hit Options</h3>
+          <table>
+            <tr><th>Option</th><th>Range</th><th>What it does</th></tr>
+            <tr><td>Crit Mode</td><td>Average / Guaranteed / Max</td><td><em>Average</em> — weighted DPS average across all crit tiers (best for build comparison). <em>Guaranteed</em> — floor tier, worst-case per hit. <em>Max</em> — ceiling tier, best-case per hit.</td></tr>
+            <tr><td>Body Part</td><td>Populated from enemy data</td><td>Applies the body part damage multiplier (Step 2 of the pipeline). Head is typically ×2. On a crit + headshot, the crit multiplier is also doubled.</td></tr>
+            <tr><td>Viral Stacks</td><td>0–10</td><td>Viral status stacks on the enemy. Multiplies final damage: 1 stack = ×1.75, up to 10 stacks = ×4.25.</td></tr>
+            <tr><td>Corrosive Stacks</td><td>0–10</td><td>Corrosive status stacks strip enemy armor. Each stack removes ~6% (formula: min(80%, 20% + 6%×N)).</td></tr>
+            <tr><td>Combo Counter</td><td>1–12 (Venka Prime: 1–13)</td><td>Melee only. Sets the melee combo tier. Tier 1 = ×1.0, Tier 2 = ×2.0, …</td></tr>
+            <tr><td>Active Statuses</td><td>0–10</td><td>Unique status types currently on the enemy. Used by Condition Overload (+80% damage per unique status) and Galvanized Aptitude.</td></tr>
+            <tr><td>Galvanized Stacks</td><td>0–5</td><td>Kill stacks for Galvanized mods (e.g. Galvanized Chamber, Savvy, Crosshairs). Only shown when a Galvanized mod is equipped. Each mod has its own cap (4–5 stacks).</td></tr>
+          </table>
+
+          <h3>Warframe Buffs</h3>
+          <p>Click <strong>+ Add</strong> in the Warframe Buffs panel to add an ability buff row. Multiple buffs can be stacked.</p>
+          <table>
+            <tr><th>Buff</th><th>Base value</th><th>Pipeline step</th><th>Notes</th></tr>
+            <tr><td>Roar (Rhino)</td><td>50% / 30% subsumed</td><td>Step 5 — additive with Bane mods</td><td>Double-dips on DoT procs (Slash, Heat, Gas, Toxin, Electricity). Acts like a faction mod.</td></tr>
+            <tr><td>Eclipse (Mirage)</td><td>200% / 30% subsumed</td><td>Step 5.5 — multiplicative after faction</td><td>No double-dip on procs. Applies as a separate damage multiplier.</td></tr>
+            <tr><td>Xata's Whisper (Xaku)</td><td>26% (same subsumed)</td><td>Independent Void hit</td><td>Adds a separate Void damage instance that bypasses armor and double-dips faction + headshot multipliers.</td></tr>
+            <tr><td>Nourish (Grendel)</td><td>75% / 45% subsumed</td><td>Step 1 — adds Viral to the hit</td><td>Adds Viral elemental damage proportional to base damage. Participates in elemental combination.</td></tr>
+          </table>
+          <p><strong>Ability Strength %</strong> input scales the buff's base value (100% = default). <strong>Helminth</strong> checkbox applies the reduced subsumed base value.</p>
+
+          <h3>Enemy Panel</h3>
+          <ul>
+            <li><strong>Level</strong> (1–9999) — scales enemy health, shield, armor, and overguard using the faction-specific smoothstep formulas from the wiki. The live stat cards update instantly.</li>
+            <li><strong>Steel Path</strong> — applies ×2.5 to health and shields (not level). Does not affect armor or overguard scaling.</li>
+            <li><strong>Eximus</strong> — enables Overguard scaling. The Overguard card appears in the live stat display.</li>
+            <li><strong>Scaled stats cards</strong> — show the final HP, Shield, Armor, and Overguard at the current level and settings, formatted with thousands separators.</li>
+          </ul>
+
+          <h3>Reading Results</h3>
+          <p>After clicking Calculate, the results panel shows:</p>
+          <ul>
+            <li><strong>Total damage</strong> — final per-hit damage (after all 6 pipeline steps, including multishot).</li>
+            <li><strong>Breakdown table</strong> — damage per type (Impact, Puncture, Slash, elementals). Green <code>+50%</code> badges = enemy is vulnerable to that type. Red <code>−50%</code> badges = enemy is resistant. These are faction-based (Update 36+).</li>
+            <li><strong>Status Procs table</strong> — if the weapon has elemental damage, shows per-tick and 6-tick total for DoT procs (Slash bleed, Heat burn, Gas cloud, Toxin poison, Electricity arc). Faction mods double-dip on these.</li>
+            <li><strong>CC / Debuff Procs table</strong> — shows crowd-control effects for Viral (health vulnerability), Magnetic (shield damage), Radiation (confuse), Blast (accuracy debuff), Cold (slow).</li>
+            <li><strong>DPS section</strong> — Burst DPS (damage × fire rate), Sustained DPS (accounts for reload), and Proc DPS (steady-state average from status effects).</li>
+            <li><strong>Kill Time section</strong> — shots to kill, burst TTK, and sustained TTK based on the scaled enemy HP at the selected level.</li>
+          </ul>
+
+          <h3>CLI Reference</h3>
+          <p>Run <code>python -m dc "Weapon" [Mods…] vs "Enemy" [flags]</code></p>
+          <table>
+            <tr><th>Flag</th><th>Description</th></tr>
+            <tr><td><code>--crit average|guaranteed|max</code></td><td>Crit calculation mode (default: average)</td></tr>
+            <tr><td><code>--body-part NAME</code></td><td>Target body part (default: Body)</td></tr>
+            <tr><td><code>--headshot</code></td><td>Shortcut for --body-part Head</td></tr>
+            <tr><td><code>--attack NAME</code></td><td>Attack mode for multi-attack weapons</td></tr>
+            <tr><td><code>--viral N</code></td><td>Viral stacks 0–10</td></tr>
+            <tr><td><code>--corrosive N</code></td><td>Corrosive stacks 0–10</td></tr>
+            <tr><td><code>--combo N</code></td><td>Melee combo hit count</td></tr>
+            <tr><td><code>--statuses N</code></td><td>Unique status types for Condition Overload</td></tr>
+            <tr><td><code>--procs</code></td><td>Show status proc damage and DPS</td></tr>
+            <tr><td><code>--riven "stat:val,..."</code></td><td>Riven stats as decimal fractions (e.g. <code>damage:0.66,crit_chance:0.47</code>)</td></tr>
+            <tr><td><code>--bonus-element heat:50</code></td><td>Kuva/Tenet bonus element and % </td></tr>
+            <tr><td><code>--buff roar[:strength[:s]]</code></td><td>Warframe buff. Presets: roar, eclipse, xatas_whisper, nourish. Optional strength (1.0=100%) and <code>:s</code> for Helminth.</td></tr>
+            <tr><td><code>--list-weapons / --list-mods / --list-enemies</code></td><td>Print all available names</td></tr>
+            <tr><td><code>--list-attacks "Weapon"</code></td><td>List attack modes for a weapon</td></tr>
+            <tr><td><code>--list-body-parts "Enemy"</code></td><td>List body parts and multipliers</td></tr>
+          </table>
+
+        </div>
       </div>
     </div>
 
@@ -1871,7 +2004,13 @@ document.addEventListener('click', e => {
   const alch = document.getElementById('alchemy-mixer-overlay');
   if (alch && alch.classList.contains('active') && e.target === alch)
     closeAlchemyMixer();
+  const guide = document.getElementById('guide-overlay');
+  if (guide && guide.classList.contains('active') && e.target === guide)
+    closeGuide();
 });
+
+function openGuide()  { document.getElementById('guide-overlay').classList.add('active'); }
+function closeGuide() { document.getElementById('guide-overlay').classList.remove('active'); }
 
 // ---------------------------------------------------------------------------
 // Warframe Buffs
