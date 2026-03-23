@@ -24,7 +24,7 @@ if str(_project_root) not in sys.path:
 
 from src.calculator import DamageCalculator, calculate_crit_multiplier, VIRAL_STACK_MULTIPLIERS
 from src.enums import DamageType
-from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, list_attacks, make_riven_mod, RIVEN_STAT_NAMES
+from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, list_attacks, make_riven_mod, RIVEN_STAT_NAMES, _raw_weapons
 
 _BONUS_ELEM_CLI: dict[str, DamageType] = {
     "heat":        DamageType.HEAT,
@@ -82,6 +82,19 @@ def _print_results(
     crit_mult = calculate_crit_multiplier(total_cc, total_cm, mode=crit_mode)
     modded_ms = 1.0 + sum(m.multishot_bonus for m in mods)
 
+    # DPS-relevant stats
+    raw_w = _raw_weapons().get(weapon.name, {})
+    # Prefer selected attack's fire_rate, fall back to weapon-level
+    sel_atk = next((a for a in weapon.attacks if a.name == (attack_name or (weapon.attacks[0].name if weapon.attacks else ""))), None)
+    base_fr = sel_atk.fire_rate if sel_atk and sel_atk.fire_rate else float(raw_w.get("fire_rate") or 1.0)
+    base_mag = float(raw_w.get("magazine") or 1.0)
+    base_reload = float(raw_w.get("reload") or 0.0)
+    total_reload_bonus = sum(m.reload_bonus for m in mods)
+    modded_fr = base_fr * (1.0 + sum(m.fire_rate_bonus for m in mods))
+    modded_mag = max(1.0, round(base_mag * (1.0 + sum(m.magazine_bonus for m in mods))))
+    modded_reload = round(base_reload / (1.0 + total_reload_bonus), 4) if total_reload_bonus and base_reload else base_reload
+    modded_sc = weapon.status_chance * (1.0 + sum(m.sc_bonus for m in mods))
+
     calc = DamageCalculator()
     result = calc.calculate(
         weapon=weapon,
@@ -135,6 +148,18 @@ def _print_results(
     print("-" * 34)
     print(f"  {'TOTAL':<16} {total:>14.4f}")
 
+    # DPS section
+    burst_dps = total * modded_fr
+    sustained_dps = (total * modded_mag / (modded_mag / modded_fr + modded_reload)
+                     if modded_reload > 0 and modded_mag > 1 else None)
+    print()
+    print("DPS")
+    print("-" * 46)
+    fr_note = f"  ×{modded_ms:.2f} ms" if modded_ms > 1.0001 else ""
+    print(f"  {'Burst DPS':<20} {burst_dps:>14,.2f}   ({modded_fr:.1f}/s{fr_note})")
+    if sustained_dps is not None:
+        print(f"  {'Sustained DPS':<20} {sustained_dps:>14,.2f}   ({modded_reload:.1f}s reload / {modded_mag:.0f} mag)")
+
     if show_procs:
         procs = calc.calculate_procs(
             weapon=weapon,
@@ -179,6 +204,23 @@ def _print_results(
         if not dot_active and not cc_active:
             print()
             print("  (no active status procs)")
+
+        # Proc DPS
+        procs_per_sec = modded_sc * modded_ms * modded_fr
+        if dot_active and procs_per_sec > 0:
+            total_proc_dps = 0.0
+            print()
+            print(f"{'Proc DPS':<22} {'DPS':>14}")
+            print("-" * 38)
+            for key, p in dot_active:
+                pdps = p["damage_per_tick"] * procs_per_sec
+                total_proc_dps += pdps
+                label = _DOT_LABELS[key].strip()
+                print(f"  {label + ' DPS':<20} {pdps:>14,.2f}")
+            print("-" * 38)
+            print(f"  {'TOTAL w/ procs':<20} {burst_dps + total_proc_dps:>14,.2f}")
+            sc_pct = modded_sc * 100
+            print(f"  (@ {sc_pct:.1f}% SC × {modded_ms:.2f} ms × {modded_fr:.1f}/s)")
 
     print()
 
