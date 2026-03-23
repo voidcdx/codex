@@ -23,6 +23,7 @@ class WeaponAttack:
     status_chance: float = 0.0
     shot_type: str = ""
     fire_rate: float = 0.0
+    multishot: int = 1
 
 
 @dataclass
@@ -37,6 +38,7 @@ class Weapon:
     crit_chance: float = 0.0
     crit_multiplier: float = 1.0
     status_chance: float = 0.0
+    multishot: int = 1
 
     @property
     def total_base_damage(self) -> float:

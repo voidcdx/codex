@@ -128,6 +128,15 @@ def _parse_attack(raw_attack: dict) -> dict:
     if shot_type:
         attack_out["shot_type"] = shot_type
 
+    ms = raw_attack.get("Multishot")
+    if ms is not None:
+        try:
+            ms_val = int(float(ms))
+            if ms_val > 1:
+                attack_out["multishot"] = ms_val
+        except (TypeError, ValueError):
+            pass
+
     return attack_out
 
 

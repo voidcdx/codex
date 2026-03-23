@@ -147,6 +147,7 @@ def _parse_weapon_attack(raw_attack: dict) -> WeaponAttack:
         status_chance=float(raw_attack.get("status_chance") or 0.0),
         shot_type=raw_attack.get("shot_type", ""),
         fire_rate=float(raw_attack.get("fire_rate") or 0.0),
+        multishot=int(raw_attack.get("multishot") or 1),
     )
 
 
@@ -194,6 +195,7 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         selected_cc = float(entry.get("crit_chance") or 0.0)
         selected_cm = float(entry.get("crit_multiplier") or 1.0)
         selected_sc = float(entry.get("status_chance") or 0.0)
+        selected_ms_count = 1
     else:
         # Select attack by name or default to first
         if attack_name:
@@ -215,6 +217,7 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         selected_cc = selected_attack.crit_chance
         selected_cm = selected_attack.crit_multiplier
         selected_sc = selected_attack.status_chance
+        selected_ms_count = selected_attack.multishot
 
     is_kuva_tenet = bool(entry.get("is_kuva_tenet", False))
     family = str(entry.get("family", "") or "")
@@ -230,6 +233,7 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         crit_chance=selected_cc,
         crit_multiplier=selected_cm,
         status_chance=selected_sc,
+        multishot=selected_ms_count,
     )
 
 
@@ -485,6 +489,7 @@ def list_attacks(weapon_name: str) -> list[dict]:
             "status_chance": a.status_chance,
             "fire_rate": a.fire_rate,
             "shot_type": a.shot_type,
+            "multishot": a.multishot,
         }
         for a in weapon.attacks
     ]
