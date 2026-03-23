@@ -225,6 +225,33 @@ const ELEM_COLORS = {
   void:        '#9060ff',
 };
 
+// Damage-type SVG icons (16×16 viewBox, uses currentColor)
+const DMG_ICONS = {
+  impact:      '<path d="M3 8 A5 5 0 0 1 13 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M5 8 A3 3 0 0 1 11 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M7 8 A1 1 0 0 1 9 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
+  puncture:    '<polygon points="8,2 13,11 10,11 10,14 6,14 6,11 3,11" fill="currentColor"/>',
+  slash:       '<path d="M4 12 L12 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M6 13 L14 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>',
+  heat:        '<path d="M8 2 C8 2 4 7 4 10 C4 12.2 5.8 14 8 14 C10.2 14 12 12.2 12 10 C12 7 8 2 8 2Z" fill="currentColor"/><circle cx="8" cy="10.5" r="2" fill="currentColor" opacity="0.5"/>',
+  cold:        '<line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="2.8" y1="5" x2="13.2" y2="11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="2.8" y1="11" x2="13.2" y2="5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="8" y1="2" x2="6" y2="4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="8" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
+  electricity: '<polygon points="9,1 5,7.5 7.5,7.5 6,15 12,7 9,7" fill="currentColor"/>',
+  toxin:       '<path d="M8 2 C8 2 3 8 3 11 C3 13.2 5.2 15 8 15 C10.8 15 13 13.2 13 11 C13 8 8 2 8 2Z" fill="currentColor"/>',
+  blast:       '<polygon points="8,1 9.5,5.5 14,5.5 10.5,8.5 12,13 8,10.5 4,13 5.5,8.5 2,5.5 6.5,5.5" fill="currentColor"/>',
+  corrosive:   '<path d="M5.5 2 C5.5 2 2 7 2 9.5 C2 11.5 3.6 13 5.5 13 C7.4 13 9 11.5 9 9.5 C9 7 5.5 2 5.5 2Z" fill="currentColor"/><path d="M11 6 C11 6 8.5 9.5 8.5 11 C8.5 12.4 9.6 13.5 11 13.5 C12.4 13.5 13.5 12.4 13.5 11 C13.5 9.5 11 6 11 6Z" fill="currentColor" opacity="0.7"/>',
+  gas:         '<circle cx="6" cy="9" r="3.5" fill="currentColor" opacity="0.7"/><circle cx="10.5" cy="7.5" r="3" fill="currentColor" opacity="0.55"/><circle cx="8.5" cy="11.5" r="2.5" fill="currentColor" opacity="0.45"/>',
+  magnetic:    '<path d="M4 4 L4 10 C4 12.2 5.8 14 8 14 C10.2 14 12 12.2 12 10 L12 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><rect x="2" y="2" width="4" height="3" rx="0.5" fill="currentColor"/><rect x="10" y="2" width="4" height="3" rx="0.5" fill="currentColor"/>',
+  radiation:   '<circle cx="8" cy="8" r="2" fill="currentColor"/><path d="M8 8 L8 2 A6 6 0 0 1 13.2 11Z" fill="currentColor" opacity="0.7"/><path d="M8 8 L13.2 11 A6 6 0 0 1 2.8 11Z" fill="currentColor" opacity="0.7"/><path d="M8 8 L2.8 11 A6 6 0 0 1 8 2Z" fill="currentColor" opacity="0.7"/>',
+  viral:       '<path d="M5 2 C5 5 11 6 11 9 C11 12 5 13 5 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M11 2 C11 5 5 6 5 9 C5 12 11 13 11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>',
+  true:        '<circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="1" x2="8" y2="15" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.2"/>',
+  void:        '<path d="M8 3 C4 3 3 6 5 8 C7 10 5 13 8 13 C11 13 13 10 11 8 C9 6 12 3 8 3Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>',
+};
+
+function dmgIcon(type, size) {
+  size = size || 14;
+  const color = ELEM_COLORS[type] || '#888';
+  const inner = DMG_ICONS[type];
+  if (!inner) return '<span class="elem-dot" style="background:' + color + '"></span>';
+  return '<svg class="dmg-icon" width="' + size + '" height="' + size + '" viewBox="0 0 16 16" fill="none" style="color:' + color + '" aria-hidden="true">' + inner + '</svg>';
+}
+
 // Faction damage-type effectiveness (Update 36.0+)
 // Keys mirror enemies.json faction strings; values map damage type → multiplier
 const FACTION_EFFECTIVENESS = {
@@ -651,11 +678,11 @@ function updateElementBadges() {
     const cr = ELEM_COLORS[b.result.toLowerCase()] || 'var(--accent)';
     const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
     return `<div class="element-badge">
-      <span class="elem-dot" style="background:${ca}"></span>${cap(b.a)}
+      ${dmgIcon(b.a, 12)}${cap(b.a)}
       <span class="arrow">+</span>
-      <span class="elem-dot" style="background:${cb}"></span>${cap(b.b)}
+      ${dmgIcon(b.b, 12)}${cap(b.b)}
       <span class="arrow">=</span>
-      <span class="elem-dot" style="background:${cr}"></span>${cap(b.result)}
+      ${dmgIcon(b.result.toLowerCase(), 12)}${cap(b.result)}
     </div>`;
   }).join('');
 
@@ -968,7 +995,7 @@ function renderDamageTable(baseDmg, moddedData) {
     const baseVal = baseDmg[type];
     const modVal  = hasModded ? moddedData.modded_damage[type] : null;
     const color   = ELEM_COLORS[type] || 'var(--text)';
-    const dot     = `<span class="elem-dot" style="background:${color}"></span>`;
+    const dot     = dmgIcon(type);
     const label   = type.charAt(0).toUpperCase() + type.slice(1);
     const ttAttr  = TOOLTIPS[type] ? ` data-tooltip="${type}"` : '';
 
@@ -1675,7 +1702,7 @@ function showAlchModSuggestions(a, b) {
   const label = '<div class="alchemy-mods-label">Mods that provide these elements</div>';
   const chips = _alchRelevantMods.map(m => {
     const color = ELEM_COLORS[m.primary_element] || '#fff';
-    return `<span class="alchemy-mod-chip"><span class="chip-elem" style="background:${color}"></span>${m.name}</span>`;
+    return `<span class="alchemy-mod-chip">${dmgIcon(m.primary_element, 10)}${m.name}</span>`;
   }).join('');
   // Show equip button only if there are empty slots and at least 2 elements selected
   const emptySlots = modSlots.filter(s => !s).length;
@@ -1888,7 +1915,7 @@ function showResults(data) {
     const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
     const key  = type.toLowerCase();
     const color = ELEM_COLORS[key] || 'var(--accent)';
-    const dot = `<span class="elem-dot" style="background:${color}"></span>`;
+    const dot = dmgIcon(key);
     const ttAttr = TOOLTIPS[key] ? ` data-tooltip="${key}"` : '';
     const eff = _factionMap[key];
     const effBadge = eff === 1.5 ? '<span class="eff-badge eff-vuln">+50%</span>'
@@ -1918,7 +1945,7 @@ function showResults(data) {
     if (activeDot.length) {
       const procRows = activeDot.map(([key, p]) => {
         const color = PROC_COLORS[key] || 'var(--accent)';
-        const dot = `<span class="elem-dot" style="background:${color}"></span>`;
+        const dot = dmgIcon(key);
         return `<tr>
           <td>${dot}${PROC_LABELS[key] || key}</td>
           <td>${p.damage_per_tick.toFixed(2)} × ${p.ticks} ticks</td>
@@ -1935,7 +1962,7 @@ function showResults(data) {
     if (activeCc.length) {
       const ccRows = activeCc.map(([key, p]) => {
         const color = CC_PROC_COLORS[key] || 'var(--accent)';
-        const dot = `<span class="elem-dot" style="background:${color}"></span>`;
+        const dot = dmgIcon(key);
         return `<tr>
           <td>${dot}${CC_PROC_LABELS[key] || key}</td>
           <td colspan="2" style="color:var(--text-muted);font-size:0.85em">${p.effect}</td>
@@ -1974,7 +2001,7 @@ function showResults(data) {
         totalProcDps += pdps;
         const label = PROC_LABELS[key] || key;
         const color = ELEM_COLORS[key] || 'var(--accent)';
-        const dot   = `<span class="elem-dot" style="background:${color}"></span>`;
+        const dot   = dmgIcon(key);
         procDpsRows += `<tr><td>${dot}${label} DPS</td><td></td><td>${fmtNum(pdps)}</td></tr>`;
       }
     }
