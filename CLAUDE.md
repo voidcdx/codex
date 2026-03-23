@@ -52,8 +52,10 @@ scripts/
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
+                   #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
   static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input, Galv. Stacks input
   static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
+                   #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
@@ -116,13 +118,22 @@ All inputs (`input[type=number]`, `input[type=text]`, `select`) and search boxes
 
 ## Alchemy Mixer (Web UI)
 - **Button:** Gold Orokin seal SVG (`btn-alchemy-mixer`) in the mod panel heading, left of the purple Riven `+`. Both wrapped in `span.mod-panel-actions` (flex, gap 10px).
-- **Modal:** `#alchemy-mixer-overlay` — same `.mod-picker-overlay` backdrop pattern as Riven modal.
-- **Flow:** Pick two primary elements → colored orbs appear → swirl animation → merge → flash burst → combined element name shown in its color → mod chips filtered by weapon type.
+- **Modal:** `#alchemy-mixer-overlay` — same `.mod-picker-overlay` backdrop pattern as Riven modal. Glassmorphism: `backdrop-filter: blur(22px) saturate(1.3)`.
+- **Header:** `.alchemy-modal-header` — flex row (`align-items: center`) containing the "Alchemy Guide" h2 title and a **"Clear Mods"** button (`clearAlchMods()`). `clearAlchMods()` removes all mods whose `primary_element !== null` from `modSlots` — only elemental mods (what the mixer suggests) are cleared.
+- **Flow:** Pick two primary elements → colored orbs appear → swirl animation → merge → flash burst → combined element name shown in its color → mod list filtered by weapon type.
 - **State:** `alchSelected[]` (0–2 items). `_alchMergeTimer` holds the setTimeout ref so it can be cancelled on deselect.
 - **Animation:** CSS-only. `.alchemy-stage.swirling` triggers `alch-swirl-left/right` keyframes; `.merging` triggers `alch-merge-left/right`; flash uses `alch-flash-pop`. No canvas or libraries.
+- **Mod rows:** `alchModRow(mod, elemField)` renders `.alch-mod-row` (flex column with `--elem-color` inline CSS var):
+  - `.alch-mod-row-main`: element icon, mod name (`flex:1`, ellipsis), GALV badge (teal), pct `+60` (no `%`, `text-align:center`), +/− button
+  - `.alch-stat-strip`: always-visible pills from `mod.effect` (plain-text `effect_raw` parsed via API). Only rendered when `statPills` is non-empty.
+- **+/− toggle:** Equipped mods show red `−` (`.alch-remove-btn`); unequipped show `+`. `addAlchMod(name)` / `removeAlchMod(name)` write to `modSlots[]`.
+- **Colored hover:** `.alch-mod-row:hover` uses `color-mix(in srgb, var(--elem-color) 14%, rgba(255,255,255,0.02))` for background + matching border and `box-shadow` glow. No expand animation — stat strip is always-visible, so no layout shift on hover.
+- **Scroll:** `overscroll-behavior: contain; -webkit-overflow-scrolling: touch` on `.alchemy-suggestions`. `overflow: hidden` on `.mod-picker-overlay.active` prevents body scroll bleed.
+- **Mobile:** At ≤520px, `.mod-picker-overlay` goes `align-items: flex-end` (bottom-sheet for other overlays). `#alchemy-mixer-overlay` overrides this back to `align-items: center` so the mixer stays centered.
 - **Mod suggestions:** `showAlchModSuggestions(a, b)` filters `allMods` using `getCompatibleModTypes(getCurrentWeapon())` (returns a `Set`) and matches `m.primary_element === a || b`.
 - **Critical naming:** The existing `PRIMARY_ELEMENTS` const (line ~566) is a `Set` used by the combiner. The alchemy mixer uses `ALCH_PRIMARY` (array) to avoid redeclaration conflict.
 - **Tooltips:** All 9 elemental tooltips updated to faction-based text (Update 36) — no Ferrite/Alloy Armor references remain.
+- **Gas colour:** `ELEM_COLORS.gas` is `#00c8a0` (teal). `PROC_COLORS.gas` references `ELEM_COLORS.gas` and updates automatically.
 
 ## Multi-Attack System
 Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Rocket Explosion; Torid: Grenade Impact + Poison Cloud + Incarnon Form). Each attack has its own damage, crit, status, fire rate, and shot type.

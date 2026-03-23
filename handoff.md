@@ -1,40 +1,54 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Two sessions of housekeeping + polish. No logic changes; all 256 pytest tests pass.
+UI polish session focused on the Alchemy Guide modal and general web UX.
+No logic changes; all 256 pytest tests still pass.
 
 ---
 
 ## Changes made
 
-### 1. Branding cleanup
-- Removed "100% accurate" from all user-facing strings:
-  - `CLAUDE.md` heading
-  - `__main__.py` argparse description
-  - `web/static/index.html` guide modal subtitle
+### 1. Alchemy Guide — major overhaul
+Complete redesign of the Alchemy Mixer into "Alchemy Guide":
+- Glassmorphism modal: `backdrop-filter: blur(22px) saturate(1.3)`, dark glass card rows
+- Mod rows rendered by `alchModRow()` → `.alch-mod-row` (flex column):
+  - `.alch-mod-row-main`: element icon, mod name, GALV badge, pct (+60, no %), +/− button
+  - `.alch-stat-strip`: always-visible pills from `mod.effect` (parsed via API `effect_raw`)
+- +/− toggle: equipped mods show red `−` (`alch-remove-btn`), unequipped show `+`
+- `addAlchMod()` / `removeAlchMod()` update `modSlots[]`
+- Element arcs: per-row-band offset fix so Gas arc lands on correct card row
 
-### 2. Semantic versioning (`src/version.py`)
-Single source of truth for two strings:
-```python
-APP_VERSION       = "0.1.0"
-GAME_DATA_VERSION = "Update 41 — The Old Peace"
-```
-- `web/api.py` imports both; `GET /api/version` endpoint returns `{"app": ..., "game_data": ...}`
-- `__main__.py` `--version` flag prints `Void Codex v0.1.0 · Update 41 — The Old Peace`
-- Guide modal bottom shows both strings, fetched dynamically from `/api/version` on DOMContentLoaded
+### 2. Alchemy Guide — UX fixes
+- **Mobile centering:** `#alchemy-mixer-overlay` overrides `.mod-picker-overlay`
+  `align-items: flex-end` at ≤520px → stays centered via specific rule
+- **Scroll bleed:** `overscroll-behavior: contain; -webkit-overflow-scrolling: touch`
+  on `.alchemy-suggestions`; `overflow: hidden` on `.mod-picker-overlay.active`
+- **Clear Mods button:** `.alchemy-modal-header` flex row (title + button).
+  `clearAlchMods()` removes all `primary_element !== null` mods from `modSlots`.
+  Button text: "Clear Mods". Hover: red tint.
+- **Colored hover:** `color-mix(in srgb, var(--elem-color) 14%, ...)` on
+  `.alch-mod-row:hover` for background, border, and `box-shadow` glow. No layout shift
+  (stat strip is always-visible, not expand-on-hover).
+- **Pct label:** `+60` not `+60%`; `text-align: center` on `.alch-mod-pct`
 
-### 3. Input / focus styling
-Removed yellow/gold focus borders from all inputs and selects.
-Three CSS blocks in `style.css` (lines ~192, ~238, ~539):
-- Before: `border-color: var(--accent)` + `box-shadow: 0 0 0 2px var(--accent-glow)`
-- After: `border-color: rgba(255,255,255,0.25)` + `box-shadow: 0 0 0 2px rgba(255,255,255,0.06)`
-- Riven modal inputs intentionally kept purple — untouched.
+### 3. API — mods endpoint
+`GET /api/mods` now returns `effect` field (plain-text `effect_raw`) so the
+front-end can render stat pills without secondary-stat guessing.
+
+### 4. Table overflow fix
+`overflow-wrap: break-word; word-break: break-word` added to
+`.breakdown-table th, .breakdown-table td` — long CC/Debuff effect text wraps
+instead of stretching the table on narrow viewports.
+
+### 5. Gas colour
+`ELEM_COLORS.gas` changed from `#c0e040` (yellow-green) to `#00c8a0` (teal).
+`PROC_COLORS.gas` auto-updates via reference.
 
 ---
 
 ## Current state
-- Branch: `claude/continue-handoff-xwp5Y`
-- Version: `0.1.0` (early alpha)
+- Branch: `claude/review-handoff-notes-I3mZt`
+- Version: `0.1.0` (no bump this session)
 - Game data: Update 41 — The Old Peace
 - Tests: 256 passing
 
