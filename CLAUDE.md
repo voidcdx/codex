@@ -314,10 +314,8 @@ Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mo
 | Category | Abilities | Pipeline Step | Proc Interaction |
 |---|---|---|---|
 | Faction-type | Roar | Step 5 — additive with Bane mods | Double-dips on DoT procs |
-| General multiplier | Eclipse, Vex Armor, Octavia Amp | Step 5.5 — separate multiplicative after faction | No double-dip |
-| Weak point | Sonar | Step 2 — multiplies body part multiplier | Affects proc base (step-2) |
-| Elemental addition | Xata's Whisper (Void), Toxic Lash (Toxin), Nourish (Viral) | Step 1 — adds elemental damage | Adds to modded damage |
-| Weapon stat | Volt Shield (+Electricity, +Crit Dmg), Wisp Haste (+Fire Rate) | Pre-calculation — modifies weapon stats | Indirect |
+| General multiplier | Eclipse | Step 5.5 — separate multiplicative after faction | No double-dip |
+| Elemental addition | Xata's Whisper (Void), Nourish (Viral) | Step 1 — adds elemental damage | Adds to modded damage |
 
 ### Usage
 - **CLI:** `--buff roar` or `--buff roar:1.5` (150% ability strength). Repeat for multiple buffs.
@@ -325,7 +323,7 @@ Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mo
 - **Web UI:** "Warframe Buffs" panel with dropdown + ability strength % input. Multiple buffs supported.
 
 ### Presets (`src/buffs.py`)
-`roar`, `eclipse`, `vex_armor`, `octavia_amp`, `sonar`, `xatas_whisper`, `toxic_lash`, `nourish`, `volt_shield`, `wisp_haste`
+`roar`, `eclipse`, `xatas_whisper`, `nourish`
 
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.

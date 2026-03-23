@@ -425,12 +425,8 @@ def calculate(req: CalcRequest) -> dict:
     galv_sc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
                   for m in mods if m.galv_kill_stat == "sc_bonus")
 
-    # Buff pre-calc stat modifications (Volt Shield crit damage, Wisp fire rate)
-    buff_cd_bonus = sum(b.crit_damage_bonus for b in buff_objects)
-    buff_fr_bonus = sum(b.fire_rate_bonus for b in buff_objects)
-
     base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + galv_cc
-    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + galv_cd + buff_cd_bonus
+    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + galv_cd
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
     raw_w = _raw_weapons().get(weapon.name, {})
@@ -440,7 +436,7 @@ def calculate(req: CalcRequest) -> dict:
     base_sc     = weapon.status_chance
     total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc
     total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms
-    total_fr_bonus = sum(m.fire_rate_bonus for m in mods) + buff_fr_bonus
+    total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
     modded_sc   = base_sc * (1.0 + total_sc_bonus)
     modded_ms   = 1.0 + total_ms_bonus
 

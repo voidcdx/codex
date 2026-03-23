@@ -81,13 +81,9 @@ def _print_results(
 
     _buffs = buffs or []
 
-    # Buff pre-calc stat modifications (Volt Shield crit damage, Wisp fire rate)
-    buff_cd_bonus = sum(b.crit_damage_bonus for b in _buffs)
-    buff_fr_bonus = sum(b.fire_rate_bonus for b in _buffs)
-
     # Crit stats come directly from the selected attack on the weapon
     total_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
-    total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + buff_cd_bonus
+    total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods)
     crit_mult = calculate_crit_multiplier(total_cc, total_cm, mode=crit_mode)
     modded_ms = 1.0 + sum(m.multishot_bonus for m in mods)
 
@@ -99,7 +95,7 @@ def _print_results(
     base_mag = float(raw_w.get("magazine") or 1.0)
     base_reload = float(raw_w.get("reload") or 0.0)
     total_reload_bonus = sum(m.reload_bonus for m in mods)
-    modded_fr = base_fr * (1.0 + sum(m.fire_rate_bonus for m in mods) + buff_fr_bonus)
+    modded_fr = base_fr * (1.0 + sum(m.fire_rate_bonus for m in mods))
     modded_mag = max(1.0, round(base_mag * (1.0 + sum(m.magazine_bonus for m in mods))))
     modded_reload = round(base_reload / (1.0 + total_reload_bonus), 4) if total_reload_bonus and base_reload else base_reload
     modded_sc = weapon.status_chance * (1.0 + sum(m.sc_bonus for m in mods))

@@ -1390,21 +1390,6 @@ class TestEclipseBuff:
         assert procs_yes["slash"]["damage_per_tick"] == pytest.approx(procs_no["slash"]["damage_per_tick"] * 3.0)
 
 
-class TestSonarBuff:
-    """Sonar: multiplies body part multiplier at Step 2."""
-
-    def test_sonar_on_body(self):
-        """Sonar +500% on body (×1 base): combined = 1.0 * (1+5.0) = 6.0.
-
-        Braton Slash modded = 63.75 (quantized), body×6 = round(63.75*6) = round(382.5) = 383
-        Step 3: Slash vs GRINEER ×1.0 → 383
-        Step 4-5: no armor, no faction → 383
-        """
-        sonar = Buff("Sonar", sonar_multiplier=5.0)
-        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[sonar])
-        assert result[DamageType.SLASH] == pytest.approx(383.0)
-
-
 class TestBuffStacking:
     """Multiple buffs stack correctly."""
 
@@ -1448,9 +1433,3 @@ class TestMakeBuffPresets:
         r2 = make_buff("roar", 2.0)
         assert r2.faction_damage_bonus == pytest.approx(r1.faction_damage_bonus * 2.0)
 
-    def test_volt_shield_crit_not_scaled(self):
-        """Volt Shield crit damage bonus is flat +2.0, not scaled by strength."""
-        v1 = make_buff("volt_shield", 1.0)
-        v2 = make_buff("volt_shield", 2.0)
-        assert v1.crit_damage_bonus == 2.0
-        assert v2.crit_damage_bonus == 2.0  # same, not doubled
