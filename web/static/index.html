@@ -1382,7 +1382,9 @@ function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
     if (matches.length > 80) {
       dropdown.innerHTML += `<div class="combobox-hint">${matches.length} results — type to narrow</div>`;
     }
-    dropdown.classList.toggle('open', shown.length > 0);
+    const isOpen = shown.length > 0;
+    dropdown.classList.toggle('open', isOpen);
+    if (panel) panel.classList.toggle('combobox-open', isOpen);
   }
 
   function commit(name) {
@@ -1392,7 +1394,12 @@ function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
     if (onSelect) onSelect(name);
   }
 
-  function close() { dropdown.classList.remove('open'); }
+  const panel = input.closest('.panel');
+
+  function close() {
+    dropdown.classList.remove('open');
+    if (panel) panel.classList.remove('combobox-open');
+  }
 
   input.addEventListener('focus', () => render(input.value));
   input.addEventListener('input', () => { toggleSearchClear(input); render(input.value); });
@@ -1417,11 +1424,8 @@ function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
     if (item) { e.preventDefault(); commit(item.dataset.value); }
   });
 
-  // Close on click/tap outside
+  // Close on click outside
   document.addEventListener('mousedown', e => {
-    if (!input.contains(e.target) && !dropdown.contains(e.target)) close();
-  });
-  document.addEventListener('touchstart', e => {
     if (!input.contains(e.target) && !dropdown.contains(e.target)) close();
   });
 
