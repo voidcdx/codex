@@ -1259,8 +1259,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .alch-mod-row {
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-direction: column;
+  gap: 0;
   padding: 5px 6px;
   border-radius: 6px;
   background: rgba(255,255,255,0.03);
@@ -1271,6 +1271,31 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .alch-mod-row:hover {
   background: rgba(255,255,255,0.07);
   border-color: rgba(255,255,255,0.09);
+}
+.alch-mod-row-main {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.alch-stat-strip {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.15s ease, padding 0.15s ease;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding: 0 6px 0 18px;
+}
+.alch-mod-row:hover .alch-stat-strip,
+.alch-mod-row:focus-within .alch-stat-strip {
+  max-height: 40px;
+  padding: 4px 6px 3px 18px;
+}
+.alch-strip-primary {
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .alch-mod-name {
   flex: 1;
@@ -1288,8 +1313,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   flex-shrink: 0;
   letter-spacing: 0.3px;
 }
-.alch-tier-primed { background: rgba(212,168,67,0.15); color: #D4A843; }
-.alch-tier-galv   { background: rgba(64,200,200,0.15); color: #40c8c8; }
+.alch-tier-galv { background: rgba(64,200,200,0.15); color: #40c8c8; }
 .alch-mod-pct {
   font-size: 11px;
   font-weight: 600;
@@ -1299,25 +1323,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .alch-stat-pill {
   font-size: 9px;
-  color: var(--text-dim);
+  color: var(--elem-color, var(--text-dim));
   background: rgba(255,255,255,0.06);
   border-radius: 3px;
   padding: 1px 5px;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: color 0.15s;
-}
-.alch-mod-row:hover .alch-stat-pill {
-  color: var(--elem-color, var(--text-muted));
-}
-.alch-shared-note {
-  font-size: 9px;
-  color: var(--text-dim);
-  opacity: 0.7;
-  margin-bottom: 4px;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: 0;
 }
 .alch-add-btn {
   width: 20px;
@@ -1341,24 +1352,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   border-color: rgba(255,255,255,0.3);
 }
 .alch-add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.alch-pair-btn {
-  display: block;
-  margin: 10px auto 2px;
-  padding: 5px 16px;
-  background: rgba(212,168,67,0.1);
-  border: 1px solid rgba(212,168,67,0.4);
-  border-radius: 5px;
-  color: #D4A843;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  transition: background 0.15s;
-}
-.alch-pair-btn:hover:not(:disabled) { background: rgba(212,168,67,0.22); }
-.alch-pair-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.alch-remove-btn { border-color: rgba(200,80,80,0.4); color: rgba(220,100,100,0.9); }
+.alch-remove-btn:hover { background: rgba(200,80,80,0.15); border-color: rgba(200,80,80,0.6); }
 
 /* ── User Guide Modal ───────────────────────────────────── */
 .guide-modal {
@@ -1494,4 +1489,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .guide-modal-title { font-size: 15px; }
   .guide-content h3 { margin-top: 18px; }
   .guide-content td:first-child { white-space: normal; }
+}
+@media (max-width: 520px) {
+  .alchemy-modal { padding: 14px 12px 16px; }
+  .alch-pair-cols { grid-template-columns: 1fr; gap: 0; }
 }
