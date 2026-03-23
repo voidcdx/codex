@@ -117,9 +117,14 @@
     <!-- User Guide Modal -->
     <div class="mod-picker-overlay" id="guide-overlay">
       <div class="guide-modal">
-        <button class="riven-modal-close" onclick="closeGuide()">×</button>
-        <p class="guide-modal-title">Void Codex — User Guide</p>
-        <p class="guide-modal-subtitle">100% accurate Warframe damage calculator · wiki.warframe.com formulas</p>
+        <div class="guide-modal-header">
+          <div>
+            <p class="guide-modal-title">Void Codex — User Guide</p>
+            <p class="guide-modal-subtitle">100% accurate Warframe damage calculator · wiki.warframe.com formulas</p>
+          </div>
+          <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeGuide()">×</button>
+        </div>
+        <div class="guide-modal-body">
         <div class="guide-content">
 
           <h3>Quick Start</h3>
@@ -221,6 +226,7 @@
             <li><strong>Kill Time section</strong> — shots to kill, burst TTK, and sustained TTK based on the scaled enemy HP at the selected level.</li>
           </ul>
 
+        </div>
         </div>
       </div>
     </div>
