@@ -1,34 +1,47 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Versioning and changelog session. Bumped to v0.2.0 (SemVer minor) and added changelog in two places: `CHANGELOG.md` repo file and a "What's New" modal in the Web UI.
+Two-part session: (1) versioning + changelog, (2) JS extraction from index.html.
 No logic changes; all 256 pytest tests still pass.
 
 ---
 
 ## Changes made
 
-### 1. Version bump
+### 1. Version bump to v0.2.0
 - `src/version.py`: `APP_VERSION` → `"0.2.0"`
 - Guide modal footer placeholder updated to match
 
 ### 2. CHANGELOG.md (new file, repo root)
 - Keep a Changelog format + SemVer
-- Two entries: v0.2.0 (Alchemy Guide redesign, API field, fixes) and v0.1.0 (initial release)
-- Professional, user-facing language — no code paths or sensitive info
+- Two entries: v0.2.0 and v0.1.0
 
 ### 3. "What's New" modal (Web UI)
-- **Nav button:** "What's New" added to header nav bar, same inline style as Guide button
-- **Overlay:** `#changelog-overlay` using `.mod-picker-overlay` base class
-- **Modal:** `.changelog-modal` — glassmorphism card (560px), scrollable body, sticky header
-  - Reuses Guide modal's blur/saturate/border treatment
-  - Version headers (gold) with dates, section headings (Added/Improved/Fixed), bullet lists
-  - Close via × button, backdrop click
-- **JS:** `CHANGELOG_ENTRIES` constant (array of `{version, date, sections[]}`) rendered by `renderChangelog()`
-  - `openChangelog()` / `closeChangelog()` follow existing open/close pattern
-  - Backdrop click handler added to existing unified listener
-- **CSS:** `.changelog-modal`, `.changelog-modal-header`, `.changelog-modal-body`, `.changelog-entry`, `.changelog-ver`, `.changelog-date`, `.changelog-section-heading`, `.changelog-list`
-  - Responsive: bottom-sheet at ≤520px, tighter padding at ≤768px
+- Nav button, `#changelog-overlay`, glassmorphism modal
+- `CHANGELOG_ENTRIES` constant rendered by `renderChangelog()`
+- CSS in `style.css`: `.changelog-modal*` classes with responsive rules
+
+### 4. JS extraction — index.html split into 8 files
+`index.html` reduced from ~2,450 lines to ~360 (HTML-only, no inline JS).
+All JavaScript moved to `web/static/js/` with `<script defer>` tags in `<head>`.
+
+| File | Lines | Contents |
+|------|-------|----------|
+| `constants.js` | 243 | All global state + data constants |
+| `utils.js` | 86 | `esc()`, `fmtNum()`, `dmgIcon()`, `initTooltips()`, `getCurrentWeapon/Enemy()` |
+| `combobox.js` | 101 | `setupCombobox()`, `clearCombobox()` |
+| `weapons.js` | 882 | Mod grid, picker, weapon stats, element badges, modded stats, special slots |
+| `enemy.js` | 126 | Enemy panel, level scaling, Steel Path, Eximus |
+| `modals.js` | 333 | Alchemy Guide, Riven Builder, Guide, Changelog, Buffs |
+| `calculate.js` | 250 | `runCalculation()`, `showResults()`, `showError()` |
+| `app.js` | 49 | `loadData()` bootstrap, DOMContentLoaded handlers |
+
+**Key architecture notes:**
+- No bundler — plain `<script defer>` tags execute in document order
+- All functions/variables on `window` scope (unchanged from before)
+- CDN scripts (SortableJS, Popper, Tippy) moved to `<head>` with `defer`, before app scripts
+- `constants.js` must load first (declares all shared mutable state)
+- `app.js` must load last (bootstrap)
 
 ---
 
@@ -51,4 +64,4 @@ No logic changes; all 256 pytest tests still pass.
 - [ ] Run `pytest` — confirm 256 passing before touching anything
 - [ ] Check `git log --oneline -5` to orient on recent commits
 - [ ] Ask about version bump and changelog tracking (see above)
-- [ ] If version is bumped, update `CHANGELOG.md` and `CHANGELOG_ENTRIES` in `index.html`
+- [ ] If version is bumped, update `CHANGELOG.md` and `CHANGELOG_ENTRIES` in `constants.js`

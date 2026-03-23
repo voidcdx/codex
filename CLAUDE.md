@@ -53,9 +53,18 @@ scripts/
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
-  static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input, Galv. Stacks input
+  static/index.html # SPA HTML only — no inline JS (uses defer script tags)
   static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
                    #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
+  static/js/
+    constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
+    utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy()
+    combobox.js    # setupCombobox(), clearCombobox() — reusable widget
+    weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
+    enemy.js       # enemy panel, level scaling, Steel Path, Eximus
+    modals.js      # Alchemy Guide, Riven Builder, Guide, Changelog, Buffs
+    calculate.js   # runCalculation(), showResults(), showError()
+    app.js         # loadData() bootstrap, DOMContentLoaded, version fetch
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 CHANGELOG.md        # Keep a Changelog format — user-facing version history
@@ -76,7 +85,7 @@ GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are 
 - Guide modal footer shows both strings (fetched on DOMContentLoaded)
 - **At the start of each new session, ask the user if the version should be bumped.**
 - **At the start of each new session, ask the user if this session's changes should be tracked in the changelog.** Do NOT automatically add changelog entries — only update when the user confirms. Not every session warrants a changelog update.
-- **Changelog:** When bumping the version, update both `CHANGELOG.md` (repo root) and the `CHANGELOG_ENTRIES` JS constant in `web/static/index.html` (powers the "What's New" modal in the Web UI).
+- **Changelog:** When bumping the version, update both `CHANGELOG.md` (repo root) and the `CHANGELOG_ENTRIES` JS constant in `web/static/js/constants.js` (powers the "What's New" modal in the Web UI).
 
 ## Web UI Notes
 
