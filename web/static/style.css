@@ -1395,3 +1395,26 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .guide-content tr:hover td { background: rgba(255,255,255,0.025); }
 .guide-content td:first-child { color: var(--text); white-space: nowrap; font-size: 12px; }
+
+/* Guide modal — responsive */
+@media (max-width: 768px) {
+  .guide-modal { padding: 24px 18px 28px; }
+  .guide-content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .guide-content td, .guide-content th { padding: 5px 8px; }
+}
+@media (max-width: 520px) {
+  #guide-overlay { align-items: flex-end; }
+  .guide-modal {
+    width: 100%;
+    max-width: 100vw;
+    max-height: 92vh;
+    border-radius: 14px 14px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: 20px 14px 32px;
+  }
+  .guide-modal-title { font-size: 16px; }
+  .guide-content h3 { margin-top: 18px; }
+  .guide-content td:first-child { white-space: normal; }
+}
