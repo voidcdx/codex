@@ -1826,12 +1826,13 @@ function alchModRow(mod, elemField) {
   const noSlots = modSlots.indexOf('') === -1;
   const disabledAttr = (equipped || noSlots) ? `disabled title="${equipped ? 'Already equipped' : 'No empty slots'}"` : '';
 
-  return `<div class="alch-mod-row">
+  return `<div class="alch-mod-row" style="--elem-color:${color}">
     ${dmgIcon(elemName, 10)}
     <span class="alch-mod-name">${esc(mod.name)}</span>
     ${badge}
-    <span class="alch-mod-stats"><span class="alch-mod-pct" style="color:${color}">${pctStr}</span>${secondaryBadges}</span>
-    <button class="alch-add-btn" ${disabledAttr} onclick="addAlchMod(${JSON.stringify(mod.name)})">+</button>
+    <span class="alch-mod-pct" style="color:${color}">${pctStr}</span>
+    <button class="alch-add-btn" ${disabledAttr} data-mod="${esc(mod.name)}" onclick="addAlchMod(this.dataset.mod)">+</button>
+    ${secondaryBadges ? `<div class="alch-hover-stats">${secondaryBadges}</div>` : ''}
   </div>`;
 }
 
