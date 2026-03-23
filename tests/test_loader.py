@@ -258,3 +258,29 @@ class TestGalvanizedModLoading:
         assert m.galv_kill_stat == ""
         assert m.galv_kill_pct == 0.0
         assert m.galv_max_stacks == 0
+
+
+# ---------------------------------------------------------------------------
+# Weapon multishot (inherent pellet count)
+# ---------------------------------------------------------------------------
+
+class TestWeaponMultishot:
+    def test_tigris_multishot(self):
+        w = load_weapon("Tigris")
+        assert w.multishot == 5
+
+    def test_strun_multishot(self):
+        w = load_weapon("Strun")
+        assert w.multishot == 12
+
+    def test_braton_default_multishot(self):
+        w = load_weapon("Braton")
+        assert w.multishot == 1
+
+    def test_kohm_fully_spooled(self):
+        w = load_weapon("Kohm", attack_name="Fully Spooled")
+        assert w.multishot == 12
+
+    def test_attack_multishot_preserved(self):
+        w = load_weapon("Tigris")
+        assert w.attacks[0].multishot == 5

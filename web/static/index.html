@@ -932,8 +932,9 @@ function showWeaponStats(weapon) {
         </div>
         <div class="stat-block">
           <div class="stat-label" data-tooltip="status">Status</div>
-          <div class="stat-value status" id="sv-sc">${pct((atk ? atk.status_chance : weapon.status_chance) || 0)}</div>
+          <div class="stat-value status" id="sv-sc">${pct((atk ? atk.status_chance : weapon.status_chance) || 0)}${(atk && atk.multishot > 1) ? ' <span style="font-size:0.7rem;color:var(--text-muted)">\u00d7' + atk.multishot + ' pellets</span>' : ''}</div>
           <div class="stat-modded" id="sm-sc" style="display:none"></div>
+          <div class="stat-modded" id="sm-sc-pellet" style="display:none"></div>
         </div>
       </div>
       <div class="stat-row">
@@ -1103,6 +1104,16 @@ async function _doUpdateModdedStats() {
         smSC.style.display = 'block';
       } else {
         smSC.style.display = 'none';
+      }
+    }
+    const smSCPellet = document.getElementById('sm-sc-pellet');
+    if (smSCPellet) {
+      if (data.inherent_multishot > 1) {
+        const ppSc = data.sc_per_pellet || 0;
+        smSCPellet.textContent = pct(ppSc) + '/pellet';
+        smSCPellet.style.display = 'block';
+      } else {
+        smSCPellet.style.display = 'none';
       }
     }
 
@@ -1991,7 +2002,10 @@ function showResults(data) {
       ? data.total * mag / (mag / fr + rel)
       : null;
 
-    const procsPerSec = sc * ms * fr;
+    const inherentMs = data.inherent_multishot || 1;
+    const scPerPellet = data.sc_per_pellet || sc;
+    const totalProjectiles = inherentMs * ms;
+    const procsPerSec = scPerPellet * totalProjectiles * fr;
     let procDpsRows = '';
     let totalProcDps = 0;
     if (data.procs) {
@@ -2007,8 +2021,9 @@ function showResults(data) {
     }
 
     const scPct = (sc * 100).toFixed(1);
+    const pelletNote = inherentMs > 1 ? ` (${(scPerPellet*100).toFixed(1)}%/pellet \u00d7${totalProjectiles.toFixed(1)})` : '';
     const footnote = procsPerSec > 0
-      ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">Proc DPS is steady-state average @ ${scPct}% status chance</div>`
+      ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">Proc DPS is steady-state average @ ${scPct}% status chance${pelletNote}</div>`
       : '';
 
     dpsHtml = `

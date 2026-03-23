@@ -158,6 +158,21 @@ def calculate_armor_multiplier(armor: float) -> float:
     return 300.0 / (300.0 + clamped)
 
 
+def status_chance_per_pellet(total_sc: float, pellet_count: int) -> float:
+    """Derive per-pellet status chance from total per-shot status chance.
+
+    Warframe formula: per_pellet = 1 - (1 - total_sc)^(1/pellet_count)
+    For single-pellet weapons (pellet_count=1) this returns total_sc unchanged.
+    """
+    if pellet_count <= 1:
+        return total_sc
+    if total_sc >= 1.0:
+        return 1.0
+    if total_sc <= 0.0:
+        return 0.0
+    return 1.0 - (1.0 - total_sc) ** (1.0 / pellet_count)
+
+
 class DamageCalculator:
     """Implements the 5-step Warframe damage pipeline.
 

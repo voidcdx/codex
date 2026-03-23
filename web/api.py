@@ -28,7 +28,7 @@ from pydantic import BaseModel
 
 import math
 from pydantic import Field
-from src.calculator import DamageCalculator, calculate_crit_multiplier
+from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
     _raw_enemies, _raw_mods, _raw_weapons,
@@ -87,6 +87,7 @@ def get_weapons() -> list[dict]:
                     "crit_multiplier": a.get("crit_multiplier", 1),
                     "status_chance": a.get("status_chance", 0),
                     "fire_rate": a.get("fire_rate", 0),
+                    "multishot": a.get("multishot", 1),
                 }
                 for a in attacks
             ],
@@ -323,6 +324,8 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "modded_cm": round(base_cm * (1.0 + total_cd_bonus), 6),
         "base_sc":  base_sc,
         "modded_sc": round(base_sc * (1.0 + total_sc_bonus), 6),
+        "sc_per_pellet": round(status_chance_per_pellet(base_sc * (1.0 + total_sc_bonus), weapon.multishot), 6),
+        "inherent_multishot": weapon.multishot,
         "base_multishot":   1.0,
         "modded_multishot": round(1.0 + total_ms_bonus, 6),
         "base_fr":    round(base_fr, 4),
@@ -459,6 +462,8 @@ def calculate(req: CalcRequest) -> dict:
         "magazine":      magazine,
         "reload":        reload_time,
         "modded_sc":     round(modded_sc, 6),
+        "sc_per_pellet": round(status_chance_per_pellet(modded_sc, weapon.multishot), 6),
+        "inherent_multishot": weapon.multishot,
         "modded_ms":     round(modded_ms, 6),
     }
 

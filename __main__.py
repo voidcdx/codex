@@ -22,7 +22,7 @@ _project_root = Path(__file__).parent
 if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
-from src.calculator import DamageCalculator, calculate_crit_multiplier, VIRAL_STACK_MULTIPLIERS
+from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet, VIRAL_STACK_MULTIPLIERS
 from src.enums import DamageType
 from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, list_attacks, make_riven_mod, RIVEN_STAT_NAMES, _raw_weapons
 
@@ -205,8 +205,10 @@ def _print_results(
             print()
             print("  (no active status procs)")
 
-        # Proc DPS
-        procs_per_sec = modded_sc * modded_ms * modded_fr
+        # Proc DPS — per-pellet status chance × total projectiles × fire rate
+        per_pellet_sc = status_chance_per_pellet(modded_sc, weapon.multishot)
+        total_projectiles = weapon.multishot * modded_ms
+        procs_per_sec = per_pellet_sc * total_projectiles * modded_fr
         if dot_active and procs_per_sec > 0:
             total_proc_dps = 0.0
             print()
@@ -220,7 +222,11 @@ def _print_results(
             print("-" * 38)
             print(f"  {'TOTAL w/ procs':<20} {burst_dps + total_proc_dps:>14,.2f}")
             sc_pct = modded_sc * 100
-            print(f"  (@ {sc_pct:.1f}% SC × {modded_ms:.2f} ms × {modded_fr:.1f}/s)")
+            if weapon.multishot > 1:
+                pp_pct = per_pellet_sc * 100
+                print(f"  (@ {sc_pct:.1f}% SC = {pp_pct:.1f}%/pellet × {weapon.multishot} pellets, ×{modded_ms:.2f} ms × {modded_fr:.1f}/s)")
+            else:
+                print(f"  (@ {sc_pct:.1f}% SC × {modded_ms:.2f} ms × {modded_fr:.1f}/s)")
 
     print()
 
@@ -299,12 +305,14 @@ def main(argv: list[str] | None = None) -> None:
         if len(attacks) == 1:
             print(f"{attacks[0]['name']}  (only attack)")
         else:
-            print(f"{'Attack':<30} {'CC%':>6} {'CM':>6} {'SC%':>6} {'FR':>6}  Shot")
-            print("-" * 65)
+            print(f"{'Attack':<30} {'CC%':>6} {'CM':>6} {'SC%':>6} {'FR':>6} {'MS':>4}  Shot")
+            print("-" * 72)
             for a in attacks:
+                ms_val = a.get('multishot', 1)
+                ms_str = str(ms_val) if ms_val > 1 else ''
                 print(f"  {a['name']:<28} {a['crit_chance']*100:>5.1f}%"
                       f" {a['crit_multiplier']:>5.1f}x {a['status_chance']*100:>5.1f}%"
-                      f" {a['fire_rate']:>5.1f}  {a['shot_type']}")
+                      f" {a['fire_rate']:>5.1f} {ms_str:>4}  {a['shot_type']}")
         return
 
     args: list[str] = ns.args

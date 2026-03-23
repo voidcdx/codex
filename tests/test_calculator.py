@@ -7,7 +7,7 @@ M10: Integration — Nagantaka Prime full wiki example
 """
 import math
 import pytest
-from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, BANE_MODS, VIRAL_STACK_MULTIPLIERS
+from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, status_chance_per_pellet, BANE_MODS, VIRAL_STACK_MULTIPLIERS
 from src.loader import make_riven_mod
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.enums import DamageType, FactionType, HealthType, ArmorType
@@ -1257,3 +1257,48 @@ class TestIPSModBuffs:
         assert result[DamageType.IMPACT]   == pytest.approx(79.0)
         assert result[DamageType.PUNCTURE] == pytest.approx(115.0)
         assert result[DamageType.SLASH]    == pytest.approx(79.0)
+
+
+# ---------------------------------------------------------------------------
+# Per-pellet status chance
+# ---------------------------------------------------------------------------
+
+class TestStatusChancePerPellet:
+    """Tests for the per-pellet status chance formula.
+
+    Formula: per_pellet = 1 - (1 - total_sc)^(1/pellet_count)
+    """
+
+    def test_single_pellet_unchanged(self):
+        """Single pellet (or multishot=1) returns total SC unchanged."""
+        assert status_chance_per_pellet(0.25, 1) == pytest.approx(0.25)
+
+    def test_tigris_5_pellets(self):
+        """Tigris: 16.8% total SC, 5 pellets → ~3.62% per pellet."""
+        pp = status_chance_per_pellet(0.168, 5)
+        assert pp == pytest.approx(0.03612, abs=0.0001)
+
+    def test_strun_12_pellets(self):
+        """Strun: 5% total SC, 12 pellets → ~0.427% per pellet."""
+        pp = status_chance_per_pellet(0.05, 12)
+        assert pp == pytest.approx(0.00427, abs=0.0001)
+
+    def test_100_pct_status(self):
+        """100% status chance → 100% per pellet regardless of count."""
+        assert status_chance_per_pellet(1.0, 8) == 1.0
+
+    def test_zero_status(self):
+        """0% status chance → 0% per pellet."""
+        assert status_chance_per_pellet(0.0, 5) == 0.0
+
+    def test_expected_procs_per_shot(self):
+        """Expected procs per shot = pellet_count × per_pellet_sc.
+
+        For Tigris (5 pellets, 16.8% total): ~0.181 expected procs/shot.
+        This is slightly MORE than the raw 0.168 because the per-pellet
+        formula distributes the chance across independent rolls.
+        """
+        pp = status_chance_per_pellet(0.168, 5)
+        expected_procs = 5 * pp
+        assert expected_procs == pytest.approx(0.1812, abs=0.001)
+        assert expected_procs > 0.168  # more than raw SC

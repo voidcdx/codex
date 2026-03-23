@@ -4,7 +4,7 @@
 - [x] Add DPS output — fire rate × damage × multishot row in results table *(done: CLI burst/sustained/proc DPS)*
 - [ ] Add Kill Time (TTK) calculator — shots and seconds to kill given enemy HP at level X
 - [ ] Add Warframe buff support — Roar, Eclipse, and other damage-multiplying abilities
-- [ ] Fix status chance per pellet display for shotguns and multi-pellet weapons
+- [x] Fix status chance per pellet display for shotguns and multi-pellet weapons *(done: inherent multishot parsed from wiki Lua, per-pellet SC formula, UI/CLI/API display, proc DPS corrected)*
 - [ ] Add build saving and URL sharing — encode build state in URL params
 - [ ] Add mod optimizer — find highest-DPS mod combination for a target faction/enemy
 - [ ] Add side-by-side weapon comparison — two builds, DPS/TTK columns next to each other
