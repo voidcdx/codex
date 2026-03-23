@@ -9,7 +9,39 @@
 </head>
 <body>
 <header>
-  <h1>Void Codex</h1>
+  <div class="banner-lockup">
+    <!-- Left Orokin wing -->
+    <svg class="banner-wing" width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow-l" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="1.8" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <polyline points="0,5 10,5 15,10 15,34 10,39 0,39" stroke="#e8b923" stroke-width="1.5" stroke-linejoin="miter" filter="url(#glow-l)"/>
+      <line x1="19" y1="22" x2="98" y2="22" stroke="#c49a1f" stroke-width="1"/>
+      <line x1="36" y1="18" x2="36" y2="26" stroke="#c49a1f" stroke-width="1"/>
+      <line x1="58" y1="19" x2="58" y2="25" stroke="#c49a1f" stroke-width="0.8"/>
+      <line x1="80" y1="19" x2="80" y2="25" stroke="#c49a1f" stroke-width="0.8"/>
+      <polygon points="98,22 103,17 108,22 103,27" fill="#e8b923" filter="url(#glow-l)"/>
+    </svg>
+    <h1>Void Codex</h1>
+    <!-- Right wing — mirror of left -->
+    <svg class="banner-wing" width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
+      <defs>
+        <filter id="glow-r" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="1.8" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <polyline points="0,5 10,5 15,10 15,34 10,39 0,39" stroke="#e8b923" stroke-width="1.5" stroke-linejoin="miter" filter="url(#glow-r)"/>
+      <line x1="19" y1="22" x2="98" y2="22" stroke="#c49a1f" stroke-width="1"/>
+      <line x1="36" y1="18" x2="36" y2="26" stroke="#c49a1f" stroke-width="1"/>
+      <line x1="58" y1="19" x2="58" y2="25" stroke="#c49a1f" stroke-width="0.8"/>
+      <line x1="80" y1="19" x2="80" y2="25" stroke="#c49a1f" stroke-width="0.8"/>
+      <polygon points="98,22 103,17 108,22 103,27" fill="#e8b923" filter="url(#glow-r)"/>
+    </svg>
+  </div>
   <nav style="display:flex;align-items:center;gap:6px;margin-left:auto">
     <a href="/" style="color:var(--accent2);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid var(--border-highlight)">Damage Calculator</a>
     <a href="/live" style="color:var(--text-dim);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid transparent;transition:color .15s" onmouseover="this.style.color='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)'">Live Data</a>
