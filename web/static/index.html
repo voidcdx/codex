@@ -1363,69 +1363,66 @@ function setupSearch(inputId, selectId, getNames, onChange) {
   });
 }
 
-function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl = null) {
+function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl) {
   const input = document.getElementById(inputId);
   const dropdown = document.getElementById(dropdownId);
-  let ignoreBlur = false;
-
-  // Portal: move dropdown to body so it escapes any panel stacking context
-  // (backdrop-filter on .panel creates a stacking context that clips z-index)
-  document.body.appendChild(dropdown);
-  dropdown.style.position = 'fixed';
-
-  function positionDropdown() {
-    const r = input.closest('.search-wrap').getBoundingClientRect();
-    dropdown.style.top   = r.bottom + 'px';
-    dropdown.style.left  = r.left   + 'px';
-    dropdown.style.width = r.width  + 'px';
-  }
-  window.addEventListener('scroll', () => { if (dropdown.classList.contains('open')) positionDropdown(); }, true);
-  window.addEventListener('resize', () => { if (dropdown.classList.contains('open')) positionDropdown(); });
 
   function esc(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
 
-  function renderDropdown(q) {
+  function render(q) {
     const lq = q.toLowerCase();
-    const matches = q ? items.filter(n => n.toLowerCase().includes(lq)) : items;
-    const shown = matches.slice(0, 120);
+    const matches = lq ? items.filter(n => n.toLowerCase().includes(lq)) : items;
+    const shown = matches.slice(0, 80);
     dropdown.innerHTML = shown.map(n => {
-      const imgTag = getImageUrl
+      const img = getImageUrl
         ? `<img class="combobox-img" src="${getImageUrl(n)}" alt="" onerror="this.style.display='none'">`
         : '';
-      return `<div class="combobox-item" tabindex="-1" data-value="${esc(n)}">${imgTag}${n.replace(/&/g,'&amp;')}</div>`;
+      return `<div class="combobox-item" data-value="${esc(n)}">${img}${esc(n)}</div>`;
     }).join('');
-    if (matches.length > 120) {
-      dropdown.insertAdjacentHTML('beforeend',
-        `<div class="combobox-hint">${matches.length} results — type to narrow</div>`);
+    if (matches.length > 80) {
+      dropdown.innerHTML += `<div class="combobox-hint">${matches.length} results — type to narrow</div>`;
     }
-    positionDropdown();
     dropdown.classList.toggle('open', shown.length > 0);
   }
 
   function commit(name) {
     input.value = name;
-    dropdown.classList.remove('open');
+    close();
     toggleSearchClear(input);
     if (onSelect) onSelect(name);
   }
 
-  input.addEventListener('focus', () => renderDropdown(input.value));
-  input.addEventListener('input', () => { toggleSearchClear(input); renderDropdown(input.value); });
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { dropdown.classList.remove('open'); input.blur(); }
-    if (e.key === 'Enter') { const first = dropdown.querySelector('.combobox-item'); if (first) commit(first.dataset.value); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); dropdown.querySelector('.combobox-item')?.focus(); }
-  });
-  input.addEventListener('blur', () => { if (!ignoreBlur) setTimeout(() => dropdown.classList.remove('open'), 150); });
+  function close() { dropdown.classList.remove('open'); }
 
-  dropdown.addEventListener('mousedown', () => { ignoreBlur = true; });
-  dropdown.addEventListener('mouseup',   () => { ignoreBlur = false; });
-  dropdown.addEventListener('click', e => { const item = e.target.closest('.combobox-item'); if (item) commit(item.dataset.value); });
-  dropdown.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { const item = e.target.closest('.combobox-item'); if (item) commit(item.dataset.value); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); e.target.nextElementSibling?.focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); (e.target.previousElementSibling?.classList.contains('combobox-item') ? e.target.previousElementSibling : input)?.focus(); }
-    if (e.key === 'Escape') { dropdown.classList.remove('open'); input.focus(); }
+  input.addEventListener('focus', () => render(input.value));
+  input.addEventListener('input', () => { toggleSearchClear(input); render(input.value); });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { close(); input.blur(); }
+    if (e.key === 'Enter') {
+      const first = dropdown.querySelector('.combobox-item');
+      if (first) commit(first.dataset.value);
+    }
+  });
+
+  // mousedown + preventDefault keeps input focused while selecting
+  dropdown.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const item = e.target.closest('.combobox-item');
+    if (item) commit(item.dataset.value);
+  });
+
+  // Touch selection
+  dropdown.addEventListener('touchend', e => {
+    const item = e.target.closest('.combobox-item');
+    if (item) { e.preventDefault(); commit(item.dataset.value); }
+  });
+
+  // Close on click/tap outside
+  document.addEventListener('mousedown', e => {
+    if (!input.contains(e.target) && !dropdown.contains(e.target)) close();
+  });
+  document.addEventListener('touchstart', e => {
+    if (!input.contains(e.target) && !dropdown.contains(e.target)) close();
   });
 
   return { set: commit };
