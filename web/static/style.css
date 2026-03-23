@@ -242,6 +242,7 @@ select option {
 .search-input::placeholder { color: var(--text-dim); }
 
 /* ── Combobox ───────────────────────────────────────── */
+.panel.combobox-open { z-index: 50; position: relative; }
 .combobox-wrap { position: relative; }
 .combobox-wrap .search-input { margin-bottom: 0; }
 .combobox-dropdown {
