@@ -1318,14 +1318,18 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 
 /* ── User Guide Modal ───────────────────────────────────── */
 .guide-modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(14, 14, 22, 0.72);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: var(--radius);
   width: min(820px, 96vw);
   max-height: 88vh;
   overflow-y: auto;
   padding: 32px 36px 36px;
   position: relative;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.06);
   animation: rivenModalIn 0.18s ease;
 }
 .guide-modal-title {
@@ -1345,7 +1349,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
   padding-bottom: 6px;
   margin: 24px 0 10px;
 }
@@ -1378,14 +1382,16 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  border-bottom: 1px solid var(--border);
-  padding: 5px 8px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 6px 10px;
 }
 .guide-content td {
-  padding: 5px 8px;
-  border-bottom: 1px solid var(--border);
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
   color: var(--text-dim);
   vertical-align: top;
   line-height: 1.5;
 }
+.guide-content tr:hover td { background: rgba(255,255,255,0.025); }
 .guide-content td:first-child { color: var(--text); white-space: nowrap; font-size: 12px; }
