@@ -7,10 +7,14 @@ Endpoints:
   GET  /api/enemies          → list of enemy names + factions
   POST /api/modded-weapon    → modded weapon stats
   POST /api/calculate        → full damage calculation
+  GET  /api/worldstate       → parsed live worldstate (fissures, alerts, etc.)
+  GET  /live                 → live data SPA
 """
 from __future__ import annotations
 
 import sys
+import time
+import json
 from pathlib import Path
 
 # Ensure project root on path when run from web/ directory
@@ -485,6 +489,75 @@ def scaled_enemy(req: ScaleRequest) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Worldstate — live game data
+# ---------------------------------------------------------------------------
+
+import requests as _requests  # noqa: E402
+
+# In-memory cache: platform → (parsed_data, timestamp)
+_ws_cache: dict[str, tuple[dict, float]] = {}
+_WS_TTL = 300  # 5 minutes
+
+_PLATFORM_URLS: dict[str, str] = {
+    "pc":  "https://content.warframe.com/dynamic/worldState.php",
+    "ps4": "https://ps4.warframe.com/dynamic/worldState.php",
+    "xb1": "https://xb1.warframe.com/dynamic/worldState.php",
+    "swi": "https://swi.warframe.com/dynamic/worldState.php",
+}
+
+_WS_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, */*",
+    "Referer": "https://www.warframe.com/",
+}
+
+
+def _fetch_worldstate(platform: str) -> dict:
+    """Fetch and parse live worldstate for the given platform."""
+    # Import here to avoid circular issues; scripts/ is not a package
+    import importlib.util, os
+    spec = importlib.util.spec_from_file_location(
+        "parse_worldstate",
+        Path(__file__).parent.parent / "scripts" / "parse_worldstate.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)  # type: ignore[union-attr]
+
+    url = _PLATFORM_URLS.get(platform, _PLATFORM_URLS["pc"])
+    try:
+        r = _requests.get(url, headers=_WS_HEADERS, timeout=15)
+        r.raise_for_status()
+        raw = r.json()
+    except Exception:
+        # Fall back to cached file if available
+        raw_path = Path(__file__).parent.parent / "data" / "worldstate_raw.json"
+        if raw_path.exists():
+            raw = json.loads(raw_path.read_text())
+        else:
+            raise HTTPException(503, "Worldstate unavailable and no local cache found. "
+                                     "Run: python scripts/fetch_worldstate.py")
+
+    return mod.parse(raw)
+
+
+@app.get("/api/worldstate")
+def get_worldstate(platform: str = "pc") -> dict:
+    if platform not in _PLATFORM_URLS:
+        raise HTTPException(400, f"Unknown platform: {platform!r}")
+    now = time.time()
+    if platform in _ws_cache:
+        data, ts = _ws_cache[platform]
+        if now - ts < _WS_TTL:
+            return data
+    parsed = _fetch_worldstate(platform)
+    _ws_cache[platform] = (parsed, now)
+    return parsed
+
+
+# ---------------------------------------------------------------------------
 # Root — serve the SPA
 # ---------------------------------------------------------------------------
 
@@ -493,3 +566,8 @@ from fastapi.responses import FileResponse  # noqa: E402
 @app.get("/")
 def index() -> FileResponse:
     return FileResponse(str(_static / "index.html"))
+
+
+@app.get("/live")
+def live() -> FileResponse:
+    return FileResponse(str(_static / "live.html"))
