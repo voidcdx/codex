@@ -190,8 +190,8 @@ select, input[type=text], input[type=number] {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 select:focus, input[type=text]:focus, input[type=number]:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
 }
 select option {
   background: var(--surface-solid);
@@ -236,8 +236,8 @@ select option {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .search-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
 }
 .search-input::placeholder { color: var(--text-dim); }
 
@@ -537,8 +537,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   margin-bottom: 0;
 }
 .mod-picker-search:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
 }
 .mod-picker-list {
   overflow-y: auto;
