@@ -1278,6 +1278,7 @@ function showEnemyStats(enemy) {
 // ---------------------------------------------------------------------------
 let steelPathOn = false;
 let eximusOn    = false;
+let lastScaledEnemy = null; // cached from refreshEnemyScaling for TTK display
 
 function toggleSteelPath() {
   steelPathOn = !steelPathOn;
@@ -1298,7 +1299,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function refreshEnemyScaling() {
   const enemy = getCurrentEnemy();
   const container = document.getElementById('enemy-scaled-stats');
-  if (!enemy) { container.innerHTML = ''; return; }
+  if (!enemy) { container.innerHTML = ''; lastScaledEnemy = null; return; }
   const level = Math.max(parseInt(document.getElementById('enemy-level').value) || 1, enemy.base_level || 1);
   try {
     const r = await fetch('/api/scaled-enemy', {
@@ -1307,6 +1308,7 @@ async function refreshEnemyScaling() {
       body: JSON.stringify({ enemy: enemy.name, level, steel_path: steelPathOn, eximus: eximusOn }),
     });
     const d = await r.json();
+    lastScaledEnemy = d;
     const fmt = v => {
       if (v <= 0) return '—';
       return Number(v.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits: 2});
@@ -2091,6 +2093,35 @@ function showResults(data) {
       ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">Proc DPS is steady-state average @ ${scPct}% status chance${pelletNote}</div>`
       : '';
 
+    // TTK calculation (requires lastScaledEnemy from refreshEnemyScaling)
+    let ttkHtml = '';
+    if (lastScaledEnemy && data.total > 0) {
+      const totalHP = lastScaledEnemy.health + lastScaledEnemy.shield + (eximusOn ? (lastScaledEnemy.overguard || 0) : 0);
+      if (totalHP > 0) {
+        const stk = Math.ceil(totalHP / data.total);
+        const burstTTK = (stk - 1) / fr;
+        let sustainedTTKRow = '';
+        if (rel > 0 && mag > 1 && stk > mag) {
+          const reloads = Math.floor((stk - 1) / mag);
+          const sustainedTTK = (stk - 1) / fr + reloads * rel;
+          sustainedTTKRow = `<tr><td>Sustained TTK</td><td style="font-size:0.75rem;color:var(--text-muted)">${reloads} reload${reloads !== 1 ? 's' : ''}</td><td>${sustainedTTK.toFixed(2)}s</td></tr>`;
+        }
+        const fmtHP = v => Number(v.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits: 2});
+        const levelLabel = lastScaledEnemy.level != null ? `Lvl ${lastScaledEnemy.level}` : '';
+        ttkHtml = `
+          <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">Kill Time</h4>
+          <table class="breakdown-table">
+            <thead><tr><th>Metric</th><th></th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Enemy HP</td><td style="font-size:0.75rem;color:var(--text-muted)">${levelLabel}</td><td>${fmtHP(totalHP)}</td></tr>
+              <tr><td>Shots to Kill</td><td></td><td>${stk.toLocaleString()}</td></tr>
+              <tr><td>Burst TTK</td><td style="font-size:0.75rem;color:var(--text-muted)">${fr}/s</td><td>${burstTTK.toFixed(2)}s</td></tr>
+              ${sustainedTTKRow}
+            </tbody>
+          </table>`;
+      }
+    }
+
     dpsHtml = `
       <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">DPS</h4>
       <table class="breakdown-table">
@@ -2102,7 +2133,7 @@ function showResults(data) {
         </tbody>
         ${totalProcDps > 0 ? `<tfoot class="total-row"><tr><td colspan="2">TOTAL w/ procs</td><td>${fmtNum(burstDps + totalProcDps)}</td></tr></tfoot>` : ''}
       </table>
-      ${footnote}`;
+      ${footnote}${ttkHtml}`;
   }
 
   document.getElementById('results-content').innerHTML = `
