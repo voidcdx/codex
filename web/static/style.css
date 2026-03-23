@@ -276,19 +276,6 @@ select option {
   flex-shrink: 0;
   border-radius: 3px;
 }
-.combobox-group-header {
-  padding: 6px 10px 4px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  background: var(--surface-solid);
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  border-bottom: 1px solid var(--border);
-}
 .combobox-hint {
   padding: 6px 10px;
   font-size: 11px;
