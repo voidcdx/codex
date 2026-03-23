@@ -22,9 +22,11 @@ _project_root = Path(__file__).parent
 if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
+from src.buffs import BUFF_PRESETS, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet, VIRAL_STACK_MULTIPLIERS
 from src.enums import DamageType
 from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, list_attacks, make_riven_mod, RIVEN_STAT_NAMES, _raw_weapons
+from src.models import Buff
 
 _BONUS_ELEM_CLI: dict[str, DamageType] = {
     "heat":        DamageType.HEAT,
@@ -66,6 +68,7 @@ def _print_results(
     show_procs: bool = False,
     bonus_element_type: DamageType | None = None,
     bonus_element_pct: float = 0.0,
+    buffs: list[Buff] | None = None,
 ) -> None:
     weapon = load_weapon(weapon_name, attack_name=attack_name)
     if bonus_element_type is not None and bonus_element_pct > 0.0:
@@ -76,9 +79,15 @@ def _print_results(
         mods.append(make_riven_mod(_parse_riven_arg(riven_str)))
     enemy  = load_enemy(enemy_name, body_part=body_part)
 
+    _buffs = buffs or []
+
+    # Buff pre-calc stat modifications (Volt Shield crit damage, Wisp fire rate)
+    buff_cd_bonus = sum(b.crit_damage_bonus for b in _buffs)
+    buff_fr_bonus = sum(b.fire_rate_bonus for b in _buffs)
+
     # Crit stats come directly from the selected attack on the weapon
     total_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
-    total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods)
+    total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + buff_cd_bonus
     crit_mult = calculate_crit_multiplier(total_cc, total_cm, mode=crit_mode)
     modded_ms = 1.0 + sum(m.multishot_bonus for m in mods)
 
@@ -90,7 +99,7 @@ def _print_results(
     base_mag = float(raw_w.get("magazine") or 1.0)
     base_reload = float(raw_w.get("reload") or 0.0)
     total_reload_bonus = sum(m.reload_bonus for m in mods)
-    modded_fr = base_fr * (1.0 + sum(m.fire_rate_bonus for m in mods))
+    modded_fr = base_fr * (1.0 + sum(m.fire_rate_bonus for m in mods) + buff_fr_bonus)
     modded_mag = max(1.0, round(base_mag * (1.0 + sum(m.magazine_bonus for m in mods))))
     modded_reload = round(base_reload / (1.0 + total_reload_bonus), 4) if total_reload_bonus and base_reload else base_reload
     modded_sc = weapon.status_chance * (1.0 + sum(m.sc_bonus for m in mods))
@@ -107,6 +116,7 @@ def _print_results(
         corrosive_stacks=corrosive_stacks,
         combo_counter=combo_counter,
         unique_statuses=unique_statuses,
+        buffs=_buffs,
     )
 
     total = sum(result.values())
@@ -139,6 +149,9 @@ def _print_results(
         print(f"Combo  : {combo_counter} hits  (×{cmult:.2f})")
     if unique_statuses > 0:
         print(f"CO     : {unique_statuses} unique status type{'s' if unique_statuses != 1 else ''} on enemy")
+    if _buffs:
+        buff_names = ", ".join(b.name for b in _buffs)
+        print(f"Buffs  : {buff_names}")
     print()
     trigger_label = "Per-trigger" if modded_ms > 1.0001 else "Per-hit"
     print(f"{'Damage type':<18} {trigger_label + ' damage':>14}")
@@ -167,6 +180,7 @@ def _print_results(
             enemy=enemy,
             crit_multiplier=crit_mult,
             is_crit_headshot=(body_part != "Body"),
+            buffs=_buffs,
         )
         _DOT_LABELS = {
             "slash":       "Slash (Bleed)",
@@ -263,6 +277,9 @@ def main(argv: list[str] | None = None) -> None:
                         help="Unique active status types on enemy (0–10, for Condition Overload)")
     parser.add_argument("--procs", action="store_true",
                         help="Show status proc damage per tick and total")
+    parser.add_argument("--buff", action="append", default=[], metavar="NAME[:STRENGTH]",
+                        help='Warframe ability buff, e.g. "roar" or "roar:1.5" (150%% strength). '
+                             'Repeat for multiple buffs. Valid: ' + ', '.join(sorted(BUFF_PRESETS.keys())))
     parser.add_argument("--bonus-element", default=None, metavar="ELEMENT:PCT",
                         help='Kuva/Tenet bonus element, e.g. "heat:50" for +50%% Heat. '
                              'Elements: heat, cold, electricity, toxin')
@@ -350,6 +367,18 @@ def main(argv: list[str] | None = None) -> None:
             else:
                 bpct = float(parts[1].strip()) / 100.0
 
+    # Parse --buff "roar:1.5" flags
+    buff_list: list[Buff] = []
+    for buff_arg in ns.buff:
+        parts = buff_arg.split(":", 1)
+        buff_name = parts[0].strip()
+        buff_strength = float(parts[1].strip()) if len(parts) == 2 else 1.0
+        try:
+            buff_list.append(make_buff(buff_name, buff_strength))
+        except KeyError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
+
     try:
         effective_part = "Head" if ns.headshot else ns.body_part
         _print_results(
@@ -362,6 +391,7 @@ def main(argv: list[str] | None = None) -> None:
             show_procs=ns.procs,
             bonus_element_type=bet,
             bonus_element_pct=bpct,
+            buffs=buff_list,
         )
     except KeyError as e:
         print(f"Error: {e}")
