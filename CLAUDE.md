@@ -57,7 +57,7 @@ run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"]
 ```
 
-## 237 Tests Passing
+## 235 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Web UI Notes
