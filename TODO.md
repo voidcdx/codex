@@ -8,12 +8,14 @@
 - [x] Fix dropdown collapsing on touch scroll — removed touchstart close listener
 - [x] Search UX — clear input on focus, persist stats panel until new selection committed
 
+## Done this session
+- [x] Add Kill Time (TTK) calculator — Shots to Kill + Burst/Sustained TTK in results panel
+- [x] Style the combobox dropdowns — accent border, box-shadow, subtle row separators
+- [x] Condition Overload unique_statuses — confirmed fully wired (UI → API → calculator)
+
 ## Outstanding
 - [ ] Implement Weapon Arcanes (Deadhead, Merciless, Cascadia Flare) — stack-based bonuses
-- [ ] Add Kill Time (TTK) calculator — shots and seconds to kill given enemy HP at level X
-- [ ] Add build saving and URL sharing — encode build state in URL params
+- [ ] Add build saving and URL sharing — encode build state in URL params (deferred, needs research)
 - [ ] Add mod optimizer — find highest-DPS mod combination for a target faction/enemy
 - [ ] Add side-by-side weapon comparison — two builds, DPS/TTK columns next to each other
-- [ ] Wire Condition Overload unique_statuses from UI → API → calculator (parsing done, wiring missing)
-- [ ] Style the combobox dropdowns — border, hover, shadow now that mechanics are stable
 - [ ] Header / branding — needs mobile-first design (≤375px), no SVG wings
