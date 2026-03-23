@@ -94,6 +94,12 @@ _ELEM_FIELD: dict[str, DamageType] = {
     "viral_pct":       DamageType.VIRAL,
 }
 
+_IPS_FIELD: dict[str, DamageType] = {
+    "impact_pct":   DamageType.IMPACT,
+    "puncture_pct": DamageType.PUNCTURE,
+    "slash_pct":    DamageType.SLASH,
+}
+
 
 # ---------------------------------------------------------------------------
 # Raw JSON loaders
@@ -250,6 +256,12 @@ def load_mod(name: str) -> Mod:
         if v is not None:
             elemental_bonuses.append(DamageComponent(dt, float(v)))
 
+    ips_bonuses: list[DamageComponent] = []
+    for field, dt in _IPS_FIELD.items():
+        v = entry.get(field)
+        if v is not None:
+            ips_bonuses.append(DamageComponent(dt, float(v)))
+
     faction_bonus = float(entry.get("faction_bonus") or 0.0)
     faction_target = entry.get("faction_target") or ""
     faction_type: FactionType | None = _FACTION_TYPE.get(faction_target.lower())
@@ -272,6 +284,7 @@ def load_mod(name: str) -> Mod:
         name=name,
         damage_bonus=damage_bonus,
         elemental_bonuses=elemental_bonuses,
+        ips_bonuses=ips_bonuses,
         faction_bonus=faction_bonus,
         faction_type=faction_type,
         cc_bonus=cc_bonus,
@@ -290,7 +303,7 @@ def load_mod(name: str) -> Mod:
     )
 
 
-# Riven stat name → Mod field name (or elemental key for elemental bonuses)
+# Riven stat name → Mod field name (or elemental/IPS key for type bonuses)
 _RIVEN_STAT_MAP: dict[str, str] = {
     "damage":         "damage_bonus",
     "crit_chance":    "cc_bonus",
@@ -308,6 +321,9 @@ _RIVEN_STAT_MAP: dict[str, str] = {
     "magnetic":       "magnetic",
     "radiation":      "radiation",
     "viral":          "viral",
+    "impact":         "impact",
+    "puncture":       "puncture",
+    "slash":          "slash",
 }
 
 RIVEN_STAT_NAMES: frozenset[str] = frozenset(_RIVEN_STAT_MAP)
@@ -325,16 +341,21 @@ _RIVEN_ELEM_TYPES: dict[str, DamageType] = {
     "viral":       DamageType.VIRAL,
 }
 
+_RIVEN_IPS_TYPES: dict[str, DamageType] = {
+    "impact":   DamageType.IMPACT,
+    "puncture": DamageType.PUNCTURE,
+    "slash":    DamageType.SLASH,
+}
+
 
 def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> Mod:
     """Build a Mod from Riven stat definitions.
 
     Each stat dict must have:
-        "stat":  one of the keys in _RIVEN_STAT_MAP (e.g. "damage", "heat")
+        "stat":  one of the keys in _RIVEN_STAT_MAP (e.g. "damage", "heat", "impact")
         "value": decimal fraction (e.g. 0.658 means +65.8%)
 
     Unknown stat keys are silently ignored.
-    IPS buffs (impact/puncture/slash) are not yet supported.
     """
     damage_bonus = 0.0
     cc_bonus = 0.0
@@ -343,6 +364,7 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
     multishot_bonus = 0.0
     fire_rate_bonus = 0.0
     elemental_bonuses: list[DamageComponent] = []
+    ips_bonuses: list[DamageComponent] = []
 
     for entry in stats:
         stat = str(entry.get("stat", "")).lower()
@@ -350,7 +372,9 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
         mapped = _RIVEN_STAT_MAP.get(stat)
         if mapped is None:
             continue
-        if mapped in _RIVEN_ELEM_TYPES:
+        if mapped in _RIVEN_IPS_TYPES:
+            ips_bonuses.append(DamageComponent(_RIVEN_IPS_TYPES[mapped], value))
+        elif mapped in _RIVEN_ELEM_TYPES:
             elemental_bonuses.append(DamageComponent(_RIVEN_ELEM_TYPES[mapped], value))
         elif mapped == "damage_bonus":
             damage_bonus += value
@@ -369,6 +393,7 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
         name=name,
         damage_bonus=damage_bonus,
         elemental_bonuses=elemental_bonuses,
+        ips_bonuses=ips_bonuses,
         cc_bonus=cc_bonus,
         cd_bonus=cd_bonus,
         sc_bonus=sc_bonus,

@@ -268,9 +268,17 @@ class DamageCalculator:
         all_components = ips_components + elemental_components
 
         # --- Step 1: Apply damage mods → modded base, then quantize ---
+        # IPS-specific bonuses (e.g. Rupture +Impact%, Jagged Edge +Slash%) stack additively
+        # with the general damage bonus but only for their respective damage type.
+        ips_bonus: dict[DamageType, float] = {}
+        for m in mods:
+            for comp in m.ips_bonuses:
+                ips_bonus[comp.type] = ips_bonus.get(comp.type, 0.0) + comp.amount
+
         modded: list[DamageComponent] = []
         for comp in all_components:
-            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + co_total + galv_aptitude_total) * combo_mult)
+            type_specific = ips_bonus.get(comp.type, 0.0)
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + type_specific + co_total + galv_aptitude_total) * combo_mult)
             q = quantize(float(raw), base_damage)
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
@@ -415,9 +423,15 @@ class DamageCalculator:
         ]
         all_components = ips_components + elemental_components
 
+        ips_bonus: dict[DamageType, float] = {}
+        for m in mods:
+            for comp in m.ips_bonuses:
+                ips_bonus[comp.type] = ips_bonus.get(comp.type, 0.0) + comp.amount
+
         modded: list[DamageComponent] = []
         for comp in all_components:
-            raw = math.floor(comp.amount * (1.0 + total_damage_bonus))
+            type_specific = ips_bonus.get(comp.type, 0.0)
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + type_specific))
             q = quantize(float(raw), base_damage)
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
