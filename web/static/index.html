@@ -1093,7 +1093,7 @@ async function _doUpdateModdedStats() {
     const smSC = document.getElementById('sm-sc');
 
     if (smCC) {
-      if (hasMods && Math.abs(data.modded_cc - data.base_cc) > 0.0001) {
+      if (hasSomeMods && Math.abs(data.modded_cc - data.base_cc) > 0.0001) {
         smCC.textContent = pct(data.modded_cc);
         smCC.style.display = 'block';
       } else {
@@ -1101,7 +1101,7 @@ async function _doUpdateModdedStats() {
       }
     }
     if (smCM) {
-      if (hasMods && Math.abs(data.modded_cm - data.base_cm) > 0.0001) {
+      if (hasSomeMods && Math.abs(data.modded_cm - data.base_cm) > 0.0001) {
         smCM.textContent = data.modded_cm.toFixed(2) + 'x';
         smCM.style.display = 'block';
       } else {
@@ -1109,7 +1109,7 @@ async function _doUpdateModdedStats() {
       }
     }
     if (smSC) {
-      if (hasMods && Math.abs(data.modded_sc - data.base_sc) > 0.0001) {
+      if (hasSomeMods && Math.abs(data.modded_sc - data.base_sc) > 0.0001) {
         smSC.textContent = pct(data.modded_sc);
         smSC.style.display = 'block';
       } else {

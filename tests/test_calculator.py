@@ -288,6 +288,28 @@ class TestCalculateCritMultiplier:
         with pytest.raises(ValueError):
             calculate_crit_multiplier(1.5, self.CM, "invalid")
 
+    def test_cd_mod_multiplicative(self):
+        # CD mods multiply base: CD_final = CD_base × (1 + Σ cd_bonuses)
+        # Soma Prime base CM = 3.0; Vital Sense cd_bonus = 1.2
+        # → 3.0 × (1 + 1.2) = 3.0 × 2.2 = 6.6 (NOT additive 3.0 + 1.2 = 4.2)
+        from src.loader import load_weapon, load_mod
+        weapon = load_weapon("Soma Prime")
+        vs = load_mod("Vital Sense")
+        modded_cm = weapon.crit_multiplier * (1.0 + vs.cd_bonus)
+        assert modded_cm == pytest.approx(6.6)
+        # Verify this differs from the (wrong) additive result
+        assert modded_cm != pytest.approx(weapon.crit_multiplier + vs.cd_bonus)
+
+    def test_cc_mod_additive(self):
+        # CC mods add flat: CC_final = CC_base + Σ cc_bonuses
+        # Opticor base CC = 0.20; Point Strike cc_bonus = 1.5
+        # → 0.20 + 1.5 = 1.70 (170% — guaranteed Tier 1 + 70% chance Tier 2)
+        from src.loader import load_weapon, load_mod
+        weapon = load_weapon("Opticor")
+        ps = load_mod("Point Strike")
+        modded_cc = weapon.crit_chance + ps.cc_bonus
+        assert modded_cc == pytest.approx(1.70)
+
 
 # ---------------------------------------------------------------------------
 # BANE_MODS constants + faction Step 3 integration

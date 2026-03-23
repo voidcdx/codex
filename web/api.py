@@ -335,7 +335,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "modded_damage": modded_dmg_dict,
         "modded_total":  round(modded_total, 4),
         "base_cc":  base_cc,
-        "modded_cc": round(base_cc * (1.0 + total_cc_bonus), 6),
+        "modded_cc": round(base_cc + total_cc_bonus, 6),
         "base_cm":  base_cm,
         "modded_cm": round(base_cm * (1.0 + total_cd_bonus), 6),
         "base_sc":  base_sc,
@@ -427,7 +427,7 @@ def calculate(req: CalcRequest) -> dict:
                   for m in mods if m.galv_kill_stat == "sc_bonus")
 
     base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + galv_cc
-    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + galv_cd
+    base_cm = weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd)
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
     raw_w = _raw_weapons().get(weapon.name, {})
