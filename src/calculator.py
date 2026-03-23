@@ -291,10 +291,14 @@ class DamageCalculator:
 
         all_components = ips_components + elemental_components
 
-        # --- Buff elemental additions (Xata's Whisper, Nourish) ---
+        # --- Buff elemental additions (Nourish adds to current hit; Xata's is separate) ---
+        separate_instance_buffs: list[Buff] = []
         for b in _buffs:
             if b.elemental_type is not None and b.elemental_bonus > 0.0:
-                all_components.append(DamageComponent(b.elemental_type, base_damage * b.elemental_bonus))
+                if b.separate_instance:
+                    separate_instance_buffs.append(b)
+                else:
+                    all_components.append(DamageComponent(b.elemental_type, base_damage * b.elemental_bonus))
 
         # --- Step 1: Apply damage mods → modded base, then quantize ---
         # IPS-specific bonuses (e.g. Rupture +Impact%, Jagged Edge +Slash%) stack additively
@@ -369,6 +373,29 @@ class DamageCalculator:
         viral_mult = VIRAL_STACK_MULTIPLIERS.get(min(viral_stacks, 10), 1.0)
         if viral_mult != 1.0:
             final = {dtype: float(math.floor(v * viral_mult)) for dtype, v in final.items()}
+
+        # --- Separate-instance buffs (Xata's Whisper Void): independent hit ---
+        # Double-dips on faction mods and headshot multiplier.
+        for b in separate_instance_buffs:
+            # Step 1: modded + quantize
+            void_raw = math.floor(base_damage * b.elemental_bonus * (1.0 + total_damage_bonus + co_total + galv_aptitude_total) * combo_mult)
+            void_q = quantize(float(void_raw), base_damage)
+            if void_q == 0.0:
+                continue
+            # Step 2: body part² (headshot double-dip) × crit
+            void_step2 = _wr(void_q * enemy.body_part_multiplier ** 2 * effective_crit)
+            # Step 3: type effectiveness
+            void_step3 = math.floor(void_step2 * self._type_multiplier(b.elemental_type, enemy.faction))
+            # Step 4: Void bypasses armor (no mitigation)
+            # Step 5: faction double-dip — (1 + faction_bonus)²
+            void_step5 = float(math.floor(void_step3 * (1.0 + faction_bonus) ** 2))
+            # Step 5.5: ability damage multiplier (Eclipse)
+            if buff_damage_mult != 1.0:
+                void_step5 = float(math.floor(void_step5 * buff_damage_mult))
+            # Step 6: viral stacks
+            if viral_mult != 1.0:
+                void_step5 = float(math.floor(void_step5 * viral_mult))
+            final[b.elemental_type] = final.get(b.elemental_type, 0.0) + void_step5
 
         # --- Multishot: multiply all damage by projectile count ---
         if multishot != 1.0:
@@ -467,9 +494,9 @@ class DamageCalculator:
         ]
         all_components = ips_components + elemental_components
 
-        # Buff elemental additions (Xata's Whisper, Nourish)
+        # Buff elemental additions (Nourish adds to current hit; Xata's is separate instance — excluded)
         for b in _buffs:
-            if b.elemental_type is not None and b.elemental_bonus > 0.0:
+            if b.elemental_type is not None and b.elemental_bonus > 0.0 and not b.separate_instance:
                 all_components.append(DamageComponent(b.elemental_type, base_damage * b.elemental_bonus))
 
         ips_bonus: dict[DamageType, float] = {}
