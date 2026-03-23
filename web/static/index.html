@@ -1865,11 +1865,13 @@ function addBuffRow() {
   const id = buffRowId++;
   const row = document.createElement('div');
   row.id = 'buff-row-' + id;
-  row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:6px';
+  row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap';
   const opts = BUFF_OPTIONS.map(o => `<option value="${o.key}">${o.label}</option>`).join('');
   row.innerHTML = `<select style="flex:1;min-width:140px">${opts}</select>`
     + `<label style="font-size:12px;color:#aaa">Str%</label>`
     + `<input type="number" value="100" min="1" max="999" style="width:56px" title="Ability Strength %">`
+    + `<label style="font-size:11px;color:#b89d65;cursor:pointer;display:flex;align-items:center;gap:3px" title="Use Helminth (subsumed) reduced base values">`
+    + `<input type="checkbox" class="buff-subsumed" style="accent-color:#b89d65"> Helminth</label>`
     + `<button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;color:#c44;cursor:pointer;font-size:16px" title="Remove buff">&times;</button>`;
   container.appendChild(row);
 }
@@ -1880,8 +1882,11 @@ function getActiveBuffs() {
   rows.forEach(row => {
     const sel = row.querySelector('select');
     const inp = row.querySelector('input[type="number"]');
+    const sub = row.querySelector('.buff-subsumed');
     if (sel && inp) {
-      buffs.push({name: sel.value, strength: (parseFloat(inp.value) || 100) / 100});
+      const b = {name: sel.value, strength: (parseFloat(inp.value) || 100) / 100};
+      if (sub && sub.checked) b.subsumed = true;
+      buffs.push(b);
     }
   });
   return buffs;
