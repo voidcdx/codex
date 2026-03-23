@@ -42,9 +42,13 @@ No logic changes; all 256 pytest tests still pass.
 
 ## Start-of-session checklist for next Claude
 
-> **Ask the user:** "Should I bump the version in `src/version.py` before we start? Current version is `0.2.0`."
+> **Ask the user two things:**
+> 1. "Should I bump the version in `src/version.py`? Current version is `0.2.0`."
+> 2. "Should this session's changes be tracked in the changelog?"
+>
+> Do NOT auto-bump the version or add changelog entries without explicit confirmation.
 
 - [ ] Run `pytest` — confirm 256 passing before touching anything
 - [ ] Check `git log --oneline -5` to orient on recent commits
-- [ ] Ask about version bump (see above)
+- [ ] Ask about version bump and changelog tracking (see above)
 - [ ] If version is bumped, update `CHANGELOG.md` and `CHANGELOG_ENTRIES` in `index.html`
