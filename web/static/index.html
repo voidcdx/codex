@@ -1830,10 +1830,17 @@ function alchModRow(mod, elemField) {
     ${dmgIcon(elemName, 10)}
     <span class="alch-mod-name">${esc(mod.name)}</span>
     ${badge}
+    ${secondaryBadges}
     <span class="alch-mod-pct" style="color:${color}">${pctStr}</span>
     <button class="alch-add-btn" ${disabledAttr} data-mod="${esc(mod.name)}" onclick="addAlchMod(this.dataset.mod)">+</button>
-    ${secondaryBadges ? `<div class="alch-hover-stats">${secondaryBadges}</div>` : ''}
   </div>`;
+}
+
+function getSharedWith(primary, currentElem) {
+  return Object.entries(ALCH_RECIPES)
+    .filter(([c, r]) => c !== currentElem && r.includes(primary))
+    .map(([c]) => c.charAt(0).toUpperCase() + c.slice(1))
+    .join(', ');
 }
 
 function renderAlchSuggestions(elem) {
@@ -1888,12 +1895,16 @@ function renderAlchSuggestions(elem) {
     if (!modsA.length && !modsB.length) {
       html += `<p style="color:var(--text-dim);font-size:12px;text-align:center;padding:12px 0">No primary mods for this weapon type</p>`;
     } else {
+      const sharedA = getSharedWith(recipeA, elem);
+      const sharedB = getSharedWith(recipeB, elem);
       const colA = `<div>
         <div class="alch-col-header" style="color:${colorA}">${dmgIcon(recipeA, 9)} ${recipeA}</div>
+        ${sharedA ? `<div class="alch-shared-note">also: ${sharedA}</div>` : ''}
         ${modsA.length ? modsA.map(m => alchModRow(m, fieldA)).join('') : '<span style="color:var(--text-dim);font-size:11px">—</span>'}
       </div>`;
       const colB = `<div>
         <div class="alch-col-header" style="color:${colorB}">${dmgIcon(recipeB, 9)} ${recipeB}</div>
+        ${sharedB ? `<div class="alch-shared-note">also: ${sharedB}</div>` : ''}
         ${modsB.length ? modsB.map(m => alchModRow(m, fieldB)).join('') : '<span style="color:var(--text-dim);font-size:11px">—</span>'}
       </div>`;
       html += `<div class="alch-pair-cols">${colA}${colB}</div>`;
