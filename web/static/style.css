@@ -252,7 +252,7 @@ select option {
   left: 0;
   right: 0;
   background: var(--surface-solid);
-  border: 1px solid var(--accent);
+  border: 1px solid var(--border);
   border-top: none;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   max-height: 240px;
@@ -1131,7 +1131,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
 
-  .combobox-item { font-size: 16px !important; padding: 8px 10px; }
+  /* Allow vertical scroll inside the dropdown when touching items */
+  .combobox-item { touch-action: pan-y; font-size: 16px !important; padding: 8px 10px; }
 
 }
 @media (max-width: 480px) {
