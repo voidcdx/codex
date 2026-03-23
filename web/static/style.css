@@ -1291,12 +1291,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   max-height: 40px;
   padding: 4px 6px 3px 18px;
 }
-.alch-strip-primary {
-  font-size: 10px;
-  font-weight: 600;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
+
 .alch-mod-name {
   flex: 1;
   font-size: 11px;

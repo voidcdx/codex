@@ -113,6 +113,15 @@ _PRIMARY_ELEM_FIELDS = {
     "toxin": "toxin_pct",
 }
 
+# pct fields consumed by the Alchemy Guide (sort, filter, display)
+_PCT_FIELDS = [
+    "heat_pct", "cold_pct", "electricity_pct", "toxin_pct",
+    "blast_pct", "corrosive_pct", "gas_pct",
+    "magnetic_pct", "radiation_pct", "viral_pct",
+    "status_chance_pct", "damage_bonus_pct", "fire_rate_pct",
+    "crit_damage_pct", "multishot_pct", "reload_speed_pct",
+]
+
 
 @app.get("/api/mods")
 def get_mods() -> list[dict]:
@@ -135,6 +144,7 @@ def get_mods() -> list[dict]:
             "max_rank":        int(entry.get("max_rank") or 5),
             "effect":          entry.get("effect_raw", ""),
             "primary_element": primary_element,
+            **{f: float(entry.get(f) or 0) for f in _PCT_FIELDS},
         })
     return sorted(out, key=lambda x: x["name"])
 
