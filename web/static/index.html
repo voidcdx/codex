@@ -173,6 +173,14 @@
       </div>
     </div>
 
+    <!-- Warframe Buffs -->
+    <div class="panel" style="margin-bottom:16px">
+      <h2 style="display:flex;align-items:center;gap:8px">Warframe Buffs
+        <button type="button" class="btn-add-buff" onclick="addBuffRow()" title="Add ability buff" style="background:none;border:1px solid #b89d65;color:#b89d65;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:13px">+ Add</button>
+      </h2>
+      <div id="buff-rows"></div>
+    </div>
+
     <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
   </div>
 
@@ -1842,6 +1850,50 @@ document.addEventListener('click', e => {
 });
 
 // ---------------------------------------------------------------------------
+// Warframe Buffs
+// ---------------------------------------------------------------------------
+const BUFF_OPTIONS = [
+  {key:'roar',          label:'Roar (Rhino)'},
+  {key:'eclipse',       label:'Eclipse (Mirage)'},
+  {key:'vex_armor',     label:'Vex Armor (Chroma)'},
+  {key:'octavia_amp',   label:'Amp (Octavia)'},
+  {key:'sonar',         label:'Sonar (Banshee)'},
+  {key:'xatas_whisper', label:"Xata's Whisper (Xaku)"},
+  {key:'toxic_lash',    label:'Toxic Lash (Saryn)'},
+  {key:'nourish',       label:'Nourish (Grendel)'},
+  {key:'volt_shield',   label:'Electric Shield (Volt)'},
+  {key:'wisp_haste',    label:'Haste Mote (Wisp)'},
+];
+let buffRowId = 0;
+
+function addBuffRow() {
+  const container = document.getElementById('buff-rows');
+  const id = buffRowId++;
+  const row = document.createElement('div');
+  row.id = 'buff-row-' + id;
+  row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:6px';
+  const opts = BUFF_OPTIONS.map(o => `<option value="${o.key}">${o.label}</option>`).join('');
+  row.innerHTML = `<select style="flex:1;min-width:140px">${opts}</select>`
+    + `<label style="font-size:12px;color:#aaa">Str%</label>`
+    + `<input type="number" value="100" min="1" max="999" style="width:56px" title="Ability Strength %">`
+    + `<button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;color:#c44;cursor:pointer;font-size:16px" title="Remove buff">&times;</button>`;
+  container.appendChild(row);
+}
+
+function getActiveBuffs() {
+  const rows = document.querySelectorAll('#buff-rows > div');
+  const buffs = [];
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const inp = row.querySelector('input[type="number"]');
+    if (sel && inp) {
+      buffs.push({name: sel.value, strength: (parseFloat(inp.value) || 100) / 100});
+    }
+  });
+  return buffs;
+}
+
+// ---------------------------------------------------------------------------
 // Calculate
 // ---------------------------------------------------------------------------
 async function runCalculation() {
@@ -1870,7 +1922,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, ...getBonusElement()}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, buffs: getActiveBuffs(), ...getBonusElement()}),
     });
     const data = await resp.json();
     if (!resp.ok) {
@@ -1917,6 +1969,7 @@ function showResults(data) {
     data.viral_stacks > 0 ? `Viral: ${data.viral_stacks} stacks (×${[1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4.25][data.viral_stacks-1]})` : null,
     data.corrosive_stacks > 0 ? `Corrosive: ${data.corrosive_stacks} stacks (−${Math.min(80, 20 + 6*data.corrosive_stacks)}% armor)` : null,
     data.galvanized_stacks > 0 ? `Galv. Stacks: ${data.galvanized_stacks}` : null,
+    data.buffs && data.buffs.length > 0 ? `Buffs: ${data.buffs.map(b => b.name + (b.strength !== 1 ? ` (${Math.round(b.strength*100)}%)` : '')).join(', ')}` : null,
   ].filter(Boolean).join(' &nbsp;|&nbsp; ');
 
   const _effEnemy = getCurrentEnemy();

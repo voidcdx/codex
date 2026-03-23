@@ -1302,3 +1302,155 @@ class TestStatusChancePerPellet:
         expected_procs = 5 * pp
         assert expected_procs == pytest.approx(0.1812, abs=0.001)
         assert expected_procs > 0.168  # more than raw SC
+
+
+# ---------------------------------------------------------------------------
+# Warframe Buff Tests
+# ---------------------------------------------------------------------------
+from src.models import Buff
+from src.buffs import make_buff
+
+
+class TestRoarBuff:
+    """Roar: faction-type buff, additive with Bane mods, double-dips on procs."""
+
+    def test_roar_basic(self):
+        """Roar +50% should multiply final damage by 1.5 (no Bane).
+
+        Braton + Serration vs Grineer (no armor):
+        Slash without buff = 64.0, with Roar +50%: floor(64 * 1.5) = 96
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar])
+        assert result[DamageType.SLASH] == pytest.approx(96.0)
+
+    def test_roar_additive_with_bane(self):
+        """Roar is additive with Bane mods: (1 + 0.30 + 0.50) = 1.80.
+
+        Slash without faction = 64.0, with Bane + Roar: floor(64 * 1.80) = 115
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        result = calc.calculate(braton(), [serration(), bane_grineer()], grineer_flesh_no_armor(), buffs=[roar])
+        assert result[DamageType.SLASH] == pytest.approx(115.0)
+
+    def test_roar_double_dips_on_slash_proc(self):
+        """Roar double-dips on DoT procs: proc_dmg * (1 + faction_bonus)^2.
+
+        Without buff: slash_dpt = 55.0
+        With Roar 50%: faction_bonus = 0.50, (1+0.5)^2 = 2.25
+        slash_dpt = floor(step2_total * 0.35 * 2.25) = 124.0
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        procs_no = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor())
+        procs_yes = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar])
+        # Roar double-dips: ratio should be ~(1.5)^2 = 2.25
+        ratio = procs_yes["slash"]["damage_per_tick"] / procs_no["slash"]["damage_per_tick"]
+        assert ratio == pytest.approx(2.25, abs=0.05)
+        assert procs_yes["slash"]["damage_per_tick"] == pytest.approx(124.0)
+
+    def test_roar_with_strength(self):
+        """make_buff('roar', 2.0) → 100% damage bonus."""
+        roar = make_buff("roar", 2.0)
+        assert roar.faction_damage_bonus == pytest.approx(1.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar])
+        # floor(64 * 2.0) = 128
+        assert result[DamageType.SLASH] == pytest.approx(128.0)
+
+
+class TestEclipseBuff:
+    """Eclipse: general damage multiplier, multiplicative, no double-dip on procs."""
+
+    def test_eclipse_basic(self):
+        """Eclipse +200%: separate multiplicative step after faction.
+
+        Slash = 64.0 (after faction), eclipse mult = 1+2.0 = 3.0 → floor(64 * 3.0) = 192
+        """
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(192.0)
+
+    def test_eclipse_multiplicative_with_bane(self):
+        """Eclipse × Bane: faction first, then Eclipse multiplies.
+
+        Slash = 64, Bane ×1.30 → floor(64*1.30) = 83, Eclipse ×3.0 → floor(83*3.0) = 249
+        """
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        result = calc.calculate(braton(), [serration(), bane_grineer()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(249.0)
+
+    def test_eclipse_no_double_dip_on_procs(self):
+        """Eclipse applies once to procs (not squared).
+
+        Without eclipse: slash_dpt = 160 * 0.35 * 1.0 = 56.0
+        With eclipse ×3: slash_dpt = 56.0 * 3.0 = 168.0
+        """
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        procs_no = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor())
+        procs_yes = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert procs_yes["slash"]["damage_per_tick"] == pytest.approx(procs_no["slash"]["damage_per_tick"] * 3.0)
+
+
+class TestSonarBuff:
+    """Sonar: multiplies body part multiplier at Step 2."""
+
+    def test_sonar_on_body(self):
+        """Sonar +500% on body (×1 base): combined = 1.0 * (1+5.0) = 6.0.
+
+        Braton Slash modded = 63.75 (quantized), body×6 = round(63.75*6) = round(382.5) = 383
+        Step 3: Slash vs GRINEER ×1.0 → 383
+        Step 4-5: no armor, no faction → 383
+        """
+        sonar = Buff("Sonar", sonar_multiplier=5.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[sonar])
+        assert result[DamageType.SLASH] == pytest.approx(383.0)
+
+
+class TestBuffStacking:
+    """Multiple buffs stack correctly."""
+
+    def test_roar_plus_eclipse(self):
+        """Roar (faction) + Eclipse (multiplicative) stack.
+
+        Slash = 64 (base modded)
+        Step 5: floor(64 * (1 + 0.50)) = floor(64 * 1.5) = 96
+        Step 5.5: floor(96 * (1 + 2.0)) = floor(96 * 3.0) = 288
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar, eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(288.0)
+
+    def test_no_buffs_unchanged(self):
+        """Empty buff list produces same result as no buffs parameter."""
+        result_none = calc.calculate(braton(), [serration()], grineer_flesh_no_armor())
+        result_empty = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[])
+        assert result_none == result_empty
+
+
+class TestMakeBuffPresets:
+    """make_buff() preset factory."""
+
+    def test_all_presets_valid(self):
+        """All preset names produce valid Buff objects."""
+        from src.buffs import BUFF_PRESETS
+        for key in BUFF_PRESETS:
+            b = make_buff(key)
+            assert isinstance(b, Buff)
+            assert b.name  # non-empty name
+
+    def test_unknown_preset_raises(self):
+        with pytest.raises(KeyError):
+            make_buff("nonexistent_ability")
+
+    def test_strength_scaling(self):
+        """Strength multiplier scales the buff values."""
+        r1 = make_buff("roar", 1.0)
+        r2 = make_buff("roar", 2.0)
+        assert r2.faction_damage_bonus == pytest.approx(r1.faction_damage_bonus * 2.0)
+
+    def test_volt_shield_crit_not_scaled(self):
+        """Volt Shield crit damage bonus is flat +2.0, not scaled by strength."""
+        v1 = make_buff("volt_shield", 1.0)
+        v2 = make_buff("volt_shield", 2.0)
+        assert v1.crit_damage_bonus == 2.0
+        assert v2.crit_damage_bonus == 2.0  # same, not doubled

@@ -57,7 +57,7 @@ run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"]
 ```
 
-## 210 Tests Passing
+## 237 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Web UI Notes
@@ -304,6 +304,28 @@ Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mo
 
 ### Known unimplemented data
 - **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare etc. Stack-based bonuses not modelled.
+
+## Warframe Ability Buffs
+
+`src/buffs.py` — preset factory functions for ability buffs. `src/models.py` — `Buff` dataclass.
+
+### Buff Categories & Pipeline Placement
+
+| Category | Abilities | Pipeline Step | Proc Interaction |
+|---|---|---|---|
+| Faction-type | Roar | Step 5 — additive with Bane mods | Double-dips on DoT procs |
+| General multiplier | Eclipse, Vex Armor, Octavia Amp | Step 5.5 — separate multiplicative after faction | No double-dip |
+| Weak point | Sonar | Step 2 — multiplies body part multiplier | Affects proc base (step-2) |
+| Elemental addition | Xata's Whisper (Void), Toxic Lash (Toxin), Nourish (Viral) | Step 1 — adds elemental damage | Adds to modded damage |
+| Weapon stat | Volt Shield (+Electricity, +Crit Dmg), Wisp Haste (+Fire Rate) | Pre-calculation — modifies weapon stats | Indirect |
+
+### Usage
+- **CLI:** `--buff roar` or `--buff roar:1.5` (150% ability strength). Repeat for multiple buffs.
+- **API:** POST body field `buffs: [{name: "roar", strength: 1.5}]` on `/api/calculate`.
+- **Web UI:** "Warframe Buffs" panel with dropdown + ability strength % input. Multiple buffs supported.
+
+### Presets (`src/buffs.py`)
+`roar`, `eclipse`, `vex_armor`, `octavia_amp`, `sonar`, `xatas_whisper`, `toxic_lash`, `nourish`, `volt_shield`, `wisp_haste`
 
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.

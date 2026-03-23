@@ -28,6 +28,7 @@ from pydantic import BaseModel
 
 import math
 from pydantic import Field
+from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
@@ -35,7 +36,7 @@ from src.loader import (
     list_enemies, list_mods, list_weapons,
     load_enemy, load_mod, load_weapon, make_riven_mod,
 )
-from src.models import DamageComponent
+from src.models import Buff, DamageComponent
 from src.quantizer import quantize
 from src.scaling import scale_enemy_stats
 
@@ -150,6 +151,20 @@ def get_enemies() -> list[dict]:
 # ---------------------------------------------------------------------------
 # Calculate endpoint
 # ---------------------------------------------------------------------------
+
+class BuffSpec(BaseModel):
+    name: str            # preset key, e.g. "roar", "eclipse"
+    strength: float = 1.0  # ability strength multiplier (1.0 = 100%)
+
+
+@app.get("/api/buffs")
+def get_buffs() -> list[dict]:
+    """Return available buff presets for the UI."""
+    return [
+        {"key": k, "display_name": BUFF_DISPLAY_NAMES.get(k, k)}
+        for k in BUFF_PRESETS
+    ]
+
 
 class RivenStat(BaseModel):
     stat: str    # e.g. "damage", "crit_chance", "heat"
@@ -358,6 +373,7 @@ class CalcRequest(BaseModel):
     riven:        RivenSpec | None = None
     bonus_element: str | None = None    # "heat" | "cold" | "electricity" | "toxin"
     bonus_element_pct: float = 0.0      # 0.25–0.60
+    buffs:        list[BuffSpec] = []    # Warframe ability buffs
 
 
 @app.post("/api/calculate")
@@ -391,6 +407,14 @@ def calculate(req: CalcRequest) -> dict:
     if req.crit_mode not in ("average", "guaranteed", "max"):
         raise HTTPException(400, f"crit_mode must be average/guaranteed/max")
 
+    # --- Build Buff objects ---
+    buff_objects: list[Buff] = []
+    for bs in req.buffs:
+        try:
+            buff_objects.append(make_buff(bs.name, bs.strength))
+        except KeyError as e:
+            raise HTTPException(400, str(e))
+
     galv_stacks = req.galvanized_stacks
     galv_cc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
                   for m in mods if m.galv_kill_stat == "cc_bonus")
@@ -401,8 +425,12 @@ def calculate(req: CalcRequest) -> dict:
     galv_sc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
                   for m in mods if m.galv_kill_stat == "sc_bonus")
 
+    # Buff pre-calc stat modifications (Volt Shield crit damage, Wisp fire rate)
+    buff_cd_bonus = sum(b.crit_damage_bonus for b in buff_objects)
+    buff_fr_bonus = sum(b.fire_rate_bonus for b in buff_objects)
+
     base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + galv_cc
-    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + galv_cd
+    base_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + galv_cd + buff_cd_bonus
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
     raw_w = _raw_weapons().get(weapon.name, {})
@@ -412,6 +440,7 @@ def calculate(req: CalcRequest) -> dict:
     base_sc     = weapon.status_chance
     total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc
     total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms
+    total_fr_bonus = sum(m.fire_rate_bonus for m in mods) + buff_fr_bonus
     modded_sc   = base_sc * (1.0 + total_sc_bonus)
     modded_ms   = 1.0 + total_ms_bonus
 
@@ -431,6 +460,7 @@ def calculate(req: CalcRequest) -> dict:
         combo_counter=req.combo_counter,
         unique_statuses=req.unique_statuses,
         galvanized_stacks=galv_stacks,
+        buffs=buff_objects,
     )
     procs = calc.calculate_procs(
         weapon=weapon,
@@ -440,10 +470,14 @@ def calculate(req: CalcRequest) -> dict:
         is_crit_headshot=(effective_part != "Body"),
         unique_statuses=req.unique_statuses,
         galvanized_stacks=galv_stacks,
+        buffs=buff_objects,
     )
 
     breakdown = {dtype.name: val for dtype, val in result.items()}
     total = sum(result.values())
+
+    # Modded fire rate includes buff fire rate bonus
+    modded_fr = fire_rate * (1.0 + total_fr_bonus)
 
     return {
         "weapon":        weapon.name,
@@ -455,10 +489,12 @@ def calculate(req: CalcRequest) -> dict:
         "viral_stacks":    req.viral_stacks,
         "corrosive_stacks": req.corrosive_stacks,
         "galvanized_stacks": galv_stacks,
+        "buffs":         [{"name": b.name, "strength": bs.strength} for b, bs in zip(buff_objects, req.buffs)],
         "breakdown":     breakdown,
         "total":         total,
         "procs":         procs,
         "fire_rate":     fire_rate,
+        "modded_fr":     round(modded_fr, 6),
         "magazine":      magazine,
         "reload":        reload_time,
         "modded_sc":     round(modded_sc, 6),

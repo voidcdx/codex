@@ -69,6 +69,30 @@ class Mod:
 
 
 @dataclass
+class Buff:
+    """Warframe ability buff applied during damage calculation.
+
+    Each buff category applies at a different pipeline step:
+    - faction_damage_bonus: Step 5, additive with Bane mods, double-dips on procs (Roar)
+    - damage_multiplier: Step 5.5, separate multiplicative, no double-dip (Eclipse, Vex Armor)
+    - sonar_multiplier: Step 2, multiplies body part multiplier (Sonar)
+    - elemental_type/bonus: Step 1, adds elemental damage as fraction of base (Xata's Whisper)
+    - crit_damage_bonus: pre-calc, added to crit multiplier (Volt Shield)
+    - electricity_bonus: Step 1, adds Electricity damage as fraction of base (Volt Shield)
+    - fire_rate_bonus: pre-calc, added to fire rate multiplier (Wisp Haste)
+    """
+    name: str
+    faction_damage_bonus: float = 0.0   # additive with Bane mods (Roar)
+    damage_multiplier: float = 0.0      # multiplicative step (Eclipse, Vex Armor, Octavia)
+    sonar_multiplier: float = 0.0       # multiplies body part (Sonar)
+    elemental_type: DamageType | None = None  # element to add (Xata's, Toxic Lash, Nourish)
+    elemental_bonus: float = 0.0        # fraction of base damage
+    crit_damage_bonus: float = 0.0      # flat crit damage addition (Volt Shield)
+    electricity_bonus: float = 0.0      # fraction of base damage as Electricity (Volt Shield)
+    fire_rate_bonus: float = 0.0        # additive fire rate bonus (Wisp Haste)
+
+
+@dataclass
 class Enemy:
     name: str
     faction: FactionType
