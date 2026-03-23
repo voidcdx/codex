@@ -48,6 +48,7 @@ class Mod:
     name: str
     damage_bonus: float = 0.0                     # additive, e.g. 1.65 for Serration
     elemental_bonuses: list[DamageComponent] = field(default_factory=list)
+    ips_bonuses: list[DamageComponent] = field(default_factory=list)  # per-IPS-type % bonus (Impact/Puncture/Slash)
     faction_bonus: float = 0.0
     faction_type: FactionType | None = None        # Python 3.10+ union syntax
     cc_bonus: float = 0.0                         # additive crit chance, e.g. 1.5 for Point Strike

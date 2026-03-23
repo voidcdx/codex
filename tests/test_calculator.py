@@ -1191,3 +1191,51 @@ class TestBonusElement:
         enemy = Enemy("Test", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
         result = calc.calculate(weapon, [], enemy)
         assert DamageType.HEAT not in result
+
+
+# ---------------------------------------------------------------------------
+# IPS mod buffs — per-type bonus (Rupture, Piercing Hit, Jagged Edge etc.)
+# ---------------------------------------------------------------------------
+class TestIPSModBuffs:
+    def _ips_weapon(self) -> Weapon:
+        """Weapon with 30 Impact + 30 Puncture + 30 Slash (total=90)."""
+        return Weapon(
+            name="Test IPS",
+            base_damage={
+                DamageType.IMPACT:   30.0,
+                DamageType.PUNCTURE: 30.0,
+                DamageType.SLASH:    30.0,
+            },
+        )
+
+    def _no_armor_enemy(self) -> Enemy:
+        return Enemy("Target", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+
+    def test_impact_mod_only_boosts_impact(self):
+        """A mod with +120% Impact should boost Impact only; Puncture/Slash unchanged.
+
+        base_damage=90, scale=90/32=2.8125
+        Impact with +120%: floor(30*(1+1.2))=66; quantize→64.6875; Step2 round→65
+        Puncture/Slash no bonus: floor(30*1.0)=30; quantize→30.9375; Step2 round→31
+        """
+        mod = Mod(name="Rupture", ips_bonuses=[DamageComponent(DamageType.IMPACT, 1.2)])
+        result = calc.calculate(self._ips_weapon(), [mod], self._no_armor_enemy())
+        assert result[DamageType.IMPACT]   == pytest.approx(65.0)
+        assert result[DamageType.PUNCTURE] == pytest.approx(31.0)
+        assert result[DamageType.SLASH]    == pytest.approx(31.0)
+
+    def test_ips_and_damage_mod_stack_additively(self):
+        """General damage mod + IPS mod stack additively for the matching type only.
+
+        base_damage=90, scale=2.8125
+        Serration +165%, Puncture mod +120%:
+          Impact:   floor(30*(1+1.65))=79; quantize→78.75; Step2 round→79
+          Puncture: floor(30*(1+1.65+1.2))=floor(115.5)=115; quantize→115.3125; Step2 round→115
+          Slash:    floor(30*(1+1.65))=79; quantize→78.75; Step2 round→79
+        """
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        piercing  = Mod(name="Piercing Hit", ips_bonuses=[DamageComponent(DamageType.PUNCTURE, 1.2)])
+        result = calc.calculate(self._ips_weapon(), [serration, piercing], self._no_armor_enemy())
+        assert result[DamageType.IMPACT]   == pytest.approx(79.0)
+        assert result[DamageType.PUNCTURE] == pytest.approx(115.0)
+        assert result[DamageType.SLASH]    == pytest.approx(79.0)
