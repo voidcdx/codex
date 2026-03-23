@@ -221,27 +221,6 @@
             <li><strong>Kill Time section</strong> — shots to kill, burst TTK, and sustained TTK based on the scaled enemy HP at the selected level.</li>
           </ul>
 
-          <h3>CLI Reference</h3>
-          <p>Run <code>python -m dc "Weapon" [Mods…] vs "Enemy" [flags]</code></p>
-          <table>
-            <tr><th>Flag</th><th>Description</th></tr>
-            <tr><td><code>--crit average|guaranteed|max</code></td><td>Crit calculation mode (default: average)</td></tr>
-            <tr><td><code>--body-part NAME</code></td><td>Target body part (default: Body)</td></tr>
-            <tr><td><code>--headshot</code></td><td>Shortcut for --body-part Head</td></tr>
-            <tr><td><code>--attack NAME</code></td><td>Attack mode for multi-attack weapons</td></tr>
-            <tr><td><code>--viral N</code></td><td>Viral stacks 0–10</td></tr>
-            <tr><td><code>--corrosive N</code></td><td>Corrosive stacks 0–10</td></tr>
-            <tr><td><code>--combo N</code></td><td>Melee combo hit count</td></tr>
-            <tr><td><code>--statuses N</code></td><td>Unique status types for Condition Overload</td></tr>
-            <tr><td><code>--procs</code></td><td>Show status proc damage and DPS</td></tr>
-            <tr><td><code>--riven "stat:val,..."</code></td><td>Riven stats as decimal fractions (e.g. <code>damage:0.66,crit_chance:0.47</code>)</td></tr>
-            <tr><td><code>--bonus-element heat:50</code></td><td>Kuva/Tenet bonus element and % </td></tr>
-            <tr><td><code>--buff roar[:strength[:s]]</code></td><td>Warframe buff. Presets: roar, eclipse, xatas_whisper, nourish. Optional strength (1.0=100%) and <code>:s</code> for Helminth.</td></tr>
-            <tr><td><code>--list-weapons / --list-mods / --list-enemies</code></td><td>Print all available names</td></tr>
-            <tr><td><code>--list-attacks "Weapon"</code></td><td>List attack modes for a weapon</td></tr>
-            <tr><td><code>--list-body-parts "Enemy"</code></td><td>List body parts and multipliers</td></tr>
-          </table>
-
         </div>
       </div>
     </div>
