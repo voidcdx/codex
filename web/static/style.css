@@ -1033,38 +1033,47 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-select {
   flex: 1;
   min-width: 0;
-  height: 30px;
-  padding: 0 8px;
-  background: var(--surface);
+  padding: 3px;
+  background: var(--surface-solid);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
+  border-radius: var(--radius-sm);
+  color: var(--text-field);
   font-size: 12px;
+  -webkit-appearance: none;
   appearance: none;
   box-sizing: border-box;
   cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .riven-stat-select:focus {
   outline: none;
   border-color: rgba(155, 109, 208, 0.7);
+  box-shadow: 0 0 0 2px var(--riven-glow);
+}
+.riven-stat-select option {
+  background: var(--surface-solid);
+  color: var(--text-field);
 }
 .riven-stat-input {
   flex: 0 0 56px;
   width: 56px;
-  height: 30px;
-  padding: 0 8px;
-  background: var(--surface);
+  padding: 3px;
+  background: var(--surface-solid);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
+  border-radius: var(--radius-sm);
+  color: var(--text-field);
   font-size: 12px;
   text-align: center;
   box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
   -moz-appearance: textfield;
 }
 .riven-stat-input:focus {
   outline: none;
   border-color: rgba(155, 109, 208, 0.7);
+  box-shadow: 0 0 0 2px var(--riven-glow);
 }
 .riven-stat-input::-webkit-inner-spin-button,
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
