@@ -967,9 +967,11 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: rgba(14, 10, 22, 0.6);
+  background: var(--surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid rgba(155, 109, 208, 0.25);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   animation: fadeIn 0.2s ease;
 }
 .riven-fullgrid-header {
@@ -997,20 +999,21 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  height: 32px;
 }
 .riven-stat-btn {
   flex: 1;
   min-width: 0;
-  height: 34px;
-  padding: 0 8px;
+  height: 32px;
+  padding: 3px 8px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-dim);
   font-family: inherit;
   font-size: 13px;
-  line-height: 32px;
+  line-height: 1;
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
@@ -1056,15 +1059,15 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-input {
   flex: 0 0 56px;
   width: 56px;
-  height: 34px;
-  padding: 0 6px;
+  height: 32px;
+  padding: 3px 6px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
   font-family: inherit;
   font-size: 13px;
-  line-height: 32px;
+  line-height: 1;
   text-align: center;
   -webkit-appearance: none;
   appearance: none;
@@ -1081,15 +1084,17 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .riven-row-clear {
   flex: 0 0 24px;
-  height: 34px;
+  width: 24px;
+  height: 32px;
   padding: 0;
   background: none;
   border: none;
   color: var(--text-muted);
   font-size: 16px;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center;
   transition: color 0.15s;
+  line-height: 1;
 }
 .riven-row-clear:hover { color: var(--bad); }
 
