@@ -183,7 +183,7 @@ select, input[type=text], input[type=number] {
   color: var(--text-field);
   -webkit-appearance: none;
   appearance: none;
-  padding: 4px;
+  padding: 3px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 8px;
@@ -229,7 +229,7 @@ select option {
   background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text-field);
-  padding: 4px;
+  padding: 3px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 6px;
@@ -252,8 +252,10 @@ select option {
   top: 100%;
   left: 0;
   right: 0;
-  background: var(--surface-solid);
-  border: 1px solid var(--border);
+  background: rgba(10, 12, 22, 0.82);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid var(--border-highlight);
   border-top: none;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   max-height: 240px;
@@ -261,11 +263,11 @@ select option {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   z-index: 100;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 .combobox-dropdown.open { display: block; }
 .combobox-item {
-  padding: 4px;
+  padding: 5px;
   cursor: pointer;
   font-size: 12px;
   color: var(--text-field);
@@ -538,7 +540,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-field);
-  padding: 4px;
+  padding: 3px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   outline: none;
@@ -554,7 +556,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   padding: 4px 0;
 }
 .mod-picker-item {
-  padding: 4px;
+  padding: 3px;
   cursor: pointer;
   font-size: 13px;
   color: var(--text-field);
@@ -587,7 +589,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 4px;
+  padding: 3px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -633,7 +635,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: block;
 }
 .custom-select-option {
-  padding: 4px;
+  padding: 3px;
   font-size: 12px;
   color: var(--text-field);
   cursor: pointer;
@@ -1208,13 +1210,13 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .riven-stat-select,
   .riven-stat-input,
   .custom-select-btn,
-  .custom-select-option { font-size: 16px !important; padding: 4px !important; }
+  .custom-select-option { font-size: 16px !important; padding: 3px !important; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
 
   /* Allow vertical scroll inside the dropdown when touching items */
-  .combobox-item { touch-action: pan-y; font-size: 16px !important; padding: 4px; }
+  .combobox-item { touch-action: pan-y; font-size: 16px !important; padding: 5px; }
 
 }
 @media (max-width: 480px) {
