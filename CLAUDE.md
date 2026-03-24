@@ -77,7 +77,7 @@ handoff.md          # session handoff notes for next Claude instance
 ## Versioning
 `src/version.py` is the single source of truth:
 ```python
-APP_VERSION       = "0.2.1"          # semver — bump before shipping features
+APP_VERSION       = "0.2.2"          # semver — bump before shipping features
 GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are refreshed
 ```
 - `GET /api/version` returns `{"app": APP_VERSION, "game_data": GAME_DATA_VERSION}`
@@ -116,6 +116,8 @@ Melee-only mechanic. `onWeaponChange()` hides `#combo-div` and resets to tier 1 
 
 ### Input / Focus Styling
 All inputs (`input[type=number]`, `input[type=text]`, `select`) and search boxes (`.search-input`, `.mod-picker-search`) share the same base style: `var(--surface-solid)` background, `var(--border)` border. On `:focus`, border becomes `rgba(255,255,255,0.25)` with a faint `rgba(255,255,255,0.06)` glow — **not** `var(--accent)` (gold). Riven modal inputs (`.riven-stat-select`, `.riven-stat-input`) keep their purple focus (`rgba(155,109,208,0.7)`) intentionally.
+
+**Text colours:** `--text-field: #8888a4` (blue-gray) for all input/field/dropdown text. `--text-dim: #777788` for placeholders. Do NOT use `--border-highlight` (gold) on combobox dropdowns or modal borders — it was intentionally removed. Gold border (`--border-highlight`) stays on `.panel:hover` and `.stat-block:hover` only.
 
 ### Galvanized Stacks
 `#galv-stacks` input (range 0–5, default 0). Shown in the mod panel whenever any equipped mod has `galv_kill_stat` set. Sent as `galvanized_stacks: int` in POST bodies to `/api/calculate` and `/api/modded-weapon`. The server caps effective stacks per-mod via `galv_max_stacks`.
