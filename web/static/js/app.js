@@ -23,6 +23,7 @@ async function loadData() {
       return w?.image ? `/static/images/weapons/${w.image}` : '';
     }
   );
+  weaponCombo.set('Acceltra');
 
   const HIDDEN_ENEMY_NAMES = new Set([
     'Explosive Barrel', 'Storage Container', '[Wiki Dummy]',
