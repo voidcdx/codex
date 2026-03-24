@@ -80,6 +80,7 @@ function renderModCards() {
 }
 
 function initSortable() {
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
   const grid = document.getElementById('mod-grid');
   if (_sortableInstance) _sortableInstance.destroy();
   _sortableInstance = new Sortable(grid, {

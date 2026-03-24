@@ -458,6 +458,9 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .mod-card:hover .mod-clear { opacity: 1; }
 .mod-card .mod-clear:hover { color: var(--bad); }
+@media (hover: none) {
+  .mod-card .mod-clear { opacity: 1; font-size: 14px; padding: 4px; }
+}
 .mod-card .mod-polarity {
   position: absolute;
   top: 5px;
