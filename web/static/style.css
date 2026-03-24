@@ -954,44 +954,63 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-card-stats { display: flex; flex-direction: column; gap: 1px; margin-top: 3px; }
 .riven-card-stat { font-size: 9px; color: var(--good); line-height: 1.4; }
 
-/* ── Riven Inline Editor (in mod grid) ────────────────── */
-.riven-inline-editor {
-  cursor: default !important;
-  padding: 8px !important;
-  min-height: auto !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
+/* ── Riven Full-Grid Editor ───────────────────────────── */
+.riven-editor-mode {
+  display: flex !important;
+  justify-content: center;
+  align-items: flex-start;
 }
-.riven-inline-header {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 4px;
-}
-.riven-inline-rows {
+.riven-fullgrid {
+  width: 320px;
+  max-width: 100%;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
+  background: rgba(14, 10, 22, 0.6);
+  border: 1px solid rgba(155, 109, 208, 0.25);
+  border-radius: var(--radius-sm);
+  animation: fadeIn 0.2s ease;
+}
+.riven-fullgrid-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.riven-fullgrid-title {
+  color: var(--riven);
+  font-size: 16px;
+  font-weight: 600;
+}
+.riven-fullgrid-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.riven-fullgrid-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 /* Stat rows */
 .riven-stat-row {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 .riven-stat-btn {
   flex: 1;
   min-width: 0;
-  height: 26px;
-  padding: 0 4px;
+  height: 34px;
+  padding: 0 8px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-dim);
   font-family: inherit;
-  font-size: 10px;
-  line-height: 24px;
+  font-size: 13px;
+  line-height: 32px;
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
@@ -1012,9 +1031,9 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-btn .arrow {
   margin-left: auto;
   opacity: 0.4;
-  font-size: 8px;
+  font-size: 10px;
   flex-shrink: 0;
-  padding-left: 4px;
+  padding-left: 6px;
 }
 .riven-portal-dropdown {
   display: none;
@@ -1031,21 +1050,21 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 .riven-portal-dropdown.open { display: block; }
-.riven-portal-dropdown .combobox-item { padding: 5px 8px; font-size: 12px; }
+.riven-portal-dropdown .combobox-item { padding: 5px 8px; }
 .riven-portal-dropdown .combobox-item:hover { background: rgba(255, 255, 255, 0.08); }
 .riven-portal-dropdown .combobox-item.selected { color: var(--text); }
 .riven-stat-input {
-  flex: 0 0 40px;
-  width: 40px;
-  height: 26px;
-  padding: 0 3px;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 34px;
+  padding: 0 6px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
   font-family: inherit;
-  font-size: 10px;
-  line-height: 24px;
+  font-size: 13px;
+  line-height: 32px;
   text-align: center;
   -webkit-appearance: none;
   appearance: none;
@@ -1061,29 +1080,28 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-input::-webkit-inner-spin-button,
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .riven-row-clear {
-  flex: 0 0 18px;
-  height: 26px;
+  flex: 0 0 24px;
+  height: 34px;
   padding: 0;
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 16px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: color 0.15s;
 }
 .riven-row-clear:hover { color: var(--bad); }
 
-/* Action buttons — compact for inline card */
-.riven-btn-row-inline { display: flex; gap: 4px; margin-top: 4px; }
+/* Action buttons */
 .btn-riven-apply {
   flex: 1;
-  height: 26px;
+  height: 36px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--text);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
@@ -1091,12 +1109,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .btn-riven-apply:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.25); }
 .btn-riven-reset {
   flex: 1;
-  height: 26px;
+  height: 36px;
   background: none;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--text-muted);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
