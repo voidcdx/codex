@@ -13,6 +13,7 @@
   --accent2: #e8b923;
   --accent-glow: rgba(232, 185, 35, 0.15);
   --text: #e0e0e8;
+  --text-field: #deded6;
   --text-dim: #777788;
   --good: #4caf50;
   --bad: #f44336;
@@ -179,7 +180,7 @@ select, input[type=text], input[type=number] {
   width: 100%;
   background: var(--surface-solid);
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--text-field);
   -webkit-appearance: none;
   appearance: none;
   padding: 4px 7px;
@@ -227,7 +228,7 @@ select option {
   width: 100%;
   background: var(--surface-solid);
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--text-field);
   padding: 4px 7px;
   border-radius: var(--radius-sm);
   font-size: 12px;
@@ -267,7 +268,7 @@ select option {
   padding: 5px 8px;
   cursor: pointer;
   font-size: 12px;
-  color: var(--text);
+  color: var(--text-field);
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 .combobox-item:hover, .combobox-item.active {
@@ -536,7 +537,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--text-field);
   padding: 4px 7px;
   border-radius: var(--radius-sm);
   font-size: 12px;
@@ -590,7 +591,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  color: var(--text);
+  color: var(--text-field);
   font-size: 12px;
   cursor: pointer;
   white-space: nowrap;
@@ -634,7 +635,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .custom-select-option {
   padding: 5px 10px;
   font-size: 12px;
-  color: var(--text);
+  color: var(--text-field);
   cursor: pointer;
   transition: background 0.1s;
 }
