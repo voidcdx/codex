@@ -180,6 +180,7 @@ document.getElementById('riven-picker-overlay').classList.add('active');
 }
 
 function closeRivenBuilder() {
+  closeRivenDropdown();
   document.getElementById('riven-picker-overlay').classList.remove('active');
   document.body.style.overflow = '';
 }
@@ -223,14 +224,13 @@ function onRivenDraftChange(i, field, value) {
 function renderRivenRows() {
   const container = document.getElementById('riven-rows');
   container.innerHTML = rivenDraft.map((s, i) => {
+    const sel = RIVEN_STAT_OPTIONS.find(o => o.value === s.stat);
+    const label = sel ? sel.label : '\u2014 Select stat \u2014';
     return `
     <div class="riven-stat-row${s.stat ? ' has-value' : ''}">
-      <select class="riven-stat-select" onchange="onRivenDraftChange(${i},'stat',this.value);this.closest('.riven-stat-row').classList.toggle('has-value',!!this.value)">
-        <option value="">— Select stat —</option>
-        ${RIVEN_STAT_OPTIONS.map(o =>
-          `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
-        ).join('')}
-      </select>
+      <button type="button" class="riven-stat-btn" data-idx="${i}" onclick="toggleRivenDropdown(${i})">
+        <span>${esc(label)}</span><span class="arrow">&#9662;</span>
+      </button>
       <input type="number" class="riven-stat-input" step="0.1" value="${s.pct || ''}"
         placeholder="0" min="-999" max="9999"
         onchange="onRivenDraftChange(${i},'pct',this.value)"
@@ -238,6 +238,73 @@ function renderRivenRows() {
       <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">\u00d7</button>
     </div>`;
   }).join('');
+}
+
+// Portal dropdown — lives on <body>, positioned via getBoundingClientRect
+let _rivenDropdown = null;
+function _ensureRivenDropdown() {
+  if (_rivenDropdown) return _rivenDropdown;
+  _rivenDropdown = document.createElement('div');
+  _rivenDropdown.className = 'riven-portal-dropdown';
+  document.body.appendChild(_rivenDropdown);
+
+  _rivenDropdown.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const item = e.target.closest('.combobox-item');
+    if (item) _pickRivenPortal(item);
+  });
+  let _ty = 0;
+  _rivenDropdown.addEventListener('touchstart', e => { _ty = e.touches[0].clientY; }, { passive: true });
+  _rivenDropdown.addEventListener('touchend', e => {
+    const item = e.target.closest('.combobox-item');
+    if (item && Math.abs(e.changedTouches[0].clientY - _ty) < 10) {
+      e.preventDefault();
+      _pickRivenPortal(item);
+    }
+  });
+
+  document.addEventListener('mousedown', e => {
+    if (!_rivenDropdown.contains(e.target) && !e.target.closest('.riven-stat-btn'))
+      closeRivenDropdown();
+  });
+  return _rivenDropdown;
+}
+
+let _rivenDDIdx = -1;
+function toggleRivenDropdown(idx) {
+  const dd = _ensureRivenDropdown();
+  if (dd.classList.contains('open') && _rivenDDIdx === idx) {
+    closeRivenDropdown();
+    return;
+  }
+  _rivenDDIdx = idx;
+  const btn = document.querySelector(`.riven-stat-btn[data-idx="${idx}"]`);
+  const r = btn.getBoundingClientRect();
+  const cur = rivenDraft[idx].stat;
+
+  dd.innerHTML = RIVEN_STAT_OPTIONS.map(o =>
+    `<div class="combobox-item${o.value === cur ? ' selected' : ''}" data-value="${esc(o.value)}">${esc(o.label)}</div>`
+  ).join('');
+
+  dd.style.top = r.bottom + 'px';
+  dd.style.left = r.left + 'px';
+  dd.style.width = r.width + 'px';
+  dd.classList.add('open');
+}
+
+function closeRivenDropdown() {
+  if (_rivenDropdown) _rivenDropdown.classList.remove('open');
+  _rivenDDIdx = -1;
+}
+
+function _pickRivenPortal(item) {
+  const value = item.dataset.value;
+  onRivenDraftChange(_rivenDDIdx, 'stat', value);
+  const btn = document.querySelector(`.riven-stat-btn[data-idx="${_rivenDDIdx}"]`);
+  const sel = RIVEN_STAT_OPTIONS.find(o => o.value === value);
+  btn.querySelector('span').textContent = sel ? sel.label : '\u2014 Select stat \u2014';
+  btn.closest('.riven-stat-row').classList.toggle('has-value', !!value);
+  closeRivenDropdown();
 }
 
 function clearRivenRow(i) {
