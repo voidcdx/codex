@@ -40,6 +40,7 @@ tests/
   test_quantization.py
   test_arcanes.py
   test_combiner.py
+  test_co_curve.py    # Condition Overload curve: presence, monotonic increase, consistency
   test_loader.py
   test_calculator.py  # M7–M13 + TestCCProcs: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
   test_scaling.py     # enemy level scaling: health/shield/armor/overguard per faction
