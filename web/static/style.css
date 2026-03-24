@@ -146,7 +146,7 @@ header::after {
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 18px;
+  padding: 14px;
   transition: border-color 0.2s;
 }
 .panel:hover {
@@ -158,7 +158,7 @@ header::after {
   letter-spacing: 0.1em;
   color: var(--accent);
   margin-bottom: 14px;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -182,7 +182,7 @@ select, input[type=text], input[type=number] {
   color: var(--text);
   -webkit-appearance: none;
   appearance: none;
-  padding: 5px 8px;
+  padding: 4px 7px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 8px;
@@ -228,7 +228,7 @@ select option {
   background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text);
-  padding: 5px 8px;
+  padding: 4px 7px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 6px;
@@ -264,7 +264,7 @@ select option {
 }
 .combobox-dropdown.open { display: block; }
 .combobox-item {
-  padding: 6px 10px;
+  padding: 5px 8px;
   cursor: pointer;
   font-size: 12px;
   color: var(--text);
@@ -275,7 +275,7 @@ select option {
   color: var(--accent);
 }
 .combobox-img { width: 22px; height: 22px; object-fit: contain; vertical-align: middle; margin-right: 6px; border-radius: 3px; }
-.combobox-hint { padding: 6px 10px; font-size: 11px; color: var(--text-dim); text-align: center; }
+.combobox-hint { padding: 4px 8px; font-size: 11px; color: var(--text-dim); text-align: center; }
 
 /* ── Enemy Level Controls ───────────────────────────── */
 .enemy-level-row {
@@ -287,7 +287,7 @@ select option {
 }
 .enemy-level-row label { font-size: 11px; color: var(--text-dim); margin-bottom: 2px; }
 .toggle-btn {
-  padding: 5px 10px;
+  padding: 4px 8px;
   font-size: 12px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
@@ -522,7 +522,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 .mod-picker-header {
-  padding: 14px 16px 10px;
+  padding: 10px 14px 8px;
   border-bottom: 1px solid var(--border);
 }
 .mod-picker-header h3 {
@@ -537,7 +537,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text);
-  padding: 5px 8px;
+  padding: 4px 7px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   outline: none;
@@ -550,10 +550,10 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .mod-picker-list {
   overflow-y: auto;
   flex: 1;
-  padding: 6px 0;
+  padding: 4px 0;
 }
 .mod-picker-item {
-  padding: 8px 16px;
+  padding: 6px 12px;
   cursor: pointer;
   font-size: 13px;
   color: var(--text);
@@ -586,12 +586,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 10px;
+  padding: 4px 8px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   white-space: nowrap;
   backdrop-filter: blur(12px);
@@ -632,8 +632,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: block;
 }
 .custom-select-option {
-  padding: 7px 12px;
-  font-size: 13px;
+  padding: 5px 10px;
+  font-size: 12px;
   color: var(--text);
   cursor: pointer;
   transition: background 0.1s;
@@ -736,7 +736,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   margin: 8px 0 10px;
 }
 .attack-tab {
-  padding: 3px 10px;
+  padding: 3px 8px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--surface2);
@@ -759,7 +759,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 8px 10px;
+  padding: 6px 8px;
   min-width: 0;
   transition: border-color 0.2s;
 }
@@ -809,7 +809,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   border-collapse: collapse;
 }
 .breakdown-table th, .breakdown-table td {
-  padding: 7px 10px;
+  padding: 5px 8px;
   text-align: left;
   font-size: 13px;
   overflow-wrap: break-word;
@@ -995,7 +995,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 /* Right column — controls */
 .riven-modal-right {
   flex: 1;
-  padding: 28px 24px 22px;
+  padding: 22px 20px 18px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1205,7 +1205,9 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .search-input,
   .mod-picker-search,
   .riven-stat-select,
-  .riven-stat-input { font-size: 16px !important; padding: 5px 8px !important; }
+  .riven-stat-input,
+  .custom-select-btn,
+  .custom-select-option { font-size: 16px !important; padding: 5px 8px !important; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
@@ -1222,7 +1224,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     gap: 6px;
   }
   .mod-card { min-height: 72px; }
-  .riven-stat-select { font-size: 13px !important; }
+
 }
 @media (max-width: 520px) {
   .mod-picker-overlay { align-items: flex-end; }
@@ -1250,7 +1252,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   -webkit-backdrop-filter: blur(22px) saturate(1.3);
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 14px;
-  padding: 20px 22px 22px;
+  padding: 16px 18px 18px;
   width: 560px;
   max-width: 95vw;
   max-height: 82vh;
@@ -1365,7 +1367,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 5px 6px;
+  padding: 4px 5px;
   border-radius: 6px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.04);
@@ -1468,7 +1470,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 22px 24px 16px;
+  padding: 18px 22px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   position: sticky;
   top: 0;
@@ -1481,7 +1483,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .guide-modal-body {
   overflow-y: auto;
-  padding: 20px 28px 32px;
+  padding: 16px 24px 28px;
   flex: 1;
 }
 .guide-modal-title {
@@ -1579,7 +1581,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 22px 24px 16px;
+  padding: 18px 22px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   position: sticky;
   top: 0;
@@ -1607,7 +1609,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
-  padding: 20px 28px 32px;
+  padding: 16px 24px 28px;
   flex: 1;
 }
 .changelog-entry {
@@ -1655,8 +1657,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 
 /* Guide modal — responsive */
 @media (max-width: 768px) {
-  .guide-modal-header { padding: 16px 16px 12px; }
-  .guide-modal-body { padding: 16px 14px 24px; }
+  .guide-modal-header { padding: 14px 14px 10px; }
+  .guide-modal-body { padding: 12px 12px 20px; }
   .guide-content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .guide-content td, .guide-content th { padding: 5px 8px; }
 }
@@ -1671,19 +1673,19 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     border-right: none;
     border-bottom: none;
   }
-  .guide-modal-header { border-radius: 14px 14px 0 0; padding: 14px 14px 12px; }
-  .guide-modal-body { padding: 14px 12px 28px; }
+  .guide-modal-header { border-radius: 14px 14px 0 0; padding: 12px 12px 10px; }
+  .guide-modal-body { padding: 10px 10px 24px; }
   .guide-modal-title { font-size: 15px; }
   .guide-content h3 { margin-top: 18px; }
   .guide-content td:first-child { white-space: normal; }
 }
 @media (max-width: 520px) {
-  .alchemy-modal { padding: 14px 12px 16px; }
+  .alchemy-modal { padding: 12px 10px 14px; }
   .alch-pair-cols { grid-template-columns: 1fr; gap: 0; }
 }
 @media (max-width: 768px) {
-  .changelog-modal-header { padding: 16px 16px 12px; }
-  .changelog-modal-body { padding: 16px 14px 24px; }
+  .changelog-modal-header { padding: 14px 14px 10px; }
+  .changelog-modal-body { padding: 12px 12px 20px; }
 }
 @media (max-width: 520px) {
   #changelog-overlay { align-items: flex-end; }
@@ -1696,7 +1698,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     border-right: none;
     border-bottom: none;
   }
-  .changelog-modal-header { border-radius: 14px 14px 0 0; padding: 14px 14px 12px; }
-  .changelog-modal-body { padding: 14px 12px 28px; }
+  .changelog-modal-header { border-radius: 14px 14px 0 0; padding: 12px 12px 10px; }
+  .changelog-modal-body { padding: 10px 10px 24px; }
   .changelog-modal-title { font-size: 15px; }
 }
