@@ -192,7 +192,7 @@ select, input[type=text], input[type=number] {
   color: var(--text-field);
   -webkit-appearance: none;
   appearance: none;
-  padding: 3px;
+  padding: 4px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 8px;
@@ -238,7 +238,7 @@ select option {
   background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text-field);
-  padding: 3px;
+  padding: 4px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 6px;
@@ -549,7 +549,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-field);
-  padding: 3px;
+  padding: 4px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   outline: none;
@@ -565,7 +565,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   padding: 4px 0;
 }
 .mod-picker-item {
-  padding: 3px;
+  padding: 4px;
   cursor: pointer;
   font-size: 13px;
   color: var(--text-field);
@@ -598,7 +598,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 3px;
+  padding: 4px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -644,7 +644,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: block;
 }
 .custom-select-option {
-  padding: 3px;
+  padding: 4px;
   font-size: 12px;
   color: var(--text-field);
   cursor: pointer;
@@ -1238,7 +1238,7 @@ input[type=number].riven-stat-input:focus {
   .search-input,
   .mod-picker-search,
   .custom-select-btn,
-  .custom-select-option { font-size: 16px !important; padding: 3px !important; }
+  .custom-select-option { font-size: 16px !important; padding: 4px !important; }
   /* Riven builder — compact for mobile */
   .riven-fullgrid { padding: 12px; gap: 8px; }
   .riven-fullgrid-rows { gap: 6px; }
