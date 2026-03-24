@@ -200,6 +200,15 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.3.1',
+    date: '2026-03-24',
+    sections: [
+      { heading: 'Added', items: [
+        'Condition Overload scaling curve in calculation results \u2014 shows damage at 0\u201310 unique statuses with bar chart and % increase',
+      ]},
+    ],
+  },
+  {
     version: '0.3.0',
     date: '2026-03-24',
     sections: [

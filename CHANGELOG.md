@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.1] — 2026-03-24
+
+### Added
+- Condition Overload scaling curve in calculation results — shows damage at 0–10 unique statuses with bar chart and % increase
+
 ## [0.3.0] — 2026-03-24
 
 ### Added
