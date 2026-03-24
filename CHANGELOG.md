@@ -4,10 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.2.3] — 2026-03-24
+## [0.3.0] — 2026-03-24
 
 ### Added
-- Weapon Arcane support (Merciless, Deadhead, Dexterity, Cascadia) — stack-based bonuses across CLI, API, and Web UI
+- Weapon Arcane support — 11 arcane presets (Merciless, Deadhead, Dexterity, Cascadia variants) with per-arcane stack counts, weapon slot filtering, and full damage pipeline integration
+- Arcane panel in Web UI with dropdown filtered by weapon type, stacks input, and max 2 slots
+- `--arcane NAME:STACKS` CLI flag (repeatable, max 2)
+- `GET /api/arcanes` endpoint returning available presets with display names, max stacks, and restrictions
+- `arcanes` field on `/api/calculate` and `/api/modded-weapon` POST endpoints
+- Cascadia Overcharge flat damage distributed proportionally among IPS types
+- Deadhead headshot multiplier bonus applied additively in Step 2
+- Modded reload time in `/api/calculate` response (accounts for Merciless reload bonus)
+- 19 new tests covering arcane factories, stack clamping, pipeline integration, and proc calculations
 
 ## [0.2.2] — 2026-03-24
 
