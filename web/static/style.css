@@ -13,7 +13,7 @@
   --accent2: #e8b923;
   --accent-glow: rgba(232, 185, 35, 0.15);
   --text: #e0e0e8;
-  --text-field: #deded6;
+  --text-field: rgba(255, 255, 255, 0.87);
   --text-dim: #777788;
   --good: #4caf50;
   --bad: #f44336;
@@ -252,10 +252,10 @@ select option {
   top: 100%;
   left: 0;
   right: 0;
-  background: rgba(10, 12, 22, 0.82);
+  background: rgba(10, 12, 22, 0.96);
   backdrop-filter: blur(22px) saturate(1.3);
   -webkit-backdrop-filter: blur(22px) saturate(1.3);
-  border: 1px solid var(--border-highlight);
+  border: 1px solid var(--border);
   border-top: none;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   max-height: 240px;
