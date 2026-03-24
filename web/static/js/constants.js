@@ -21,6 +21,7 @@ let rivenApplied = null;
 let rivenDraft = [];
 let alchSelected = null;
 let buffRowId = 0;
+let arcaneRowId = 0;
 let _currentMultishot = 1.0;
 let _modUpdateTimer = null;
 
@@ -199,6 +200,15 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.2.3',
+    date: '2026-03-24',
+    sections: [
+      { heading: 'Added', items: [
+        'Weapon Arcane support (Merciless, Deadhead, Dexterity, Cascadia) — stack-based bonuses across CLI, API, and Web UI',
+      ]},
+    ],
+  },
+  {
     version: '0.2.2',
     date: '2026-03-24',
     sections: [
@@ -258,4 +268,18 @@ const BUFF_OPTIONS = [
   {key:'eclipse',       label:'Eclipse (Mirage)'},
   {key:'xatas_whisper', label:"Xata's Whisper (Xaku)"},
   {key:'nourish',       label:'Nourish (Grendel)'},
+];
+
+const ARCANE_OPTIONS = [
+  {key:'primary_merciless',   label:'Primary Merciless',   maxStacks:12, restriction:'primary'},
+  {key:'secondary_merciless', label:'Secondary Merciless', maxStacks:12, restriction:'secondary'},
+  {key:'shotgun_merciless',   label:'Shotgun Merciless',   maxStacks:12, restriction:'shotgun'},
+  {key:'primary_deadhead',    label:'Primary Deadhead',    maxStacks:6,  restriction:'primary'},
+  {key:'secondary_deadhead',  label:'Secondary Deadhead',  maxStacks:6,  restriction:'secondary'},
+  {key:'shotgun_deadhead',    label:'Shotgun Deadhead',    maxStacks:6,  restriction:'shotgun'},
+  {key:'primary_dexterity',   label:'Primary Dexterity',   maxStacks:6,  restriction:'primary'},
+  {key:'secondary_dexterity', label:'Secondary Dexterity', maxStacks:6,  restriction:'secondary'},
+  {key:'cascadia_flare',      label:'Cascadia Flare',      maxStacks:12, restriction:'secondary'},
+  {key:'cascadia_empowered',  label:'Cascadia Empowered',  maxStacks:5,  restriction:'secondary'},
+  {key:'cascadia_overcharge', label:'Cascadia Overcharge',  maxStacks:1,  restriction:'secondary'},
 ];

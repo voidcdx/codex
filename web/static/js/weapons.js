@@ -477,6 +477,7 @@ function onWeaponChange() {
   updateModdedStats();
 
   updateElementBadges();
+  clearIncompatibleArcanes();
 }
 
 function updateAttackSelector(weapon) {
@@ -683,7 +684,7 @@ async function _doUpdateModdedStats() {
     const resp = await fetch('/api/modded-weapon', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec(), galvanized_stacks: parseInt(document.getElementById('galv-stacks').value, 10) || 0, ...getBonusElement() }),
+      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec(), galvanized_stacks: parseInt(document.getElementById('galv-stacks').value, 10) || 0, arcanes: getActiveArcanes(), ...getBonusElement() }),
     });
     if (!resp.ok) return;
     const data = await resp.json();

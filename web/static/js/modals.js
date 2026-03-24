@@ -331,3 +331,87 @@ function getActiveBuffs() {
   });
   return buffs;
 }
+
+
+// ── Weapon Arcanes ───────────────────────────────────────
+
+function _getWeaponArcaneRestriction() {
+  const w = getCurrentWeapon();
+  if (!w) return '';
+  const slot = w.slot || '';
+  const cls = w.class || '';
+  if (slot === 'Secondary') return 'secondary';
+  if (slot === 'Primary' && cls === 'Shotgun') return 'shotgun';
+  if (slot === 'Primary') return 'primary';
+  return '';
+}
+
+function _getFilteredArcaneOptions() {
+  const restriction = _getWeaponArcaneRestriction();
+  if (!restriction) return [];
+  return ARCANE_OPTIONS.filter(o => o.restriction === restriction);
+}
+
+function addArcaneRow() {
+  const container = document.getElementById('arcane-rows');
+  if (container.children.length >= 2) return;  // max 2 arcane slots
+  const id = arcaneRowId++;
+  const row = document.createElement('div');
+  row.id = 'arcane-row-' + id;
+  row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap';
+  const options = _getFilteredArcaneOptions();
+  const opts = options.map(o => `<option value="${o.key}" data-max="${o.maxStacks}">${o.label}</option>`).join('');
+  const firstMax = options.length > 0 ? options[0].maxStacks : 12;
+  row.innerHTML = `<select style="flex:1;min-width:150px" onchange="updateArcaneStackMax(this)">${opts}</select>`
+    + `<label style="font-size:12px;color:#aaa">Stacks</label>`
+    + `<input type="number" value="${firstMax}" min="0" max="${firstMax}" style="width:56px" title="Active stacks">`
+    + `<button type="button" onclick="removeArcaneRow(this)" style="background:none;border:none;color:#c44;cursor:pointer;font-size:16px" title="Remove arcane">&times;</button>`;
+  container.appendChild(row);
+  _updateAddArcaneBtn();
+}
+
+function removeArcaneRow(btn) {
+  btn.parentElement.remove();
+  _updateAddArcaneBtn();
+}
+
+function updateArcaneStackMax(sel) {
+  const opt = sel.options[sel.selectedIndex];
+  const max = parseInt(opt.dataset.max) || 12;
+  const inp = sel.parentElement.querySelector('input[type="number"]');
+  inp.max = max;
+  if (parseInt(inp.value) > max) inp.value = max;
+}
+
+function _updateAddArcaneBtn() {
+  const btn = document.querySelector('.btn-add-arcane');
+  if (!btn) return;
+  const count = document.getElementById('arcane-rows').children.length;
+  btn.style.display = count >= 2 ? 'none' : '';
+}
+
+function getActiveArcanes() {
+  const rows = document.querySelectorAll('#arcane-rows > div');
+  const arcanes = [];
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const inp = row.querySelector('input[type="number"]');
+    if (sel && inp) {
+      arcanes.push({name: sel.value, stacks: parseInt(inp.value) || 0});
+    }
+  });
+  return arcanes;
+}
+
+function clearIncompatibleArcanes() {
+  const restriction = _getWeaponArcaneRestriction();
+  const rows = document.querySelectorAll('#arcane-rows > div');
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    if (sel) {
+      const opt = ARCANE_OPTIONS.find(o => o.key === sel.value);
+      if (!opt || opt.restriction !== restriction) row.remove();
+    }
+  });
+  _updateAddArcaneBtn();
+}

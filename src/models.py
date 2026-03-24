@@ -87,6 +87,28 @@ class Buff:
 
 
 @dataclass
+class WeaponArcane:
+    """Weapon arcane with stack-based bonuses (Merciless, Deadhead, Cascadia, etc.).
+
+    Bonuses are pre-multiplied by clamped stacks in make_arcane().
+    - damage_bonus: additive with Serration in Step 1
+    - headshot_bonus: additive to body part multiplier in Step 2 (headshot only)
+    - cc_bonus / cd_bonus: pre-computed in api.py, added to weapon stats
+    - reload_bonus: applied to modded reload time for sustained DPS
+    - flat_damage: added to base damage pool before Step 1 (Cascadia Overcharge)
+    """
+    name: str
+    damage_bonus: float = 0.0
+    cc_bonus: float = 0.0
+    cd_bonus: float = 0.0
+    headshot_bonus: float = 0.0
+    reload_bonus: float = 0.0
+    flat_damage: float = 0.0
+    max_stacks: int = 1
+    stacks: int = 0
+
+
+@dataclass
 class Enemy:
     name: str
     faction: FactionType

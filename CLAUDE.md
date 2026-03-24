@@ -30,6 +30,7 @@ src/
   enums.py          # DamageType, FactionType, HealthType, ArmorType
   models.py         # Weapon, WeaponAttack, Mod, Enemy, DamageComponent dataclasses
   quantizer.py      # quantize() — pure function, no side effects
+  arcanes.py        # weapon arcane presets — Merciless, Deadhead, Cascadia, Dexterity
   combiner.py       # elemental combination by mod slot order; innate primary/secondary split
   calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks + calculate_procs()
   loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot + attack selection
@@ -37,6 +38,7 @@ src/
   version.py        # APP_VERSION, GAME_DATA_VERSION — single source of truth
 tests/
   test_quantization.py
+  test_arcanes.py
   test_combiner.py
   test_loader.py
   test_calculator.py  # M7–M13 + TestCCProcs: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
@@ -71,7 +73,7 @@ CHANGELOG.md        # Keep a Changelog format — user-facing version history
 handoff.md          # session handoff notes for next Claude instance
 ```
 
-## 256 Tests Passing
+## 275 Tests Passing
 `pytest` — all pass. Run before committing.
 
 ## Versioning
@@ -353,8 +355,37 @@ Fields read by `loader.py` from each mod entry:
 ### mods.json — Conclave (PVP) mods
 Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mods()` via the `/PvPMods/` substring in `InternalName`. This removes ~129 mods. Dual-use mods (diamond icon, `Conclave=True` but no `/PvPMods/`) such as Eagle Eye are retained.
 
-### Known unimplemented data
-- **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare etc. Stack-based bonuses not modelled.
+## Weapon Arcanes
+
+`src/arcanes.py` — preset factory functions. `src/models.py` — `WeaponArcane` dataclass.
+
+### Pipeline Placement
+- **damage_bonus** → additive with Serration in Step 1 (`total_damage_bonus`)
+- **headshot_bonus** (Deadhead) → additive to `body_part_multiplier` in Step 2, headshot only
+- **cc_bonus / cd_bonus** (Cascadia Flare/Empowered) → pre-computed in `api.py`, added to weapon stats
+- **reload_bonus** (Merciless) → applied to modded reload time for sustained DPS
+- **flat_damage** (Cascadia Overcharge) → distributed proportionally among IPS types before Step 1
+
+### Presets (`src/arcanes.py`)
+
+| Key | Bonus | Per Stack | Max | Restriction |
+|---|---|---|---|---|
+| `primary_merciless` | damage + reload | +30% / +7.5% | 12 | primary |
+| `secondary_merciless` | damage + reload | +30% / +7.5% | 12 | secondary |
+| `shotgun_merciless` | damage + reload | +30% / +7.5% | 12 | shotgun |
+| `primary_deadhead` | damage + headshot | +60% / +30% | 6 | primary |
+| `secondary_deadhead` | damage + headshot | +60% / +30% | 6 | secondary |
+| `shotgun_deadhead` | damage + headshot | +60% / +30% | 6 | shotgun |
+| `primary_dexterity` | damage | +60% | 6 | primary |
+| `secondary_dexterity` | damage | +60% | 6 | secondary |
+| `cascadia_flare` | crit chance | +24% | 12 | secondary |
+| `cascadia_empowered` | crit damage | +30% | 5 | secondary |
+| `cascadia_overcharge` | flat damage | +4000 | 1 | secondary |
+
+### Usage
+- **CLI:** `--arcane primary_merciless:12` (name:stacks). Repeat for second arcane (max 2).
+- **API:** POST body field `arcanes: [{name: "primary_merciless", stacks: 12}]` on `/api/calculate` and `/api/modded-weapon`. `GET /api/arcanes` returns preset list.
+- **Web UI:** "Weapon Arcanes" panel with "+ Add" button. Dropdown filtered by weapon slot (primary/secondary/shotgun). Stacks input with per-arcane max. Max 2 rows. Incompatible arcanes cleared on weapon change.
 
 ## Warframe Ability Buffs
 

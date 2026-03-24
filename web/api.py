@@ -28,6 +28,7 @@ from pydantic import BaseModel
 
 import math
 from pydantic import Field
+from src.arcanes import ARCANE_PRESETS, ARCANE_DISPLAY_NAMES, ARCANE_RESTRICTIONS, ARCANE_MAX_STACKS, make_arcane
 from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
@@ -187,6 +188,25 @@ def get_buffs() -> list[dict]:
     ]
 
 
+class ArcaneSpec(BaseModel):
+    name: str          # preset key, e.g. "primary_merciless"
+    stacks: int = 0    # current active stacks
+
+
+@app.get("/api/arcanes")
+def get_arcanes() -> list[dict]:
+    """Return available weapon arcane presets for the UI."""
+    return [
+        {
+            "key": k,
+            "display_name": ARCANE_DISPLAY_NAMES.get(k, k),
+            "max_stacks": ARCANE_MAX_STACKS.get(k, 1),
+            "restriction": ARCANE_RESTRICTIONS.get(k, ""),
+        }
+        for k in ARCANE_PRESETS
+    ]
+
+
 class RivenStat(BaseModel):
     stat: str    # e.g. "damage", "crit_chance", "heat"
     value: float # decimal fraction (0.658 = +65.8%)
@@ -209,6 +229,7 @@ class ModdedWeaponRequest(BaseModel):
     riven: RivenSpec | None = None
     bonus_element: str | None = None      # "heat" | "cold" | "electricity" | "toxin"
     bonus_element_pct: float = 0.0        # 0.25–0.60
+    arcanes: list[ArcaneSpec] = []        # weapon arcanes (max 2)
 
 
 @app.post("/api/modded-weapon")
@@ -248,15 +269,27 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     galv_sc_bonus = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
                         for m in mods if m.galv_kill_stat == "sc_bonus")
 
-    total_damage_bonus = sum(m.damage_bonus for m in mods)
-    total_cc_bonus = sum(m.cc_bonus for m in mods) + galv_cc_bonus
-    total_cd_bonus = sum(m.cd_bonus for m in mods) + galv_cd_bonus
+    # --- Build Arcane objects ---
+    arcane_objects = []
+    for aspec in req.arcanes:
+        try:
+            arcane_objects.append(make_arcane(aspec.name, aspec.stacks))
+        except KeyError as e:
+            raise HTTPException(400, str(e))
+    arcane_damage_bonus = sum(a.damage_bonus for a in arcane_objects)
+    arcane_cc_bonus = sum(a.cc_bonus for a in arcane_objects)
+    arcane_cd_bonus = sum(a.cd_bonus for a in arcane_objects)
+    arcane_reload_bonus = sum(a.reload_bonus for a in arcane_objects)
+
+    total_damage_bonus = sum(m.damage_bonus for m in mods) + arcane_damage_bonus
+    total_cc_bonus = sum(m.cc_bonus for m in mods) + galv_cc_bonus + arcane_cc_bonus
+    total_cd_bonus = sum(m.cd_bonus for m in mods) + galv_cd_bonus + arcane_cd_bonus
     total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc_bonus
     total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms_bonus
     total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
     total_mag_bonus = sum(m.magazine_bonus for m in mods)
     total_ammo_max_bonus = sum(m.ammo_max_bonus for m in mods)
-    total_reload_bonus = sum(m.reload_bonus for m in mods)
+    total_reload_bonus = sum(m.reload_bonus for m in mods) + arcane_reload_bonus
 
     # Build elemental components from mods + innate, then combine
     mod_elements: list[DamageComponent] = []
@@ -395,6 +428,7 @@ class CalcRequest(BaseModel):
     bonus_element: str | None = None    # "heat" | "cold" | "electricity" | "toxin"
     bonus_element_pct: float = 0.0      # 0.25–0.60
     buffs:        list[BuffSpec] = []    # Warframe ability buffs
+    arcanes:      list[ArcaneSpec] = []  # Weapon arcanes (max 2)
 
 
 @app.post("/api/calculate")
@@ -436,6 +470,17 @@ def calculate(req: CalcRequest) -> dict:
         except KeyError as e:
             raise HTTPException(400, str(e))
 
+    # --- Build Arcane objects ---
+    arcane_objects = []
+    for aspec in req.arcanes:
+        try:
+            arcane_objects.append(make_arcane(aspec.name, aspec.stacks))
+        except KeyError as e:
+            raise HTTPException(400, str(e))
+    arcane_cc = sum(a.cc_bonus for a in arcane_objects)
+    arcane_cd = sum(a.cd_bonus for a in arcane_objects)
+    arcane_reload = sum(a.reload_bonus for a in arcane_objects)
+
     galv_stacks = req.galvanized_stacks
     galv_cc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
                   for m in mods if m.galv_kill_stat == "cc_bonus")
@@ -446,8 +491,8 @@ def calculate(req: CalcRequest) -> dict:
     galv_sc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
                   for m in mods if m.galv_kill_stat == "sc_bonus")
 
-    base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + galv_cc
-    base_cm = weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd)
+    base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + galv_cc + arcane_cc
+    base_cm = weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd + arcane_cd)
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
     raw_w = _raw_weapons().get(weapon.name, {})
@@ -458,6 +503,7 @@ def calculate(req: CalcRequest) -> dict:
     total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc
     total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms
     total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
+    total_reload_bonus = sum(m.reload_bonus for m in mods) + arcane_reload
     modded_sc   = base_sc * (1.0 + total_sc_bonus)
     modded_ms   = 1.0 + total_ms_bonus
 
@@ -478,6 +524,7 @@ def calculate(req: CalcRequest) -> dict:
         unique_statuses=req.unique_statuses,
         galvanized_stacks=galv_stacks,
         buffs=buff_objects,
+        arcanes=arcane_objects,
     )
     procs = calc.calculate_procs(
         weapon=weapon,
@@ -488,6 +535,7 @@ def calculate(req: CalcRequest) -> dict:
         unique_statuses=req.unique_statuses,
         galvanized_stacks=galv_stacks,
         buffs=buff_objects,
+        arcanes=arcane_objects,
     )
 
     breakdown = {dtype.name: val for dtype, val in result.items()}
@@ -507,6 +555,7 @@ def calculate(req: CalcRequest) -> dict:
         "corrosive_stacks": req.corrosive_stacks,
         "galvanized_stacks": galv_stacks,
         "buffs":         [{"name": b.name, "strength": bs.strength} for b, bs in zip(buff_objects, req.buffs)],
+        "arcanes":       [{"name": a.name, "stacks": a.stacks} for a in arcane_objects],
         "breakdown":     breakdown,
         "total":         total,
         "procs":         procs,
@@ -514,6 +563,7 @@ def calculate(req: CalcRequest) -> dict:
         "modded_fr":     round(modded_fr, 6),
         "magazine":      magazine,
         "reload":        reload_time,
+        "modded_reload": round(reload_time / (1.0 + total_reload_bonus), 4) if total_reload_bonus and reload_time else reload_time,
         "modded_sc":     round(modded_sc, 6),
         "sc_per_pellet": round(status_chance_per_pellet(modded_sc, weapon.multishot), 6),
         "inherent_multishot": weapon.multishot,
