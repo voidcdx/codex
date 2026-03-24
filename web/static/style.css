@@ -1187,6 +1187,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .alchemy-modal-header {
   display: flex;
   align-items: center;
+  gap: 8px;
   margin-bottom: 14px;
 }
 .alchemy-modal-title { margin: 0; font-size: 15px; letter-spacing: 1px; }
