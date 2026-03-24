@@ -1239,6 +1239,14 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .mod-picker-search,
   .custom-select-btn,
   .custom-select-option { font-size: 16px !important; padding: 3px !important; }
+  /* Riven fields: keep their own padding, only bump font-size for iOS */
+  .riven-stat-btn,
+  .riven-stat-input { font-size: 16px !important; padding: 0 14px !important; }
+  .riven-stat-input { text-align: center !important; }
+  .riven-row-clear { padding: 0 !important; }
+
+  /* Riven grid: use flexible ratios on mobile */
+  .riven-stat-row { grid-template-columns: 1fr 80px 40px; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
