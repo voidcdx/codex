@@ -1231,7 +1231,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 @media (max-width: 520px) {
   .mod-picker-overlay { align-items: flex-end; }
-  #alchemy-mixer-overlay { align-items: center; }
+  #alchemy-mixer-overlay, #riven-picker-overlay { align-items: center; }
   .riven-modal {
     flex-direction: column;
     width: 100%;
@@ -1239,6 +1239,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     border-radius: 14px 14px 0 0;
     max-height: 90vh;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
   .riven-modal-left {
     width: 100%;

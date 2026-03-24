@@ -176,10 +176,12 @@ function openRivenBuilder() {
   );
   renderRivenRows();
 document.getElementById('riven-picker-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeRivenBuilder() {
   document.getElementById('riven-picker-overlay').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 function applyRiven() {
