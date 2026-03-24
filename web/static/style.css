@@ -503,7 +503,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   align-items: center;
   justify-content: center;
 }
-.mod-picker-overlay.active { display: flex; overflow: hidden; }
+.mod-picker-overlay.active { display: flex; overflow: hidden; touch-action: none; }
 .mod-picker {
   background: var(--surface-solid);
   border: 1px solid var(--border-highlight);
@@ -1249,6 +1249,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   min-height: 0;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 .alchemy-suggestions::-webkit-scrollbar { width: 4px; }
 .alchemy-suggestions::-webkit-scrollbar-track { background: transparent; }
@@ -1528,6 +1529,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   padding: 20px 28px 32px;
   flex: 1;
 }
