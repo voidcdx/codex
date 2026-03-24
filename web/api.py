@@ -541,6 +541,33 @@ def calculate(req: CalcRequest) -> dict:
     breakdown = {dtype.name: val for dtype, val in result.items()}
     total = sum(result.values())
 
+    # CO curve: damage at each unique_statuses 0–10
+    has_co = any(m.condition_overload_bonus > 0 for m in mods)
+    co_curve = None
+    if has_co:
+        co_curve = []
+        for us in range(11):
+            if us == req.unique_statuses:
+                co_curve.append(round(total, 2))
+            else:
+                r = calc.calculate(
+                    weapon=weapon, mods=mods, enemy=enemy,
+                    crit_multiplier=crit_mult,
+                    is_crit_headshot=(effective_part != "Body"),
+                    multishot=modded_ms,
+                    viral_stacks=req.viral_stacks,
+                    corrosive_stacks=req.corrosive_stacks,
+                    enemy_level=req.enemy_level,
+                    steel_path=req.steel_path,
+                    eximus=req.eximus,
+                    combo_counter=req.combo_counter,
+                    unique_statuses=us,
+                    galvanized_stacks=galv_stacks,
+                    buffs=buff_objects,
+                    arcanes=arcane_objects,
+                )
+                co_curve.append(round(sum(r.values()), 2))
+
     # Modded fire rate includes buff fire rate bonus
     modded_fr = fire_rate * (1.0 + total_fr_bonus)
 
@@ -558,6 +585,7 @@ def calculate(req: CalcRequest) -> dict:
         "arcanes":       [{"name": a.name, "stacks": a.stacks} for a in arcane_objects],
         "breakdown":     breakdown,
         "total":         total,
+        "co_curve":      co_curve,
         "procs":         procs,
         "fire_rate":     fire_rate,
         "modded_fr":     round(modded_fr, 6),
