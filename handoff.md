@@ -1,27 +1,46 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Added Condition Overload scaling curve to calculation results. Mobile layout fix. Updated User Guide with Arcanes + CO Curve sections. Trimmed CLAUDE.md from 426 → 377 lines.
+Attempted to fix riven builder modal alignment and rounded corner issues on mobile. Multiple CSS patch attempts failed. Ended with a full CSS+HTML rebuild of the modal — but the user reports it still doesn't look right. **Next session needs to visually verify and fix the riven modal.**
 
 ---
 
 ## Changes made this session
 
-### 1. Condition Overload Curve (backend + frontend)
-- `web/api.py`: When any equipped mod has `condition_overload_bonus > 0`, loops `calculate()` for statuses 0–10 and returns `co_curve: [float × 11]` in the `/api/calculate` response. `null` when no CO mod is equipped.
-- `web/static/js/calculate.js`: Renders a vertical table (status count | bar | damage | % increase) between procs and DPS sections. Active row highlighted with gold left border.
-- `web/static/style.css`: `.co-curve-table` row highlight styles.
-- `tests/test_co_curve.py`: 6 new tests (presence/absence, individual match, monotonic increase, baseline equivalence, combo interaction).
+### Riven Modal Rebuild (8 commits, still broken)
+The riven builder modal had two persistent bugs:
+1. **Rounded corners missing on mobile** — Safari `backdrop-filter` + `border-radius` clipping bug
+2. **Dropdown and input fields misaligned** — conflicting `padding: 3px !important` mobile overrides fighting with fixed `height: 26px`
 
-### 2. Mobile Layout Fix
-- Switched CO curve from horizontal 12-column table (broke on 375px) to vertical 2-column layout with bar chart. No horizontal scrolling needed.
+Attempted fixes (all on branch `claude/review-handoff-Cuk26`):
+- Tried `-webkit-mask-image` hack for Safari clip bug
+- Tried removing `!important` overrides selectively
+- Finally did a **full teardown and rebuild** (commit `e63ffd6`):
+  - Replaced translucent `backdrop-filter` bg with near-opaque `rgba(14,10,22,0.97)`
+  - New two-column layout: left panel (160px) with static hexagon glyph `⬡`, right panel with form
+  - All row elements share `height: 36px` + `box-sizing: border-box` + `font-size: 13px`
+  - Removed all purple theming from modal chrome
+  - Removed all `!important` font-size/padding overrides for riven elements in mobile breakpoints
+  - Mobile (≤520px): stacks vertically with 80px glyph banner
 
-### 3. User Guide Updates
-- `web/static/index.html` (`#guide-overlay`): Added Weapon Arcanes section (full table with all 11 presets) and CO Curve description in Reading Results.
+**User says it still doesn't look right.** The next session should:
+1. Ask the user for a screenshot or specific description of what's wrong
+2. Actually test in a browser / mobile viewport before committing
+3. Consider whether the portal dropdown positioning (`getBoundingClientRect` → fixed position) is the alignment culprit rather than CSS sizing
 
-### 4. CLAUDE.md Maintenance
-- Trimmed redundant implementation details (combobox internals, riven/alchemy CSS, arcane preset table, session history). 426 → 377 lines.
-- Added rule: always update User Guide when adding new features.
+### Key files touched
+- `web/static/style.css` — lines ~957–1164 (riven modal section), mobile overrides in `@media 520px` block
+- `web/static/index.html` — lines 87–99 (riven modal HTML)
+- `web/static/js/modals.js` — **NOT changed** (all class names preserved)
+
+---
+
+## Known issue: Riven modal still broken
+
+The riven modal rebuild didn't satisfy the user. Possible remaining problems:
+- **Portal dropdown misalignment**: `toggleRivenDropdown()` in `modals.js:273-293` positions the dropdown via `getBoundingClientRect()` on the button. If the modal scrolls or the button padding changed, the dropdown won't line up with the button.
+- **Mobile corner rendering**: Even with opaque bg, `overflow: hidden` + `border-radius` can still fail on iOS Safari in some cases. May need to test with `clip-path: inset(0 round 14px)` instead.
+- **Visual design**: User may want a more significant layout redesign, not just alignment fixes. They mentioned liking the Guide modal design — consider using that as the reference for the riven modal style.
 
 ---
 
@@ -41,10 +60,11 @@ Added Condition Overload scaling curve to calculation results. Mobile layout fix
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-JUSoq`
-- Version: `0.3.1`
+- Branch: `claude/review-handoff-Cuk26`
+- Version: `0.3.1` (no bump this session)
 - Game data: Update 41 — The Old Peace
 - Tests: 281 passing
+- **Riven modal needs visual fix — priority for next session**
 
 ---
 
@@ -60,7 +80,7 @@ Added Condition Overload scaling curve to calculation results. Mobile layout fix
 - [ ] Run `pytest` — confirm 281 passing before touching anything
 - [ ] Check `git log --oneline -5` to orient on recent commits
 - [ ] Ask about version bump and changelog tracking (see above)
+- [ ] **Priority: Fix riven modal** — ask user for screenshot, test in browser before committing
 - [ ] If version is bumped, update `CHANGELOG.md` and `CHANGELOG_ENTRIES` in `constants.js`
 - [ ] When adding new features, update User Guide in `index.html` (`#guide-overlay`)
 - [ ] Keep mobile optimization in mind (test at ≤375px)
-- [ ] Remind user of feature backlog (see list above)
