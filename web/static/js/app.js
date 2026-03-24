@@ -29,6 +29,13 @@ async function loadData() {
   );
 
   initModGrid();
+
+  setupCustomSelect('crit-mode');
+  setupCustomSelect('body-part-select');
+  setupCustomSelect('bonus-element-type', () => {
+    updateModdedStats();
+    updateElementBadges();
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
