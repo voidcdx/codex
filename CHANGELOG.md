@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ## [0.2.2] — 2026-03-24
 
 ### Improved
-- UI polish and mobile optimisations across the web interface
+- UI polish and mobile optimizations
 
 ## [0.2.1] — 2026-03-23
 
