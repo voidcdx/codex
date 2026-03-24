@@ -31,6 +31,28 @@ function initModGrid() {
 function renderModCards() {
   const grid = document.getElementById('mod-grid');
   grid.innerHTML = '';
+
+  // Full-grid riven editor mode
+  if (typeof _rivenEditing !== 'undefined' && _rivenEditing) {
+    grid.classList.add('riven-editor-mode');
+    grid.innerHTML = `
+      <div class="riven-fullgrid">
+        <div class="riven-fullgrid-header">
+          <span class="riven-card-icon" style="font-size:20px">⬡</span>
+          <span class="riven-fullgrid-title">Create Riven</span>
+        </div>
+        <div id="riven-rows" class="riven-fullgrid-rows"></div>
+        <div class="riven-fullgrid-btns">
+          <button class="btn-riven-apply" onclick="applyRiven()">Add</button>
+          <button class="btn-riven-reset" onclick="clearRiven()">Reset</button>
+        </div>
+      </div>`;
+    setTimeout(() => renderRivenRows(grid.querySelector('#riven-rows')), 0);
+    updateElementBadges();
+    return;
+  }
+  grid.classList.remove('riven-editor-mode');
+
   const STAT_LABELS = {
     damage:'DMG', multishot:'MS', crit_chance:'CC', crit_damage:'CD',
     status_chance:'SC', fire_rate:'FR', heat:'Heat', cold:'Cold',
@@ -41,23 +63,7 @@ function renderModCards() {
     const card = document.createElement('div');
     card.dataset.slot = i;
 
-    if (modName === '__riven__' && typeof _rivenEditing !== 'undefined' && _rivenEditing) {
-      // Inline riven editor — expanded card
-      card.className = 'mod-card riven-mod-card riven-inline-editor';
-      card.innerHTML = `
-        <div class="riven-inline-header">
-          <span class="riven-card-icon">⬡</span>
-          <span style="color:var(--riven);font-size:11px;font-weight:600">Riven</span>
-        </div>
-        <div id="riven-rows" class="riven-inline-rows"></div>
-        <div class="riven-btn-row riven-btn-row-inline">
-          <button class="btn-riven-apply" onclick="event.stopPropagation();applyRiven()">Add</button>
-          <button class="btn-riven-reset" onclick="event.stopPropagation();clearRiven()">Reset</button>
-        </div>`;
-      card.onclick = null;
-      // Render stat rows after DOM insertion
-      setTimeout(() => renderRivenRows(card.querySelector('#riven-rows')), 0);
-    } else if (modName === '__riven__') {
+    if (modName === '__riven__') {
       card.className = 'mod-card riven-mod-card';
       const lines = (rivenApplied || []).filter(s => s.stat)
         .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${esc(STAT_LABELS[s.stat] || s.stat)}</div>`)
