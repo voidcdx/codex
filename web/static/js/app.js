@@ -23,8 +23,40 @@ async function loadData() {
       return w?.image ? `/static/images/weapons/${w.image}` : '';
     }
   );
+  const HIDDEN_ENEMY_NAMES = new Set([
+    'Explosive Barrel', 'Storage Container', '[Wiki Dummy]',
+    'Clem', 'Darvo', 'Hacked Drone'
+  ]);
+  const HIDDEN_ENEMY_PATTERNS = [/\bturret\b/i, /\bdropship\b/i, /\bcrewship\b/i];
+  const FAUNA_NAMES = new Set([
+    'Alpine Monitor Sawgaw', 'Amethyst Nexifera', 'Ashen Kuaka',
+    'Bau Vasca Kavat', 'Black-Banded Bolarola', 'Brindle Kubrodon',
+    'Coastal Mergoo', 'Common Avichaea', 'Common Condroc',
+    'Crescent Vulpaphyla', 'Dappled Horrasque', 'Death Scuttler',
+    'Delicate Pobber', 'Desert Skate', 'Dusky-Headed Virmink',
+    'Emperor Condroc', 'Fire-Veined Stover', 'Flossy Sawgaw',
+    'Frogmouthed Sawgaw', 'Fuming Dax Stover', 'Ghost Kuaka',
+    'Green Velocipod', 'Horrasque Stormer', 'Howler Undazoa',
+    'Kavat', 'Kubrodon Incarnadine', 'Kubrow',
+    'Medjay Predasite', 'Nephil Vasca Kavat', 'Ostia Vasca Kavat',
+    'Panzer Vulpaphyla', 'Pharaoh Predasite', 'Plains Kuaka',
+    'Purple Velocipod', 'Red-Crested Virmink', 'Rogue Condroc',
+    'Scarlet Nexifera', 'Scuttlers', 'Sentinel Stover',
+    'Sly Vulpaphyla', 'Splendid Mergoo', 'Sporule Avichaea',
+    'Spotted Bolarola', 'Subterranean Pobber', 'Sunny Pobber',
+    'Swimmer Horrasque', 'Thorny Bolarola', 'Umber Undazoa',
+    'Vallis Kubrodon', 'Vaporous Undazoa', 'Viscid Avichaea',
+    'Viridian Nexifera', 'Vizier Predasite', 'White Velocipod',
+    'White-Breasted Virmink', 'Woodland Mergoo'
+  ]);
+  const visibleEnemies = allEnemies.filter(e =>
+    !HIDDEN_ENEMY_NAMES.has(e.name) &&
+    !FAUNA_NAMES.has(e.name) &&
+    !HIDDEN_ENEMY_PATTERNS.some(p => p.test(e.name))
+  );
+
   enemyCombo = setupCombobox('enemy-search', 'enemy-dropdown',
-    allEnemies.map(e => e.name),
+    visibleEnemies.map(e => e.name),
     () => { showEnemyStats(getCurrentEnemy()); }
   );
 
