@@ -833,10 +833,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .total-row td { border-top: 1px solid var(--border); font-weight: 700; }
 
 /* ── CO Curve table ──────────────────────────────────── */
-.co-curve-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.co-curve-table th,
-.co-curve-table td { text-align: center; padding: 4px 6px; font-size: 0.8rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.co-curve-table td.co-active { background: var(--surface2); outline: 1px solid var(--accent); border-radius: 3px; font-weight: 600; }
+.co-curve-table tr.co-active td { background: var(--surface2); }
+.co-curve-table tr.co-active td:first-child { font-weight: 600; border-left: 2px solid var(--accent); }
 
 /* ── Damage Table ───────────────────────────────────── */
 .col-modded { color: var(--accent2); font-weight: 600; }
