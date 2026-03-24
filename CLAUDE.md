@@ -79,7 +79,7 @@ handoff.md          # session handoff notes for next Claude instance
 ## Versioning
 `src/version.py` is the single source of truth:
 ```python
-APP_VERSION       = "0.2.2"          # semver — bump before shipping features
+APP_VERSION       = "0.3.0"          # semver — bump before shipping features
 GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are refreshed
 ```
 - `GET /api/version` returns `{"app": APP_VERSION, "game_data": GAME_DATA_VERSION}`
@@ -131,6 +131,8 @@ All inputs (`input[type=number]`, `input[type=text]`, `select`) and search boxes
 - **% input:** `type="number"`, range `min="-999" max="9999"`. `maxlength` doesn't work on number inputs — 4-char cap enforced via `oninput` slice: `if(this.value.length>4)this.value=this.value.slice(0,4)`.
 - **Clear row:** `×` button calls `clearRivenRow(i)` → sets row to `{stat:'', pct:''}`.
 - **Apply:** `buildRivenFromDraft()` converts draft to a Mod-compatible object → `equippedMods['riven']`. Card shows stat count badge.
+- **Scroll lock:** `openRivenBuilder()` sets `body.overflow = 'hidden'`; `closeRivenBuilder()` restores it. Prevents background page scroll while modal is open.
+- **Mobile:** At ≤520px, `#riven-picker-overlay` overrides `align-items` back to `center` (same pattern as alchemy mixer) so the modal stays centered instead of bottom-sheet. `.riven-modal` gets `overscroll-behavior: contain` for scroll containment.
 
 ## Alchemy Mixer (Web UI)
 - **Button:** Gold Orokin seal SVG (`btn-alchemy-mixer`) in the mod panel heading, left of the purple Riven `+`. Both wrapped in `span.mod-panel-actions` (flex, gap 10px).
