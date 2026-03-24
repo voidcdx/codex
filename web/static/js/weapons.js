@@ -466,7 +466,7 @@ function onWeaponChange() {
     const isKT = weapon && (weapon.name.startsWith('Kuva ') || weapon.name.startsWith('Tenet '));
     bonusDiv.style.display = isKT ? '' : 'none';
     if (!isKT) {
-      document.getElementById('bonus-element-type').value = 'heat';
+      setCustomSelectValue('bonus-element-type', 'heat');
       document.getElementById('bonus-element-pct').value = 25;
     }
   }
