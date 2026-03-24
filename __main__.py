@@ -24,11 +24,12 @@ if str(_project_root) not in sys.path:
 
 from src.version import APP_VERSION, GAME_DATA_VERSION
 
+from src.arcanes import ARCANE_PRESETS, make_arcane
 from src.buffs import BUFF_PRESETS, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet, VIRAL_STACK_MULTIPLIERS
 from src.enums import DamageType
 from src.loader import load_enemy, load_mod, load_weapon, list_enemies, list_mods, list_weapons, list_body_parts, list_attacks, make_riven_mod, RIVEN_STAT_NAMES, _raw_weapons
-from src.models import Buff
+from src.models import Buff, WeaponArcane
 
 _BONUS_ELEM_CLI: dict[str, DamageType] = {
     "heat":        DamageType.HEAT,
@@ -71,6 +72,7 @@ def _print_results(
     bonus_element_type: DamageType | None = None,
     bonus_element_pct: float = 0.0,
     buffs: list[Buff] | None = None,
+    arcanes: list[WeaponArcane] | None = None,
 ) -> None:
     weapon = load_weapon(weapon_name, attack_name=attack_name)
     if bonus_element_type is not None and bonus_element_pct > 0.0:
@@ -82,10 +84,16 @@ def _print_results(
     enemy  = load_enemy(enemy_name, body_part=body_part)
 
     _buffs = buffs or []
+    _arcanes = arcanes or []
+
+    # Arcane stat bonuses (CC/CD/reload pre-computed; damage handled in calculator)
+    arcane_cc = sum(a.cc_bonus for a in _arcanes)
+    arcane_cd = sum(a.cd_bonus for a in _arcanes)
+    arcane_reload = sum(a.reload_bonus for a in _arcanes)
 
     # Crit stats come directly from the selected attack on the weapon
-    total_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods)
-    total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods)
+    total_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + arcane_cc
+    total_cm = weapon.crit_multiplier + sum(m.cd_bonus for m in mods) + arcane_cd
     crit_mult = calculate_crit_multiplier(total_cc, total_cm, mode=crit_mode)
     modded_ms = 1.0 + sum(m.multishot_bonus for m in mods)
 
@@ -96,7 +104,7 @@ def _print_results(
     base_fr = sel_atk.fire_rate if sel_atk and sel_atk.fire_rate else float(raw_w.get("fire_rate") or 1.0)
     base_mag = float(raw_w.get("magazine") or 1.0)
     base_reload = float(raw_w.get("reload") or 0.0)
-    total_reload_bonus = sum(m.reload_bonus for m in mods)
+    total_reload_bonus = sum(m.reload_bonus for m in mods) + arcane_reload
     modded_fr = base_fr * (1.0 + sum(m.fire_rate_bonus for m in mods))
     modded_mag = max(1.0, round(base_mag * (1.0 + sum(m.magazine_bonus for m in mods))))
     modded_reload = round(base_reload / (1.0 + total_reload_bonus), 4) if total_reload_bonus and base_reload else base_reload
@@ -115,6 +123,7 @@ def _print_results(
         combo_counter=combo_counter,
         unique_statuses=unique_statuses,
         buffs=_buffs,
+        arcanes=_arcanes,
     )
 
     total = sum(result.values())
@@ -150,6 +159,9 @@ def _print_results(
     if _buffs:
         buff_names = ", ".join(b.name for b in _buffs)
         print(f"Buffs  : {buff_names}")
+    if _arcanes:
+        arcane_strs = [f"{a.name} ({a.stacks}/{a.max_stacks})" for a in _arcanes]
+        print(f"Arcanes: {', '.join(arcane_strs)}")
     print()
     trigger_label = "Per-trigger" if modded_ms > 1.0001 else "Per-hit"
     print(f"{'Damage type':<18} {trigger_label + ' damage':>14}")
@@ -179,6 +191,7 @@ def _print_results(
             crit_multiplier=crit_mult,
             is_crit_headshot=(body_part != "Body"),
             buffs=_buffs,
+            arcanes=_arcanes,
         )
         _DOT_LABELS = {
             "slash":       "Slash (Bleed)",
@@ -283,6 +296,9 @@ def main(argv: list[str] | None = None) -> None:
                         help='Warframe ability buff, e.g. "roar" or "roar:1.5" (150%% strength). '
                              'Append ":s" for subsumed (Helminth) base values, e.g. "roar:1.5:s". '
                              'Repeat for multiple buffs. Valid: ' + ', '.join(sorted(BUFF_PRESETS.keys())))
+    parser.add_argument("--arcane", action="append", default=[], metavar="NAME:STACKS",
+                        help='Weapon arcane, e.g. "primary_merciless:12". '
+                             'Repeat for second arcane (max 2). Valid: ' + ', '.join(sorted(ARCANE_PRESETS.keys())))
     parser.add_argument("--bonus-element", default=None, metavar="ELEMENT:PCT",
                         help='Kuva/Tenet bonus element, e.g. "heat:50" for +50%% Heat. '
                              'Elements: heat, cold, electricity, toxin')
@@ -389,6 +405,18 @@ def main(argv: list[str] | None = None) -> None:
             print(f"Error: {e}")
             sys.exit(1)
 
+    # Parse --arcane "primary_merciless:12" flags
+    arcane_list: list[WeaponArcane] = []
+    for arcane_arg in ns.arcane[:2]:  # max 2 arcane slots
+        parts = arcane_arg.split(":")
+        arcane_name = parts[0].strip()
+        arcane_stacks = int(parts[1].strip()) if len(parts) > 1 else 0
+        try:
+            arcane_list.append(make_arcane(arcane_name, arcane_stacks))
+        except KeyError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
+
     try:
         effective_part = "Head" if ns.headshot else ns.body_part
         _print_results(
@@ -402,6 +430,7 @@ def main(argv: list[str] | None = None) -> None:
             bonus_element_type=bet,
             bonus_element_pct=bpct,
             buffs=buff_list,
+            arcanes=arcane_list,
         )
     except KeyError as e:
         print(f"Error: {e}")
