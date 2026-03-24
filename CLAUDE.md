@@ -73,14 +73,14 @@ CHANGELOG.md        # Keep a Changelog format — user-facing version history
 handoff.md          # session handoff notes for next Claude instance
 ```
 
-## 275 Tests Passing
-`pytest` — all pass. Run before committing.
+## Tests
+Run `pytest` before committing. All tests must pass.
 
 ## Versioning
 `src/version.py` is the single source of truth:
 ```python
-APP_VERSION       = "0.3.0"          # semver — bump before shipping features
-GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are refreshed
+APP_VERSION       = "x.y.z"          # semver — bump before shipping features
+GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 ```
 - `GET /api/version` returns `{"app": APP_VERSION, "game_data": GAME_DATA_VERSION}`
 - CLI `--version` prints `Void Codex v{APP_VERSION} · {GAME_DATA_VERSION}`
@@ -93,7 +93,7 @@ GAME_DATA_VERSION = "Update 41 — The Old Peace"  # update when data files are 
 ## Web UI Notes
 
 ### Header / Nav
-`<header>` is a compact sticky bar: `<span class="nav-brand">Void Codex</span>` + nav links (Damage Calculator / Live Data). No decorative SVG. CSS: `.nav-brand` (12px, uppercase, dimmed gold). The header has had multiple banner attempts this session — all removed. Future banner work should be mobile-first (≤375px) and not use flanking SVG wings in a flex row.
+Compact sticky bar. Future banner work should be mobile-first (≤375px).
 
 ### Faction Effectiveness Badges
 Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `web/static/js/constants.js` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
@@ -102,14 +102,7 @@ Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to da
 Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from the weapon search combobox via `visibleWeapons` filter in `loadData()`. `allWeapons` retains full data.
 
 ### Combobox (Weapon + Enemy Search)
-`setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl)` — bare-bones implementation, intentionally simple. Key behaviours:
-- **No portal** — dropdown is `position: absolute` inside `.combobox-wrap`. No JS repositioning.
-- **`_confirmed`** — tracks last committed selection inside the closure. On focus, input is cleared for a new search. On close-without-commit (Escape / click-outside), `_confirmed` is restored to the input so the stats panel stays populated.
-- **Z-index** — `.panel.combobox-open` lifts the parent panel (`z-index: 50`) when open, escaping the `backdrop-filter` stacking context that traps child z-indices.
-- **Scroll** — `overscroll-behavior: contain` on `.combobox-dropdown` prevents scroll bleed to page. `-webkit-overflow-scrolling: touch` for iOS.
-- **Selection** — `mousedown` + `e.preventDefault()` (desktop); `touchend` + `e.preventDefault()` (mobile).
-- **Close** — `mousedown` outside only. No `touchstart` listener (it caused scroll collapse).
-- **X button** — dispatches `combobox-clear` custom event to reset `_confirmed` without calling `onSelect`, so stats panel persists after clearing.
+`setupCombobox()` in `combobox.js` — intentionally simple. Read the source for closure internals (`_confirmed`, z-index lift, touch/mouse event handling).
 
 ### Mod Slot Compatibility
 `onWeaponChange()` clears any mod slots whose `mod.type` is not in `getCompatibleModTypes()` for the new weapon. Mod picker always enforces type compatibility — no fallback to showing all mods.
@@ -118,41 +111,20 @@ Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from
 Melee-only mechanic. `onWeaponChange()` hides `#combo-div` and resets to tier 1 for non-melee weapons (uses existing `isMeleeWeapon()`). Range: 1–12 for all weapons, 1–13 for Venka Prime. `oninput` clamp enforces the cap against manual keyboard entry.
 
 ### Input / Focus Styling
-All inputs (`input[type=number]`, `input[type=text]`, `select`) and search boxes (`.search-input`, `.mod-picker-search`) share the same base style: `var(--surface-solid)` background, `var(--border)` border. On `:focus`, border becomes `rgba(255,255,255,0.25)` with a faint `rgba(255,255,255,0.06)` glow — **not** `var(--accent)` (gold). Riven modal inputs (`.riven-stat-select`, `.riven-stat-input`) keep their purple focus (`rgba(155,109,208,0.7)`) intentionally.
-
-**Text colours:** `--text-field: #8888a4` (blue-gray) for all input/field/dropdown text. `--text-dim: #777788` for placeholders. Do NOT use `--border-highlight` (gold) on combobox dropdowns or modal borders — it was intentionally removed. Gold border (`--border-highlight`) stays on `.panel:hover` and `.stat-block:hover` only.
+- Focus glow is white/subtle — **not** gold (`var(--accent)`). Riven inputs keep purple focus intentionally.
+- Do NOT use `--border-highlight` (gold) on combobox dropdowns or modal borders. Gold border stays on `.panel:hover` and `.stat-block:hover` only.
 
 ### Galvanized Stacks
 `#galv-stacks` input (range 0–5, default 0). Shown in the mod panel whenever any equipped mod has `galv_kill_stat` set. Sent as `galvanized_stacks: int` in POST bodies to `/api/calculate` and `/api/modded-weapon`. The server caps effective stacks per-mod via `galv_max_stacks`.
 
 ## Riven Mod Builder (Web UI)
-- **Slot:** Purple card in the mod grid. Clicking opens a two-column modal.
-- **Modal state:** `rivenDraft[]` — 4 rows, each `{stat, pct}`. Rendered by `renderRivenModal()`.
-- **Stat select:** Populated from `RIVEN_STATS` constant. Empty option = "no stat" (row inactive).
-- **% input:** `type="number"`, range `min="-999" max="9999"`. `maxlength` doesn't work on number inputs — 4-char cap enforced via `oninput` slice: `if(this.value.length>4)this.value=this.value.slice(0,4)`.
-- **Clear row:** `×` button calls `clearRivenRow(i)` → sets row to `{stat:'', pct:''}`.
-- **Apply:** `buildRivenFromDraft()` converts draft to a Mod-compatible object → `equippedMods['riven']`. Card shows stat count badge.
-- **Scroll lock:** `openRivenBuilder()` sets `body.overflow = 'hidden'`; `closeRivenBuilder()` restores it. Prevents background page scroll while modal is open.
-- **Mobile:** At ≤520px, `#riven-picker-overlay` overrides `align-items` back to `center` (same pattern as alchemy mixer) so the modal stays centered instead of bottom-sheet. `.riven-modal` gets `overscroll-behavior: contain` for scroll containment.
+Purple card in mod grid → two-column modal with up to 4 stat rows. `rivenDraft[]` state in `modals.js`. `buildRivenFromDraft()` converts to Mod-compatible object. Mobile: centered modal with scroll containment.
 
 ## Alchemy Mixer (Web UI)
-- **Button:** Gold Orokin seal SVG (`btn-alchemy-mixer`) in the mod panel heading, left of the purple Riven `+`. Both wrapped in `span.mod-panel-actions` (flex, gap 10px).
-- **Modal:** `#alchemy-mixer-overlay` — same `.mod-picker-overlay` backdrop pattern as Riven modal. Glassmorphism: `backdrop-filter: blur(22px) saturate(1.3)`.
-- **Header:** `.alchemy-modal-header` — flex row (`align-items: center`) containing the "Alchemy Guide" h2 title and a **"Clear Mods"** button (`clearAlchMods()`). `clearAlchMods()` removes all mods whose `primary_element !== null` from `modSlots` — only elemental mods (what the mixer suggests) are cleared.
-- **Flow:** Pick two primary elements → colored orbs appear → swirl animation → merge → flash burst → combined element name shown in its color → mod list filtered by weapon type.
-- **State:** `alchSelected[]` (0–2 items). `_alchMergeTimer` holds the setTimeout ref so it can be cancelled on deselect.
-- **Animation:** CSS-only. `.alchemy-stage.swirling` triggers `alch-swirl-left/right` keyframes; `.merging` triggers `alch-merge-left/right`; flash uses `alch-flash-pop`. No canvas or libraries.
-- **Mod rows:** `alchModRow(mod, elemField)` renders `.alch-mod-row` (flex column with `--elem-color` inline CSS var):
-  - `.alch-mod-row-main`: element icon, mod name (`flex:1`, ellipsis), GALV badge (teal), pct `+60` (no `%`, `text-align:center`), +/− button
-  - `.alch-stat-strip`: always-visible pills from `mod.effect` (plain-text `effect_raw` parsed via API). Only rendered when `statPills` is non-empty.
-- **+/− toggle:** Equipped mods show red `−` (`.alch-remove-btn`); unequipped show `+`. `addAlchMod(name)` / `removeAlchMod(name)` write to `modSlots[]`.
-- **Colored hover:** `.alch-mod-row:hover` uses `color-mix(in srgb, var(--elem-color) 14%, rgba(255,255,255,0.02))` for background + matching border and `box-shadow` glow. No expand animation — stat strip is always-visible, so no layout shift on hover.
-- **Scroll:** `overscroll-behavior: contain; -webkit-overflow-scrolling: touch` on `.alchemy-suggestions`. `overflow: hidden` on `.mod-picker-overlay.active` prevents body scroll bleed.
-- **Mobile:** At ≤520px, `.mod-picker-overlay` goes `align-items: flex-end` (bottom-sheet for other overlays). `#alchemy-mixer-overlay` overrides this back to `align-items: center` so the mixer stays centered.
-- **Mod suggestions:** `showAlchModSuggestions(a, b)` filters `allMods` using `getCompatibleModTypes(getCurrentWeapon())` (returns a `Set`) and matches `m.primary_element === a || b`.
-- **Critical naming:** The existing `PRIMARY_ELEMENTS` const (line ~566) is a `Set` used by the combiner. The alchemy mixer uses `ALCH_PRIMARY` (array) to avoid redeclaration conflict.
-- **Tooltips:** All 9 elemental tooltips updated to faction-based text (Update 36) — no Ferrite/Alloy Armor references remain.
-- **Gas colour:** `ELEM_COLORS.gas` is `#00c8a0` (teal). `PROC_COLORS.gas` references `ELEM_COLORS.gas` and updates automatically.
+Gold seal button in mod panel header → modal for exploring elemental combinations. Pick two primary elements → animated merge → filtered mod suggestions with +/− equip buttons.
+- **Key state:** `alchSelected[]` (0–2), `_alchMergeTimer`. `clearAlchMods()` removes only elemental mods from slots.
+- **Naming:** Uses `ALCH_PRIMARY` (array) — do not confuse with `PRIMARY_ELEMENTS` (Set, used by combiner).
+- **Mobile:** Stays centered (overrides bottom-sheet pattern). Scroll containment on `.alchemy-suggestions`.
 
 ## Multi-Attack System
 Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Rocket Explosion; Torid: Grenade Impact + Poison Cloud + Incarnon Form). Each attack has its own damage, crit, status, fire rate, and shot type.
@@ -336,8 +308,7 @@ These are crowd-control or debuff effects — no tick damage. Return `{active, e
 | `blast` | −30% accuracy (up to −75%); detonates at 10 stacks |
 | `cold` | −50% speed (up to −90%); +0.1 flat crit damage |
 
-**Web UI:** DoT procs → "Status Procs" table (per-tick / total columns). CC procs → separate "CC / Debuff Procs" table (effect text column). DPS proc loop skips CC procs (no damage contribution).
-**CLI `--procs`:** DoT procs shown in left table; CC procs shown in separate section with effect text.
+DoT procs show per-tick / total columns. CC procs show effect text only (no damage contribution).
 
 ## Damage Type Effectiveness (Update 36.0+)
 - **Vulnerable (+):** ×1.5
@@ -369,47 +340,27 @@ Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mo
 - **reload_bonus** (Merciless) → applied to modded reload time for sustained DPS
 - **flat_damage** (Cascadia Overcharge) → distributed proportionally among IPS types before Step 1
 
-### Presets (`src/arcanes.py`)
-
-| Key | Bonus | Per Stack | Max | Restriction |
-|---|---|---|---|---|
-| `primary_merciless` | damage + reload | +30% / +7.5% | 12 | primary |
-| `secondary_merciless` | damage + reload | +30% / +7.5% | 12 | secondary |
-| `shotgun_merciless` | damage + reload | +30% / +7.5% | 12 | shotgun |
-| `primary_deadhead` | damage + headshot | +60% / +30% | 6 | primary |
-| `secondary_deadhead` | damage + headshot | +60% / +30% | 6 | secondary |
-| `shotgun_deadhead` | damage + headshot | +60% / +30% | 6 | shotgun |
-| `primary_dexterity` | damage | +60% | 6 | primary |
-| `secondary_dexterity` | damage | +60% | 6 | secondary |
-| `cascadia_flare` | crit chance | +24% | 12 | secondary |
-| `cascadia_empowered` | crit damage | +30% | 5 | secondary |
-| `cascadia_overcharge` | flat damage | +4000 | 1 | secondary |
+### Presets
+11 presets in `src/arcanes.py` — Merciless (×3 slots), Deadhead (×3), Dexterity (×2), Cascadia Flare/Empowered/Overcharge. See source or User Guide for full table.
 
 ### Usage
-- **CLI:** `--arcane primary_merciless:12` (name:stacks). Repeat for second arcane (max 2).
-- **API:** POST body field `arcanes: [{name: "primary_merciless", stacks: 12}]` on `/api/calculate` and `/api/modded-weapon`. `GET /api/arcanes` returns preset list.
-- **Web UI:** "Weapon Arcanes" panel with "+ Add" button. Dropdown filtered by weapon slot (primary/secondary/shotgun). Stacks input with per-arcane max. Max 2 rows. Incompatible arcanes cleared on weapon change.
+- **CLI:** `--arcane primary_merciless:12` (name:stacks, max 2).
+- **API:** `arcanes: [{name, stacks}]` on `/api/calculate` and `/api/modded-weapon`. `GET /api/arcanes` returns preset list.
+- **Web UI:** Arcane panel with dropdown filtered by weapon slot, stacks input, max 2 rows.
 
 ## Warframe Ability Buffs
 
 `src/buffs.py` — preset factory functions for ability buffs. `src/models.py` — `Buff` dataclass.
 
-### Buff Categories & Pipeline Placement
-
-| Category | Abilities | Pipeline Step | Proc Interaction |
-|---|---|---|---|
-| Faction-type | Roar | Step 5 — additive with Bane mods | Double-dips on DoT procs |
-| General multiplier | Eclipse | Step 5.5 — separate multiplicative after faction | No double-dip |
-| Separate instance | Xata's Whisper (Void) | Independent hit — double-dips faction mods + headshot | Not in proc pool |
-| Elemental addition | Nourish (Viral) | Step 1 — adds elemental damage to current hit | Adds to modded damage |
+### Pipeline Placement
+- **Roar** → Step 5, additive with Bane mods. Double-dips on DoT procs.
+- **Eclipse** → Step 5.5, separate multiplicative after faction. No double-dip.
+- **Xata's Whisper** → Independent Void hit, double-dips faction + headshot.
+- **Nourish** → Step 1, adds Viral elemental damage.
 
 ### Usage
-- **CLI:** `--buff roar` or `--buff roar:1.5` (150% ability strength). Repeat for multiple buffs.
-- **API:** POST body field `buffs: [{name: "roar", strength: 1.5}]` on `/api/calculate`.
-- **Web UI:** "Warframe Buffs" panel with dropdown + ability strength % input. Multiple buffs supported.
-
-### Presets (`src/buffs.py`)
-`roar`, `eclipse`, `xatas_whisper`, `nourish`
+- **CLI:** `--buff roar:1.5` (name:strength). **API:** `buffs: [{name, strength}]`. **Web UI:** Buffs panel with dropdown + strength input.
+- Presets: `roar`, `eclipse`, `xatas_whisper`, `nourish` in `src/buffs.py`.
 
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.
