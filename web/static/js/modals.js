@@ -222,21 +222,55 @@ function onRivenDraftChange(i, field, value) {
 
 function renderRivenRows() {
   const container = document.getElementById('riven-rows');
-  container.innerHTML = rivenDraft.map((s, i) => `
+  container.innerHTML = rivenDraft.map((s, i) => {
+    const sel = RIVEN_STAT_OPTIONS.find(o => o.value === s.stat);
+    const label = sel ? sel.label : '\u2014 Select stat \u2014';
+    return `
     <div class="riven-stat-row${s.stat ? ' has-value' : ''}">
-      <select class="riven-stat-select" onchange="onRivenDraftChange(${i},'stat',this.value)">
-        ${RIVEN_STAT_OPTIONS.map(o =>
-          `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
-        ).join('')}
-      </select>
+      <div class="riven-select-wrap" data-idx="${i}">
+        <button type="button" class="riven-select-btn" onclick="toggleRivenSelect(${i})">
+          <span>${esc(label)}</span><span class="riven-select-arrow">&#9662;</span>
+        </button>
+        <div class="riven-select-dropdown">
+          ${RIVEN_STAT_OPTIONS.map(o =>
+            `<div class="riven-select-option${o.value===s.stat?' selected':''}" data-value="${esc(o.value)}" onclick="pickRivenStat(${i},this)">${esc(o.label)}</div>`
+          ).join('')}
+        </div>
+      </div>
       <input type="number" class="riven-stat-input" step="0.1" value="${s.pct || ''}"
         placeholder="0" min="-999" max="9999"
         onchange="onRivenDraftChange(${i},'pct',this.value)"
         oninput="if(this.value.length>4)this.value=this.value.slice(0,4);onRivenDraftChange(${i},'pct',this.value)">
-      <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">×</button>
-    </div>
-  `).join('');
+      <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">\u00d7</button>
+    </div>`;
+  }).join('');
 }
+
+function toggleRivenSelect(idx) {
+  const wrap = document.querySelector(`.riven-select-wrap[data-idx="${idx}"]`);
+  const wasOpen = wrap.classList.contains('open');
+  // close all first
+  document.querySelectorAll('.riven-select-wrap.open').forEach(w => w.classList.remove('open'));
+  if (!wasOpen) wrap.classList.add('open');
+}
+
+function pickRivenStat(idx, el) {
+  const value = el.dataset.value;
+  onRivenDraftChange(idx, 'stat', value);
+  // update button label
+  const wrap = el.closest('.riven-select-wrap');
+  wrap.querySelector('.riven-select-btn span:first-child').textContent = el.textContent;
+  // mark selected
+  wrap.querySelectorAll('.riven-select-option').forEach(o => o.classList.toggle('selected', o.dataset.value === value));
+  wrap.classList.remove('open');
+}
+
+// close riven dropdowns on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.riven-select-wrap')) {
+    document.querySelectorAll('.riven-select-wrap.open').forEach(w => w.classList.remove('open'));
+  }
+});
 
 function clearRivenRow(i) {
   rivenDraft[i] = { stat: '', pct: 0 };

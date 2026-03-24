@@ -1030,30 +1030,75 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   align-items: center;
   gap: 8px;
 }
-.riven-stat-select {
+.riven-select-wrap {
   flex: 1;
   min-width: 0;
-  padding: 3px;
+  position: relative;
+}
+.riven-select-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 3px 8px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-field);
   font-size: 12px;
-  -webkit-appearance: none;
-  appearance: none;
-  box-sizing: border-box;
   cursor: pointer;
+  box-sizing: border-box;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.riven-stat-select:focus {
-  outline: none;
+.riven-select-btn:focus,
+.riven-select-btn:hover {
   border-color: rgba(155, 109, 208, 0.7);
   box-shadow: 0 0 0 2px var(--riven-glow);
 }
-.riven-stat-select option {
-  background: var(--surface-solid);
+.riven-select-arrow {
+  margin-left: auto;
+  opacity: 0.5;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+  font-size: 10px;
+  padding-left: 6px;
+}
+.riven-select-wrap.open .riven-select-arrow { transform: rotate(180deg); }
+.riven-select-dropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background: rgba(10, 12, 22, 0.96);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  max-height: 200px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 200;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  display: none;
+}
+.riven-select-wrap.open .riven-select-dropdown { display: block; }
+.riven-select-option {
+  padding: 5px 8px;
+  font-size: 12px;
   color: var(--text-field);
+  cursor: pointer;
+  transition: background 0.1s;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.riven-select-option:hover {
+  background: var(--riven-glow);
+  color: var(--riven);
+}
+.riven-select-option.selected {
+  color: var(--riven);
 }
 .riven-stat-input {
   flex: 0 0 56px;
@@ -1229,7 +1274,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   input[type=number],
   .search-input,
   .mod-picker-search,
-  .riven-stat-select,
+  .riven-select-btn,
+  .riven-select-option,
   .riven-stat-input,
   .custom-select-btn,
   .custom-select-option { font-size: 16px !important; padding: 3px !important; }
