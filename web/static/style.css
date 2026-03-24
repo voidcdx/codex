@@ -971,6 +971,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  isolation: isolate;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
   animation: rivenModalIn 0.18s ease;
 }
@@ -1264,10 +1266,10 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   input[type=number],
   .search-input,
   .mod-picker-search,
-  .riven-stat-btn,
-  .riven-stat-input,
   .custom-select-btn,
   .custom-select-option { font-size: 16px !important; padding: 3px !important; }
+  .riven-stat-btn,
+  .riven-stat-input { font-size: 14px !important; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
