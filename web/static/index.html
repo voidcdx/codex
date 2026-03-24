@@ -195,6 +195,24 @@
             <li><strong>Equip These Mods</strong> fills empty mod slots with the suggested mods.</li>
           </ul>
 
+          <h3>Weapon Arcanes</h3>
+          <p>Click <strong>+ Add</strong> in the Weapon Arcanes panel to add an arcane row (max 2). Each arcane has a stack count input clamped to its maximum.</p>
+          <table>
+            <tr><th>Arcane</th><th>Bonus per stack</th><th>Max</th><th>Slot</th></tr>
+            <tr><td>Primary Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Primary</td></tr>
+            <tr><td>Secondary Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Secondary</td></tr>
+            <tr><td>Shotgun Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Shotgun</td></tr>
+            <tr><td>Primary Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Primary</td></tr>
+            <tr><td>Secondary Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Secondary</td></tr>
+            <tr><td>Shotgun Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Shotgun</td></tr>
+            <tr><td>Primary Dexterity</td><td>+60% damage</td><td>6</td><td>Primary</td></tr>
+            <tr><td>Secondary Dexterity</td><td>+60% damage</td><td>6</td><td>Secondary</td></tr>
+            <tr><td>Cascadia Flare</td><td>+24% crit chance</td><td>12</td><td>Secondary</td></tr>
+            <tr><td>Cascadia Empowered</td><td>+30% crit damage</td><td>5</td><td>Secondary</td></tr>
+            <tr><td>Cascadia Overcharge</td><td>+4000 flat damage</td><td>1</td><td>Secondary</td></tr>
+          </table>
+          <p>Arcane damage bonus is additive with Serration in Step 1. Deadhead headshot bonus is additive with the body part multiplier in Step 2. Incompatible arcanes are cleared when switching weapons.</p>
+
           <h3>Hit Options</h3>
           <table>
             <tr><th>Option</th><th>Range</th><th>What it does</th></tr>
@@ -233,6 +251,7 @@
             <li><strong>Breakdown table</strong> — damage per type (Impact, Puncture, Slash, elementals). <code style="color:#4caf50;background:#1a3a1a;border-color:transparent">+50%</code> badges = enemy is vulnerable to that type. <code style="color:#f44336;background:#3a1a1a;border-color:transparent">−50%</code> badges = enemy is resistant. These are faction-based (Update 36+).</li>
             <li><strong>Status Procs table</strong> — if the weapon has elemental damage, shows per-tick and 6-tick total for DoT procs (Slash bleed, Heat burn, Gas cloud, Toxin poison, Electricity arc). Faction mods double-dip on these.</li>
             <li><strong>CC / Debuff Procs table</strong> — shows crowd-control effects for Viral (health vulnerability), Magnetic (shield damage), Radiation (confuse), Blast (accuracy debuff), Cold (slow).</li>
+            <li><strong>Condition Overload Curve</strong> — when a Condition Overload mod is equipped, shows a table of damage at 0–10 unique statuses with bar chart and % increase over baseline. The current status count row is highlighted.</li>
             <li><strong>DPS section</strong> — Burst DPS (damage × fire rate), Sustained DPS (accounts for reload), and Proc DPS (steady-state average from status effects).</li>
             <li><strong>Kill Time section</strong> — shots to kill, burst TTK, and sustained TTK based on the scaled enemy HP at the selected level.</li>
           </ul>
