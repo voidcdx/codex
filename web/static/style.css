@@ -183,7 +183,7 @@ select, input[type=text], input[type=number] {
   color: var(--text-field);
   -webkit-appearance: none;
   appearance: none;
-  padding: 0;
+  padding: 2px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 8px;
@@ -229,7 +229,7 @@ select option {
   background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text-field);
-  padding: 0;
+  padding: 2px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 6px;
@@ -265,7 +265,7 @@ select option {
 }
 .combobox-dropdown.open { display: block; }
 .combobox-item {
-  padding: 0;
+  padding: 2px;
   cursor: pointer;
   font-size: 12px;
   color: var(--text-field);
@@ -538,7 +538,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-field);
-  padding: 0;
+  padding: 2px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   outline: none;
@@ -554,7 +554,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   padding: 4px 0;
 }
 .mod-picker-item {
-  padding: 0;
+  padding: 2px;
   cursor: pointer;
   font-size: 13px;
   color: var(--text-field);
@@ -587,7 +587,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 0;
+  padding: 2px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -633,7 +633,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: block;
 }
 .custom-select-option {
-  padding: 0;
+  padding: 2px;
   font-size: 12px;
   color: var(--text-field);
   cursor: pointer;
@@ -1208,13 +1208,13 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .riven-stat-select,
   .riven-stat-input,
   .custom-select-btn,
-  .custom-select-option { font-size: 16px !important; padding: 0 !important; }
+  .custom-select-option { font-size: 16px !important; padding: 2px !important; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
 
   /* Allow vertical scroll inside the dropdown when touching items */
-  .combobox-item { touch-action: pan-y; font-size: 16px !important; padding: 0; }
+  .combobox-item { touch-action: pan-y; font-size: 16px !important; padding: 2px; }
 
 }
 @media (max-width: 480px) {
