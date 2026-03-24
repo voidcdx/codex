@@ -970,7 +970,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   max-width: calc(100vw - 32px);
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
   animation: rivenModalIn 0.18s ease;
 }
@@ -999,6 +999,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-radius: 14px 0 0 14px;
 }
 .riven-art-img {
   width: 100%;
@@ -1103,7 +1104,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-input {
   flex: 0 0 56px;
   width: 56px;
-  padding: 3px;
+  padding: 3px 8px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -1306,14 +1307,13 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     max-width: 100vw;
     border-radius: 14px 14px 0 0;
     max-height: 90vh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible;
   }
   .riven-modal-left {
     width: 100%;
     height: 140px;
     flex-shrink: 0;
+    border-radius: 14px 14px 0 0;
   }
   .riven-modal-right { padding: 20px 16px 16px; }
 }
