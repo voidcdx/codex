@@ -251,7 +251,16 @@ function toggleRivenSelect(idx) {
   const wasOpen = wrap.classList.contains('open');
   // close all first
   document.querySelectorAll('.riven-select-wrap.open').forEach(w => w.classList.remove('open'));
-  if (!wasOpen) wrap.classList.add('open');
+  if (!wasOpen) {
+    wrap.classList.add('open');
+    // position fixed dropdown relative to button
+    const btn = wrap.querySelector('.riven-select-btn');
+    const dd = wrap.querySelector('.riven-select-dropdown');
+    const r = btn.getBoundingClientRect();
+    dd.style.top = (r.bottom + 2) + 'px';
+    dd.style.left = r.left + 'px';
+    dd.style.width = r.width + 'px';
+  }
 }
 
 function pickRivenStat(idx, el) {
