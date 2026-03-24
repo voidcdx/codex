@@ -199,6 +199,15 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.2.2',
+    date: '2026-03-24',
+    sections: [
+      { heading: 'Improved', items: [
+        'UI polish and mobile optimisations across the web interface',
+      ]},
+    ],
+  },
+  {
     version: '0.2.1',
     date: '2026-03-23',
     sections: [

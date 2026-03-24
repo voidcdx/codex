@@ -1,55 +1,56 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Three-part session: (1) versioning + changelog infrastructure, (2) JS extraction from index.html into 8 separate files, (3) patch version bump to v0.2.1 + changelog entry for the refactor.
-No logic changes; all 256 pytest tests still pass.
+UI-only session: glassmorphic modal polish, uniform input/field styling, combobox dropdown redesign, mobile bug fixes, and text colour tuning. No logic or data changes — all 256 pytest tests still pass.
 
 ---
 
 ## Changes made this session
 
-### 1. Version bump to v0.2.1
-- `src/version.py`: `APP_VERSION` → `"0.2.1"` (patch — internal refactor, no user-facing changes)
+### 1. Version bump to v0.2.2
+- `src/version.py`: `APP_VERSION` → `"0.2.2"`
+- `CHANGELOG.md`: new `[0.2.2]` entry — "UI polish and mobile optimisations across the web interface"
+- `web/static/js/constants.js`: new entry prepended to `CHANGELOG_ENTRIES`
 
-### 2. Changelog entry for v0.2.1
-- `CHANGELOG.md`: new `[0.2.1]` entry added above `[0.2.0]`
-- `web/static/js/constants.js`: new entry prepended to `CHANGELOG_ENTRIES` (powers the "What's New" modal)
-- Entry text: "Web interface JavaScript reorganised into separate, focused modules for improved maintainability and long-term reliability"
+### 2. Glassmorphic modals (`web/static/style.css`)
+- All modals (Guide, Changelog, Buffs, Riven, Alchemy) use `backdrop-filter: blur(22px) saturate(1.3)` + `rgba(10,12,22,0.96)` dark glass background
+- Custom `<select>` dropdowns restyled to match dark theme
+- Toggle/checkbox custom styling
 
-### 3. Version bump to v0.2.0 (previous session work — already committed)
-- `src/version.py`: `APP_VERSION` → `"0.2.0"`
-- `CHANGELOG.md`: Keep a Changelog format, two entries: v0.2.0 and v0.1.0
-- "What's New" nav button + `#changelog-overlay` glassmorphism modal in Web UI
-- `CHANGELOG_ENTRIES` constant in `constants.js` rendered by `renderChangelog()`
-- CSS: `.changelog-modal*` classes in `style.css` with responsive rules
+### 3. Combobox dropdown polish
+- Glass background (`rgba(10,12,22,0.96)`) — was semi-transparent
+- Border switched to `var(--border)` (neutral subtle white) — removed gold/yellow `--border-highlight`
+- Uniform 12px font + compact padding across all inputs, fields, and dropdown items
 
-### 4. JS extraction — index.html split into 8 files (previous session work — already committed)
-`index.html` reduced from ~2,450 lines to ~360 (HTML-only, no inline JS).
-All JavaScript moved to `web/static/js/` with `<script defer>` tags in `<head>`.
+### 4. Text colour — `--text-field`
+- Final value: `#8888a4` (blue-gray, matches the placeholder tone)
+- Iterated through several values this session; `#8888a4` was approved
 
-| File | Lines | Contents |
-|------|-------|----------|
-| `constants.js` | 243 | All global state + data constants |
-| `utils.js` | 86 | `esc()`, `fmtNum()`, `dmgIcon()`, `initTooltips()`, `getCurrentWeapon/Enemy()` |
-| `combobox.js` | 101 | `setupCombobox()`, `clearCombobox()` |
-| `weapons.js` | 882 | Mod grid, picker, weapon stats, element badges, modded stats, special slots |
-| `enemy.js` | 126 | Enemy panel, level scaling, Steel Path, Eximus |
-| `modals.js` | 333 | Alchemy Guide, Riven Builder, Guide, Changelog, Buffs |
-| `calculate.js` | 250 | `runCalculation()`, `showResults()`, `showError()` |
-| `app.js` | 49 | `loadData()` bootstrap, DOMContentLoaded handlers |
+### 5. Mobile fixes
+- Disabled mod drag on touch devices
+- Always-visible remove button on mobile mod cards
+- Fixed modal background scroll bleed on iOS
+- Fixed alchemy modal header layout (Clear Mods / X button separation)
+- Fixed "What's New" modal header clipping + mobile scroll bleed
 
-**Key architecture notes:**
-- No bundler — plain `<script defer>` tags execute in document order
-- All functions/variables on `window` scope (unchanged from before)
-- CDN scripts (SortableJS, Popper, Tippy) in `<head>` with `defer`, before app scripts
-- `constants.js` must load first (declares all shared mutable state)
-- `app.js` must load last (bootstrap)
+---
+
+## CSS variable reference (key design tokens)
+```css
+--border:           rgba(255, 255, 255, 0.12)   /* subtle neutral border */
+--border-highlight: rgba(196, 154, 31, 0.3)     /* gold — used on .panel:hover and .stat-block:hover ONLY */
+--text:             #e0e0e8                      /* general body text */
+--text-field:       #8888a4                      /* input/field/dropdown text */
+--text-dim:         #777788                      /* placeholder + dimmed labels */
+--accent:           #c49a1f                      /* gold accent */
+```
+**Note:** `--border-highlight` (gold) was intentionally removed from the combobox dropdown border this session. Do NOT re-add it to dropdowns or modals — it looks yellow and clashes. It stays on `.panel:hover` and `.stat-block:hover` only.
 
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-pjWUR`
-- Version: `0.2.1`
+- Branch: `claude/review-handoff-notes-wQAsQ`
+- Version: `0.2.2`
 - Game data: Update 41 — The Old Peace
 - Tests: 256 passing
 
@@ -58,7 +59,7 @@ All JavaScript moved to `web/static/js/` with `<script defer>` tags in `<head>`.
 ## Start-of-session checklist for next Claude
 
 > **Ask the user two things before touching any code:**
-> 1. "Should I bump the version in `src/version.py`? Current version is `0.2.1`."
+> 1. "Should I bump the version in `src/version.py`? Current version is `0.2.2`."
 > 2. "Should this session's changes be tracked in the changelog?"
 >
 > Do NOT auto-bump the version or add changelog entries without explicit confirmation.
