@@ -988,24 +988,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .riven-modal-close:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
 
-/* Left column — riven glyph */
-.riven-modal-left {
-  width: 160px;
-  flex-shrink: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-right: 1px solid var(--border);
-}
-.riven-glyph {
-  font-size: 64px;
-  color: var(--text-dim);
-  opacity: 0.45;
-  user-select: none;
-}
-
-/* Right column — form */
+/* Form column */
 .riven-modal-right {
   flex: 1;
   min-width: 0;
@@ -1283,14 +1266,6 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
   }
-  .riven-modal-left {
-    width: 100%;
-    height: 80px;
-    flex-shrink: 0;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .riven-glyph { font-size: 40px; }
   .riven-modal-right { padding: 20px 16px 16px; }
 }
 
