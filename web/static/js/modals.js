@@ -170,36 +170,39 @@ function clearAlchMods() {
   if (alchSelected) renderAlchSuggestions(alchSelected);
 }
 
+let _rivenEditing = false;
+
 function openRivenBuilder() {
   rivenDraft = Array.from({length: 4}, (_, i) =>
     rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 0}
   );
-  renderRivenRows();
-document.getElementById('riven-picker-overlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
+  // Ensure riven slot exists in grid
+  if (modSlots.indexOf('__riven__') < 0) {
+    const empty = modSlots.indexOf('');
+    if (empty >= 0) modSlots[empty] = '__riven__';
+    else { alert('No empty mod slot — remove a mod first.'); return; }
+  }
+  _rivenEditing = true;
+  renderModCards();
+  initSortable();
 }
 
 function closeRivenBuilder() {
   closeRivenDropdown();
-  document.getElementById('riven-picker-overlay').classList.remove('active');
-  document.body.style.overflow = '';
+  _rivenEditing = false;
+  renderModCards();
+  initSortable();
 }
 
 function applyRiven() {
   const valid = rivenDraft.filter(s => s.stat);
   rivenApplied = valid.length ? valid : null;
-  closeRivenBuilder();
-  if (rivenApplied) {
-    const existing = modSlots.indexOf('__riven__');
-    if (existing < 0) {
-      const empty = modSlots.indexOf('');
-      if (empty >= 0) modSlots[empty] = '__riven__';
-      else { alert('No empty mod slot — remove a mod first.'); return; }
-    }
-  } else {
+  if (!rivenApplied) {
     const idx = modSlots.indexOf('__riven__');
     if (idx >= 0) modSlots[idx] = '';
   }
+  _rivenEditing = false;
+  closeRivenDropdown();
   renderModCards();
   initSortable();
   updateModdedStats();
@@ -210,7 +213,8 @@ function clearRiven() {
   rivenApplied = null;
   const idx = modSlots.indexOf('__riven__');
   if (idx >= 0) modSlots[idx] = '';
-  renderRivenRows();
+  _rivenEditing = false;
+  closeRivenDropdown();
   renderModCards();
   initSortable();
   updateModdedStats();
@@ -221,8 +225,9 @@ function onRivenDraftChange(i, field, value) {
   else rivenDraft[i].stat = value;
 }
 
-function renderRivenRows() {
-  const container = document.getElementById('riven-rows');
+function renderRivenRows(container) {
+  if (!container) container = document.getElementById('riven-rows');
+  if (!container) return;
   container.innerHTML = rivenDraft.map((s, i) => {
     const sel = RIVEN_STAT_OPTIONS.find(o => o.value === s.stat);
     const label = sel ? sel.label : '\u2014 Select stat \u2014';
@@ -319,11 +324,8 @@ function getRivenSpec() {
   return stats.length ? {stats} : null;
 }
 
-// Close riven modal on backdrop click
+// Close modals on backdrop click
 document.addEventListener('click', e => {
-  const riven = document.getElementById('riven-picker-overlay');
-  if (riven && riven.classList.contains('active') && e.target === riven)
-    closeRivenBuilder();
   const alch = document.getElementById('alchemy-mixer-overlay');
   if (alch && alch.classList.contains('active') && e.target === alch)
     closeAlchemyMixer();

@@ -954,74 +954,44 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-card-stats { display: flex; flex-direction: column; gap: 1px; margin-top: 3px; }
 .riven-card-stat { font-size: 9px; color: var(--good); line-height: 1.4; }
 
-/* ── Riven Modal ─────────────────────────────────────── */
-@keyframes rivenModalIn {
-  from { opacity: 0; transform: scale(0.96) translateY(8px); }
-  to   { opacity: 1; transform: scale(1)    translateY(0);   }
+/* ── Riven Inline Editor (in mod grid) ────────────────── */
+.riven-inline-editor {
+  cursor: default !important;
+  padding: 8px !important;
+  min-height: auto !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
 }
-.riven-modal {
-  position: relative;
-  background: rgba(14, 10, 22, 0.97);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  width: 520px;
-  max-width: calc(100vw - 32px);
+.riven-inline-header {
   display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
-  animation: rivenModalIn 0.18s ease;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
 }
-.riven-modal-close {
-  position: absolute;
-  top: 12px; right: 14px;
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  border: none;
-  background: none;
-  color: var(--text-muted);
-  font-size: 18px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1;
-  transition: background 0.15s, color 0.15s;
-}
-.riven-modal-close:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
-
-/* Form column */
-.riven-modal-right {
-  flex: 1;
-  min-width: 0;
-  padding: 24px 20px 20px;
+.riven-inline-rows {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-.riven-modal-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0;
+  gap: 4px;
 }
 
-/* Stat rows — all elements share height for strict alignment */
+/* Stat rows */
 .riven-stat-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 .riven-stat-btn {
   flex: 1;
   min-width: 0;
-  height: 32px;
-  padding: 0 6px;
+  height: 26px;
+  padding: 0 4px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-dim);
   font-family: inherit;
-  font-size: 13px;
-  line-height: 30px;
+  font-size: 10px;
+  line-height: 24px;
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
@@ -1042,9 +1012,9 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-btn .arrow {
   margin-left: auto;
   opacity: 0.4;
-  font-size: 10px;
+  font-size: 8px;
   flex-shrink: 0;
-  padding-left: 6px;
+  padding-left: 4px;
 }
 .riven-portal-dropdown {
   display: none;
@@ -1061,21 +1031,21 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 .riven-portal-dropdown.open { display: block; }
-.riven-portal-dropdown .combobox-item { padding: 5px 8px; }
+.riven-portal-dropdown .combobox-item { padding: 5px 8px; font-size: 12px; }
 .riven-portal-dropdown .combobox-item:hover { background: rgba(255, 255, 255, 0.08); }
 .riven-portal-dropdown .combobox-item.selected { color: var(--text); }
 .riven-stat-input {
-  flex: 0 0 56px;
-  width: 56px;
-  height: 32px;
-  padding: 0 6px;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 26px;
+  padding: 0 3px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
   font-family: inherit;
-  font-size: 13px;
-  line-height: 30px;
+  font-size: 10px;
+  line-height: 24px;
   text-align: center;
   -webkit-appearance: none;
   appearance: none;
@@ -1091,29 +1061,29 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-input::-webkit-inner-spin-button,
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .riven-row-clear {
-  flex: 0 0 24px;
-  height: 32px;
+  flex: 0 0 18px;
+  height: 26px;
   padding: 0;
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: color 0.15s;
 }
 .riven-row-clear:hover { color: var(--bad); }
 
-/* Action buttons */
-.riven-btn-row { display: flex; gap: 8px; margin-top: 4px; }
+/* Action buttons — compact for inline card */
+.riven-btn-row-inline { display: flex; gap: 4px; margin-top: 4px; }
 .btn-riven-apply {
   flex: 1;
-  height: 38px;
+  height: 26px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--text);
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
@@ -1121,12 +1091,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .btn-riven-apply:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.25); }
 .btn-riven-reset {
   flex: 1;
-  height: 38px;
+  height: 26px;
   background: none;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
@@ -1259,18 +1229,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 @media (max-width: 520px) {
   .mod-picker-overlay { align-items: flex-end; }
-  #alchemy-mixer-overlay, #riven-picker-overlay { align-items: center; }
-  .riven-modal {
-    flex-direction: column;
-    width: 100%;
-    max-width: 100vw;
-    border-radius: 14px;
-    max-height: 90vh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-  .riven-modal-right { padding: 20px 16px 16px; }
+  #alchemy-mixer-overlay { align-items: center; }
 }
 
 /* ── Alchemy Guide Modal ─────────────────────────────── */
