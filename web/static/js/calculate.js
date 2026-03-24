@@ -151,19 +151,25 @@ function showResults(data) {
   let coCurveHtml = '';
   if (data.co_curve && data.co_curve.length === 11) {
     const currentUS = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
-    const headerCells = Array.from({length: 11}, (_, i) => `<th>${i}</th>`).join('');
-    const dataCells = data.co_curve.map((val, i) => {
+    const maxVal = data.co_curve[10] || 1;
+    const baseVal = data.co_curve[0];
+    const coRows = data.co_curve.map((val, i) => {
+      const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
+      const inc = baseVal > 0 ? ((val / baseVal - 1) * 100).toFixed(0) : 0;
       const cls = i === currentUS ? ' class="co-active"' : '';
-      return `<td${cls}>${fmtNum(val)}</td>`;
+      return `<tr${cls}>
+        <td>${i}</td>
+        <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:var(--accent)"></div></div></td>
+        <td>${fmtNum(val)}</td>
+        <td style="color:var(--text-muted);font-size:0.8em">${i === 0 ? '' : '+' + inc + '%'}</td>
+      </tr>`;
     }).join('');
     coCurveHtml = `
       <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">Condition Overload Curve</h4>
-      <div class="co-curve-wrap">
-        <table class="breakdown-table co-curve-table">
-          <thead><tr><th>Statuses</th>${headerCells}</tr></thead>
-          <tbody><tr><td>Damage</td>${dataCells}</tr></tbody>
-        </table>
-      </div>`;
+      <table class="breakdown-table co-curve-table">
+        <thead><tr><th>#</th><th></th><th>Damage</th><th></th></tr></thead>
+        <tbody>${coRows}</tbody>
+      </table>`;
   }
 
   // DPS section
