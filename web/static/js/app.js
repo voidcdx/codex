@@ -59,6 +59,7 @@ async function loadData() {
     visibleEnemies.map(e => e.name),
     () => { showEnemyStats(getCurrentEnemy()); }
   );
+  enemyCombo.set('Corrupted Heavy Gunner');
 
   initModGrid();
 
