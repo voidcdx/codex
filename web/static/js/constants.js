@@ -203,7 +203,7 @@ const CHANGELOG_ENTRIES = [
     date: '2026-03-24',
     sections: [
       { heading: 'Improved', items: [
-        'UI polish and mobile optimizations',
+        'Visual cleanup and mobile fixes',
       ]},
     ],
   },
