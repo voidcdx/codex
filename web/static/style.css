@@ -956,23 +956,19 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 
 /* ── Riven Modal ─────────────────────────────────────── */
 @keyframes rivenModalIn {
-  from { opacity: 0; transform: scale(0.95) translateY(6px); }
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
   to   { opacity: 1; transform: scale(1)    translateY(0);   }
 }
 .riven-modal {
   position: relative;
-  background: rgba(14, 10, 22, 0.85);
-  backdrop-filter: blur(22px) saturate(1.3);
-  -webkit-backdrop-filter: blur(22px) saturate(1.3);
-  border: 1px solid rgba(155, 109, 208, 0.2);
+  background: rgba(14, 10, 22, 0.97);
+  border: 1px solid var(--border);
   border-radius: 14px;
-  width: 680px;
+  width: 520px;
   max-width: calc(100vw - 32px);
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  isolation: isolate;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
   animation: rivenModalIn 0.18s ease;
 }
@@ -992,41 +988,40 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .riven-modal-close:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
 
-/* Left column — weapon art */
+/* Left column — riven glyph */
 .riven-modal-left {
-  width: 230px;
+  width: 160px;
   flex-shrink: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  border-right: 1px solid var(--border);
 }
-.riven-art-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 16px;
-  box-sizing: border-box;
+.riven-glyph {
+  font-size: 64px;
+  color: var(--text-dim);
+  opacity: 0.45;
+  user-select: none;
 }
 
-/* Right column — controls */
+/* Right column — form */
 .riven-modal-right {
   flex: 1;
-  padding: 22px 20px 18px;
+  min-width: 0;
+  padding: 24px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 .riven-modal-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text);
-  margin: 0 0 6px;
-  text-align: center;
+  margin: 0;
 }
 
-/* Stat rows */
+/* Stat rows — all elements share height for strict alignment */
 .riven-stat-row {
   display: flex;
   align-items: center;
@@ -1035,17 +1030,17 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-stat-btn {
   flex: 1;
   min-width: 0;
-  height: 26px;
-  padding: 0 8px;
+  height: 36px;
+  padding: 0 10px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  color: var(--text-field);
-  font-size: 12px;
+  color: var(--text);
+  font-size: 13px;
   cursor: pointer;
   box-sizing: border-box;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s;
   display: flex;
   align-items: center;
   white-space: nowrap;
@@ -1054,8 +1049,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .riven-stat-btn:focus,
 .riven-stat-btn:hover {
-  border-color: rgba(155, 109, 208, 0.7);
-  box-shadow: 0 0 0 2px var(--riven-glow);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 .riven-stat-btn .arrow {
   margin-left: auto;
@@ -1067,9 +1061,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .riven-portal-dropdown {
   display: none;
   position: fixed;
-  background: rgba(10, 12, 22, 0.96);
-  backdrop-filter: blur(22px) saturate(1.3);
-  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  background: rgba(10, 12, 22, 0.97);
   border: 1px solid var(--border);
   border-top: none;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
@@ -1078,45 +1070,37 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   z-index: 10000;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 .riven-portal-dropdown.open { display: block; }
-.riven-portal-dropdown .combobox-item {
-  padding: 5px 8px;
-}
-.riven-portal-dropdown .combobox-item:hover {
-  background: var(--riven-glow);
-  color: var(--riven);
-}
-.riven-portal-dropdown .combobox-item.selected {
-  color: var(--riven);
-}
+.riven-portal-dropdown .combobox-item { padding: 6px 10px; }
+.riven-portal-dropdown .combobox-item:hover { background: rgba(255, 255, 255, 0.08); }
+.riven-portal-dropdown .combobox-item.selected { color: var(--text); }
 .riven-stat-input {
-  flex: 0 0 56px;
-  width: 56px;
-  height: 26px;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 36px;
   padding: 0 8px;
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  color: var(--text-field);
-  font-size: 12px;
+  color: var(--text);
+  font-size: 13px;
   text-align: center;
   box-sizing: border-box;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s;
   -moz-appearance: textfield;
 }
 .riven-stat-input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
   outline: none;
-  border-color: rgba(155, 109, 208, 0.7);
-  box-shadow: 0 0 0 2px var(--riven-glow);
 }
 .riven-stat-input::-webkit-inner-spin-button,
 .riven-stat-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .riven-row-clear {
-  flex: 0 0 20px;
-  height: 26px;
+  flex: 0 0 28px;
+  height: 36px;
   padding: 0;
   background: none;
   border: none;
@@ -1126,41 +1110,36 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: flex; align-items: center; justify-content: center;
   transition: color 0.15s;
 }
-.riven-row-clear:hover { color: #f44336; }
+.riven-row-clear:hover { color: var(--bad); }
 
-/* Riven action buttons row */
-.riven-btn-row { display: flex; gap: 8px; }
-.riven-btn-row .btn-riven-apply { flex: 1; }
-
-/* Add button */
+/* Action buttons */
+.riven-btn-row { display: flex; gap: 8px; margin-top: 4px; }
 .btn-riven-apply {
-  height: 40px;
-  background: linear-gradient(135deg, #7b3fbf, var(--riven));
-  border: none;
+  flex: 1;
+  height: 38px;
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: #fff;
+  color: var(--text);
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.03em;
   cursor: pointer;
-  transition: box-shadow 0.15s, filter 0.15s;
+  transition: border-color 0.15s, background 0.15s;
 }
-.btn-riven-apply:hover { box-shadow: 0 4px 18px rgba(155, 109, 208, 0.4); filter: brightness(1.1); }
-
-/* Reset button */
+.btn-riven-apply:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.25); }
 .btn-riven-reset {
   flex: 1;
-  height: 40px;
-  background: rgba(155, 109, 208, 0.15);
-  border: 1px solid rgba(155, 109, 208, 0.35);
+  height: 38px;
+  background: none;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: var(--riven);
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
 }
-.btn-riven-reset:hover { background: rgba(155, 109, 208, 0.28); }
+.btn-riven-reset:hover { background: rgba(255, 255, 255, 0.05); }
 
 
 /* ── Animations ─────────────────────────────────────── */
@@ -1268,8 +1247,6 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .mod-picker-search,
   .custom-select-btn,
   .custom-select-option { font-size: 16px !important; padding: 3px !important; }
-  .riven-stat-btn,
-  .riven-stat-input { font-size: 14px !important; }
 
   /* Faster tap response, no 300ms double-tap delay */
   button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
@@ -1303,9 +1280,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   }
   .riven-modal-left {
     width: 100%;
-    height: 140px;
+    height: 80px;
     flex-shrink: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
   }
+  .riven-glyph { font-size: 40px; }
   .riven-modal-right { padding: 20px 16px 16px; }
 }
 
