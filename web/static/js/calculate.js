@@ -147,6 +147,25 @@ function showResults(data) {
     }
   }
 
+  // CO curve section (only when Condition Overload is equipped)
+  let coCurveHtml = '';
+  if (data.co_curve && data.co_curve.length === 11) {
+    const currentUS = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
+    const headerCells = Array.from({length: 11}, (_, i) => `<th>${i}</th>`).join('');
+    const dataCells = data.co_curve.map((val, i) => {
+      const cls = i === currentUS ? ' class="co-active"' : '';
+      return `<td${cls}>${fmtNum(val)}</td>`;
+    }).join('');
+    coCurveHtml = `
+      <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">Condition Overload Curve</h4>
+      <div class="co-curve-wrap">
+        <table class="breakdown-table co-curve-table">
+          <thead><tr><th>Statuses</th>${headerCells}</tr></thead>
+          <tbody><tr><td>Damage</td>${dataCells}</tr></tbody>
+        </table>
+      </div>`;
+  }
+
   // DPS section
   let dpsHtml = '';
   if (data.fire_rate != null) {
@@ -243,6 +262,7 @@ function showResults(data) {
     </table>
     ${msNote}
     ${procsHtml}
+    ${coCurveHtml}
     ${dpsHtml}
   `;
   document.getElementById('results-content').style.display = 'block';
