@@ -200,11 +200,14 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
-    version: '0.2.3',
+    version: '0.3.0',
     date: '2026-03-24',
     sections: [
       { heading: 'Added', items: [
-        'Weapon Arcane support (Merciless, Deadhead, Dexterity, Cascadia) — stack-based bonuses across CLI, API, and Web UI',
+        'Weapon Arcane support — 11 presets (Merciless, Deadhead, Dexterity, Cascadia) with per-arcane stacks and full pipeline integration',
+        'Arcane panel in Web UI with weapon-type filtering, stacks input, and max 2 slots',
+        '--arcane CLI flag and GET /api/arcanes endpoint',
+        'Deadhead headshot multiplier bonus and Cascadia Overcharge flat damage',
       ]},
     ],
   },
