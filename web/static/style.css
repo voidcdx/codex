@@ -44,16 +44,16 @@
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
 
 /* Scrollbar — Firefox */
-html { scrollbar-color: rgba(255,255,255,0.15) var(--bg); scrollbar-width: thin; }
+html { scrollbar-color: rgba(255,255,255,0.15) var(--bg); scrollbar-width: thin; height: 100%; }
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 14px;
-  min-height: 100vh;
+  height: 100%;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* Subtle scanlines */
@@ -107,7 +107,7 @@ html::before {
   position: relative;
   z-index: 1;
   display: flex;
-  min-height: 100vh;
+  height: 100%;
 }
 
 /* ── Main content ── */
@@ -117,6 +117,7 @@ html::before {
   flex-direction: column;
   overflow: hidden;
   min-width: 0;
+  height: 100%;
 }
 
 /* ── Inner header ── */
@@ -190,6 +191,7 @@ html::before {
   display: flex;
   flex-direction: column;
   padding: 24px 0;
+  overflow-y: auto;
 }
 
 .brand {
