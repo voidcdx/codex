@@ -37,14 +37,9 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Scrollbar — Webkit (Chrome/Edge/Safari) */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
-
-/* Scrollbar — Firefox */
-html { scrollbar-color: rgba(255,255,255,0.15) var(--bg); scrollbar-width: thin; height: 100%; }
+/* Scrollbar — hidden but functional */
+::-webkit-scrollbar { display: none; }
+html { scrollbar-width: none; height: 100%; }
 
 body {
   background: var(--bg);
