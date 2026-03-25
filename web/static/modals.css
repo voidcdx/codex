@@ -262,13 +262,8 @@
   padding: 18px 22px 14px;
   border-bottom: 1px solid var(--border-red);
   background: rgba(8, 8, 8, 0.97);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius) var(--radius) 0 0;
   flex-shrink: 0;
-  position: sticky;
-  top: 0;
-  z-index: 1;
 }
 
 /* ── Modal close button (shared across all modals) ──────── */
