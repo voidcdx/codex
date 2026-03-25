@@ -363,6 +363,38 @@ Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mo
 - **CLI:** `--buff roar:1.5` (name:strength). **API:** `buffs: [{name, strength}]`. **Web UI:** Buffs panel with dropdown + strength input.
 - Presets: `roar`, `eclipse`, `xatas_whisper`, `nourish` in `src/buffs.py`.
 
+## Live Data / Worldstate (`/live`)
+
+`GET /live` serves `web/static/live.html` — a separate SPA from the main calculator.
+
+### Data source
+DE's official endpoint: `https://content.warframe.com/dynamic/worldState.php` (and platform variants for ps4/xb1/swi). No third-party API.
+
+### Server-side (`web/api.py`)
+- `GET /api/worldstate?platform=pc` — fetches, parses, and returns structured worldstate JSON.
+- **Cache:** In-memory `_ws_cache` dict, TTL = 5 minutes (`_WS_TTL = 300`).
+- **Stale fallback:** If the upstream fetch fails and a cached entry exists (even expired), the stale data is returned silently. Only raises 503 on a cold cache with no data at all.
+- **HTTP timeout:** 15 seconds on the upstream request.
+- **Parsing:** `scripts/parse_worldstate.py` — imported dynamically by `_fetch_worldstate()`. `parse(raw)` is the entry point.
+
+### Parsed sections
+| Key | Source function | Rendered in live.html |
+|---|---|---|
+| `fissures` | `_parse_fissures()` | Yes |
+| `sortie` | `_parse_sortie()` | Yes |
+| `archon_hunt` | `_parse_archon_hunt()` | Yes |
+| `void_trader` | `_parse_void_trader()` | Yes |
+| `nightwave` | `_parse_nightwave()` | Yes |
+| `alerts` | `_parse_alerts()` | Yes |
+| `invasions` | `_parse_invasions()` | Yes |
+| `cycles` | `_parse_cycles()` | **Not yet** — data present, no card built |
+| `events` | `_parse_events()` | **Not yet** — data present, no card built |
+
+### UI auto-refresh
+- Countdown timer in `live.html`: refreshes every **180 seconds**.
+- Most polls hit the server cache; actual upstream fetches happen at most every 5 minutes.
+- Manual refresh button always triggers a fresh `/api/worldstate` call.
+
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.
 - **Test before implement:** Write the `pytest` case from a wiki example, then write logic until it passes.
