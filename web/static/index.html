@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Warframe Damage Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap">
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
   <!-- CDN dependencies -->
@@ -21,14 +23,15 @@
   <script defer src="/static/js/app.js"></script>
 </head>
 <body>
+<div class="app-shell">
+<div class="main-wrapper">
 <header>
-  <span class="nav-brand">Void Codex</span>
-  <nav style="display:flex;align-items:center;gap:6px;margin-left:auto">
-    <a href="/" style="color:var(--accent2);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid var(--border-highlight)">Damage Calculator</a>
-    <a href="/live" style="color:var(--text-dim);text-decoration:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid transparent;transition:color .15s" onmouseover="this.style.color='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)'">Live Data</a>
-    <button onclick="openGuide()" style="background:none;border:1px solid var(--border-highlight);color:var(--text-dim);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--accent2)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)';this.style.borderColor='var(--border-highlight)'">Guide</button>
-    <button onclick="openChangelog()" style="background:none;border:1px solid var(--border-highlight);color:var(--text-dim);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--accent2)';this.style.borderColor='var(--accent2)'" onmouseout="this.style.color='var(--text-dim)';this.style.borderColor='var(--border-highlight)'">What's New</button>
-  </nav>
+  <span class="nav-brand">VOID CODEX</span>
+  <span class="header-subtitle">DAMAGE SYSTEM</span>
+  <div class="header-status">
+    <span class="status-dot"></span>
+    <span>ZONE ACTIVE</span>
+  </div>
 </header>
 
 <div class="container">
@@ -332,7 +335,7 @@
     <!-- Warframe Buffs -->
     <div class="panel" style="margin-bottom:16px">
       <h2 style="display:flex;align-items:center;gap:8px">Warframe Buffs
-        <button type="button" class="btn-add-buff" onclick="addBuffRow()" title="Add ability buff" style="background:none;border:1px solid #b89d65;color:#b89d65;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:13px">+ Add</button>
+        <button type="button" class="btn-add-buff" onclick="addBuffRow()" title="Add ability buff" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:2px;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
       </h2>
       <div id="buff-rows"></div>
     </div>
@@ -340,7 +343,7 @@
     <!-- Weapon Arcanes -->
     <div class="panel" style="margin-bottom:16px">
       <h2 style="display:flex;align-items:center;gap:8px">Weapon Arcanes
-        <button type="button" class="btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)" style="background:none;border:1px solid #b89d65;color:#b89d65;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:13px">+ Add</button>
+        <button type="button" class="btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:2px;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
       </h2>
       <div id="arcane-rows"></div>
     </div>
@@ -371,7 +374,43 @@
     </div>
 
   </div>
-</div>
+</div><!-- .container -->
+</div><!-- .main-wrapper -->
 
+<!-- Right Nav Sidebar -->
+<nav class="right-nav">
+  <div class="right-nav-brand">
+    <span class="right-nav-logo">
+      VOID CODEX
+      <span class="logo-sub">ZONE PROTOCOL</span>
+    </span>
+  </div>
+  <div class="right-nav-items">
+    <a href="/" class="nav-item active">
+      <span class="nav-item-icon">⊛</span>
+      <span>CALCULATOR</span>
+    </a>
+    <a href="/live" class="nav-item">
+      <span class="nav-item-icon">◎</span>
+      <span>LIVE DATA</span>
+    </a>
+    <div class="right-nav-divider"></div>
+    <button onclick="openGuide()" class="nav-item">
+      <span class="nav-item-icon">▤</span>
+      <span>GUIDE</span>
+    </button>
+    <button onclick="openChangelog()" class="nav-item">
+      <span class="nav-item-icon">≣</span>
+      <span>CHANGELOG</span>
+    </button>
+  </div>
+  <div class="right-nav-footer">
+    <div class="ver-line" id="nav-ver">v—</div>
+    <div>WIKI FORMULAS</div>
+    <div>DAMAGE 3.0</div>
+  </div>
+</nav>
+
+</div><!-- .app-shell -->
 </body>
 </html>
