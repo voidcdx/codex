@@ -688,9 +688,16 @@ def get_worldstate(platform: str = "pc") -> dict:
         data, ts = _ws_cache[platform]
         if now - ts < _WS_TTL:
             return data
-    parsed = _fetch_worldstate(platform)
-    _ws_cache[platform] = (parsed, now)
-    return parsed
+    try:
+        parsed = _fetch_worldstate(platform)
+        _ws_cache[platform] = (parsed, now)
+        return parsed
+    except Exception:
+        # Serve stale cache rather than erroring if upstream is temporarily down
+        if platform in _ws_cache:
+            data, _ = _ws_cache[platform]
+            return data
+        raise
 
 
 # ---------------------------------------------------------------------------

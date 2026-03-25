@@ -725,7 +725,7 @@
         <button class="platform-pill" onclick="setPlatform('swi')">Switch</button>
       </div>
       <div class="refresh-info">
-        <span>Refresh in <span id="refresh-countdown">60</span>s</span>
+        <span>Refresh in <span id="refresh-countdown">180</span>s</span>
         <button class="refresh-btn" onclick="loadData()">↻ Now</button>
       </div>
     </div>
@@ -757,7 +757,7 @@
 
 let currentPlatform = 'pc';
 let countdownTimer  = null;
-let countdownVal    = 60;
+let countdownVal    = 180;
 
 const TIER_COLORS = {
   Lith: '#e8a060', Meso: '#c0c0c0', Neo: '#ffd700',
@@ -1055,7 +1055,7 @@ function renderAll(data) {
 
 /* ── Countdown ── */
 function resetCountdown() {
-  countdownVal = 60;
+  countdownVal = 180;
   document.getElementById('refresh-countdown').textContent = countdownVal;
   clearInterval(countdownTimer);
   countdownTimer = setInterval(() => {
