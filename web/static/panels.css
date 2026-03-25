@@ -269,6 +269,20 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .options-row > div { flex: 0 0 auto; }
 
+/* Collapsible panel toggle */
+.panel-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+.panel-toggle .chevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  opacity: 0.5;
+}
+.panel-toggle.open .chevron { transform: rotate(180deg); }
+.collapsible-body.hidden { display: none; }
+
 /* ── Legacy Mod Slots (select-based, will be replaced) */
 .mods-list { margin-bottom: 4px; }
 .mod-slot {

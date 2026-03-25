@@ -411,50 +411,6 @@
       </div>
     </div>
 
-    <!-- Hit Options + Warframe Buffs (merged) -->
-    <div class="panel">
-      <h2>Hit Options</h2>
-      <div class="options-row">
-        <div>
-          <label for="crit-mode">Hit Type</label>
-          <select id="crit-mode" style="display:none">
-            <option value="average">Average</option>
-            <option value="guaranteed">Guaranteed Crit</option>
-            <option value="max">Max Crit</option>
-          </select>
-          <div class="custom-select-wrap" data-for="crit-mode"></div>
-        </div>
-        <div>
-          <label for="body-part-select">Body Part</label>
-          <select id="body-part-select" style="display:none"><option value="Body">Body</option></select>
-          <div class="custom-select-wrap" data-for="body-part-select"></div>
-        </div>
-        <div>
-          <label for="viral-stacks">Viral Stacks</label>
-          <input type="number" id="viral-stacks" min="0" max="10" value="0" style="width:48px">
-        </div>
-        <div>
-          <label for="corrosive-stacks">Corrosive Stacks</label>
-          <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:48px">
-        </div>
-        <div id="combo-div" title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
-          <label for="combo-counter">Combo</label>
-          <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:48px" oninput="if(+this.value>+this.max)this.value=this.max;if(+this.value<1)this.value=1">
-        </div>
-        <div title="Unique proc types on enemy — used by Condition Overload (+80% per type)">
-          <label for="unique-statuses">Active Statuses</label>
-          <input type="number" id="unique-statuses" min="0" max="10" value="0" style="width:48px">
-        </div>
-        <div title="Galvanized mod kill-stacks active (0 = base stats only, max 5)">
-          <label for="galv-stacks">Galv. Stacks</label>
-          <input type="number" id="galv-stacks" min="0" max="5" value="0" style="width:48px">
-        </div>
-      </div>
-      <div class="panel-sub-h">Warframe Buffs
-        <button type="button" class="btn-add-buff" onclick="addBuffRow()" title="Add ability buff" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:0;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
-      </div>
-      <div id="buff-rows"></div>
-    </div>
 
 </div><!-- .content-main -->
 
@@ -466,6 +422,58 @@
       <div class="no-results" id="no-results">Select a weapon and enemy, then click Calculate.</div>
       <div id="results-content" style="display:none"></div>
     </div>
+
+    <!-- Options (collapsible) -->
+    <div class="panel">
+      <h2 class="panel-toggle open" onclick="this.classList.toggle('open'); document.getElementById('options-body').classList.toggle('hidden')">
+        Options
+        <svg class="chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,4 6,8 10,4"/></svg>
+      </h2>
+      <div id="options-body" class="collapsible-body">
+        <div class="options-row">
+          <div>
+            <label for="crit-mode">Hit Type</label>
+            <select id="crit-mode" style="display:none">
+              <option value="average">Average</option>
+              <option value="guaranteed">Guaranteed Crit</option>
+              <option value="max">Max Crit</option>
+            </select>
+            <div class="custom-select-wrap" data-for="crit-mode"></div>
+          </div>
+          <div>
+            <label for="body-part-select">Body Part</label>
+            <select id="body-part-select" style="display:none"><option value="Body">Body</option></select>
+            <div class="custom-select-wrap" data-for="body-part-select"></div>
+          </div>
+          <div>
+            <label for="viral-stacks">Viral Stacks</label>
+            <input type="number" id="viral-stacks" min="0" max="10" value="0" style="width:44px;padding:2px 5px">
+          </div>
+          <div>
+            <label for="corrosive-stacks">Corr. Stacks</label>
+            <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:44px;padding:2px 5px">
+          </div>
+          <div id="combo-div" title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
+            <label for="combo-counter">Combo</label>
+            <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:44px;padding:2px 5px" oninput="if(+this.value>+this.max)this.value=this.max;if(+this.value<1)this.value=1">
+          </div>
+          <div title="Unique proc types on enemy — used by Condition Overload (+80% per type)">
+            <label for="unique-statuses">Active Status</label>
+            <input type="number" id="unique-statuses" min="0" max="10" value="0" style="width:44px;padding:2px 5px">
+          </div>
+          <div title="Galvanized mod kill-stacks active (0 = base stats only, max 5)">
+            <label for="galv-stacks">Galv. Stacks</label>
+            <input type="number" id="galv-stacks" min="0" max="5" value="0" style="width:44px;padding:2px 5px">
+          </div>
+        </div>
+        <div class="panel-sub-h">Warframe Buffs
+          <button type="button" class="btn-add-buff" onclick="addBuffRow()" title="Add ability buff" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:0;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
+        </div>
+        <div id="buff-rows"></div>
+      </div>
+    </div>
+
+    <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
 
     <!-- Placeholder: Build Compare -->
     <div class="panel placeholder-panel">
@@ -504,8 +512,6 @@
       </div>
       <div id="arcane-rows"></div>
     </div>
-
-    <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
 
 </div><!-- .content-side -->
 </div><!-- .content -->
