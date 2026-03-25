@@ -574,22 +574,6 @@
 
 </div><!-- .app -->
 
-<!-- TEMP: glass variant picker — remove after user picks -->
-<div id="glass-picker" style="position:fixed;bottom:20px;left:20px;z-index:9000;background:rgba(10,10,10,0.92);border:1px solid rgba(139,0,0,0.4);padding:10px 14px;display:flex;gap:8px;align-items:center;font-family:var(--font-body)">
-  <span style="color:var(--text-dim);font-size:10px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap">Glass:</span>
-  <button onclick="setGlass('')"        style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">Off</button>
-  <button onclick="setGlass('glass-a')" style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">A: Frosted</button>
-  <button onclick="setGlass('glass-b')" style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">B: Shine</button>
-  <button onclick="setGlass('glass-c')" style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">C: Luminous</button>
-</div>
-<script>
-function setGlass(cls) {
-  document.body.classList.remove('glass-a','glass-b','glass-c');
-  if (cls) document.body.classList.add(cls);
-  document.querySelectorAll('#glass-picker button').forEach(b => b.style.outline = '');
-  if (cls) event.target.style.outline = '1px solid var(--accent2)';
-}
-</script>
 
 </body>
 </html>
