@@ -4,7 +4,7 @@
 
 :root {
   --bg:              #050505;
-  --surface:         rgba(13, 13, 13, 0.7);
+  --surface:         rgba(13, 13, 13, 0.45);
   --surface2:        rgba(10, 10, 10, 0.8);
   --surface-solid:   #0d0d0d;
   --border:          rgba(139, 0, 0, 0.15);
@@ -30,7 +30,7 @@
   --blood-red:       #4a0000;
   --font-display:    'Orbitron', monospace;
   --font-body:       'Rajdhani', sans-serif;
-  --glass-blur:      20px;
+  --glass-blur:      40px;
   --radius:          0;
   --radius-sm:       0;
 }
