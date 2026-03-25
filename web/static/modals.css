@@ -17,7 +17,6 @@
   max-height: 82vh;
   display: flex;
   flex-direction: column;
-  overflow: clip;
   position: relative;
   box-shadow: 0 24px 64px rgba(0,0,0,0.65), 0 0 40px rgba(139,0,0,0.08);
   animation: rivenModalIn 0.18s ease;
@@ -237,20 +236,9 @@
   position: relative;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(139,0,0,0.08);
   animation: rivenModalIn 0.18s ease;
-  overflow: clip;
 }
-/* crimson top-edge glow — matches .panel::before */
-.guide-modal::before,
-.changelog-modal::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(220,20,60,0.5), transparent);
-  pointer-events: none;
-  z-index: 2;
-}
-.guide-modal    { width: min(820px, calc(100vw - 32px)); max-height: 88vh; }
-.changelog-modal { width: min(560px, calc(100vw - 32px)); max-height: min(88vh, calc(100dvh - 40px)); }
+.guide-modal    { width: min(820px, calc(100vw - 48px)); max-height: 88vh; }
+.changelog-modal { width: min(560px, calc(100vw - 48px)); max-height: min(88vh, calc(100dvh - 40px)); }
 
 /* shared header */
 .guide-modal-header,
@@ -445,7 +433,7 @@
 @media (max-width: 520px) {
   #guide-overlay, #changelog-overlay { align-items: flex-end; }
   .guide-modal, .changelog-modal {
-    width: calc(100vw - 24px);
+    width: calc(100vw - 32px);
     border-radius: 14px 14px 0 0;
     border-bottom: none;
   }
