@@ -530,8 +530,7 @@ function getSelectedAttackData(weapon) {
 // Weapon stats panel — base stats
 // ---------------------------------------------------------------------------
 function showWeaponStats(weapon) {
-  const panel = document.getElementById('weapon-stats-panel');
-  if (!weapon) { panel.style.display = 'none'; return; }
+  if (!weapon) { document.getElementById('weapon-stats-content').innerHTML = ''; return; }
 
   const atk = getSelectedAttackData(weapon);
   const pct = v => (v * 100).toFixed(1) + '%';
@@ -614,7 +613,6 @@ function showWeaponStats(weapon) {
   `;
 
   renderDamageTable(atk ? atk.base_damage : weapon.base_damage, null);
-  panel.style.display = 'block';
   initTooltips();
 }
 

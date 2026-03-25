@@ -5,8 +5,7 @@
 // steelPathOn, eximusOn, lastScaledEnemy declared in constants.js
 
 function showEnemyStats(enemy) {
-  const panel = document.getElementById('enemy-stats-panel');
-  if (!enemy) { panel.style.display = 'none'; document.getElementById('enemy-scaled-stats').innerHTML = ''; return; }
+  if (!enemy) { document.getElementById('enemy-stats-content').innerHTML = ''; document.getElementById('enemy-scaled-stats').innerHTML = ''; return; }
 
   const lvlInput = document.getElementById('enemy-level');
   if (lvlInput) {
@@ -78,7 +77,6 @@ function showEnemyStats(enemy) {
       ${headRow}
     </div>
   `;
-  panel.style.display = 'block';
   refreshEnemyScaling();
 }
 
