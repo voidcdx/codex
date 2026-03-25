@@ -4,10 +4,10 @@
 
 :root {
   --bg:              #050505;
-  --surface:         rgba(22, 22, 22, 0.82);
-  --surface2:        rgba(16, 16, 16, 0.88);
-  --surface-solid:   #161616;
-  --border:          rgba(139, 0, 0, 0.22);
+  --surface:         rgba(13, 13, 13, 0.7);
+  --surface2:        rgba(10, 10, 10, 0.8);
+  --surface-solid:   #0d0d0d;
+  --border:          rgba(139, 0, 0, 0.15);
   --border-highlight: rgba(220, 20, 60, 0.4);
   --border-red:      rgba(139, 0, 0, 0.3);
   --accent:          #8b0000;
