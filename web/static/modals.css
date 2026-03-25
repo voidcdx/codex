@@ -7,18 +7,26 @@
 
 /* ── Alchemy Guide Modal ─────────────────────────────── */
 .alchemy-modal {
-  background: var(--surface2);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid rgba(139,0,0,0.55);
-  border-top: 2px solid rgba(220,20,60,0.55);
+  background: var(--surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px 18px 18px;
   width: min(560px, calc(100vw - 48px));
   max-height: 82vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.65), 0 0 40px rgba(139,0,0,0.08);
+  position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.65);
+  transition: border-color 0.2s;
+}
+.alchemy-modal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.4), transparent);
+  pointer-events: none;
 }
 .alchemy-modal-header {
   display: flex;
@@ -215,23 +223,33 @@
 .alch-remove-btn:hover { background: rgba(200,80,80,0.15); border-color: rgba(200,80,80,0.6); }
 
 /* ── Shared modal shell ─────────────────────────────────── */
+/* Same surface/border/glow as .panel */
 .guide-modal,
 .changelog-modal {
-  background: var(--surface2);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(139,0,0,0.55);
-  border-top: 2px solid rgba(220,20,60,0.55);
+  background: var(--surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(139,0,0,0.08);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.2s;
+}
+.guide-modal::before,
+.changelog-modal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.4), transparent);
+  pointer-events: none;
+  z-index: 1;
 }
 .guide-modal    { width: min(820px, calc(100vw - 48px)); max-height: 88vh; }
 .changelog-modal { width: min(560px, calc(100vw - 48px)); max-height: min(88vh, calc(100dvh - 40px)); }
 
-/* shared header */
+/* shared header — uses surface2 to distinguish from body, same as panel sub-surfaces */
 .guide-modal-header,
 .changelog-modal-header {
   display: flex;
@@ -239,12 +257,12 @@
   justify-content: space-between;
   gap: 12px;
   padding: 18px 22px 14px;
-  border-bottom: 1px solid var(--border-red);
-  background: rgba(8, 8, 8, 0.97);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
   border-radius: var(--radius) var(--radius) 0 0;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 
 /* ── Modal close button (shared across all modals) ──────── */
