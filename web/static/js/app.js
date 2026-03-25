@@ -78,8 +78,21 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch('/api/version').then(r => r.json()).then(v => {
     document.getElementById('guide-app-ver').textContent  = `Void Codex v${v.app}`;
     document.getElementById('guide-game-ver').textContent = `Game data: ${v.game_data}`;
+    const navVer = document.getElementById('nav-ver');
+    if (navVer) navVer.textContent = `v${v.app}`;
   }).catch(() => {});
 });
+
+// ── Mobile drawer ──────────────────────────────────────
+function toggleDrawer() {
+  const btn     = document.getElementById('burger-btn');
+  const drawer  = document.getElementById('mobile-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  if (!drawer) return;
+  const open = drawer.classList.toggle('open');
+  overlay.classList.toggle('open', open);
+  if (btn) btn.classList.toggle('open', open);
+}
 
 // Mod picker search
 document.addEventListener('DOMContentLoaded', () => {
