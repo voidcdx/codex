@@ -11,23 +11,14 @@
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   border: 1px solid var(--border-red);
+  border-top: 2px solid rgba(220,20,60,0.55);
   border-radius: var(--radius);
   padding: 16px 18px 18px;
-  width: min(560px, calc(100vw - 32px));
+  width: min(560px, calc(100vw - 48px));
   max-height: 82vh;
   display: flex;
   flex-direction: column;
-  position: relative;
   box-shadow: 0 24px 64px rgba(0,0,0,0.65), 0 0 40px rgba(139,0,0,0.08);
-  animation: rivenModalIn 0.18s ease;
-}
-.alchemy-modal::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(220,20,60,0.5), transparent);
-  pointer-events: none;
-  z-index: 2;
 }
 .alchemy-modal-header {
   display: flex;
@@ -230,12 +221,11 @@
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   border: 1px solid var(--border-red);
+  border-top: 2px solid rgba(220,20,60,0.55);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
-  position: relative;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(139,0,0,0.08);
-  animation: rivenModalIn 0.18s ease;
 }
 .guide-modal    { width: min(820px, calc(100vw - 48px)); max-height: 88vh; }
 .changelog-modal { width: min(560px, calc(100vw - 48px)); max-height: min(88vh, calc(100dvh - 40px)); }
@@ -250,8 +240,13 @@
   padding: 18px 22px 14px;
   border-bottom: 1px solid var(--border-red);
   background: rgba(8, 8, 8, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius) var(--radius) 0 0;
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 /* ── Modal close button (shared across all modals) ──────── */
