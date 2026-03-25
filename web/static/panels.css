@@ -106,6 +106,20 @@
   background: rgba(139, 0, 0, 0.1);
 }
 
+/* ── Compact stack/counter inputs ── */
+.input-sm      { width: 44px; padding: 2px 5px; }
+.input-sm-wide { width: 52px; }
+.input-level   { width: 72px; }
+
+/* ── Bonus element (Kuva / Tenet) ── */
+#bonus-element-div    { margin-top: 10px; }
+.bonus-element-label  { font-size: 0.85rem; color: var(--text); }
+.bonus-element-row    { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.bonus-element-unit   { color: var(--text); }
+
+/* ── Enemy level column ── */
+.enemy-level-col { display: flex; flex-direction: column; }
+
 /* ── Placeholder panels ─────────────────────────────── */
 .placeholder-panel { opacity: 0.5; }
 .coming-soon-text {
