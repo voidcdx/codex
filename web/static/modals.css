@@ -375,6 +375,11 @@
 }
 .guide-content tr:hover td { background: color-mix(in srgb, var(--accent) 4%, transparent); }
 .guide-content td:first-child { color: var(--text); white-space: nowrap; font-size: 12px; }
+.guide-content ol { padding-left: 18px; margin: 6px 0 10px; line-height: 1.65; }
+.guide-content strong { color: var(--text); }
+.guide-content .badge-vuln { color: #4caf50; background: #1a3a1a; border-color: transparent; }
+.guide-content .badge-res  { color: #f44336; background: #3a1a1a; border-color: transparent; }
+.guide-content .code-riven { color: var(--riven); border-color: rgba(208, 160, 255, 0.3); }
 
 /* ── What's New (Changelog) Modal ── */
 .changelog-modal-body {
