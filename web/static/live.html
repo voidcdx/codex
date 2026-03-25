@@ -80,11 +80,11 @@
 
     /* ── Layout ── */
     .app { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
-    .body-row { display: flex; flex: 1; }
+    .body-row { display: flex; flex: 1; overflow: hidden; }
 
     /* ── Right sidebar ── */
     .r-sidebar {
-      width: 200px;
+      width: 240px;
       flex-shrink: 0;
       background: rgba(5,5,5,0.85);
       backdrop-filter: blur(20px);
@@ -94,9 +94,10 @@
       flex-direction: column;
       padding: 24px 0;
       position: sticky;
-      top: 50px;
+      top: 0;
       height: calc(100vh - 50px);
-      overflow-y: auto;
+      overflow: hidden;
+      align-self: flex-start;
     }
     .r-sidebar::before {
       content: '';
@@ -225,6 +226,8 @@
       flex: 1;
       min-width: 0;
       padding: 28px 24px;
+      overflow-y: auto;
+      height: calc(100vh - 50px);
     }
 
     /* ── Controls ── */
