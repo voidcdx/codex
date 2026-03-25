@@ -2,79 +2,29 @@
 .we-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 20px;
+  gap: 0;
 }
 .we-col { min-width: 0; }
+.we-col:first-child {
+  border-right: 1px solid var(--border-red);
+  padding-right: 20px;
+  box-shadow: 2px 0 12px -4px var(--crimson-glow);
+}
+.we-col:last-child { padding-left: 20px; }
+
+/* Mobile: vertical divider becomes horizontal */
 @media (max-width: 600px) {
   .we-grid { grid-template-columns: 1fr; }
-  .we-col + .we-col { border-top: 1px solid var(--border); margin-top: 14px; padding-top: 14px; }
-}
-
-/* ── Variant A: Vertical Divider ── */
-.we-grid--divider { gap: 0 0; }
-.we-grid--divider .we-col:first-child { border-right: 1px solid var(--border-red); padding-right: 20px; }
-.we-grid--divider .we-col:last-child  { padding-left: 20px; }
-
-/* ── Variant B: Inner Surfaces (nested cards) ── */
-.we-grid--surfaces { gap: 0 12px; }
-.we-grid--surfaces .we-col {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  padding: 12px;
-  position: relative;
-}
-.we-grid--surfaces .we-col::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--crimson-glow), transparent);
-  pointer-events: none;
-}
-
-/* ── Variant C: Colored Top Accent line ── */
-.we-grid--accent { gap: 0 24px; }
-.we-grid--accent .we-col { padding-top: 6px; position: relative; }
-.we-grid--accent .we-col:first-child::before {
-  content: '';
-  display: block;
-  height: 2px;
-  background: var(--accent2);
-  margin-bottom: 10px;
-  box-shadow: 0 0 8px var(--crimson-glow);
-}
-.we-grid--accent .we-col:last-child::before {
-  content: '';
-  display: block;
-  height: 2px;
-  background: rgba(80, 140, 200, 0.5);
-  margin-bottom: 10px;
-  box-shadow: 0 0 8px rgba(80, 140, 200, 0.2);
-}
-
-/* ── Variant D: Labeled Badges on h2 ── */
-.we-grid--badges .we-col:first-child h2::before {
-  content: 'WEAPON';
-  font-size: 8px;
-  font-family: var(--font-display);
-  letter-spacing: .12em;
-  background: rgba(139,0,0,0.35);
-  color: var(--accent2);
-  border: 1px solid var(--border-red);
-  padding: 1px 5px;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-.we-grid--badges .we-col:last-child h2::before {
-  content: 'ENEMY';
-  font-size: 8px;
-  font-family: var(--font-display);
-  letter-spacing: .12em;
-  background: rgba(30,60,80,0.4);
-  color: rgba(100,170,220,0.85);
-  border: 1px solid rgba(80,140,200,0.3);
-  padding: 1px 5px;
-  margin-right: 8px;
-  vertical-align: middle;
+  .we-col:first-child {
+    border-right: none;
+    padding-right: 0;
+    box-shadow: none;
+    border-bottom: 1px solid var(--border-red);
+    box-shadow: 0 2px 12px -4px var(--crimson-glow);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+  .we-col:last-child { padding-left: 0; }
 }
 
 /* ── Glass Panel (stalker style) ── */
