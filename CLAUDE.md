@@ -56,8 +56,15 @@ scripts/
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
-  static/index.html # SPA HTML only — no inline JS (uses defer script tags)
-  static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
+  static/index.html # SPA HTML — stalker-dashboard layout: inner header + .content grid (1fr 320px) + right .sidebar
+                   #   .content-main: weapon/mods/enemy/options/buffs/arcanes panels + Calculate btn
+                   #   .content-side: weapon stats, enemy stats, results, placeholder panels
+                   #   aside.sidebar: brand icon, nav-menu (.nav-item), sidebar-tools, sidebar-footer (#nav-ver)
+                   #   Mobile: .burger-btn (fixed top-right) + .sidebar-overlay backdrop
+  static/style.css  # Stalker/Shadow Acolyte theme: #050505 bg, crimson #8b0000/#dc143c, Orbitron/Rajdhani fonts
+                   #   .panel: glass dark surface, 12px radius, crimson top glow ::before, no tactical corners
+                   #   .sidebar: right-side nav with .brand, .nav-menu, .nav-item (.active has right border)
+                   #   .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
                    #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
   static/js/
     constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
@@ -93,8 +100,17 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 
 ## Web UI Notes
 
-### Header / Nav
-Compact sticky bar. Future banner work should be mobile-first (≤375px).
+### Layout — Stalker-Dashboard Theme
+The calculator page uses a mirrored stalker-dashboard layout:
+- **`.main`** — left flex:1 column; contains `.header` (inner top bar) + `.content` grid
+- **`.content`** — `grid-template-columns: 1fr 320px`; `.content-main` (inputs) + `.content-side` (results)
+- **`aside.sidebar`** — right 220px; brand icon, `.nav-menu` with `.nav-item` links, `.sidebar-tools`, `.sidebar-footer`
+- **Mobile ≤900px** — sidebar hidden, `.burger-btn` shows (fixed top-right), sidebar slides in from right with `.sidebar-overlay` backdrop
+- `toggleDrawer()` in `app.js` toggles `#sidebar` + `#sidebar-overlay` CSS classes
+
+### CSS Variables
+Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--border: rgba(139,0,0,0.15)`, `--crimson: #8b0000`, `--crimson-bright: #dc143c`, `--font-display: 'Orbitron'`, `--font-body: 'Rajdhani'`, `--radius: 12px`.
+**No green UI accents** — `--accent-green` maps to crimson. Only game-data colors (element types, mod rarities, riven olive `--riven: #5a8a3a`) stay green.
 
 ### Faction Effectiveness Badges
 Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `web/static/js/constants.js` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
@@ -112,8 +128,8 @@ Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from
 Melee-only mechanic. `onWeaponChange()` hides `#combo-div` and resets to tier 1 for non-melee weapons (uses existing `isMeleeWeapon()`). Range: 1–12 for all weapons, 1–13 for Venka Prime. `oninput` clamp enforces the cap against manual keyboard entry.
 
 ### Input / Focus Styling
-- Focus glow is white/subtle — **not** gold (`var(--accent)`). Riven inputs keep purple focus intentionally.
-- Do NOT use `--border-highlight` (gold) on combobox dropdowns or modal borders. Gold border stays on `.panel:hover` and `.stat-block:hover` only.
+- Focus glow is white/subtle — **not** crimson (`var(--accent)`). Riven inputs keep purple focus intentionally.
+- Do NOT add crimson glow to combobox dropdowns or modal borders. Crimson border stays on `.panel:hover` and `.nav-item.active` only.
 
 ### Galvanized Stacks
 `#galv-stacks` input (range 0–5, default 0). Shown in the mod panel whenever any equipped mod has `galv_kill_stat` set. Sent as `galvanized_stacks: int` in POST bodies to `/api/calculate` and `/api/modded-weapon`. The server caps effective stacks per-mod via `galv_max_stacks`.

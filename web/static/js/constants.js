@@ -200,6 +200,15 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.4.1',
+    date: '2026-03-25',
+    sections: [
+      { heading: 'Changed', items: [
+        'Calculator page redesigned to match Stalker/Shadow Acolyte theme \u2014 dark crimson palette, Orbitron/Rajdhani fonts, glass panels with crimson glow, right sidebar with brand icon and nav',
+      ]},
+    ],
+  },
+  {
     version: '0.4.0',
     date: '2026-03-25',
     sections: [
