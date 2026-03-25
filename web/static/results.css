@@ -72,7 +72,7 @@
 }
 .attack-tab {
   padding: 3px 8px;
-  border-radius: 12px;
+  border-radius: 0;
   border: 1px solid var(--border);
   background: var(--surface2);
   color: var(--text-dim);
@@ -161,8 +161,8 @@
 .breakdown-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .breakdown-table tr:hover td { background: var(--surface2); }
 .bar-cell { width: 180px; }
-.bar-bg { background: var(--surface2); border-radius: 3px; height: 8px; }
-.bar-fill { height: 8px; border-radius: 3px; transition: width 0.3s ease; box-shadow: 0 0 4px rgba(255,255,255,0.1); }
+.bar-bg { background: var(--surface2); border-radius: 0; height: 8px; }
+.bar-fill { height: 8px; border-radius: 0; transition: width 0.3s ease; box-shadow: 0 0 4px rgba(255,255,255,0.1); }
 .total-row td { border-top: 1px solid var(--border); font-weight: 700; }
 
 /* ── CO Curve table ──────────────────────────────────── */
@@ -220,6 +220,6 @@
 /* ── Misc ───────────────────────────────────────────── */
 .ms-note { font-size: 12px; color: var(--text-dim); display: block; margin-top: 6px; }
 .ms-note strong { color: var(--accent2); }
-.eff-badge { font-size: 0.68rem; font-weight: 700; padding: 1px 4px; border-radius: 3px; margin-left: 5px; vertical-align: middle; }
+.eff-badge { font-size: 0.68rem; font-weight: 700; padding: 1px 4px; border-radius: 0; margin-left: 5px; vertical-align: middle; }
 .eff-vuln  { background: rgba(61,107,42,0.18); color: #5a8a3a; }
 .eff-res   { background: rgba(148,30,30,0.18); color: #c53030; }

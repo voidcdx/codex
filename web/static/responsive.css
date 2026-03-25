@@ -49,10 +49,10 @@
     padding: 0 !important;
   }
   .btn-riven-apply, .btn-riven-reset {
-    height: 36px; border-radius: 8px; font-size: 13px;
+    height: 36px; border-radius: 0; font-size: 13px;
   }
   .riven-fullgrid-btns { gap: 6px; margin-top: 0; }
-  .riven-portal-dropdown { border-radius: 8px; }
+  .riven-portal-dropdown { border-radius: 0; }
   .riven-portal-dropdown .combobox-item { font-size: 16px !important; padding: 5px 8px; }
 
   /* Faster tap response, no 300ms double-tap delay */
