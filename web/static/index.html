@@ -185,55 +185,56 @@
 </div><!-- .content-left -->
 
 <div class="content-main">
-    <!-- Weapon -->
+    <!-- Weapon + Enemy (merged) -->
     <div class="panel">
-      <h2>Weapon</h2>
-      <div class="combobox-wrap" id="weapon-combobox">
-        <div class="search-wrap">
-          <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…" autocomplete="off">
-          <button class="search-clear" onclick="clearCombobox('weapon')" title="Clear">×</button>
+      <div class="we-grid">
+        <div class="we-col">
+          <h2>Weapon</h2>
+          <div class="combobox-wrap" id="weapon-combobox">
+            <div class="search-wrap">
+              <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…" autocomplete="off">
+              <button class="search-clear" onclick="clearCombobox('weapon')" title="Clear">×</button>
+            </div>
+            <div class="combobox-dropdown" id="weapon-dropdown"></div>
+          </div>
+          <div id="bonus-element-div" style="display:none; margin-top:10px">
+            <label style="font-size:.85rem;color:#aaa">Bonus Element (Kuva / Tenet)</label>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+              <select id="bonus-element-type" style="display:none">
+                <option value="heat">Heat</option>
+                <option value="cold">Cold</option>
+                <option value="electricity">Electricity</option>
+                <option value="toxin">Toxin</option>
+              </select>
+              <div class="custom-select-wrap" data-for="bonus-element-type"></div>
+              <input type="number" id="bonus-element-pct" min="25" max="60" value="25" style="width:52px"
+                     oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
+              <span style="color:#aaa">%</span>
+            </div>
+          </div>
+          <div id="weapon-stats-content"></div>
         </div>
-        <div class="combobox-dropdown" id="weapon-dropdown"></div>
-      </div>
-      <div id="bonus-element-div" style="display:none; margin-top:10px">
-        <label style="font-size:.85rem;color:#aaa">Bonus Element (Kuva / Tenet)</label>
-        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-          <select id="bonus-element-type" style="display:none">
-            <option value="heat">Heat</option>
-            <option value="cold">Cold</option>
-            <option value="electricity">Electricity</option>
-            <option value="toxin">Toxin</option>
-          </select>
-          <div class="custom-select-wrap" data-for="bonus-element-type"></div>
-          <input type="number" id="bonus-element-pct" min="25" max="60" value="25" style="width:52px"
-                 oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
-          <span style="color:#aaa">%</span>
+        <div class="we-col">
+          <h2>Enemy</h2>
+          <div class="combobox-wrap" id="enemy-combobox">
+            <div class="search-wrap">
+              <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…" autocomplete="off">
+              <button class="search-clear" onclick="clearCombobox('enemy')" title="Clear">×</button>
+            </div>
+            <div class="combobox-dropdown" id="enemy-dropdown"></div>
+          </div>
+          <div id="enemy-stats-content"></div>
+          <div class="enemy-level-row">
+            <div style="display:flex;flex-direction:column">
+              <label for="enemy-level">Level</label>
+              <input type="number" id="enemy-level" min="1" max="9999" value="1" style="width:72px">
+            </div>
+            <button class="toggle-btn" id="steel-path-btn" onclick="toggleSteelPath()">Steel Path</button>
+            <button class="toggle-btn" id="eximus-btn" onclick="toggleEximus()">Eximus</button>
+          </div>
+          <div id="enemy-scaled-stats" class="enemy-scaled-stats"></div>
         </div>
       </div>
-      <div id="weapon-stats-content"></div>
-    </div>
-
-    <!-- Mods — 2×4 card grid -->
-    <div class="panel">
-      <h2>Mods (in slot order)<span class="mod-panel-actions"><button class="btn-alchemy-mixer" onclick="openAlchemyMixer()" title="Alchemy Mixer"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
-  <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
-  <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="12" cy="20.5" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="3.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="20.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <path d="M12,5.5 L18,16.5 L6,16.5 Z" fill="none" stroke="#D4A843" stroke-width="1.1" stroke-linejoin="round"/>
-  <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
-  <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
-  <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
-</svg></button><button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></span></h2>
-      <div id="mod-grid-wrapper">
-        <div id="special-slots" class="special-slots-row"></div>
-        <div id="mod-grid" class="mod-grid"></div>
-        <svg id="element-arcs"></svg>
-      </div>
-      <div id="element-badges" class="element-badges"></div>
-
     </div>
 
     <!-- Riven rows rendered inline in mod-grid by JS -->
@@ -420,28 +421,6 @@
       </div>
     </div>
 
-    <!-- Enemy -->
-    <div class="panel">
-      <h2>Enemy</h2>
-      <div class="combobox-wrap" id="enemy-combobox">
-        <div class="search-wrap">
-          <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…" autocomplete="off">
-          <button class="search-clear" onclick="clearCombobox('enemy')" title="Clear">×</button>
-        </div>
-        <div class="combobox-dropdown" id="enemy-dropdown"></div>
-      </div>
-      <div id="enemy-stats-content"></div>
-      <div class="enemy-level-row">
-        <div style="display:flex;flex-direction:column">
-          <label for="enemy-level">Level</label>
-          <input type="number" id="enemy-level" min="1" max="9999" value="1" style="width:72px">
-        </div>
-        <button class="toggle-btn" id="steel-path-btn" onclick="toggleSteelPath()">Steel Path</button>
-        <button class="toggle-btn" id="eximus-btn" onclick="toggleEximus()">Eximus</button>
-      </div>
-      <div id="enemy-scaled-stats" class="enemy-scaled-stats"></div>
-    </div>
-
     <!-- Hit Options -->
     <div class="panel">
       <h2>Hit Options</h2>
@@ -521,6 +500,28 @@
     <div class="panel placeholder-panel">
       <h2>Armor Strip</h2>
       <p class="coming-soon-text">Model remaining armor after Corrosive procs coming soon.</p>
+    </div>
+
+    <!-- Mods — 2×4 card grid -->
+    <div class="panel">
+      <h2>Mods (in slot order)<span class="mod-panel-actions"><button class="btn-alchemy-mixer" onclick="openAlchemyMixer()" title="Alchemy Mixer"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
+  <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
+  <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="12" cy="20.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="3.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="20.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <path d="M12,5.5 L18,16.5 L6,16.5 Z" fill="none" stroke="#D4A843" stroke-width="1.1" stroke-linejoin="round"/>
+  <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
+  <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+  <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+</svg></button><button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></span></h2>
+      <div id="mod-grid-wrapper">
+        <div id="special-slots" class="special-slots-row"></div>
+        <div id="mod-grid" class="mod-grid"></div>
+        <svg id="element-arcs"></svg>
+      </div>
+      <div id="element-badges" class="element-badges"></div>
     </div>
 
 </div><!-- .content-side -->
