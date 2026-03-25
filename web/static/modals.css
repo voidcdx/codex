@@ -45,9 +45,9 @@
 }
 .alch-clear-btn {
   font-size: 10px;
-  color: rgba(255,255,255,0.35);
+  color: var(--text-dim);
   background: none;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid var(--border);
   border-radius: 0;
   padding: 2px 8px;
   cursor: pointer;
@@ -74,8 +74,8 @@
 .alchemy-elem-pill {
   padding: 4px 12px;
   border-radius: 0;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  background: rgba(139,0,0,0.06);
   cursor: pointer;
   font-size: 11px;
   font-weight: 600;
@@ -84,11 +84,11 @@
   transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
 }
 .alchemy-elem-pill:hover {
-  background: rgba(255,255,255,0.10);
+  background: rgba(139,0,0,0.15);
   box-shadow: 0 0 6px currentColor;
 }
 .alchemy-elem-pill.active {
-  background: rgba(255,255,255,0.13);
+  background: rgba(139,0,0,0.20);
   box-shadow: 0 0 10px currentColor;
 }
 
@@ -105,7 +105,7 @@
 }
 .alchemy-suggestions::-webkit-scrollbar { width: 4px; }
 .alchemy-suggestions::-webkit-scrollbar-track { background: transparent; }
-.alchemy-suggestions::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 0; }
+.alchemy-suggestions::-webkit-scrollbar-thumb { background: rgba(139,0,0,0.35); border-radius: 0; }
 .alch-section-label {
   font-size: 10px;
   color: var(--text-dim);
@@ -142,14 +142,14 @@
   gap: 0;
   padding: 4px 5px;
   border-radius: 0;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.04);
+  background: rgba(139,0,0,0.05);
+  border: 1px solid var(--border);
   margin-bottom: 3px;
   transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
 }
 .alch-mod-row:hover {
-  background: color-mix(in srgb, var(--elem-color) 14%, rgba(255,255,255,0.02));
-  border-color: color-mix(in srgb, var(--elem-color) 35%, rgba(255,255,255,0.07));
+  background: color-mix(in srgb, var(--elem-color) 14%, rgba(139,0,0,0.04));
+  border-color: color-mix(in srgb, var(--elem-color) 35%, rgba(139,0,0,0.10));
   box-shadow: 0 1px 8px color-mix(in srgb, var(--elem-color) 18%, transparent);
 }
 .alch-mod-row-main {
@@ -191,7 +191,7 @@
 .alch-stat-pill {
   font-size: 9px;
   color: var(--elem-color, var(--text-dim));
-  background: rgba(255,255,255,0.06);
+  background: rgba(139,0,0,0.10);
   border-radius: 0;
   padding: 1px 5px;
   white-space: nowrap;
@@ -201,8 +201,8 @@
   width: 20px;
   height: 20px;
   border-radius: 0;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-red);
+  background: rgba(139,0,0,0.08);
   color: var(--text);
   font-size: 14px;
   cursor: pointer;
@@ -215,8 +215,8 @@
   transition: background 0.12s, border-color 0.12s;
 }
 .alch-add-btn:hover:not(:disabled) {
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.3);
+  background: rgba(139,0,0,0.20);
+  border-color: var(--accent);
 }
 .alch-add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .alch-remove-btn { border-color: var(--border-red); color: var(--accent2); }
