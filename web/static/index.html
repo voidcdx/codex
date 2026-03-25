@@ -582,5 +582,24 @@
 </button>
 
 </div><!-- .app -->
+
+<!-- TEMP: panel style preview picker — remove after user decides -->
+<div id="style-picker" style="position:fixed;bottom:20px;left:20px;z-index:9000;background:var(--surface2);border:1px solid var(--border-red);padding:10px 14px;display:flex;gap:8px;align-items:center;font-family:var(--font-body)">
+  <span style="color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;font-size:10px;white-space:nowrap">Panel style:</span>
+  <button onclick="setWeVariant('')"                    style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">Off</button>
+  <button onclick="setWeVariant('we-grid--divider')"   style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">A: Divider</button>
+  <button onclick="setWeVariant('we-grid--surfaces')"  style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">B: Surfaces</button>
+  <button onclick="setWeVariant('we-grid--accent')"    style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">C: Accent</button>
+  <button onclick="setWeVariant('we-grid--badges')"    style="padding:3px 8px;background:none;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:11px;font-family:var(--font-body)">D: Badges</button>
+</div>
+<script>
+function setWeVariant(cls) {
+  const g = document.querySelector('.we-grid');
+  g.classList.remove('we-grid--divider','we-grid--surfaces','we-grid--accent','we-grid--badges');
+  if (cls) g.classList.add(cls);
+  document.querySelectorAll('#style-picker button').forEach(b => b.style.borderColor = 'var(--border)');
+  if (cls) event.target.style.borderColor = 'var(--accent2)';
+}
+</script>
 </body>
 </html>
