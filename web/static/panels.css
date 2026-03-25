@@ -1,3 +1,15 @@
+/* ── Weapon + Enemy merged 2-col grid ── */
+.we-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+.we-col { min-width: 0; }
+@media (max-width: 600px) {
+  .we-grid { grid-template-columns: 1fr; }
+  .we-col + .we-col { border-top: 1px solid var(--border); margin-top: 14px; padding-top: 14px; }
+}
+
 /* ── Glass Panel (stalker style) ── */
 .panel {
   background: var(--surface);
