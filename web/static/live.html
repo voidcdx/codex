@@ -616,8 +616,68 @@
       100% { transform: scaleX(1.4); opacity: 1; }
     }
 
+    /* ── Hamburger button ── */
+    .burger-btn {
+      display: none;
+      margin-left: auto;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .burger-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-dim);
+      transition: all .2s;
+    }
+    .burger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--crimson-bright); }
+    .burger-btn.open span:nth-child(2) { opacity: 0; }
+    .burger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--crimson-bright); }
+
+    /* ── Mobile drawer overlay ── */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      backdrop-filter: blur(2px);
+    }
+    .drawer-overlay.open { display: block; }
+
+    /* ── Mobile drawer (slides in from right) ── */
+    .mobile-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 260px;
+      height: 100vh;
+      background: rgba(8,8,8,0.97);
+      border-left: 1px solid rgba(139,0,0,0.3);
+      z-index: 201;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 0 24px;
+      transform: translateX(100%);
+      transition: transform .25s cubic-bezier(.4,0,.2,1);
+      overflow-y: auto;
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-drawer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 1px; height: 100%;
+      background: linear-gradient(180deg, transparent, rgba(220,20,60,0.4) 30%, rgba(220,20,60,0.4) 70%, transparent);
+      pointer-events: none;
+    }
+
     /* ── Responsive ── */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
+      .burger-btn { display: flex; }
       .live-grid { grid-template-columns: 1fr; }
       .s-panel.full-width { grid-column: 1; }
       .live-wrap { padding: 16px 14px; }
@@ -637,7 +697,28 @@
       <a href="/">Calculator</a>
       <a href="/live" class="active">Live Data</a>
     </nav>
+    <button class="burger-btn" id="burger-btn" aria-label="Menu" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
   </header>
+
+  <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="sidebar-section-label">Navigation</div>
+    <nav class="r-nav">
+      <a href="/">
+        <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
+        Calculator
+      </a>
+      <a href="/live" class="active">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-4.2-7.8-2.1 2.1M6.3 17.7l-2.1 2.1m0-13.6 2.1 2.1m11.3 11.3 2.1 2.1"/></svg>
+        Live Data
+      </a>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Tier Filter</div>
+    <nav class="r-nav" id="mobile-tier-nav"></nav>
+  </div>
 
   <div class="body-row">
   <div class="live-wrap">
@@ -717,16 +798,28 @@ function setTier(tier) {
   renderFissureRows(window._fissureData || []);
 }
 
+
+function toggleDrawer() {
+  const btn = document.getElementById('burger-btn');
+  const overlay = document.getElementById('drawer-overlay');
+  const drawer = document.getElementById('mobile-drawer');
+  const open = drawer.classList.toggle('open');
+  overlay.classList.toggle('open', open);
+  btn.classList.toggle('open', open);
+}
+
 function buildSidebarTiers() {
   const tiers = ['All','Lith','Meso','Neo','Axi','Requiem','Omnia'];
-  const nav = document.getElementById('sidebar-tier-nav');
-  if (!nav) return;
-  nav.innerHTML = tiers.map(t => {
+  const html = tiers.map(t => {
     const col = TIER_COLORS[t] || '#A0A0A0';
     return `<a href="#" class="sidebar-tier-btn${t===activeTier?' active':''}" data-tier="${t}"
       style="color:${col};--tier-col:${col}"
-      onclick="event.preventDefault();setTier('${t}')">${t}</a>`;
+      onclick="event.preventDefault();setTier('${t}');if(document.getElementById('mobile-drawer').classList.contains('open'))toggleDrawer()">${t}</a>`;
   }).join('');
+  const nav = document.getElementById('sidebar-tier-nav');
+  if (nav) nav.innerHTML = html;
+  const mnav = document.getElementById('mobile-tier-nav');
+  if (mnav) mnav.innerHTML = html;
 }
 
 /* ── Fissures ── */
