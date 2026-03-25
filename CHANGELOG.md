@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Changed
 - Calculator page redesigned to match Stalker/Shadow Acolyte theme — dark crimson palette, Orbitron/Rajdhani fonts, glass panels with crimson glow, right sidebar with brand icon and nav
+- UI optimizations — layout, panel structure, and stylesheet organization
 
 ## [0.4.0] — 2026-03-25
 
