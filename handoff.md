@@ -1,46 +1,59 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Applied the Stalker/Shadow Acolyte visual design from `stalker-dashboard.html` to the calculator page (`index.html` + `style.css`). Layout is now: inner header + two-column content grid (calculator inputs left, results right) + right sidebar with brand icon, nav links, tools, and version footer. Full crimson theme throughout — no green UI accents.
+Applied Stalker theme consistently to Guide and What's New (Changelog) modals. Fixed a series of progressive layout bugs (top cut off, X button unstyled, "Quick Start" heading hidden, side borders invisible on mobile). Replaced all hardcoded `rgba()` crimson values in `modals.css` with proper CSS variables. Fixed real-phone viewport cut-off with `dvh` units.
 
 ---
 
 ## Changes made this session
 
-### Calculator redesign (commit `b90f3e4`)
-- **`web/static/index.html`** — Replaced top header + old right sidebar with stalker-dashboard layout:
-  - Inner `.header` bar: "Damage Calculator" title + Guide/Changelog action buttons
-  - `.content` grid (1fr 320px): `.content-main` (weapon/mods/enemy/options/buffs/arcanes/Calculate) + `.content-side` (weapon stats, enemy stats, results, placeholders)
-  - Right `aside.sidebar`: brand icon + "VOID CODEX", `nav.nav-menu` with Calculator/Live Data nav-items, `.sidebar-tools` (Guide/Changelog buttons), `.sidebar-footer` (version)
-  - Mobile: burger btn (top-right fixed) + sidebar slides in from right + `.sidebar-overlay` backdrop
-- **`web/static/style.css`** — Full stalker palette + layout:
-  - `:root` vars: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--border: rgba(139,0,0,0.15)`, `--crimson: #8b0000`, `--crimson-bright: #dc143c`; `--accent-green` → crimson (no green UI)
-  - Fonts: `--font-display: 'Orbitron'`, `--font-body: 'Rajdhani'`; removed all `'Share Tech Mono'` references
-  - Removed blob `body::before`/`body::after` animations
-  - New layout classes: `.main`, `.header`, `.header-title`, `.header-actions`, `.content`, `.content-main`, `.content-side`
-  - New sidebar classes: `.sidebar`, `.brand`, `.brand-icon`, `.brand-text`, `.nav-menu`, `.nav-item` (with active indicator on right edge), `.nav-icon`, `.sidebar-tools`, `.sidebar-footer`
-  - Mobile: `.burger-btn`, `.sidebar-overlay`, `@media (max-width: 900px)` sidebar slide-in
-  - `.panel`: stalker style (12px radius, crimson top glow `::before`, no tactical corner marks, no `//` h2 prefix, Orbitron h2)
-  - Removed old: `header`, `.nav-brand`, `.nav-sep`, `.nav-links`, `.burger-btn` (old), `.drawer-overlay`, `.mobile-drawer`, `.r-sidebar`, `.r-nav`, `.r-nav-btn`, `.sidebar-section-label`, `.sidebar-divider`, `.r-sidebar-footer`, `.body-row`, `.calc-wrap`, `.calc-wrap-inner`, `.container`
-- **`web/static/js/app.js`** — Updated `toggleDrawer()` to toggle `#sidebar` + `#sidebar-overlay` instead of old drawer elements
+### Modal theme + layout fixes (`web/static/modals.css`)
+- Restored `position: relative` on `.guide-modal` / `.changelog-modal` shell (was lost in prior refactor)
+- Added `min-height: 0` to `.guide-modal-body` and `.changelog-modal-body` — critical fix for flex overflow; without it the body grows to full content height, overflowing `max-height: 88vh` and getting clipped by the overlay
+- Added `position: relative; z-index: 2` to both modal headers so the `::before` glow (z-index 1) doesn't paint over the X button and title
+- Added `.riven-modal-close` styles — this class was lost during the `style.css` → multiple-files split and was never defined in any new file
+- Changed modal border from `var(--border)` (too subtle at 0.15 opacity against the dark overlay) to `var(--border-red)` (0.30 opacity)
+- Removed `@media (max-width: 480px)` rule that was explicitly stripping `border-left: none; border-right: none` from modals
+- Applied full stalker theme to guide/changelog — `var(--surface)`, `var(--surface2)`, `var(--border-red)`, `var(--radius)`, `var(--glass-blur)`, `::before` gradient glow — matching `.panel` exactly
+- Replaced ALL hardcoded `rgba(139,…)` / `rgba(220,20,60,…)` with CSS variables: `var(--crimson-glow)`, `var(--accent)`, `var(--accent2)`, `var(--border-red)`, `color-mix(in srgb, var(--accent…) X%, transparent)`
+- Mobile `max-height` switched to `min(Xvh, Xdvh)` — fixes real-phone address-bar clipping that devtools emulation doesn't show
 
-### Version bump + changelog
-- `src/version.py` → `0.4.1`
-- `CHANGELOG.md` + `CHANGELOG_ENTRIES` in `constants.js` updated with graphical update entry
+### Version + changelog
+- `src/version.py` → `0.4.2`
+- `CHANGELOG.md` + `CHANGELOG_ENTRIES` in `constants.js` — "Design tweaks — modal theme consistency, CSS variable cleanup, mobile viewport fix"
+
+---
+
+## Design system rules (ENFORCE THESE)
+The user is very strict about this — **never use hardcoded `rgba()` for theme colors**. Always use CSS variables:
+
+| Color | Variable |
+|---|---|
+| Crimson glow (0.4 alpha) | `var(--crimson-glow)` |
+| Dark red border (0.3) | `var(--border-red)` |
+| Subtle border (0.15) | `var(--border)` |
+| Bright crimson | `var(--accent2)` |
+| Dark crimson | `var(--accent)` |
+| Surface (glass) | `var(--surface)` |
+| Surface darker | `var(--surface2)` |
+| Glow blur | `var(--glass-blur)` |
+| Border radius | `var(--radius)` |
+
+For one-off opacities: use `color-mix(in srgb, var(--accent) 8%, transparent)` — **not** hardcoded rgba.
 
 ---
 
 ## Known issues / next priorities
 
 ### Riven modal
-The riven modal was flagged as broken in a prior session. It was **not touched this session**. With the panel padding/radius changes it may need re-checking. Ask user for a screenshot before touching code. Key file: `web/static/js/modals.js:273-293` (`toggleRivenDropdown()`).
+Not touched this session. Ask user for a screenshot before touching code. Key file: `web/static/js/modals.js:273-293` (`toggleRivenDropdown()`).
 
 ### Cycles + Events not yet rendered in live.html
 `_parse_cycles()` and `_parse_events()` data is present in `/api/worldstate` response but `renderAll()` in `live.html` doesn't call `buildCyclesCard()` or `buildEventsCard()` — those functions don't exist yet.
 
 ---
 
-## Feature backlog (discussed with user in prior sessions)
+## Feature backlog (discussed with user)
 
 1. ~~Weapon Arcanes~~ — **DONE**
 2. ~~Condition Overload curves~~ — **DONE**
@@ -57,8 +70,8 @@ The riven modal was flagged as broken in a prior session. It was **not touched t
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-bbSMM`
-- Version: `0.4.1`
+- Branch: `claude/review-handoff-7pzk5`
+- Version: `0.4.2`
 - Game data: Update 41 — The Old Peace
 - Tests: 281 passing
 
@@ -67,7 +80,7 @@ The riven modal was flagged as broken in a prior session. It was **not touched t
 ## Start-of-session checklist for next Claude
 
 > **Ask the user two things before touching any code:**
-> 1. "Should I bump the version in `src/version.py`? Current version is `0.4.1`."
+> 1. "Should I bump the version in `src/version.py`? Current version is `0.4.2`."
 > 2. "Should this session's changes be tracked in the changelog?"
 >
 > Do NOT auto-bump the version or add changelog entries without explicit confirmation.
@@ -78,6 +91,6 @@ The riven modal was flagged as broken in a prior session. It was **not touched t
 - [ ] Ask about version bump and changelog tracking (see above)
 - [ ] **Check riven modal** — ask user if it still looks broken, get screenshot before touching code
 - [ ] If cycles/events cards are wanted, add `buildCyclesCard()` + `buildEventsCard()` to `live.html` and wire into `renderAll()`
-- [ ] If version is bumped, update `CHANGELOG.md` and `CHANGELOG_ENTRIES` in `constants.js`
 - [ ] When adding new features, update User Guide in `index.html` (`#guide-overlay`)
 - [ ] Keep mobile optimization in mind (test at ≤375px and ≤900px breakpoint)
+- [ ] **Never use hardcoded rgba() for theme colors** — always use CSS variables (see Design System Rules above)
