@@ -69,13 +69,13 @@
 .content {
   flex: 1;
   display: grid;
-  grid-template-columns: 300px 1fr 480px;
+  grid-template-columns: 1fr 480px;
   gap: 20px;
   padding: 24px 28px;
   overflow-y: auto;
   align-items: start;
 }
-.content-left  { display: flex; flex-direction: column; gap: 16px; }
+.content-left  { display: none; }
 .content-main  { display: flex; flex-direction: column; gap: 16px; }
 .content-side  { display: flex; flex-direction: column; gap: 16px; }
 
