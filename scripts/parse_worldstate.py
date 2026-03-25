@@ -361,6 +361,114 @@ def _parse_nightwave(raw: list) -> dict | None:
     }
 
 
+def _parse_cycles(raw: dict) -> list[dict]:
+    """Parse open-world day/night and warm/cold cycle states."""
+    cycles: list[dict] = []
+    now = datetime.now(tz=timezone.utc)
+
+    # ── Cetus / Plains of Eidolon (computed from known cycle constants) ──────
+    # Community-derived: total 9000 s cycle, 6000 s day, 3000 s night.
+    # Reference epoch ≈ Nov 4 2017 (Plains of Eidolon launch).
+    try:
+        from datetime import timedelta
+        day_s, night_s = 6000, 3000
+        cycle_s = day_s + night_s
+        epoch_s = 1509785490
+        elapsed = int(now.timestamp() - epoch_s) % cycle_s
+        is_day   = elapsed < day_s
+        secs_left = (day_s - elapsed) if is_day else (cycle_s - elapsed)
+        cycles.append({
+            "location": "Cetus",
+            "state":    "Day"   if is_day else "Night",
+            "eta":      _eta(now + timedelta(seconds=secs_left)),
+        })
+    except Exception:
+        pass
+
+    # ── Orb Vallis warm / cold ────────────────────────────────────────────────
+    vallis = raw.get("VallisCycle")
+    if isinstance(vallis, dict):
+        expiry_dt = _parse_date(vallis.get("expiry") or vallis.get("Expiry"))
+        raw_state = vallis.get("state", vallis.get("isDay", "cold"))
+        is_warm   = (raw_state is True) or str(raw_state).lower() in ("warm", "true", "day")
+        cycles.append({
+            "location": "Orb Vallis",
+            "state":    "Warm" if is_warm else "Cold",
+            "eta":      _eta(expiry_dt),
+        })
+
+    # ── Cambion Drift fass / vome ─────────────────────────────────────────────
+    cambion = raw.get("CambionCycle")
+    if isinstance(cambion, dict):
+        expiry_dt = _parse_date(cambion.get("expiry") or cambion.get("Expiry"))
+        active    = str(cambion.get("active", cambion.get("state", ""))).lower()
+        is_fass   = active == "fass" or cambion.get("isDay", False) is True
+        cycles.append({
+            "location": "Cambion Drift",
+            "state":    "Fass" if is_fass else "Vome",
+            "eta":      _eta(expiry_dt),
+        })
+
+    # ── Zariman Ten Zero corpus / grineer ─────────────────────────────────────
+    zariman = raw.get("ZarimanCycle")
+    if isinstance(zariman, dict):
+        expiry_dt = _parse_date(zariman.get("expiry") or zariman.get("Expiry"))
+        raw_state = zariman.get("state", zariman.get("isDay", "grineer"))
+        is_corpus = (raw_state is True) or str(raw_state).lower() in ("corpus", "true", "day")
+        cycles.append({
+            "location": "Zariman Ten Zero",
+            "state":    "Corpus" if is_corpus else "Grineer",
+            "eta":      _eta(expiry_dt),
+        })
+
+    return cycles
+
+
+def _parse_events(raw: dict) -> list[dict]:
+    """Parse active, non-expired game events."""
+    out: list[dict] = []
+    now = datetime.now(tz=timezone.utc)
+    for ev in raw.get("Events", []):
+        try:
+            expiry = _parse_date(ev.get("Expiry"))
+            if expiry and expiry < now:
+                continue
+
+            # Name: try Description → Messages → Tag
+            desc = ev.get("Description", {})
+            name = (desc.get("value", "") if isinstance(desc, dict) else str(desc)) if desc else ""
+            if not name:
+                msgs = ev.get("Messages", [])
+                if msgs and isinstance(msgs[0], dict):
+                    name = msgs[0].get("message", "")
+            if not name:
+                name = ev.get("Tag", "")
+            if not name:
+                continue
+
+            # Reward hint
+            rewards = ev.get("Rewards", [])
+            reward = ""
+            if rewards and isinstance(rewards[0], dict):
+                r = rewards[0]
+                items = r.get("items") or r.get("Items") or []
+                credits = r.get("credits", r.get("Credits", 0))
+                if items:
+                    first = items[0]
+                    reward = first if isinstance(first, str) else first.get("ItemType", "").rsplit("/", 1)[-1]
+                elif credits:
+                    reward = f"{int(credits):,} Credits"
+
+            out.append({
+                "name":   name[:60],
+                "eta":    _eta(expiry),
+                "reward": reward[:50],
+            })
+        except Exception:
+            continue
+    return out[:10]
+
+
 def _parse_invasions(raw: list, solnode_map: dict) -> list[dict]:
     out = []
     for inv in raw:
@@ -424,6 +532,8 @@ def parse(raw: dict) -> dict:
         "void_trader": _parse_void_trader(raw.get("VoidTraders", []), solnode_map),
         "nightwave":   _parse_nightwave(raw.get("SyndicateMissions", [])),
         "invasions":   _parse_invasions(raw.get("Invasions", []), solnode_map),
+        "cycles":      _parse_cycles(raw),
+        "events":      _parse_events(raw),
     }
 
 
