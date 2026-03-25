@@ -71,6 +71,24 @@
 }
 .panel h2::before { content: none; }
 
+/* ── Panel sub-section heading (merged panels) ── */
+.panel-sub-h {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 14px;
+  padding-bottom: 10px;
+  border-top: 1px solid rgba(139, 0, 0, 0.12);
+}
+
 /* ── Placeholder panels ─────────────────────────────── */
 .placeholder-panel { opacity: 0.5; }
 .coming-soon-text {

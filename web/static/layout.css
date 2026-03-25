@@ -69,7 +69,7 @@
 .content {
   flex: 1;
   display: grid;
-  grid-template-columns: 260px 1fr 420px;
+  grid-template-columns: 300px 1fr 480px;
   gap: 20px;
   padding: 24px 28px;
   overflow-y: auto;
