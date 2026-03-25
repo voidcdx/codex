@@ -27,7 +27,7 @@
   background: rgba(148,30,30,0.32);
   border-color: var(--accent2);
   box-shadow: 0 0 20px rgba(148,30,30,0.35);
-  color: #fff;
+  color: var(--text-primary);
 }
 .btn-calc:hover::before { transform: translateX(100%); }
 .btn-calc:active { transform: scale(0.99); }
@@ -162,7 +162,7 @@
 .breakdown-table tr:hover td { background: var(--surface2); }
 .bar-cell { width: 180px; }
 .bar-bg { background: var(--surface2); border-radius: 0; height: 8px; }
-.bar-fill { height: 8px; border-radius: 0; transition: width 0.3s ease; box-shadow: 0 0 4px rgba(255,255,255,0.1); }
+.bar-fill { height: 8px; border-radius: 0; transition: width 0.3s ease; box-shadow: 0 0 4px rgba(139,0,0,0.2); }
 .total-row td { border-top: 1px solid var(--border); font-weight: 700; }
 
 /* ── CO Curve table ──────────────────────────────────── */
