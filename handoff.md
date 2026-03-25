@@ -1,46 +1,34 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Attempted to fix riven builder modal alignment and rounded corner issues on mobile. Multiple CSS patch attempts failed. Ended with a full CSS+HTML rebuild of the modal — but the user reports it still doesn't look right. **Next session needs to visually verify and fix the riven modal.**
+Short session. Diagnosed intermittent live data loading failures on `/live`. Fixed two issues:
+1. **Stale cache fallback** — `get_worldstate()` now serves the last-good cached response when the DE upstream is temporarily down, instead of raising 503.
+2. **UI refresh reduced** — auto-refresh changed from 60s → 180s. The server-side cache is 5 minutes, so 60s polls were just hitting cached data anyway.
 
 ---
 
 ## Changes made this session
 
-### Riven Modal Rebuild (8 commits, still broken)
-The riven builder modal had two persistent bugs:
-1. **Rounded corners missing on mobile** — Safari `backdrop-filter` + `border-radius` clipping bug
-2. **Dropdown and input fields misaligned** — conflicting `padding: 3px !important` mobile overrides fighting with fixed `height: 26px`
+### Worldstate resilience (commit `76272b7`)
+- **`web/api.py`** — `get_worldstate()`: wrapped `_fetch_worldstate()` in try/except; on failure serves stale `_ws_cache` entry if available, only raises if no cache exists at all.
+- **`web/static/live.html`** — `countdownVal` and initial display changed from `60` → `180`.
 
-Attempted fixes (all on branch `claude/review-handoff-Cuk26`):
-- Tried `-webkit-mask-image` hack for Safari clip bug
-- Tried removing `!important` overrides selectively
-- Finally did a **full teardown and rebuild** (commit `e63ffd6`):
-  - Replaced translucent `backdrop-filter` bg with near-opaque `rgba(14,10,22,0.97)`
-  - New two-column layout: left panel (160px) with static hexagon glyph `⬡`, right panel with form
-  - All row elements share `height: 36px` + `box-sizing: border-box` + `font-size: 13px`
-  - Removed all purple theming from modal chrome
-  - Removed all `!important` font-size/padding overrides for riven elements in mobile breakpoints
-  - Mobile (≤520px): stacks vertically with 80px glyph banner
-
-**User says it still doesn't look right.** The next session should:
-1. Ask the user for a screenshot or specific description of what's wrong
-2. Actually test in a browser / mobile viewport before committing
-3. Consider whether the portal dropdown positioning (`getBoundingClientRect` → fixed position) is the alignment culprit rather than CSS sizing
-
-### Key files touched
-- `web/static/style.css` — lines ~957–1164 (riven modal section), mobile overrides in `@media 520px` block
-- `web/static/index.html` — lines 87–99 (riven modal HTML)
-- `web/static/js/modals.js` — **NOT changed** (all class names preserved)
+### Prior session (already committed, not touched this session)
+- **`scripts/parse_worldstate.py`** (commit `c4ba6b6`) — Added `_parse_cycles()` (Cetus/Orb Vallis/Cambion Drift/Zariman cycle states) and `_parse_events()` (active game events). These are parsed but not yet rendered in `live.html` — they exist in the parsed output from `/api/worldstate` but `renderAll()` doesn't call them yet.
+- **`live.html`** — Full Stalker/Shadow Acolyte theme redesign + sidebar + mobile hamburger drawer (commits `cf768ea` through `c944090`).
 
 ---
 
-## Known issue: Riven modal still broken
+## Known issues / next priorities
 
-The riven modal rebuild didn't satisfy the user. Possible remaining problems:
-- **Portal dropdown misalignment**: `toggleRivenDropdown()` in `modals.js:273-293` positions the dropdown via `getBoundingClientRect()` on the button. If the modal scrolls or the button padding changed, the dropdown won't line up with the button.
-- **Mobile corner rendering**: Even with opaque bg, `overflow: hidden` + `border-radius` can still fail on iOS Safari in some cases. May need to test with `clip-path: inset(0 round 14px)` instead.
-- **Visual design**: User may want a more significant layout redesign, not just alignment fixes. They mentioned liking the Guide modal design — consider using that as the reference for the riven modal style.
+### Riven modal (carried over from previous session)
+Still broken — user confirmed it doesn't look right. Possible causes:
+- **Portal dropdown misalignment**: `toggleRivenDropdown()` in `modals.js:273-293` positions via `getBoundingClientRect()`. If modal scroll or padding changed, dropdown won't align.
+- **Mobile corner rendering**: `overflow:hidden` + `border-radius` can fail on iOS Safari. Try `clip-path: inset(0 round 14px)` instead.
+- **Next session:** Ask user for screenshot before touching code.
+
+### Cycles + Events not yet rendered in live.html
+`_parse_cycles()` and `_parse_events()` data is present in `/api/worldstate` response but `renderAll()` in `live.html` doesn't call `buildCyclesCard()` or `buildEventsCard()` — those functions don't exist yet. Could be a good next feature to add cards for open-world cycles and active events.
 
 ---
 
@@ -56,22 +44,22 @@ The riven modal rebuild didn't satisfy the user. Possible remaining problems:
 8. Status Simulator — steady-state active proc count given fire rate + status chance
 9. Build Cards — export styled build image for Discord/Reddit sharing
 10. Build Sharing — URL-encoded state for copy-paste build links
+11. Live Data — render open-world cycle states and active events cards (data already parsed)
 
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-Cuk26`
-- Version: `0.3.1` (no bump this session)
+- Branch: `claude/review-previous-work-1IYpw`
+- Version: `0.4.0` (no bump this session)
 - Game data: Update 41 — The Old Peace
 - Tests: 281 passing
-- **Riven modal needs visual fix — priority for next session**
 
 ---
 
 ## Start-of-session checklist for next Claude
 
 > **Ask the user two things before touching any code:**
-> 1. "Should I bump the version in `src/version.py`? Current version is `0.3.1`."
+> 1. "Should I bump the version in `src/version.py`? Current version is `0.4.0`."
 > 2. "Should this session's changes be tracked in the changelog?"
 >
 > Do NOT auto-bump the version or add changelog entries without explicit confirmation.
@@ -80,7 +68,8 @@ The riven modal rebuild didn't satisfy the user. Possible remaining problems:
 - [ ] Run `pytest` — confirm 281 passing before touching anything
 - [ ] Check `git log --oneline -5` to orient on recent commits
 - [ ] Ask about version bump and changelog tracking (see above)
-- [ ] **Priority: Fix riven modal** — ask user for screenshot, test in browser before committing
+- [ ] **Priority: Fix riven modal** — ask user for screenshot first, test before committing
+- [ ] If cycles/events cards are wanted, add `buildCyclesCard()` + `buildEventsCard()` to `live.html` and wire into `renderAll()`
 - [ ] If version is bumped, update `CHANGELOG.md` and `CHANGELOG_ENTRIES` in `constants.js`
 - [ ] When adding new features, update User Guide in `index.html` (`#guide-overlay`)
 - [ ] Keep mobile optimization in mind (test at ≤375px)
