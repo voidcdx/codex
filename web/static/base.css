@@ -77,10 +77,3 @@ html::before {
     radial-gradient(ellipse 35% 40% at 0% 80%,   rgba(80,0,0,0.10) 0%, transparent 50%),
     radial-gradient(ellipse 25% 30% at 80% 95%,  rgba(100,0,0,0.07) 0%, transparent 40%);
 }
-#matrix-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
-}
