@@ -411,7 +411,7 @@
       </div>
     </div>
 
-    <!-- Hit Options -->
+    <!-- Hit Options + Warframe Buffs (merged) -->
     <div class="panel">
       <h2>Hit Options</h2>
       <div class="options-row">
@@ -450,22 +450,10 @@
           <input type="number" id="galv-stacks" min="0" max="5" value="0" style="width:48px">
         </div>
       </div>
-    </div>
-
-    <!-- Warframe Buffs -->
-    <div class="panel">
-      <h2 style="display:flex;align-items:center;gap:8px">Warframe Buffs
+      <div class="panel-sub-h">Warframe Buffs
         <button type="button" class="btn-add-buff" onclick="addBuffRow()" title="Add ability buff" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:0;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
-      </h2>
+      </div>
       <div id="buff-rows"></div>
-    </div>
-
-    <!-- Weapon Arcanes -->
-    <div class="panel">
-      <h2 style="display:flex;align-items:center;gap:8px">Weapon Arcanes
-        <button type="button" class="btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:0;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
-      </h2>
-      <div id="arcane-rows"></div>
     </div>
 
 </div><!-- .content-main -->
@@ -511,6 +499,10 @@
         <svg id="element-arcs"></svg>
       </div>
       <div id="element-badges" class="element-badges"></div>
+      <div class="panel-sub-h">Weapon Arcanes
+        <button type="button" class="btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:0;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
+      </div>
+      <div id="arcane-rows"></div>
     </div>
 
     <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
