@@ -80,6 +80,83 @@
 
     /* ── Layout ── */
     .app { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .body-row { display: flex; flex: 1; }
+
+    /* ── Right sidebar ── */
+    .r-sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      background: rgba(5,5,5,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid rgba(139,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      position: sticky;
+      top: 50px;
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+    }
+    .r-sidebar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 1px; height: 100%;
+      background: linear-gradient(180deg, transparent, rgba(220,20,60,0.35) 30%, rgba(220,20,60,0.35) 70%, transparent);
+      pointer-events: none;
+    }
+    .sidebar-section-label {
+      font-family: var(--font-display);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0 20px 10px;
+    }
+    .r-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
+    .r-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-left: 2px solid transparent;
+      transition: all .15s;
+    }
+    .r-nav a:hover { color: var(--text); background: rgba(139,0,0,0.06); }
+    .r-nav a.active {
+      color: var(--crimson-bright);
+      background: linear-gradient(90deg, rgba(139,0,0,0.15), transparent);
+      border-left-color: var(--crimson-bright);
+      text-shadow: 0 0 5px rgba(153,0,0,0.5);
+    }
+    .r-nav a svg {
+      width: 14px; height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+    }
+    .sidebar-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139,0,0,0.25), transparent);
+      margin: 16px 0;
+    }
+    .live-wrap { flex: 1; min-width: 0; }
+
+    .sidebar-tier-btn { border-left: 2px solid transparent !important; }
+    .sidebar-tier-btn.active { background: rgba(255,255,255,0.04) !important; border-left-color: currentColor !important; }
+
+    @media (max-width: 900px) { .r-sidebar { display: none; } }
 
     /* ── Header ── */
     header {
@@ -560,6 +637,7 @@
     </nav>
   </header>
 
+  <div class="body-row">
   <div class="live-wrap">
     <div class="live-controls">
       <span class="controls-label">Platform</span>
@@ -579,7 +657,25 @@
       <div class="loading-overlay"><div class="scanner"></div>Acquiring worldstate…</div>
     </div>
   </div>
-</div>
+
+  <aside class="r-sidebar">
+    <div class="sidebar-section-label">Navigation</div>
+    <nav class="r-nav">
+      <a href="/">
+        <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
+        Calculator
+      </a>
+      <a href="/live" class="active">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-4.2-7.8-2.1 2.1M6.3 17.7l-2.1 2.1m0-13.6 2.1 2.1m11.3 11.3 2.1 2.1"/></svg>
+        Live Data
+      </a>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Tier Filter</div>
+    <nav class="r-nav" id="sidebar-tier-nav"></nav>
+  </aside>
+  </div><!-- /.body-row -->
+</div><!-- /.app -->
 
 <script>
 'use strict';
@@ -614,9 +710,21 @@ function setPlatform(p) {
 let activeTier = 'All';
 function setTier(tier) {
   activeTier = tier;
-  document.querySelectorAll('.tier-btn').forEach(b =>
+  document.querySelectorAll('.tier-btn, .sidebar-tier-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.tier === tier));
   renderFissureRows(window._fissureData || []);
+}
+
+function buildSidebarTiers() {
+  const tiers = ['All','Lith','Meso','Neo','Axi','Requiem','Omnia'];
+  const nav = document.getElementById('sidebar-tier-nav');
+  if (!nav) return;
+  nav.innerHTML = tiers.map(t => {
+    const col = TIER_COLORS[t] || '#A0A0A0';
+    return `<a href="#" class="sidebar-tier-btn${t===activeTier?' active':''}" data-tier="${t}"
+      style="color:${col};--tier-col:${col}"
+      onclick="event.preventDefault();setTier('${t}')">${t}</a>`;
+  }).join('');
 }
 
 /* ── Fissures ── */
@@ -883,6 +991,7 @@ function resetCountdown() {
   }, 1000);
 }
 
+buildSidebarTiers();
 loadData();
 </script>
 </body>
