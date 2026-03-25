@@ -5188,8 +5188,7 @@
     "base_armor": 0.0,
     "base_health": 0.0,
     "base_shield": 0.0,
-    "head_multiplier": 1.0,
-    "base_level": 1
+    "head_multiplier": 1.0
   },
   "Grineer Target": {
     "name": "Grineer Target",
@@ -7872,8 +7871,7 @@
     "base_armor": 25.0,
     "base_health": 30000.0,
     "base_shield": 0.0,
-    "head_multiplier": 1.0,
-    "base_level": 1
+    "head_multiplier": 1.0
   },
   "Archon Boreal": {
     "name": "Archon Boreal",
@@ -7883,8 +7881,7 @@
     "base_armor": 25.0,
     "base_health": 30000.0,
     "base_shield": 0.0,
-    "head_multiplier": 1.0,
-    "base_level": 1
+    "head_multiplier": 1.0
   },
   "Archon Nira": {
     "name": "Archon Nira",
@@ -7894,8 +7891,7 @@
     "base_armor": 25.0,
     "base_health": 30000.0,
     "base_shield": 0.0,
-    "head_multiplier": 1.0,
-    "base_level": 1
+    "head_multiplier": 1.0
   },
   "Narmer Buzzard Dropship": {
     "name": "Narmer Buzzard Dropship",
@@ -8763,8 +8759,7 @@
     "base_armor": 0.0,
     "base_health": 0.0,
     "base_shield": 0.0,
-    "head_multiplier": 1.0,
-    "base_level": 1
+    "head_multiplier": 1.0
   },
   "H-09 Apex": {
     "name": "H-09 Apex",
@@ -10017,8 +10012,7 @@
     "base_armor": 0.0,
     "base_health": 50.0,
     "base_shield": 0.0,
-    "head_multiplier": 1.0,
-    "base_level": 1
+    "head_multiplier": 1.0
   },
   "Fire-Veined Stover": {
     "name": "Fire-Veined Stover",
@@ -10490,8 +10484,7 @@
     "base_armor": 0.0,
     "base_health": 10.0,
     "base_shield": 0.0,
-    "head_multiplier": 1.0,
-    "base_level": 1
+    "head_multiplier": 1.0
   },
   "Subterranean Pobber": {
     "name": "Subterranean Pobber",

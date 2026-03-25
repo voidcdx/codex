@@ -128,6 +128,15 @@ def _parse_attack(raw_attack: dict) -> dict:
     if shot_type:
         attack_out["shot_type"] = shot_type
 
+    ms = raw_attack.get("Multishot")
+    if ms is not None:
+        try:
+            ms_val = int(float(ms))
+            if ms_val > 1:
+                attack_out["multishot"] = ms_val
+        except (TypeError, ValueError):
+            pass
+
     return attack_out
 
 
@@ -327,6 +336,10 @@ def _parse_mod_effect(effect_str: str) -> dict:
 def _parse_mod(raw: dict) -> dict | None:
     name = raw.get("Name", "")
     if not name:
+        return None
+
+    # Skip Conclave-exclusive (wings icon) mods — identified by /PvPMods/ in InternalName
+    if "/PvPMods/" in (raw.get("InternalName") or ""):
         return None
 
     max_rank = raw.get("MaxRank") or raw.get("fusionLimit") or 0

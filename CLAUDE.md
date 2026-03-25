@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-# Warframe 100% Accurate Damage Calculator
+# Warframe Damage Calculator
 
 ## Project Goal
 Create a Python-based damage calculator that accurately emulates in-game damage calculations per the official [Warframe Wiki — Damage/Calculation](https://wiki.warframe.com/w/Damage/Calculation), including full quantization to 1/32nd of base damage.
@@ -30,18 +30,23 @@ src/
   enums.py          # DamageType, FactionType, HealthType, ArmorType
   models.py         # Weapon, WeaponAttack, Mod, Enemy, DamageComponent dataclasses
   quantizer.py      # quantize() — pure function, no side effects
+  arcanes.py        # weapon arcane presets — Merciless, Deadhead, Cascadia, Dexterity
   combiner.py       # elemental combination by mod slot order; innate primary/secondary split
   calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks + calculate_procs()
   loader.py         # load_weapon/mod/enemy from JSON; case-insensitive; headshot + attack selection
   scaling.py        # enemy level scaling: health/shield/armor/overguard formulas
+  version.py        # APP_VERSION, GAME_DATA_VERSION — single source of truth
 tests/
   test_quantization.py
+  test_arcanes.py
   test_combiner.py
+  test_co_curve.py    # Condition Overload curve: presence, monotonic increase, consistency
   test_loader.py
   test_calculator.py  # M7–M13 + TestCCProcs: modded damage, body part, faction, armor, crit, Viral stacks, secondary elemental mods, status procs
+  test_scaling.py     # enemy level scaling: health/shield/armor/overguard per faction
 data/
   weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
-  mods.json         # 1534 mods — damage%, elemental%, cc/cd/sc/multishot, faction bonus
+  mods.json         # 1405 mods — damage%, elemental%, ips%, cc/cd/sc/multishot, faction bonus; Conclave mods excluded
   enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, base_level, base_health, base_shield, head_multiplier
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
@@ -49,34 +54,78 @@ scripts/
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
 web/
-  api.py            # FastAPI: GET /api/weapons|mods|enemies; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
-  static/index.html # SPA: weapon/mod/enemy selects, mod card grid, stance/exilus slots, live stats, Viral stacks input
+  api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
+                   #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
+  static/index.html # SPA HTML only — no inline JS (uses defer script tags)
   static/style.css  # dark theme; .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
+                   #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
+  static/js/
+    constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
+    utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy()
+    combobox.js    # setupCombobox(), clearCombobox() — reusable widget
+    weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
+    enemy.js       # enemy panel, level scaling, Steel Path, Eximus
+    modals.js      # Alchemy Guide, Riven Builder, Guide, Changelog, Buffs
+    calculate.js   # runCalculation(), showResults(), showError()
+    app.js         # loadData() bootstrap, DOMContentLoaded, version fetch
 run_web.py          # python run_web.py → dev server on port 8000
-__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"]
+__main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
+CHANGELOG.md        # Keep a Changelog format — user-facing version history
+handoff.md          # session handoff notes for next Claude instance
 ```
 
-## 164 Tests Passing
-`pytest` — all pass. Run before committing.
+## Tests
+Run `pytest` before committing. All tests must pass.
+
+## Versioning
+`src/version.py` is the single source of truth:
+```python
+APP_VERSION       = "x.y.z"          # semver — bump before shipping features
+GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
+```
+- `GET /api/version` returns `{"app": APP_VERSION, "game_data": GAME_DATA_VERSION}`
+- CLI `--version` prints `Void Codex v{APP_VERSION} · {GAME_DATA_VERSION}`
+- Guide modal footer shows both strings (fetched on DOMContentLoaded)
+- **At the start of each new session, ask the user if the version should be bumped.**
+- **At the start of each new session, ask the user if this session's changes should be tracked in the changelog.** Do NOT automatically add changelog entries — only update when the user confirms. Not every session warrants a changelog update.
+- **Changelog:** When bumping the version, update both `CHANGELOG.md` (repo root) and the `CHANGELOG_ENTRIES` JS constant in `web/static/js/constants.js` (powers the "What's New" modal in the Web UI).
+- **User Guide:** When adding new features or panels to the Web UI, always update the Guide modal in `web/static/index.html` (`#guide-overlay`) to document the new functionality. The Guide is the user-facing reference for all calculator features.
 
 ## Web UI Notes
 
+### Header / Nav
+Compact sticky bar. Future banner work should be mobile-first (≤375px).
+
 ### Faction Effectiveness Badges
-Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `index.html` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
+Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `web/static/js/constants.js` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
 
 ### Weapon Picker Filtering
 Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from the weapon search combobox via `visibleWeapons` filter in `loadData()`. `allWeapons` retains full data.
 
+### Combobox (Weapon + Enemy Search)
+`setupCombobox()` in `combobox.js` — intentionally simple. Read the source for closure internals (`_confirmed`, z-index lift, touch/mouse event handling).
+
 ### Mod Slot Compatibility
 `onWeaponChange()` clears any mod slots whose `mod.type` is not in `getCompatibleModTypes()` for the new weapon. Mod picker always enforces type compatibility — no fallback to showing all mods.
 
+### Combo Counter
+Melee-only mechanic. `onWeaponChange()` hides `#combo-div` and resets to tier 1 for non-melee weapons (uses existing `isMeleeWeapon()`). Range: 1–12 for all weapons, 1–13 for Venka Prime. `oninput` clamp enforces the cap against manual keyboard entry.
+
+### Input / Focus Styling
+- Focus glow is white/subtle — **not** gold (`var(--accent)`). Riven inputs keep purple focus intentionally.
+- Do NOT use `--border-highlight` (gold) on combobox dropdowns or modal borders. Gold border stays on `.panel:hover` and `.stat-block:hover` only.
+
+### Galvanized Stacks
+`#galv-stacks` input (range 0–5, default 0). Shown in the mod panel whenever any equipped mod has `galv_kill_stat` set. Sent as `galvanized_stacks: int` in POST bodies to `/api/calculate` and `/api/modded-weapon`. The server caps effective stacks per-mod via `galv_max_stacks`.
+
 ## Riven Mod Builder (Web UI)
-- **Slot:** Purple card in the mod grid. Clicking opens a two-column modal.
-- **Modal state:** `rivenDraft[]` — 4 rows, each `{stat, pct}`. Rendered by `renderRivenModal()`.
-- **Stat select:** Populated from `RIVEN_STATS` constant. Empty option = "no stat" (row inactive).
-- **% input:** `type="number"`, range `min="-999" max="9999"`. `maxlength` doesn't work on number inputs — 4-char cap enforced via `oninput` slice: `if(this.value.length>4)this.value=this.value.slice(0,4)`.
-- **Clear row:** `×` button calls `clearRivenRow(i)` → sets row to `{stat:'', pct:''}`.
-- **Apply:** `buildRivenFromDraft()` converts draft to a Mod-compatible object → `equippedMods['riven']`. Card shows stat count badge.
+Purple card in mod grid → two-column modal with up to 4 stat rows. `rivenDraft[]` state in `modals.js`. `buildRivenFromDraft()` converts to Mod-compatible object. Mobile: centered modal with scroll containment.
+
+## Alchemy Mixer (Web UI)
+Gold seal button in mod panel header → modal for exploring elemental combinations. Pick two primary elements → animated merge → filtered mod suggestions with +/− equip buttons.
+- **Key state:** `alchSelected[]` (0–2), `_alchMergeTimer`. `clearAlchMods()` removes only elemental mods from slots.
+- **Naming:** Uses `ALCH_PRIMARY` (array) — do not confuse with `PRIMARY_ELEMENTS` (Set, used by combiner).
+- **Mobile:** Stays centered (overrides bottom-sheet pattern). Scroll containment on `.alchemy-suggestions`.
 
 ## Multi-Attack System
 Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Rocket Explosion; Torid: Grenade Impact + Poison Cloud + Incarnon Form). Each attack has its own damage, crit, status, fire rate, and shot type.
@@ -88,6 +137,22 @@ Weapons can have multiple attack modes (e.g. Acceltra Prime: Rocket Impact + Roc
 **CLI:** `--attack "Rocket Explosion"` flag (must come before or after all positional args due to argparse).
 
 **API:** POST endpoints (`/api/calculate`, `/api/modded-weapon`) accept optional `"attack"` field. `GET /api/weapons` returns per-weapon `attacks[]` with per-attack stats.
+
+## Galvanized Mods
+
+Three extra fields on the `Mod` dataclass (default to empty/0 for non-galvanized mods):
+
+| Field | Type | Values |
+|---|---|---|
+| `galv_kill_stat` | `str` | `"multishot_bonus"` \| `"cc_bonus"` \| `"cd_bonus"` \| `"sc_bonus"` \| `"aptitude_damage_bonus"` \| `""` |
+| `galv_kill_pct` | `float` | Per-stack bonus (e.g. `0.20` = +20% per stack) |
+| `galv_max_stacks` | `int` | Mod-specific cap (typically 4 or 5) |
+
+**Stack injection:** `calculate()` and `calculate_procs()` accept `galvanized_stacks: int = 0`. For each equipped galvanized mod, effective stacks = `min(galvanized_stacks, mod.galv_max_stacks)`.
+
+**Aptitude-style** (`galv_kill_stat == "aptitude_damage_bonus"`): bonus = `galv_kill_pct × stacks × unique_statuses`, added to `damage_bonus` in Step 1.
+
+**CC/CD/multishot/SC styles**: bonuses are pre-computed in `api.py` before calling `calculate()` — they augment the relevant `Weapon` fields directly.
 
 ## Confirmed Order of Operations (from wiki research)
 Per [Mad5cout's community research](https://wiki.warframe.com/w/User_blog:Mad5cout/Warframe_Damage_Calculation_Research):
@@ -238,18 +303,65 @@ These are crowd-control or debuff effects — no tick damage. Return `{active, e
 
 | Key | Effect |
 |---|---|
-| `viral` | Health ×1.75–×4.25 (modeled via `viral_stacks` param in main pipeline) |
+| `viral` | Health Vulnr. ×1.75–×4.25 |
 | `magnetic` | +100% shield/OG dmg; forced Elec proc on shield break |
 | `radiation` | Confuses enemy to attack allies for 12s |
 | `blast` | −30% accuracy (up to −75%); detonates at 10 stacks |
 | `cold` | −50% speed (up to −90%); +0.1 flat crit damage |
 
-**Web UI:** DoT procs → "Status Procs" table (per-tick / total columns). CC procs → separate "CC / Debuff Procs" table (effect text column). DPS proc loop skips CC procs (no damage contribution).
-**CLI `--procs`:** DoT procs shown in left table; CC procs shown in separate section with effect text.
+DoT procs show per-tick / total columns. CC procs show effect text only (no damage contribution).
 
 ## Damage Type Effectiveness (Update 36.0+)
 - **Vulnerable (+):** ×1.5
 - **Resistant (−):** ×0.5
+
+## Data Quality Notes
+
+### mods.json — secondary stat fields
+Many mods have a primary stat (e.g. an elemental%) and secondary weapon stats (e.g. reload speed, magazine, status chance) that are **only** in `effect_raw` unless explicitly parsed. `scripts/fix_secondary_stats.py` was used to backfill 109 such fields across 9 stat types. After regenerating `mods.json`, run both patch scripts in order:
+```bash
+python scripts/fix_secondary_stats.py
+python scripts/fix_galv_stats.py
+```
+
+Fields read by `loader.py` from each mod entry:
+`damage_bonus_pct`, `impact_pct`, `puncture_pct`, `slash_pct`, `crit_chance_pct`, `crit_damage_pct`, `status_chance_pct`, `multishot_pct`, `status_damage_pct`, `fire_rate_pct`, `magazine_pct`, `ammo_max_pct`, `reload_speed_pct`, `condition_overload_pct`
+
+### mods.json — Conclave (PVP) mods
+Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mods()` via the `/PvPMods/` substring in `InternalName`. This removes ~129 mods. Dual-use mods (diamond icon, `Conclave=True` but no `/PvPMods/`) such as Eagle Eye are retained.
+
+## Weapon Arcanes
+
+`src/arcanes.py` — preset factory functions. `src/models.py` — `WeaponArcane` dataclass.
+
+### Pipeline Placement
+- **damage_bonus** → additive with Serration in Step 1 (`total_damage_bonus`)
+- **headshot_bonus** (Deadhead) → additive to `body_part_multiplier` in Step 2, headshot only
+- **cc_bonus / cd_bonus** (Cascadia Flare/Empowered) → pre-computed in `api.py`, added to weapon stats
+- **reload_bonus** (Merciless) → applied to modded reload time for sustained DPS
+- **flat_damage** (Cascadia Overcharge) → distributed proportionally among IPS types before Step 1
+
+### Presets
+11 presets in `src/arcanes.py` — Merciless (×3 slots), Deadhead (×3), Dexterity (×2), Cascadia Flare/Empowered/Overcharge. See source or User Guide for full table.
+
+### Usage
+- **CLI:** `--arcane primary_merciless:12` (name:stacks, max 2).
+- **API:** `arcanes: [{name, stacks}]` on `/api/calculate` and `/api/modded-weapon`. `GET /api/arcanes` returns preset list.
+- **Web UI:** Arcane panel with dropdown filtered by weapon slot, stacks input, max 2 rows.
+
+## Warframe Ability Buffs
+
+`src/buffs.py` — preset factory functions for ability buffs. `src/models.py` — `Buff` dataclass.
+
+### Pipeline Placement
+- **Roar** → Step 5, additive with Bane mods. Double-dips on DoT procs.
+- **Eclipse** → Step 5.5, separate multiplicative after faction. No double-dip.
+- **Xata's Whisper** → Independent Void hit, double-dips faction + headshot.
+- **Nourish** → Step 1, adds Viral elemental damage.
+
+### Usage
+- **CLI:** `--buff roar:1.5` (name:strength). **API:** `buffs: [{name, strength}]`. **Web UI:** Buffs panel with dropdown + strength input.
+- Presets: `roar`, `eclipse`, `xatas_whisper`, `nourish` in `src/buffs.py`.
 
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.

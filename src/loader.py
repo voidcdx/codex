@@ -94,6 +94,12 @@ _ELEM_FIELD: dict[str, DamageType] = {
     "viral_pct":       DamageType.VIRAL,
 }
 
+_IPS_FIELD: dict[str, DamageType] = {
+    "impact_pct":   DamageType.IMPACT,
+    "puncture_pct": DamageType.PUNCTURE,
+    "slash_pct":    DamageType.SLASH,
+}
+
 
 # ---------------------------------------------------------------------------
 # Raw JSON loaders
@@ -141,6 +147,7 @@ def _parse_weapon_attack(raw_attack: dict) -> WeaponAttack:
         status_chance=float(raw_attack.get("status_chance") or 0.0),
         shot_type=raw_attack.get("shot_type", ""),
         fire_rate=float(raw_attack.get("fire_rate") or 0.0),
+        multishot=int(raw_attack.get("multishot") or 1),
     )
 
 
@@ -188,6 +195,7 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         selected_cc = float(entry.get("crit_chance") or 0.0)
         selected_cm = float(entry.get("crit_multiplier") or 1.0)
         selected_sc = float(entry.get("status_chance") or 0.0)
+        selected_ms_count = 1
     else:
         # Select attack by name or default to first
         if attack_name:
@@ -209,6 +217,7 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         selected_cc = selected_attack.crit_chance
         selected_cm = selected_attack.crit_multiplier
         selected_sc = selected_attack.status_chance
+        selected_ms_count = selected_attack.multishot
 
     is_kuva_tenet = bool(entry.get("is_kuva_tenet", False))
     family = str(entry.get("family", "") or "")
@@ -224,6 +233,7 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         crit_chance=selected_cc,
         crit_multiplier=selected_cm,
         status_chance=selected_sc,
+        multishot=selected_ms_count,
     )
 
 
@@ -250,6 +260,12 @@ def load_mod(name: str) -> Mod:
         if v is not None:
             elemental_bonuses.append(DamageComponent(dt, float(v)))
 
+    ips_bonuses: list[DamageComponent] = []
+    for field, dt in _IPS_FIELD.items():
+        v = entry.get(field)
+        if v is not None:
+            ips_bonuses.append(DamageComponent(dt, float(v)))
+
     faction_bonus = float(entry.get("faction_bonus") or 0.0)
     faction_target = entry.get("faction_target") or ""
     faction_type: FactionType | None = _FACTION_TYPE.get(faction_target.lower())
@@ -264,11 +280,15 @@ def load_mod(name: str) -> Mod:
     ammo_max_bonus = float(entry.get("ammo_max_pct") or 0.0)
     reload_bonus = float(entry.get("reload_speed_pct") or 0.0)
     condition_overload_bonus = float(entry.get("condition_overload_pct") or 0.0)
+    galv_kill_stat  = str(entry.get("galv_kill_stat")  or "")
+    galv_kill_pct   = float(entry.get("galv_kill_pct")  or 0.0)
+    galv_max_stacks = int(entry.get("galv_max_stacks")  or 0)
 
     return Mod(
         name=name,
         damage_bonus=damage_bonus,
         elemental_bonuses=elemental_bonuses,
+        ips_bonuses=ips_bonuses,
         faction_bonus=faction_bonus,
         faction_type=faction_type,
         cc_bonus=cc_bonus,
@@ -281,10 +301,13 @@ def load_mod(name: str) -> Mod:
         ammo_max_bonus=ammo_max_bonus,
         reload_bonus=reload_bonus,
         condition_overload_bonus=condition_overload_bonus,
+        galv_kill_stat=galv_kill_stat,
+        galv_kill_pct=galv_kill_pct,
+        galv_max_stacks=galv_max_stacks,
     )
 
 
-# Riven stat name → Mod field name (or elemental key for elemental bonuses)
+# Riven stat name → Mod field name (or elemental/IPS key for type bonuses)
 _RIVEN_STAT_MAP: dict[str, str] = {
     "damage":         "damage_bonus",
     "crit_chance":    "cc_bonus",
@@ -302,6 +325,9 @@ _RIVEN_STAT_MAP: dict[str, str] = {
     "magnetic":       "magnetic",
     "radiation":      "radiation",
     "viral":          "viral",
+    "impact":         "impact",
+    "puncture":       "puncture",
+    "slash":          "slash",
 }
 
 RIVEN_STAT_NAMES: frozenset[str] = frozenset(_RIVEN_STAT_MAP)
@@ -319,16 +345,21 @@ _RIVEN_ELEM_TYPES: dict[str, DamageType] = {
     "viral":       DamageType.VIRAL,
 }
 
+_RIVEN_IPS_TYPES: dict[str, DamageType] = {
+    "impact":   DamageType.IMPACT,
+    "puncture": DamageType.PUNCTURE,
+    "slash":    DamageType.SLASH,
+}
+
 
 def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> Mod:
     """Build a Mod from Riven stat definitions.
 
     Each stat dict must have:
-        "stat":  one of the keys in _RIVEN_STAT_MAP (e.g. "damage", "heat")
+        "stat":  one of the keys in _RIVEN_STAT_MAP (e.g. "damage", "heat", "impact")
         "value": decimal fraction (e.g. 0.658 means +65.8%)
 
     Unknown stat keys are silently ignored.
-    IPS buffs (impact/puncture/slash) are not yet supported.
     """
     damage_bonus = 0.0
     cc_bonus = 0.0
@@ -337,6 +368,7 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
     multishot_bonus = 0.0
     fire_rate_bonus = 0.0
     elemental_bonuses: list[DamageComponent] = []
+    ips_bonuses: list[DamageComponent] = []
 
     for entry in stats:
         stat = str(entry.get("stat", "")).lower()
@@ -344,7 +376,9 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
         mapped = _RIVEN_STAT_MAP.get(stat)
         if mapped is None:
             continue
-        if mapped in _RIVEN_ELEM_TYPES:
+        if mapped in _RIVEN_IPS_TYPES:
+            ips_bonuses.append(DamageComponent(_RIVEN_IPS_TYPES[mapped], value))
+        elif mapped in _RIVEN_ELEM_TYPES:
             elemental_bonuses.append(DamageComponent(_RIVEN_ELEM_TYPES[mapped], value))
         elif mapped == "damage_bonus":
             damage_bonus += value
@@ -363,6 +397,7 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
         name=name,
         damage_bonus=damage_bonus,
         elemental_bonuses=elemental_bonuses,
+        ips_bonuses=ips_bonuses,
         cc_bonus=cc_bonus,
         cd_bonus=cd_bonus,
         sc_bonus=sc_bonus,
@@ -371,13 +406,14 @@ def make_riven_mod(stats: list[dict[str, str | float]], name: str = "Riven") -> 
     )
 
 
-def load_enemy(name: str, headshot: bool = False) -> Enemy:
+def load_enemy(name: str, body_part: str = "Body", headshot: bool = False) -> Enemy:
     """Load an enemy by exact name.
 
     Args:
-        name:     Exact enemy name (case-insensitive fallback).
-        headshot: If True, use the head multiplier as body_part_multiplier.
-                  Default False (body shot = multiplier 1.0).
+        name:      Exact enemy name (case-insensitive fallback).
+        body_part: Name of the body part to target (e.g. "Head", "Body").
+                   Defaults to "Body" (multiplier 1.0).
+        headshot:  Deprecated alias for body_part="Head".
 
     Raises KeyError if not found.
     """
@@ -396,8 +432,16 @@ def load_enemy(name: str, headshot: bool = False) -> Enemy:
     health_type  = _HEALTH_TYPE.get(entry.get("health_type", "").lower(), HealthType.FLESH)
     armor_type   = _ARMOR_TYPE.get(entry.get("armor_type", "").lower(), ArmorType.NONE)
 
-    head_mult = float(entry.get("head_multiplier") or 1.0)
-    body_part_mult = head_mult if headshot else 1.0
+    # Build body_parts dict — supports both new body_parts key and legacy head_multiplier
+    raw_parts = entry.get("body_parts")
+    if raw_parts:
+        body_parts = {k: float(v) for k, v in raw_parts.items()}
+    else:
+        hm = float(entry.get("head_multiplier") or 1.0)
+        body_parts = {"Body": 1.0, "Head": hm}
+
+    effective_part = "Head" if headshot else body_part
+    body_part_mult = body_parts.get(effective_part, 1.0)
 
     return Enemy(
         name=name,
@@ -406,6 +450,7 @@ def load_enemy(name: str, headshot: bool = False) -> Enemy:
         armor_type=armor_type,
         base_armor=float(entry.get("base_armor") or 0.0),
         body_part_multiplier=body_part_mult,
+        body_parts=body_parts,
         base_level=int(entry.get("base_level") or 1),
         base_health=float(entry.get("base_health") or 0.0),
         base_shield=float(entry.get("base_shield") or 0.0),
@@ -422,3 +467,29 @@ def list_mods() -> list[str]:
 
 def list_enemies() -> list[str]:
     return sorted(_raw_enemies().keys())
+
+
+def list_body_parts(enemy_name: str) -> dict[str, float]:
+    """Return the body_parts dict for the named enemy (case-insensitive)."""
+    return load_enemy(enemy_name).body_parts
+
+
+def list_attacks(weapon_name: str) -> list[dict]:
+    """Return attack info for the named weapon (case-insensitive).
+
+    Each entry: {"name": str, "crit_chance": float, "crit_multiplier": float,
+                 "status_chance": float, "fire_rate": float, "shot_type": str}
+    """
+    weapon = load_weapon(weapon_name)
+    return [
+        {
+            "name": a.name,
+            "crit_chance": a.crit_chance,
+            "crit_multiplier": a.crit_multiplier,
+            "status_chance": a.status_chance,
+            "fire_rate": a.fire_rate,
+            "shot_type": a.shot_type,
+            "multishot": a.multishot,
+        }
+        for a in weapon.attacks
+    ]

@@ -7,7 +7,7 @@ M10: Integration — Nagantaka Prime full wiki example
 """
 import math
 import pytest
-from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, BANE_MODS, VIRAL_STACK_MULTIPLIERS
+from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, status_chance_per_pellet, BANE_MODS, VIRAL_STACK_MULTIPLIERS
 from src.loader import make_riven_mod
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.enums import DamageType, FactionType, HealthType, ArmorType
@@ -287,6 +287,28 @@ class TestCalculateCritMultiplier:
     def test_invalid_mode_raises(self):
         with pytest.raises(ValueError):
             calculate_crit_multiplier(1.5, self.CM, "invalid")
+
+    def test_cd_mod_multiplicative(self):
+        # CD mods multiply base: CD_final = CD_base × (1 + Σ cd_bonuses)
+        # Soma Prime base CM = 3.0; Vital Sense cd_bonus = 1.2
+        # → 3.0 × (1 + 1.2) = 3.0 × 2.2 = 6.6 (NOT additive 3.0 + 1.2 = 4.2)
+        from src.loader import load_weapon, load_mod
+        weapon = load_weapon("Soma Prime")
+        vs = load_mod("Vital Sense")
+        modded_cm = weapon.crit_multiplier * (1.0 + vs.cd_bonus)
+        assert modded_cm == pytest.approx(6.6)
+        # Verify this differs from the (wrong) additive result
+        assert modded_cm != pytest.approx(weapon.crit_multiplier + vs.cd_bonus)
+
+    def test_cc_mod_additive(self):
+        # CC mods add flat: CC_final = CC_base + Σ cc_bonuses
+        # Opticor base CC = 0.20; Point Strike cc_bonus = 1.5
+        # → 0.20 + 1.5 = 1.70 (170% — guaranteed Tier 1 + 70% chance Tier 2)
+        from src.loader import load_weapon, load_mod
+        weapon = load_weapon("Opticor")
+        ps = load_mod("Point Strike")
+        modded_cc = weapon.crit_chance + ps.cc_bonus
+        assert modded_cc == pytest.approx(1.70)
 
 
 # ---------------------------------------------------------------------------
@@ -996,3 +1018,625 @@ class TestConditionOverload:
         r = calc.calculate(_combo_weapon(), [serration, self._co_mod], _no_armor_enemy(),
                            combo_counter=5, unique_statuses=2)
         assert r[DamageType.SLASH] == 638.0
+
+    # --- Proc damage scaling with CO ---
+
+    def test_proc_zero_statuses_baseline(self):
+        # 100 Slash, no CO bonus → step2=100, slash_dpt = floor(100*0.35) = 35
+        procs = calc.calculate_procs(_combo_weapon(), [self._co_mod], _no_armor_enemy(),
+                                     unique_statuses=0)
+        assert procs["slash"]["damage_per_tick"] == 35.0
+
+    def test_proc_two_statuses_scales(self):
+        # CO 2 statuses → co_total=1.60
+        # Step 1: floor(100*(1+1.60))=260, quantize(260,100)=259.375
+        # Step 2: warframe_round(259.375)=259
+        # Slash dpt: floor(259*0.35) = floor(90.65) = 90
+        procs = calc.calculate_procs(_combo_weapon(), [self._co_mod], _no_armor_enemy(),
+                                     unique_statuses=2)
+        assert procs["slash"]["damage_per_tick"] == 90.0
+        assert procs["slash"]["total_damage"] == 90.0 * 6
+
+
+# ---------------------------------------------------------------------------
+# Galvanized mod kill-stack tests
+# ---------------------------------------------------------------------------
+
+class TestGalvanizedStacks:
+    """Tests for galvanized mod kill-stack support.
+
+    Uses the same 100-Slash weapon and no-armor enemy as TestConditionOverload.
+    scale = 100/32 = 3.125
+    """
+    _aptitude_mod = Mod(
+        name="Galvanized Aptitude",
+        galv_kill_stat="aptitude_damage_bonus",
+        galv_kill_pct=0.40,
+        galv_max_stacks=2,
+    )
+    _chamber_mod = Mod(
+        name="Galvanized Chamber",
+        multishot_bonus=0.80,
+        galv_kill_stat="multishot_bonus",
+        galv_kill_pct=0.30,
+        galv_max_stacks=5,
+    )
+    _scope_mod = Mod(
+        name="Galvanized Scope",
+        cc_bonus=1.20,
+        galv_kill_stat="cc_bonus",
+        galv_kill_pct=0.40,
+        galv_max_stacks=5,
+    )
+    _steel_mod = Mod(
+        name="Galvanized Steel",
+        cc_bonus=1.10,
+        galv_kill_stat="cd_bonus",
+        galv_kill_pct=0.30,
+        galv_max_stacks=4,
+    )
+
+    # --- Aptitude: damage per status type per stack ---
+
+    def test_aptitude_zero_stacks_no_change(self):
+        # galv_aptitude_total = 0.40 * min(0,2) * 2 = 0 → floor(100*1.0)=100 → quantize=100
+        r = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=2, galvanized_stacks=0)
+        assert r[DamageType.SLASH] == 100.0
+
+    def test_aptitude_one_stack_two_statuses(self):
+        # galv_aptitude_total = 0.40 * 1 * 2 = 0.80
+        # floor(100 * (1.0 + 0.80)) = 180
+        # quantize(180, 100): 180/3.125=57.6→58→58*3.125=181.25→warframe_round=181
+        r = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=2, galvanized_stacks=1)
+        assert r[DamageType.SLASH] == 181.0
+
+    def test_aptitude_two_stacks_three_statuses(self):
+        # galv_aptitude_total = 0.40 * 2 * 3 = 2.40
+        # floor(100 * (1.0 + 2.40)) = 340
+        # quantize(340, 100): 340/3.125=108.8→109→109*3.125=340.625→warframe_round=341
+        r = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=3, galvanized_stacks=2)
+        assert r[DamageType.SLASH] == 341.0
+
+    def test_aptitude_stack_cap_enforced(self):
+        # stacks=10 but max=2 → effective=2; same result as stacks=2, 1 status
+        # galv_aptitude_total = 0.40 * 2 * 1 = 0.80
+        # floor(100*(1.0+0.80))=180 → quantize→181
+        r10 = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                             unique_statuses=1, galvanized_stacks=10)
+        r2  = calc.calculate(_combo_weapon(), [self._aptitude_mod], _no_armor_enemy(),
+                             unique_statuses=1, galvanized_stacks=2)
+        assert r10[DamageType.SLASH] == r2[DamageType.SLASH]
+
+    def test_aptitude_additive_with_serration(self):
+        # Serration+1.65, aptitude 1 stack 1 status: galv=0.40*1*1=0.40
+        # total_dmg_bonus = 1.65 + 0.40 = 2.05
+        # floor(100 * (1.0 + 2.05)) = floor(305) = 305
+        # quantize(305, 100): 305/3.125=97.6→98→98*3.125=306.25→warframe_round=306
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        r = calc.calculate(_combo_weapon(), [serration, self._aptitude_mod], _no_armor_enemy(),
+                           unique_statuses=1, galvanized_stacks=1)
+        assert r[DamageType.SLASH] == 306.0
+
+    # --- Multishot: pre-computed via multishot parameter ---
+
+    def test_chamber_base_multishot(self):
+        # At 0 stacks: total_ms = 1 + 0.80 = 1.80; damage × 1.80 = 100 × 1.80 = 180
+        ms = 1.0 + self._chamber_mod.multishot_bonus  # base only, 0 stacks
+        r = calc.calculate(_combo_weapon(), [self._chamber_mod], _no_armor_enemy(), multishot=ms)
+        assert r[DamageType.SLASH] == pytest.approx(180.0)
+
+    def test_chamber_five_stacks_multishot(self):
+        # At 5 stacks: galv_ms = 0.30*5 = 1.50; total_ms = 1 + 0.80 + 1.50 = 3.30
+        galv_stacks = 5
+        galv_ms = self._chamber_mod.galv_kill_pct * min(galv_stacks, self._chamber_mod.galv_max_stacks)
+        ms = 1.0 + self._chamber_mod.multishot_bonus + galv_ms
+        assert ms == pytest.approx(3.30)
+        r = calc.calculate(_combo_weapon(), [self._chamber_mod], _no_armor_enemy(), multishot=ms)
+        assert r[DamageType.SLASH] == pytest.approx(100.0 * 3.30)
+
+    def test_chamber_stack_cap_five(self):
+        # stacks=10, cap=5 → same as stacks=5
+        ms_cap = 1.0 + self._chamber_mod.multishot_bonus + self._chamber_mod.galv_kill_pct * 5
+        ms_over = 1.0 + self._chamber_mod.multishot_bonus + self._chamber_mod.galv_kill_pct * min(10, self._chamber_mod.galv_max_stacks)
+        assert ms_cap == pytest.approx(ms_over)
+
+    # --- CC: galv_cc pre-computed and added to base_cc ---
+
+    def test_scope_galv_cc_accumulates(self):
+        # 3 stacks: galv_cc = 0.40 * 3 = 1.20
+        galv_stacks = 3
+        galv_cc = self._scope_mod.galv_kill_pct * min(galv_stacks, self._scope_mod.galv_max_stacks)
+        assert galv_cc == pytest.approx(1.20)
+
+    def test_scope_stack_cap_five(self):
+        # stacks=10 → capped at 5 → galv_cc = 0.40*5 = 2.00
+        galv_cc_capped = self._scope_mod.galv_kill_pct * min(10, self._scope_mod.galv_max_stacks)
+        galv_cc_exact  = self._scope_mod.galv_kill_pct * 5
+        assert galv_cc_capped == pytest.approx(galv_cc_exact)
+
+    # --- CD: galv_cd pre-computed and added to base_cm ---
+
+    def test_steel_galv_cd_four_stacks(self):
+        # 4 stacks (cap): galv_cd = 0.30 * 4 = 1.20
+        galv_stacks = 4
+        galv_cd = self._steel_mod.galv_kill_pct * min(galv_stacks, self._steel_mod.galv_max_stacks)
+        assert galv_cd == pytest.approx(1.20)
+
+    def test_steel_stack_cap_enforced(self):
+        # stacks=99 → capped at 4
+        galv_cd_over = self._steel_mod.galv_kill_pct * min(99, self._steel_mod.galv_max_stacks)
+        galv_cd_cap  = self._steel_mod.galv_kill_pct * 4
+        assert galv_cd_over == pytest.approx(galv_cd_cap)
+
+
+# ---------------------------------------------------------------------------
+# Kuva/Tenet bonus element
+# ---------------------------------------------------------------------------
+
+class TestBonusElement:
+    """Kuva/Tenet bonus element: player-chosen primary added before combination."""
+
+    def test_bonus_heat_no_mods(self):
+        """50% Heat bonus on a 100-damage weapon → Heat component = 50."""
+        # base_damage=100, scale=100/32=3.125
+        # bonus heat amount = 100 * 0.50 = 50.0
+        # quantize(50, 100): 50/3.125=16 → 16*3.125=50.0
+        # Step1 no mods: floor(50*1.0)=50; quantize(50,100)=50.0
+        # Step2 body=1.0, no crit: wr(50)=50
+        # Steps 3-5 neutral, no armor → 50
+        weapon = Weapon(
+            name="Kuva Test",
+            base_damage={DamageType.IMPACT: 100.0},
+            is_kuva_tenet=True,
+            bonus_element_type=DamageType.HEAT,
+            bonus_element_pct=0.50,
+        )
+        enemy = Enemy("Test", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+        result = calc.calculate(weapon, [], enemy)
+        assert result[DamageType.IMPACT] == pytest.approx(100.0)
+        assert result[DamageType.HEAT]   == pytest.approx(50.0)
+
+    def test_bonus_element_combines_with_toxin_mod(self):
+        """Kuva 50% Cold bonus + Toxin mod (90%) → Viral combination."""
+        # Toxin mod occupies slot 0; Cold innate goes last → Toxin+Cold = Viral
+        weapon = Weapon(
+            name="Kuva Test2",
+            base_damage={DamageType.IMPACT: 100.0},
+            is_kuva_tenet=True,
+            bonus_element_type=DamageType.COLD,
+            bonus_element_pct=0.50,
+        )
+        toxin_mod = Mod(
+            name="Pathogen Rounds",
+            elemental_bonuses=[DamageComponent(DamageType.TOXIN, 0.90)],
+        )
+        enemy = Enemy("Test", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+        result = calc.calculate(weapon, [toxin_mod], enemy)
+        assert DamageType.VIRAL in result
+        assert DamageType.COLD  not in result
+        assert DamageType.TOXIN not in result
+
+    def test_bonus_element_absent_when_zero_pct(self):
+        """bonus_element_pct=0 must not add any elemental component."""
+        weapon = Weapon(
+            name="Kuva Test3",
+            base_damage={DamageType.IMPACT: 100.0},
+            is_kuva_tenet=True,
+            bonus_element_type=DamageType.HEAT,
+            bonus_element_pct=0.0,
+        )
+        enemy = Enemy("Test", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+        result = calc.calculate(weapon, [], enemy)
+        assert DamageType.HEAT not in result
+
+
+# ---------------------------------------------------------------------------
+# IPS mod buffs — per-type bonus (Rupture, Piercing Hit, Jagged Edge etc.)
+# ---------------------------------------------------------------------------
+class TestIPSModBuffs:
+    def _ips_weapon(self) -> Weapon:
+        """Weapon with 30 Impact + 30 Puncture + 30 Slash (total=90)."""
+        return Weapon(
+            name="Test IPS",
+            base_damage={
+                DamageType.IMPACT:   30.0,
+                DamageType.PUNCTURE: 30.0,
+                DamageType.SLASH:    30.0,
+            },
+        )
+
+    def _no_armor_enemy(self) -> Enemy:
+        return Enemy("Target", FactionType.NONE, HealthType.FLESH, ArmorType.NONE, 0.0)
+
+    def test_impact_mod_only_boosts_impact(self):
+        """A mod with +120% Impact should boost Impact only; Puncture/Slash unchanged.
+
+        base_damage=90, scale=90/32=2.8125
+        Impact with +120%: floor(30*(1+1.2))=66; quantize→64.6875; Step2 round→65
+        Puncture/Slash no bonus: floor(30*1.0)=30; quantize→30.9375; Step2 round→31
+        """
+        mod = Mod(name="Rupture", ips_bonuses=[DamageComponent(DamageType.IMPACT, 1.2)])
+        result = calc.calculate(self._ips_weapon(), [mod], self._no_armor_enemy())
+        assert result[DamageType.IMPACT]   == pytest.approx(65.0)
+        assert result[DamageType.PUNCTURE] == pytest.approx(31.0)
+        assert result[DamageType.SLASH]    == pytest.approx(31.0)
+
+    def test_ips_and_damage_mod_stack_additively(self):
+        """General damage mod + IPS mod stack additively for the matching type only.
+
+        base_damage=90, scale=2.8125
+        Serration +165%, Puncture mod +120%:
+          Impact:   floor(30*(1+1.65))=79; quantize→78.75; Step2 round→79
+          Puncture: floor(30*(1+1.65+1.2))=floor(115.5)=115; quantize→115.3125; Step2 round→115
+          Slash:    floor(30*(1+1.65))=79; quantize→78.75; Step2 round→79
+        """
+        serration = Mod(name="Serration", damage_bonus=1.65)
+        piercing  = Mod(name="Piercing Hit", ips_bonuses=[DamageComponent(DamageType.PUNCTURE, 1.2)])
+        result = calc.calculate(self._ips_weapon(), [serration, piercing], self._no_armor_enemy())
+        assert result[DamageType.IMPACT]   == pytest.approx(79.0)
+        assert result[DamageType.PUNCTURE] == pytest.approx(115.0)
+        assert result[DamageType.SLASH]    == pytest.approx(79.0)
+
+
+# ---------------------------------------------------------------------------
+# Per-pellet status chance
+# ---------------------------------------------------------------------------
+
+class TestStatusChancePerPellet:
+    """Tests for the per-pellet status chance formula.
+
+    Formula: per_pellet = 1 - (1 - total_sc)^(1/pellet_count)
+    """
+
+    def test_single_pellet_unchanged(self):
+        """Single pellet (or multishot=1) returns total SC unchanged."""
+        assert status_chance_per_pellet(0.25, 1) == pytest.approx(0.25)
+
+    def test_tigris_5_pellets(self):
+        """Tigris: 16.8% total SC, 5 pellets → ~3.62% per pellet."""
+        pp = status_chance_per_pellet(0.168, 5)
+        assert pp == pytest.approx(0.03612, abs=0.0001)
+
+    def test_strun_12_pellets(self):
+        """Strun: 5% total SC, 12 pellets → ~0.427% per pellet."""
+        pp = status_chance_per_pellet(0.05, 12)
+        assert pp == pytest.approx(0.00427, abs=0.0001)
+
+    def test_100_pct_status(self):
+        """100% status chance → 100% per pellet regardless of count."""
+        assert status_chance_per_pellet(1.0, 8) == 1.0
+
+    def test_zero_status(self):
+        """0% status chance → 0% per pellet."""
+        assert status_chance_per_pellet(0.0, 5) == 0.0
+
+    def test_expected_procs_per_shot(self):
+        """Expected procs per shot = pellet_count × per_pellet_sc.
+
+        For Tigris (5 pellets, 16.8% total): ~0.181 expected procs/shot.
+        This is slightly MORE than the raw 0.168 because the per-pellet
+        formula distributes the chance across independent rolls.
+        """
+        pp = status_chance_per_pellet(0.168, 5)
+        expected_procs = 5 * pp
+        assert expected_procs == pytest.approx(0.1812, abs=0.001)
+        assert expected_procs > 0.168  # more than raw SC
+
+
+# ---------------------------------------------------------------------------
+# Warframe Buff Tests
+# ---------------------------------------------------------------------------
+from src.models import Buff
+from src.buffs import make_buff
+
+
+class TestRoarBuff:
+    """Roar: faction-type buff, additive with Bane mods, double-dips on procs."""
+
+    def test_roar_basic(self):
+        """Roar +50% should multiply final damage by 1.5 (no Bane).
+
+        Braton + Serration vs Grineer (no armor):
+        Slash without buff = 64.0, with Roar +50%: floor(64 * 1.5) = 96
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar])
+        assert result[DamageType.SLASH] == pytest.approx(96.0)
+
+    def test_roar_additive_with_bane(self):
+        """Roar is additive with Bane mods: (1 + 0.30 + 0.50) = 1.80.
+
+        Slash without faction = 64.0, with Bane + Roar: floor(64 * 1.80) = 115
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        result = calc.calculate(braton(), [serration(), bane_grineer()], grineer_flesh_no_armor(), buffs=[roar])
+        assert result[DamageType.SLASH] == pytest.approx(115.0)
+
+    def test_roar_double_dips_on_slash_proc(self):
+        """Roar double-dips on DoT procs: proc_dmg * (1 + faction_bonus)^2.
+
+        Without buff: slash_dpt = 55.0
+        With Roar 50%: faction_bonus = 0.50, (1+0.5)^2 = 2.25
+        slash_dpt = floor(step2_total * 0.35 * 2.25) = 124.0
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        procs_no = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor())
+        procs_yes = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar])
+        # Roar double-dips: ratio should be ~(1.5)^2 = 2.25
+        ratio = procs_yes["slash"]["damage_per_tick"] / procs_no["slash"]["damage_per_tick"]
+        assert ratio == pytest.approx(2.25, abs=0.05)
+        assert procs_yes["slash"]["damage_per_tick"] == pytest.approx(124.0)
+
+    def test_roar_with_strength(self):
+        """make_buff('roar', 2.0) → 100% damage bonus."""
+        roar = make_buff("roar", 2.0)
+        assert roar.faction_damage_bonus == pytest.approx(1.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar])
+        # floor(64 * 2.0) = 128
+        assert result[DamageType.SLASH] == pytest.approx(128.0)
+
+
+class TestEclipseBuff:
+    """Eclipse: general damage multiplier, multiplicative, no double-dip on procs."""
+
+    def test_eclipse_basic(self):
+        """Eclipse +200%: separate multiplicative step after faction.
+
+        Slash = 64.0 (after faction), eclipse mult = 1+2.0 = 3.0 → floor(64 * 3.0) = 192
+        """
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(192.0)
+
+    def test_eclipse_multiplicative_with_bane(self):
+        """Eclipse × Bane: faction first, then Eclipse multiplies.
+
+        Slash = 64, Bane ×1.30 → floor(64*1.30) = 83, Eclipse ×3.0 → floor(83*3.0) = 249
+        """
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        result = calc.calculate(braton(), [serration(), bane_grineer()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(249.0)
+
+    def test_eclipse_no_double_dip_on_procs(self):
+        """Eclipse applies once to procs (not squared).
+
+        Without eclipse: slash_dpt = 160 * 0.35 * 1.0 = 56.0
+        With eclipse ×3: slash_dpt = 56.0 * 3.0 = 168.0
+        """
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        procs_no = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor())
+        procs_yes = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert procs_yes["slash"]["damage_per_tick"] == pytest.approx(procs_no["slash"]["damage_per_tick"] * 3.0)
+
+    def test_eclipse_strength_200pct(self):
+        """Eclipse original at 200% strength: +400% damage (×5 total).
+
+        Slash = 64, eclipse mult = 1 + 2.0×2.0 = 5.0 → floor(64 × 5.0) = 320
+        """
+        eclipse = make_buff("eclipse", 2.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(320.0)
+
+    def test_eclipse_strength_300pct(self):
+        """Eclipse original at 300% strength: +600% damage (×7 total).
+
+        Slash = 64, eclipse mult = 1 + 2.0×3.0 = 7.0 → floor(64 × 7.0) = 448
+        """
+        eclipse = make_buff("eclipse", 3.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(448.0)
+
+    def test_eclipse_subsumed_100pct(self):
+        """Eclipse subsumed at 100% strength: +30% damage (×1.30 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30 = 1.30 → floor(64 × 1.30) = 83
+        """
+        eclipse = make_buff("eclipse", 1.0, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(83.0)
+
+    def test_eclipse_subsumed_150pct(self):
+        """Eclipse subsumed at 150% strength: +45% damage (×1.45 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30×1.5 = 1.45 → floor(64 × 1.45) = 92
+        """
+        eclipse = make_buff("eclipse", 1.5, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(92.0)
+
+    def test_eclipse_subsumed_200pct(self):
+        """Eclipse subsumed at 200% strength: +60% damage (×1.60 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30×2.0 = 1.60 → floor(64 × 1.60) = 102
+        """
+        eclipse = make_buff("eclipse", 2.0, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(102.0)
+
+    def test_eclipse_subsumed_300pct(self):
+        """Eclipse subsumed at 300% strength: +90% damage (×1.90 total).
+
+        Slash = 64, eclipse mult = 1 + 0.30×3.0 = 1.90 → floor(64 × 1.90) = 121
+        """
+        eclipse = make_buff("eclipse", 3.0, subsumed=True)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(121.0)
+
+
+class TestBuffStacking:
+    """Multiple buffs stack correctly."""
+
+    def test_roar_plus_eclipse(self):
+        """Roar (faction) + Eclipse (multiplicative) stack.
+
+        Slash = 64 (base modded)
+        Step 5: floor(64 * (1 + 0.50)) = floor(64 * 1.5) = 96
+        Step 5.5: floor(96 * (1 + 2.0)) = floor(96 * 3.0) = 288
+        """
+        roar = Buff("Roar", faction_damage_bonus=0.50)
+        eclipse = Buff("Eclipse", damage_multiplier=2.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[roar, eclipse])
+        assert result[DamageType.SLASH] == pytest.approx(288.0)
+
+    def test_no_buffs_unchanged(self):
+        """Empty buff list produces same result as no buffs parameter."""
+        result_none = calc.calculate(braton(), [serration()], grineer_flesh_no_armor())
+        result_empty = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[])
+        assert result_none == result_empty
+
+
+class TestMakeBuffPresets:
+    """make_buff() preset factory."""
+
+    def test_all_presets_valid(self):
+        """All preset names produce valid Buff objects."""
+        from src.buffs import BUFF_PRESETS
+        for key in BUFF_PRESETS:
+            b = make_buff(key)
+            assert isinstance(b, Buff)
+            assert b.name  # non-empty name
+
+    def test_unknown_preset_raises(self):
+        with pytest.raises(KeyError):
+            make_buff("nonexistent_ability")
+
+    def test_strength_scaling(self):
+        """Strength multiplier scales the buff values."""
+        r1 = make_buff("roar", 1.0)
+        r2 = make_buff("roar", 2.0)
+        assert r2.faction_damage_bonus == pytest.approx(r1.faction_damage_bonus * 2.0)
+
+    def test_subsumed_roar(self):
+        """Subsumed Roar base is 30% (vs 50% original)."""
+        orig = make_buff("roar", 1.0)
+        sub = make_buff("roar", 1.0, subsumed=True)
+        assert orig.faction_damage_bonus == pytest.approx(0.50)
+        assert sub.faction_damage_bonus == pytest.approx(0.30)
+
+    def test_subsumed_eclipse(self):
+        """Subsumed Eclipse base is 30% (vs 200% original)."""
+        orig = make_buff("eclipse", 1.0)
+        sub = make_buff("eclipse", 1.0, subsumed=True)
+        assert orig.damage_multiplier == pytest.approx(2.00)
+        assert sub.damage_multiplier == pytest.approx(0.30)
+
+    def test_subsumed_nourish(self):
+        """Subsumed Nourish base is 45% (vs 75% original)."""
+        orig = make_buff("nourish", 1.0)
+        sub = make_buff("nourish", 1.0, subsumed=True)
+        assert orig.elemental_bonus == pytest.approx(0.75)
+        assert sub.elemental_bonus == pytest.approx(0.45)
+
+    def test_subsumed_xatas_whisper(self):
+        """Xata's Whisper is not reduced when subsumed (26% both)."""
+        orig = make_buff("xatas_whisper", 1.0)
+        sub = make_buff("xatas_whisper", 1.0, subsumed=True)
+        assert orig.elemental_bonus == pytest.approx(0.26)
+        assert sub.elemental_bonus == pytest.approx(0.26)
+
+    def test_subsumed_with_strength(self):
+        """Subsumed Roar at 200% strength → 0.30 × 2.0 = 0.60."""
+        sub = make_buff("roar", 2.0, subsumed=True)
+        assert sub.faction_damage_bonus == pytest.approx(0.60)
+
+    def test_xatas_separate_instance(self):
+        """Xata's Whisper has separate_instance=True."""
+        xata = make_buff("xatas_whisper", 1.0)
+        assert xata.separate_instance is True
+
+    def test_nourish_not_separate_instance(self):
+        """Nourish has separate_instance=False (adds to current hit)."""
+        nourish = make_buff("nourish", 1.0)
+        assert nourish.separate_instance is False
+
+
+class TestXatasWhisperBuff:
+    """Xata's Whisper: Void is a separate damage instance.
+
+    Double-dips on faction mods (Banes) and headshot multiplier.
+    Void bypasses armor.
+    """
+
+    def test_xatas_basic_void_damage(self):
+        """Xata's Whisper adds Void damage as separate entry in result.
+
+        Braton (60 base) + Serration (165%) + Xata's Whisper (26%):
+        Void raw = floor(60 × 0.26 × 2.65) = floor(41.34) = 41
+        quantize(41, 60): scale=1.875, 41/1.875=21.866→22, 22×1.875 = 41.25
+        Step 2: warframe_round(41.25 × 1.0 × 1.0) = 41
+        """
+        xata = make_buff("xatas_whisper", 1.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        assert DamageType.VOID in result
+        assert result[DamageType.VOID] == pytest.approx(41.0)
+        # IPS values should be unaffected by Xata's (not mixed in)
+        result_no_buff = calc.calculate(braton(), [serration()], grineer_flesh_no_armor())
+        assert result[DamageType.SLASH] == result_no_buff[DamageType.SLASH]
+        assert result[DamageType.IMPACT] == result_no_buff[DamageType.IMPACT]
+        assert result[DamageType.PUNCTURE] == result_no_buff[DamageType.PUNCTURE]
+
+    def test_xatas_faction_double_dip(self):
+        """Void double-dips on faction mods: (1 + faction_bonus)².
+
+        Main hit uses (1 + 0.30), Void uses (1 + 0.30)² = 1.69.
+        Void Step 1: quantize(floor(60×0.26×2.65), 60) = 41.25
+        Void Step 2: warframe_round(41.25) = 41
+        Void Step 5: floor(41 × 1.69) = floor(69.29) = 69
+        """
+        xata = make_buff("xatas_whisper", 1.0)
+        result = calc.calculate(
+            braton(), [serration(), bane_grineer()], grineer_flesh_no_armor(), buffs=[xata],
+        )
+        assert result[DamageType.VOID] == pytest.approx(69.0)
+
+    def test_xatas_headshot_double_dip(self):
+        """Void double-dips on headshot: body_part_mult².
+
+        With headshot (body_part=2.0): main gets ×2, Void gets ×4.
+        """
+        xata = make_buff("xatas_whisper", 1.0)
+        enemy_head = Enemy(
+            name="Lancer Head", faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH, armor_type=ArmorType.NONE,
+            base_armor=0.0, body_part_multiplier=2.0,
+        )
+        result_body = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        result_head = calc.calculate(braton(), [serration()], enemy_head, buffs=[xata])
+        # Main IPS headshot ratio should be ~2.0
+        slash_ratio = result_head[DamageType.SLASH] / result_body[DamageType.SLASH]
+        assert slash_ratio == pytest.approx(2.0, abs=0.05)
+        # Void headshot ratio should be ~4.0 (double-dip)
+        void_ratio = result_head[DamageType.VOID] / result_body[DamageType.VOID]
+        assert void_ratio == pytest.approx(4.0, abs=0.1)
+
+    def test_xatas_bypasses_armor(self):
+        """Void damage ignores armor (separate instance still bypasses)."""
+        xata = make_buff("xatas_whisper", 1.0)
+        result_no_armor = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        result_armor = calc.calculate(braton(), [serration()], grineer_flesh_300_armor(), buffs=[xata])
+        # Void should be identical regardless of armor
+        assert result_armor[DamageType.VOID] == result_no_armor[DamageType.VOID]
+
+    def test_xatas_not_in_proc_pool(self):
+        """Xata's Void doesn't contribute to proc pool (separate instance)."""
+        xata = make_buff("xatas_whisper", 1.0)
+        procs = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor(), buffs=[xata])
+        procs_no_buff = calc.calculate_procs(braton(), [serration()], grineer_flesh_no_armor())
+        # Slash proc damage should be identical — Void doesn't inflate step-2 total
+        assert procs["slash"]["damage_per_tick"] == procs_no_buff["slash"]["damage_per_tick"]
+
+    def test_nourish_still_inline(self):
+        """Nourish (Viral) adds to current hit — not separate instance."""
+        nourish = make_buff("nourish", 1.0)
+        result = calc.calculate(braton(), [serration()], grineer_flesh_no_armor(), buffs=[nourish])
+        # Viral should appear in result
+        assert DamageType.VIRAL in result
+        # Nourish should inflate total damage (it's part of the weapon pool)
+        result_no = calc.calculate(braton(), [serration()], grineer_flesh_no_armor())
+        total_with = sum(result.values())
+        total_without = sum(result_no.values())
+        assert total_with > total_without
+

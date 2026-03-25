@@ -1,129 +1,128 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**164 tests passing.** Full pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS.
-Web UI fully functional with dark theme, mod card grid, special slots, weapon images, riven mod builder, enemy level scaler.
+**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional: dark theme, mod card grid, special slots (stance/exilus), weapon images, riven mod builder, enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks, inline SVG damage type icons.
+
+Branch: `claude/continue-handoff-aMsDx`
 
 ---
 
-## What's Done
+## What Was Done This Session
 
-### Core (`src/`)
-- `enums.py` — DamageType, FactionType, HealthType, ArmorType
-- `models.py` — Weapon, WeaponAttack, Mod, Enemy, DamageComponent dataclasses
-- `quantizer.py` — `quantize()` with Decimal + ROUND_HALF_UP (never uses Python `round()`)
-- `combiner.py` — elemental combination by mod slot order; innate primary/secondary split; Kuva/Tenet HCET priority
-- `calculator.py` — full 6-step damage pipeline + `calculate_procs()` for all 10 proc types (5 DoT + 5 CC/debuff)
-- `loader.py` — `load_weapon(name, attack_name=None)`, `load_mod()`, `load_enemy()`
-- `scaling.py` — enemy level scaling (health/shield power law, armor cap, Overguard); full float64 precision coefficients reproduce wiki values exactly
+### 1. Mod grid — fix scroll on mobile (SortableJS)
+SortableJS was immediately capturing touch events on mod cards, blocking page scroll. Fixed by adding `delay: 150` + `delayOnTouchOnly: true` to the Sortable config. Desktop drag is instant; mobile requires a 150ms long-press before drag begins.
 
-### Data (`data/`)
-- `weapons.json` — 588 weapons with `attacks[]` per weapon, per-attack damage/crit/status/shot_type, weapon images
-- `mods.json` — 1534 mods — all stats audited; damage%, elemental%, cc/cd/sc/multishot, faction bonus
-- `enemies.json` — 983 enemies — faction, health/armor type, base_armor, base_level, base_health, base_shield, head_multiplier
+### 2. Tighter text field sizing (desktop + mobile)
+Reduced padding and font sizes across all form inputs for a more compact UI:
+- Global inputs/selects: `padding 8px 10px → 5px 8px`, `font 13px → 12px`, margins reduced
+- Riven modal inputs: `height 36px → 30px`, `font 14px → 12px`
+- Mobile (≤768px): preserves `font-size: 16px !important` (iOS zoom prevention), adds tight padding override
+- Combobox dropdown items: padding reduced
 
-### Web (`web/`)
-- `api.py` — FastAPI:
-  - `GET /api/weapons` — all weapons with per-attack stats
-  - `GET /api/mods` — all mods
-  - `GET /api/enemies` — all enemies with base_level
-  - `POST /api/modded-weapon` — modded weapon stats (no enemy)
-  - `POST /api/calculate` — full damage calculation (accepts enemy_level, steel_path, eximus, viral_stacks, corrosive_stacks)
-  - `POST /api/scaled-enemy` — scaled HP/shield/armor/overguard for given level
-- `static/index.html` — dark SPA:
-  - Weapon combobox with thumbnail images in dropdown; attack tab buttons for multi-attack weapons
-  - 2×4 mod card grid with searchable mod picker popup; duplicate mod prevention
-  - Element arcs — SVG lines connecting paired elemental mods → combined element badge
-  - **Stance slot** (melee-only, gold shimmer) + **Exilus slot** (teal, all weapon types)
-  - **Weapon-specific exilus mods** — Adhesive Blast, Cautious Shot, etc. appear only for eligible weapons
-  - **Riven mod slot** — purple card, opens two-column stat builder modal; up to 4 stats; `×` clears a row; % input enforces 4-char max via `oninput`
-  - Enemy combobox with faction/type display
-  - **Enemy level scaler** — Level input (1–9999), Steel Path toggle (×2.5 HP/shield), Eximus toggle (shows Overguard)
-  - Live stats panel: modded base damage, DPS (burst + sustained), crit stats, element badges
-  - Damage breakdown table with per-hit and per-trigger columns + faction effectiveness badges
-  - **Status Procs** table — DoT procs (per-tick / total). Separate **CC / Debuff Procs** table (effect text, no damage columns). DPS loop skips CC entries.
+### 3. Weapon/enemy search — bare-bones rewrite
+Stripped the combobox of all overcomplicated machinery that caused bugs on mobile and desktop:
 
-### CLI (`__main__.py`)
-- `python -m dc "Soma Prime" "Serration" vs "Heavy Gunner"`
-- Flags: `--crit avg|guaranteed|max`, `--headshot`, `--attack "Name"`, `--viral N`, `--corrosive`, `--procs`
-- `--procs` now shows two tables: DoT procs (per-tick / total) + CC/debuff procs (effect text)
+**Removed:**
+- Body portal (`document.body.appendChild`) + `position: fixed` + JS repositioning on every scroll/resize
+- `ignoreBlur` mousedown/mouseup hack
+- `tabindex` on every dropdown item (fought touch scrolling)
+- Arrow key navigation inside dropdown
+- `blur` timeout close
 
----
+**Added/fixed:**
+- `position: absolute` inside `.combobox-wrap` — natural DOM positioning
+- `overscroll-behavior: contain` — dropdown scroll no longer bleeds to page
+- `-webkit-overflow-scrolling: touch` — iOS momentum scrolling
+- `mousedown` + `e.preventDefault()` for desktop selection (no blur)
+- Clean `touchend` handler for mobile item selection
+- Click-outside-to-close via single `mousedown` document listener
 
-## Recent Changes (this session)
+### 4. Dropdown z-index fix (behind tables)
+`.panel` uses `backdrop-filter` which creates a CSS stacking context, trapping the dropdown's z-index. Fix: when a dropdown opens, its parent `.panel` gets `.combobox-open` class (`z-index: 50; position: relative`) to lift it above sibling panels. Removed on close.
 
-### Multishot Fix
-- `DamageCalculator.calculate()` now accepts `multishot: float` param
-- Per-hit damage is multiplied by multishot count inside the pipeline
-- `api.py` computes `modded_ms` from mods and passes it through
-- `index.html` shows "Per-trigger damage (includes ×N multishot)" note when MS > 1
-- `breakdown_per_trigger` and `total_per_trigger` added to API response
+### 5. Dropdown collapses on touch scroll — fixed
+`document.addEventListener('touchstart', ...)` was firing when scrolling inside the dropdown, closing it. Removed the touchstart close listener entirely. Mobile close now relies on tapping outside (mousedown fires on mobile too after touch).
 
-### CC / Debuff Status Procs
-Added 5 non-DoT procs to `calculate_procs()` in `src/calculator.py`:
-
-| Proc | Effect |
-|---|---|
-| `viral` | Health ×1.75–×4.25 (already modeled via viral_stacks in main pipeline) |
-| `magnetic` | +100% shield/OG dmg; forced Elec proc on shield break |
-| `radiation` | Confuses enemy to attack allies for 12s |
-| `blast` | −30% accuracy (up to −75%); detonates at 10 stacks |
-| `cold` | −50% speed (up to −90%); +0.1 flat crit damage |
-
-These return `{active, effect, damage_per_tick:0, ticks:0, total_damage:0}`. A `_cc_proc()` helper was added alongside the existing `_proc()`.
-
-**Web UI:** A second "CC / Debuff Procs" table renders below the DoT table when any CC procs are active. The DPS proc loop skips them (`k in PROC_LABELS` guard added). `CC_PROC_LABELS` and `CC_PROC_COLORS` constants added (colors sourced from existing `ELEM_COLORS`).
-
-**CLI:** `--procs` flag now renders two separate sections.
-
-**Tests:** `TestCCProcs` class added (7 tests) — active/inactive per type + zero-damage assertion.
+### 6. Search UX — clear on click, persist stats
+Two UX improvements to the search flow:
+- **Click-to-clear:** Focusing the search input now clears the text and opens the full dropdown immediately. No need to manually delete the name or click X first.
+- **Persist stats:** Clicking X or abandoning a search no longer wipes the stats panel. Stats remain visible showing the last confirmed selection until a new one is committed. Achieved via `_confirmed` variable inside `setupCombobox` — restored to input on close-without-commit (Escape or click-outside).
 
 ---
 
-## Known Issue / Not Yet Verified
+## Architecture Quick Reference
 
-The CC procs table in the web UI renders correctly in code (HTML inserted at line 1751 inside `displayResults()`), but **was not visually confirmed in browser** before session ended. If it's not showing:
-1. Open browser console — check for JS errors in `displayResults()`
-2. Inspect the raw `/api/calculate` response — confirm `procs.viral`, `procs.cold`, etc. are present with `active: true`
-3. The guard is `p.active && k in CC_PROC_LABELS` — if `data.procs` keys don't match, the filter silently skips them
+### Damage Pipeline (6 Steps)
+```
+1. Base Damage × (1 + ΣDamageMods)         → Modded Base   [floor]
+2. Modded Base × Body Part × Crit           → Part Damage   [round nearest]
+3. Part Damage × Faction Type Effectiveness  → Typed Damage   [floor]
+4. Typed Damage × Armor Mitigation          → Mitigated     [floor]
+5. Mitigated × (1 + FactionMod + Roar)      → Final         [floor]
+5.5. Final × Eclipse multiplier             → Buffed Final   [floor]
+6. Buffed Final × Viral stacks              → Viral Damage   [floor]
+```
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `src/calculator.py` | 6-step pipeline + crit + armor + faction + Viral + procs |
+| `src/loader.py` | JSON → Weapon/Mod/Enemy; case-insensitive; attack selection |
+| `src/buffs.py` | 4 buff presets (Roar, Eclipse, Xata's Whisper, Nourish) |
+| `src/models.py` | Weapon, WeaponAttack, Mod, Enemy, Buff, DamageComponent |
+| `src/scaling.py` | Enemy level scaling per faction |
+| `src/combiner.py` | Elemental combination by mod slot order |
+| `src/quantizer.py` | quantize() — Decimal + ROUND_HALF_UP |
+| `web/api.py` | FastAPI endpoints |
+| `web/static/index.html` | SPA — all JS inline |
+| `web/static/style.css` | Dark theme styles |
+| `__main__.py` | CLI interface |
+
+### Data Files
+| File | Records |
+|------|---------|
+| `data/weapons.json` | 588 weapons |
+| `data/mods.json` | 1,405 mods |
+| `data/enemies.json` | 983 enemies |
+
+### Combobox Architecture (post-rewrite)
+`setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl)` in `index.html`:
+- Dropdown is `position: absolute` inside `.combobox-wrap` — **no portal**
+- `_confirmed` tracks last committed name; restored to input on abandon
+- `.panel.combobox-open` lifts parent panel z-index when open
+- `overscroll-behavior: contain` on `.combobox-dropdown` prevents scroll bleed
+- Selection: `mousedown` (desktop) + `touchend` (mobile), both with `e.preventDefault()`
+- Close: `mousedown` outside only (no touchstart — it caused scroll collapse)
+- X button dispatches `combobox-clear` custom event to reset `_confirmed` without calling `onSelect`
 
 ---
 
-## Pending
+## Known Gaps / TODO
 
-### Shield HP Layer (Corpus)
-Model Corpus enemy shields as a separate HP layer in `DamageCalculator.calculate()`:
-- Shield gate: damage hits shields first; excess carries over to health
-- Magnetic amplifier: ×2.0 damage to shields when shields are up
-- API: `/api/calculate` request needs `target_layer: "shield"|"health"` or the calculator returns both layers
+### Not yet implemented
+- **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare. Stack-based bonuses not modelled.
+- **Kill Time (TTK)** — Shots and seconds to kill at given enemy level.
+- **Build saving / URL sharing** — Encode build state in URL params.
+- **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
+- **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
 
-### Melee Combo Counter
-- `Weapon.combo_counter: int` field (default 0)
-- Combo multiplier: `1.0 + 0.5 × floor(counter / 5)` (unmodded)
-- CLI: `--combo N` flag
+### Partially wired
+- **Condition Overload** — `condition_overload_bonus` parsed and stored on Mod. Calculator uses `unique_statuses` parameter. API/CLI don't pass actual unique status counts from UI — caller-side wiring missing.
 
-### Condition Overload
-- Melee mod: `+60%` damage per unique active status on enemy, max 6 stacks (+360%)
-- Requires tracking which status types are currently active on the enemy
-- Applied in Step 1 alongside other damage mods
-
-### Arcane Framework
-- Weapon arcanes (Arcane Acceleration, Arcane Velocity, etc.) and Warframe arcanes affecting damage
-- Add `arcanes: list[Arcane]` to request body; apply bonuses in Step 1 / as flat multipliers
-
-### TAU Damage Effectiveness Table
-- Void, Tau damage types have their own effectiveness vs Sentient/Murmur (Zariman-era)
-- Add to `FACTION_EFFECTIVENESS` in `src/calculator.py` and mirror in `index.html`
+### Design unsettled
+- **Header / Branding** — Current plain header works but user wants something better. Previous attempts (SVG wings, hero banner) all removed. Needs mobile-first design (≤375px).
+- **Combobox styling** — Intentionally stripped bare this session. Ready to be restyled (border, hover states, shadow, etc.) now that the core mechanics are stable.
 
 ---
 
-## Key Architecture Notes
-- **Crit stats are per-attack:** `Weapon.crit_chance`/`crit_multiplier` come from the selected attack.
-- **`attacks[]` is source of truth:** Flat `base_damage`/`innate_elements` on `Weapon` are populated from the selected attack. `Weapon.attacks` holds all `WeaponAttack` objects.
-- **IPS vs innate_elements:** In `weapons.json`, Impact/Puncture/Slash go in `base_damage`; elemental types go in `innate_elements`.
-- **Exilus filtering:** `getExilusSet()` in `index.html` returns a weapon-type-appropriate Set, unioned with any `WEAPON_SPECIFIC_EXILUS` entries. Switching weapon auto-clears invalid exilus mods via `onWeaponChange()`.
-- **Riven modal:** `rivenDraft[]` is a 4-element array. `buildRivenFromDraft()` converts it to a `Mod`-compatible riven object. `%` input is `type="number"` — `maxlength` doesn't apply to number inputs, so 4-char cap enforced with `oninput` slice.
-- **Duplicate mod prevention:** `onModSelect()` checks if chosen mod key is already in any slot and aborts if so.
-- **Scaling precision:** `scaling.py` uses full Python float64 literals for exponent coefficients — do not round them. 6-decimal truncation causes ~9 HP / ~2 OG drift vs wiki values.
-- **Decimal display:** `refreshEnemyScaling()` uses `Number(v.toFixed(2)).toLocaleString(...)` so integers show without `.00`.
-- **CC proc DPS guard:** In `index.html` DPS loop, `k in PROC_LABELS` guard must stay — CC procs have `damage_per_tick: 0` and must not pollute the proc DPS total.
+## Scripts (run order after rescrape)
+```bash
+python scripts/parse_wiki_data.py      # rebuild weapons.json + mods.json from raw
+python scripts/fix_secondary_stats.py  # backfill 109 secondary stat fields
+python scripts/fix_galv_stats.py       # restore 10 galvanized mod fields
+```
+
+## Tests
+```bash
+pytest   # 248 passing — run before every commit
+```

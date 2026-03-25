@@ -4,12 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Warframe Damage Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap">
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+  <!-- CDN dependencies -->
+  <script defer src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+  <script defer src="https://unpkg.com/@popperjs/core@2"></script>
+  <script defer src="https://unpkg.com/tippy.js@6"></script>
+  <!-- App scripts -->
+  <script defer src="/static/js/constants.js"></script>
+  <script defer src="/static/js/utils.js"></script>
+  <script defer src="/static/js/combobox.js"></script>
+  <script defer src="/static/js/weapons.js"></script>
+  <script defer src="/static/js/enemy.js"></script>
+  <script defer src="/static/js/modals.js"></script>
+  <script defer src="/static/js/calculate.js"></script>
+  <script defer src="/static/js/app.js"></script>
 </head>
 <body>
+<div class="app-shell">
+<div class="main-wrapper">
 <header>
-  <h1>Warframe Damage Calculator</h1>
+  <span class="nav-brand">VOID CODEX</span>
+  <span class="header-subtitle">DAMAGE SYSTEM</span>
+  <div class="header-status">
+    <span class="status-dot"></span>
+    <span>ZONE ACTIVE</span>
+  </div>
 </header>
 
 <div class="container">
@@ -24,11 +46,37 @@
         </div>
         <div class="combobox-dropdown" id="weapon-dropdown"></div>
       </div>
+      <div id="bonus-element-div" style="display:none; margin-top:10px">
+        <label style="font-size:.85rem;color:#aaa">Bonus Element (Kuva / Tenet)</label>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <select id="bonus-element-type" style="display:none">
+            <option value="heat">Heat</option>
+            <option value="cold">Cold</option>
+            <option value="electricity">Electricity</option>
+            <option value="toxin">Toxin</option>
+          </select>
+          <div class="custom-select-wrap" data-for="bonus-element-type"></div>
+          <input type="number" id="bonus-element-pct" min="25" max="60" value="25" style="width:52px"
+                 oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
+          <span style="color:#aaa">%</span>
+        </div>
+      </div>
     </div>
 
     <!-- Mods — 2×4 card grid -->
     <div class="panel" style="margin-bottom:16px">
-      <h2>Mods (in slot order)<button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></h2>
+      <h2>Mods (in slot order)<span class="mod-panel-actions"><button class="btn-alchemy-mixer" onclick="openAlchemyMixer()" title="Alchemy Mixer"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
+  <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
+  <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="12" cy="20.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="3.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="20.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <path d="M12,5.5 L18,16.5 L6,16.5 Z" fill="none" stroke="#D4A843" stroke-width="1.1" stroke-linejoin="round"/>
+  <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
+  <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+  <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+</svg></button><button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></span></h2>
       <div id="mod-grid-wrapper">
         <div id="special-slots" class="special-slots-row"></div>
         <div id="mod-grid" class="mod-grid"></div>
@@ -38,18 +86,18 @@
 
     </div>
 
-    <!-- Riven Builder Modal -->
-    <div class="mod-picker-overlay" id="riven-picker-overlay">
-      <div class="riven-modal">
-        <button class="riven-modal-close" onclick="closeRivenBuilder()">×</button>
-<div class="riven-modal-right">
-          <h2 class="riven-modal-title">Create riven</h2>
-          <div id="riven-rows"></div>
-          <div class="riven-btn-row">
-            <button class="btn-riven-apply" onclick="applyRiven()">Add</button>
-            <button class="btn-riven-reset" onclick="clearRiven();closeRivenBuilder()">Reset</button>
-          </div>
+    <!-- Riven rows rendered inline in mod-grid by JS -->
+
+    <!-- Alchemy Guide Modal -->
+    <div class="mod-picker-overlay" id="alchemy-mixer-overlay">
+      <div class="alchemy-modal">
+        <div class="alchemy-modal-header">
+          <h2 class="alchemy-modal-title">Alchemy Guide</h2>
+          <button class="alch-clear-btn" onclick="clearAlchMods()" title="Remove all alchemy mods from slots">Clear Mods</button>
+          <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeAlchemyMixer()">×</button>
         </div>
+        <div class="alchemy-palette" id="alchemy-palette"></div>
+        <div class="alchemy-suggestions" id="alchemy-suggestions"></div>
       </div>
     </div>
 
@@ -64,6 +112,161 @@
           </div>
         </div>
         <div class="mod-picker-list" id="mod-picker-list"></div>
+      </div>
+    </div>
+
+    <!-- User Guide Modal -->
+    <div class="mod-picker-overlay" id="guide-overlay">
+      <div class="guide-modal">
+        <div class="guide-modal-header">
+          <div>
+            <p class="guide-modal-title">Void Codex — User Guide</p>
+            <p class="guide-modal-subtitle">Warframe damage calculator · wiki.warframe.com formulas</p>
+          </div>
+          <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeGuide()">×</button>
+        </div>
+        <div class="guide-modal-body">
+        <div class="guide-content">
+
+          <h3>Quick Start</h3>
+          <ol style="padding-left:18px;margin:6px 0 10px;font-size:13px;color:var(--text-dim);line-height:1.65">
+            <li>Search and select a <strong style="color:var(--text)">Weapon</strong> in the top-left panel.</li>
+            <li>Equip mods by clicking any mod card slot. Drag cards to reorder them.</li>
+            <li>Search and select an <strong style="color:var(--text)">Enemy</strong>. Set its level, Steel Path, and Eximus state if needed.</li>
+            <li>Adjust <strong style="color:var(--text)">Hit Options</strong> (crit mode, body part, status stacks, etc.).</li>
+            <li>Click <strong style="color:var(--text)">Calculate</strong>. Results appear on the right.</li>
+          </ol>
+
+          <h3>Weapon Selector</h3>
+          <p>Type any part of a weapon name to search. Exalted weapons and Garuda Talons are hidden.</p>
+          <ul>
+            <li><strong>Attack tabs</strong> — weapons with multiple fire modes (e.g. Acceltra Prime's Rocket Impact vs Explosion, Torid's Grenade vs Cloud) show tabs below the weapon name. Each tab has its own damage, crit, status, and fire rate.</li>
+            <li><strong>Kuva / Tenet bonus element</strong> — a bonus element row appears automatically for Kuva and Tenet weapons. Pick the element type (Heat / Cold / Electricity / Toxin) and the bonus percentage (25–60%). The bonus is treated as an innate secondary element and combines with mod elements using HCET priority.</li>
+          </ul>
+
+          <h3>Mod Slots</h3>
+          <p>The mod panel has up to <strong>10 slots</strong>: 8 regular + 1 Stance (melee only) + 1 Exilus.</p>
+          <table>
+            <tr><th>Slot</th><th>What goes there</th></tr>
+            <tr><td>Regular (×8)</td><td>Any damage, elemental, IPS, crit, multishot, fire rate, reload, magazine, status, or faction mod compatible with the weapon type.</td></tr>
+            <tr><td>Stance ⚔</td><td>Melee stance mods only (shown for melee weapons). Provides combo multiplier bonuses and attack combos.</td></tr>
+            <tr><td>Exilus ✦</td><td>Utility mods: ammo drum, mutation, magazine, air recon, etc. The list is weapon-type-specific. Weapon-specific exilus mods (e.g. Ambush Optics for Rubico) only appear when that weapon is selected.</td></tr>
+            <tr><td>Riven ◆</td><td>Built via the Riven Builder (see below). Purple diamond card. Stats are fully custom.</td></tr>
+          </table>
+          <p>Drag mod cards left or right to reorder them. <strong>Slot order controls elemental combination priority</strong> — the top-left slot pairs with the next available element first.</p>
+
+          <h3>Elemental Combining</h3>
+          <p>Four primary elements (Heat, Cold, Electricity, Toxin) combine in mod-slot order to produce combined elements. Visual arc lines and badges below the mod grid show the active combos live.</p>
+          <table>
+            <tr><th>Combined</th><th>Recipe</th></tr>
+            <tr><td>Blast</td><td>Heat + Cold</td></tr>
+            <tr><td>Corrosive</td><td>Electricity + Toxin</td></tr>
+            <tr><td>Gas</td><td>Heat + Toxin</td></tr>
+            <tr><td>Magnetic</td><td>Cold + Electricity</td></tr>
+            <tr><td>Radiation</td><td>Heat + Electricity</td></tr>
+            <tr><td>Viral</td><td>Cold + Toxin</td></tr>
+          </table>
+          <p>A weapon's innate primary elements slot in <em>after</em> all mod slots (slot 9). Exception: Kuva/Tenet innate elements follow HCET priority (Heat → Cold → Electricity → Toxin) and merge with a matching mod slot if one exists. Secondary (combined) innate elements (e.g. Magnetic on Kuva Nukor) are a fixed bucket — they cannot be further combined.</p>
+
+          <h3>Riven Builder</h3>
+          <p>Click the <code style="color:var(--riven);border-color:rgba(208,160,255,0.3)">+</code> button in the mod panel header to open the Riven Builder.</p>
+          <ul>
+            <li>Up to <strong>4 stat rows</strong>. Each row: pick a stat from the dropdown, enter a % value (negative for penalties, e.g. <code>−50</code> for Recoil).</li>
+            <li>Click <strong>Add</strong> to equip the riven. The purple diamond card appears in the mod grid and shows each stat.</li>
+            <li>Click the card again (or re-open the builder) to edit. <strong>Reset</strong> clears all rows.</li>
+            <li>Available stats: Damage, Multishot, Crit Chance, Crit Damage, Status Chance, Fire Rate, Heat, Cold, Electricity, Toxin, Impact, Puncture, Slash.</li>
+          </ul>
+
+          <h3>Alchemy Mixer</h3>
+          <p>Click the gold seal icon in the mod panel header to open the Alchemy Mixer — a visual tool for exploring elemental combinations.</p>
+          <ul>
+            <li>Select two primary elements. An animated merge shows the result with its color and name.</li>
+            <li>Below the animation, compatible elemental mods for the selected weapon type are listed as chips.</li>
+            <li><strong>Equip These Mods</strong> fills empty mod slots with the suggested mods.</li>
+          </ul>
+
+          <h3>Weapon Arcanes</h3>
+          <p>Click <strong>+ Add</strong> in the Weapon Arcanes panel to add an arcane row (max 2). Each arcane has a stack count input clamped to its maximum.</p>
+          <table>
+            <tr><th>Arcane</th><th>Bonus per stack</th><th>Max</th><th>Slot</th></tr>
+            <tr><td>Primary Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Primary</td></tr>
+            <tr><td>Secondary Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Secondary</td></tr>
+            <tr><td>Shotgun Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Shotgun</td></tr>
+            <tr><td>Primary Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Primary</td></tr>
+            <tr><td>Secondary Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Secondary</td></tr>
+            <tr><td>Shotgun Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Shotgun</td></tr>
+            <tr><td>Primary Dexterity</td><td>+60% damage</td><td>6</td><td>Primary</td></tr>
+            <tr><td>Secondary Dexterity</td><td>+60% damage</td><td>6</td><td>Secondary</td></tr>
+            <tr><td>Cascadia Flare</td><td>+24% crit chance</td><td>12</td><td>Secondary</td></tr>
+            <tr><td>Cascadia Empowered</td><td>+30% crit damage</td><td>5</td><td>Secondary</td></tr>
+            <tr><td>Cascadia Overcharge</td><td>+4000 flat damage</td><td>1</td><td>Secondary</td></tr>
+          </table>
+          <p>Arcane damage bonus is additive with Serration in Step 1. Deadhead headshot bonus is additive with the body part multiplier in Step 2. Incompatible arcanes are cleared when switching weapons.</p>
+
+          <h3>Hit Options</h3>
+          <table>
+            <tr><th>Option</th><th>Range</th><th>What it does</th></tr>
+            <tr><td>Crit Mode</td><td>Average / Guaranteed / Max</td><td><em>Average</em> — weighted DPS average across all crit tiers (best for build comparison). <em>Guaranteed</em> — floor tier, worst-case per hit. <em>Max</em> — ceiling tier, best-case per hit.</td></tr>
+            <tr><td>Body Part</td><td>Populated from enemy data</td><td>Applies the body part damage multiplier (Step 2 of the pipeline). Head is typically ×2. On a crit + headshot, the crit multiplier is also doubled.</td></tr>
+            <tr><td>Viral Stacks</td><td>0–10</td><td>Viral status stacks on the enemy. Multiplies final damage: 1 stack = ×1.75, up to 10 stacks = ×4.25.</td></tr>
+            <tr><td>Corrosive Stacks</td><td>0–10</td><td>Corrosive status stacks strip enemy armor. Each stack removes ~6% (formula: min(80%, 20% + 6%×N)).</td></tr>
+            <tr><td>Combo Counter</td><td>1–12 (Venka Prime: 1–13)</td><td>Melee only. Sets the melee combo tier. Tier 1 = ×1.0, Tier 2 = ×2.0, …</td></tr>
+            <tr><td>Active Statuses</td><td>0–10</td><td>Unique status types currently on the enemy. Used by Condition Overload (+80% damage per unique status) and Galvanized Aptitude.</td></tr>
+            <tr><td>Galvanized Stacks</td><td>0–5</td><td>Kill stacks for Galvanized mods (e.g. Galvanized Chamber, Savvy, Crosshairs). Only shown when a Galvanized mod is equipped. Each mod has its own cap (4–5 stacks).</td></tr>
+          </table>
+
+          <h3>Warframe Buffs</h3>
+          <p>Click <strong>+ Add</strong> in the Warframe Buffs panel to add an ability buff row. Multiple buffs can be stacked.</p>
+          <table>
+            <tr><th>Buff</th><th>Base value</th><th>Pipeline step</th><th>Notes</th></tr>
+            <tr><td>Roar (Rhino)</td><td>50% / 30% subsumed</td><td>Step 5 — additive with Bane mods</td><td>Double-dips on DoT procs (Slash, Heat, Gas, Toxin, Electricity). Acts like a faction mod.</td></tr>
+            <tr><td>Eclipse (Mirage)</td><td>200% / 30% subsumed</td><td>Step 5.5 — multiplicative after faction</td><td>No double-dip on procs. Applies as a separate damage multiplier.</td></tr>
+            <tr><td>Xata's Whisper (Xaku)</td><td>26% (same subsumed)</td><td>Independent Void hit</td><td>Adds a separate Void damage instance that bypasses armor and double-dips faction + headshot multipliers.</td></tr>
+            <tr><td>Nourish (Grendel)</td><td>75% / 45% subsumed</td><td>Step 1 — adds Viral to the hit</td><td>Adds Viral elemental damage proportional to base damage. Participates in elemental combination.</td></tr>
+          </table>
+          <p><strong>Ability Strength %</strong> input scales the buff's base value (100% = default). <strong>Helminth</strong> checkbox applies the reduced subsumed base value.</p>
+
+          <h3>Enemy Panel</h3>
+          <ul>
+            <li><strong>Level</strong> (1–9999) — scales enemy health, shield, armor, and overguard using the faction-specific smoothstep formulas from the wiki. The live stat cards update instantly.</li>
+            <li><strong>Steel Path</strong> — applies ×2.5 to health and shields (not level). Does not affect armor or overguard scaling.</li>
+            <li><strong>Eximus</strong> — enables Overguard scaling. The Overguard card appears in the live stat display.</li>
+            <li><strong>Scaled stats cards</strong> — show the final HP, Shield, Armor, and Overguard at the current level and settings, formatted with thousands separators.</li>
+          </ul>
+
+          <h3>Reading Results</h3>
+          <p>After clicking Calculate, the results panel shows:</p>
+          <ul>
+            <li><strong>Total damage</strong> — final per-hit damage (after all 6 pipeline steps, including multishot).</li>
+            <li><strong>Breakdown table</strong> — damage per type (Impact, Puncture, Slash, elementals). <code style="color:#4caf50;background:#1a3a1a;border-color:transparent">+50%</code> badges = enemy is vulnerable to that type. <code style="color:#f44336;background:#3a1a1a;border-color:transparent">−50%</code> badges = enemy is resistant. These are faction-based (Update 36+).</li>
+            <li><strong>Status Procs table</strong> — if the weapon has elemental damage, shows per-tick and 6-tick total for DoT procs (Slash bleed, Heat burn, Gas cloud, Toxin poison, Electricity arc). Faction mods double-dip on these.</li>
+            <li><strong>CC / Debuff Procs table</strong> — shows crowd-control effects for Viral (health vulnerability), Magnetic (shield damage), Radiation (confuse), Blast (accuracy debuff), Cold (slow).</li>
+            <li><strong>Condition Overload Curve</strong> — when a Condition Overload mod is equipped, shows a table of damage at 0–10 unique statuses with bar chart and % increase over baseline. The current status count row is highlighted.</li>
+            <li><strong>DPS section</strong> — Burst DPS (damage × fire rate), Sustained DPS (accounts for reload), and Proc DPS (steady-state average from status effects).</li>
+            <li><strong>Kill Time section</strong> — shots to kill, burst TTK, and sustained TTK based on the scaled enemy HP at the selected level.</li>
+          </ul>
+
+          <div class="guide-modal-version">
+            <span id="guide-app-ver">Void Codex v0.2.0</span>
+            <span class="footer-sep">·</span>
+            <span id="guide-game-ver">Game data: Update 41 — The Old Peace</span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What's New Modal -->
+    <div class="mod-picker-overlay" id="changelog-overlay">
+      <div class="changelog-modal">
+        <div class="changelog-modal-header">
+          <div>
+            <p class="changelog-modal-title">What's New</p>
+            <p class="changelog-modal-subtitle">Version history and release notes</p>
+          </div>
+          <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeChangelog()">×</button>
+        </div>
+        <div class="changelog-modal-body" id="changelog-body"></div>
       </div>
     </div>
 
@@ -94,15 +297,17 @@
       <div class="options-row">
         <div>
           <label for="crit-mode">Hit Type</label>
-          <select id="crit-mode" style="width:auto">
+          <select id="crit-mode" style="display:none">
             <option value="average">Average</option>
             <option value="guaranteed">Guaranteed Crit</option>
             <option value="max">Max Crit</option>
           </select>
+          <div class="custom-select-wrap" data-for="crit-mode"></div>
         </div>
-        <div style="display:flex;align-items:center;gap:6px;padding-top:18px">
-          <input type="checkbox" id="headshot-cb" style="width:auto;margin:0">
-          <label for="headshot-cb" style="margin:0;cursor:pointer">Headshot</label>
+        <div>
+          <label for="body-part-select">Body Part</label>
+          <select id="body-part-select" style="display:none"><option value="Body">Body</option></select>
+          <div class="custom-select-wrap" data-for="body-part-select"></div>
         </div>
         <div>
           <label for="viral-stacks">Viral Stacks</label>
@@ -112,15 +317,35 @@
           <label for="corrosive-stacks">Corrosive Stacks</label>
           <input type="number" id="corrosive-stacks" min="0" max="10" value="0" style="width:48px">
         </div>
-        <div title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
+        <div id="combo-div" title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
           <label for="combo-counter">Combo</label>
-          <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:48px">
+          <input type="number" id="combo-counter" min="1" max="12" value="1" style="width:48px" oninput="if(+this.value>+this.max)this.value=this.max;if(+this.value<1)this.value=1">
         </div>
         <div title="Unique proc types on enemy — used by Condition Overload (+80% per type)">
           <label for="unique-statuses">Active Statuses</label>
           <input type="number" id="unique-statuses" min="0" max="10" value="0" style="width:48px">
         </div>
+        <div title="Galvanized mod kill-stacks active (0 = base stats only, max 5)">
+          <label for="galv-stacks">Galv. Stacks</label>
+          <input type="number" id="galv-stacks" min="0" max="5" value="0" style="width:48px">
+        </div>
       </div>
+    </div>
+
+    <!-- Warframe Buffs -->
+    <div class="panel" style="margin-bottom:16px">
+      <h2 style="display:flex;align-items:center;gap:8px">Warframe Buffs
+        <button type="button" class="btn-add-buff" onclick="addBuffRow()" title="Add ability buff" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:2px;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
+      </h2>
+      <div id="buff-rows"></div>
+    </div>
+
+    <!-- Weapon Arcanes -->
+    <div class="panel" style="margin-bottom:16px">
+      <h2 style="display:flex;align-items:center;gap:8px">Weapon Arcanes
+        <button type="button" class="btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)" style="background:none;border:1px solid var(--accent-green);color:var(--accent-green2);border-radius:2px;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Share Tech Mono',monospace;letter-spacing:.06em">+ ADD</button>
+      </h2>
+      <div id="arcane-rows"></div>
     </div>
 
     <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
@@ -149,1631 +374,43 @@
     </div>
 
   </div>
-</div>
-
-<script>
-let allWeapons = [];
-let allMods = [];
-let allEnemies = [];
-
-// Warframe element colours
-const ELEM_COLORS = {
-  impact:      '#9090b0',
-  puncture:    '#d0c080',
-  slash:       '#e05050',
-  heat:        '#ff7a30',
-  cold:        '#60b0e0',
-  electricity: '#f0e040',
-  toxin:       '#60d030',
-  blast:       '#ffd040',
-  corrosive:   '#a0e040',
-  gas:         '#c0e040',
-  magnetic:    '#c060f0',
-  radiation:   '#f0a020',
-  viral:       '#f060a0',
-  true:        '#ffffff',
-  void:        '#9060ff',
-};
-
-// Faction damage-type effectiveness (Update 36.0+)
-// Keys mirror enemies.json faction strings; values map damage type → multiplier
-const FACTION_EFFECTIVENESS = {
-  grineer:         { impact:1.5, corrosive:1.5 },
-  kuva_grineer:    { impact:1.5, heat:0.5, corrosive:1.5 },
-  corpus:          { puncture:1.5, magnetic:1.5 },
-  corpus_amalgam:  { electricity:1.5, blast:0.5, magnetic:1.5 },
-  infested:        { slash:1.5, heat:1.5 },
-  infestation:     { slash:1.5, heat:1.5 },
-  deimos_infested: { blast:1.5, gas:1.5, viral:0.5 },
-  corrupted:       { puncture:1.5, radiation:0.5, viral:1.5 },
-  orokin:          { puncture:1.5, radiation:0.5, viral:1.5 },
-  sentient:        { cold:1.5, corrosive:0.5, radiation:1.5 },
-  narmer:          { slash:1.5, toxin:1.5, magnetic:0.5 },
-  themurmur:       { electricity:1.5, radiation:1.5, viral:0.5 },
-  murmur:          { electricity:1.5, radiation:1.5, viral:0.5 },
-  scaldra:         { impact:1.5, corrosive:1.5, gas:0.5 },
-  techrot:         { cold:0.5, gas:1.5, magnetic:1.5 },
-  anarchs:         { impact:1.5, electricity:1.5, radiation:0.5 },
-};
-
-// Tooltip text map
-const TOOLTIPS = {
-  'crit-chance':  'Chance per hit to deal a critical strike. 100–200% = guaranteed Tier 1 + chance at Tier 2, etc.',
-  'crit-mult':    'Damage multiplier on a critical hit.',
-  'status':       'Chance per hit to apply a status proc — Slash bleed, Heat burn, Viral debuff, etc.',
-  'fire-rate':    'Shots (or attacks) per second. Affects DPS but not per-hit damage.',
-  'magazine':     'Rounds before a reload is required.',
-  'max-ammo':     'Maximum ammo reserve (excludes magazine).',
-  'reload':       'Time in seconds to reload the weapon.',
-  'multishot':    'Projectiles fired per trigger pull. Each projectile deals full damage and independently rolls status/crit. Base is 1.0 for all weapons.',
-  'impact':       'Strong vs. Machinery, Robotic. Weak vs. Infested Sinew.',
-  'puncture':     'Strong vs. Armor, Fossilized. Weak vs. Infested Flesh.',
-  'slash':        'Strong vs. Cloned Flesh, Infested. Weak vs. Robotic, Machinery. Procs a bleed DoT that bypasses armor.',
-  'heat':         'Strong vs. Cloned Flesh, Infested Flesh. Weak vs. Robotic. Procs a burn DoT.',
-  'cold':         'Strong vs. Shields, Proto Shields. Weak vs. Infested. Procs a slow.',
-  'electricity':  'Strong vs. Robotic, Machinery. Weak vs. Alloy Armor. Procs a chain stun.',
-  'toxin':        'Strong vs. Cloned Flesh, Fossilized. Weak vs. Robotic, Machinery. Procs a poison DoT that bypasses shields.',
-  'blast':        'Heat + Cold. Strong vs. Machinery, Fossilized. Weak vs. Alloy Armor. Procs a knockback.',
-  'corrosive':    'Electricity + Toxin. Strong vs. Ferrite Armor, Fossilized. Weak vs. Proto Shields. Permanently strips armor stacks.',
-  'gas':          'Heat + Toxin. Strong vs. Infested Flesh. Weak vs. Robotic, Machinery. Procs a toxic cloud AoE.',
-  'magnetic':     'Cold + Electricity. Strong vs. Shields, Proto Shields. Weak vs. Alloy Armor. Procs a shield drain.',
-  'radiation':    'Heat + Electricity. Strong vs. Alloy Armor, Robotic. Weak vs. Ferrite Armor, Infested. Procs confusion (enemies attack each other).',
-  'viral':        'Cold + Toxin. Strong vs. Cloned Flesh, Flesh. Weak vs. Robotic, Machinery. Procs a health debuff (×4.25 damage to health at 10 stacks).',
-  'void':         'Dealt by Operator amps and select weapons. No special armor/health interactions.',
-};
-
-// Track current multishot for results note
-let _currentMultishot = 1.0;
-
-function initTooltips() {
-  document.querySelectorAll('[data-tooltip]').forEach(el => {
-    if (el._tippyBound) return;
-    const text = TOOLTIPS[el.dataset.tooltip];
-    if (!text) return;
-    el._tippyBound = true;
-    if (typeof tippy === 'function') {
-      tippy(el, {
-        content: text,
-        placement: 'top',
-        theme: 'warframe',
-        delay: [200, 0],
-        maxWidth: 280,
-      });
-    }
-  });
-}
-
-let weaponCombo = null;
-let enemyCombo = null;
-
-async function loadData() {
-  [allWeapons, allMods, allEnemies] = await Promise.all([
-    fetch('/api/weapons').then(r => r.json()),
-    fetch('/api/mods').then(r => r.json()),
-    fetch('/api/enemies').then(r => r.json()),
-  ]);
-
-  const HIDDEN_WEAPON_CLASSES = new Set(['Exalted Weapon']);
-  const HIDDEN_WEAPON_NAMES  = new Set(['Garuda Talons', 'Garuda Prime Talons']);
-  const visibleWeapons = allWeapons.filter(w =>
-    !HIDDEN_WEAPON_CLASSES.has(w.class) && !HIDDEN_WEAPON_NAMES.has(w.name)
-  );
-
-  weaponCombo = setupCombobox('weapon-search', 'weapon-dropdown',
-    visibleWeapons.map(w => w.name),
-    () => onWeaponChange(),
-    name => {
-      const w = allWeapons.find(x => x.name === name);
-      return w?.image ? `/static/images/weapons/${w.image}` : '';
-    }
-  );
-  enemyCombo = setupCombobox('enemy-search', 'enemy-dropdown',
-    allEnemies.map(e => e.name),
-    () => { showEnemyStats(getCurrentEnemy()); }
-  );
-
-  initModGrid();
-}
-
-function getCurrentWeapon() {
-  const name = document.getElementById('weapon-search').value;
-  return allWeapons.find(x => x.name === name) || null;
-}
-
-function getCurrentEnemy() {
-  const name = document.getElementById('enemy-search').value;
-  return allEnemies.find(x => x.name === name) || null;
-}
-
-// ---------------------------------------------------------------------------
-// 2×4 Mod Card Grid
-// ---------------------------------------------------------------------------
-let selectedAttack = null; // name of selected attack mode (null = first)
-
-let modSlots = ['','','','','','','','']; // 8 slots, mod names
-let _pickerSlot = -1; // which slot the picker is open for
-let _sortableInstance = null;
-
-function polaritySVG(polarity) {
-  if (!polarity) return '';
-  const paths = {
-    'Madurai':   '<path d="M6 2L11 10L6 8L1 10Z"/>',
-    'Naramon':   '<path d="M1 4.5H11V7.5H1Z"/>',
-    'Vazarin':   '<path d="M3 1C9 3 9 9 3 11L3 1Z"/>',
-    'Zenurik':   '<path d="M1 2.5H11V4.5H1ZM1 7.5H11V9.5H1Z"/>',
-    'Unairu':    '<path d="M6 1L11 11H1Z"/>',
-    'Penjaga':   '<path d="M6 1L10 5L6 9M6 5H2"/>',
-    'Umbra':     '<path d="M6 1L10 6L6 11L2 6ZM6 4L8 6L6 8"/>',
-    'Universal': '<circle cx="6" cy="6" r="4"/>',
-  };
-  const p = paths[polarity];
-  if (!p) return '';
-  return `<span class="mod-polarity"><svg class="polarity-icon" viewBox="0 0 12 12" width="14" height="14" fill="currentColor" stroke="none">${p}</svg></span>`;
-}
-
-function initModGrid() {
-  modSlots = ['','','','','','','',''];
-  renderModCards();
-  renderSpecialSlots();
-  initSortable();
-
-}
-
-function renderModCards() {
-  const grid = document.getElementById('mod-grid');
-  grid.innerHTML = '';
-  const STAT_LABELS = {
-    damage:'DMG', multishot:'MS', crit_chance:'CC', crit_damage:'CD',
-    status_chance:'SC', fire_rate:'FR', heat:'Heat', cold:'Cold',
-    electricity:'Elec', toxin:'Tox',
-  };
-  modSlots.forEach((modName, i) => {
-    const card = document.createElement('div');
-    card.dataset.slot = i;
-
-    if (modName === '__riven__') {
-      card.className = 'mod-card riven-mod-card';
-      const lines = (rivenApplied || []).filter(s => s.stat)
-        .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${STAT_LABELS[s.stat] || s.stat}</div>`)
-        .join('');
-      card.innerHTML = `
-        <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">&times;</button>
-        <div class="riven-card-icon">⬡</div>
-        <div class="mod-name" style="color:var(--riven)">Riven</div>
-        <div class="riven-card-stats">${lines}</div>`;
-      card.onclick = openRivenBuilder;
-    } else if (modName) {
-      card.className = 'mod-card';
-      const mod = allMods.find(m => m.name === modName);
-      const rarity = mod ? (mod.rarity || '').toLowerCase() : '';
-      if (rarity) card.classList.add('rarity-' + rarity);
-      const elemTag = mod && mod.primary_element ? mod.primary_element : '';
-      const polIcon = mod ? polaritySVG(mod.polarity) : '';
-      card.innerHTML = `
-        <button class="mod-clear" onclick="event.stopPropagation();clearModSlot(${i})" title="Remove mod">&times;</button>
-        ${polIcon}
-        <div class="mod-name">${esc(modName)}</div>
-        ${elemTag ? `<div class="mod-element">${esc(elemTag)}</div>` : ''}
-        <div class="slot-num">${i+1}</div>`;
-      card.onclick = () => openModPicker(i);
-    } else {
-      card.className = 'mod-card empty';
-      card.innerHTML = `
-        <svg class="add-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 30" fill="#C2A24F">
-          <path fill-rule="evenodd" d="M8,0 H12 L12,2 L15,5 L17,9 V23 L13,27 L10,30 L7,27 L3,23 V9 L5,5 L8,2 Z M6.5,4.5 H13.5 V6 H6.5 Z M10,12 L13,16 L10,20 L7,16 Z"/>
-        </svg>
-        <div class="add-icon">+</div>
-        <div class="add-label">Add Mod</div>
-        <div class="slot-num">${i+1}</div>`;
-      card.onclick = () => openModPicker(i);
-    }
-    grid.appendChild(card);
-  });
-  updateElementBadges();
-}
-
-function initSortable() {
-  const grid = document.getElementById('mod-grid');
-  if (_sortableInstance) _sortableInstance.destroy();
-  _sortableInstance = new Sortable(grid, {
-    animation: 200,
-    ghostClass: 'sortable-ghost',
-    chosenClass: 'sortable-chosen',
-    onEnd(evt) {
-      const item = modSlots.splice(evt.oldIndex, 1)[0];
-      modSlots.splice(evt.newIndex, 0, item);
-      renderModCards();
-      initSortable();
-      updateModdedStats();
-    }
-  });
-}
-
-function clearModSlot(i) {
-  modSlots[i] = '';
-  renderModCards();
-  initSortable();
-  updateModdedStats();
-
-}
-
-function getSelectedMods() {
-  const specials = [stanceSlot, exilusSlot].filter(Boolean);
-  return [...specials, ...modSlots.filter(n => n && n !== '__riven__')];
-}
-
-
-// ---------------------------------------------------------------------------
-// Mod Picker
-// ---------------------------------------------------------------------------
-function openModPicker(slotIndex) {
-  _pickerSlot = slotIndex;
-  document.getElementById('picker-slot-num').textContent = slotIndex + 1;
-  const overlay = document.getElementById('mod-picker-overlay');
-  overlay.classList.add('active');
-  const search = document.getElementById('mod-picker-search');
-  search.value = '';
-  toggleSearchClear(search);
-  search.focus();
-  renderPickerList('');
-}
-
-function openSpecialPicker(kind) {
-  _pickerSlot = kind; // 'stance' or 'exilus'
-  document.getElementById('picker-slot-num').textContent =
-    kind === 'stance' ? 'Stance' : 'Exilus';
-  const overlay = document.getElementById('mod-picker-overlay');
-  overlay.classList.add('active');
-  const search = document.getElementById('mod-picker-search');
-  search.value = '';
-  toggleSearchClear(search);
-  search.focus();
-  renderPickerList('');
-}
-
-function closeModPicker() {
-  document.getElementById('mod-picker-overlay').classList.remove('active');
-  _pickerSlot = -1;
-}
-
-function renderPickerList(query) {
-  const weapon = getCurrentWeapon();
-  const types = getCompatibleModTypes(weapon);
-  const q = query.toLowerCase();
-
-  // Build set of mods already in use (excluding the slot currently being replaced)
-  const inUse = new Set();
-  if (_pickerSlot !== 'stance' && stanceSlot) inUse.add(stanceSlot);
-  if (_pickerSlot !== 'exilus' && exilusSlot) inUse.add(exilusSlot);
-  modSlots.forEach((name, i) => {
-    if (name && name !== '__riven__' && i !== _pickerSlot) inUse.add(name);
-  });
-
-  let filtered;
-  if (_pickerSlot === 'stance') {
-    const NON_STANCE = new Set(['Aura','Railjack Aura','Warframe','Plexus','K-Drive',
-      'Companion','Sentinel','MOA','Beast','Kubrow','Kavat','Vulpaphyla','Predasite',
-      'Necramech','Archwing','Archgun','Archmelee']);
-    filtered = allMods.filter(m => (m.base_drain || 0) < 0 && !NON_STANCE.has(m.type))
-      .filter(m => weapon ? types.has(m.type) : true)
-      .filter(m => !inUse.has(m.name))
-      .filter(m => !q || m.name.toLowerCase().includes(q));
-  } else if (_pickerSlot === 'exilus') {
-    const exilusSet = getExilusSet();
-    filtered = allMods.filter(m => exilusSet.has(m.name))
-      .filter(m => !inUse.has(m.name))
-      .filter(m => !q || m.name.toLowerCase().includes(q));
-  } else {
-    filtered = allMods
-      .filter(m => types.has(m.type))
-      .filter(m => !inUse.has(m.name))
-      .filter(m => !q || m.name.toLowerCase().includes(q));
-  }
-
-  const list = document.getElementById('mod-picker-list');
-  const RARITY_COLORS = { common: '#9e9e78', uncommon: '#6a8f47', rare: '#5a7cc4', legendary: '#c49a1f' };
-  list.innerHTML = filtered.slice(0, 100).map(m => {
-    const rc = RARITY_COLORS[(m.rarity || '').toLowerCase()] || '#888';
-    const elem = m.primary_element || '';
-    return `<div class="mod-picker-item" data-mod="${esc(m.name)}" onclick="selectPickerMod(this)">
-      <span class="mod-rarity-dot" style="background:${rc}"></span>
-      ${esc(m.name)}
-      ${elem ? `<span class="mod-element-tag">${esc(elem)}</span>` : ''}
-    </div>`;
-  }).join('');
-}
-
-function selectPickerMod(el) {
-  if (_pickerSlot === -1) return;
-  const modName = el.dataset.mod;
-  // Prevent duplicates across all slots
-  const allSelected = getSelectedMods();
-  const currentInSlot = _pickerSlot === 'stance' ? stanceSlot
-    : _pickerSlot === 'exilus' ? exilusSlot
-    : modSlots[_pickerSlot];
-  if (modName !== currentInSlot && allSelected.includes(modName)) return;
-  if (_pickerSlot === 'stance') {
-    stanceSlot = modName;
-    closeModPicker();
-    renderSpecialSlots();
-  } else if (_pickerSlot === 'exilus') {
-    exilusSlot = modName;
-    closeModPicker();
-    renderSpecialSlots();
-  } else {
-    modSlots[_pickerSlot] = modName;
-    closeModPicker();
-    renderModCards();
-    initSortable();
-  }
-  updateModdedStats();
-
-}
-
-// Close picker on outside click
-document.addEventListener('click', e => {
-  const overlay = document.getElementById('mod-picker-overlay');
-  if (overlay && overlay.classList.contains('active') && e.target === overlay) {
-    closeModPicker();
-  }
-});
-
-// Picker search
-document.addEventListener('DOMContentLoaded', () => {
-  const search = document.getElementById('mod-picker-search');
-  if (search) search.addEventListener('input', function() {
-    renderPickerList(this.value);
-    toggleSearchClear(this);
-  });
-});
-
-// ---------------------------------------------------------------------------
-// Element Combination Badges
-// ---------------------------------------------------------------------------
-const ELEM_COMBOS = {
-  'heat+cold': 'Blast', 'cold+heat': 'Blast',
-  'electricity+toxin': 'Corrosive', 'toxin+electricity': 'Corrosive',
-  'heat+toxin': 'Gas', 'toxin+heat': 'Gas',
-  'cold+electricity': 'Magnetic', 'electricity+cold': 'Magnetic',
-  'heat+electricity': 'Radiation', 'electricity+heat': 'Radiation',
-  'cold+toxin': 'Viral', 'toxin+cold': 'Viral',
-};
-const PRIMARY_ELEMENTS = new Set(['heat', 'cold', 'electricity', 'toxin']);
-
-function updateElementBadges() {
-  const container = document.getElementById('element-badges');
-  if (!container) return;
-  // Gather elemental mods in slot order, tracking slot index
-  const elemQueue = [];
-  modSlots.forEach((name, slotIdx) => {
-    if (!name) return;
-    const mod = allMods.find(m => m.name === name);
-    if (mod && mod.primary_element && PRIMARY_ELEMENTS.has(mod.primary_element.toLowerCase())) {
-      elemQueue.push({ element: mod.primary_element.toLowerCase(), slotIdx });
-    }
-  });
-
-  // Append weapon's innate primary elements at slot 8 (after all 8 mod slots)
-  const weaponData = getCurrentWeapon();
-  if (weaponData) {
-    const atk = getSelectedAttackData(weaponData);
-    const bd = ((atk || weaponData).base_damage) || {};
-    Object.keys(bd).forEach(k => {
-      if (PRIMARY_ELEMENTS.has(k) && bd[k] > 0) {
-        elemQueue.push({ element: k, slotIdx: 8 });
-      }
-    });
-  }
-
-  // Combine in order (same as combiner.py logic)
-  const badges = [];
-  const used = new Set();
-  for (let i = 0; i < elemQueue.length; i++) {
-    if (used.has(i)) continue;
-    let combined = false;
-    for (let j = i + 1; j < elemQueue.length; j++) {
-      if (used.has(j)) continue;
-      const key = elemQueue[i].element + '+' + elemQueue[j].element;
-      if (ELEM_COMBOS[key]) {
-        badges.push({ a: elemQueue[i].element, b: elemQueue[j].element, result: ELEM_COMBOS[key], slotA: elemQueue[i].slotIdx, slotB: elemQueue[j].slotIdx });
-        used.add(i);
-        used.add(j);
-        combined = true;
-        break;
-      }
-    }
-    if (!combined) {
-      badges.push({ a: elemQueue[i].element, b: null, result: elemQueue[i].element, slotA: elemQueue[i].slotIdx, slotB: -1 });
-      used.add(i);
-    }
-  }
-
-  container.innerHTML = badges.filter(b => b.b).map(b => {
-    const ca = ELEM_COLORS[b.a] || '#888';
-    const cb = ELEM_COLORS[b.b] || '#888';
-    const cr = ELEM_COLORS[b.result.toLowerCase()] || 'var(--accent)';
-    const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
-    return `<div class="element-badge">
-      <span class="elem-dot" style="background:${ca}"></span>${cap(b.a)}
-      <span class="arrow">+</span>
-      <span class="elem-dot" style="background:${cb}"></span>${cap(b.b)}
-      <span class="arrow">=</span>
-      <span class="elem-dot" style="background:${cr}"></span>${cap(b.result)}
-    </div>`;
-  }).join('');
-
-  drawElementArcs(badges.filter(b => b.b !== null));
-}
-
-function drawElementArcs(combos) {
-  const svg = document.getElementById('element-arcs');
-  if (!svg) return;
-  svg.innerHTML = '';
-  if (!combos || !combos.length) { svg.style.height = '0'; return; }
-
-  const grid = document.getElementById('mod-grid');
-  const wrap = document.getElementById('mod-grid-wrapper');
-  const wrapRect = wrap.getBoundingClientRect();
-  const arcSpace = 30 + combos.length * 28;
-  svg.setAttribute('width', wrap.offsetWidth);
-  svg.setAttribute('height', grid.offsetHeight + arcSpace);
-
-  combos.forEach((combo, idx) => {
-    if (combo.slotA < 0 || combo.slotB < 0) return;
-    const cardA = grid.children[combo.slotA];
-    const cardB = grid.children[combo.slotB];
-    if (!cardA || !cardB) return;
-
-    const rectA = cardA.getBoundingClientRect();
-    const rectB = cardB.getBoundingClientRect();
-    const ax = rectA.left - wrapRect.left + rectA.width / 2;
-    const ay = rectA.top - wrapRect.top + rectA.height;
-    const bx = rectB.left - wrapRect.left + rectB.width / 2;
-    const by = rectB.top - wrapRect.top + rectB.height;
-    const mx = (ax + bx) / 2;
-    const my = Math.max(ay, by) + 18 + idx * 28;
-    const color = ELEM_COLORS[combo.result.toLowerCase()] || 'var(--accent)';
-
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', `M${ax} ${ay} Q${ax} ${my} ${mx} ${my} M${bx} ${by} Q${bx} ${my} ${mx} ${my}`);
-    path.setAttribute('fill', 'none');
-    path.setAttribute('stroke', color);
-    path.setAttribute('stroke-width', '1.5');
-    path.setAttribute('stroke-opacity', '0.5');
-    svg.appendChild(path);
-
-    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.setAttribute('transform', `translate(${mx},${my})`);
-    const label = combo.result;
-    const tw = label.length * 7 + 14;
-    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    bg.setAttribute('x', -tw / 2); bg.setAttribute('y', -9);
-    bg.setAttribute('width', tw); bg.setAttribute('height', 18);
-    bg.setAttribute('rx', 9);
-    bg.setAttribute('fill', 'rgba(15,15,25,0.85)');
-    bg.setAttribute('stroke', color); bg.setAttribute('stroke-width', '1');
-    g.appendChild(bg);
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('text-anchor', 'middle'); text.setAttribute('dy', '4');
-    text.setAttribute('fill', color); text.setAttribute('font-size', '11');
-    text.setAttribute('font-weight', '600'); text.setAttribute('font-family', 'inherit');
-    text.textContent = label;
-    g.appendChild(text);
-    svg.appendChild(g);
-  });
-}
-
-window.addEventListener('resize', () => updateElementBadges());
-
-
-// Returns the set of mod types compatible with the given weapon
-function getCompatibleModTypes(weapon) {
-  if (!weapon) return new Set();
-  const slot = weapon.slot || '';
-  const cls  = weapon.class || '';
-  const types = new Set([weapon.name]); // always include weapon-specific mods
-
-  if (slot === 'Primary') {
-    types.add('Primary');
-    if (cls === 'Shotgun') {
-      types.add('Shotgun');
-    } else if (cls === 'Sniper Rifle') {
-      types.add('Rifle');
-      types.add('Sniper');
-    } else if (cls === 'Bow' || cls === 'Crossbow') {
-      types.add('Rifle');
-      types.add('Bow');
-    } else {
-      types.add('Rifle');
-      types.add('Assault Rifle');
-    }
-  } else if (slot === 'Secondary') {
-    types.add('Pistol');
-  } else if (slot === 'Melee') {
-    types.add('Melee');
-    const classMap = {
-      'Dagger':           'Daggers',
-      'Dual Daggers':     'Dual Daggers',
-      'Sword':            'Swords',
-      'Dual Swords':      'Dual Swords',
-      'Nikana':           'Nikanas',
-      'Dual Nikanas':     'Dual Nikanas',
-      'Two-Handed Nikana':'Two-Handed Nikana',
-      'Heavy Blade':      'Heavy Blade',
-      'Hammer':           'Hammers',
-      'Polearm':          'Polearms',
-      'Staff':            'Staves',
-      'Whip':             'Whips',
-      'Blade and Whip':   'Blade And Whip',
-      'Glaive':           'Glaives',
-      'Claws':            'Claws',
-      'Tonfa':            'Tonfas',
-      'Scythe':           'Scythes',
-      'Heavy Scythe':     'Heavy Scythe',
-      'Rapier':           'Rapiers',
-      'Sword and Shield': 'Sword And Shield',
-      'Machete':          'Machetes',
-      'Sparring':         'Sparring',
-      'Fist':             'Fists',
-      'Nunchaku':         'Nunchaku',
-      'Warfan':           'Warfans',
-      'Gunblade':         'Gunblade',
-    };
-    if (classMap[cls]) types.add(classMap[cls]);
-  }
-  return types;
-}
-
-// (buildModOptions and refreshModDropdowns removed — replaced by card grid + picker)
-
-function onWeaponChange() {
-  selectedAttack = null;
-  const weapon = getCurrentWeapon();
-  const compatTypes = getCompatibleModTypes(weapon);
-  // Clear regular mod slots that are no longer compatible with the new weapon
-  modSlots = modSlots.map(name => {
-    if (!name || name === '__riven__') return name;
-    const mod = allMods.find(m => m.name === name);
-    return (mod && compatTypes.has(mod.type)) ? name : '';
-  });
-  // Stance slot is melee-only — clear if switching to a ranged weapon
-  if (stanceSlot && !isMeleeWeapon()) {
-    stanceSlot = '';
-  }
-  // Exilus set is weapon-type-specific — clear exilus if it no longer applies
-  if (exilusSlot && !getExilusSet().has(exilusSlot)) {
-    exilusSlot = '';
-  }
-  // Update combo max: Venka Prime can reach 13x; all other weapons cap at 12x
-  const comboInput = document.getElementById('combo-counter');
-  comboInput.max = (weapon && weapon.name === 'Venka Prime') ? 13 : 12;
-  if (parseInt(comboInput.value) > parseInt(comboInput.max)) comboInput.value = comboInput.max;
-
-  updateAttackSelector(weapon);
-  showWeaponStats(weapon);
-  renderSpecialSlots();
-  updateModdedStats();
-
-  updateElementBadges();
-}
-
-function updateAttackSelector(weapon) {
-  if (!weapon || !weapon.attacks || weapon.attacks.length <= 1) {
-    selectedAttack = null;
-  } else {
-    selectedAttack = selectedAttack || weapon.attacks[0].name;
-  }
-}
-
-function selectAttack(name) {
-  selectedAttack = name;
-  showWeaponStats(getCurrentWeapon());
-  updateModdedStats();
-  updateElementBadges();
-}
-
-function getSelectedAttackData(weapon) {
-  if (!weapon || !weapon.attacks || !weapon.attacks.length) return null;
-  if (selectedAttack) {
-    const found = weapon.attacks.find(a => a.name === selectedAttack);
-    if (found) return found;
-  }
-  return weapon.attacks[0];
-}
-
-// ---------------------------------------------------------------------------
-// Weapon stats panel — base stats
-// ---------------------------------------------------------------------------
-function showWeaponStats(weapon) {
-  const panel = document.getElementById('weapon-stats-panel');
-  if (!weapon) { panel.style.display = 'none'; return; }
-
-  const atk = getSelectedAttackData(weapon);
-  const pct = v => (v * 100).toFixed(1) + '%';
-  const fmt = (v, suffix) => v != null ? v + (suffix || '') : '—';
-  const sub = [weapon.slot, weapon.class, weapon.trigger].filter(Boolean).join(' · ');
-
-  const imgHtml = weapon.image
-    ? `<div class="weapon-stats-img-row" id="weapon-img-row">
-        <img src="/static/images/weapons/${esc(weapon.image)}" alt=""
-             onerror="document.getElementById('weapon-img-row').style.display='none'">
-        <div>
-          <div class="weapon-stats-name">${esc(weapon.name)}</div>
-          <div class="weapon-stats-sub">${esc(sub)}</div>
-        </div>
-       </div>`
-    : `<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)">
-        <div class="weapon-stats-name">${esc(weapon.name)}</div>
-        <div class="weapon-stats-sub">${esc(sub)}</div>
-       </div>`;
-
-  const hasMultiAttack = weapon.attacks && weapon.attacks.length > 1;
-  const attackTabsHtml = hasMultiAttack
-    ? `<div class="attack-tabs">${weapon.attacks.map(a =>
-        `<button class="attack-tab${a.name === selectedAttack ? ' active' : ''}"
-          onclick="selectAttack(this.dataset.name)" data-name="${esc(a.name)}">${esc(a.name)}</button>`
-      ).join('')}</div>`
-    : '';
-
-  document.getElementById('weapon-stats-content').innerHTML = `
-    ${imgHtml}
-    ${attackTabsHtml}
-    <div class="stat-rows">
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="crit-chance">Crit Chance</div>
-          <div class="stat-value crit" id="sv-cc">${pct((atk ? atk.crit_chance : weapon.crit_chance) || 0)}</div>
-          <div class="stat-modded" id="sm-cc" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="crit-mult">Crit Mult</div>
-          <div class="stat-value crit" id="sv-cm">${fmt((atk ? atk.crit_multiplier : weapon.crit_multiplier), 'x')}</div>
-          <div class="stat-modded" id="sm-cm" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="status">Status</div>
-          <div class="stat-value status" id="sv-sc">${pct((atk ? atk.status_chance : weapon.status_chance) || 0)}</div>
-          <div class="stat-modded" id="sm-sc" style="display:none"></div>
-        </div>
-      </div>
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="fire-rate">Fire Rate</div>
-          <div class="stat-value">${fmt(atk ? atk.fire_rate : weapon.fire_rate)}</div>
-          <div class="stat-modded" id="sm-fr" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="magazine">Magazine</div>
-          <div class="stat-value" id="sv-mag">${fmt(weapon.magazine)}</div>
-          <div class="stat-modded" id="sm-mag" style="display:none"></div>
-        </div>
-        ${weapon.max_ammo ? `<div class="stat-block">
-          <div class="stat-label" data-tooltip="max-ammo">Max Ammo</div>
-          <div class="stat-value" id="sv-ammo">${fmt(weapon.max_ammo)}</div>
-          <div class="stat-modded" id="sm-ammo" style="display:none"></div>
-        </div>` : ''}
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="reload">Reload</div>
-          <div class="stat-value" id="sv-reload">${fmt(weapon.reload, 's')}</div>
-          <div class="stat-modded" id="sm-reload" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="multishot">Multishot</div>
-          <div class="stat-value" id="sv-ms">1.0</div>
-          <div class="stat-modded" id="sm-ms" style="display:none"></div>
-        </div>
-      </div>
-    </div>
-    <div id="damage-table-wrap"></div>
-  `;
-
-  renderDamageTable(atk ? atk.base_damage : weapon.base_damage, null);
-  panel.style.display = 'block';
-  initTooltips();
-}
-
-function renderDamageTable(baseDmg, moddedData) {
-  const wrap = document.getElementById('damage-table-wrap');
-  if (!wrap) return;
-
-  const hasModded = moddedData && Object.keys(moddedData.modded_damage || {}).length > 0;
-
-  // Merge all damage types: base IPS + modded elementals
-  const allTypes = new Set([
-    ...Object.keys(baseDmg),
-    ...(hasModded ? Object.keys(moddedData.modded_damage) : []),
-  ]);
-
-  const baseTotal = Object.values(baseDmg).reduce((s, v) => s + v, 0);
-  const moddedTotal = hasModded ? moddedData.modded_total : null;
-
-  const headerModded = hasModded
-    ? `<th style="text-align:right" class="col-modded">Modded</th>`
-    : '';
-
-  const rows = Array.from(allTypes).map(type => {
-    const baseVal = baseDmg[type];
-    const modVal  = hasModded ? moddedData.modded_damage[type] : null;
-    const color   = ELEM_COLORS[type] || 'var(--text)';
-    const dot     = `<span class="elem-dot" style="background:${color}"></span>`;
-    const label   = type.charAt(0).toUpperCase() + type.slice(1);
-    const ttAttr  = TOOLTIPS[type] ? ` data-tooltip="${type}"` : '';
-
-    const baseCell = baseVal != null
-      ? `<td class="col-base" style="text-align:right">${baseVal.toFixed(1)}</td>`
-      : `<td class="col-base" style="text-align:right;color:var(--border)">—</td>`;
-
-    const moddedCell = hasModded
-      ? `<td class="col-modded" style="text-align:right">${modVal != null ? modVal.toFixed(1) : '—'}</td>`
-      : '';
-
-    return `<tr>
-      <td${ttAttr}>${dot}${label}</td>
-      ${baseCell}
-      ${moddedCell}
-    </tr>`;
-  }).join('');
-
-  const moddedTotalCell = hasModded
-    ? `<td style="text-align:right" class="col-modded">${moddedTotal.toFixed(1)}</td>`
-    : '';
-
-  wrap.innerHTML = `
-    <table class="breakdown-table">
-      <thead>
-        <tr>
-          <th>Damage Type</th>
-          <th style="text-align:right">Base</th>
-          ${headerModded}
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-      <tfoot class="total-row">
-        <tr>
-          <td>Total</td>
-          <td style="text-align:right">${baseTotal.toFixed(1)}</td>
-          ${moddedTotalCell}
-        </tr>
-      </tfoot>
-    </table>
-  `;
-  initTooltips();
-}
-
-// ---------------------------------------------------------------------------
-// Live modded stats update
-// ---------------------------------------------------------------------------
-let _modUpdateTimer = null;
-
-function updateModdedStats() {
-  clearTimeout(_modUpdateTimer);
-  _modUpdateTimer = setTimeout(_doUpdateModdedStats, 120);
-}
-
-async function _doUpdateModdedStats() {
-  const weapon = getCurrentWeapon();
-  if (!weapon) return;
-
-  const mods = getSelectedMods();
-
-  try {
-    const resp = await fetch('/api/modded-weapon', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec() }),
-    });
-    if (!resp.ok) return;
-    const data = await resp.json();
-
-    // Update damage table
-    const atkData = getSelectedAttackData(weapon);
-    const qBase = data.quantized_base_damage || (atkData ? atkData.base_damage : weapon.base_damage);
-    const moddedDiffers = data && JSON.stringify(data.modded_damage) !== JSON.stringify(data.quantized_base_damage);
-    const hasAnyMods = (mods.length > 0 || !!getRivenSpec()) && moddedDiffers;
-    renderDamageTable(qBase, hasAnyMods ? data : null);
-
-    // Update crit/status stat blocks
-    const hasMods = hasAnyMods;
-    const hasSomeMods = mods.length > 0 || !!getRivenSpec();
-    const pct = v => (v * 100).toFixed(1) + '%';
-
-    const smCC = document.getElementById('sm-cc');
-    const smCM = document.getElementById('sm-cm');
-    const smSC = document.getElementById('sm-sc');
-
-    if (smCC) {
-      if (hasMods && Math.abs(data.modded_cc - data.base_cc) > 0.0001) {
-        smCC.textContent = pct(data.modded_cc);
-        smCC.style.display = 'block';
-      } else {
-        smCC.style.display = 'none';
-      }
-    }
-    if (smCM) {
-      if (hasMods && Math.abs(data.modded_cm - data.base_cm) > 0.0001) {
-        smCM.textContent = data.modded_cm.toFixed(2) + 'x';
-        smCM.style.display = 'block';
-      } else {
-        smCM.style.display = 'none';
-      }
-    }
-    if (smSC) {
-      if (hasMods && Math.abs(data.modded_sc - data.base_sc) > 0.0001) {
-        smSC.textContent = pct(data.modded_sc);
-        smSC.style.display = 'block';
-      } else {
-        smSC.style.display = 'none';
-      }
-    }
-
-    const smMS = document.getElementById('sm-ms');
-    if (smMS) {
-      const ms = data.modded_multishot || 1.0;
-      _currentMultishot = ms;
-      if (hasSomeMods && ms > 1.0001) {
-        smMS.textContent = '→ ' + ms.toFixed(2) + 'x';
-        smMS.style.display = 'block';
-      } else {
-        smMS.style.display = 'none';
-        if (!hasSomeMods) _currentMultishot = 1.0;
-      }
-    }
-
-    const smFR = document.getElementById('sm-fr');
-    if (smFR) {
-      const baseFr  = data.base_fr  || 0;
-      const moddedFr = data.modded_fr || 0;
-      if (hasSomeMods && baseFr > 0 && Math.abs(moddedFr - baseFr) > 0.001) {
-        smFR.textContent = '→ ' + moddedFr.toFixed(2) + '/s';
-        smFR.style.display = 'block';
-      } else {
-        smFR.style.display = 'none';
-      }
-    }
-
-    const smReload = document.getElementById('sm-reload');
-    if (smReload) {
-      const baseRel   = data.base_reload   || 0;
-      const moddedRel = data.modded_reload || 0;
-      if (hasSomeMods && baseRel > 0 && Math.abs(moddedRel - baseRel) > 0.001) {
-        smReload.textContent = '→ ' + moddedRel.toFixed(2) + 's';
-        smReload.style.display = 'block';
-      } else {
-        smReload.style.display = 'none';
-      }
-    }
-
-    const smMag = document.getElementById('sm-mag');
-    const svMag = document.getElementById('sv-mag');
-    if (smMag && svMag) {
-      const baseMag   = data.base_magazine   || 0;
-      const moddedMag = data.modded_magazine || 0;
-      if (hasSomeMods && baseMag > 0 && moddedMag !== baseMag) {
-        smMag.textContent = '→ ' + moddedMag;
-        smMag.style.display = 'block';
-      } else {
-        smMag.style.display = 'none';
-      }
-    }
-
-    const smAmmo = document.getElementById('sm-ammo');
-    const svAmmo = document.getElementById('sv-ammo');
-    if (smAmmo && svAmmo) {
-      const baseAmmo   = data.base_ammo_max   || 0;
-      const moddedAmmo = data.modded_ammo_max || 0;
-      if (hasSomeMods && baseAmmo > 0 && moddedAmmo !== baseAmmo) {
-        smAmmo.textContent = '→ ' + moddedAmmo;
-        smAmmo.style.display = 'block';
-      } else {
-        smAmmo.style.display = 'none';
-      }
-    }
-  } catch(e) {
-    // silent — non-critical
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Enemy stats panel
-// ---------------------------------------------------------------------------
-function showEnemyStats(enemy) {
-  const panel = document.getElementById('enemy-stats-panel');
-  if (!enemy) { panel.style.display = 'none'; document.getElementById('enemy-scaled-stats').innerHTML = ''; return; }
-
-  // Set min to enemy's base level; keep current value if already valid, else clamp
-  const lvlInput = document.getElementById('enemy-level');
-  if (lvlInput) {
-    const bl = enemy.base_level || 1;
-    lvlInput.min = bl;
-    lvlInput.value = bl;
-  }
-
-  const fmt = (v, suffix) => v != null && v !== 0 ? v + (suffix || '') : '—';
-  // Handles underscore-separated strings like "infested_flesh" → "Infested Flesh"
-  const cap = s => s ? s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '—';
-
-  const headRow = enemy.head_multiplier && enemy.head_multiplier !== 1
-    ? `<div class="stat-row">
-        <div class="stat-block" style="flex:2">
-          <div class="stat-label">Head Multiplier</div>
-          <div class="stat-value">${enemy.head_multiplier}×</div>
-        </div>
-       </div>`
-    : '';
-
-  document.getElementById('enemy-stats-content').innerHTML = `
-    <div style="margin-bottom:10px">
-      <div style="font-size:15px;font-weight:600;color:var(--text)">${esc(enemy.name)}</div>
-    </div>
-    <div class="stat-rows">
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label">Faction</div>
-          <div class="stat-value">${cap(enemy.faction)}</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label">Health Type</div>
-          <div class="stat-value">${cap(enemy.health_type)}</div>
-        </div>
-      </div>
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label">Base Health</div>
-          <div class="stat-value">${fmt(enemy.base_health)}</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label">Base Shield</div>
-          <div class="stat-value">${fmt(enemy.base_shield)}</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label">Base Armor</div>
-          <div class="stat-value">${fmt(enemy.base_armor)}</div>
-        </div>
-      </div>
-      ${headRow}
-    </div>
-  `;
-  panel.style.display = 'block';
-  refreshEnemyScaling();
-}
-
-// ---------------------------------------------------------------------------
-// Enemy level scaling controls
-// ---------------------------------------------------------------------------
-let steelPathOn = false;
-let eximusOn    = false;
-
-function toggleSteelPath() {
-  steelPathOn = !steelPathOn;
-  document.getElementById('steel-path-btn').classList.toggle('active', steelPathOn);
-  refreshEnemyScaling();
-}
-
-function toggleEximus() {
-  eximusOn = !eximusOn;
-  document.getElementById('eximus-btn').classList.toggle('active', eximusOn);
-  refreshEnemyScaling();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('enemy-level').addEventListener('input', refreshEnemyScaling);
-});
-
-async function refreshEnemyScaling() {
-  const enemy = getCurrentEnemy();
-  const container = document.getElementById('enemy-scaled-stats');
-  if (!enemy) { container.innerHTML = ''; return; }
-  const level = Math.max(parseInt(document.getElementById('enemy-level').value) || 1, enemy.base_level || 1);
-  try {
-    const r = await fetch('/api/scaled-enemy', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ enemy: enemy.name, level, steel_path: steelPathOn, eximus: eximusOn }),
-    });
-    const d = await r.json();
-    const fmt = v => {
-      if (v <= 0) return '—';
-      return Number(v.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits: 2});
-    };
-    const lvlLabel = steelPathOn ? `${level} <span style="color:var(--accent);font-size:10px">(SP ×2.5)</span>` : String(d.level);
-    container.innerHTML = `
-      <div class="scaled-stat-block">Lvl <span>${lvlLabel}</span></div>
-      <div class="scaled-stat-block">HP <span>${fmt(d.health)}</span></div>
-      <div class="scaled-stat-block">Shield <span>${fmt(d.shield)}</span></div>
-      <div class="scaled-stat-block">Armor <span>${fmt(d.armor)}</span></div>
-      ${eximusOn ? `<div class="scaled-stat-block">Overguard <span>${fmt(d.overguard)}</span></div>` : ''}
-    `;
-  } catch { container.innerHTML = ''; }
-}
-
-// ---------------------------------------------------------------------------
-// Utilities
-// ---------------------------------------------------------------------------
-function populateSelect(id, names) {
-  const sel = document.getElementById(id);
-  sel.innerHTML = names.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
-}
-
-function setSelectValue(id, value) {
-  const sel = document.getElementById(id);
-  for (const opt of sel.options) {
-    if (opt.value === value) { sel.value = value; return; }
-  }
-}
-
-function setSelectByText(sel, text) {
-  for (const opt of sel.options) {
-    if (opt.value === text) { sel.value = text; return; }
-  }
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-function fmtNum(n) {
-  return n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-}
-
-document.addEventListener('DOMContentLoaded', () => { loadData(); });
-
-function setupSearch(inputId, selectId, getNames, onChange) {
-  const el = document.getElementById(inputId);
-  el.addEventListener('input', function() {
-    const q = this.value.toLowerCase();
-    const names = getNames().filter(n => n.toLowerCase().includes(q));
-    populateSelect(selectId, names);
-    if (onChange) onChange();
-    toggleSearchClear(this);
-  });
-}
-
-function setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl = null) {
-  const input = document.getElementById(inputId);
-  const dropdown = document.getElementById(dropdownId);
-  let ignoreBlur = false;
-
-  // Portal: move dropdown to body so it escapes any panel stacking context
-  // (backdrop-filter on .panel creates a stacking context that clips z-index)
-  document.body.appendChild(dropdown);
-  dropdown.style.position = 'fixed';
-
-  function positionDropdown() {
-    const r = input.closest('.search-wrap').getBoundingClientRect();
-    dropdown.style.top   = r.bottom + 'px';
-    dropdown.style.left  = r.left   + 'px';
-    dropdown.style.width = r.width  + 'px';
-  }
-  window.addEventListener('scroll', () => { if (dropdown.classList.contains('open')) positionDropdown(); }, true);
-  window.addEventListener('resize', () => { if (dropdown.classList.contains('open')) positionDropdown(); });
-
-  function esc(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
-
-  function renderDropdown(q) {
-    const lq = q.toLowerCase();
-    const matches = q ? items.filter(n => n.toLowerCase().includes(lq)) : items;
-    const shown = matches.slice(0, 120);
-    dropdown.innerHTML = shown.map(n => {
-      const imgTag = getImageUrl
-        ? `<img class="combobox-img" src="${getImageUrl(n)}" alt="" onerror="this.style.display='none'">`
-        : '';
-      return `<div class="combobox-item" tabindex="-1" data-value="${esc(n)}">${imgTag}${n.replace(/&/g,'&amp;')}</div>`;
-    }).join('');
-    if (matches.length > 120) {
-      dropdown.insertAdjacentHTML('beforeend',
-        `<div class="combobox-hint">${matches.length} results — type to narrow</div>`);
-    }
-    positionDropdown();
-    dropdown.classList.toggle('open', shown.length > 0);
-  }
-
-  function commit(name) {
-    input.value = name;
-    dropdown.classList.remove('open');
-    toggleSearchClear(input);
-    if (onSelect) onSelect(name);
-  }
-
-  input.addEventListener('focus', () => renderDropdown(input.value));
-  input.addEventListener('input', () => { toggleSearchClear(input); renderDropdown(input.value); });
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { dropdown.classList.remove('open'); input.blur(); }
-    if (e.key === 'Enter') { const first = dropdown.querySelector('.combobox-item'); if (first) commit(first.dataset.value); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); dropdown.querySelector('.combobox-item')?.focus(); }
-  });
-  input.addEventListener('blur', () => { if (!ignoreBlur) setTimeout(() => dropdown.classList.remove('open'), 150); });
-
-  dropdown.addEventListener('mousedown', () => { ignoreBlur = true; });
-  dropdown.addEventListener('mouseup',   () => { ignoreBlur = false; });
-  dropdown.addEventListener('click', e => { const item = e.target.closest('.combobox-item'); if (item) commit(item.dataset.value); });
-  dropdown.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { const item = e.target.closest('.combobox-item'); if (item) commit(item.dataset.value); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); e.target.nextElementSibling?.focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); (e.target.previousElementSibling?.classList.contains('combobox-item') ? e.target.previousElementSibling : input)?.focus(); }
-    if (e.key === 'Escape') { dropdown.classList.remove('open'); input.focus(); }
-  });
-
-  return { set: commit };
-}
-
-function clearCombobox(which) {
-  const input = document.getElementById(`${which}-search`);
-  const dropdown = document.getElementById(`${which}-dropdown`);
-  input.value = '';
-  dropdown.classList.remove('open');
-  toggleSearchClear(input);
-  input.focus();
-}
-
-function toggleSearchClear(input) {
-  const wrap = input.closest('.search-wrap');
-  if (wrap) wrap.classList.toggle('has-value', input.value.length > 0);
-}
-
-function clearSearch(inputId) {
-  const el = document.getElementById(inputId);
-  el.value = '';
-  el.dispatchEvent(new Event('input'));
-  el.focus();
-}
-
-// ---------------------------------------------------------------------------
-// Riven Builder
-// ---------------------------------------------------------------------------
-const RIVEN_STAT_OPTIONS = [
-  {value: '',              label: '— Select stat —'},
-  {value: 'damage',        label: 'Damage'},
-  {value: 'multishot',     label: 'Multishot'},
-  {value: 'crit_chance',   label: 'Critical Chance'},
-  {value: 'crit_damage',   label: 'Critical Multiplier'},
-  {value: 'status_chance', label: 'Status Chance'},
-  {value: 'fire_rate',     label: 'Fire Rate'},
-  {value: 'heat',          label: 'Heat'},
-  {value: 'cold',          label: 'Cold'},
-  {value: 'electricity',   label: 'Electricity'},
-  {value: 'toxin',         label: 'Toxin'},
-];
-
-// ---------------------------------------------------------------------------
-// Special Slots (Stance / Exilus)
-// ---------------------------------------------------------------------------
-let stanceSlot = '';
-let exilusSlot = '';
-
-const EXILUS_PRIMARY = new Set([
-  'Ammo Drum','Shell Compression','Rifle Ammo Mutation','Primed Rifle Ammo Mutation',
-  'Shotgun Ammo Mutation','Primed Shotgun Ammo Mutation','Arrow Mutation',
-  'Sniper Ammo Mutation','Vigilante Supplies','Eagle Eye','Broad Eye','Overview',
-  'Aero Periphery','Agile Aim','Snap Shot','Aerial Ace',
-  'Gun Glide','Double-Barrel Drift','Stabilizer','Primed Stabilizer','Vile Precision',
-  'Guided Ordnance','Narrow Barrel','Hush','Silent Battery','Twitch','Soft Hands',
-  'Lock and Load','Tactical Reload','Terminal Velocity','Fatal Acceleration',
-  'Galvanized Acceleration','Mending Shot','Sinister Reach',
-]);
-const EXILUS_SECONDARY = new Set([
-  'Trick Mag','Pistol Ammo Mutation','Primed Pistol Ammo Mutation','Air Recon',
-  'Hawk Eye','Spry Sights','Strafing Slide','Steady Hands','Primed Steady Hands',
-  'Targeting Subsystem','Suppress','Reflex Draw','Eject Magazine','Lethal Momentum',
-  'Energizing Shot','Ruinous Extension','Fass Canticle','Jahu Canticle',
-  'Khra Canticle','Lohk Canticle',
-]);
-const EXILUS_MELEE = new Set([
-  'Dispatch Overdrive','Electromagnetic Shielding','Focused Defense','Guardian Derision',
-  'Parry','Whirlwind',"Condition's Perfection","Discipline's Merit","Dreamer's Wrath",
-  "Master's Edge","Mentor's Legacy","Opportunity's Reach",
-]);
-
-// Exilus mods that only appear for specific weapons
-const WEAPON_SPECIFIC_EXILUS = {
-  'Ambush Optics': ['Rubico','Rubico Prime'],
-  'Bhisaj-Bal': ['Paris Prime'],
-  'Adhesive Blast': [
-    'Ogris','Penta','Secura Penta','Carmine Penta','Tenet Ferrox',
-    'Tenet Envoy','Tonkor','Torid','Zarr',
-  ],
-  'Cautious Shot': [
-    'Acceltra','Acceltra Prime','Aeolak','Afentis','Alternox','Ambassador',
-    'Battacor','Basmu','Evensong','Ferrox','Tenet Ferrox','Javlok','Komorex',
-    'Kuva Bramma','Kuva Chakkhurr','Lenz','Mutalist Quanta','Ogris','Kuva Ogris',
-    'Opticor','Opticor Vandal','Panthera Prime','Penta','Secura Penta',
-    'Proboscis Cernos','Scourge','Scourge Prime','Shedu','Simulor','Synoid Simulor',
-    'Sporothrix','Stahlta','Tenet Envoy','Tonkor','Kuva Tonkor',
-    'Torid','Trumna','Trumna Prime','Zarr','Kuva Zarr','Zhuge Prime',
-  ],
-  'Directed Convergence': ['Supra','Supra Vandal'],
-  'Fomorian Accelerant': ['Drakgoon'],
-  'Kinetic Ricochet': ['Prisma Tetra','Tenet Tetra'],
-  'Tether Grenades': ['Secura Penta','Carmine Penta'],
-};
-
-function isMeleeWeapon() {
-  const w = getCurrentWeapon();
-  if (!w) return false;
-  const types = getCompatibleModTypes(w);
-  return types.has('Melee') || [...types].some(t =>
-    ['Daggers','Dual Daggers','Dual Swords','Swords','Hammers','Fists','Polearms',
-     'Scythes','Whips','Claws','Heavy Blade','Blade And Whip','Machetes',
-     'Nunchaku','Gunblade','Thrown Melee'].includes(t));
-}
-
-function getExilusSet() {
-  const w = getCurrentWeapon();
-  if (!w) return new Set([...EXILUS_PRIMARY, ...EXILUS_SECONDARY, ...EXILUS_MELEE]);
-  const types = getCompatibleModTypes(w);
-
-  let base;
-  if (types.has('Melee') || [...types].some(t =>
-    ['Daggers','Dual Daggers','Dual Swords','Swords','Hammers','Fists','Polearms',
-     'Scythes','Whips','Claws','Heavy Blade','Blade And Whip','Machetes',
-     'Nunchaku','Gunblade','Thrown Melee'].includes(t))) {
-    base = new Set(EXILUS_MELEE);
-  } else if (types.has('Pistol')) {
-    base = new Set(EXILUS_SECONDARY);
-  } else {
-    base = new Set(EXILUS_PRIMARY);
-  }
-
-  // Add weapon-specific exilus mods for the selected weapon
-  for (const [modName, weapons] of Object.entries(WEAPON_SPECIFIC_EXILUS)) {
-    if (weapons.includes(w.name)) base.add(modName);
-  }
-  return base;
-}
-
-function renderSpecialSlots() {
-  const container = document.getElementById('special-slots');
-  const melee = isMeleeWeapon();
-  const hasWeapon = !!getCurrentWeapon();
-  const stanceDisabled = hasWeapon && !melee;
-
-  const makeCard = (kind, slotName, label, colorClass, icon, disabled) => {
-    const card = document.createElement('div');
-    card.className = `mod-card special-slot ${colorClass}${disabled ? ' disabled' : ''}`;
-    if (!disabled) card.onclick = () => openSpecialPicker(kind);
-    if (slotName && !disabled) {
-      const mod = allMods.find(m => m.name === slotName);
-      const polIcon = mod ? polaritySVG(mod.polarity) : '';
-      card.innerHTML = `
-        <button class="mod-clear" onclick="event.stopPropagation();clear${kind === 'stance' ? 'Stance' : 'Exilus'}()" title="Remove">&times;</button>
-        ${polIcon}
-        <div class="special-slot-label">${label}</div>
-        <div class="mod-name">${esc(slotName)}</div>`;
-    } else {
-      card.classList.add('empty');
-      card.innerHTML = `
-        <div class="special-slot-label">${label}</div>
-        <div class="special-slot-icon">${icon}</div>`;
-    }
-    return card;
-  };
-  container.innerHTML = '';
-  container.appendChild(makeCard('stance', stanceSlot, 'Stance', 'stance-slot', '⚔', stanceDisabled));
-  container.appendChild(makeCard('exilus', exilusSlot, 'Exilus', 'exilus-slot', '✦', false));
-}
-
-function clearStance() {
-  stanceSlot = '';
-  renderSpecialSlots();
-  updateModdedStats();
-}
-function clearExilus() {
-  exilusSlot = '';
-  renderSpecialSlots();
-  updateModdedStats();
-}
-
-// ---------------------------------------------------------------------------
-// Riven Builder
-// ---------------------------------------------------------------------------
-let rivenApplied = null; // [{stat, pct}, ...] — committed
-let rivenDraft   = [];   // working copy in modal
-
-function openRivenBuilder() {
-  rivenDraft = Array.from({length: 4}, (_, i) =>
-    rivenApplied && rivenApplied[i] ? {...rivenApplied[i]} : {stat: '', pct: 0}
-  );
-  renderRivenRows();
-document.getElementById('riven-picker-overlay').classList.add('active');
-}
-
-function closeRivenBuilder() {
-  document.getElementById('riven-picker-overlay').classList.remove('active');
-}
-
-function applyRiven() {
-  const valid = rivenDraft.filter(s => s.stat);
-  rivenApplied = valid.length ? valid : null;
-  closeRivenBuilder();
-  if (rivenApplied) {
-    const existing = modSlots.indexOf('__riven__');
-    if (existing < 0) {
-      const empty = modSlots.indexOf('');
-      if (empty >= 0) modSlots[empty] = '__riven__';
-      else { alert('No empty mod slot — remove a mod first.'); return; }
-    }
-  } else {
-    const idx = modSlots.indexOf('__riven__');
-    if (idx >= 0) modSlots[idx] = '';
-  }
-  renderModCards();
-  initSortable();
-  updateModdedStats();
-}
-
-function clearRiven() {
-  rivenDraft = [{stat:'',pct:0},{stat:'',pct:0},{stat:'',pct:0},{stat:'',pct:0}];
-  rivenApplied = null;
-  const idx = modSlots.indexOf('__riven__');
-  if (idx >= 0) modSlots[idx] = '';
-  renderRivenRows();
-  renderModCards();
-  initSortable();
-  updateModdedStats();
-}
-
-function clearRivenRow(i) {
-  rivenDraft[i] = {stat: '', pct: 0};
-  renderRivenRows();
-}
-
-function onRivenDraftChange(i, field, value) {
-  if (field === 'pct') rivenDraft[i].pct = parseFloat(value) || 0;
-  else rivenDraft[i].stat = value;
-}
-
-function renderRivenRows() {
-  const container = document.getElementById('riven-rows');
-  container.innerHTML = rivenDraft.map((s, i) => `
-    <div class="riven-stat-row${s.stat ? ' has-value' : ''}">
-      <select class="riven-stat-select" onchange="onRivenDraftChange(${i},'stat',this.value)">
-        ${RIVEN_STAT_OPTIONS.map(o =>
-          `<option value="${esc(o.value)}"${o.value===s.stat?' selected':''}>${esc(o.label)}</option>`
-        ).join('')}
-      </select>
-      <input type="number" class="riven-stat-input" step="0.1" value="${s.pct || ''}"
-        placeholder="0" min="-999" max="9999"
-        onchange="onRivenDraftChange(${i},'pct',this.value)"
-        oninput="if(this.value.length>4)this.value=this.value.slice(0,4);onRivenDraftChange(${i},'pct',this.value)">
-      <button class="riven-row-clear" onclick="clearRivenRow(${i})" title="Clear row">×</button>
-    </div>
-  `).join('');
-}
-
-function clearRivenRow(i) {
-  rivenDraft[i] = { stat: '', pct: 0 };
-  renderRivenRows();
-}
-
-
-function getRivenSpec() {
-  if (!rivenApplied || !rivenApplied.length) return null;
-  const stats = rivenApplied.filter(s => s.stat).map(s => ({stat: s.stat, value: s.pct / 100}));
-  return stats.length ? {stats} : null;
-}
-
-// Close riven modal on backdrop click
-document.addEventListener('click', e => {
-  const overlay = document.getElementById('riven-picker-overlay');
-  if (overlay && overlay.classList.contains('active') && e.target === overlay)
-    closeRivenBuilder();
-});
-
-// ---------------------------------------------------------------------------
-// Calculate
-// ---------------------------------------------------------------------------
-async function runCalculation() {
-  const weapon = document.getElementById('weapon-search').value;
-  const enemy  = document.getElementById('enemy-search').value;
-  const mods   = getSelectedMods();
-  const critMode    = document.getElementById('crit-mode').value;
-  const headshot    = document.getElementById('headshot-cb').checked;
-  const viralStacks     = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
-  const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
-  const comboTier       = Math.max(1, parseInt(document.getElementById('combo-counter').value, 10) || 1);
-  const comboCounter    = (comboTier - 1) * 10; // tier → raw hits: tier=1→0 (×1), tier=12→110 (×12)
-  const uniqueStatuses  = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
-
-  if (!weapon || !enemy) {
-    showError('Please select a weapon and enemy.');
-    return;
-  }
-
-  const btn = document.getElementById('calc-btn');
-  btn.disabled = true;
-  btn.textContent = 'Calculating…';
-
-  try {
-    const resp = await fetch('/api/calculate', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, headshot, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn}),
-    });
-    const data = await resp.json();
-    if (!resp.ok) {
-      showError(data.detail || 'Calculation failed.');
-    } else {
-      showResults(data);
-    }
-  } catch(e) {
-    showError('Network error: ' + e.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Calculate';
-  }
-}
-
-function showError(msg) {
-  document.getElementById('no-results').style.display = 'none';
-  document.getElementById('results-content').style.display = 'none';
-  let errDiv = document.getElementById('error-msg');
-  if (!errDiv) {
-    errDiv = document.createElement('div');
-    errDiv.id = 'error-msg';
-    errDiv.className = 'error-msg';
-    document.getElementById('results-panel').appendChild(errDiv);
-  }
-  errDiv.textContent = msg;
-  errDiv.style.display = 'block';
-}
-
-function showResults(data) {
-  const errDiv = document.getElementById('error-msg');
-  if (errDiv) errDiv.style.display = 'none';
-  document.getElementById('no-results').style.display = 'none';
-
-  const breakdown = data.breakdown;
-  const entries = Object.entries(breakdown).sort((a,b) => b[1] - a[1]);
-  const maxVal = entries.length ? entries[0][1] : 1;
-
-  const meta = [
-    `Weapon: ${data.weapon}`,
-    `Mods: ${data.mods.length ? data.mods.join(', ') : '(none)'}`,
-    `Enemy: ${data.enemy}`,
-    `Crit: ${data.crit_mode} — ×${data.crit_multiplier.toFixed(3)}${data.headshot ? ' (headshot)' : ''}`,
-    data.viral_stacks > 0 ? `Viral: ${data.viral_stacks} stacks (×${[1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4.25][data.viral_stacks-1]})` : null,
-    data.corrosive_stacks > 0 ? `Corrosive: ${data.corrosive_stacks} stacks (−${Math.min(80, 20 + 6*data.corrosive_stacks)}% armor)` : null,
-  ].filter(Boolean).join(' &nbsp;|&nbsp; ');
-
-  const _effEnemy = getCurrentEnemy();
-  const _factionMap = _effEnemy ? (FACTION_EFFECTIVENESS[_effEnemy.faction.toLowerCase()] || {}) : {};
-
-  const rows = entries.map(([type, val]) => {
-    const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
-    const key  = type.toLowerCase();
-    const color = ELEM_COLORS[key] || 'var(--accent)';
-    const dot = `<span class="elem-dot" style="background:${color}"></span>`;
-    const ttAttr = TOOLTIPS[key] ? ` data-tooltip="${key}"` : '';
-    const eff = _factionMap[key];
-    const effBadge = eff === 1.5 ? '<span class="eff-badge eff-vuln">+50%</span>'
-                   : eff === 0.5 ? '<span class="eff-badge eff-res">−50%</span>'
-                   : '';
-    return `<tr>
-      <td${ttAttr}>${dot}${type}${effBadge}</td>
-      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div></td>
-      <td>${val.toFixed(2)}</td>
-    </tr>`;
-  }).join('');
-
-  const ms = _currentMultishot;
-  const msNote = ms > 1.0001
-    ? `<span class="ms-note">Per-trigger damage (includes ×${ms.toFixed(2)} multishot)</span>`
-    : '';
-
-  // Status procs section
-  const PROC_LABELS = { slash: 'Slash (Bleed)', heat: 'Heat (Burn)', gas: 'Gas (Cloud)', toxin: 'Toxin (Poison)', electricity: 'Electricity (Arc)' };
-  const PROC_COLORS = { slash: ELEM_COLORS.slash, heat: ELEM_COLORS.heat, gas: ELEM_COLORS.gas, toxin: ELEM_COLORS.toxin, electricity: ELEM_COLORS.electricity };
-  const CC_PROC_LABELS = { viral: 'Viral (Health Amp)', magnetic: 'Magnetic (Shield)', radiation: 'Radiation (Confuse)', blast: 'Blast (Accuracy)', cold: 'Cold (Freeze)' };
-  const CC_PROC_COLORS = { viral: ELEM_COLORS.viral, magnetic: ELEM_COLORS.magnetic, radiation: ELEM_COLORS.radiation, blast: ELEM_COLORS.blast, cold: ELEM_COLORS.cold };
-  let procsHtml = '';
-  if (data.procs) {
-    const activeDot = Object.entries(data.procs).filter(([k, p]) => p.active && k in PROC_LABELS);
-    const activeCc  = Object.entries(data.procs).filter(([k, p]) => p.active && k in CC_PROC_LABELS);
-    if (activeDot.length) {
-      const procRows = activeDot.map(([key, p]) => {
-        const color = PROC_COLORS[key] || 'var(--accent)';
-        const dot = `<span class="elem-dot" style="background:${color}"></span>`;
-        return `<tr>
-          <td>${dot}${PROC_LABELS[key] || key}</td>
-          <td>${p.damage_per_tick.toFixed(2)} × ${p.ticks} ticks</td>
-          <td>${p.total_damage.toFixed(2)}</td>
-        </tr>`;
-      }).join('');
-      procsHtml += `
-        <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">Status Procs (if triggered)</h4>
-        <table class="breakdown-table">
-          <thead><tr><th>Proc</th><th>Per Tick</th><th>Total (6 ticks)</th></tr></thead>
-          <tbody>${procRows}</tbody>
-        </table>`;
-    }
-    if (activeCc.length) {
-      const ccRows = activeCc.map(([key, p]) => {
-        const color = CC_PROC_COLORS[key] || 'var(--accent)';
-        const dot = `<span class="elem-dot" style="background:${color}"></span>`;
-        return `<tr>
-          <td>${dot}${CC_PROC_LABELS[key] || key}</td>
-          <td colspan="2" style="color:var(--text-muted);font-size:0.85em">${p.effect}</td>
-        </tr>`;
-      }).join('');
-      procsHtml += `
-        <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">CC / Debuff Procs (if triggered)</h4>
-        <table class="breakdown-table">
-          <thead><tr><th>Proc</th><th colspan="2">Effect</th></tr></thead>
-          <tbody>${ccRows}</tbody>
-        </table>`;
-    }
-  }
-
-  // DPS section
-  let dpsHtml = '';
-  if (data.fire_rate != null) {
-    const fr  = data.fire_rate;
-    const mag = data.magazine;
-    const rel = data.reload;
-    const ms  = data.modded_ms || 1.0;
-    const sc  = data.modded_sc || 0.0;
-
-    const burstDps     = data.total * fr;
-    const sustainedDps = (rel > 0 && mag > 1)
-      ? data.total * mag / (mag / fr + rel)
-      : null;
-
-    const procsPerSec = sc * ms * fr;
-    let procDpsRows = '';
-    let totalProcDps = 0;
-    if (data.procs) {
-      for (const [key, p] of Object.entries(data.procs)) {
-        if (!p.active || procsPerSec <= 0 || !(key in PROC_LABELS)) continue;
-        const pdps = p.damage_per_tick * procsPerSec;
-        totalProcDps += pdps;
-        const label = PROC_LABELS[key] || key;
-        const color = ELEM_COLORS[key] || 'var(--accent)';
-        const dot   = `<span class="elem-dot" style="background:${color}"></span>`;
-        procDpsRows += `<tr><td>${dot}${label} DPS</td><td></td><td>${fmtNum(pdps)}</td></tr>`;
-      }
-    }
-
-    const scPct = (sc * 100).toFixed(1);
-    const footnote = procsPerSec > 0
-      ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">Proc DPS is steady-state average @ ${scPct}% status chance</div>`
-      : '';
-
-    dpsHtml = `
-      <h4 style="margin:12px 0 6px;color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em">DPS</h4>
-      <table class="breakdown-table">
-        <thead><tr><th>Metric</th><th></th><th>DPS</th></tr></thead>
-        <tbody>
-          <tr><td>Burst DPS</td><td style="font-size:0.75rem;color:var(--text-muted)">${ms > 1.0001 ? `×${ms.toFixed(2)} multishot × ` : ''}${fr}/s</td><td>${fmtNum(burstDps)}</td></tr>
-          ${sustainedDps != null ? `<tr><td>Sustained DPS</td><td style="font-size:0.75rem;color:var(--text-muted)">${rel}s reload / ${mag} mag</td><td>${fmtNum(sustainedDps)}</td></tr>` : ''}
-          ${procDpsRows}
-        </tbody>
-        ${totalProcDps > 0 ? `<tfoot class="total-row"><tr><td colspan="2">TOTAL w/ procs</td><td>${fmtNum(burstDps + totalProcDps)}</td></tr></tfoot>` : ''}
-      </table>
-      ${footnote}`;
-  }
-
-  document.getElementById('results-content').innerHTML = `
-    <div class="result-header">
-      <h3>${esc(data.weapon)} vs ${esc(data.enemy)}</h3>
-      <div class="result-total">${data.total.toFixed(2)} <span>total damage</span></div>
-    </div>
-    <div class="result-meta">${meta}</div>
-    <table class="breakdown-table">
-      <thead><tr><th>Type</th><th>Bar</th><th>Damage</th></tr></thead>
-      <tbody>${rows}</tbody>
-      <tfoot class="total-row">
-        <tr><td colspan="2">TOTAL</td><td>${data.total.toFixed(2)}</td></tr>
-      </tfoot>
-    </table>
-    ${msNote}
-    ${procsHtml}
-    ${dpsHtml}
-  `;
-  document.getElementById('results-content').style.display = 'block';
-  initTooltips();
-}
-</script>
-<!-- Tippy.js handles tooltips now -->
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
+</div><!-- .container -->
+</div><!-- .main-wrapper -->
+
+<!-- Right Nav Sidebar -->
+<nav class="right-nav">
+  <div class="right-nav-brand">
+    <span class="right-nav-logo">
+      VOID CODEX
+      <span class="logo-sub">ZONE PROTOCOL</span>
+    </span>
+  </div>
+  <div class="right-nav-items">
+    <a href="/" class="nav-item active">
+      <span class="nav-item-icon">⊛</span>
+      <span>CALCULATOR</span>
+    </a>
+    <a href="/live" class="nav-item">
+      <span class="nav-item-icon">◎</span>
+      <span>LIVE DATA</span>
+    </a>
+    <div class="right-nav-divider"></div>
+    <button onclick="openGuide()" class="nav-item">
+      <span class="nav-item-icon">▤</span>
+      <span>GUIDE</span>
+    </button>
+    <button onclick="openChangelog()" class="nav-item">
+      <span class="nav-item-icon">≣</span>
+      <span>CHANGELOG</span>
+    </button>
+  </div>
+  <div class="right-nav-footer">
+    <div class="ver-line" id="nav-ver">v—</div>
+    <div>WIKI FORMULAS</div>
+    <div>DAMAGE 3.0</div>
+  </div>
+</nav>
+
+</div><!-- .app-shell -->
 </body>
 </html>

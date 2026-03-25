@@ -25,7 +25,8 @@
     "max_rank": 3,
     "base_drain": 6,
     "puncture_pct": 0.6,
-    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture"
+    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture",
+    "fire_rate_pct": 0.6
   },
   "Accelerated Deflection": {
     "name": "Accelerated Deflection",
@@ -44,7 +45,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate"
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate",
+    "fire_rate_pct": 0.4
   },
   "Accumulating Whipclaw": {
     "name": "Accumulating Whipclaw",
@@ -83,15 +85,6 @@
     "base_drain": 2,
     "effect_raw": "When Damaged:\r\n+10% Resistance to that Damage Type for 20s. Stacks up to 90%."
   },
-  "Adept Surge": {
-    "name": "Adept Surge",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "+10% Mobility\r\n-25 Health"
-  },
   "Adhesive Blast": {
     "name": "Adhesive Blast",
     "type": "Unique",
@@ -100,15 +93,6 @@
     "max_rank": 5,
     "base_drain": 4,
     "effect_raw": "Grenades have 100% chance to stick to surfaces."
-  },
-  "Adrenaline Boost": {
-    "name": "Adrenaline Boost",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+50% Energy\r\n-20% Health"
   },
   "Aegis Gale": {
     "name": "Aegis Gale",
@@ -209,15 +193,6 @@
     "base_drain": 6,
     "effect_raw": "Core Vent Augment: <DT_EXPLOSION_COLOR>Blast Damage ignites exhaust fumes for 12s. Enemies passing through the flames take 500 <DT_FIRE_COLOR>Heat Damage."
   },
-  "Agile Aim": {
-    "name": "Agile Aim",
-    "type": "Rifle",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "+20% Movement Speed when Aiming"
-  },
   "Agility Drift": {
     "name": "Agility Drift",
     "type": "Warframe",
@@ -226,24 +201,6 @@
     "max_rank": 5,
     "base_drain": 4,
     "effect_raw": "Reduced damage by 12% while airborne\r\n-6% Enemy Accuracy when targeting Warframe"
-  },
-  "Air Recon": {
-    "name": "Air Recon",
-    "type": "Pistol",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 5,
-    "base_drain": 2,
-    "effect_raw": "-60% Zoom while Aim Gliding"
-  },
-  "Air Thrusters": {
-    "name": "Air Thrusters",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "+100% Slide Boost when Airborne\r\n-20% Mobility"
   },
   "Air Time": {
     "name": "Air Time",
@@ -397,15 +354,6 @@
     "base_drain": 6,
     "effect_raw": "When Ghost invisibility is broken, Shade's owner is granted +240% Weapon Damage for 3s."
   },
-  "Ambush Optics": {
-    "name": "Ambush Optics",
-    "type": "Rubico",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-50% Zoom"
-  },
   "Ammo Case": {
     "name": "Ammo Case",
     "type": "Carrier",
@@ -499,7 +447,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "fire_rate_pct": 0.9,
-    "effect_raw": "+90% Fire Rate\r\n-15% Damage"
+    "effect_raw": "+90% Fire Rate\r\n-15% Damage",
+    "damage_bonus_pct": -0.15
   },
   "Animal Instinct": {
     "name": "Animal Instinct",
@@ -509,15 +458,6 @@
     "max_rank": 5,
     "base_drain": 6,
     "effect_raw": "+30m Loot Radar\r\n+18m Enemy Radar"
-  },
-  "Anti-Flak Plating": {
-    "name": "Anti-Flak Plating",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 4,
-    "effect_raw": "+20 <DT_EXPLOSION_COLOR>Blast Resistance\r\n-10% Mobility"
   },
   "Anti-Grav Array": {
     "name": "Anti-Grav Array",
@@ -546,15 +486,6 @@
     "base_drain": 0,
     "effect_raw": "Digital extremists stand no chance when you have Anti-V on your side"
   },
-  "Anticipation": {
-    "name": "Anticipation",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "Immune to Knockdown for an additional +4s after being knocked down.\r\nImmune to Stagger for an additional +4s after being Staggered."
-  },
   "Antimatter Absorb": {
     "name": "Antimatter Absorb",
     "type": "Nova",
@@ -582,15 +513,6 @@
     "base_drain": 2,
     "toxin_pct": 0.45,
     "effect_raw": "+45% <DT_POISON_COLOR>Toxin Resistance"
-  },
-  "Apex Predator": {
-    "name": "Apex Predator",
-    "type": "Rifle",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 5,
-    "base_drain": 2,
-    "effect_raw": "On Hit:\r\nReveals target on Minimap for +6s."
   },
   "Arc Coil": {
     "name": "Arc Coil",
@@ -659,15 +581,6 @@
     "heat_pct": 1.0,
     "effect_raw": "+100% Health\r\nStatus Effects from abilities that deal <DT_FIRE_COLOR>Heat Damage will be applied twice."
   },
-  "Argent Scourge": {
-    "name": "Argent Scourge",
-    "type": "Polearms",
-    "polarity": "Zenurik",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Argon Plating": {
     "name": "Argon Plating",
     "type": "Archwing",
@@ -687,16 +600,6 @@
     "crit_chance_pct": 1.35,
     "effect_raw": "On Headshot:\r\n+135% Critical Chance when Aiming for 9s"
   },
-  "Armored Acrobatics": {
-    "name": "Armored Acrobatics",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 6,
-    "damage_bonus_pct": 0.2,
-    "effect_raw": "+20% Damage Resistance during Bullet Jump\r\n-10% Mobility"
-  },
   "Armored Agility": {
     "name": "Armored Agility",
     "type": "Warframe",
@@ -705,26 +608,6 @@
     "max_rank": 5,
     "base_drain": 6,
     "effect_raw": "+15% Sprint Speed\r\n+40% Armor"
-  },
-  "Armored Evade": {
-    "name": "Armored Evade",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 6,
-    "damage_bonus_pct": 0.4,
-    "effect_raw": "+40% Damage Resistance while Dodging\r\n-10% Mobility"
-  },
-  "Armored Recovery": {
-    "name": "Armored Recovery",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 6,
-    "damage_bonus_pct": 0.5,
-    "effect_raw": "+50% Damage Resistance when knocked down\r\n-20% Slide"
   },
   "Arrow Mutation": {
     "name": "Arrow Mutation",
@@ -826,7 +709,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Magazine Capacity"
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Magazine Capacity",
+    "magazine_pct": 0.4
   },
   "Auger Strike": {
     "name": "Auger Strike",
@@ -1121,7 +1005,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "Restore 300 Health for every 3 Status effects.\r\n+90% Status Chance"
+    "effect_raw": "Restore 300 Health for every 3 Status effects.\r\n+90% Status Chance",
+    "status_chance_pct": 0.9
   },
   "Biotic Rounds": {
     "name": "Biotic Rounds",
@@ -1141,7 +1026,8 @@
     "max_rank": 10,
     "base_drain": 6,
     "crit_chance_pct": 3.3,
-    "effect_raw": "+330% Critical Chance\r\n+220% Critical Damage"
+    "effect_raw": "+330% Critical Chance\r\n+220% Critical Damage",
+    "crit_damage_pct": 2.2
   },
   "Biting Frost": {
     "name": "Biting Frost",
@@ -1152,15 +1038,6 @@
     "base_drain": 6,
     "crit_chance_pct": 2.0,
     "effect_raw": "Frost gains +200% Critical Chance and +200% Critical Damage against frozen enemies."
-  },
-  "Biting Piranha": {
-    "name": "Biting Piranha",
-    "type": "Dual Daggers",
-    "polarity": "Unairu",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Blackout Pulse": {
     "name": "Blackout Pulse",
@@ -1216,7 +1093,8 @@
     "max_rank": 3,
     "base_drain": 6,
     "heat_pct": 0.6,
-    "effect_raw": "+60% Damage\r\n+60% <DT_FIRE_COLOR>Heat"
+    "effect_raw": "+60% Damage\r\n+60% <DT_FIRE_COLOR>Heat",
+    "damage_bonus_pct": 0.6
   },
   "Blazing Pillage": {
     "name": "Blazing Pillage",
@@ -1282,15 +1160,6 @@
     "max_rank": 10,
     "base_drain": 6,
     "effect_raw": "+99% Ability Strength\r\n-55% Ability Efficiency"
-  },
-  "Blind Shot": {
-    "name": "Blind Shot",
-    "type": "Pistol",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "+40% Projectile Speed\r\n-4% Accuracy"
   },
   "Blinding Reave": {
     "name": "Blinding Reave",
@@ -1410,7 +1279,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Melee Damage\r\n+60% Status Damage"
+    "effect_raw": "+90% Melee Damage\r\n+60% Status Damage",
+    "status_damage_pct": 0.6
   },
   "Boreal's Hatred": {
     "name": "Boreal's Hatred",
@@ -1429,24 +1299,6 @@
     "max_rank": 5,
     "base_drain": 4,
     "effect_raw": "Oxylus Sentinel will automatically pick any plants within 50m over 2.0s."
-  },
-  "Bounty Hunter": {
-    "name": "Bounty Hunter",
-    "type": "Shotgun",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 5,
-    "base_drain": 2,
-    "effect_raw": "On Hit:\r\nReveals target on Minimap for +6s."
-  },
-  "Brain Storm": {
-    "name": "Brain Storm",
-    "type": "Grakata",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Headshot:\r\n+100% Ammo Efficiency for 0.5s"
   },
   "Breach Loader": {
     "name": "Breach Loader",
@@ -1485,15 +1337,6 @@
     "base_drain": 4,
     "effect_raw": "+100% Melee Damage\r\n+1 'Purity'"
   },
-  "Broad Eye": {
-    "name": "Broad Eye",
-    "type": "Shotgun",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 5,
-    "base_drain": 2,
-    "effect_raw": "-60% Zoom while Aim Gliding"
-  },
   "Brutal Tide": {
     "name": "Brutal Tide",
     "type": "Sparring",
@@ -1530,7 +1373,8 @@
     "max_rank": 5,
     "base_drain": 6,
     "magazine_pct": 0.6,
-    "effect_raw": "+60% Magazine Capacity\r\n-18% Reload Speed"
+    "effect_raw": "+60% Magazine Capacity\r\n-18% Reload Speed",
+    "reload_speed_pct": -0.18
   },
   "Burning Claws": {
     "name": "Burning Claws",
@@ -1540,7 +1384,8 @@
     "max_rank": 10,
     "base_drain": 4,
     "heat_pct": 3.3,
-    "effect_raw": "+330% <DT_FIRE_COLOR>Heat\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FIRE_COLOR>Heat damage"
+    "effect_raw": "+330% <DT_FIRE_COLOR>Heat\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FIRE_COLOR>Heat damage",
+    "status_chance_pct": 3.3
   },
   "Burning Hate": {
     "name": "Burning Hate",
@@ -1615,24 +1460,6 @@
     "base_drain": 0,
     "effect_raw": "Sentinel charges a powerful shot and fires at the first enemy within 70m."
   },
-  "Calculated Spring": {
-    "name": "Calculated Spring",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "-10% Mobility\r\n+25% Health"
-  },
-  "Calculated Victory": {
-    "name": "Calculated Victory",
-    "type": "Pistol",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n-100% Shield Recharge Delay for 10s\r\n-25% from Health Orbs"
-  },
   "Calm & Frenzy": {
     "name": "Calm & Frenzy",
     "type": "Equinox",
@@ -1677,7 +1504,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "slash_pct": 0.9,
-    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance"
+    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Carnis Stinger": {
     "name": "Carnis Stinger",
@@ -1687,7 +1515,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "slash_pct": 0.9,
-    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance"
+    "effect_raw": "+90% <DT_SLASH_COLOR>Slash\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Carving Mantis": {
     "name": "Carving Mantis",
@@ -1770,15 +1599,6 @@
     "base_drain": 0,
     "effect_raw": "+100% chance to reduce the Stagger effect from self-imposed Radial Attacks"
   },
-  "Celestial Nightfall": {
-    "name": "Celestial Nightfall",
-    "type": "Glaives",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Celestial Stomp": {
     "name": "Celestial Stomp",
     "type": "Wukong",
@@ -1814,7 +1634,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Charged Chamber": {
     "name": "Charged Chamber",
@@ -1853,7 +1674,8 @@
     "max_rank": 10,
     "base_drain": 4,
     "cold_pct": 3.3,
-    "effect_raw": "+330% <DT_FREEZE_COLOR>Cold\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FREEZE_COLOR>Cold damage"
+    "effect_raw": "+330% <DT_FREEZE_COLOR>Cold\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_FREEZE_COLOR>Cold damage",
+    "status_chance_pct": 3.3
   },
   "Chilling Globe": {
     "name": "Chilling Globe",
@@ -1882,7 +1704,8 @@
     "max_rank": 3,
     "base_drain": 2,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+40% Reload Speed"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+40% Reload Speed",
+    "reload_speed_pct": 0.4
   },
   "Chromatic Blade": {
     "name": "Chromatic Blade",
@@ -2096,15 +1919,6 @@
     "impact_pct": 0.9,
     "effect_raw": "+90% <DT_IMPACT_COLOR>Impact"
   },
-  "Comet Rounds": {
-    "name": "Comet Rounds",
-    "type": "Rifle",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_IMPACT_COLOR>Impact"
-  },
   "Computer Cop": {
     "name": "Computer Cop",
     "type": "Parazon",
@@ -2149,7 +1963,7 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 10,
-    "condition_overload_pct": 0.80,
+    "condition_overload_pct": 0.8,
     "effect_raw": "+80% Melee Damage per Status Type affecting the target"
   },
   "Condition's Perfection": {
@@ -2244,7 +2058,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+30% Multishot"
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+30% Multishot",
+    "multishot_pct": 0.3
   },
   "Contamination Casing": {
     "name": "Contamination Casing",
@@ -2254,7 +2069,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Continuity": {
     "name": "Continuity",
@@ -2365,15 +2181,6 @@
     "base_drain": 0,
     "effect_raw": "Flares that distract enemy guided projectiles."
   },
-  "Counterweight": {
-    "name": "Counterweight",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_IMPACT_COLOR>Impact"
-  },
   "Covert Bond": {
     "name": "Covert Bond",
     "type": "Companion",
@@ -2402,33 +2209,6 @@
     "impact_pct": 1.2,
     "effect_raw": "+120% <DT_IMPACT_COLOR>Impact"
   },
-  "Crash Shot": {
-    "name": "Crash Shot",
-    "type": "Shotgun",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_IMPACT_COLOR>Impact"
-  },
-  "Crashing Havoc": {
-    "name": "Crashing Havoc",
-    "type": "Hammers",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
-  "Crashing Timber": {
-    "name": "Crashing Timber",
-    "type": "Staves",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Creeping Bullseye": {
     "name": "Creeping Bullseye",
     "type": "Pistol",
@@ -2437,7 +2217,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
+    "fire_rate_pct": -0.2
   },
   "Creeping Terrify": {
     "name": "Creeping Terrify",
@@ -2492,7 +2273,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
+    "fire_rate_pct": -0.2
   },
   "Critical Delay": {
     "name": "Critical Delay",
@@ -2502,7 +2284,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)"
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)",
+    "fire_rate_pct": -0.2
   },
   "Critical Focus": {
     "name": "Critical Focus",
@@ -2522,7 +2305,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+60% Critical Chance"
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+60% Critical Chance",
+    "crit_chance_pct": 0.6
   },
   "Critical Mutation": {
     "name": "Critical Mutation",
@@ -2595,7 +2379,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Cryo Rounds": {
     "name": "Cryo Rounds",
@@ -2616,15 +2401,6 @@
     "base_drain": 4,
     "damage_bonus_pct": 2.4,
     "effect_raw": "+60% Melee Damage per Status Type affecting the target\r\nNon-Critical hits deal +240% damage"
-  },
-  "Cunning Aspect": {
-    "name": "Cunning Aspect",
-    "type": "Rapiers",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Cunning Drift": {
     "name": "Cunning Drift",
@@ -2801,15 +2577,6 @@
     "base_drain": -2,
     "effect_raw": "Sudden lashes, lethal slashes."
   },
-  "Deft Tempo": {
-    "name": "Deft Tempo",
-    "type": "Assault Rifle",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Headshot:\r\n+10% Mobility for 4s"
-  },
   "Depleted Reload": {
     "name": "Depleted Reload",
     "type": "Sniper",
@@ -2817,7 +2584,9 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "-60% Magazine Capacity\r\n+48% Reload Speed"
+    "effect_raw": "-60% Magazine Capacity\r\n+48% Reload Speed",
+    "reload_speed_pct": 0.48,
+    "magazine_pct": -0.6
   },
   "Desiccation's Curse": {
     "name": "Desiccation's Curse",
@@ -2873,15 +2642,6 @@
     "max_rank": 5,
     "base_drain": 0,
     "effect_raw": "The kubrow sniffs out buried objects and digs them up.\r\n+270% Success Chance"
-  },
-  "Directed Convergence": {
-    "name": "Directed Convergence",
-    "type": "Supra",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+100% Accuracy when Aiming"
   },
   "Disabling Conditioning": {
     "name": "Disabling Conditioning",
@@ -2957,15 +2717,6 @@
     "base_drain": 0,
     "effect_raw": "Fabricate 3 Specters that fight for 30s. Each deals 85% of the Hound's damage and cannot use Abilities."
   },
-  "Dividing Blades": {
-    "name": "Dividing Blades",
-    "type": "Dual Swords",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Dizzying Rounds": {
     "name": "Dizzying Rounds",
     "type": "Bronco",
@@ -2973,25 +2724,8 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "Shots from less than 8m stun enemies and open them to finishers.\r\n+200% Status Chance"
-  },
-  "Double Tap": {
-    "name": "Double Tap",
-    "type": "Latron",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "ON HIT:\r\n20% Bonus Damage on next Shot for 2s.\r\nStacks up to 20x outside of Conclave."
-  },
-  "Double-Barrel Drift": {
-    "name": "Double-Barrel Drift",
-    "type": "Shotgun",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-20% Weapon Recoil\r\nand +20% Accuracy when Sliding"
+    "effect_raw": "Shots from less than 8m stun enemies and open them to finishers.\r\n+200% Status Chance",
+    "status_chance_pct": 2.0
   },
   "Draining Bite": {
     "name": "Draining Bite",
@@ -3001,15 +2735,6 @@
     "max_rank": 3,
     "base_drain": 0,
     "effect_raw": "Vasca Kavat inflicts 5 stacks of <DT_SLASH_COLOR>Slash at 150% of its melee damage and restores 10% Health to itself."
-  },
-  "Draining Gloom": {
-    "name": "Draining Gloom",
-    "type": "Despair",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+100% chance of Energy Drain explosion\r\n-60% Magazine Capacity\r\n-60% Ammo Maximum"
   },
   "Dreadful Killshot": {
     "name": "Dreadful Killshot",
@@ -3054,7 +2779,8 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+10s Combo Duration\r\n+40% Status Chance"
+    "effect_raw": "+10s Combo Duration\r\n+40% Status Chance",
+    "status_chance_pct": 0.4
   },
   "Drive-Duster": {
     "name": "Drive-Duster",
@@ -3137,7 +2863,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "Only consume ammo when dealing damage.\r\n+150% Status Chance"
+    "effect_raw": "Only consume ammo when dealing damage.\r\n+150% Status Chance",
+    "status_chance_pct": 1.5
   },
   "Efficient Transferral": {
     "name": "Efficient Transferral",
@@ -3147,16 +2874,6 @@
     "max_rank": 3,
     "base_drain": 4,
     "effect_raw": "+30% Ability Duration"
-  },
-  "Eject Magazine": {
-    "name": "Eject Magazine",
-    "type": "Pistol",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "magazine_pct": 0.2,
-    "effect_raw": "+20% Magazine Reloaded/s when Holstered"
   },
   "Electrical Resistance": {
     "name": "Electrical Resistance",
@@ -3240,15 +2957,6 @@
     "base_drain": 4,
     "effect_raw": "On Ability Cast:\r\n+90% Status Chance when Aiming for 9s"
   },
-  "Emergent Aftermath": {
-    "name": "Emergent Aftermath",
-    "type": "Sniper",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n+50% Reload Speed for 3s"
-  },
   "Empowered Blades": {
     "name": "Empowered Blades",
     "type": "Aura",
@@ -3256,7 +2964,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": -2,
-    "effect_raw": "Squad receives +60% Status Chance and Status Damage on Heavy Attacks, but lose 90 Shields per hit."
+    "effect_raw": "Squad receives +60% Status Chance and Status Damage on Heavy Attacks, but lose 90 Shields per hit.",
+    "status_chance_pct": 0.6
   },
   "Empowered Quiver": {
     "name": "Empowered Quiver",
@@ -3301,7 +3010,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+100% Status Chance on Lifted enemies"
+    "effect_raw": "+100% Status Chance on Lifted enemies",
+    "status_chance_pct": 1.0
   },
   "Enduring Strike": {
     "name": "Enduring Strike",
@@ -3657,15 +3367,6 @@
     "faction_target": "murmur",
     "effect_raw": "x1.3 Damage to Murmur"
   },
-  "Explosive Demise": {
-    "name": "Explosive Demise",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 5,
-    "base_drain": 4,
-    "effect_raw": "Enemies killed explode, dealing 300 Damage shortly after death."
-  },
   "Explosive Legerdemain": {
     "name": "Explosive Legerdemain",
     "type": "Mirage",
@@ -3795,15 +3496,6 @@
     "base_drain": 6,
     "effect_raw": "Teleport Augment: Teleport will perform a Finisher on the target, dealing 200% Extra Damage. 50% of Energy cost is refunded on a kill."
   },
-  "Fateful Truth": {
-    "name": "Fateful Truth",
-    "type": "Nikanas",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Fear Sense": {
     "name": "Fear Sense",
     "type": "Kavat",
@@ -3813,15 +3505,6 @@
     "base_drain": 2,
     "damage_bonus_pct": 2.0,
     "effect_raw": "The Kavat senses the weaknesses of enemies within 25m. For 25s, its attacks deal +200% damage and stagger with a 30% chance of knockdown."
-  },
-  "Feathered Arrows": {
-    "name": "Feathered Arrows",
-    "type": "Bow",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "+60% Projectile Speed\r\n-20% Damage"
   },
   "Ferocity": {
     "name": "Ferocity",
@@ -3851,15 +3534,6 @@
     "toxin_pct": 0.9,
     "effect_raw": "+90% <DT_POISON_COLOR>Toxin"
   },
-  "Final Act": {
-    "name": "Final Act",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Low Health:\r\n+30% Ability Strength\r\n+30% Casting Speed for 8s"
-  },
   "Final Harbinger": {
     "name": "Final Harbinger",
     "type": "Sword And Shield",
@@ -3868,16 +3542,6 @@
     "max_rank": 3,
     "base_drain": -2,
     "effect_raw": "Powerful slashes and shield attacks."
-  },
-  "Final Tap": {
-    "name": "Final Tap",
-    "type": "Hind",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "damage_bonus_pct": 1.0,
-    "effect_raw": "On 4 Hits within 0.05s:\r\n+100% Damage for 0.2s"
   },
   "Finishing Touch": {
     "name": "Finishing Touch",
@@ -3962,15 +3626,6 @@
     "base_drain": -2,
     "effect_raw": "Lifting strikes and whirlwind combos."
   },
-  "Flak Shot": {
-    "name": "Flak Shot",
-    "type": "Shotgun",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_SLASH_COLOR>Slash"
-  },
   "Flame Gland": {
     "name": "Flame Gland",
     "type": "Claws",
@@ -3979,7 +3634,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Flame Repellent": {
     "name": "Flame Repellent",
@@ -4498,7 +4154,8 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+60% Status Chance"
+    "effect_raw": "+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Flawed Metal Auger": {
     "name": "Flawed Metal Auger",
@@ -4710,7 +4367,8 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+60% Status Chance"
+    "effect_raw": "+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Flawed Rupture": {
     "name": "Flawed Rupture",
@@ -4816,7 +4474,8 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+12% Status Chance"
+    "effect_raw": "+12% Status Chance",
+    "status_chance_pct": 0.12
   },
   "Flawed Slip Magazine": {
     "name": "Flawed Slip Magazine",
@@ -4935,7 +4594,8 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 2,
-    "effect_raw": "+4% Status Chance"
+    "effect_raw": "+4% Status Chance",
+    "status_chance_pct": 0.04
   },
   "Flawed Tactical Pump": {
     "name": "Flawed Tactical Pump",
@@ -5080,15 +4740,6 @@
     "radiation_pct": 0.6,
     "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Heavy Attack Efficiency"
   },
-  "Focused Acceleration": {
-    "name": "Focused Acceleration",
-    "type": "Tetra",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "When Aiming:\r\n+80% Projectile Speed"
-  },
   "Focused Defense": {
     "name": "Focused Defense",
     "type": "Melee",
@@ -5106,15 +4757,6 @@
     "max_rank": 5,
     "base_drain": 0,
     "effect_raw": "Fires a beam of energy that deals 900 <DT_FIRE_COLOR>Heat Damage over 4.5s."
-  },
-  "Follow Through": {
-    "name": "Follow Through",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Respawn:\r\n+10 Energy"
   },
   "Fomorian Accelerant": {
     "name": "Fomorian Accelerant",
@@ -5196,7 +4838,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "fire_rate_pct": 0.9,
-    "effect_raw": "+90% Fire Rate\r\n-15% Damage"
+    "effect_raw": "+90% Fire Rate\r\n-15% Damage",
+    "damage_bonus_pct": -0.15
   },
   "Freeze Force": {
     "name": "Freeze Force",
@@ -5224,7 +4867,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Frost Insulation": {
     "name": "Frost Insulation",
@@ -5243,7 +4887,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Frostbite": {
     "name": "Frostbite",
@@ -5253,17 +4898,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
-  },
-  "Full Capacity": {
-    "name": "Full Capacity",
-    "type": "Pistol",
-    "polarity": "Naramon",
-    "rarity": "Common",
-    "max_rank": 5,
-    "base_drain": 4,
-    "magazine_pct": 0.3,
-    "effect_raw": "+30% Magazine Capacity\r\n-15% Reload Speed"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Full Contact": {
     "name": "Full Contact",
@@ -5394,6 +5030,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_chance_pct": 0.8,
+    "galv_kill_stat": "aptitude_damage_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 2,
     "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
   },
   "Galvanized Chamber": {
@@ -5404,6 +5044,9 @@
     "max_rank": 10,
     "base_drain": 6,
     "multishot_pct": 0.8,
+    "galv_kill_stat": "multishot_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 5,
     "effect_raw": "+80% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 5x."
   },
   "Galvanized Crosshairs": {
@@ -5414,6 +5057,9 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.2,
+    "galv_kill_stat": "cc_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 5,
     "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x."
   },
   "Galvanized Diffusion": {
@@ -5424,6 +5070,9 @@
     "max_rank": 10,
     "base_drain": 4,
     "multishot_pct": 1.1,
+    "galv_kill_stat": "multishot_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x."
   },
   "Galvanized Elementalist": {
@@ -5433,6 +5082,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_damage_pct": 0.8,
+    "galv_kill_stat": "sc_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x."
   },
   "Galvanized Hell": {
@@ -5443,6 +5096,9 @@
     "max_rank": 10,
     "base_drain": 6,
     "multishot_pct": 1.1,
+    "galv_kill_stat": "multishot_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x."
   },
   "Galvanized Reflex": {
@@ -5461,6 +5117,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_chance_pct": 0.8,
+    "galv_kill_stat": "aptitude_damage_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 2,
     "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
   },
   "Galvanized Scope": {
@@ -5471,6 +5131,9 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.2,
+    "galv_kill_stat": "cc_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 5,
     "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x."
   },
   "Galvanized Shot": {
@@ -5480,6 +5143,10 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
+    "status_chance_pct": 0.8,
+    "galv_kill_stat": "aptitude_damage_bonus",
+    "galv_kill_pct": 0.4,
+    "galv_max_stacks": 3,
     "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 14s. Stacks up to 3x."
   },
   "Galvanized Steel": {
@@ -5490,6 +5157,9 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.1,
+    "galv_kill_stat": "cd_bonus",
+    "galv_kill_pct": 0.3,
+    "galv_max_stacks": 4,
     "effect_raw": "+110% Critical Chance (x2 for Heavy Attacks)\r\nOn Melee Kill:\r\n+30% Critical Damage for 20s. Stacks up to 4x."
   },
   "Gastro": {
@@ -5602,7 +5272,8 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+100% Status Chance\r\n+1 'Blight'"
+    "effect_raw": "+100% Status Chance\r\n+1 'Blight'",
+    "status_chance_pct": 1.0
   },
   "Gleaming Talon": {
     "name": "Gleaming Talon",
@@ -5621,16 +5292,6 @@
     "max_rank": 3,
     "base_drain": -2,
     "effect_raw": "Lunging punctures with impaling spirals."
-  },
-  "Gorgon Frenzy": {
-    "name": "Gorgon Frenzy",
-    "type": "Gorgon",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "fire_rate_pct": 0.3,
-    "effect_raw": "On Kill:\r\n+30% Fire Rate for 3s"
   },
   "Gourmand": {
     "name": "Gourmand",
@@ -5667,15 +5328,6 @@
     "max_rank": 3,
     "base_drain": -2,
     "effect_raw": "Lightning fast hit chains and hard-hitting combos."
-  },
-  "Grinloked": {
-    "name": "Grinloked",
-    "type": "Grinlok",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+60% Accuracy when Aiming"
   },
   "Growing Power": {
     "name": "Growing Power",
@@ -5731,15 +5383,6 @@
     "base_drain": 2,
     "effect_raw": "On Hit:\r\n+30% Accuracy when Aiming for 9s"
   },
-  "Gun Glide": {
-    "name": "Gun Glide",
-    "type": "Assault Rifle",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-20% Weapon Recoil\r\nand +20% Accuracy when Sliding"
-  },
   "Gunslinger": {
     "name": "Gunslinger",
     "type": "Pistol",
@@ -5786,7 +5429,8 @@
     "max_rank": 3,
     "base_drain": 6,
     "crit_damage_pct": 0.6,
-    "effect_raw": "+60% Critical Damage\r\n+80% Status Chance"
+    "effect_raw": "+60% Critical Damage\r\n+80% Status Chance",
+    "status_chance_pct": 0.8
   },
   "Handspring": {
     "name": "Handspring",
@@ -5842,15 +5486,6 @@
     "base_drain": 4,
     "effect_raw": "+90% Shield Recharge\r\n-45% Shield Recharge Delay"
   },
-  "Hastened Steps": {
-    "name": "Hastened Steps",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+20% Sprint Speed\r\n-20% Shield Capacity"
-  },
   "Hata-Satya": {
     "name": "Hata-Satya",
     "type": "Soma Prime",
@@ -5905,15 +5540,6 @@
     "base_drain": 10,
     "effect_raw": "Health Orbs grant 450 Armor, stacking up to 3x. Taking damage will consume a stack after 3s."
   },
-  "Heartseeker": {
-    "name": "Heartseeker",
-    "type": "Daggers",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "Lock onto targets within 1m, but reduces blocking effectiveness.\r\n-50% Damage Block"
-  },
   "Hearty Nourishment": {
     "name": "Hearty Nourishment",
     "type": "Grendel",
@@ -5961,25 +5587,6 @@
     "base_drain": 2,
     "impact_pct": 0.9,
     "effect_raw": "+90% <DT_IMPACT_COLOR>Impact"
-  },
-  "Heavy Warhead": {
-    "name": "Heavy Warhead",
-    "type": "Pistol",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "blast_pct": 1.0,
-    "effect_raw": "+100% Blast Radius\r\n-50% Projectile Speed"
-  },
-  "Heightened Reflexes": {
-    "name": "Heightened Reflexes",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+20% Casting Speed\r\n-20% Ability Efficiency"
   },
   "Hell's Chamber": {
     "name": "Hell's Chamber",
@@ -6037,7 +5644,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Hit And Run": {
     "name": "Hit And Run",
@@ -6065,7 +5673,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_damage_pct": 0.6,
-    "effect_raw": "+60% Critical Damage\r\n-15% Damage"
+    "effect_raw": "+60% Critical Damage\r\n-15% Damage",
+    "damage_bonus_pct": -0.15
   },
   "Hollowed Bullets": {
     "name": "Hollowed Bullets",
@@ -6204,24 +5813,6 @@
     "base_drain": 6,
     "effect_raw": "Invisibility Augment: Weapon noise is reduced by 100% while invisible."
   },
-  "Hydraulic Barrel": {
-    "name": "Hydraulic Barrel",
-    "type": "Pistol",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-40% Weapon Recoil\r\n-20% Magazine Capacity"
-  },
-  "Hydraulic Chamber": {
-    "name": "Hydraulic Chamber",
-    "type": "Shotgun",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-60% Weapon Recoil\r\n-10% Magazine Capacity"
-  },
   "Hydraulic Crosshairs": {
     "name": "Hydraulic Crosshairs",
     "type": "Pistol",
@@ -6231,15 +5822,6 @@
     "base_drain": 2,
     "crit_chance_pct": 1.35,
     "effect_raw": "On Headshot:\r\n+135% Critical Chance when Aiming for 9s"
-  },
-  "Hydraulic Gauge": {
-    "name": "Hydraulic Gauge",
-    "type": "Assault Rifle",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-60% Weapon Recoil\r\n-10% Magazine Capacity"
   },
   "Hyperion Thrusters": {
     "name": "Hyperion Thrusters",
@@ -6267,7 +5849,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Hysteria": {
     "name": "Hysteria",
@@ -6323,7 +5906,8 @@
     "max_rank": 3,
     "base_drain": 6,
     "cold_pct": 0.4,
-    "effect_raw": "+40% Magazine Capacity\r\n+40% <DT_FREEZE_COLOR>Cold"
+    "effect_raw": "+40% Magazine Capacity\r\n+40% <DT_FREEZE_COLOR>Cold",
+    "magazine_pct": 0.4
   },
   "Ice Wave Impedance": {
     "name": "Ice Wave Impedance",
@@ -6359,7 +5943,8 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+50% Status Damage"
+    "effect_raw": "+50% Status Damage",
+    "status_damage_pct": 0.5
   },
   "Immuno Shield": {
     "name": "Immuno Shield",
@@ -6369,25 +5954,6 @@
     "max_rank": 3,
     "base_drain": 0,
     "effect_raw": "Gain 15% Disinfection and gain 5000 Affinity"
-  },
-  "Impaler Munitions": {
-    "name": "Impaler Munitions",
-    "type": "Pistol",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_PUNCTURE_COLOR>Puncture"
-  },
-  "Impenetrable Offense": {
-    "name": "Impenetrable Offense",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "damage_bonus_pct": 0.3,
-    "effect_raw": "+30% Damage Block\r\n-10% Melee Damage"
   },
   "Incendiary Coat": {
     "name": "Incendiary Coat",
@@ -6444,7 +6010,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Infested Impedance": {
     "name": "Infested Impedance",
@@ -6480,7 +6047,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 0,
-    "effect_raw": "Gain 15% Disinfection and gain 10,000 H\ufffdllars"
+    "effect_raw": "Gain 15% Disinfection and gain 10,000 H�llars"
   },
   "Insulation": {
     "name": "Insulation",
@@ -6563,7 +6130,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Iron Phoenix": {
     "name": "Iron Phoenix",
@@ -6682,7 +6250,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Jugulus Barbs": {
     "name": "Jugulus Barbs",
@@ -6692,7 +6261,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "puncture_pct": 0.9,
-    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance"
+    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Jugulus Carapace": {
     "name": "Jugulus Carapace",
@@ -6711,7 +6281,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "puncture_pct": 0.9,
-    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance"
+    "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Juice": {
     "name": "Juice",
@@ -6775,15 +6346,6 @@
     "max_rank": 3,
     "base_drain": 4,
     "effect_raw": "Enemies have a 12% chance to drop a Universal Orb on death."
-  },
-  "Kill Switch": {
-    "name": "Kill Switch",
-    "type": "Shotgun",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n+50% Reload Speed for 3s"
   },
   "Killing Blow": {
     "name": "Killing Blow",
@@ -6867,15 +6429,6 @@
     "crit_chance_pct": 1.2,
     "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 9s"
   },
-  "Lashing Coil": {
-    "name": "Lashing Coil",
-    "type": "Whips",
-    "polarity": "Zenurik",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Lashta-Vak": {
     "name": "Lashta-Vak",
     "type": "Antique",
@@ -6884,15 +6437,6 @@
     "max_rank": 5,
     "base_drain": 0,
     "effect_raw": "Void Sling emits a pulse that breaks Containers within 12 m\r\n+2m bonus for each Mod from a unique School"
-  },
-  "Last Herald": {
-    "name": "Last Herald",
-    "type": "Sword And Shield",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Lasting Covenant": {
     "name": "Lasting Covenant",
@@ -6958,17 +6502,8 @@
     "max_rank": 5,
     "base_drain": 6,
     "fire_rate_pct": 0.6,
-    "effect_raw": "+60% Fire Rate\r\n+60% Multishot"
-  },
-  "Lie In Wait": {
-    "name": "Lie In Wait",
-    "type": "Sniper",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 10,
-    "fire_rate_pct": 0.2,
-    "effect_raw": "+20% Fire Rate when Crouching\r\n+100% Weapon Recoil"
+    "effect_raw": "+60% Fire Rate\r\n+60% Multishot",
+    "multishot_pct": 0.6
   },
   "Life Strike": {
     "name": "Life Strike",
@@ -7053,26 +6588,6 @@
     "base_drain": 0,
     "effect_raw": "Shock enemies within 20m while Hacking"
   },
-  "Loaded Capacity": {
-    "name": "Loaded Capacity",
-    "type": "Shotgun",
-    "polarity": "Naramon",
-    "rarity": "Common",
-    "max_rank": 5,
-    "base_drain": 4,
-    "magazine_pct": 0.3,
-    "effect_raw": "+30% Magazine Capacity\r\n-15% Reload Speed"
-  },
-  "Lock and Load": {
-    "name": "Lock and Load",
-    "type": "Shotgun",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "magazine_pct": 0.2,
-    "effect_raw": "+20% Magazine Reloaded/s when Holstered"
-  },
   "Lohk": {
     "name": "Lohk",
     "type": "Parazon",
@@ -7091,33 +6606,6 @@
     "base_drain": 4,
     "fire_rate_pct": 0.3,
     "effect_raw": "Killing enemies grants Allies within Affinity Range +30% Fire Rate for 15s."
-  },
-  "Loose Chamber": {
-    "name": "Loose Chamber",
-    "type": "Shotgun",
-    "polarity": "Naramon",
-    "rarity": "Common",
-    "max_rank": 5,
-    "base_drain": 4,
-    "effect_raw": "+30% Reload Speed\r\n+50% Weapon Recoil"
-  },
-  "Loose Hatch": {
-    "name": "Loose Hatch",
-    "type": "Assault Rifle",
-    "polarity": "Naramon",
-    "rarity": "Common",
-    "max_rank": 5,
-    "base_drain": 4,
-    "effect_raw": "+30% Reload Speed\r\n+50% Weapon Recoil"
-  },
-  "Loose Magazine": {
-    "name": "Loose Magazine",
-    "type": "Pistol",
-    "polarity": "Naramon",
-    "rarity": "Common",
-    "max_rank": 5,
-    "base_drain": 4,
-    "effect_raw": "+50% Reload Speed\r\n+50% Weapon Recoil"
   },
   "Loot Detector": {
     "name": "Loot Detector",
@@ -7173,15 +6661,6 @@
     "base_drain": 2,
     "effect_raw": "13% chance to double Credit and Resource pickups"
   },
-  "Lucky Shot": {
-    "name": "Lucky Shot",
-    "type": "Rifle",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "+40% Projectile Speed\r\n-2% Accuracy"
-  },
   "Mach Crash": {
     "name": "Mach Crash",
     "type": "Gauss",
@@ -7208,15 +6687,6 @@
     "max_rank": 0,
     "base_drain": 0,
     "effect_raw": "Ensures transmuted mod is of Madurai polarity and eliminates credit cost."
-  },
-  "Mafic Rain": {
-    "name": "Mafic Rain",
-    "type": "Nunchaku",
-    "polarity": "Vazarin",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Mag Locks": {
     "name": "Mag Locks",
@@ -7264,7 +6734,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Magnetic Capacity": {
     "name": "Magnetic Capacity",
@@ -7274,7 +6745,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Magazine Capacity"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Magazine Capacity",
+    "magazine_pct": 0.4
   },
   "Magnetic Claws": {
     "name": "Magnetic Claws",
@@ -7294,7 +6766,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage",
+    "crit_damage_pct": 0.4
   },
   "Magnetic Rush": {
     "name": "Magnetic Rush",
@@ -7304,7 +6777,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+20% Attack Speed"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+20% Attack Speed",
+    "fire_rate_pct": 0.2
   },
   "Magnetic Strafe": {
     "name": "Magnetic Strafe",
@@ -7314,7 +6788,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate",
+    "fire_rate_pct": 0.4
   },
   "Magnetic Strike": {
     "name": "Magnetic Strike",
@@ -7342,7 +6817,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Critical Damage",
+    "crit_damage_pct": 0.4
   },
   "Magnetized Cycle": {
     "name": "Magnetized Cycle",
@@ -7352,7 +6828,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate"
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate",
+    "fire_rate_pct": 0.3
   },
   "Magnetized Discharge": {
     "name": "Magnetized Discharge",
@@ -7419,7 +6896,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Manifold Bond": {
     "name": "Manifold Bond",
@@ -7447,16 +6925,6 @@
     "max_rank": 5,
     "base_drain": 6,
     "effect_raw": "+120% Status Chance when Aiming"
-  },
-  "Martial Fury": {
-    "name": "Martial Fury",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "fire_rate_pct": 0.2,
-    "effect_raw": "+20% Attack Speed\r\n-50% Energy Rate"
   },
   "Martyr Symbiosis": {
     "name": "Martyr Symbiosis",
@@ -7502,26 +6970,6 @@
     "max_rank": 10,
     "base_drain": 4,
     "effect_raw": "+330% Melee Damage"
-  },
-  "Maximum Capacity": {
-    "name": "Maximum Capacity",
-    "type": "Assault Rifle",
-    "polarity": "Naramon",
-    "rarity": "Common",
-    "max_rank": 5,
-    "base_drain": 4,
-    "magazine_pct": 0.3,
-    "effect_raw": "+30% Magazine Capacity\r\n-15% Reload Speed"
-  },
-  "Measured Burst": {
-    "name": "Measured Burst",
-    "type": "Tiberon",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "damage_bonus_pct": 0.3,
-    "effect_raw": "When Aiming:\r\n-60% Fire Rate\r\n+30% Damage"
   },
   "Mecha Empowered": {
     "name": "Mecha Empowered",
@@ -7584,7 +7032,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+60% Heavy Attack Wind Up Speed"
+    "effect_raw": "+90% Status Damage\r\n+60% Heavy Attack Wind Up Speed",
+    "status_damage_pct": 0.9
   },
   "Melee Guidance": {
     "name": "Melee Guidance",
@@ -7602,7 +7051,8 @@
     "rarity": "Common",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance"
+    "effect_raw": "+90% Status Chance",
+    "status_chance_pct": 0.9
   },
   "Mending Shot": {
     "name": "Mending Shot",
@@ -7724,15 +7174,6 @@
     "impact_pct": 0.9,
     "effect_raw": "+90% <DT_IMPACT_COLOR>Impact"
   },
-  "Meteor Munitions": {
-    "name": "Meteor Munitions",
-    "type": "Pistol",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_IMPACT_COLOR>Impact"
-  },
   "Meticulous Aim": {
     "name": "Meticulous Aim",
     "type": "Vulkar",
@@ -7777,7 +7218,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+60% Status Chance"
+    "effect_raw": "+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Molecular Conversion": {
     "name": "Molecular Conversion",
@@ -7807,15 +7249,6 @@
     "heat_pct": 0.9,
     "effect_raw": "+90% <DT_FIRE_COLOR>Heat"
   },
-  "Momentary Pause": {
-    "name": "Momentary Pause",
-    "type": "Shotgun",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n+15 Heal Rate for 10s\r\n-25% from Health Orbs"
-  },
   "Momentous Bond": {
     "name": "Momentous Bond",
     "type": "Companion",
@@ -7833,16 +7266,6 @@
     "max_rank": 3,
     "base_drain": 6,
     "effect_raw": "+20% Ability Strength"
-  },
-  "Mortal Conduct": {
-    "name": "Mortal Conduct",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "damage_bonus_pct": 0.6,
-    "effect_raw": "At Less than 50 Health:\r\n+60% Damage taken is reflected when Blocking attacks while Channeling for 8s"
   },
   "Motus Impact": {
     "name": "Motus Impact",
@@ -8295,15 +7718,6 @@
     "base_drain": 6,
     "effect_raw": "Null Star Augment: Particles deal 240 <DT_FIRE_COLOR>Heat Damage with guaranteed Status effect in 8m. On recast, remaining particles seek out enemies with doubled search radius."
   },
-  "Night Stalker": {
-    "name": "Night Stalker",
-    "type": "Pistol",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 5,
-    "base_drain": 2,
-    "effect_raw": "On Hit:\r\nReveals target on Minimap for +6s."
-  },
   "Nightwatch Napalm": {
     "name": "Nightwatch Napalm",
     "type": "Ogris",
@@ -8329,7 +7743,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Melee Damage\r\n+60% Status Chance"
+    "effect_raw": "+90% Melee Damage\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Nira's Hatred": {
     "name": "Nira's Hatred",
@@ -8349,15 +7764,6 @@
     "base_drain": 4,
     "effect_raw": "+30% K-Drive Boost Speed"
   },
-  "No Current Leap": {
-    "name": "No Current Leap",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "+10% Mobility\r\n0 Energy Rate"
-  },
   "No Return": {
     "name": "No Return",
     "type": "Pistol",
@@ -8367,15 +7773,6 @@
     "base_drain": 2,
     "puncture_pct": 0.9,
     "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture"
-  },
-  "Noble Cadence": {
-    "name": "Noble Cadence",
-    "type": "Heavy Blade",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "North Wind": {
     "name": "North Wind",
@@ -8505,24 +7902,6 @@
     "base_drain": 0,
     "effect_raw": "Blinds enemies within 18m on Mercy Kill"
   },
-  "Overcharge Detectors": {
-    "name": "Overcharge Detectors",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 5,
-    "base_drain": 2,
-    "effect_raw": "Exposes enemies at maximum Energy Capacity within 30m."
-  },
-  "Overcharged": {
-    "name": "Overcharged",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 5,
-    "base_drain": 10,
-    "effect_raw": "On Respawn:\r\nConverts up to 50 Energy to Overshields at a rate of 100%."
-  },
   "Overextended": {
     "name": "Overextended",
     "type": "Warframe",
@@ -8540,15 +7919,6 @@
     "max_rank": 3,
     "base_drain": 2,
     "effect_raw": "+50% Maximum Ordnance Munitions"
-  },
-  "Overview": {
-    "name": "Overview",
-    "type": "Assault Rifle",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 5,
-    "base_drain": 2,
-    "effect_raw": "-60% Zoom while Aim Gliding"
   },
   "Pacifying Bolts": {
     "name": "Pacifying Bolts",
@@ -8806,15 +8176,6 @@
     "puncture_pct": 1.2,
     "effect_raw": "+120% <DT_PUNCTURE_COLOR>Puncture"
   },
-  "Piercing Fury": {
-    "name": "Piercing Fury",
-    "type": "Daggers",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Piercing Hit": {
     "name": "Piercing Hit",
     "type": "Rifle",
@@ -8915,7 +8276,9 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+60% Reload Speed"
+    "effect_raw": "+90% Status Damage\r\n+60% Reload Speed",
+    "status_damage_pct": 0.9,
+    "reload_speed_pct": 0.6
   },
   "Pistol Gambit": {
     "name": "Pistol Gambit",
@@ -8935,7 +8298,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Pistol Scavenger": {
     "name": "Pistol Scavenger",
@@ -8945,15 +8309,6 @@
     "max_rank": 5,
     "base_drain": -2,
     "effect_raw": "Squad receives +150% Pistol Ammo Recovery"
-  },
-  "Plan B": {
-    "name": "Plan B",
-    "type": "Bow",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Hit:\r\n+20% Secondary Weapon Fire Rate for 3s"
   },
   "Point Blank": {
     "name": "Point Blank",
@@ -9103,15 +8458,6 @@
     "max_rank": 5,
     "base_drain": 6,
     "effect_raw": "+90% Ability Strength for your 4th Ability"
-  },
-  "Precision Munition": {
-    "name": "Precision Munition",
-    "type": "Tonkor",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 0,
-    "base_drain": 10,
-    "effect_raw": "+100% Accuracy\r\n+50% Projectile Speed"
   },
   "Precision Strike": {
     "name": "Precision Strike",
@@ -9873,15 +9219,6 @@
     "base_drain": 6,
     "effect_raw": "Prismatic Gem Augment: The gem now attaches to your free-moving companion. \r\nPassive : +50% Prismatic Gem Duration."
   },
-  "Prize Kill": {
-    "name": "Prize Kill",
-    "type": "Shotgun",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n-100% Shield Recharge Delay for 10s\r\n-25% from Health Orbs"
-  },
   "Proboscis": {
     "name": "Proboscis",
     "type": "Helminth Charger",
@@ -9943,7 +9280,8 @@
     "rarity": "Uncommon",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "During a Wall Latch gain +120% Status Chance and Critical Chance."
+    "effect_raw": "During a Wall Latch gain +120% Status Chance and Critical Chance.",
+    "status_chance_pct": 1.2
   },
   "Proton Pulse": {
     "name": "Proton Pulse",
@@ -10020,15 +9358,6 @@
     "base_drain": 6,
     "effect_raw": "Fire Walker Augment: Accumulate 250% of the damage Fire Walker deals, unleashing it in a trail of fire that lasts 10s."
   },
-  "Quaking Hand": {
-    "name": "Quaking Hand",
-    "type": "Fists",
-    "polarity": "Unairu",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Quasar Drill": {
     "name": "Quasar Drill",
     "type": "Archgun",
@@ -10038,15 +9367,6 @@
     "base_drain": 2,
     "puncture_pct": 0.9,
     "effect_raw": "+90% <DT_PUNCTURE_COLOR>Puncture"
-  },
-  "Quick Charge": {
-    "name": "Quick Charge",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-20% Shield Recharge Delay\r\n-20 Shield Capacity"
   },
   "Quick Correct": {
     "name": "Quick Correct",
@@ -10140,7 +9460,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Reload Speed"
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Reload Speed",
+    "reload_speed_pct": 0.4
   },
   "Radon Claws": {
     "name": "Radon Claws",
@@ -10150,7 +9471,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+80% Critical Damage"
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+80% Critical Damage",
+    "crit_damage_pct": 0.8
   },
   "Rage": {
     "name": "Rage",
@@ -10226,15 +9548,6 @@
     "base_drain": 6,
     "electricity_pct": 0.7,
     "effect_raw": "Razor Gyre Augment: Groups enemies together, while Lethal Progeny's Ortholysts focus fire on those enemies with +70% <DT_ELECTRICITY_COLOR>Electricity Damage and Fire Rate for 6s."
-  },
-  "Razor Munitions": {
-    "name": "Razor Munitions",
-    "type": "Pistol",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_SLASH_COLOR>Slash"
   },
   "Razor Shot": {
     "name": "Razor Shot",
@@ -10336,24 +9649,6 @@
     "base_drain": 6,
     "effect_raw": "Crystallize Augment: Enemies killed by crystalline growths stagger and spread the crystals to enemies within 16m."
   },
-  "Recover": {
-    "name": "Recover",
-    "type": "Assault Rifle",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n+15 Heal Rate for 10s\r\n-25% from Health Orbs"
-  },
-  "Recuperate": {
-    "name": "Recuperate",
-    "type": "Pistol",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n+15 Heal Rate for 10s\r\n-25% from Health Orbs"
-  },
   "Redirection": {
     "name": "Redirection",
     "type": "Warframe",
@@ -10398,15 +9693,6 @@
     "max_rank": 5,
     "base_drain": 0,
     "effect_raw": "Generates a shield that reflects 90% Damage taken in pulses over 10s as <DT_MAGNETIC_COLOR>Magnetic Damage in a 12m radius."
-  },
-  "Reflex Draw": {
-    "name": "Reflex Draw",
-    "type": "Pistol",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 4,
-    "effect_raw": "On Equip: \r\n-40% Weapon Recoil and +40% Accuracy for 8s"
   },
   "Reflex Guard": {
     "name": "Reflex Guard",
@@ -10462,15 +9748,6 @@
     "base_drain": -2,
     "effect_raw": "Squad receives +3 Health Regen/s"
   },
-  "Relentless Assault": {
-    "name": "Relentless Assault",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n+2 Energy Rate for 4s"
-  },
   "Relentless Combination": {
     "name": "Relentless Combination",
     "type": "Melee",
@@ -10509,15 +9786,6 @@
     "base_drain": 4,
     "slash_pct": 0.18,
     "effect_raw": "+18% to Bullet Jump\r\n+18% Aim Glide/Wall Latch Duration\r\n+60% <DT_SLASH_COLOR>Slash on Bullet Jump"
-  },
-  "Rending Wind": {
-    "name": "Rending Wind",
-    "type": "Machetes",
-    "polarity": "Zenurik",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Repair Dispensary": {
     "name": "Repair Dispensary",
@@ -10709,7 +9977,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance"
+    "effect_raw": "+90% Status Chance",
+    "status_chance_pct": 0.9
   },
   "Rifle Elementalist": {
     "name": "Rifle Elementalist",
@@ -10718,7 +9987,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+90% Status Damage\r\n+0.6 Punch Through"
+    "effect_raw": "+90% Status Damage\r\n+0.6 Punch Through",
+    "status_damage_pct": 0.9
   },
   "Rifle Scavenger": {
     "name": "Rifle Scavenger",
@@ -10764,16 +10034,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
-  },
-  "Rime Vault": {
-    "name": "Rime Vault",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 0,
-    "base_drain": 0,
-    "effect_raw": "Ice FX on Bullet Jump"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Ripload": {
     "name": "Ripload",
@@ -10783,15 +10045,6 @@
     "max_rank": 5,
     "base_drain": 6,
     "effect_raw": "-42% Ordnance Reload Time"
-  },
-  "Ripper Rounds": {
-    "name": "Ripper Rounds",
-    "type": "Rifle",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_PUNCTURE_COLOR>Puncture"
   },
   "Ris": {
     "name": "Ris",
@@ -10810,24 +10063,6 @@
     "max_rank": 3,
     "base_drain": 10,
     "effect_raw": "Alternate Fire increases Ability Duration by 4% for 20s for each enemy hit. Stacks up to 15 times."
-  },
-  "Rising Skill": {
-    "name": "Rising Skill",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "+10% Mobility\r\n-30 Shield Capacity"
-  },
-  "Rising Steel": {
-    "name": "Rising Steel",
-    "type": "Swords",
-    "polarity": "Unairu",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
   },
   "Rising Storm": {
     "name": "Rising Storm",
@@ -10960,7 +10195,8 @@
     "base_drain": 6,
     "faction_bonus": 0.33,
     "faction_target": "sentients",
-    "effect_raw": "+220% Critical Chance (x2 for Heavy Attacks)\r\nx1.33 Damage to Sentients"
+    "effect_raw": "+220% Critical Chance (x2 for Heavy Attacks)\r\nx1.33 Damage to Sentients",
+    "crit_chance_pct": 2.2
   },
   "Safeguard": {
     "name": "Safeguard",
@@ -11052,7 +10288,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "impact_pct": 0.9,
-    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance"
+    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Saxum Thorax": {
     "name": "Saxum Thorax",
@@ -11062,7 +10299,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "impact_pct": 0.9,
-    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance"
+    "effect_raw": "+90% <DT_IMPACT_COLOR>Impact\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Scan Aquatic Lifeforms": {
     "name": "Scan Aquatic Lifeforms",
@@ -11082,15 +10320,6 @@
     "base_drain": 0,
     "effect_raw": "Reveals resource containers and mineral deposits within 60m. Automatically breaks containers and collects resources every 3s."
   },
-  "Scarlet Hurricane": {
-    "name": "Scarlet Hurricane",
-    "type": "Claws",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Scattered Justice": {
     "name": "Scattered Justice",
     "type": "Hek",
@@ -11109,7 +10338,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Scavenge": {
     "name": "Scavenge",
@@ -11128,7 +10358,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Scourging Warheads": {
     "name": "Scourging Warheads",
@@ -11139,15 +10370,6 @@
     "base_drain": 4,
     "effect_raw": "51% chance for Ordnance to ignore enemy Shields"
   },
-  "Searing Leap": {
-    "name": "Searing Leap",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 0,
-    "base_drain": 0,
-    "effect_raw": "Fire FX on Bullet Jump"
-  },
   "Searing Steel": {
     "name": "Searing Steel",
     "type": "Archmelee",
@@ -11156,16 +10378,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
-  },
-  "Secondary Wind": {
-    "name": "Secondary Wind",
-    "type": "Pistol",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n+50% Reload Speed for 4s"
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Section Density": {
     "name": "Section Density",
@@ -11219,7 +10433,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 6,
-    "effect_raw": "+15% Reload Speed\r\n+1.2 Punch Through"
+    "effect_raw": "+15% Reload Speed\r\n+1.2 Punch Through",
+    "reload_speed_pct": 0.15
   },
   "Seeking Shuriken": {
     "name": "Seeking Shuriken",
@@ -11321,7 +10536,8 @@
     "max_rank": 10,
     "base_drain": 4,
     "toxin_pct": 3.3,
-    "effect_raw": "+330% <DT_POISON_COLOR>Toxin\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_POISON_COLOR>Toxin damage"
+    "effect_raw": "+330% <DT_POISON_COLOR>Toxin\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_POISON_COLOR>Toxin damage",
+    "status_chance_pct": 3.3
   },
   "Sequence Burn": {
     "name": "Sequence Burn",
@@ -11341,24 +10557,6 @@
     "base_drain": 0,
     "effect_raw": "Stance: With his Restraint eroded, Baruuk commands the Desert Wind to deliver powerful radial strikes with his fists and feet. Each moment commanding the storm restores his Restraint."
   },
-  "Serrated Edges": {
-    "name": "Serrated Edges",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_PUNCTURE_COLOR>Puncture"
-  },
-  "Serrated Rounds": {
-    "name": "Serrated Rounds",
-    "type": "Rifle",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_SLASH_COLOR>Slash"
-  },
   "Serration": {
     "name": "Serration",
     "type": "Rifle",
@@ -11369,15 +10567,6 @@
     "damage_bonus_pct": 1.65,
     "effect_raw": "+165% Damage"
   },
-  "Shadow Harvest": {
-    "name": "Shadow Harvest",
-    "type": "Scythes",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Shadow Haze": {
     "name": "Shadow Haze",
     "type": "Sevagoth",
@@ -11386,15 +10575,6 @@
     "max_rank": 3,
     "base_drain": 6,
     "effect_raw": "Reap Augment: Increase Critical Chance by 50% on enemies inflicted with Death Harvest. A new Shadow emerges from those enemies when they perish. Limit of 3 Shadows."
-  },
-  "Sharpened Blade": {
-    "name": "Sharpened Blade",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_SLASH_COLOR>Slash"
   },
   "Sharpened Bullets": {
     "name": "Sharpened Bullets",
@@ -11467,7 +10647,8 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+90% Status Chance\r\n+1 'Justice'"
+    "effect_raw": "+90% Status Chance\r\n+1 'Justice'",
+    "status_chance_pct": 0.9
   },
   "Shattering Storm": {
     "name": "Shattering Storm",
@@ -11505,7 +10686,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Shelter": {
     "name": "Shelter",
@@ -11605,7 +10787,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Shock Trooper": {
     "name": "Shock Trooper",
@@ -11633,7 +10816,8 @@
     "max_rank": 10,
     "base_drain": 4,
     "electricity_pct": 3.3,
-    "effect_raw": "+330% <DT_ELECTRICITY_COLOR>Electricity\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_ELECTRICITY_COLOR>Electricity damage"
+    "effect_raw": "+330% <DT_ELECTRICITY_COLOR>Electricity\r\n+330% Status Chance\r\nConverts all elemental damage from these claws to <DT_ELECTRICITY_COLOR>Electricity damage",
+    "status_chance_pct": 3.3
   },
   "Shocking Touch": {
     "name": "Shocking Touch",
@@ -11709,7 +10893,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "magazine_pct": 0.6,
-    "effect_raw": "+90% Status Damage\r\n+60% Magazine Capacity"
+    "effect_raw": "+90% Status Damage\r\n+60% Magazine Capacity",
+    "status_damage_pct": 0.9
   },
   "Shotgun Savvy": {
     "name": "Shotgun Savvy",
@@ -11718,7 +10903,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance"
+    "effect_raw": "+90% Status Chance",
+    "status_chance_pct": 0.9
   },
   "Shotgun Scavenger": {
     "name": "Shotgun Scavenger",
@@ -11728,16 +10914,6 @@
     "max_rank": 5,
     "base_drain": -2,
     "effect_raw": "Squad receives +150% Shotgun Ammo Recovery"
-  },
-  "Shrapnel Rounds": {
-    "name": "Shrapnel Rounds",
-    "type": "Marelok",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 0,
-    "base_drain": 10,
-    "multishot_pct": 2.0,
-    "effect_raw": "+200% Multishot\r\n-66% Damage"
   },
   "Shrapnel Shot": {
     "name": "Shrapnel Shot",
@@ -11758,15 +10934,6 @@
     "base_drain": 6,
     "fire_rate_pct": 0.3,
     "effect_raw": "+30% Fire Rate (x2 for Bows)\r\n+1.2 Punch Through"
-  },
-  "Shred Shot": {
-    "name": "Shred Shot",
-    "type": "Shotgun",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "20% of Damage converted into <DT_PUNCTURE_COLOR>Puncture"
   },
   "Shredder": {
     "name": "Shredder",
@@ -11831,15 +10998,6 @@
     "max_rank": 3,
     "base_drain": -2,
     "effect_raw": "Strong, focused attacks with multi-hit spins."
-  },
-  "Skull Shots": {
-    "name": "Skull Shots",
-    "type": "Viper",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Headshot:\r\n+100% Ammo Efficiency for 2s"
   },
   "Slay Board": {
     "name": "Slay Board",
@@ -11951,15 +11109,6 @@
     "base_drain": 6,
     "effect_raw": "Smoke Screen Augment: Conceals allies within 15m and grants 150% Critical Chance while invisible."
   },
-  "Snap Shot": {
-    "name": "Snap Shot",
-    "type": "Shotgun",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "+20% Movement Speed when Aiming"
-  },
   "Sniper Ammo Mutation": {
     "name": "Sniper Ammo Mutation",
     "type": "Sniper",
@@ -11977,25 +11126,6 @@
     "max_rank": 5,
     "base_drain": -2,
     "effect_raw": "Squad receives +150% Sniper Rifle Ammo Recovery"
-  },
-  "Soaring Strike": {
-    "name": "Soaring Strike",
-    "type": "Bow",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "fire_rate_pct": 0.5,
-    "effect_raw": "+50% Fire Rate when Airborne"
-  },
-  "Soft Hands": {
-    "name": "Soft Hands",
-    "type": "Shotgun",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 4,
-    "effect_raw": "On Equip: \r\n-40% Weapon Recoil and +40% Accuracy for 8s"
   },
   "Soft Safe": {
     "name": "Soft Safe",
@@ -12143,7 +11273,8 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+100% Melee Damage\r\n-20% Attack Speed"
+    "effect_raw": "+100% Melee Damage\r\n-20% Attack Speed",
+    "fire_rate_pct": -0.2
   },
   "Spontaneous Singularity": {
     "name": "Spontaneous Singularity",
@@ -12163,15 +11294,6 @@
     "base_drain": 4,
     "effect_raw": "On Status Effect: +1 Range for 24s. Stacks up to 2 times."
   },
-  "Spring-Loaded Broadhead": {
-    "name": "Spring-Loaded Broadhead",
-    "type": "Daikyu",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 5,
-    "base_drain": 10,
-    "effect_raw": "Increase damage by +40%\r\nif the target is over 15m away."
-  },
   "Spring-Loaded Chamber": {
     "name": "Spring-Loaded Chamber",
     "type": "Assault Rifle",
@@ -12190,15 +11312,6 @@
     "max_rank": 5,
     "base_drain": -2,
     "effect_raw": "Squad receives +15% Sprint Speed"
-  },
-  "Spry Sights": {
-    "name": "Spry Sights",
-    "type": "Pistol",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "+20% Movement Speed when Aiming"
   },
   "Squad Renew": {
     "name": "Squad Renew",
@@ -12245,15 +11358,6 @@
     "base_drain": -2,
     "effect_raw": "Lunging spirals and shattering combos."
   },
-  "Stand Ground": {
-    "name": "Stand Ground",
-    "type": "Melee",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 5,
-    "base_drain": 4,
-    "effect_raw": "Blocking reduces damage taken from enemy abilities by 60%."
-  },
   "Stand United": {
     "name": "Stand United",
     "type": "Aura",
@@ -12263,15 +11367,6 @@
     "base_drain": -2,
     "effect_raw": "Squad receives +25% Armor"
   },
-  "Star Divide": {
-    "name": "Star Divide",
-    "type": "Tonfas",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Stasis Field": {
     "name": "Stasis Field",
     "type": "MOA",
@@ -12280,15 +11375,6 @@
     "max_rank": 5,
     "base_drain": 4,
     "effect_raw": "Creates a stasis field for 30s. While inside the field, all enemy projectiles move 90% slower and deal 60% less Damage."
-  },
-  "Static Alacrity": {
-    "name": "Static Alacrity",
-    "type": "Staticor",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "+50% Projectile Speed\r\n-50% Blast Radius"
   },
   "Static Discharge": {
     "name": "Static Discharge",
@@ -12373,15 +11459,6 @@
     "electricity_pct": 0.9,
     "effect_raw": "+90% <DT_ELECTRICITY_COLOR>Electricity"
   },
-  "Strafing Slide": {
-    "name": "Strafing Slide",
-    "type": "Pistol",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "effect_raw": "-20% Weapon Recoil\r\nand +20% Accuracy when Sliding"
-  },
   "Strain Consume": {
     "name": "Strain Consume",
     "type": "Warframe",
@@ -12463,7 +11540,9 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 6,
-    "effect_raw": "+40% Reload Speed\r\n+30% Status Chance"
+    "effect_raw": "+40% Reload Speed\r\n+30% Status Chance",
+    "status_chance_pct": 0.3,
+    "reload_speed_pct": 0.4
   },
   "Sudden Impact": {
     "name": "Sudden Impact",
@@ -12472,17 +11551,8 @@
     "rarity": "Common",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+60% Status Chance"
-  },
-  "Sudden Justice": {
-    "name": "Sudden Justice",
-    "type": "Sybaris",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "fire_rate_pct": 0.3,
-    "effect_raw": "On 2 Hits within 0.2s:\r\n+30% Fire Rate for 2s"
+    "effect_raw": "+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Summoner's Wrath": {
     "name": "Summoner's Wrath",
@@ -12546,7 +11616,8 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "+90% Status Chance"
+    "effect_raw": "+90% Status Chance",
+    "status_chance_pct": 0.9
   },
   "Surging Blades": {
     "name": "Surging Blades",
@@ -12565,15 +11636,6 @@
     "max_rank": 3,
     "base_drain": 6,
     "effect_raw": "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 8."
-  },
-  "Surplus Diverters": {
-    "name": "Surplus Diverters",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 5,
-    "base_drain": 10,
-    "effect_raw": "Gain +6 energy, upon replenishing shields completely after they have been deactivated."
   },
   "Survival Instinct": {
     "name": "Survival Instinct",
@@ -12666,15 +11728,6 @@
     "base_drain": -2,
     "effect_raw": "Quick slashes with spinning lunges."
   },
-  "Sword Alone": {
-    "name": "Sword Alone",
-    "type": "Melee",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "With Melee Equipped:\r\n+10% Mobility\r\n+30% Sprint Speed"
-  },
   "Synergized Prospectus": {
     "name": "Synergized Prospectus",
     "type": "Hound",
@@ -12739,25 +11792,6 @@
     "effect_raw": "+60% Reload Speed",
     "reload_speed_pct": 0.6
   },
-  "Tactical Reload": {
-    "name": "Tactical Reload",
-    "type": "Assault Rifle",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 6,
-    "magazine_pct": 0.2,
-    "effect_raw": "+20% Magazine Reloaded/s when Holstered"
-  },
-  "Tactical Retreat": {
-    "name": "Tactical Retreat",
-    "type": "Warframe",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Low Health:\r\n+10% Mobility for 4s"
-  },
   "Tainted Clip": {
     "name": "Tainted Clip",
     "type": "Pistol",
@@ -12766,16 +11800,8 @@
     "max_rank": 5,
     "base_drain": 6,
     "magazine_pct": 0.6,
-    "effect_raw": "+60% Magazine Capacity\r\n-30% Reload Speed"
-  },
-  "Tainted Hydra": {
-    "name": "Tainted Hydra",
-    "type": "Blade And Whip",
-    "polarity": "Madurai",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
+    "effect_raw": "+60% Magazine Capacity\r\n-30% Reload Speed",
+    "reload_speed_pct": -0.3
   },
   "Tainted Mag": {
     "name": "Tainted Mag",
@@ -12785,7 +11811,8 @@
     "max_rank": 10,
     "base_drain": 4,
     "magazine_pct": 0.66,
-    "effect_raw": "+66% Magazine Capacity\r\n-33% Reload Speed"
+    "effect_raw": "+66% Magazine Capacity\r\n-33% Reload Speed",
+    "reload_speed_pct": -0.33
   },
   "Tainted Shell": {
     "name": "Tainted Shell",
@@ -12794,7 +11821,8 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate"
+    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate",
+    "fire_rate_pct": -0.55
   },
   "Talsek-An": {
     "name": "Talsek-An",
@@ -12943,15 +11971,6 @@
     "crit_chance_pct": 1.5,
     "effect_raw": "+150% Critical Chance"
   },
-  "Tempered Bound": {
-    "name": "Tempered Bound",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 2,
-    "effect_raw": "-10% Mobility\r\n+30 Shield Capacity"
-  },
   "Tempo Royale": {
     "name": "Tempo Royale",
     "type": "Heavy Blade",
@@ -13078,7 +12097,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Thief's Wit": {
     "name": "Thief's Wit",
@@ -13134,15 +12154,6 @@
     "base_drain": 6,
     "effect_raw": "+30% Chance to Explode (Use with Caution)"
   },
-  "Thundermiter": {
-    "name": "Thundermiter",
-    "type": "Miter",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+100% chance charged Projectiles explode\r\n-60% Magazine Capacity"
-  },
   "Tidal Impunity": {
     "name": "Tidal Impunity",
     "type": "Hydroid",
@@ -13178,7 +12189,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Toxic Blight": {
     "name": "Toxic Blight",
@@ -13301,16 +12313,6 @@
     "ammo_max_pct": 0.9,
     "effect_raw": "+90% Ammo Maximum"
   },
-  "Triple Tap": {
-    "name": "Triple Tap",
-    "type": "Burston",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "damage_bonus_pct": 0.4,
-    "effect_raw": "On 2 Hits within 0.02s:\r\n+40% Damage for 0.2s"
-  },
   "Trojan Tracker": {
     "name": "Trojan Tracker",
     "type": "Parazon",
@@ -13375,15 +12377,6 @@
     "max_rank": 3,
     "base_drain": -2,
     "effect_raw": "A mix of sweeping attacks with precise strikes."
-  },
-  "Twitch": {
-    "name": "Twitch",
-    "type": "Rifle",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": 4,
-    "effect_raw": "On Equip: \r\n-40% Weapon Recoil and +40% Accuracy for 8s"
   },
   "Ubri-Kaneph": {
     "name": "Ubri-Kaneph",
@@ -13523,15 +12516,6 @@
     "max_rank": 3,
     "base_drain": 6,
     "effect_raw": "Grasp Of Lohk Augment: When a stolen weapon deals damage to an enemy affected by The Lost: Gaze or The Vast Untime, Xaku heals by 25."
-  },
-  "Vanquished Prey": {
-    "name": "Vanquished Prey",
-    "type": "Rifle",
-    "polarity": "Vazarin",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "On Kill:\r\n-100% Shield Recharge Delay for 10s\r\n-25% from Health Orbs"
   },
   "Vapor Trail": {
     "name": "Vapor Trail",
@@ -13676,7 +12660,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Venomous Clip": {
     "name": "Venomous Clip",
@@ -13687,15 +12672,6 @@
     "base_drain": 4,
     "toxin_pct": 1.2,
     "effect_raw": "+120% <DT_POISON_COLOR>Toxin"
-  },
-  "Venomous Rise": {
-    "name": "Venomous Rise",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 0,
-    "base_drain": 0,
-    "effect_raw": "Toxin FX on Bullet Jump"
   },
   "Vermillion Storm": {
     "name": "Vermillion Storm",
@@ -13715,15 +12691,6 @@
     "base_drain": 6,
     "effect_raw": "Vex Armor Augment: Taking 150 Damage will trigger a 9m burst. Shield damage will cause a <DT_PUNCTURE_COLOR>Puncture Status effect while Health damage will cause a <DT_EXPLOSION_COLOR>Blast Status effect."
   },
-  "Vicious Approach": {
-    "name": "Vicious Approach",
-    "type": "Sparring",
-    "polarity": "Naramon",
-    "rarity": "Uncommon",
-    "max_rank": 3,
-    "base_drain": -2,
-    "effect_raw": "Fighting form devised for Conclave."
-  },
   "Vicious Bond": {
     "name": "Vicious Bond",
     "type": "Companion",
@@ -13741,7 +12708,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "cold_pct": 0.6,
-    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FREEZE_COLOR>Cold\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Vicious Spread": {
     "name": "Vicious Spread",
@@ -13863,7 +12831,8 @@
     "max_rank": 5,
     "base_drain": 4,
     "fire_rate_pct": 0.9,
-    "effect_raw": "+90% Fire Rate (x2 for Bows)\r\n-15% Damage"
+    "effect_raw": "+90% Fire Rate (x2 for Bows)\r\n-15% Damage",
+    "damage_bonus_pct": -0.15
   },
   "Vile Discharge": {
     "name": "Vile Discharge",
@@ -13881,7 +12850,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)"
+    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)",
+    "fire_rate_pct": -0.36
   },
   "Viral Quills": {
     "name": "Viral Quills",
@@ -13890,7 +12860,8 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 0,
-    "effect_raw": "Launches 6 quills at enemies within 20m, each dealing 60 <DT_VIRAL_COLOR>Viral Damage with 40% Status Chance. If the target is affected by a Viral Status, a Spore is added. 4s cooldown."
+    "effect_raw": "Launches 6 quills at enemies within 20m, each dealing 60 <DT_VIRAL_COLOR>Viral Damage with 40% Status Chance. If the target is affected by a Viral Status, a Spore is added. 4s cooldown.",
+    "status_chance_pct": 0.4
   },
   "Virulent Scourge": {
     "name": "Virulent Scourge",
@@ -13900,7 +12871,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "toxin_pct": 0.6,
-    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_POISON_COLOR>Toxin\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Vital Sense": {
     "name": "Vital Sense",
@@ -13911,15 +12883,6 @@
     "base_drain": 2,
     "crit_damage_pct": 1.2,
     "effect_raw": "+120% Critical Damage"
-  },
-  "Vital Systems Bypass": {
-    "name": "Vital Systems Bypass",
-    "type": "Warframe",
-    "polarity": "Naramon",
-    "rarity": "Rare",
-    "max_rank": 3,
-    "base_drain": 10,
-    "effect_raw": "+1 Health Regen/s\r\n+50% Shield Recharge Delay"
   },
   "Vitality": {
     "name": "Vitality",
@@ -13992,7 +12955,8 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 2,
-    "effect_raw": "Shots have +3 Punch Through and barbs explode instantly. Barbs that strike enemies directly have +4m radius and +50% Status Chance."
+    "effect_raw": "Shots have +3 Punch Through and barbs explode instantly. Barbs that strike enemies directly have +4m radius and +50% Status Chance.",
+    "status_chance_pct": 0.5
   },
   "Volcanic Edge": {
     "name": "Volcanic Edge",
@@ -14002,7 +12966,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "heat_pct": 0.6,
-    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_FIRE_COLOR>Heat\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Voltage Sequence": {
     "name": "Voltage Sequence",
@@ -14013,15 +12978,6 @@
     "base_drain": 4,
     "effect_raw": "Killing a flying enemy creates a lightning trap from their remains, lasting 8s\r\n+1 'Sequence'"
   },
-  "Voltaic Lance": {
-    "name": "Voltaic Lance",
-    "type": "Warframe",
-    "polarity": "Madurai",
-    "rarity": "Rare",
-    "max_rank": 0,
-    "base_drain": 0,
-    "effect_raw": "Electrical FX on Bullet Jump"
-  },
   "Voltaic Strike": {
     "name": "Voltaic Strike",
     "type": "Melee",
@@ -14030,7 +12986,8 @@
     "max_rank": 3,
     "base_drain": 4,
     "electricity_pct": 0.6,
-    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance"
+    "effect_raw": "+60% <DT_ELECTRICITY_COLOR>Electricity\r\n+60% Status Chance",
+    "status_chance_pct": 0.6
   },
   "Vome": {
     "name": "Vome",
@@ -14195,7 +13152,8 @@
     "max_rank": 3,
     "base_drain": 6,
     "heat_pct": 0.2,
-    "effect_raw": "+20% Magazine Capacity\r\n+60% <DT_FIRE_COLOR>Heat"
+    "effect_raw": "+20% Magazine Capacity\r\n+60% <DT_FIRE_COLOR>Heat",
+    "magazine_pct": 0.2
   },
   "Winds of Purity": {
     "name": "Winds of Purity",

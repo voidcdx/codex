@@ -1,7 +1,7 @@
 import math
 from decimal import Decimal
 from src.enums import DamageType, FactionType
-from src.models import Weapon, Mod, Enemy, DamageComponent
+from src.models import Weapon, Mod, Enemy, DamageComponent, Buff, WeaponArcane
 from src.quantizer import quantize, quantize_components
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.scaling import scale_enemy_stats
@@ -158,6 +158,21 @@ def calculate_armor_multiplier(armor: float) -> float:
     return 300.0 / (300.0 + clamped)
 
 
+def status_chance_per_pellet(total_sc: float, pellet_count: int) -> float:
+    """Derive per-pellet status chance from total per-shot status chance.
+
+    Warframe formula: per_pellet = 1 - (1 - total_sc)^(1/pellet_count)
+    For single-pellet weapons (pellet_count=1) this returns total_sc unchanged.
+    """
+    if pellet_count <= 1:
+        return total_sc
+    if total_sc >= 1.0:
+        return 1.0
+    if total_sc <= 0.0:
+        return 0.0
+    return 1.0 - (1.0 - total_sc) ** (1.0 / pellet_count)
+
+
 class DamageCalculator:
     """Implements the 5-step Warframe damage pipeline.
 
@@ -186,20 +201,39 @@ class DamageCalculator:
         eximus: bool = False,          # Eximus unit
         combo_counter: int = 0,        # melee combo hit count; mult = 1 + 0.5×floor(count/5)
         unique_statuses: int = 0,      # unique active status types on enemy (for Condition Overload)
+        galvanized_stacks: int = 0,    # 0–5 galvanized mod kill-stacks active
+        buffs: list[Buff] | None = None,  # Warframe ability buffs
+        arcanes: list[WeaponArcane] | None = None,  # Weapon arcanes (Merciless, Deadhead, etc.)
     ) -> dict[DamageType, float]:
         """Return final per-trigger damage values after the full pipeline (includes multishot)."""
+        _buffs = buffs or []
+        _arcanes = arcanes or []
         base_damage = weapon.total_base_damage
 
-        # --- Collect mod bonuses ---
-        total_damage_bonus = sum(m.damage_bonus for m in mods)
+        # --- Collect buff bonuses ---
+        buff_faction_bonus = sum(b.faction_damage_bonus for b in _buffs)
+        buff_damage_mult = 1.0
+        for b in _buffs:
+            if b.damage_multiplier != 0.0:
+                buff_damage_mult *= (1.0 + b.damage_multiplier)
+
+        # --- Collect mod + arcane bonuses ---
+        arcane_damage_bonus = sum(a.damage_bonus for a in _arcanes)
+        total_damage_bonus = sum(m.damage_bonus for m in mods) + arcane_damage_bonus
         # Condition Overload: additive +N% per unique status type on enemy
         co_total = sum(m.condition_overload_bonus for m in mods) * unique_statuses
+        # Galvanized Aptitude/Savvy/Shot: +galv_kill_pct% damage per unique status type per stack
+        galv_aptitude_total = sum(
+            m.galv_kill_pct * min(galvanized_stacks, m.galv_max_stacks) * unique_statuses
+            for m in mods
+            if m.galv_kill_stat == "aptitude_damage_bonus"
+        )
         # Combo counter: multiplicative melee bonus, 1 + 0.5×floor(hits/5)
         combo_mult = 1.0 + 0.5 * math.floor(combo_counter / 5)
         faction_bonus = sum(
             m.faction_bonus for m in mods
             if m.faction_type == enemy.faction
-        )
+        ) + buff_faction_bonus
 
         # Collect elemental mods in slot order
         mod_elements: list[DamageComponent] = []
@@ -233,6 +267,11 @@ class DamageCalculator:
             for c in weapon.innate_elements
             if c.type not in PRIMARY_ELEMENTS
         ]
+        # Kuva/Tenet bonus element: player-chosen primary, treated as last innate primary
+        if weapon.bonus_element_type is not None and weapon.bonus_element_pct > 0.0:
+            scaled_innate_primary.append(
+                DamageComponent(weapon.bonus_element_type, base_damage * weapon.bonus_element_pct)
+            )
 
         combined_elements = combine_elements(
             scaled_mod_elements,
@@ -248,17 +287,38 @@ class DamageCalculator:
         )
 
         # --- Build full component list (IPS + elemental) ---
-        ips_components = [
-            DamageComponent(dt, amt)
-            for dt, amt in weapon.base_damage.items()
-        ]
+        # Flat damage from arcanes (Cascadia Overcharge): distribute proportionally among IPS types
+        arcane_flat = sum(a.flat_damage for a in _arcanes)
+        ips_components: list[DamageComponent] = []
+        if arcane_flat > 0.0 and base_damage > 0.0:
+            for dt, amt in weapon.base_damage.items():
+                ips_components.append(DamageComponent(dt, amt + arcane_flat * (amt / base_damage)))
+        else:
+            ips_components = [DamageComponent(dt, amt) for dt, amt in weapon.base_damage.items()]
 
         all_components = ips_components + elemental_components
 
+        # --- Buff elemental additions (Nourish adds to current hit; Xata's is separate) ---
+        separate_instance_buffs: list[Buff] = []
+        for b in _buffs:
+            if b.elemental_type is not None and b.elemental_bonus > 0.0:
+                if b.separate_instance:
+                    separate_instance_buffs.append(b)
+                else:
+                    all_components.append(DamageComponent(b.elemental_type, base_damage * b.elemental_bonus))
+
         # --- Step 1: Apply damage mods → modded base, then quantize ---
+        # IPS-specific bonuses (e.g. Rupture +Impact%, Jagged Edge +Slash%) stack additively
+        # with the general damage bonus but only for their respective damage type.
+        ips_bonus: dict[DamageType, float] = {}
+        for m in mods:
+            for comp in m.ips_bonuses:
+                ips_bonus[comp.type] = ips_bonus.get(comp.type, 0.0) + comp.amount
+
         modded: list[DamageComponent] = []
         for comp in all_components:
-            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + co_total) * combo_mult)
+            type_specific = ips_bonus.get(comp.type, 0.0)
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + type_specific + co_total + galv_aptitude_total) * combo_mult)
             q = quantize(float(raw), base_damage)
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
@@ -267,7 +327,12 @@ class DamageCalculator:
         effective_crit = crit_multiplier
         if is_crit_headshot and enemy.body_part_multiplier > 1.0:
             effective_crit = 1.0 + (crit_multiplier - 1.0) * 2.0
-        combined_mult = enemy.body_part_multiplier * effective_crit
+        # Deadhead arcane: headshot bonus adds to body part multiplier (headshot only)
+        body_part_mult = enemy.body_part_multiplier
+        if body_part_mult > 1.0:
+            arcane_hs_bonus = sum(a.headshot_bonus for a in _arcanes)
+            body_part_mult += arcane_hs_bonus
+        combined_mult = body_part_mult * effective_crit
         from src.quantizer import warframe_round as _wr
         after_bodypart: list[DamageComponent] = [
             DamageComponent(c.type, _wr(c.amount * combined_mult))
@@ -312,10 +377,37 @@ class DamageCalculator:
         for dtype, value in after_armor.items():
             final[dtype] = float(math.floor(value * (1.0 + faction_bonus)))
 
+        # --- Step 5.5: Ability damage multiplier (Eclipse, Vex Armor, Octavia) [math.floor] ---
+        if buff_damage_mult != 1.0:
+            final = {dtype: float(math.floor(v * buff_damage_mult)) for dtype, v in final.items()}
+
         # --- Step 6: Viral status proc multiplier [math.floor] ---
         viral_mult = VIRAL_STACK_MULTIPLIERS.get(min(viral_stacks, 10), 1.0)
         if viral_mult != 1.0:
             final = {dtype: float(math.floor(v * viral_mult)) for dtype, v in final.items()}
+
+        # --- Separate-instance buffs (Xata's Whisper Void): independent hit ---
+        # Double-dips on faction mods and headshot multiplier.
+        for b in separate_instance_buffs:
+            # Step 1: modded + quantize
+            void_raw = math.floor(base_damage * b.elemental_bonus * (1.0 + total_damage_bonus + co_total + galv_aptitude_total) * combo_mult)
+            void_q = quantize(float(void_raw), base_damage)
+            if void_q == 0.0:
+                continue
+            # Step 2: body part² (headshot double-dip) × crit
+            void_step2 = _wr(void_q * enemy.body_part_multiplier ** 2 * effective_crit)
+            # Step 3: type effectiveness
+            void_step3 = math.floor(void_step2 * self._type_multiplier(b.elemental_type, enemy.faction))
+            # Step 4: Void bypasses armor (no mitigation)
+            # Step 5: faction double-dip — (1 + faction_bonus)²
+            void_step5 = float(math.floor(void_step3 * (1.0 + faction_bonus) ** 2))
+            # Step 5.5: ability damage multiplier (Eclipse)
+            if buff_damage_mult != 1.0:
+                void_step5 = float(math.floor(void_step5 * buff_damage_mult))
+            # Step 6: viral stacks
+            if viral_mult != 1.0:
+                void_step5 = float(math.floor(void_step5 * viral_mult))
+            final[b.elemental_type] = final.get(b.elemental_type, 0.0) + void_step5
 
         # --- Multishot: multiply all damage by projectile count ---
         if multishot != 1.0:
@@ -331,21 +423,43 @@ class DamageCalculator:
         enemy: Enemy,
         crit_multiplier: float = 1.0,
         is_crit_headshot: bool = False,
+        unique_statuses: int = 0,
+        galvanized_stacks: int = 0,
+        buffs: list[Buff] | None = None,
+        arcanes: list[WeaponArcane] | None = None,
     ) -> dict[str, dict]:
         """Compute Slash (Bleed), Heat (Burn), Gas (Cloud), Toxin (Poison), and Electricity (Arc) proc damage per tick and total.
 
         Proc damage is based on Step-2 values (after body part + crit, before
         type effectiveness and armor).  Faction bonus double-dips: proc_dmg × (1+f)².
+        Ability buffs: faction-type (Roar) double-dips; general multipliers (Eclipse) apply once.
         """
         from src.quantizer import warframe_round as _wr
 
+        _buffs = buffs or []
+        _arcanes = arcanes or []
+        buff_faction_bonus = sum(b.faction_damage_bonus for b in _buffs)
+        buff_damage_mult = 1.0
+        for b in _buffs:
+            if b.damage_multiplier != 0.0:
+                buff_damage_mult *= (1.0 + b.damage_multiplier)
+
         base_damage = weapon.total_base_damage
 
-        total_damage_bonus = sum(m.damage_bonus for m in mods)
+        arcane_damage_bonus = sum(a.damage_bonus for a in _arcanes)
+        total_damage_bonus = sum(m.damage_bonus for m in mods) + arcane_damage_bonus
+        # Condition Overload: additive +N% per unique status type on enemy
+        co_total = sum(m.condition_overload_bonus for m in mods) * unique_statuses
+        galv_aptitude_total = sum(
+            m.galv_kill_pct * min(galvanized_stacks, m.galv_max_stacks) * unique_statuses
+            for m in mods
+            if m.galv_kill_stat == "aptitude_damage_bonus"
+        )
+        total_damage_bonus += galv_aptitude_total
         faction_bonus = sum(
             m.faction_bonus for m in mods
             if m.faction_type == enemy.faction
-        )
+        ) + buff_faction_bonus
         total_status_damage_bonus = sum(m.status_damage_bonus for m in mods)
 
         mod_elements: list[DamageComponent] = []
@@ -372,6 +486,12 @@ class DamageCalculator:
             for c in weapon.innate_elements
             if c.type not in PRIMARY_ELEMENTS
         ]
+        # Kuva/Tenet bonus element: player-chosen primary, treated as last innate primary
+        if weapon.bonus_element_type is not None and weapon.bonus_element_pct > 0.0:
+            scaled_innate_primary.append(
+                DamageComponent(weapon.bonus_element_type, base_damage * weapon.bonus_element_pct)
+            )
+
         combined_elements = combine_elements(
             scaled_mod_elements,
             scaled_innate_primary,
@@ -384,14 +504,30 @@ class DamageCalculator:
             + [c for c in mod_secondary if c.amount != 0.0]
         )
 
-        ips_components = [
-            DamageComponent(dt, amt) for dt, amt in weapon.base_damage.items()
-        ]
+        # Flat damage from arcanes (Cascadia Overcharge): distribute proportionally
+        arcane_flat = sum(a.flat_damage for a in _arcanes)
+        ips_components: list[DamageComponent] = []
+        if arcane_flat > 0.0 and base_damage > 0.0:
+            for dt, amt in weapon.base_damage.items():
+                ips_components.append(DamageComponent(dt, amt + arcane_flat * (amt / base_damage)))
+        else:
+            ips_components = [DamageComponent(dt, amt) for dt, amt in weapon.base_damage.items()]
         all_components = ips_components + elemental_components
+
+        # Buff elemental additions (Nourish adds to current hit; Xata's is separate instance — excluded)
+        for b in _buffs:
+            if b.elemental_type is not None and b.elemental_bonus > 0.0 and not b.separate_instance:
+                all_components.append(DamageComponent(b.elemental_type, base_damage * b.elemental_bonus))
+
+        ips_bonus: dict[DamageType, float] = {}
+        for m in mods:
+            for comp in m.ips_bonuses:
+                ips_bonus[comp.type] = ips_bonus.get(comp.type, 0.0) + comp.amount
 
         modded: list[DamageComponent] = []
         for comp in all_components:
-            raw = math.floor(comp.amount * (1.0 + total_damage_bonus))
+            type_specific = ips_bonus.get(comp.type, 0.0)
+            raw = math.floor(comp.amount * (1.0 + total_damage_bonus + type_specific + co_total))
             q = quantize(float(raw), base_damage)
             if q != 0.0:
                 modded.append(DamageComponent(comp.type, q))
@@ -399,7 +535,10 @@ class DamageCalculator:
         effective_crit = crit_multiplier
         if is_crit_headshot and enemy.body_part_multiplier > 1.0:
             effective_crit = 1.0 + (crit_multiplier - 1.0) * 2.0
-        combined_mult = enemy.body_part_multiplier * effective_crit
+        body_part_mult = enemy.body_part_multiplier
+        if body_part_mult > 1.0:
+            body_part_mult += sum(a.headshot_bonus for a in _arcanes)
+        combined_mult = body_part_mult * effective_crit
         after_step2: list[DamageComponent] = [
             DamageComponent(c.type, _wr(c.amount * combined_mult))
             for c in modded
@@ -425,12 +564,16 @@ class DamageCalculator:
                 "total_damage": 0.0,
             }
 
+        # General damage multiplier (Eclipse, Vex Armor, Octavia) applies once to procs
+        # (no double-dip). Faction-type buff bonus (Roar) is already in faction_bonus
+        # and double-dips via (1 + faction_bonus)².
+
         slash_active = DamageType.SLASH in types_present
-        slash_dpt = total_step2 * 0.35 * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
+        slash_dpt = total_step2 * 0.35 * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus) * buff_damage_mult
 
         heat_active = DamageType.HEAT in types_present
         heat_eff = FACTION_EFFECTIVENESS.get((enemy.faction, DamageType.HEAT), 1.0)
-        heat_dpt = total_step2 * 0.50 * heat_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
+        heat_dpt = total_step2 * 0.50 * heat_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus) * buff_damage_mult
 
         # Gas Cloud: ignores elemental/physical mods; scales with Gas mods, faction (×2),
         # status damage mods, crit, body part. No type effectiveness (wiki formula has none).
@@ -443,12 +586,13 @@ class DamageCalculator:
         )
         gas_dpt = (
             weapon.total_base_damage
-            * (1.0 + total_damage_bonus)
+            * (1.0 + total_damage_bonus + co_total)
             * (1.0 + faction_bonus) ** 2
             * 0.5
             * (1.0 + total_gas_bonus)
             * (1.0 + total_status_damage_bonus)
             * combined_mult
+            * buff_damage_mult
         )
 
         # Toxin (Poison): 50% of total step-2 damage × Toxin effectiveness vs health.
@@ -456,7 +600,7 @@ class DamageCalculator:
         # Source: wiki.warframe.com/w/Damage/Toxin_Damage
         toxin_active = DamageType.TOXIN in types_present
         toxin_eff = FACTION_EFFECTIVENESS.get((enemy.faction, DamageType.TOXIN), 1.0)
-        toxin_dpt = total_step2 * 0.50 * toxin_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
+        toxin_dpt = total_step2 * 0.50 * toxin_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus) * buff_damage_mult
 
         # Electricity (Tesla Chain): 50% of total step-2 damage × Electricity effectiveness.
         # Stuns target; AoE ticks enemies within 3m — on single target the proc'd enemy
@@ -465,7 +609,7 @@ class DamageCalculator:
         # Source: wiki.warframe.com/w/Damage/Electricity_Damage
         elec_active = DamageType.ELECTRICITY in types_present
         elec_eff = FACTION_EFFECTIVENESS.get((enemy.faction, DamageType.ELECTRICITY), 1.0)
-        elec_dpt = total_step2 * 0.50 * elec_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus)
+        elec_dpt = total_step2 * 0.50 * elec_eff * (1.0 + faction_bonus) ** 2 * (1.0 + total_status_damage_bonus) * buff_damage_mult
 
         return {
             "slash":       _proc(slash_active, slash_dpt, 6),
@@ -475,7 +619,7 @@ class DamageCalculator:
             "electricity": _proc(elec_active, elec_dpt, 6),
             # CC / debuff procs — no damage ticks
             "viral":     _cc_proc(DamageType.VIRAL in types_present,
-                                  "Health \u00d71.75\u2013\u00d74.25 (use viral_stacks param)"),
+                                  "Health Vulnr. \u00d71.75\u2013\u00d74.25"),
             "magnetic":  _cc_proc(DamageType.MAGNETIC in types_present,
                                   "+100% shield/OG dmg; forced Elec proc on shield break"),
             "radiation": _cc_proc(DamageType.RADIATION in types_present,

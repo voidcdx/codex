@@ -473,7 +473,8 @@
         "crit_multiplier": 1.7,
         "status_chance": 0.0616,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 18
       },
       {
         "name": "Second Heavy Attack - Toxic Spines",
@@ -489,7 +490,8 @@
         "crit_multiplier": 1.7,
         "status_chance": 0.123,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 9
       },
       {
         "name": "Slam Attack",
@@ -9413,7 +9415,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.01,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 12
       },
       {
         "name": "Second Heavy Attack - Ethereal Daggers",
@@ -9425,7 +9428,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.02,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 6
       },
       {
         "name": "Slam Attack",
@@ -9487,7 +9491,8 @@
         "crit_multiplier": 2.5,
         "status_chance": 0.01,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 18
       },
       {
         "name": "Second Heavy Attack - Ethereal Daggers",
@@ -9499,7 +9504,8 @@
         "crit_multiplier": 2.5,
         "status_chance": 0.02,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 9
       },
       {
         "name": "Slam Attack",
@@ -9662,7 +9668,8 @@
         "crit_multiplier": 1.8,
         "status_chance": 0.066,
         "fire_rate": 1.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       },
       {
         "name": "Slam Attack",
@@ -9723,7 +9730,8 @@
         "crit_multiplier": 2.2,
         "status_chance": 0.09,
         "fire_rate": 0.917,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       },
       {
         "name": "Slam Attack",
@@ -12422,7 +12430,8 @@
         "crit_multiplier": 1.7,
         "status_chance": 0.1033,
         "fire_rate": 1.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 9
       },
       {
         "name": "Slam Attack",
@@ -13973,7 +13982,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.2,
         "fire_rate": 1.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 7
       },
       {
         "name": "Base Charged Shot",
@@ -13986,7 +13996,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.2,
         "fire_rate": 1.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 7
       },
       {
         "name": "Concentrated Arrow Uncharged Shot",
@@ -14064,7 +14075,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.2,
         "fire_rate": 1.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 7
       },
       {
         "name": "Base Charged Shot",
@@ -14077,7 +14089,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.2,
         "fire_rate": 1.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 7
       },
       {
         "name": "Concentrated Arrow Uncharged Shot",
@@ -14325,7 +14338,8 @@
         "crit_multiplier": 4.8,
         "status_chance": 0.3,
         "fire_rate": 12.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.15,
@@ -14480,7 +14494,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.075,
         "fire_rate": 4.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 8
       },
       {
         "name": "Incarnon Form",
@@ -14524,7 +14539,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.1125,
         "fire_rate": 4.67,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 8
       },
       {
         "name": "Incarnon Form",
@@ -14581,7 +14597,8 @@
         "crit_multiplier": 2.8,
         "status_chance": 0.0933,
         "fire_rate": 10.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.1,
@@ -14626,7 +14643,8 @@
         "crit_multiplier": 3.0,
         "status_chance": 0.2,
         "fire_rate": 11.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.12,
@@ -14833,7 +14851,8 @@
         "crit_multiplier": 2.3,
         "status_chance": 0.0929,
         "fire_rate": 3.83,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 7
       },
       {
         "name": "Burst",
@@ -15082,7 +15101,8 @@
         "crit_multiplier": 2.4,
         "status_chance": 0.003,
         "fire_rate": 3.83,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       },
       {
         "name": "Alt-Fire Glaive",
@@ -15135,7 +15155,8 @@
         "crit_multiplier": 2.4,
         "status_chance": 0.02,
         "fire_rate": 4.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       },
       {
         "name": "Alt-Fire Glaive",
@@ -15236,7 +15257,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.3,
         "fire_rate": 1.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       },
       {
         "name": "Charged Horizontal/Vertical Shot",
@@ -15249,7 +15271,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.3,
         "fire_rate": 1.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.35,
@@ -15347,7 +15370,8 @@
         "crit_multiplier": 2.2,
         "status_chance": 0.4,
         "fire_rate": 1.67,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 6
       }
     ],
     "crit_chance": 0.18,
@@ -15489,7 +15513,8 @@
         "crit_multiplier": 2.4,
         "status_chance": 0.45,
         "fire_rate": 12.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       },
       {
         "name": "Alt-Fire",
@@ -15502,7 +15527,8 @@
         "crit_multiplier": 2.4,
         "status_chance": 0.45,
         "fire_rate": 16.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.16,
@@ -15535,7 +15561,8 @@
         "crit_multiplier": 2.8,
         "status_chance": 0.06,
         "fire_rate": 1.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       },
       {
         "name": "Air Burst Projectile",
@@ -15590,7 +15617,8 @@
         "crit_multiplier": 2.8,
         "status_chance": 0.09,
         "fire_rate": 1.42,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       },
       {
         "name": "Air Burst Projectile",
@@ -15868,7 +15896,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.063,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       },
       {
         "name": "Charged Shot",
@@ -15881,7 +15910,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.069,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.05,
@@ -15992,7 +16022,8 @@
         "crit_multiplier": 2.1,
         "status_chance": 0.0573,
         "fire_rate": 7.8334,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 11
       }
     ],
     "crit_chance": 0.20999999,
@@ -16084,7 +16115,8 @@
         "crit_multiplier": 1.4,
         "status_chance": 0.36,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.08,
@@ -16117,7 +16149,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.055,
         "fire_rate": 3.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 4
       },
       {
         "name": "Incarnon Form",
@@ -16679,7 +16712,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.107,
         "fire_rate": 2.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.1,
@@ -17038,7 +17072,8 @@
         "crit_multiplier": 2.3,
         "status_chance": 0.0625,
         "fire_rate": 3.67,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 12
       }
     ],
     "crit_chance": 0.11,
@@ -17134,7 +17169,8 @@
         "crit_multiplier": 2.1,
         "status_chance": 0.21,
         "fire_rate": 1.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       },
       {
         "name": "Cluster Bomb Explosion",
@@ -17145,7 +17181,8 @@
         "crit_multiplier": 2.1,
         "status_chance": 0.21,
         "fire_rate": 1.0,
-        "shot_type": "AoE"
+        "shot_type": "AoE",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.35,
@@ -17224,7 +17261,8 @@
         "crit_multiplier": 2.1,
         "status_chance": 0.09,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       },
       {
         "name": "Charged Shot",
@@ -17237,7 +17275,8 @@
         "crit_multiplier": 2.5,
         "status_chance": 0.09,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.19,
@@ -17270,7 +17309,8 @@
         "crit_multiplier": 2.1,
         "status_chance": 0.133,
         "fire_rate": 2.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       },
       {
         "name": "Alt-Fire",
@@ -17283,7 +17323,8 @@
         "crit_multiplier": 2.1,
         "status_chance": 0.0332,
         "fire_rate": 1.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 28
       }
     ],
     "crit_chance": 0.23,
@@ -17421,7 +17462,8 @@
         "crit_multiplier": 2.3,
         "status_chance": 0.075,
         "fire_rate": 4.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 12
       }
     ],
     "crit_chance": 0.19,
@@ -17547,7 +17589,8 @@
         "crit_multiplier": 2.3,
         "status_chance": 0.21,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 5
       }
     ],
     "crit_chance": 0.21,
@@ -17646,7 +17689,8 @@
         "crit_multiplier": 2.5,
         "status_chance": 0.31,
         "fire_rate": 2.17,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       },
       {
         "name": "Cannon Mode Cluster Bomb Explosion",
@@ -17657,7 +17701,8 @@
         "crit_multiplier": 2.5,
         "status_chance": 0.31,
         "fire_rate": 2.17,
-        "shot_type": "AoE"
+        "shot_type": "AoE",
+        "multishot": 3
       },
       {
         "name": "Barrage Mode",
@@ -17670,7 +17715,8 @@
         "crit_multiplier": 2.5,
         "status_chance": 0.097,
         "fire_rate": 2.17,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.25,
@@ -18158,7 +18204,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.06,
         "fire_rate": 2.08,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       },
       {
         "name": "Incarnon Form",
@@ -19111,7 +19158,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.155,
         "fire_rate": 12.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.19,
@@ -19145,7 +19193,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.222,
         "fire_rate": 12.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       },
       {
         "name": "Plasma Bomb Impact",
@@ -19178,7 +19227,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.37,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 5
       },
       {
         "name": "Cluster Bombs Explosion",
@@ -19223,7 +19273,8 @@
         "crit_multiplier": 1.9,
         "status_chance": 0.222,
         "fire_rate": 12.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       },
       {
         "name": "Plasma Bomb Impact",
@@ -19256,7 +19307,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.37,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 5
       },
       {
         "name": "Cluster Bombs Explosion",
@@ -19642,7 +19694,8 @@
         "crit_multiplier": 2.2,
         "status_chance": 0.24,
         "fire_rate": 12.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       },
       {
         "name": "Cube (direct hit)",
@@ -19705,7 +19758,8 @@
         "crit_multiplier": 2.4,
         "status_chance": 0.45,
         "fire_rate": 12.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       },
       {
         "name": "Cube (direct hit)",
@@ -19899,7 +19953,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.12,
         "fire_rate": 0.8,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 8
       }
     ],
     "crit_chance": 0.06,
@@ -20030,7 +20085,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.14,
         "fire_rate": 2.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       }
     ],
     "crit_chance": 0.15,
@@ -20397,7 +20453,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.162,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 5
       }
     ],
     "crit_chance": 0.11,
@@ -20443,7 +20500,8 @@
         "crit_multiplier": 3.0,
         "status_chance": 0.025,
         "fire_rate": 7.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 8
       }
     ],
     "crit_chance": 0.3,
@@ -20489,7 +20547,8 @@
         "crit_multiplier": 3.4,
         "status_chance": 0.03,
         "fire_rate": 7.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 8
       }
     ],
     "crit_chance": 0.3,
@@ -20752,7 +20811,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.05,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 12
       },
       {
         "name": "Incarnon Form",
@@ -20811,7 +20871,8 @@
         "crit_multiplier": 2.2,
         "status_chance": 0.0667,
         "fire_rate": 3.33,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 12
       },
       {
         "name": "Incarnon Form",
@@ -20870,7 +20931,8 @@
         "crit_multiplier": 2.2,
         "status_chance": 0.12,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       },
       {
         "name": "Incarnon Form",
@@ -21193,7 +21255,8 @@
         "crit_multiplier": 3.2,
         "status_chance": 0.1067,
         "fire_rate": 10.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.3,
@@ -21736,7 +21799,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.168,
         "fire_rate": 2.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 5
       }
     ],
     "crit_chance": 0.1,
@@ -21769,7 +21833,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.1125,
         "fire_rate": 2.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 8
       }
     ],
     "crit_chance": 0.1,
@@ -22029,7 +22094,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.107,
         "fire_rate": 3.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.25,
@@ -22309,7 +22375,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.2,
         "fire_rate": 1.67,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 6
       },
       {
         "name": "Cannon Mode Cluster Bomb Explosion",
@@ -22320,7 +22387,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.1,
         "fire_rate": 1.67,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 6
       },
       {
         "name": "Barrage Mode",
@@ -22333,7 +22401,8 @@
         "crit_multiplier": 2.5,
         "status_chance": 0.087,
         "fire_rate": 3.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.17,
@@ -22781,7 +22850,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.0314,
         "fire_rate": 5.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.06,
@@ -22814,7 +22884,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.1286,
         "fire_rate": 4.33,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.06,
@@ -23681,7 +23752,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.15,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 4
       },
       {
         "name": "Charged Shot",
@@ -23694,7 +23766,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.15,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 4
       }
     ],
     "crit_chance": 0.2,
@@ -23759,7 +23832,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.051,
         "fire_rate": 5.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.17,
@@ -23792,7 +23866,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.0943,
         "fire_rate": 4.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       },
       {
         "name": "Incarnon Form",
@@ -23805,7 +23880,8 @@
         "crit_multiplier": 3.0,
         "status_chance": 0.1886,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.06,
@@ -23838,7 +23914,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.1286,
         "fire_rate": 4.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       },
       {
         "name": "Incarnon Form",
@@ -23851,7 +23928,8 @@
         "crit_multiplier": 3.2,
         "status_chance": 0.2571,
         "fire_rate": 3.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.06,
@@ -24086,7 +24164,8 @@
         "crit_multiplier": 2.9,
         "status_chance": 0.43,
         "fire_rate": 12.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       },
       {
         "name": "Partial Reload Explosion",
@@ -24097,7 +24176,8 @@
         "crit_multiplier": 2.9,
         "status_chance": 0.43,
         "fire_rate": 12.0,
-        "shot_type": "AoE"
+        "shot_type": "AoE",
+        "multishot": 3
       },
       {
         "name": "Reload From Empty Impact",
@@ -24108,7 +24188,8 @@
         "crit_multiplier": 2.9,
         "status_chance": 0.59,
         "fire_rate": 12.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       },
       {
         "name": "Reload From Empty Explosion",
@@ -24119,7 +24200,8 @@
         "crit_multiplier": 2.9,
         "status_chance": 0.59,
         "fire_rate": 12.0,
-        "shot_type": "AoE"
+        "shot_type": "AoE",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.11,
@@ -24383,7 +24465,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.1286,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.04,
@@ -24831,7 +24914,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.09,
         "fire_rate": 1.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.3,
@@ -24919,7 +25003,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.123,
         "fire_rate": 1.5,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       }
     ],
     "crit_chance": 0.23,
@@ -25397,7 +25482,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.138,
         "fire_rate": 5.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 5
       }
     ],
     "crit_chance": 0.11,
@@ -25428,7 +25514,8 @@
         "crit_multiplier": 1.8,
         "status_chance": 0.3,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 4
       },
       {
         "name": "Explosion",
@@ -25439,7 +25526,8 @@
         "crit_multiplier": 1.8,
         "status_chance": 0.3,
         "fire_rate": 3.33,
-        "shot_type": "AoE"
+        "shot_type": "AoE",
+        "multishot": 4
       }
     ],
     "crit_chance": 0.06,
@@ -25470,7 +25558,8 @@
         "crit_multiplier": 1.8,
         "status_chance": 0.36,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 4
       },
       {
         "name": "Explosion",
@@ -25481,7 +25570,8 @@
         "crit_multiplier": 1.8,
         "status_chance": 0.36,
         "fire_rate": 3.33,
-        "shot_type": "AoE"
+        "shot_type": "AoE",
+        "multishot": 4
       }
     ],
     "crit_chance": 0.16,
@@ -25567,7 +25657,8 @@
         "crit_multiplier": 2.3,
         "status_chance": 0.19,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 3
       },
       {
         "name": "Cluster Bomb Explosion",
@@ -25624,7 +25715,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.16,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.08,
@@ -25657,7 +25749,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.111,
         "fire_rate": 5.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.29,
@@ -25911,7 +26004,8 @@
         "crit_multiplier": 2.6,
         "status_chance": 0.06,
         "fire_rate": 3.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.1,
@@ -25957,7 +26051,8 @@
         "crit_multiplier": 3.2,
         "status_chance": 0.15,
         "fire_rate": 4.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.3,
@@ -26003,7 +26098,8 @@
         "crit_multiplier": 3.0,
         "status_chance": 0.1,
         "fire_rate": 4.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.26,
@@ -26187,7 +26283,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.05,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.05,
@@ -26284,7 +26381,8 @@
         "crit_multiplier": 1.5,
         "status_chance": 0.1371,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 7
       }
     ],
     "crit_chance": 0.08,
@@ -26774,7 +26872,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.025,
         "fire_rate": 4.17,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 12
       }
     ],
     "crit_chance": 0.2,
@@ -26807,7 +26906,8 @@
         "crit_multiplier": 2.2,
         "status_chance": 0.036,
         "fire_rate": 4.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.24,
@@ -27073,7 +27173,8 @@
         "crit_multiplier": 2.4,
         "status_chance": 0.18,
         "fire_rate": 2.4,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 4
       },
       {
         "name": "Semi",
@@ -27809,7 +27910,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.1,
         "fire_rate": 3.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       },
       {
         "name": "Burst Shot",
@@ -27820,7 +27922,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.1,
         "fire_rate": 2.0,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 10
       }
     ],
     "crit_chance": 0.18,
@@ -28001,7 +28104,8 @@
         "crit_multiplier": 2.7,
         "status_chance": 0.165,
         "fire_rate": 20.0,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 2
       }
     ],
     "crit_chance": 0.25,
@@ -28080,7 +28184,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.138,
         "fire_rate": 6.67,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 5
       }
     ],
     "crit_chance": 0.11,
@@ -28113,7 +28218,8 @@
         "crit_multiplier": 2.0,
         "status_chance": 0.066,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 15
       }
     ],
     "crit_chance": 0.1,
@@ -28269,7 +28375,8 @@
         "crit_multiplier": 2.8,
         "status_chance": 0.0267,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       }
     ],
     "crit_chance": 0.2,
@@ -28315,7 +28422,8 @@
         "crit_multiplier": 3.2,
         "status_chance": 0.0667,
         "fire_rate": 2.5,
-        "shot_type": "Hit-Scan"
+        "shot_type": "Hit-Scan",
+        "multishot": 6
       }
     ],
     "crit_chance": 0.22,
@@ -28776,7 +28884,8 @@
         "crit_multiplier": 2.3,
         "status_chance": 0.3,
         "fire_rate": 1.33,
-        "shot_type": "Projectile"
+        "shot_type": "Projectile",
+        "multishot": 6
       },
       {
         "name": "Homing Spore Explosion",
@@ -28787,7 +28896,8 @@
         "crit_multiplier": 2.3,
         "status_chance": 0.3,
         "fire_rate": 1.33,
-        "shot_type": "AoE"
+        "shot_type": "AoE",
+        "multishot": 6
       }
     ],
     "crit_chance": 0.05,
