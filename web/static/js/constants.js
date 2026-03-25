@@ -205,6 +205,7 @@ const CHANGELOG_ENTRIES = [
     sections: [
       { heading: 'Changed', items: [
         'Calculator page redesigned to match Stalker/Shadow Acolyte theme \u2014 dark crimson palette, Orbitron/Rajdhani fonts, glass panels with crimson glow, right sidebar with brand icon and nav',
+        'UI optimizations \u2014 layout, panel structure, and stylesheet organization',
       ]},
     ],
   },
