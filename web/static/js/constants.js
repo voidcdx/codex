@@ -200,6 +200,20 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.5.0',
+    date: '2026-03-25',
+    sections: [
+      { heading: 'Changed', items: [
+        'Major UI layout overhaul \u2014 Weapon+Enemy merged side-by-side, Arcanes into Mods, Hit Options+Buffs merged',
+        'Options panel moved to right column, collapsible; Calculate button repositioned below Options',
+        'Sidebar widened, right column expanded, Builds panel hidden, layout centered at 1440px',
+        'Removed header Guide/Changelog buttons; sidebar footer now shows copyright + data attribution',
+        'All hardcoded inline styles extracted to CSS classes; scan-line overlay removed',
+        'Sharp edges (border-radius: 0) and hidden scrollbars throughout',
+      ]},
+    ],
+  },
+  {
     version: '0.4.2',
     date: '2026-03-25',
     sections: [

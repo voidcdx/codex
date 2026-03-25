@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] — 2026-03-25
+
+### Changed
+- Major UI layout overhaul — merged Weapon+Enemy into single side-by-side panel with glowing crimson divider, merged Hit Options+Buffs, merged Arcanes into Mods panel
+- Options panel moved to right column (collapsible, below Results), Calculate button repositioned below Options
+- Builds panel hidden; content grid simplified to 2-column layout
+- Sidebar and left panel widened; right column expanded for better results display
+- Removed Guide and Changelog buttons from header (accessible via sidebar nav)
+- Sidebar footer updated with copyright and data source attribution
+- Full layout centered at 1440px max-width
+- Sharp edges throughout (border-radius: 0 everywhere except circles)
+- Scrollbars hidden globally while preserving scroll functionality
+- Scan-line overlay removed
+- All hardcoded inline styles extracted to CSS classes (.input-sm, .btn-add, .bonus-element-*, .enemy-level-col, etc.)
+- Guide modal content styles moved to CSS (.guide-ol, .guide-em, .badge-vuln, .badge-res, .code-riven)
+- We-grid divider uses gradient bright-in-middle line matching panel top-border style
+- Panel sub-section headings use .panel-sub-h class
+
 ## [0.4.2] — 2026-03-25
 
 ### Changed

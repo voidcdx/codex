@@ -56,14 +56,15 @@ scripts/
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
-  static/index.html # SPA HTML — stalker-dashboard layout: inner header + .content grid (1fr 320px) + right .sidebar
-                   #   .content-main: weapon/mods/enemy/options/buffs/arcanes panels + Calculate btn
-                   #   .content-side: weapon stats, enemy stats, results, placeholder panels
-                   #   aside.sidebar: brand icon, nav-menu (.nav-item), sidebar-tools, sidebar-footer (#nav-ver)
+  static/index.html # SPA HTML — stalker-dashboard layout: inner header + .content grid (1fr 480px) + right .sidebar
+                   #   .content-main: Weapon+Enemy (.we-grid), Mods+Arcanes panel
+                   #   .content-side: Results → Options (collapsible, merged Hit Options+Buffs) → Calculate → Build Compare (hidden) → Armor Strip → Mods panel
+                   #   aside.sidebar (260px): brand icon, nav-menu (.nav-item), sidebar-tools, sidebar-footer (copyright + data source)
+                   #   .content-left (Builds panel): hidden via CSS, grid column removed from layout
                    #   Mobile: .burger-btn (fixed top-right) + .sidebar-overlay backdrop
   static/style.css  # Stalker/Shadow Acolyte theme: #050505 bg, crimson #8b0000/#dc143c, Orbitron/Rajdhani fonts
-                   #   .panel: glass dark surface, 12px radius, crimson top glow ::before, no tactical corners
-                   #   .sidebar: right-side nav with .brand, .nav-menu, .nav-item (.active has right border)
+                   #   .panel: glass dark surface, sharp edges (radius:0), crimson top glow ::before
+                   #   .sidebar: right-side nav 260px with .brand, .nav-menu, .nav-item (.active has right border)
                    #   .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
                    #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
   static/js/
@@ -103,14 +104,38 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 ### Layout — Stalker-Dashboard Theme
 The calculator page uses a mirrored stalker-dashboard layout:
 - **`.main`** — left flex:1 column; contains `.header` (inner top bar) + `.content` grid
-- **`.content`** — `grid-template-columns: 1fr 320px`; `.content-main` (inputs) + `.content-side` (results)
-- **`aside.sidebar`** — right 220px; brand icon, `.nav-menu` with `.nav-item` links, `.sidebar-tools`, `.sidebar-footer`
+- **`.content`** — `grid-template-columns: 1fr 480px`; `.content-main` (inputs) + `.content-side` (results)
+- **`aside.sidebar`** — right 260px; brand icon, `.nav-menu` with `.nav-item` links, `.sidebar-tools`, `.sidebar-footer` (copyright + `Data: wiki.warframe.com`)
+- **`.content-left`** — Builds panel, currently `display: none` (hidden). Grid column removed.
+- **`.content-side` order** — Results → Options (collapsible) → Calculate button → Build Compare → Armor Strip → Mods panel
+- **`.app`** — `max-width: 1440px; margin: 0 auto` — full layout centered
 - **Mobile ≤900px** — sidebar hidden, `.burger-btn` shows (fixed top-right), sidebar slides in from right with `.sidebar-overlay` backdrop
 - `toggleDrawer()` in `app.js` toggles `#sidebar` + `#sidebar-overlay` CSS classes
 
 ### CSS Variables
-Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--border: rgba(139,0,0,0.15)`, `--crimson: #8b0000`, `--crimson-bright: #dc143c`, `--font-display: 'Orbitron'`, `--font-body: 'Rajdhani'`, `--radius: 12px`.
+Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--border: rgba(139,0,0,0.15)`, `--crimson: #8b0000`, `--crimson-bright: #dc143c`, `--font-display: 'Orbitron'`, `--font-body: 'Rajdhani'`, `--radius: 0` (sharp edges everywhere).
 **No green UI accents** — `--accent-green` maps to crimson. Only game-data colors (element types, mod rarities, riven olive `--riven: #5a8a3a`) stay green.
+
+### CSS Design Rules (STRICT)
+- **No inline `style=` attributes** on HTML elements — all styles go to CSS classes. SVG presentation attributes excepted.
+- **No hardcoded `rgba()` for theme colors** — use CSS variables (see variable list above).
+- **No rounded corners** — `--radius: 0`, `--radius-sm: 0` everywhere.
+- **No scan-line or noise overlays** — both removed. Do not re-add.
+- **No glassmorphism attempts** on `#050505` background — `backdrop-filter` has nothing to work with. All attempts rejected. Do not revisit without a new approach.
+
+### Key CSS Classes (panels.css)
+| Class | Purpose |
+|---|---|
+| `.panel-sub-h` | Section heading divider within merged panels |
+| `.btn-add` | `+ ADD` button (buffs row, arcane row) |
+| `.input-sm` | Compact 44px number input (stacks inputs) |
+| `.input-sm-wide` | Compact 52px number input |
+| `.input-level` | 72px enemy level input |
+| `.bonus-element-label/row/unit` | Bonus element form row layout |
+| `.enemy-level-col` | Column flex wrapper for level/SP/Eximus stack |
+| `.panel-toggle` | Clickable `h2` header that collapses/expands panel |
+| `.chevron` | Rotating arrow SVG inside `.panel-toggle` |
+| `.collapsible-body` | Collapses with `.hidden` class |
 
 ### Faction Effectiveness Badges
 Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `web/static/js/constants.js` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
