@@ -83,14 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }).catch(() => {});
 });
 
-// ── Mobile drawer ──────────────────────────────────────
+// ── Mobile sidebar toggle ───────────────────────────────
 function toggleDrawer() {
   const btn     = document.getElementById('burger-btn');
-  const drawer  = document.getElementById('mobile-drawer');
-  const overlay = document.getElementById('drawer-overlay');
-  if (!drawer) return;
-  const open = drawer.classList.toggle('open');
-  overlay.classList.toggle('open', open);
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (!sidebar) return;
+  const open = sidebar.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('open', open);
   if (btn) btn.classList.toggle('open', open);
 }
 
