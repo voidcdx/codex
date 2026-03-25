@@ -84,7 +84,7 @@
 
     /* ── Right sidebar ── */
     .r-sidebar {
-      width: 240px;
+      width: 280px;
       flex-shrink: 0;
       background: rgba(5,5,5,0.85);
       backdrop-filter: blur(20px);
@@ -93,11 +93,8 @@
       display: flex;
       flex-direction: column;
       padding: 24px 0;
-      position: sticky;
-      top: 0;
-      height: calc(100vh - 50px);
+      height: 100%;
       overflow: hidden;
-      align-self: flex-start;
     }
     .r-sidebar::before {
       content: '';
@@ -225,9 +222,12 @@
     .live-wrap {
       flex: 1;
       min-width: 0;
-      padding: 28px 24px;
       overflow-y: auto;
-      height: calc(100vh - 50px);
+      height: 100%;
+    }
+    .live-wrap-inner {
+      max-width: 960px;
+      padding: 28px 24px;
     }
 
     /* ── Controls ── */
@@ -680,7 +680,7 @@
       .burger-btn { display: flex; }
       .live-grid { grid-template-columns: 1fr; }
       .s-panel.full-width { grid-column: 1; }
-      .live-wrap { padding: 16px 14px; }
+      .live-wrap-inner { padding: 16px 14px; }
     }
   </style>
 </head>
@@ -719,6 +719,7 @@
 
   <div class="body-row">
   <div class="live-wrap">
+  <div class="live-wrap-inner">
     <div class="live-controls">
       <span class="controls-label">Platform</span>
       <div class="platform-pills">
@@ -736,7 +737,8 @@
     <div id="live-content">
       <div class="loading-overlay"><div class="scanner"></div>Acquiring worldstate…</div>
     </div>
-  </div>
+  </div><!-- /.live-wrap-inner -->
+  </div><!-- /.live-wrap -->
 
   <aside class="r-sidebar">
     <div class="sidebar-section-label">Navigation</div>
