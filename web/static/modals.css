@@ -10,7 +10,7 @@
   background: var(--surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-red);
   border-radius: var(--radius);
   padding: 16px 18px 18px;
   width: min(560px, calc(100vw - 48px));
@@ -25,7 +25,7 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, var(--crimson-glow), transparent);
   pointer-events: none;
 }
 .alchemy-modal-header {
@@ -219,8 +219,8 @@
   border-color: rgba(255,255,255,0.3);
 }
 .alch-add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.alch-remove-btn { border-color: rgba(200,80,80,0.4); color: rgba(220,100,100,0.9); }
-.alch-remove-btn:hover { background: rgba(200,80,80,0.15); border-color: rgba(200,80,80,0.6); }
+.alch-remove-btn { border-color: var(--border-red); color: var(--accent2); }
+.alch-remove-btn:hover { background: color-mix(in srgb, var(--accent2) 15%, transparent); border-color: var(--accent2); }
 
 /* ── Shared modal shell ─────────────────────────────────── */
 /* Same surface/border/glow as .panel */
@@ -229,7 +229,7 @@
   background: var(--surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-red);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
@@ -242,11 +242,11 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, var(--crimson-glow), transparent);
   pointer-events: none;
   z-index: 1;
 }
-.guide-modal    { width: min(820px, calc(100vw - 48px)); max-height: 88vh; }
+.guide-modal    { width: min(820px, calc(100vw - 48px)); max-height: min(88vh, 88dvh); }
 .changelog-modal { width: min(560px, calc(100vw - 48px)); max-height: min(88vh, calc(100dvh - 40px)); }
 
 /* shared header — uses surface2 to distinguish from body, same as panel sub-surfaces */
@@ -271,7 +271,7 @@
   height: 28px;
   border-radius: 6px;
   border: 1px solid var(--border-red);
-  background: rgba(139,0,0,0.08);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
   color: var(--text-dim);
   font-size: 18px;
   line-height: 1;
@@ -284,7 +284,7 @@
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 .riven-modal-close:hover {
-  background: rgba(220,20,60,0.15);
+  background: color-mix(in srgb, var(--accent2) 15%, transparent);
   border-color: var(--accent2);
   color: var(--text);
 }
@@ -362,7 +362,7 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  background: rgba(139,0,0,0.06);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   border-bottom: 1px solid var(--border-red);
   padding: 6px 10px;
 }
@@ -373,7 +373,7 @@
   vertical-align: top;
   line-height: 1.5;
 }
-.guide-content tr:hover td { background: rgba(139,0,0,0.04); }
+.guide-content tr:hover td { background: color-mix(in srgb, var(--accent) 4%, transparent); }
 .guide-content td:first-child { color: var(--text); white-space: nowrap; font-size: 12px; }
 
 /* ── What's New (Changelog) Modal ── */
@@ -450,7 +450,7 @@
     border-radius: 14px 14px 0 0;
     border-bottom: none;
   }
-  .guide-modal    { max-height: 92vh; }
+  .guide-modal    { max-height: min(92vh, 92dvh); }
   .changelog-modal { max-height: min(92vh, calc(100dvh - 20px)); }
   .guide-modal-header,
   .changelog-modal-header { border-radius: 14px 14px 0 0; padding: 12px 12px 10px; }
@@ -459,13 +459,6 @@
   .guide-modal-title, .changelog-modal-title { font-size: 15px; }
   .guide-content h3 { margin-top: 18px; }
   .guide-content td:first-child { white-space: normal; }
-}
-@media (max-width: 480px) {
-  .guide-modal, .changelog-modal {
-    width: 100%;
-    border-left: none;
-    border-right: none;
-  }
 }
 @media (max-width: 520px) {
   .alchemy-modal { padding: 12px 10px 14px; }
