@@ -1,0 +1,103 @@
+/* ═══════════════════════════════════════════════════════
+   Warframe Damage Calculator
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --bg:              #050505;
+  --surface:         rgba(13, 13, 13, 0.7);
+  --surface2:        rgba(10, 10, 10, 0.8);
+  --surface-solid:   #0d0d0d;
+  --border:          rgba(139, 0, 0, 0.15);
+  --border-highlight: rgba(220, 20, 60, 0.4);
+  --border-red:      rgba(139, 0, 0, 0.3);
+  --accent:          #8b0000;
+  --accent2:         #dc143c;
+  --accent-glow:     rgba(139, 0, 0, 0.2);
+  --accent-green:    #8b0000;
+  --accent-green2:   #dc143c;
+  --text:            #888888;
+  --text-primary:    #e8e8e8;
+  --text-dim:        #444444;
+  --text-field:      #808080;
+  --text-muted:      #444444;
+  --good:            #888888;
+  --bad:             #dc143c;
+  --riven:           #5a8a3a;
+  --riven-glow:      rgba(90, 138, 58, 0.22);
+  --crimson:         #8b0000;
+  --crimson-bright:  #dc143c;
+  --crimson-glow:    rgba(220, 20, 60, 0.4);
+  --blood-red:       #4a0000;
+  --font-display:    'Orbitron', monospace;
+  --font-body:       'Rajdhani', sans-serif;
+  --glass-blur:      20px;
+  --radius:          12px;
+  --radius-sm:       8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Scrollbar — Webkit (Chrome/Edge/Safari) */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+/* Scrollbar — Firefox */
+html { scrollbar-color: rgba(255,255,255,0.15) var(--bg); scrollbar-width: thin; height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle scanlines */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent 0px, transparent 3px,
+    rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+
+/* ── Atmosphere layers (live.html style background) ── */
+.atmo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 35% at 50% -5%,  rgba(139,0,0,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 100% 50%, rgba(80,0,0,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 35% 40% at 0% 80%,   rgba(80,0,0,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 25% 30% at 80% 95%,  rgba(100,0,0,0.07) 0%, transparent 40%);
+}
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+.gridlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(139,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,0,0,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}

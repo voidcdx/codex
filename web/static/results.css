@@ -1,0 +1,225 @@
+/* ── Buttons ────────────────────────────────────────── */
+.btn-calc {
+  width: 100%;
+  background: rgba(148,30,30,0.18);
+  border: 1px solid var(--accent);
+  color: var(--accent2);
+  padding: 11px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-calc::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(197,48,48,0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s;
+}
+.btn-calc:hover {
+  background: rgba(148,30,30,0.32);
+  border-color: var(--accent2);
+  box-shadow: 0 0 20px rgba(148,30,30,0.35);
+  color: #fff;
+}
+.btn-calc:hover::before { transform: translateX(100%); }
+.btn-calc:active { transform: scale(0.99); }
+.btn-calc:disabled {
+  background: rgba(139,0,0,0.06);
+  border-color: var(--border);
+  color: var(--text-dim);
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ── Right Column ───────────────────────────────────── */
+.right-col { display: flex; flex-direction: column; gap: 16px; }
+
+/* ── Weapon Stats ───────────────────────────────────── */
+.weapon-stats-img-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.weapon-stats-img-row img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+.weapon-stats-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.weapon-stats-sub { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+
+.attack-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0 10px;
+}
+.attack-tab {
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.attack-tab:hover { border-color: var(--accent); color: var(--text); }
+.attack-tab.active {
+  background: rgba(196, 154, 31, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.stat-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.stat-row { display: flex; gap: 8px; }
+.stat-block {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  min-width: 0;
+  transition: border-color 0.2s;
+}
+.stat-block:hover { border-color: var(--border-highlight); }
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+}
+.stat-value { font-size: 15px; font-weight: 600; color: var(--text); }
+.stat-value.crit   { color: #d45a2a; }
+.stat-value.status { color: var(--accent-green2); }
+.stat-value.status { color: #60b0e0; }
+.stat-modded {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent2);
+  margin-top: 2px;
+}
+.stat-modded::before { content: '▶ '; font-size: 9px; opacity: 0.7; }
+
+/* ── Results ────────────────────────────────────────── */
+.no-results {
+  color: var(--text-dim);
+  text-align: center;
+  padding: 60px 0;
+  font-size: 13px;
+}
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+.result-header h3 { font-size: 15px; color: var(--accent2); }
+.result-total { font-size: 24px; font-weight: 700; color: var(--text); }
+.result-total span { font-size: 12px; color: var(--text-dim); margin-left: 4px; }
+.result-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.breakdown-table th, .breakdown-table td {
+  padding: 5px 8px;
+  text-align: left;
+  font-size: 13px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.breakdown-table th {
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+}
+.breakdown-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.breakdown-table tr:hover td { background: var(--surface2); }
+.bar-cell { width: 180px; }
+.bar-bg { background: var(--surface2); border-radius: 3px; height: 8px; }
+.bar-fill { height: 8px; border-radius: 3px; transition: width 0.3s ease; box-shadow: 0 0 4px rgba(255,255,255,0.1); }
+.total-row td { border-top: 1px solid var(--border); font-weight: 700; }
+
+/* ── CO Curve table ──────────────────────────────────── */
+.co-curve-table tr.co-active td { background: var(--surface2); }
+.co-curve-table tr.co-active td:first-child { font-weight: 600; border-left: 2px solid var(--accent); }
+
+/* ── Damage Table ───────────────────────────────────── */
+.col-modded { color: var(--accent2); font-weight: 600; }
+.col-base { color: var(--text-dim); }
+.elem-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.dmg-icon {
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Error ──────────────────────────────────────────── */
+.error-msg {
+  background: rgba(42, 16, 16, 0.8);
+  border: 1px solid #5a2020;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  color: #e07070;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* ── Tippy.js Warframe Theme ─────────────────────────── */
+.tippy-box[data-theme~='warframe'] {
+  background: rgba(20, 20, 35, 0.95);
+  backdrop-filter: blur(8px);
+  color: #c8c8d8;
+  border: 1px solid rgba(196, 154, 31, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.5;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+.tippy-box[data-theme~='warframe'] .tippy-arrow {
+  color: rgba(20, 20, 35, 0.95);
+}
+.stat-label[data-tooltip] {
+  cursor: default;
+  border-bottom: 1px dotted var(--text-dim);
+}
+
+/* ── Misc ───────────────────────────────────────────── */
+.ms-note { font-size: 12px; color: var(--text-dim); display: block; margin-top: 6px; }
+.ms-note strong { color: var(--accent2); }
+.eff-badge { font-size: 0.68rem; font-weight: 700; padding: 1px 4px; border-radius: 3px; margin-left: 5px; vertical-align: middle; }
+.eff-vuln  { background: rgba(61,107,42,0.18); color: #5a8a3a; }
+.eff-res   { background: rgba(148,30,30,0.18); color: #c53030; }

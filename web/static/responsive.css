@@ -1,0 +1,78 @@
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .burger-btn { display: flex; }
+  .nav-links { display: none; }
+  .r-sidebar { display: none; }
+  .calc-wrap-inner { padding: 16px 14px; }
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .mod-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stat-row { flex-wrap: wrap; }
+  .stat-block { min-width: 80px; }
+  .bar-cell { width: 80px; }
+  .result-header { flex-direction: column; gap: 6px; }
+  .result-total { font-size: 18px; }
+  .options-row { flex-direction: column; }
+  header { padding: 0 16px; }
+  .mod-picker { width: 95vw; max-height: 80vh; }
+
+  /* iOS: prevent auto-zoom on input focus (needs 16px+ to avoid it) */
+  select,
+  input[type=text],
+  input[type=number],
+  .search-input,
+  .mod-picker-search,
+  .custom-select-btn,
+  .custom-select-option { font-size: 16px !important; padding: 4px !important; }
+  /* Riven builder — compact for mobile */
+  .riven-fullgrid { padding: 12px; gap: 8px; }
+  .riven-fullgrid-rows { gap: 6px; }
+  .riven-fullgrid-title { font-size: 14px; }
+  .riven-stat-row { grid-template-columns: 1fr 64px 28px; gap: 6px; }
+  .riven-stat-btn {
+    padding: 0 10px !important; font-size: 16px !important;
+  }
+  .riven-stat-btn .arrow { font-size: 9px; padding-left: 6px; }
+  input[type=number].riven-stat-input {
+    padding: 0 8px !important; font-size: 16px !important;
+    text-align: center !important;
+  }
+  .riven-row-clear {
+    font-size: 13px !important;
+    padding: 0 !important;
+  }
+  .btn-riven-apply, .btn-riven-reset {
+    height: 36px; border-radius: 8px; font-size: 13px;
+  }
+  .riven-fullgrid-btns { gap: 6px; margin-top: 0; }
+  .riven-portal-dropdown { border-radius: 8px; }
+  .riven-portal-dropdown .combobox-item { font-size: 16px !important; padding: 5px 8px; }
+
+  /* Faster tap response, no 300ms double-tap delay */
+  button, .mod-card, .special-slot, .mod-picker-item, .combobox-item { touch-action: manipulation; }
+
+  /* Allow vertical scroll inside the dropdown when touching items */
+  .combobox-item { touch-action: pan-y; font-size: 16px !important; padding: 5px; }
+}
+
+@media (max-width: 480px) {
+  .breakdown-table .bar-cell { display: none; }
+  .weapon-stats-img-row img { width: 52px; height: 52px; }
+  .mod-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .mod-card { min-height: 72px; }
+}
+
+@media (max-width: 520px) {
+  .mod-picker-overlay { align-items: flex-end; }
+  #alchemy-mixer-overlay { align-items: center; }
+}
