@@ -4,167 +4,339 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Void Codex — Live</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ── Nav ─────────────────────────────────────────── */
-    .site-nav {
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --void-black:     #050505;
+      --void-dark:      #0a0a0a;
+      --void-panel:     rgba(10, 10, 10, 0.85);
+      --charcoal:       #1a1a1a;
+      --crimson:        #8B0000;
+      --crimson-bright: #dc143c;
+      --crimson-glow:   rgba(220, 20, 60, 0.35);
+      --text:           #A0A0A0;
+      --text-dim:       #555555;
+      --font-display:   'Orbitron', monospace;
+      --font-body:      'Rajdhani', sans-serif;
+    }
+
+    html, body {
+      background: var(--void-black);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Atmosphere ── */
+    .atmo {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 35% at 50% -5%,  rgba(139,0,0,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 100% 50%, rgba(80,0,0,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 40% at 0% 80%,   rgba(80,0,0,0.10) 0%, transparent 50%),
+        radial-gradient(ellipse 25% 30% at 80% 95%,  rgba(100,0,0,0.07) 0%, transparent 40%);
+    }
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+    .gridlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(139,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,0,0,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Scanlines ── */
+    html::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent 0px, transparent 3px,
+        rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Layout ── */
+    .app { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 50px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      padding: 0 24px;
+      gap: 16px;
+      background: rgba(5,5,5,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(139,0,0,0.2);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.45) 30%, rgba(220,20,60,0.45) 70%, transparent);
+      pointer-events: none;
+    }
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--crimson-bright);
+      text-shadow: 0 0 8px var(--crimson-glow);
+      user-select: none;
+    }
+    .nav-sep {
+      width: 1px;
+      height: 16px;
+      background: rgba(139,0,0,0.3);
+    }
+    .nav-links {
+      display: flex;
+      gap: 4px;
       margin-left: auto;
     }
-    .site-nav a {
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--text-dim);
       text-decoration: none;
-      font-size: 12px;
-      letter-spacing: .06em;
-      text-transform: uppercase;
       padding: 5px 12px;
-      border-radius: var(--radius-sm);
       border: 1px solid transparent;
       transition: color .15s, border-color .15s;
     }
-    .site-nav a:hover { color: var(--accent2); }
-    .site-nav a.active {
-      color: var(--accent2);
-      border-color: var(--border-highlight);
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active {
+      color: var(--crimson-bright);
+      border-color: rgba(139,0,0,0.35);
+      text-shadow: 0 0 5px rgba(153,0,0,0.5);
     }
 
-    /* ── Live page layout ────────────────────────────── */
-    .live-container {
-      max-width: 1280px;
+    /* ── Page wrapper ── */
+    .live-wrap {
+      max-width: 1320px;
+      width: 100%;
       margin: 0 auto;
-      padding: 24px;
+      padding: 28px 24px;
     }
 
-    /* Controls bar */
+    /* ── Controls ── */
     .live-controls {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       flex-wrap: wrap;
     }
-    .platform-pills { display: flex; gap: 4px; }
-    .platform-pill {
-      background: var(--surface);
-      border: 1px solid var(--border);
+    .controls-label {
+      font-family: var(--font-display);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       color: var(--text-dim);
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 12px;
+    }
+    .platform-pills { display: flex; gap: 2px; }
+    .platform-pill {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(10,10,10,0.7);
+      border: 1px solid rgba(139,0,0,0.2);
+      color: var(--text-dim);
+      padding: 5px 14px;
       cursor: pointer;
       transition: all .15s;
+      border-radius: 0;
     }
-    .platform-pill.active,
-    .platform-pill:hover {
-      border-color: var(--accent);
-      color: var(--accent2);
+    .platform-pill:hover { color: var(--text); border-color: rgba(139,0,0,0.4); }
+    .platform-pill.active {
+      background: rgba(139,0,0,0.12);
+      border-color: var(--crimson-bright);
+      color: var(--crimson-bright);
+      text-shadow: 0 0 5px rgba(153,0,0,0.5);
     }
-    .live-refresh-info {
+    .refresh-info {
       margin-left: auto;
-      font-size: 12px;
-      color: var(--text-dim);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
     }
     .refresh-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      border-radius: var(--radius-sm);
-      padding: 3px 10px;
+      font-family: var(--font-body);
       font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid rgba(139,0,0,0.25);
+      color: var(--text-dim);
+      padding: 4px 12px;
       cursor: pointer;
       transition: all .15s;
+      border-radius: 0;
     }
-    .refresh-btn:hover { border-color: var(--accent); color: var(--accent2); }
+    .refresh-btn:hover { border-color: var(--crimson-bright); color: var(--crimson-bright); }
     #refresh-countdown { font-variant-numeric: tabular-nums; }
 
-    /* ── Live grid ───────────────────────────────────── */
+    /* ── Grid ── */
     .live-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
-    .live-card {
-      background: var(--surface);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-    }
-    .live-card:hover { border-color: var(--border-highlight); }
-    .live-card.full-width { grid-column: 1 / -1; }
 
-    .card-title {
-      font-size: 11px;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 12px;
+    /* ── Panel ── */
+    .s-panel {
+      background: var(--void-panel);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(139,0,0,0.15);
+      border-radius: 0;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+    .s-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.5), transparent);
+      pointer-events: none;
+    }
+    .s-panel:hover { border-color: rgba(139,0,0,0.35); }
+    .s-panel.full-width { grid-column: 1 / -1; }
+
+    /* ── Panel header ── */
+    .s-panel-hd {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(139,0,0,0.1);
     }
-    .card-title span { color: var(--text-dim); font-weight: normal; text-transform: none; letter-spacing: 0; }
+    .s-panel-title {
+      font-family: var(--font-display);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-shadow: 0 0 5px rgba(153,0,0,0.4);
+    }
+    .s-panel-meta {
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+    .s-panel-body { padding: 14px 16px; }
 
-    /* ── Fissure rows ────────────────────────────────── */
+    /* ── Energy divider ── */
+    .s-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139,0,0,0.35), transparent);
+    }
+
+    /* ── Tier filter ── */
     .tier-filters {
       display: flex;
-      gap: 4px;
-      margin-bottom: 10px;
+      gap: 3px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
     .tier-btn {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2px 10px;
-      font-size: 11px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      padding: 2px 9px;
       cursor: pointer;
       background: none;
-      transition: all .15s;
+      transition: opacity .15s, background .15s;
+      border-radius: 2px;
     }
-    .tier-btn.active { opacity: 1; }
-    .tier-btn:not(.active) { opacity: 0.45; }
+    .tier-btn.active { opacity: 1; background: rgba(255,255,255,0.05); }
+    .tier-btn:not(.active) { opacity: 0.3; }
 
-    .fissure-row, .alert-row, .invasion-row, .nw-row {
+    /* ── Fissure rows ── */
+    .fissure-row, .alert-row, .invasion-row, .nw-row, .mission-block {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
       font-size: 13px;
     }
     .fissure-row:last-child, .alert-row:last-child,
-    .invasion-row:last-child, .nw-row:last-child {
+    .invasion-row:last-child, .nw-row:last-child, .mission-block:last-child {
       border-bottom: none;
     }
 
-    /* Tier badge */
+    /* ── Tier badge ── */
     .tier-badge {
-      border-radius: 4px;
+      border-radius: 2px;
       padding: 2px 7px;
+      font-family: var(--font-body);
       font-size: 10px;
-      font-weight: 600;
-      letter-spacing: .04em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       white-space: nowrap;
       flex-shrink: 0;
       align-self: flex-start;
       margin-top: 1px;
     }
-    .tier-Lith     { background: rgba(205,127,50,.25); color: #e8a060; border: 1px solid rgba(205,127,50,.4); }
-    .tier-Meso     { background: rgba(192,192,192,.18); color: #d0d0d0; border: 1px solid rgba(192,192,192,.35); }
-    .tier-Neo      { background: rgba(255,215,0,.18); color: #ffd700; border: 1px solid rgba(255,215,0,.35); }
-    .tier-Axi      { background: rgba(100,180,255,.18); color: #80c8ff; border: 1px solid rgba(100,180,255,.35); }
-    .tier-Requiem  { background: rgba(155,89,182,.25); color: #c39bd3; border: 1px solid rgba(155,89,182,.4); }
-    .tier-Omnia    { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+    .tier-Lith     { background: rgba(205,127,50,.2);  color: #e8a060; border: 1px solid rgba(205,127,50,.35); }
+    .tier-Meso     { background: rgba(192,192,192,.12); color: #c0c0c0; border: 1px solid rgba(192,192,192,.3); }
+    .tier-Neo      { background: rgba(255,215,0,.14);  color: #ffd700; border: 1px solid rgba(255,215,0,.3); }
+    .tier-Axi      { background: rgba(100,180,255,.14); color: #80c8ff; border: 1px solid rgba(100,180,255,.3); }
+    .tier-Requiem  { background: rgba(155,89,182,.2);  color: #c39bd3; border: 1px solid rgba(155,89,182,.35); }
+    .tier-Omnia    { background: rgba(255,255,255,.08); color: #c0c0c0; border: 1px solid rgba(255,255,255,.2); }
 
     .fissure-info { flex: 1; min-width: 0; }
-    .fissure-node { color: var(--text); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .fissure-sub  { color: var(--text-dim); font-size: 11px; margin-top: 2px; }
+    .fissure-node { color: var(--text); font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fissure-sub  { color: var(--text-dim); font-size: 11px; margin-top: 2px; letter-spacing: 0.04em; }
     .eta-chip {
       margin-left: auto;
       flex-shrink: 0;
@@ -173,45 +345,48 @@
       white-space: nowrap;
       align-self: flex-start;
       margin-top: 2px;
+      font-variant-numeric: tabular-nums;
     }
     .storm-tag {
-      font-size: 10px;
-      background: rgba(60,100,200,.3);
+      font-size: 9px;
+      background: rgba(60,100,200,.25);
       color: #88aaff;
-      border: 1px solid rgba(60,100,200,.5);
-      border-radius: 3px;
+      border: 1px solid rgba(60,100,200,.4);
+      border-radius: 2px;
       padding: 1px 5px;
       margin-left: 5px;
       vertical-align: middle;
+      font-weight: 700;
+      letter-spacing: 0.06em;
     }
     .sp-tag {
-      font-size: 10px;
-      background: rgba(200,30,30,.25);
-      color: #ff7070;
-      border: 1px solid rgba(200,30,30,.4);
-      border-radius: 3px;
+      font-size: 9px;
+      background: rgba(139,0,0,.3);
+      color: var(--crimson-bright);
+      border: 1px solid rgba(139,0,0,.5);
+      border-radius: 2px;
       padding: 1px 5px;
       margin-left: 5px;
       vertical-align: middle;
+      font-weight: 700;
+      letter-spacing: 0.06em;
     }
 
-    /* ── Sortie / Archon ─────────────────────────────── */
-    .mission-block {
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .mission-block:last-child { border-bottom: none; }
-    .mission-node { color: var(--text); font-size: 13px; }
-    .mission-sub  { color: var(--text-dim); font-size: 11px; margin-top: 3px; }
+    /* ── Sortie / Archon ── */
+    .mission-block { flex-direction: column; gap: 4px; }
+    .mission-node { color: var(--text); font-size: 13px; font-weight: 500; }
+    .mission-sub  { color: var(--text-dim); font-size: 11px; letter-spacing: 0.04em; }
     .modifier-badge {
       display: inline-block;
-      background: rgba(232,185,35,.15);
-      border: 1px solid rgba(232,185,35,.3);
-      color: var(--accent2);
-      border-radius: 3px;
+      background: rgba(139,0,0,.15);
+      border: 1px solid rgba(139,0,0,.3);
+      color: var(--crimson-bright);
+      border-radius: 2px;
       padding: 1px 7px;
       font-size: 10px;
-      margin-top: 4px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
     }
     .sortie-meta {
       display: flex;
@@ -220,10 +395,11 @@
       margin-bottom: 10px;
       font-size: 12px;
       color: var(--text-dim);
+      letter-spacing: 0.06em;
     }
     .sortie-boss { color: var(--text); font-weight: 600; }
 
-    /* ── Void Trader ─────────────────────────────────── */
+    /* ── Void Trader ── */
     .trader-status {
       display: flex;
       align-items: center;
@@ -231,147 +407,177 @@
       margin-bottom: 12px;
     }
     .trader-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
+      width: 6px; height: 6px;
+      border-radius: 0;
       flex-shrink: 0;
+      transform: rotate(45deg);
     }
-    .trader-dot.active { background: var(--good); box-shadow: 0 0 6px var(--good); }
+    .trader-dot.active  { background: var(--crimson-bright); box-shadow: 0 0 6px var(--crimson-glow); }
     .trader-dot.inactive { background: var(--text-dim); }
-    .trader-location { color: var(--text); font-size: 13px; }
-    .trader-eta { color: var(--text-dim); font-size: 12px; }
+    .trader-location { color: var(--text); font-size: 13px; font-weight: 500; }
+    .trader-eta { color: var(--text-dim); font-size: 11px; margin-left: auto; }
 
     .inventory-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; }
     .inventory-table th {
+      font-family: var(--font-display);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       color: var(--text-dim);
-      font-weight: normal;
       text-align: left;
-      padding: 4px 6px 4px 0;
-      border-bottom: 1px solid var(--border);
+      padding: 6px 6px 6px 0;
+      border-bottom: 1px solid rgba(139,0,0,0.25);
     }
     .inventory-table th:last-child, .inventory-table td:last-child { text-align: right; }
     .inventory-table td {
-      padding: 5px 6px 5px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding: 6px 6px 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
       color: var(--text);
+      font-size: 12px;
     }
+    .inventory-table tr:nth-child(even) td { background: rgba(139,0,0,0.03); }
     .inventory-table tr:last-child td { border-bottom: none; }
-    .ducat-val { color: #c8a84b; }
+    .ducat-val  { color: #c8a84b; }
     .credit-val { color: var(--text-dim); }
 
-    /* ── Nightwave ───────────────────────────────────── */
+    /* ── Nightwave ── */
     .nw-tag {
-      font-size: 10px;
-      border-radius: 3px;
-      padding: 1px 5px;
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      padding: 2px 6px;
       flex-shrink: 0;
       align-self: flex-start;
       margin-top: 2px;
-      font-weight: 600;
     }
-    .nw-tag.daily   { background: rgba(76,175,80,.2);  color: #81c784; border: 1px solid rgba(76,175,80,.4); }
-    .nw-tag.weekly  { background: rgba(33,150,243,.2); color: #64b5f6; border: 1px solid rgba(33,150,243,.4); }
-    .nw-tag.elite   { background: rgba(244,67,54,.2);  color: #e57373; border: 1px solid rgba(244,67,54,.4); }
+    .nw-tag.daily   { background: rgba(76,175,80,.15);  color: #81c784; border: 1px solid rgba(76,175,80,.3); }
+    .nw-tag.weekly  { background: rgba(33,150,243,.15); color: #64b5f6; border: 1px solid rgba(33,150,243,.3); }
+    .nw-tag.elite   { background: rgba(139,0,0,.2);     color: var(--crimson-bright); border: 1px solid rgba(139,0,0,.4); }
     .nw-rep { margin-left: auto; font-size: 11px; color: #c8a84b; white-space: nowrap; flex-shrink: 0; }
 
-    /* ── Invasions ───────────────────────────────────── */
+    /* ── Invasions ── */
     .invasion-info { flex: 1; min-width: 0; }
+    .invasion-node { color: var(--text); font-size: 13px; font-weight: 500; }
     .invasion-factions {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-dim);
       margin-top: 3px;
+      letter-spacing: 0.04em;
     }
-    .invasion-vs { color: var(--text-dim); font-size: 10px; }
+    .invasion-vs { color: rgba(139,0,0,0.6); font-size: 9px; font-weight: 700; }
     .progress-bar-wrap {
-      height: 3px;
-      background: rgba(255,255,255,.1);
-      border-radius: 2px;
-      margin-top: 5px;
+      height: 2px;
+      background: rgba(255,255,255,.08);
+      margin-top: 6px;
       overflow: hidden;
     }
     .progress-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 2px;
-      transition: width .3s;
+      background: linear-gradient(90deg, var(--crimson), var(--crimson-bright));
+      transition: width .4s;
     }
     .invasion-rewards {
       display: flex;
-      gap: 6px;
-      margin-top: 5px;
+      gap: 5px;
+      margin-top: 6px;
       font-size: 11px;
       flex-wrap: wrap;
     }
     .reward-chip {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 3px;
+      background: rgba(139,0,0,.08);
+      border: 1px solid rgba(139,0,0,.2);
+      border-radius: 2px;
       padding: 1px 6px;
       color: var(--text-dim);
+      font-size: 10px;
     }
 
-    /* ── Alerts ──────────────────────────────────────── */
-    .alert-reward { flex: 1; color: var(--text); font-size: 13px; }
-    .alert-sub { color: var(--text-dim); font-size: 11px; margin-top: 2px; }
-    .empty-state { color: var(--text-dim); font-size: 13px; padding: 12px 0; text-align: center; }
+    /* ── Alerts ── */
+    .alert-reward { flex: 1; color: var(--text); font-size: 13px; font-weight: 500; }
+    .alert-sub    { color: var(--text-dim); font-size: 11px; margin-top: 2px; letter-spacing: 0.04em; }
 
-    /* ── Loading / error ─────────────────────────────── */
+    /* ── Empty / error ── */
+    .empty-state {
+      color: var(--text-dim);
+      font-size: 12px;
+      padding: 16px 0;
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+    .error-msg { color: var(--crimson-bright); font-size: 13px; padding: 16px 0; }
+
+    /* ── Loading ── */
     .loading-overlay {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px;
+      padding: 60px;
       color: var(--text-dim);
-      font-size: 13px;
-      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      gap: 16px;
     }
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      flex-shrink: 0;
+    .scanner {
+      width: 28px; height: 3px;
+      background: var(--crimson);
+      box-shadow: 0 0 8px var(--crimson-glow);
+      animation: scan .8s ease-in-out infinite alternate;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .error-msg { color: var(--bad); font-size: 13px; padding: 12px 0; }
+    @keyframes scan {
+      0%   { transform: scaleX(0.3); opacity: 0.5; }
+      100% { transform: scaleX(1.4); opacity: 1; }
+    }
 
-    /* ── Responsive ──────────────────────────────────── */
+    /* ── Responsive ── */
     @media (max-width: 768px) {
       .live-grid { grid-template-columns: 1fr; }
-      .live-card.full-width { grid-column: 1; }
+      .s-panel.full-width { grid-column: 1; }
+      .live-wrap { padding: 16px 14px; }
     }
   </style>
 </head>
 <body>
-<header>
-  <span class="nav-brand">Void Codex</span>
-  <nav class="site-nav">
-    <a href="/">Damage Calculator</a>
-    <a href="/live" class="active">Live Data</a>
-  </nav>
-</header>
+<div class="atmo"></div>
+<div class="noise"></div>
+<div class="gridlines"></div>
 
-<div class="live-container">
-  <!-- Controls -->
-  <div class="live-controls">
-    <div class="platform-pills">
-      <button class="platform-pill active" onclick="setPlatform('pc')">PC</button>
-      <button class="platform-pill" onclick="setPlatform('ps4')">PS4</button>
-      <button class="platform-pill" onclick="setPlatform('xb1')">Xbox</button>
-      <button class="platform-pill" onclick="setPlatform('swi')">Switch</button>
-    </div>
-    <div class="live-refresh-info">
-      <span>Refreshes in <span id="refresh-countdown">60</span>s</span>
-      <button class="refresh-btn" onclick="loadData()">↻ Refresh now</button>
-    </div>
-  </div>
+<div class="app">
+  <header>
+    <span class="nav-brand">Void Codex</span>
+    <div class="nav-sep"></div>
+    <nav class="nav-links">
+      <a href="/">Calculator</a>
+      <a href="/live" class="active">Live Data</a>
+    </nav>
+  </header>
 
-  <!-- Content -->
-  <div id="live-content">
-    <div class="loading-overlay"><div class="spinner"></div> Loading worldstate…</div>
+  <div class="live-wrap">
+    <div class="live-controls">
+      <span class="controls-label">Platform</span>
+      <div class="platform-pills">
+        <button class="platform-pill active" onclick="setPlatform('pc')">PC</button>
+        <button class="platform-pill" onclick="setPlatform('ps4')">PS4</button>
+        <button class="platform-pill" onclick="setPlatform('xb1')">Xbox</button>
+        <button class="platform-pill" onclick="setPlatform('swi')">Switch</button>
+      </div>
+      <div class="refresh-info">
+        <span>Refresh in <span id="refresh-countdown">60</span>s</span>
+        <button class="refresh-btn" onclick="loadData()">↻ Now</button>
+      </div>
+    </div>
+
+    <div id="live-content">
+      <div class="loading-overlay"><div class="scanner"></div>Acquiring worldstate…</div>
+    </div>
   </div>
 </div>
 
@@ -379,138 +585,130 @@
 'use strict';
 
 let currentPlatform = 'pc';
-let refreshTimer = null;
-let countdownTimer = null;
-let countdownVal = 60;
+let countdownTimer  = null;
+let countdownVal    = 60;
 
 const TIER_COLORS = {
-  Lith: '#e8a060', Meso: '#d0d0d0', Neo: '#ffd700',
-  Axi: '#80c8ff', Requiem: '#c39bd3', Omnia: '#ffffff',
+  Lith: '#e8a060', Meso: '#c0c0c0', Neo: '#ffd700',
+  Axi: '#80c8ff', Requiem: '#c39bd3', Omnia: '#c0c0c0',
 };
 
 function esc(s) {
   return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function setPlatform(p) {
   currentPlatform = p;
   document.querySelectorAll('.platform-pill').forEach(el => {
-    el.classList.toggle('active', el.textContent.toLowerCase() === p ||
+    el.classList.toggle('active',
+      el.textContent.toLowerCase() === p ||
       (p === 'xb1' && el.textContent === 'Xbox') ||
-      (p === 'swi' && el.textContent === 'Switch'));
+      (p === 'swi' && el.textContent === 'Switch')
+    );
   });
   loadData();
 }
 
-// ── Tier filter state ──────────────────────────────────────
 let activeTier = 'All';
-
 function setTier(tier) {
   activeTier = tier;
-  document.querySelectorAll('.tier-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.tier === tier);
-  });
+  document.querySelectorAll('.tier-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.tier === tier));
   renderFissureRows(window._fissureData || []);
 }
 
-// ── Render helpers ─────────────────────────────────────────
-
+/* ── Fissures ── */
 function renderFissureRows(fissures) {
-  const filtered = activeTier === 'All'
-    ? fissures
-    : fissures.filter(f => f.tier === activeTier);
-
-  if (!filtered.length) {
-    return '<div class="empty-state">No fissures for selected tier</div>';
-  }
-  return filtered.map(f => `
+  const list = activeTier === 'All' ? fissures : fissures.filter(f => f.tier === activeTier);
+  if (!list.length) return '<div class="empty-state">No fissures for selected tier</div>';
+  return list.map(f => `
     <div class="fissure-row">
       <span class="tier-badge tier-${esc(f.tier)}">${esc(f.tier)}</span>
       <div class="fissure-info">
-        <div class="fissure-node">
-          ${esc(f.node)}
-          ${f.is_storm ? '<span class="storm-tag">Storm</span>' : ''}
-          ${f.is_steel_path ? '<span class="sp-tag">SP</span>' : ''}
-        </div>
+        <div class="fissure-node">${esc(f.node)}${f.is_storm?'<span class="storm-tag">Storm</span>':''}${f.is_steel_path?'<span class="sp-tag">SP</span>':''}</div>
         <div class="fissure-sub">${esc(f.mission_type)} · ${esc(f.enemy)}</div>
       </div>
       <span class="eta-chip">${esc(f.eta)}</span>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function buildFissureCard(fissures) {
   window._fissureData = fissures;
-  const tiers = ['All', 'Lith', 'Meso', 'Neo', 'Axi', 'Requiem', 'Omnia'];
-  const tierBtns = tiers.map(t => {
-    const color = TIER_COLORS[t] ? `style="color:${TIER_COLORS[t]};border-color:${TIER_COLORS[t]}44"` : '';
-    return `<button class="tier-btn ${t === activeTier ? 'active' : ''}" data-tier="${t}"
-      onclick="setTier('${t}')" ${color}>${t}</button>`;
+  const tiers = ['All','Lith','Meso','Neo','Axi','Requiem','Omnia'];
+  const btns = tiers.map(t => {
+    const col = TIER_COLORS[t] ? `style="color:${TIER_COLORS[t]};border-color:${TIER_COLORS[t]}55"` : 'style="color:#A0A0A0;border-color:#333"';
+    return `<button class="tier-btn${t===activeTier?' active':''}" data-tier="${t}" onclick="setTier('${t}')" ${col}>${t}</button>`;
   }).join('');
-
   return `
-    <div class="live-card full-width">
-      <div class="card-title">Void Fissures <span>${fissures.length} active</span></div>
-      <div class="tier-filters">${tierBtns}</div>
-      <div id="fissure-rows">${renderFissureRows(fissures)}</div>
-    </div>
-  `;
+    <div class="s-panel full-width">
+      <div class="s-panel-hd">
+        <span class="s-panel-title">Void Fissures</span>
+        <span class="s-panel-meta">${fissures.length} active</span>
+      </div>
+      <div class="s-panel-body">
+        <div class="tier-filters">${btns}</div>
+        <div id="fissure-rows">${renderFissureRows(fissures)}</div>
+      </div>
+    </div>`;
 }
 
+/* ── Sortie ── */
 function buildSortieCard(sortie) {
   if (!sortie) return `
-    <div class="live-card">
-      <div class="card-title">Sortie</div>
-      <div class="empty-state">No sortie data</div>
-    </div>`;
-  const missions = (sortie.missions || []).map(m => `
+    <div class="s-panel"><div class="s-panel-hd"><span class="s-panel-title">Sortie</span></div>
+    <div class="s-panel-body"><div class="empty-state">No sortie data</div></div></div>`;
+  const missions = (sortie.missions||[]).map(m => `
     <div class="mission-block">
       <div class="mission-node">${esc(m.node)}</div>
       <div class="mission-sub">${esc(m.mission_type)}</div>
-      ${m.modifier ? `<div><span class="modifier-badge">${esc(m.modifier)}</span></div>` : ''}
-    </div>
-  `).join('');
+      ${m.modifier?`<div><span class="modifier-badge">${esc(m.modifier)}</span></div>`:''}
+    </div>`).join('');
   return `
-    <div class="live-card">
-      <div class="card-title">Sortie <span>${esc(sortie.eta)}</span></div>
-      <div class="sortie-meta">
-        <span class="sortie-boss">${esc(sortie.boss)}</span>
-        <span>${esc(sortie.faction)}</span>
+    <div class="s-panel">
+      <div class="s-panel-hd">
+        <span class="s-panel-title">Sortie</span>
+        <span class="s-panel-meta">${esc(sortie.eta)}</span>
       </div>
-      ${missions}
-    </div>
-  `;
+      <div class="s-panel-body">
+        <div class="sortie-meta">
+          <span class="sortie-boss">${esc(sortie.boss)}</span>
+          <span>${esc(sortie.faction)}</span>
+        </div>
+        ${missions}
+      </div>
+    </div>`;
 }
 
+/* ── Archon ── */
 function buildArchonCard(archon) {
   if (!archon) return `
-    <div class="live-card">
-      <div class="card-title">Archon Hunt</div>
-      <div class="empty-state">No archon hunt data</div>
-    </div>`;
-  const missions = (archon.missions || []).map(m => `
+    <div class="s-panel"><div class="s-panel-hd"><span class="s-panel-title">Archon Hunt</span></div>
+    <div class="s-panel-body"><div class="empty-state">No archon hunt data</div></div></div>`;
+  const missions = (archon.missions||[]).map(m => `
     <div class="mission-block">
       <div class="mission-node">${esc(m.node)}</div>
       <div class="mission-sub">${esc(m.mission_type)}</div>
-      ${m.modifier ? `<div><span class="modifier-badge">${esc(m.modifier)}</span></div>` : ''}
-    </div>
-  `).join('');
+      ${m.modifier?`<div><span class="modifier-badge">${esc(m.modifier)}</span></div>`:''}
+    </div>`).join('');
   return `
-    <div class="live-card">
-      <div class="card-title">Archon Hunt <span>${esc(archon.eta)}</span></div>
-      <div class="sortie-meta">
-        <span class="sortie-boss">${esc(archon.boss)}</span>
-        <span>${esc(archon.faction)}</span>
+    <div class="s-panel">
+      <div class="s-panel-hd">
+        <span class="s-panel-title">Archon Hunt</span>
+        <span class="s-panel-meta">${esc(archon.eta)}</span>
       </div>
-      ${missions}
-    </div>
-  `;
+      <div class="s-panel-body">
+        <div class="sortie-meta">
+          <span class="sortie-boss">${esc(archon.boss)}</span>
+          <span>${esc(archon.faction)}</span>
+        </div>
+        ${missions}
+      </div>
+    </div>`;
 }
 
+/* ── Void Trader ── */
 function buildTraderCard(trader) {
   if (!trader) return '';
   const dot = trader.active
@@ -519,68 +717,62 @@ function buildTraderCard(trader) {
   const status = trader.active
     ? `${dot}<span class="trader-location">${esc(trader.node)}</span><span class="trader-eta">Departs ${esc(trader.eta)}</span>`
     : `${dot}<span class="trader-location">Not available</span><span class="trader-eta">Arrives ${esc(trader.eta)}</span>`;
-
   let inventory = '';
   if (trader.active && trader.inventory && trader.inventory.length) {
     const rows = trader.inventory.map(it => `
       <tr>
         <td>${esc(it.item)}</td>
-        <td class="ducat-val">${it.ducats > 0 ? it.ducats + ' ⟁' : '—'}</td>
-        <td class="credit-val">${it.credits > 0 ? it.credits.toLocaleString() + ' ¢' : '—'}</td>
-      </tr>
-    `).join('');
-    inventory = `
-      <table class="inventory-table">
-        <thead><tr><th>Item</th><th>Ducats</th><th>Credits</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+        <td class="ducat-val">${it.ducats>0?it.ducats+' ⟁':'—'}</td>
+        <td class="credit-val">${it.credits>0?it.credits.toLocaleString()+' ¢':'—'}</td>
+      </tr>`).join('');
+    inventory = `<table class="inventory-table">
+      <thead><tr><th>Item</th><th>Ducats</th><th>Credits</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
   }
-
+  const wide = trader.active && trader.inventory && trader.inventory.length > 6 ? ' full-width' : '';
   return `
-    <div class="live-card ${trader.active && trader.inventory && trader.inventory.length > 6 ? 'full-width' : ''}">
-      <div class="card-title">Void Trader — Baro Ki'Tec</div>
-      <div class="trader-status">${status}</div>
-      ${inventory}
-    </div>
-  `;
+    <div class="s-panel${wide}">
+      <div class="s-panel-hd"><span class="s-panel-title">Void Trader — Baro Ki'Tec</span></div>
+      <div class="s-panel-body">
+        <div class="trader-status">${status}</div>
+        ${inventory}
+      </div>
+    </div>`;
 }
 
+/* ── Nightwave ── */
 function buildNightwaveCard(nw) {
   if (!nw) return `
-    <div class="live-card">
-      <div class="card-title">Nightwave</div>
-      <div class="empty-state">No active Nightwave season</div>
-    </div>`;
-
-  const challenges = (nw.active_challenges || []).map(ch => {
-    const tagClass = ch.is_elite ? 'elite' : ch.is_daily ? 'daily' : 'weekly';
-    const tagLabel = ch.is_elite ? 'Elite' : ch.is_daily ? 'Daily' : 'Weekly';
-    return `
-      <div class="nw-row">
-        <span class="nw-tag ${tagClass}">${tagLabel}</span>
-        <div style="flex:1;min-width:0">
-          <div style="color:var(--text);font-size:13px">${esc(ch.title)}</div>
-          <div style="color:var(--text-dim);font-size:11px;margin-top:2px">${esc(ch.eta)}</div>
-        </div>
-        <span class="nw-rep">+${ch.reputation.toLocaleString()} rep</span>
+    <div class="s-panel"><div class="s-panel-hd"><span class="s-panel-title">Nightwave</span></div>
+    <div class="s-panel-body"><div class="empty-state">No active Nightwave season</div></div></div>`;
+  const challenges = (nw.active_challenges||[]).map(ch => {
+    const cls = ch.is_elite?'elite':ch.is_daily?'daily':'weekly';
+    const lbl = ch.is_elite?'Elite':ch.is_daily?'Daily':'Weekly';
+    return `<div class="nw-row">
+      <span class="nw-tag ${cls}">${lbl}</span>
+      <div style="flex:1;min-width:0">
+        <div style="color:var(--text);font-size:13px;font-weight:500">${esc(ch.title)}</div>
+        <div style="color:var(--text-dim);font-size:11px;margin-top:2px">${esc(ch.eta)}</div>
       </div>
-    `;
+      <span class="nw-rep">+${ch.reputation.toLocaleString()}</span>
+    </div>`;
   }).join('');
-
   return `
-    <div class="live-card">
-      <div class="card-title">Nightwave <span>Season ${nw.season} · ${esc(nw.eta)}</span></div>
-      ${challenges || '<div class="empty-state">No active challenges</div>'}
-    </div>
-  `;
+    <div class="s-panel">
+      <div class="s-panel-hd">
+        <span class="s-panel-title">Nightwave</span>
+        <span class="s-panel-meta">S${nw.season} · ${esc(nw.eta)}</span>
+      </div>
+      <div class="s-panel-body">${challenges||'<div class="empty-state">No active challenges</div>'}</div>
+    </div>`;
 }
 
+/* ── Alerts ── */
 function buildAlertsCard(alerts) {
-  if (!alerts || !alerts.length) return `
-    <div class="live-card">
-      <div class="card-title">Alerts</div>
-      <div class="empty-state">No active alerts</div>
-    </div>`;
+  if (!alerts||!alerts.length) return `
+    <div class="s-panel"><div class="s-panel-hd"><span class="s-panel-title">Alerts</span></div>
+    <div class="s-panel-body"><div class="empty-state">No active alerts</div></div></div>`;
   const rows = alerts.map(a => `
     <div class="alert-row">
       <div style="flex:1;min-width:0">
@@ -588,29 +780,29 @@ function buildAlertsCard(alerts) {
         <div class="alert-sub">${esc(a.node)} · ${esc(a.mission_type)} · ${esc(a.faction)}</div>
       </div>
       <span class="eta-chip">${esc(a.eta)}</span>
-    </div>
-  `).join('');
+    </div>`).join('');
   return `
-    <div class="live-card">
-      <div class="card-title">Alerts <span>${alerts.length} active</span></div>
-      ${rows}
-    </div>
-  `;
+    <div class="s-panel">
+      <div class="s-panel-hd">
+        <span class="s-panel-title">Alerts</span>
+        <span class="s-panel-meta">${alerts.length} active</span>
+      </div>
+      <div class="s-panel-body">${rows}</div>
+    </div>`;
 }
 
+/* ── Invasions ── */
 function buildInvasionsCard(invasions) {
-  if (!invasions || !invasions.length) return `
-    <div class="live-card">
-      <div class="card-title">Invasions</div>
-      <div class="empty-state">No active invasions</div>
-    </div>`;
+  if (!invasions||!invasions.length) return `
+    <div class="s-panel"><div class="s-panel-hd"><span class="s-panel-title">Invasions</span></div>
+    <div class="s-panel-body"><div class="empty-state">No active invasions</div></div></div>`;
   const rows = invasions.map(inv => `
     <div class="invasion-row">
       <div class="invasion-info">
-        <div style="color:var(--text);font-size:13px">${esc(inv.node)}</div>
+        <div class="invasion-node">${esc(inv.node)}</div>
         <div class="invasion-factions">
           <span>${esc(inv.attacker)}</span>
-          <span class="invasion-vs">vs</span>
+          <span class="invasion-vs">VS</span>
           <span>${esc(inv.defender)}</span>
           <span class="eta-chip" style="margin-left:auto">${esc(inv.eta)}</span>
         </div>
@@ -622,63 +814,64 @@ function buildInvasionsCard(invasions) {
           <span class="reward-chip">🛡 ${esc(inv.defender_reward)}</span>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
   return `
-    <div class="live-card">
-      <div class="card-title">Invasions <span>${invasions.length} active</span></div>
-      ${rows}
-    </div>
-  `;
+    <div class="s-panel">
+      <div class="s-panel-hd">
+        <span class="s-panel-title">Invasions</span>
+        <span class="s-panel-meta">${invasions.length} active</span>
+      </div>
+      <div class="s-panel-body">${rows}</div>
+    </div>`;
 }
 
-// ── Data loading ───────────────────────────────────────────
-
+/* ── Data loading ── */
 async function loadData() {
   resetCountdown();
   document.getElementById('live-content').innerHTML =
-    '<div class="loading-overlay"><div class="spinner"></div> Loading worldstate…</div>';
-
+    '<div class="loading-overlay"><div class="scanner"></div>Acquiring worldstate…</div>';
   try {
     const res = await fetch(`/api/worldstate?platform=${currentPlatform}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     renderAll(data);
   } catch (err) {
-    document.getElementById('live-content').innerHTML =
-      `<div class="live-card full-width"><div class="error-msg">
-        Failed to load worldstate: ${esc(err.message)}<br>
-        <small style="color:var(--text-dim);margin-top:6px;display:block">
-          If this is the first run, download the worldstate manually:<br>
-          <a href="https://content.warframe.com/dynamic/worldState.php" target="_blank"
-             style="color:var(--accent)">content.warframe.com/dynamic/worldState.php</a>
-          and save it as <code>data/worldstate_raw.json</code>, then run
-          <code>python scripts/fetch_worldstate.py</code>.
-        </small>
-      </div></div>`;
+    document.getElementById('live-content').innerHTML = `
+      <div class="s-panel full-width">
+        <div class="s-panel-body">
+          <div class="error-msg">
+            Failed to load worldstate: ${esc(err.message)}<br>
+            <small style="color:var(--text-dim);margin-top:6px;display:block">
+              Download worldstate manually from
+              <a href="https://content.warframe.com/dynamic/worldState.php" target="_blank"
+                 style="color:var(--crimson-bright)">content.warframe.com</a>
+              and save as <code>data/worldstate_raw.json</code>, then run
+              <code>python scripts/fetch_worldstate.py</code>.
+            </small>
+          </div>
+        </div>
+      </div>`;
   }
 }
 
 function renderAll(data) {
   const grid = document.createElement('div');
   grid.className = 'live-grid';
-
   grid.innerHTML = [
-    buildFissureCard(data.fissures || []),
+    buildFissureCard(data.fissures||[]),
     buildSortieCard(data.sortie),
     buildArchonCard(data.archon_hunt),
     buildTraderCard(data.void_trader),
     buildNightwaveCard(data.nightwave),
-    buildAlertsCard(data.alerts || []),
-    buildInvasionsCard(data.invasions || []),
+    buildAlertsCard(data.alerts||[]),
+    buildInvasionsCard(data.invasions||[]),
   ].join('');
-
-  document.getElementById('live-content').innerHTML = '';
-  document.getElementById('live-content').appendChild(grid);
+  const el = document.getElementById('live-content');
+  el.innerHTML = '';
+  el.appendChild(grid);
 }
 
-// ── Countdown timer ────────────────────────────────────────
-
+/* ── Countdown ── */
 function resetCountdown() {
   countdownVal = 60;
   document.getElementById('refresh-countdown').textContent = countdownVal;
@@ -686,14 +879,10 @@ function resetCountdown() {
   countdownTimer = setInterval(() => {
     countdownVal--;
     document.getElementById('refresh-countdown').textContent = Math.max(0, countdownVal);
-    if (countdownVal <= 0) {
-      clearInterval(countdownTimer);
-      loadData();
-    }
+    if (countdownVal <= 0) { clearInterval(countdownTimer); loadData(); }
   }, 1000);
 }
 
-// ── Init ───────────────────────────────────────────────────
 loadData();
 </script>
 </body>
