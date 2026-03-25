@@ -403,6 +403,14 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   transition: color 0.2s;
 }
 .mod-card.empty:hover .add-icon { color: var(--accent2); }
+.mod-card .add-alchemy-icon {
+  width: 14px;
+  height: auto;
+  margin-bottom: 4px;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+}
+.mod-card.empty:hover .add-alchemy-icon { opacity: 0.75; }
 .mod-card .add-label {
   font-size: 10px;
   color: var(--text-dim);
