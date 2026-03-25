@@ -200,6 +200,15 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.4.2',
+    date: '2026-03-25',
+    sections: [
+      { heading: 'Changed', items: [
+        'Design tweaks \u2014 modal theme consistency, CSS variable cleanup, mobile viewport fix',
+      ]},
+    ],
+  },
+  {
     version: '0.4.1',
     date: '2026-03-25',
     sections: [
