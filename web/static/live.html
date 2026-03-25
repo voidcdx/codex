@@ -29,8 +29,8 @@
       font-family: var(--font-body);
       font-size: 14px;
       line-height: 1.5;
-      min-height: 100vh;
-      overflow-x: hidden;
+      height: 100%;
+      overflow: hidden;
     }
 
     /* ── Atmosphere ── */
@@ -79,7 +79,7 @@
     }
 
     /* ── Layout ── */
-    .app { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .app { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100vh; padding-top: 50px; }
     .body-row { display: flex; flex: 1; overflow: hidden; }
 
     /* ── Right sidebar ── */
@@ -161,8 +161,8 @@
 
     /* ── Header ── */
     header {
-      position: sticky;
-      top: 0;
+      position: fixed;
+      top: 0; left: 0; right: 0;
       z-index: 100;
       height: 50px;
       display: flex;
@@ -715,9 +715,6 @@
         Live Data
       </a>
     </nav>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-section-label">Tier Filter</div>
-    <nav class="r-nav" id="mobile-tier-nav"></nav>
   </div>
 
   <div class="body-row">
@@ -753,9 +750,6 @@
         Live Data
       </a>
     </nav>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-section-label">Tier Filter</div>
-    <nav class="r-nav" id="sidebar-tier-nav"></nav>
   </aside>
   </div><!-- /.body-row -->
 </div><!-- /.app -->
@@ -808,19 +802,6 @@ function toggleDrawer() {
   btn.classList.toggle('open', open);
 }
 
-function buildSidebarTiers() {
-  const tiers = ['All','Lith','Meso','Neo','Axi','Requiem','Omnia'];
-  const html = tiers.map(t => {
-    const col = TIER_COLORS[t] || '#A0A0A0';
-    return `<a href="#" class="sidebar-tier-btn${t===activeTier?' active':''}" data-tier="${t}"
-      style="color:${col};--tier-col:${col}"
-      onclick="event.preventDefault();setTier('${t}');if(document.getElementById('mobile-drawer').classList.contains('open'))toggleDrawer()">${t}</a>`;
-  }).join('');
-  const nav = document.getElementById('sidebar-tier-nav');
-  if (nav) nav.innerHTML = html;
-  const mnav = document.getElementById('mobile-tier-nav');
-  if (mnav) mnav.innerHTML = html;
-}
 
 /* ── Fissures ── */
 function renderFissureRows(fissures) {
@@ -1086,7 +1067,6 @@ function resetCountdown() {
   }, 1000);
 }
 
-buildSidebarTiers();
 loadData();
 </script>
 </body>
