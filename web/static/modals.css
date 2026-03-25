@@ -48,7 +48,7 @@
   color: rgba(255,255,255,0.35);
   background: none;
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 2px 8px;
   cursor: pointer;
   margin-left: auto;
@@ -73,7 +73,7 @@
 .alchemy-palette-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .alchemy-elem-pill {
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 0;
   border: 1px solid rgba(255,255,255,0.1);
   background: rgba(255,255,255,0.04);
   cursor: pointer;
@@ -105,7 +105,7 @@
 }
 .alchemy-suggestions::-webkit-scrollbar { width: 4px; }
 .alchemy-suggestions::-webkit-scrollbar-track { background: transparent; }
-.alchemy-suggestions::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+.alchemy-suggestions::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 0; }
 .alch-section-label {
   font-size: 10px;
   color: var(--text-dim);
@@ -141,7 +141,7 @@
   flex-direction: column;
   gap: 0;
   padding: 4px 5px;
-  border-radius: 6px;
+  border-radius: 0;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.04);
   margin-bottom: 3px;
@@ -176,7 +176,7 @@
   font-size: 8px;
   font-weight: 700;
   padding: 1px 4px;
-  border-radius: 3px;
+  border-radius: 0;
   flex-shrink: 0;
   letter-spacing: 0.3px;
 }
@@ -192,7 +192,7 @@
   font-size: 9px;
   color: var(--elem-color, var(--text-dim));
   background: rgba(255,255,255,0.06);
-  border-radius: 3px;
+  border-radius: 0;
   padding: 1px 5px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -200,7 +200,7 @@
 .alch-add-btn {
   width: 20px;
   height: 20px;
-  border-radius: 4px;
+  border-radius: 0;
   border: 1px solid rgba(255,255,255,0.15);
   background: rgba(255,255,255,0.05);
   color: var(--text);
@@ -259,7 +259,7 @@
   padding: 18px 22px 14px;
   border-bottom: 1px solid var(--border);
   background: var(--surface2);
-  border-radius: var(--radius) var(--radius) 0 0;
+  border-radius: 0;
   flex-shrink: 0;
   position: relative;
   z-index: 2;
@@ -269,7 +269,7 @@
 .riven-modal-close {
   width: 28px;
   height: 28px;
-  border-radius: 6px;
+  border-radius: 0;
   border: 1px solid var(--border-red);
   background: color-mix(in srgb, var(--accent) 8%, transparent);
   color: var(--text-dim);
@@ -345,7 +345,7 @@
   font-size: 12px;
   background: var(--surface2);
   border: 1px solid var(--border-red);
-  border-radius: 3px;
+  border-radius: 0;
   padding: 1px 5px;
   color: var(--text);
 }
@@ -447,13 +447,13 @@
   #guide-overlay, #changelog-overlay { align-items: flex-end; }
   .guide-modal, .changelog-modal {
     width: calc(100vw - 32px);
-    border-radius: 14px 14px 0 0;
+    border-radius: 0;
     border-bottom: none;
   }
   .guide-modal    { max-height: min(92vh, 92dvh); }
   .changelog-modal { max-height: min(92vh, calc(100dvh - 20px)); }
   .guide-modal-header,
-  .changelog-modal-header { border-radius: 14px 14px 0 0; padding: 12px 12px 10px; }
+  .changelog-modal-header { border-radius: 0; padding: 12px 12px 10px; }
   .guide-modal-body { padding: 10px 10px 24px; }
   .changelog-modal-body { padding: 10px 10px 24px; }
   .guide-modal-title, .changelog-modal-title { font-size: 15px; }
