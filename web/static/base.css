@@ -4,9 +4,9 @@
 
 :root {
   --bg:              #050505;
-  --surface:         #242424;
-  --surface2:        #1c1c1c;
-  --surface-solid:   #242424;
+  --surface:         #201818;
+  --surface2:        #181212;
+  --surface-solid:   #201818;
   --border:          rgba(139, 0, 0, 0.4);
   --border-highlight: rgba(220, 20, 60, 0.6);
   --border-red:      rgba(139, 0, 0, 0.55);
