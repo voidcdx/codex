@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Void Codex — Color Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── Shared structural styles ── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Rajdhani', sans-serif; font-size: 14px; display: flex; flex-direction: column; gap: 0; }
+
+.compare-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  background: #1a1a1a;
+  color: #aaa;
+  border-bottom: 1px solid #333;
+}
+.compare-label span { color: #dc143c; }
+
+.scene {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Panel structure ── */
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 16px;
+  position: relative;
+  background: var(--surface);
+  transition: border-color 0.2s;
+}
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220,20,60,0.4), transparent);
+  pointer-events: none;
+}
+.panel:hover { border-color: var(--border-hover); }
+.panel h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(139,0,0,0.1);
+}
+.row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.label { color: var(--text-dim); font-size: 13px; }
+.value { color: var(--text-primary); font-size: 13px; font-weight: 600; }
+.value-accent { color: #dc143c; font-size: 13px; font-weight: 600; }
+.stat-body { display: flex; flex-direction: column; gap: 6px; }
+.divider { height: 1px; background: rgba(139,0,0,0.12); margin: 10px 0; }
+.input-mock {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  padding: 5px 8px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+.btn-mock {
+  background: transparent;
+  border: 1px solid rgba(139,0,0,0.4);
+  color: #dc143c;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  cursor: pointer;
+  width: 100%;
+}
+.mod-slot {
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.mod-slot.filled { color: var(--text); border-color: rgba(139,0,0,0.3); }
+.sidebar-mock {
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nav-item {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 8px 12px;
+  border-right: 2px solid transparent;
+  cursor: pointer;
+}
+.nav-item.active { color: #dc143c; border-right-color: #dc143c; }
+.result-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.result-table th { color: var(--text-muted); font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 1px; text-align: left; padding: 4px 6px; border-bottom: 1px solid rgba(139,0,0,0.15); }
+.result-table td { color: var(--text); padding: 5px 6px; border-bottom: 1px solid rgba(139,0,0,0.07); }
+.result-table td.dmg { color: var(--text-primary); font-weight: 600; }
+.badge { font-size: 11px; padding: 1px 5px; border: 1px solid; }
+.badge-vuln { color: #6cba6c; border-color: rgba(108,186,108,0.4); }
+.badge-res  { color: #dc143c; border-color: rgba(220,20,60,0.4); }
+
+/* ══════════════════════════════════════════
+   THEME A — CURRENT (before)
+   ══════════════════════════════════════════ */
+.theme-a {
+  --bg:           #050505;
+  --surface:      rgba(13,13,13,0.9);
+  --surface2:     rgba(10,10,10,0.9);
+  --input-bg:     rgba(10,10,10,0.9);
+  --border:       rgba(139,0,0,0.15);
+  --border-hover: rgba(139,0,0,0.3);
+  --text:         #888888;
+  --text-primary: #e8e8e8;
+  --text-dim:     #444444;
+  --text-muted:   #444444;
+  background: var(--bg);
+}
+
+/* ══════════════════════════════════════════
+   THEME B — Option B: lighter panels + brighter text
+   ══════════════════════════════════════════ */
+.theme-b {
+  --bg:           #050505;
+  --surface:      rgba(28,28,28,0.95);
+  --surface2:     rgba(20,20,20,0.95);
+  --input-bg:     rgba(18,18,18,0.95);
+  --border:       rgba(139,0,0,0.25);
+  --border-hover: rgba(139,0,0,0.45);
+  --text:         #b0b0b0;
+  --text-primary: #f0f0f0;
+  --text-dim:     #707070;
+  --text-muted:   #666666;
+  background: var(--bg);
+}
+
+/* ══════════════════════════════════════════
+   THEME C — Option C: warm dark bg + lifted text
+   ══════════════════════════════════════════ */
+.theme-c {
+  --bg:           #0c0a09;
+  --surface:      rgba(26,20,18,0.97);
+  --surface2:     rgba(20,15,13,0.97);
+  --input-bg:     rgba(18,13,11,0.97);
+  --border:       rgba(139,0,0,0.25);
+  --border-hover: rgba(139,0,0,0.45);
+  --text:         #b0a8a4;
+  --text-primary: #f0ebe8;
+  --text-dim:     #6e6460;
+  --text-muted:   #6e6460;
+  background: var(--bg);
+}
+
+/* ══════════════════════════════════════════
+   THEME D — Option B+C combined (recommended)
+   ══════════════════════════════════════════ */
+.theme-d {
+  --bg:           #0c0a09;
+  --surface:      rgba(30,24,22,0.97);
+  --surface2:     rgba(22,17,15,0.97);
+  --input-bg:     rgba(18,13,11,0.97);
+  --border:       rgba(139,0,0,0.28);
+  --border-hover: rgba(139,0,0,0.50);
+  --text:         #b8b0ac;
+  --text-primary: #f2edea;
+  --text-dim:     #706660;
+  --text-muted:   #706660;
+  background: var(--bg);
+}
+
+</style>
+</head>
+<body>
+
+<!-- CURRENT -->
+<div class="compare-label">A — <span>Current</span> (before) · bg #050505, surface rgba(13,13,13), text #888, dim #444</div>
+<div class="scene theme-a">
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Weapon</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Acceltra Prime</span></div>
+        <div class="row"><span class="label">Total Damage</span><span class="value">152.0</span></div>
+        <div class="row"><span class="label">Crit Chance</span><span class="value-accent">38%</span></div>
+        <div class="row"><span class="label">Crit Multiplier</span><span class="value">2.4×</span></div>
+        <div class="row"><span class="label">Status Chance</span><span class="value">26%</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Mods</h2>
+      <div class="mod-slot filled">Serration +165%</div>
+      <div class="mod-slot filled">Split Chamber +90%</div>
+      <div class="mod-slot filled">Point Strike +150%</div>
+      <div class="mod-slot">— empty —</div>
+      <div class="mod-slot">— empty —</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Results</h2>
+      <table class="result-table">
+        <tr><th>Type</th><th>Per Hit</th><th>Eff.</th></tr>
+        <tr><td>Impact</td><td class="dmg">48.0</td><td></td></tr>
+        <tr><td>Puncture</td><td class="dmg">72.0</td><td></td></tr>
+        <tr><td>Slash</td><td class="dmg">24.0</td><td></td></tr>
+        <tr><td>Viral</td><td class="dmg">189.5</td><td><span class="badge badge-vuln">+50%</span></td></tr>
+        <tr><td>Heat</td><td class="dmg">94.75</td><td><span class="badge badge-res">−50%</span></td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Enemy</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Corrupted Heavy Gunner</span></div>
+        <div class="row"><span class="label">Level</span><span class="value">165</span></div>
+        <div class="row"><span class="label">Armor</span><span class="value-accent">2,700</span></div>
+        <div class="row"><span class="label">Health</span><span class="value">1,284,920.50</span></div>
+      </div>
+      <div class="divider"></div>
+      <input class="input-mock" value="165" readonly>
+      <button class="btn-mock">Calculate</button>
+    </div>
+  </div>
+</div>
+
+<!-- OPTION B -->
+<div class="compare-label">B — <span>Lighter panels + brighter text</span> · bg #050505, surface rgba(28,28,28), text #b0b0b0, dim #707070</div>
+<div class="scene theme-b">
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Weapon</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Acceltra Prime</span></div>
+        <div class="row"><span class="label">Total Damage</span><span class="value">152.0</span></div>
+        <div class="row"><span class="label">Crit Chance</span><span class="value-accent">38%</span></div>
+        <div class="row"><span class="label">Crit Multiplier</span><span class="value">2.4×</span></div>
+        <div class="row"><span class="label">Status Chance</span><span class="value">26%</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Mods</h2>
+      <div class="mod-slot filled">Serration +165%</div>
+      <div class="mod-slot filled">Split Chamber +90%</div>
+      <div class="mod-slot filled">Point Strike +150%</div>
+      <div class="mod-slot">— empty —</div>
+      <div class="mod-slot">— empty —</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Results</h2>
+      <table class="result-table">
+        <tr><th>Type</th><th>Per Hit</th><th>Eff.</th></tr>
+        <tr><td>Impact</td><td class="dmg">48.0</td><td></td></tr>
+        <tr><td>Puncture</td><td class="dmg">72.0</td><td></td></tr>
+        <tr><td>Slash</td><td class="dmg">24.0</td><td></td></tr>
+        <tr><td>Viral</td><td class="dmg">189.5</td><td><span class="badge badge-vuln">+50%</span></td></tr>
+        <tr><td>Heat</td><td class="dmg">94.75</td><td><span class="badge badge-res">−50%</span></td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Enemy</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Corrupted Heavy Gunner</span></div>
+        <div class="row"><span class="label">Level</span><span class="value">165</span></div>
+        <div class="row"><span class="label">Armor</span><span class="value-accent">2,700</span></div>
+        <div class="row"><span class="label">Health</span><span class="value">1,284,920.50</span></div>
+      </div>
+      <div class="divider"></div>
+      <input class="input-mock" value="165" readonly>
+      <button class="btn-mock">Calculate</button>
+    </div>
+  </div>
+</div>
+
+<!-- OPTION C -->
+<div class="compare-label">C — <span>Warm dark background</span> · bg #0c0a09, surface rgba(26,20,18), text #b0a8a4, dim #6e6460</div>
+<div class="scene theme-c">
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Weapon</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Acceltra Prime</span></div>
+        <div class="row"><span class="label">Total Damage</span><span class="value">152.0</span></div>
+        <div class="row"><span class="label">Crit Chance</span><span class="value-accent">38%</span></div>
+        <div class="row"><span class="label">Crit Multiplier</span><span class="value">2.4×</span></div>
+        <div class="row"><span class="label">Status Chance</span><span class="value">26%</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Mods</h2>
+      <div class="mod-slot filled">Serration +165%</div>
+      <div class="mod-slot filled">Split Chamber +90%</div>
+      <div class="mod-slot filled">Point Strike +150%</div>
+      <div class="mod-slot">— empty —</div>
+      <div class="mod-slot">— empty —</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Results</h2>
+      <table class="result-table">
+        <tr><th>Type</th><th>Per Hit</th><th>Eff.</th></tr>
+        <tr><td>Impact</td><td class="dmg">48.0</td><td></td></tr>
+        <tr><td>Puncture</td><td class="dmg">72.0</td><td></td></tr>
+        <tr><td>Slash</td><td class="dmg">24.0</td><td></td></tr>
+        <tr><td>Viral</td><td class="dmg">189.5</td><td><span class="badge badge-vuln">+50%</span></td></tr>
+        <tr><td>Heat</td><td class="dmg">94.75</td><td><span class="badge badge-res">−50%</span></td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Enemy</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Corrupted Heavy Gunner</span></div>
+        <div class="row"><span class="label">Level</span><span class="value">165</span></div>
+        <div class="row"><span class="label">Armor</span><span class="value-accent">2,700</span></div>
+        <div class="row"><span class="label">Health</span><span class="value">1,284,920.50</span></div>
+      </div>
+      <div class="divider"></div>
+      <input class="input-mock" value="165" readonly>
+      <button class="btn-mock">Calculate</button>
+    </div>
+  </div>
+</div>
+
+<!-- OPTION D (recommended) -->
+<div class="compare-label">D — <span>B+C Combined (recommended)</span> · bg #0c0a09, surface rgba(30,24,22), text #b8b0ac, dim #706660</div>
+<div class="scene theme-d">
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Weapon</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Acceltra Prime</span></div>
+        <div class="row"><span class="label">Total Damage</span><span class="value">152.0</span></div>
+        <div class="row"><span class="label">Crit Chance</span><span class="value-accent">38%</span></div>
+        <div class="row"><span class="label">Crit Multiplier</span><span class="value">2.4×</span></div>
+        <div class="row"><span class="label">Status Chance</span><span class="value">26%</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Mods</h2>
+      <div class="mod-slot filled">Serration +165%</div>
+      <div class="mod-slot filled">Split Chamber +90%</div>
+      <div class="mod-slot filled">Point Strike +150%</div>
+      <div class="mod-slot">— empty —</div>
+      <div class="mod-slot">— empty —</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="panel">
+      <h2>Results</h2>
+      <table class="result-table">
+        <tr><th>Type</th><th>Per Hit</th><th>Eff.</th></tr>
+        <tr><td>Impact</td><td class="dmg">48.0</td><td></td></tr>
+        <tr><td>Puncture</td><td class="dmg">72.0</td><td></td></tr>
+        <tr><td>Slash</td><td class="dmg">24.0</td><td></td></tr>
+        <tr><td>Viral</td><td class="dmg">189.5</td><td><span class="badge badge-vuln">+50%</span></td></tr>
+        <tr><td>Heat</td><td class="dmg">94.75</td><td><span class="badge badge-res">−50%</span></td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Enemy</h2>
+      <div class="stat-body">
+        <div class="row"><span class="label">Name</span><span class="value">Corrupted Heavy Gunner</span></div>
+        <div class="row"><span class="label">Level</span><span class="value">165</span></div>
+        <div class="row"><span class="label">Armor</span><span class="value-accent">2,700</span></div>
+        <div class="row"><span class="label">Health</span><span class="value">1,284,920.50</span></div>
+      </div>
+      <div class="divider"></div>
+      <input class="input-mock" value="165" readonly>
+      <button class="btn-mock">Calculate</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
