@@ -56,8 +56,8 @@
 .panel::after {
   content: '';
   position: absolute;
-  inset: -12px;
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, var(--accent-glow) 0%, transparent 65%);
+  inset: -24px;
+  background: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, var(--accent-glow) 60%, transparent 75%);
   z-index: -1;
   pointer-events: none;
 }
