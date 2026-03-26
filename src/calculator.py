@@ -411,7 +411,7 @@ class DamageCalculator:
 
         # --- Multishot: multiply all damage by projectile count ---
         if multishot != 1.0:
-            final = {dtype: v * multishot for dtype, v in final.items()}
+            final = {dtype: math.floor(v * multishot) for dtype, v in final.items()}
 
         return final
 
