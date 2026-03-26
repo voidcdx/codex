@@ -48,6 +48,7 @@ class Weapon:
 @dataclass
 class Mod:
     name: str
+    family: str = ""                              # base mod name; shared by base/Primed/Umbral/Archon variants
     damage_bonus: float = 0.0                     # additive, e.g. 1.65 for Serration
     elemental_bonuses: list[DamageComponent] = field(default_factory=list)
     ips_bonuses: list[DamageComponent] = field(default_factory=list)  # per-IPS-type % bonus (Impact/Puncture/Slash)
