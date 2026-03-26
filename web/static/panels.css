@@ -259,7 +259,7 @@ select option {
   position: absolute;
   top: 100%;
   left: 0; right: 0;
-  background: rgba(5, 9, 4, 0.97);
+  background: rgba(5, 5, 5, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-red);

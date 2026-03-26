@@ -227,6 +227,46 @@
       </div>
     </div>
 
+    <!-- Mods — 2×4 card grid -->
+    <div class="panel">
+      <h2>Mods (in slot order)<span class="mod-panel-actions"><button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button><button class="btn-alchemy-mixer" onclick="openAlchemyMixer()" title="Alchemy Mixer"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
+  <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
+  <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="12" cy="20.5" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="3.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <circle cx="20.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
+  <path d="M12,5.5 L18,16.5 L6,16.5 Z" fill="none" stroke="#D4A843" stroke-width="1.1" stroke-linejoin="round"/>
+  <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
+  <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+  <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
+</svg></button><button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></span></h2>
+      <div class="panel-help hidden">
+        <p>Mods apply in slot order — top-left first. Slot order determines elemental combination: the first two primary elements (Heat, Cold, Electricity, Toxin) encountered combine into a secondary (e.g. Cold + Toxin = Viral, Heat + Electricity = Radiation). Innate weapon elements occupy the last slot.</p>
+        <p>Primed, Umbral, and Archon variants block their base version — only one variant per mod family can be equipped at a time.</p>
+        <p>Click the purple slot to open the Riven Builder. Use the gold alchemy button to explore elemental combinations.</p>
+      </div>
+      <div id="mod-grid-wrapper">
+        <div id="special-slots" class="special-slots-row"></div>
+        <div id="mod-grid" class="mod-grid"></div>
+        <svg id="element-arcs"></svg>
+      </div>
+      <div id="element-badges" class="element-badges"></div>
+      <div class="panel-sub-h">Weapon Arcanes
+        <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
+        <button type="button" class="btn-add btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)">+ ADD</button>
+      </div>
+      <div class="panel-help hidden">
+        <p>Weapon arcanes slot into a max-rank built weapon and use no mod capacity. Up to 2 arcane slots per weapon.</p>
+        <p><strong>Merciless:</strong> Stacks on kill — up to +180% damage and −90% reload at 10 stacks.</p>
+        <p><strong>Deadhead:</strong> Stacks on headshot kill — up to +120% headshot bonus and −60% reload at 10 stacks.</p>
+        <p><strong>Cascadia Flare / Empowered:</strong> Proc on status hit, granting temporary crit chance or crit damage.</p>
+        <p><strong>Cascadia Overcharge:</strong> On reload, adds flat IPS damage distributed proportionally across Impact, Puncture, and Slash.</p>
+        <p>The stack count you enter represents active stacks at the moment of this hit.</p>
+      </div>
+      <div id="arcane-rows"></div>
+    </div>
+
     <!-- Riven rows rendered inline in mod-grid by JS -->
 
     <!-- Alchemy Guide Modal -->
@@ -434,7 +474,7 @@
 
     <!-- Options (collapsible) -->
     <div class="panel">
-      <h2 class="panel-toggle panel-toggle-with-help open" onclick="this.classList.toggle('open'); document.getElementById('options-body').classList.toggle('hidden')">
+      <h2 class="panel-toggle panel-toggle-with-help" onclick="this.classList.toggle('open'); document.getElementById('options-body').classList.toggle('hidden')">
         Options
         <button type="button" class="btn-help" onclick="event.stopPropagation(); togglePanelHelp(this)">?</button>
         <svg class="chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><polyline points="2,4 6,8 10,4"/></svg>
@@ -446,7 +486,7 @@
         <p><strong>Active Status:</strong> Unique proc types on the enemy — used by Condition Overload (+80% per type) and Galvanized Aptitude.</p>
         <p><strong>Galv. Stacks:</strong> Active kill-stacks on equipped Galvanized mods. Earned by kills, reset on mission start. Each mod has its own cap (typically 4–5).</p>
       </div>
-      <div id="options-body" class="collapsible-body">
+      <div id="options-body" class="collapsible-body hidden">
         <div class="options-row">
           <div>
             <label for="crit-mode">Hit Type</label>
@@ -554,45 +594,6 @@
       </div>
     </div>
 
-    <!-- Mods — 2×4 card grid -->
-    <div class="panel">
-      <h2>Mods (in slot order)<span class="mod-panel-actions"><button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button><button class="btn-alchemy-mixer" onclick="openAlchemyMixer()" title="Alchemy Mixer"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
-  <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
-  <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="12" cy="20.5" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="3.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="20.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <path d="M12,5.5 L18,16.5 L6,16.5 Z" fill="none" stroke="#D4A843" stroke-width="1.1" stroke-linejoin="round"/>
-  <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
-  <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
-  <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
-</svg></button><button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></span></h2>
-      <div class="panel-help hidden">
-        <p>Mods apply in slot order — top-left first. Slot order determines elemental combination: the first two primary elements (Heat, Cold, Electricity, Toxin) encountered combine into a secondary (e.g. Cold + Toxin = Viral, Heat + Electricity = Radiation). Innate weapon elements occupy the last slot.</p>
-        <p>Primed, Umbral, and Archon variants block their base version — only one variant per mod family can be equipped at a time.</p>
-        <p>Click the purple slot to open the Riven Builder. Use the gold alchemy button to explore elemental combinations.</p>
-      </div>
-      <div id="mod-grid-wrapper">
-        <div id="special-slots" class="special-slots-row"></div>
-        <div id="mod-grid" class="mod-grid"></div>
-        <svg id="element-arcs"></svg>
-      </div>
-      <div id="element-badges" class="element-badges"></div>
-      <div class="panel-sub-h">Weapon Arcanes
-        <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
-        <button type="button" class="btn-add btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)">+ ADD</button>
-      </div>
-      <div class="panel-help hidden">
-        <p>Weapon arcanes slot into a max-rank built weapon and use no mod capacity. Up to 2 arcane slots per weapon.</p>
-        <p><strong>Merciless:</strong> Stacks on kill — up to +180% damage and −90% reload at 10 stacks.</p>
-        <p><strong>Deadhead:</strong> Stacks on headshot kill — up to +120% headshot bonus and −60% reload at 10 stacks.</p>
-        <p><strong>Cascadia Flare / Empowered:</strong> Proc on status hit, granting temporary crit chance or crit damage.</p>
-        <p><strong>Cascadia Overcharge:</strong> On reload, adds flat IPS damage distributed proportionally across Impact, Puncture, and Slash.</p>
-        <p>The stack count you enter represents active stacks at the moment of this hit.</p>
-      </div>
-      <div id="arcane-rows"></div>
-    </div>
 
 </div><!-- .content-side -->
 </div><!-- .content -->
