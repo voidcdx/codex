@@ -617,8 +617,10 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   display: block;
 }
 .custom-select-option {
-  padding: 4px;
-  font-size: 12px;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  background: var(--surface-solid);
   color: var(--text-field);
   cursor: pointer;
   transition: background 0.1s;
