@@ -418,7 +418,16 @@
 
     <!-- Results -->
     <div class="panel results-panel" id="results-panel">
-      <h2>Results</h2>
+      <h2>Results
+        <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
+      </h2>
+      <div class="panel-help hidden">
+        <p><strong>Damage Breakdown:</strong> Per-trigger damage after all 6 pipeline steps (base → mods → body part → type effectiveness → armor → faction). Each row is a damage type. The +50% / −50% badges show faction effectiveness (vulnerable or resistant) against the selected enemy.</p>
+        <p><strong>Status Procs:</strong> DoT procs (Slash, Heat, Gas, Toxin, Electricity) deal damage over 6 ticks (~7s). Faction mods double-dip — the proc inherits the bonus from the triggering hit and applies it again each tick. CC/Debuff procs (Viral, Magnetic, Radiation, Blast, Cold) show their crowd-control effect only — no tick damage.</p>
+        <p><strong>Burst DPS:</strong> Damage per trigger × fire rate × multishot — assumes infinite magazine with no reload downtime.</p>
+        <p><strong>Sustained DPS:</strong> Accounts for reload time. This is the realistic long-run DPS including the time spent reloading.</p>
+        <p><strong>Shots to Kill / TTK:</strong> Calculated against the selected enemy's scaled health, shields, and overguard at the chosen level, with the modelled armor already factored in.</p>
+      </div>
       <div class="no-results" id="no-results">Select a weapon and enemy, then click Calculate.</div>
       <div id="results-content" style="display:none"></div>
     </div>
