@@ -73,18 +73,19 @@
 .attack-tab {
   padding: 3px 8px;
   border-radius: 0;
-  border: 1px solid var(--border);
-  background: var(--surface2);
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
   color: var(--text-dim);
   font-size: 11px;
   cursor: pointer;
   transition: all 0.15s;
 }
-.attack-tab:hover { border-color: var(--accent); color: var(--text); }
+.attack-tab:hover { border-bottom-color: var(--accent); color: var(--text); }
 .attack-tab.active {
-  background: var(--accent-glow);
-  border-color: var(--accent2);
+  border-bottom-color: var(--accent2);
   color: var(--accent2);
+  box-shadow: 0 2px 8px -2px var(--crimson-glow);
 }
 
 .stat-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
