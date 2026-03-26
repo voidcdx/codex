@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.5.3] — 2026-03-26
+
+### Added
+- Armor Strip panel — models ability strip %, Corrosive Projection aura %, and Shattering Impact flat removal; shows remaining armor and DR% live; feeds into damage calculation
+- Panel help (?) buttons on all panels and sub-sections — click to expand inline explanation of mechanics; crimson, borderless, mobile-friendly
+
 ## [0.5.2] — 2026-03-26
 
 ### Fixed

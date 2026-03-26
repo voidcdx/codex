@@ -200,6 +200,16 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.5.3',
+    date: '2026-03-26',
+    sections: [
+      { heading: 'Added', items: [
+        'Armor Strip panel \u2014 models ability strip %, Corrosive Projection aura %, and Shattering Impact flat removal; shows remaining armor and DR% live',
+        'Panel help (?) buttons on all panels \u2014 click to expand inline explanation of mechanics for each section',
+      ]},
+    ],
+  },
+  {
     version: '0.5.2',
     date: '2026-03-26',
     sections: [

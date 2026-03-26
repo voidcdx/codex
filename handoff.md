@@ -1,41 +1,26 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Bug-fix + UI polish session on top of v0.5.1. Fixed crit/damage math bugs, weapon data issues, dropdown styling, and added Cold proc CDM support.
+Two new features: full Armor Strip panel (backend + frontend) and a panel help (?) system across all panels and sub-sections.
 
 ---
 
 ## Changes made this session
 
-### Damage math fixes
-- **CC formula** corrected to multiplicative: `base_cc × (1 + sum_mods)` — was additive
-- **Blood Rush / Weeping Wounds** now scale with combo tiers (were applying flat at ×1 combo)
-- **Multishot** result floored to integer: `math.floor(v * multishot)` in `src/calculator.py`
-- **Cold proc CDM**: `+0.1` flat per stack (max 10), applied after relative bonuses in both `/api/calculate` and `/api/modded-weapon`. New `cold_stacks: int` field on both request models.
+### Armor Strip panel
+- `src/calculator.py` `calculate()`: three new params — `ability_strip_pct`, `cp_strip_pct`, `shattering_impact_flat`
+- Step 4 order: ability% + CP% (additive, capped 100%) → SI flat → corrosive proc stacks (existing)
+- `web/api.py` `CalcRequest`: same three fields forwarded to `calc.calculate()` in main call + CO-curve loop + return dict
+- `web/static/js/armorstrip.js`: `updateArmorStripDisplay()`, `getArmorStripPayload()`, `initArmorStrip()`
+- Display updates live when enemy/level/SP/Eximus changes (hooked into `refreshEnemyScaling()`)
+- `tests/test_armor_strip.py`: 7 new tests
 
-### Weapon data fixes
-- Torid all 3 attacks corrected (Grenade Impact, Poison Cloud, Incarnon Form)
-- Mutalist Quanta `crit_multiplier` fixed: `0.0 → 1.5`
-- Synoid Simulor `crit_multiplier` fixed: `0.0 → 1.0`
-
-### Mod system fixes
-- **Mod family exclusivity**: Primed/Umbral/Archon variants block base version in mod picker and Alchemy Mixer
-  - `_mod_family()` in `src/loader.py` strips prefixes; `family` field on `Mod` dataclass
-  - Picker filters by `inUseFamilies`; Alchemy Mixer guards `addAlchMod()`
-- **mods.json**: Blood Rush `crit_chance_pct → cc_per_combo_tier: 0.4`; Weeping Wounds `sc_per_combo_tier: 0.4`
-
-### New features
-- **Cold Stacks input** in Hit Options (0–10, same row as Viral/Corrosive)
-- **`scripts/validate_weapons.py`**: flags zero damage, CC/SC out of range, impossible CM, fire_rate=0, single-element 100.0 placeholder. Supports `--slot`, `--severity`, `--weapon`.
-
-### UI fixes
-- Stack inputs (Viral, Corrosive, Cold) clamped 0–10 via `oninput`
-- **Select dropdowns** (Hit Type, Body Part, Bonus Element): replaced native `<select>` (iOS picker) and broken custom-select widget with new `setupSelectDropdown()` — hides native select, builds button + `.combobox-dropdown` div reusing `.combobox-item` CSS so all dropdowns look identical
-
-### JS/CSS cleanup
-- Removed entire custom-select system (`_buildCustomSelectUI`, `setupCustomSelect`, `refreshCustomSelect`, `setCustomSelectValue`, all `.custom-select-*` CSS)
-- New functions in `web/static/js/utils.js`: `setupSelectDropdown(selectId, onChange)`, `refreshSelectDropdown(selectId)`
-- New CSS in `panels.css`: `.sel-wrap`, `.sel-btn`, `.sel-dropdown`, `.combobox-item.sel-selected`
+### Panel help (?) system
+- `togglePanelHelp(btn)` in `utils.js` — finds `.panel-help` sibling of nearest `h2` or `.panel-sub-h`, toggles `.hidden`
+- `.btn-help` — borderless, `var(--crimson)` at rest, `var(--crimson-bright)` on hover/active, `margin-left: auto` when direct child of h2/panel-sub-h
+- `.panel-toggle-with-help` modifier — transfers `margin-left: auto` from `.chevron` to `.btn-help` for collapsible panels
+- Help blocks added to: Results, Options, Warframe Buffs, Armor Strip, Mods, Weapon Arcanes
+- Options panel uses `event.stopPropagation()` so clicking `?` doesn't collapse the panel
 
 ---
 
@@ -61,6 +46,9 @@ Bug-fix + UI polish session on top of v0.5.1. Fixed crit/damage math bugs, weapo
 |---|---|---|
 | `.panel-sub-h` | panels.css | Section heading divider |
 | `.btn-add` | panels.css | `+ ADD` button |
+| `.btn-help` | panels.css | `?` help toggle (crimson, no border) |
+| `.panel-help` / `.panel-help.hidden` | panels.css | Inline help block; hidden by default |
+| `.panel-toggle-with-help` | panels.css | Transfers auto-margin from chevron to btn-help |
 | `.input-sm` | panels.css | Compact 44px number input |
 | `.input-sm-wide` | panels.css | Compact 52px number input |
 | `.input-level` | panels.css | 72px enemy level input |
@@ -68,6 +56,9 @@ Bug-fix + UI polish session on top of v0.5.1. Fixed crit/damage math bugs, weapo
 | `.sel-btn` | panels.css | Trigger button for themed select |
 | `.sel-dropdown` | panels.css | Dropdown container (extends `.combobox-dropdown`) |
 | `.combobox-item.sel-selected` | panels.css | Highlighted selected option |
+| `.strip-row` / `.strip-label-row` | panels.css | Armor strip panel row layout |
+| `.strip-slider` | panels.css | Range input (crimson thumb, no border-radius) |
+| `.strip-result-block` / `.strip-bar-fill` | panels.css | Armor/DR summary + progress bar |
 | `.sc-wrap` | results.css | Two-column weapon stat split |
 | `.sc-div` | results.css | Crimson vertical divider |
 | `.sc-val-lg` / `.sc-val-sm` | results.css | Large/small stat values |
@@ -77,9 +68,9 @@ Bug-fix + UI polish session on top of v0.5.1. Fixed crit/damage math bugs, weapo
 
 ## Known issues / pending
 
-- **Friday night task**: Refresh `weapons.json` + `mods.json` via wiki ApiSandbox, then re-run `scripts/validate_weapons.py` (27 MEDIUM 100.0 placeholder issues remain)
-- **Low priority**: CDM quantization `Round(Base CDM × 4095/32) × 32/4095`
-- **Low priority**: Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses
+- Refresh `weapons.json` + `mods.json` via wiki ApiSandbox (27 MEDIUM 100.0 placeholder issues remain)
+- CDM quantization `Round(Base CDM × 4095/32) × 32/4095` (low priority)
+- Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses (low priority)
 - Cycles + Events not yet rendered in `live.html` (data parsed, cards not built)
 - Riven modal — not touched recently. Get screenshot before changing.
 
@@ -89,36 +80,34 @@ Bug-fix + UI polish session on top of v0.5.1. Fixed crit/damage math bugs, weapo
 
 1. Side-by-side Build Compare (panel hidden, placeholder exists)
 2. Mod Optimizer — brute-force best mod per slot
-3. Armor Strip modeling
-4. Damage Falloff
-5. EHP Calculator (needs Warframe DB)
-6. Status Simulator
-7. Build Cards (export image)
-8. Build Sharing (URL-encoded state)
-9. Live Data — Cycles + Events cards
+3. Damage Falloff
+4. EHP Calculator (needs Warframe DB)
+5. Status Simulator
+6. Build Cards (export image)
+7. Build Sharing (URL-encoded state)
+8. Live Data — Cycles + Events cards
 
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-oooHw`
-- Version: `0.5.2`
+- Branch: `claude/resume-from-handoff-2AuGV`
+- Version: `0.5.3`
 - Game data: Update 41 — The Old Peace
-- Tests: 283 passing
+- Tests: 290 passing
 - Railway deploy branch: `codex`
 
 ---
 
 ## Start-of-session checklist
 
-> **Ask before touching code:**
-> 1. "Should I bump the version? Current: `0.5.2`"
+> **Ask at HANDOFF, not session start:**
+> 1. "Should I bump the version? Current: `0.5.3`"
 > 2. "Should this session be tracked in the changelog?"
 > Do NOT auto-bump or add entries without confirmation.
 > Update BOTH `CHANGELOG.md` AND `CHANGELOG_ENTRIES` in `web/static/js/constants.js`.
 
-- [ ] Run `pytest` — confirm 283 passing
+- [ ] Run `pytest` — confirm 290 passing
 - [ ] `git log --oneline -5` to orient
-- [ ] Ask version + changelog questions
 - [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism / `▶` in CSS
 - [ ] Update Guide modal when adding UI features
 - [ ] Railway deploys from `codex` — push feature branch AND merge to `codex`
