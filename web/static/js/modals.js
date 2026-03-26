@@ -53,12 +53,15 @@ function alchModRow(mod, elemField) {
     .join('');
 
   const equipped = modSlots.includes(mod.name);
+  const familyConflict = !equipped && mod.family &&
+    modSlots.some(n => { const m = allMods.find(x => x.name === n); return m?.family === mod.family; });
   const noSlots = modSlots.indexOf('') === -1;
   let btnHtml;
   if (equipped) {
     btnHtml = `<button class="alch-add-btn alch-remove-btn" data-mod="${esc(mod.name)}" onclick="removeAlchMod(this.dataset.mod)">−</button>`;
   } else {
-    const dis = noSlots ? 'disabled title="No empty slots"' : '';
+    const dis = (noSlots || familyConflict)
+      ? `disabled title="${familyConflict ? 'Family conflict' : 'No empty slots'}"` : '';
     btnHtml = `<button class="alch-add-btn" ${dis} data-mod="${esc(mod.name)}" onclick="addAlchMod(this.dataset.mod)">+</button>`;
   }
 
@@ -144,6 +147,8 @@ function renderAlchSuggestions(elem) {
 function addAlchMod(modName) {
   const slot = modSlots.indexOf('');
   if (slot < 0) return;
+  const incoming = allMods.find(x => x.name === modName);
+  if (incoming?.family && modSlots.some(n => { const m = allMods.find(x => x.name === n); return m?.family === incoming.family; })) return;
   modSlots[slot] = modName;
   renderModCards();
   initSortable();
