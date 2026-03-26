@@ -104,7 +104,7 @@ Added the Faction Weakness Cheatsheet page (`/factions`) — a new standalone pa
 - Railway deploy branch: `codex`
 
 ## Private notes
-`~/.claude/codex-accuracy.md` — accuracy self-assessment (what the calculator gets right, where the gaps are). Outside the repo, never pushed. Read on request.
+`accuracy-notes.md` — accuracy self-assessment (what the calculator gets right, where the gaps are). In repo, deletable any time. Read on request.
 
 ---
 
