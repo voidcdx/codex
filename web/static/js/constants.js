@@ -206,6 +206,7 @@ const CHANGELOG_ENTRIES = [
       { heading: 'Added', items: [
         'Armor Strip panel \u2014 models ability strip %, Corrosive Projection aura %, and Shattering Impact flat removal; shows remaining armor and DR% live',
         'Panel help (?) buttons on all panels \u2014 click to expand inline explanation of mechanics for each section',
+        'CDM quantization \u2014 critical damage multiplier snapped to game\u2019s internal precision grid',
       ]},
     ],
   },

@@ -1,26 +1,17 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Two new features: full Armor Strip panel (backend + frontend) and a panel help (?) system across all panels and sub-sections.
+Added CDM (critical damage multiplier) quantization — `Round(CDM × 4095/32) × 32/4095` — snapping modded CDM to the game's internal precision grid before feeding into the crit formula.
 
 ---
 
 ## Changes made this session
 
-### Armor Strip panel
-- `src/calculator.py` `calculate()`: three new params — `ability_strip_pct`, `cp_strip_pct`, `shattering_impact_flat`
-- Step 4 order: ability% + CP% (additive, capped 100%) → SI flat → corrosive proc stacks (existing)
-- `web/api.py` `CalcRequest`: same three fields forwarded to `calc.calculate()` in main call + CO-curve loop + return dict
-- `web/static/js/armorstrip.js`: `updateArmorStripDisplay()`, `getArmorStripPayload()`, `initArmorStrip()`
-- Display updates live when enemy/level/SP/Eximus changes (hooked into `refreshEnemyScaling()`)
-- `tests/test_armor_strip.py`: 7 new tests
-
-### Panel help (?) system
-- `togglePanelHelp(btn)` in `utils.js` — finds `.panel-help` sibling of nearest `h2` or `.panel-sub-h`, toggles `.hidden`
-- `.btn-help` — borderless, `var(--crimson)` at rest, `var(--crimson-bright)` on hover/active, `margin-left: auto` when direct child of h2/panel-sub-h
-- `.panel-toggle-with-help` modifier — transfers `margin-left: auto` from `.chevron` to `.btn-help` for collapsible panels
-- Help blocks added to: Results, Options, Warframe Buffs, Armor Strip, Mods, Weapon Arcanes
-- Options panel uses `event.stopPropagation()` so clicking `?` doesn't collapse the panel
+### CDM quantization
+- `src/quantizer.py`: new `quantize_cdm(cdm)` — `Round(CDM × 4095/32) × 32/4095`, Decimal precision, ROUND_HALF_UP
+- `web/api.py`: applied `quantize_cdm()` at both CDM computation sites — `/api/modded-weapon` (display) and `/api/calculate` (damage calc)
+- `tests/test_quantization.py`: 7 new tests — grid values (1x/2x/3x), typical modded CM, half-boundary rounding, idempotency
+- `CHANGELOG.md` + `CHANGELOG_ENTRIES` in `constants.js`: entry added under 0.5.3
 
 ---
 
@@ -69,7 +60,6 @@ Two new features: full Armor Strip panel (backend + frontend) and a panel help (
 ## Known issues / pending
 
 - Refresh `weapons.json` + `mods.json` via wiki ApiSandbox (27 MEDIUM 100.0 placeholder issues remain)
-- CDM quantization `Round(Base CDM × 4095/32) × 32/4095` (low priority)
 - Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses (low priority)
 - Cycles + Events not yet rendered in `live.html` (data parsed, cards not built)
 - Riven modal — not touched recently. Get screenshot before changing.
@@ -90,10 +80,10 @@ Two new features: full Armor Strip panel (backend + frontend) and a panel help (
 ---
 
 ## Current state
-- Branch: `claude/resume-from-handoff-2AuGV`
+- Branch: `claude/review-handoff-WKaVA`
 - Version: `0.5.3`
 - Game data: Update 41 — The Old Peace
-- Tests: 290 passing
+- Tests: 297 passing
 - Railway deploy branch: `codex`
 
 ## Private notes
@@ -109,7 +99,7 @@ Two new features: full Armor Strip panel (backend + frontend) and a panel help (
 > Do NOT auto-bump or add entries without confirmation.
 > Update BOTH `CHANGELOG.md` AND `CHANGELOG_ENTRIES` in `web/static/js/constants.js`.
 
-- [ ] Run `pytest` — confirm 290 passing
+- [ ] Run `pytest` — confirm 297 passing
 - [ ] `git log --oneline -5` to orient
 - [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism / `▶` in CSS
 - [ ] Update Guide modal when adding UI features

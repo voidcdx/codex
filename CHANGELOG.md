@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ### Added
 - Armor Strip panel — models ability strip %, Corrosive Projection aura %, and Shattering Impact flat removal; shows remaining armor and DR% live; feeds into damage calculation
 - Panel help (?) buttons on all panels and sub-sections — click to expand inline explanation of mechanics; crimson, borderless, mobile-friendly
+- CDM quantization — critical damage multiplier now snapped to Warframe's internal precision grid (`Round(CDM × 4095/32) × 32/4095`)
 
 ## [0.5.2] — 2026-03-26
 
