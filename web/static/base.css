@@ -4,12 +4,12 @@
 
 :root {
   --bg:              #050505;
-  --surface:         #181818;
-  --surface2:        #131313;
-  --surface-solid:   #181818;
-  --border:          rgba(139, 0, 0, 0.25);
-  --border-highlight: rgba(220, 20, 60, 0.5);
-  --border-red:      rgba(139, 0, 0, 0.4);
+  --surface:         #242424;
+  --surface2:        #1c1c1c;
+  --surface-solid:   #242424;
+  --border:          rgba(139, 0, 0, 0.4);
+  --border-highlight: rgba(220, 20, 60, 0.6);
+  --border-red:      rgba(139, 0, 0, 0.55);
   --accent:          #8b0000;
   --accent2:         #dc143c;
   --accent-glow:     rgba(139, 0, 0, 0.2);
