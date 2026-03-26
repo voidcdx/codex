@@ -447,15 +447,15 @@
           </div>
           <div>
             <label for="viral-stacks">Viral Stacks</label>
-            <input type="number" id="viral-stacks" class="input-sm" min="0" max="10" value="0">
+            <input type="number" id="viral-stacks" class="input-sm" min="0" max="10" value="0" oninput="if(+this.value>10)this.value=10;if(+this.value<0)this.value=0">
           </div>
           <div>
             <label for="corrosive-stacks">Corr. Stacks</label>
-            <input type="number" id="corrosive-stacks" class="input-sm" min="0" max="10" value="0">
+            <input type="number" id="corrosive-stacks" class="input-sm" min="0" max="10" value="0" oninput="if(+this.value>10)this.value=10;if(+this.value<0)this.value=0">
           </div>
           <div title="Cold status stacks on enemy — each adds +0.1 flat crit damage multiplier (max 10)">
             <label for="cold-stacks">Cold Stacks</label>
-            <input type="number" id="cold-stacks" class="input-sm" min="0" max="10" value="0">
+            <input type="number" id="cold-stacks" class="input-sm" min="0" max="10" value="0" oninput="if(+this.value>10)this.value=10;if(+this.value<0)this.value=0">
           </div>
           <div id="combo-div" title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
             <label for="combo-counter">Combo</label>
