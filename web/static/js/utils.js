@@ -156,3 +156,16 @@ function refreshSelectDropdown(selectId) {
   const wrap = sel.parentNode.querySelector('.sel-wrap');
   if (wrap && wrap._rebuild) wrap._rebuild();
 }
+
+// ── Panel help toggle ───────────────────────────────────
+// Finds the .panel-help block immediately after the containing h2 or
+// .panel-sub-h and toggles its visibility. Marks the button active.
+function togglePanelHelp(btn) {
+  const header = btn.closest('h2, .panel-sub-h');
+  if (!header) return;
+  let el = header.nextElementSibling;
+  while (el && !el.classList.contains('panel-help')) el = el.nextElementSibling;
+  if (!el) return;
+  const nowHidden = el.classList.toggle('hidden');
+  btn.classList.toggle('active', !nowHidden);
+}
