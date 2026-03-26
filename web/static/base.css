@@ -4,8 +4,8 @@
 
 :root {
   --bg:              #050505;
-  --surface:         #201818;
-  --surface2:        #181212;
+  --surface:         rgba(18, 10, 10, 0.50);
+  --surface2:        rgba(12, 6, 6, 0.55);
   --surface-solid:   #201818;
   --border:          rgba(139, 0, 0, 0.4);
   --border-highlight: rgba(220, 20, 60, 0.6);
