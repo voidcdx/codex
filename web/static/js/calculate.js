@@ -10,6 +10,7 @@ async function runCalculation() {
   const bodyPart    = document.getElementById('body-part-select').value || 'Body';
   const viralStacks     = parseInt(document.getElementById('viral-stacks').value, 10) || 0;
   const corrosiveStacks = parseInt(document.getElementById('corrosive-stacks').value, 10) || 0;
+  const coldStacks      = parseInt(document.getElementById('cold-stacks').value, 10) || 0;
   const comboTier       = Math.max(1, parseInt(document.getElementById('combo-counter').value, 10) || 1);
   const comboCounter    = (comboTier - 1) * 10; // tier → raw hits: tier=1→0 (×1), tier=12→110 (×12)
   const uniqueStatuses  = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
@@ -28,7 +29,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, buffs: getActiveBuffs(), arcanes: getActiveArcanes(), ...getBonusElement()}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, cold_stacks: coldStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, buffs: getActiveBuffs(), arcanes: getActiveArcanes(), ...getBonusElement()}),
     });
     const data = await resp.json();
     if (!resp.ok) {
