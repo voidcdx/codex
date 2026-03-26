@@ -5,17 +5,22 @@
 // steelPathOn, eximusOn, lastScaledEnemy declared in constants.js
 
 function showEnemyStats(enemy) {
-  if (!enemy) { document.getElementById('enemy-stats-content').innerHTML = ''; document.getElementById('enemy-scaled-stats').innerHTML = ''; return; }
+  const statsEl  = document.getElementById('enemy-stats-content');
+  const scaledEl = document.getElementById('enemy-scaled-stats');
+  if (!enemy) {
+    statsEl.innerHTML  = '';
+    scaledEl.innerHTML = '';
+    return;
+  }
 
   const lvlInput = document.getElementById('enemy-level');
   if (lvlInput) {
     const bl = enemy.base_level || 1;
-    lvlInput.min = bl;
+    lvlInput.min   = bl;
     lvlInput.value = bl;
   }
 
-  const fmt = (v, suffix) => v != null && v !== 0 ? v + (suffix || '') : '\u2014';
-  const cap = s => s ? s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '\u2014';
+  const cap = s => s ? s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '—';
 
   const bpSelect = document.getElementById('body-part-select');
   if (bpSelect && enemy.body_parts) {
@@ -32,49 +37,30 @@ function showEnemyStats(enemy) {
   }
 
   const headMult = enemy.body_parts && enemy.body_parts['Head'];
-  const headRow = headMult && headMult !== 1
-    ? `<div class="stat-row">
-        <div class="stat-block" style="flex:2">
-          <div class="stat-label">Head Multiplier</div>
-          <div class="stat-value">${headMult}\u00d7</div>
-        </div>
-       </div>`
-    : '';
+  const headVal  = headMult && headMult !== 1 ? `${headMult}\u00d7` : '\u2014';
 
-  document.getElementById('enemy-stats-content').innerHTML = `
-    <div style="margin-bottom:10px">
-      <div style="font-size:15px;font-weight:600;color:var(--text)">${esc(enemy.name)}</div>
-    </div>
-    <div class="stat-rows">
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label">Faction</div>
-          <div class="stat-value">${cap(enemy.faction)}</div>
+  statsEl.innerHTML = `
+    <div class="threat-card">
+      <div class="threat-card-name">${esc(enemy.name)}</div>
+      <div class="threat-badges">
+        <span class="threat-badge threat-badge-faction">${cap(enemy.faction)}</span>
+        <span class="threat-badge threat-badge-health">${cap(enemy.health_type)}</span>
+      </div>
+      <div class="threat-stats-row">
+        <div>
+          <div class="threat-stat-label">Base Lvl</div>
+          <div class="threat-stat-val">${enemy.base_level || 1}</div>
         </div>
-        <div class="stat-block">
-          <div class="stat-label">Health Type</div>
-          <div class="stat-value">${cap(enemy.health_type)}</div>
+        <div>
+          <div class="threat-stat-label">Head</div>
+          <div class="threat-stat-val">${headVal}</div>
         </div>
-        <div class="stat-block">
-          <div class="stat-label">Base Level</div>
-          <div class="stat-value">${enemy.base_level || 1}</div>
+        <div>
+          <div class="threat-stat-label">Base Armor</div>
+          <div class="threat-stat-val">${enemy.base_armor || '\u2014'}</div>
         </div>
       </div>
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label">Base Health</div>
-          <div class="stat-value">${fmt(enemy.base_health)}</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label">Base Shield</div>
-          <div class="stat-value">${fmt(enemy.base_shield)}</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label">Base Armor</div>
-          <div class="stat-value">${fmt(enemy.base_armor)}</div>
-        </div>
-      </div>
-      ${headRow}
+      <div class="threat-bars" id="threat-bars"></div>
     </div>
   `;
   refreshEnemyScaling();
@@ -97,30 +83,59 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function refreshEnemyScaling() {
-  const enemy = getCurrentEnemy();
-  const container = document.getElementById('enemy-scaled-stats');
-  if (!enemy) { container.innerHTML = ''; lastScaledEnemy = null; return; }
+  const enemy    = getCurrentEnemy();
+  const scaledEl = document.getElementById('enemy-scaled-stats');
+  const barsEl   = document.getElementById('threat-bars');
+  if (!enemy) {
+    if (scaledEl) scaledEl.innerHTML = '';
+    if (barsEl)   barsEl.innerHTML   = '';
+    lastScaledEnemy = null;
+    return;
+  }
+
   const level = Math.max(parseInt(document.getElementById('enemy-level').value) || 1, enemy.base_level || 1);
   try {
     const r = await fetch('/api/scaled-enemy', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ enemy: enemy.name, level, steel_path: steelPathOn, eximus: eximusOn }),
     });
     const d = await r.json();
     lastScaledEnemy = d;
     if (typeof updateArmorStripDisplay === 'function') updateArmorStripDisplay();
-    const fmt = v => {
-      if (v <= 0) return '\u2014';
-      return Number(v.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits: 2});
-    };
-    const lvlLabel = steelPathOn ? `${level} <span style="color:var(--accent);font-size:10px">(SP \u00d72.5)</span>` : String(d.level);
-    container.innerHTML = `
-      <div class="scaled-stat-block">Lvl <span>${lvlLabel}</span></div>
-      <div class="scaled-stat-block">HP <span>${fmt(d.health)}</span></div>
-      <div class="scaled-stat-block">Shield <span>${fmt(d.shield)}</span></div>
-      <div class="scaled-stat-block">Armor <span>${fmt(d.armor)}</span></div>
-      ${eximusOn ? `<div class="scaled-stat-block">Overguard <span>${fmt(d.overguard)}</span></div>` : ''}
-    `;
-  } catch { container.innerHTML = ''; }
+    if (scaledEl) scaledEl.innerHTML = '';
+    if (!barsEl) return;
+
+    const fmtN = v => (v > 0)
+      ? Number(v.toFixed(2)).toLocaleString(undefined, { maximumFractionDigits: 2 })
+      : null;
+
+    const dr = d.armor > 0 ? Math.round(d.armor / (d.armor + 300) * 100) : 0;
+
+    const bars = [
+      { key: 'hp', label: 'HP',     val: d.health,                        sub: fmtN(d.health),                            cls: 'threat-bar-fill-hp' },
+      { key: 'sh', label: 'Shield', val: d.shield,                        sub: fmtN(d.shield),                            cls: 'threat-bar-fill-sh' },
+      { key: 'ar', label: 'Armor',  val: d.armor,                         sub: d.armor > 0 ? `${fmtN(d.armor)} · ${dr}% DR` : null, cls: 'threat-bar-fill-ar' },
+      { key: 'og', label: 'OG',     val: eximusOn ? d.overguard : 0,      sub: (eximusOn && d.overguard > 0) ? fmtN(d.overguard) : null, cls: 'threat-bar-fill-og' },
+    ].filter(b => b.val > 0 && b.sub !== null);
+
+    const maxVal = Math.max(...bars.map(b => b.val));
+
+    barsEl.innerHTML = bars.map(b => `
+      <div class="threat-bar-row">
+        <span class="threat-bar-label">${b.label}</span>
+        <div class="threat-bar-wrap">
+          <div class="threat-bar-track"><div class="threat-bar-fill ${b.cls}" id="tbar-${b.key}"></div></div>
+          <span class="threat-bar-sub">${b.sub}</span>
+        </div>
+      </div>`).join('');
+
+    bars.forEach(b => {
+      const fill = document.getElementById(`tbar-${b.key}`);
+      if (fill) fill.style.width = `${Math.round(b.val / maxVal * 100)}%`;
+    });
+
+  } catch {
+    if (scaledEl) scaledEl.innerHTML = '';
+  }
 }
