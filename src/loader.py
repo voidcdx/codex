@@ -17,6 +17,21 @@ from src.models import DamageComponent, Enemy, Mod, Weapon, WeaponAttack
 DATA_DIR = Path(__file__).parent.parent / "data"
 
 # ---------------------------------------------------------------------------
+# Mod family helpers
+# ---------------------------------------------------------------------------
+
+_FAMILY_PREFIXES = ("Primed ", "Umbral ", "Archon ")
+
+
+def _mod_family(name: str) -> str:
+    """Return the base family name for a mod (strips Primed/Umbral/Archon prefix)."""
+    for prefix in _FAMILY_PREFIXES:
+        if name.startswith(prefix):
+            return name[len(prefix):]
+    return name
+
+
+# ---------------------------------------------------------------------------
 # String → Enum maps
 # ---------------------------------------------------------------------------
 
@@ -286,6 +301,7 @@ def load_mod(name: str) -> Mod:
 
     return Mod(
         name=name,
+        family=_mod_family(name),
         damage_bonus=damage_bonus,
         elemental_bonuses=elemental_bonuses,
         ips_bonuses=ips_bonuses,

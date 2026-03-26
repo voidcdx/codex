@@ -173,13 +173,17 @@ function renderPickerList(query) {
   const types = getCompatibleModTypes(weapon);
   const q = query.toLowerCase();
 
-  // Build set of mods already in use (excluding the slot currently being replaced)
-  const inUse = new Set();
-  if (_pickerSlot !== 'stance' && stanceSlot) inUse.add(stanceSlot);
-  if (_pickerSlot !== 'exilus' && exilusSlot) inUse.add(exilusSlot);
-  modSlots.forEach((name, i) => {
-    if (name && name !== '__riven__' && i !== _pickerSlot) inUse.add(name);
-  });
+  // Build set of mod families already in use (excluding the slot currently being replaced).
+  // This blocks base/Primed/Umbral/Archon variants of the same mod from being co-equipped.
+  const inUseFamilies = new Set();
+  const _addFamily = name => {
+    if (!name || name === '__riven__') return;
+    const mod = allMods.find(x => x.name === name);
+    if (mod?.family) inUseFamilies.add(mod.family);
+  };
+  if (_pickerSlot !== 'stance') _addFamily(stanceSlot);
+  if (_pickerSlot !== 'exilus') _addFamily(exilusSlot);
+  modSlots.forEach((name, i) => { if (i !== _pickerSlot) _addFamily(name); });
 
   let filtered;
   if (_pickerSlot === 'stance') {
@@ -188,17 +192,17 @@ function renderPickerList(query) {
       'Necramech','Archwing','Archgun','Archmelee']);
     filtered = allMods.filter(m => (m.base_drain || 0) < 0 && !NON_STANCE.has(m.type))
       .filter(m => weapon ? types.has(m.type) : true)
-      .filter(m => !inUse.has(m.name))
+      .filter(m => !inUseFamilies.has(m.family))
       .filter(m => !q || m.name.toLowerCase().includes(q));
   } else if (_pickerSlot === 'exilus') {
     const exilusSet = getExilusSet();
     filtered = allMods.filter(m => exilusSet.has(m.name))
-      .filter(m => !inUse.has(m.name))
+      .filter(m => !inUseFamilies.has(m.family))
       .filter(m => !q || m.name.toLowerCase().includes(q));
   } else {
     filtered = allMods
       .filter(m => types.has(m.type))
-      .filter(m => !inUse.has(m.name))
+      .filter(m => !inUseFamilies.has(m.family))
       .filter(m => !q || m.name.toLowerCase().includes(q));
   }
 
@@ -223,7 +227,11 @@ function selectPickerMod(el) {
   const currentInSlot = _pickerSlot === 'stance' ? stanceSlot
     : _pickerSlot === 'exilus' ? exilusSlot
     : modSlots[_pickerSlot];
-  if (modName !== currentInSlot && allSelected.includes(modName)) return;
+  const incomingMod = allMods.find(x => x.name === modName);
+  const familyConflict = incomingMod?.family && allSelected
+    .filter(n => n !== currentInSlot)
+    .some(n => { const m = allMods.find(x => x.name === n); return m?.family === incomingMod.family; });
+  if (modName !== currentInSlot && (allSelected.includes(modName) || familyConflict)) return;
   if (_pickerSlot === 'stance') {
     stanceSlot = modName;
     closeModPicker();

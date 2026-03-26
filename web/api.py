@@ -33,7 +33,7 @@ from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
-    _raw_enemies, _raw_mods, _raw_weapons,
+    _mod_family, _raw_enemies, _raw_mods, _raw_weapons,
     list_enemies, list_mods, list_weapons,
     load_enemy, load_mod, load_weapon, make_riven_mod,
 )
@@ -138,6 +138,7 @@ def get_mods() -> list[dict]:
                 break
         out.append({
             "name":            name,
+            "family":          _mod_family(name),
             "type":            entry.get("type", ""),
             "polarity":        entry.get("polarity", ""),
             "rarity":          entry.get("rarity", "Common"),
