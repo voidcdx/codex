@@ -32,41 +32,49 @@ function showEnemyStats(enemy) {
   }
 
   const headMult = enemy.body_parts && enemy.body_parts['Head'];
+  const headRow = headMult && headMult !== 1
+    ? `<div class="stat-row">
+        <div class="stat-block" style="flex:2">
+          <div class="stat-label">Head Multiplier</div>
+          <div class="stat-value">${headMult}\u00d7</div>
+        </div>
+       </div>`
+    : '';
 
   document.getElementById('enemy-stats-content').innerHTML = `
     <div style="margin-bottom:10px">
       <div style="font-size:15px;font-weight:600;color:var(--text)">${esc(enemy.name)}</div>
     </div>
-    <div class="kv-stats">
-      <div class="kv-row">
-        <span class="kv-label">Faction</span>
-        <span class="stat-value">${cap(enemy.faction)}</span>
+    <div class="stat-rows">
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">Faction</div>
+          <div class="stat-value">${cap(enemy.faction)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Health Type</div>
+          <div class="stat-value">${cap(enemy.health_type)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Base Level</div>
+          <div class="stat-value">${enemy.base_level || 1}</div>
+        </div>
       </div>
-      <div class="kv-row">
-        <span class="kv-label">Health Type</span>
-        <span class="stat-value">${cap(enemy.health_type)}</span>
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">Base Health</div>
+          <div class="stat-value">${fmt(enemy.base_health)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Base Shield</div>
+          <div class="stat-value">${fmt(enemy.base_shield)}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">Base Armor</div>
+          <div class="stat-value">${fmt(enemy.base_armor)}</div>
+        </div>
       </div>
-      <div class="kv-row">
-        <span class="kv-label">Base Level</span>
-        <span class="stat-value">${enemy.base_level || 1}</span>
-      </div>
-      <div class="kv-divider"></div>
-      <div class="kv-row">
-        <span class="kv-label">Base Health</span>
-        <span class="stat-value">${fmt(enemy.base_health)}</span>
-      </div>
-      <div class="kv-row">
-        <span class="kv-label">Base Shield</span>
-        <span class="stat-value">${fmt(enemy.base_shield)}</span>
-      </div>
-      <div class="kv-row">
-        <span class="kv-label">Base Armor</span>
-        <span class="stat-value">${fmt(enemy.base_armor)}</span>
-      </div>
-      ${headMult && headMult !== 1 ? `<div class="kv-row">
-        <span class="kv-label">Head Multiplier</span>
-        <span class="stat-value">${headMult}\u00d7</span>
-      </div>` : ''}
+      ${headRow}
     </div>
   `;
   refreshEnemyScaling();
