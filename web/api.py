@@ -38,7 +38,7 @@ from src.loader import (
     load_enemy, load_mod, load_weapon, make_riven_mod,
 )
 from src.models import Buff, DamageComponent
-from src.quantizer import quantize
+from src.quantizer import quantize, quantize_cdm
 from src.scaling import scale_enemy_stats
 from src.version import APP_VERSION, GAME_DATA_VERSION
 
@@ -396,7 +396,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "base_cc":  base_cc,
         "modded_cc": round(base_cc * (1.0 + total_cc_bonus), 6),
         "base_cm":  base_cm,
-        "modded_cm": round(base_cm * (1.0 + total_cd_bonus) + min(req.cold_stacks, 10) * 0.1, 6),
+        "modded_cm": quantize_cdm(base_cm * (1.0 + total_cd_bonus) + min(req.cold_stacks, 10) * 0.1),
         "base_sc":  base_sc,
         "modded_sc": round(base_sc * (1.0 + total_sc_bonus), 6),
         "sc_per_pellet": round(status_chance_per_pellet(base_sc * (1.0 + total_sc_bonus), weapon.multishot), 6),
@@ -505,7 +505,7 @@ def calculate(req: CalcRequest) -> dict:
     combo_cc = sum(m.cc_per_combo_tier for m in mods) * calc_combo_tiers
     combo_sc = sum(m.sc_per_combo_tier for m in mods) * calc_combo_tiers
     base_cc = weapon.crit_chance * (1.0 + sum(m.cc_bonus for m in mods) + galv_cc + arcane_cc + combo_cc)
-    base_cm = weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd + arcane_cd) + min(req.cold_stacks, 10) * 0.1
+    base_cm = quantize_cdm(weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd + arcane_cd) + min(req.cold_stacks, 10) * 0.1)
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
     raw_w = _raw_weapons().get(weapon.name, {})

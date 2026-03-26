@@ -27,6 +27,18 @@ def quantize(amount: float, base_damage: float) -> float:
     return float(steps * scale)
 
 
+def quantize_cdm(cdm: float) -> float:
+    """Quantize critical damage multiplier to Warframe's internal precision.
+
+    Formula: Round(CDM × 4095/32) × 32/4095
+    This snaps CDM to the nearest multiple of 32/4095 (~0.00781).
+    """
+    d_cdm = Decimal(str(cdm))
+    factor = Decimal('4095') / Decimal('32')
+    steps = int((d_cdm * factor).quantize(Decimal('1'), rounding=ROUND_HALF_UP))
+    return float(Decimal(str(steps)) / factor)
+
+
 def quantize_components(
     components: list[DamageComponent],
     base_damage: float,
