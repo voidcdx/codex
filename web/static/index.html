@@ -516,8 +516,7 @@
       <div class="panel-help hidden">
         <p><strong>Ability Strip %:</strong> Armor removed by a Warframe ability (e.g. 100% for max-strength Terrify, 50% for Breach Surge). Check the ability's description for the exact value.</p>
         <p><strong>Corrosive Projection:</strong> Aura mod that strips a flat % of base armor — stacks additively with ability strip. Per-player: 18% → 36% → 54% → 72% at full squad.</p>
-        <p><strong>Shattering Impact:</strong> Melee mod that permanently reduces enemy base armor by 1 per mod rank per Impact hit (6 at max rank). Applies on every discrete Impact hit — multi-projectile weapons (e.g. Sarpa, Vastilok) and multi-hit stances apply it per individual hit, so actual removal per attack can far exceed 6. Enter total Impact hits landed before your shot.</p>
-        <p><strong>Order of operations:</strong> Ability % + CP % (additive, capped at 100%) → Shattering Impact flat removal → Corrosive proc stacks from Options. Void and True damage bypass armor entirely.</p>
+        <p><strong>Order of operations:</strong> Ability % + CP % (additive, capped at 100%) → Corrosive proc stacks from Options. Void and True damage bypass armor entirely.</p>
       </div>
 
       <div class="strip-row">
@@ -534,27 +533,6 @@
           <span class="strip-pct-badge" id="strip-cp-badge">0%</span>
         </div>
         <input type="range" id="strip-cp-pct" class="strip-slider" min="0" max="100" value="0" step="1">
-      </div>
-
-      <div class="strip-row">
-        <div class="strip-label-row">
-          <label class="strip-label">Shattering Impact</label>
-        </div>
-        <div class="strip-si-row">
-          <div class="strip-si-field">
-            <label for="strip-si-hits" class="strip-sublabel">Hits</label>
-            <input type="number" id="strip-si-hits" class="input-sm-wide" min="0" max="500" value="0">
-          </div>
-          <span class="strip-si-sep">×</span>
-          <div class="strip-si-field">
-            <label for="strip-si-per-hit" class="strip-sublabel">Per Hit</label>
-            <input type="number" id="strip-si-per-hit" class="input-sm-wide" min="0" max="100" value="6" step="0.5">
-          </div>
-          <div class="strip-si-field">
-            <label class="strip-sublabel">Removed</label>
-            <span class="strip-si-total" id="strip-si-total">0</span>
-          </div>
-        </div>
       </div>
 
       <div class="strip-result-block">

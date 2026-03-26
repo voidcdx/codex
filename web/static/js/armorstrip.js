@@ -5,14 +5,9 @@
 function updateArmorStripDisplay() {
   const abilityPct = (parseInt(document.getElementById('strip-ability-pct').value, 10) || 0) / 100;
   const cpPct      = (parseInt(document.getElementById('strip-cp-pct').value,      10) || 0) / 100;
-  const siHits     = parseInt(document.getElementById('strip-si-hits').value,     10) || 0;
-  const siPerHit   = parseFloat(document.getElementById('strip-si-per-hit').value)    || 6.0;
 
   document.getElementById('strip-ability-badge').textContent = Math.round(abilityPct * 100) + '%';
   document.getElementById('strip-cp-badge').textContent      = Math.round(cpPct * 100) + '%';
-
-  const flatRemoved = siHits * siPerHit;
-  document.getElementById('strip-si-total').textContent = flatRemoved.toLocaleString(undefined, {maximumFractionDigits: 1});
 
   const scaledArmor = lastScaledEnemy ? lastScaledEnemy.armor : 0;
 
@@ -25,7 +20,7 @@ function updateArmorStripDisplay() {
   }
 
   const pctStripped = Math.min(1.0, abilityPct + cpPct);
-  const finalArmor  = Math.max(0, scaledArmor * (1.0 - pctStripped) - flatRemoved);
+  const finalArmor  = Math.max(0, scaledArmor * (1.0 - pctStripped));
   const dr          = finalArmor > 0 ? (finalArmor / (finalArmor + 300)) : 0;
 
   document.getElementById('strip-armor-val').textContent = finalArmor.toLocaleString(undefined, {maximumFractionDigits: 1});
@@ -39,17 +34,14 @@ function updateArmorStripDisplay() {
 function getArmorStripPayload() {
   const abilityPct = (parseInt(document.getElementById('strip-ability-pct').value, 10) || 0) / 100;
   const cpPct      = (parseInt(document.getElementById('strip-cp-pct').value,      10) || 0) / 100;
-  const siHits     = parseInt(document.getElementById('strip-si-hits').value,     10) || 0;
-  const siPerHit   = parseFloat(document.getElementById('strip-si-per-hit').value)    || 6.0;
   return {
-    ability_strip_pct:      Math.min(1.0, abilityPct),
-    cp_strip_pct:           Math.min(1.0, cpPct),
-    shattering_impact_flat: siHits * siPerHit,
+    ability_strip_pct: Math.min(1.0, abilityPct),
+    cp_strip_pct:      Math.min(1.0, cpPct),
   };
 }
 
 function initArmorStrip() {
-  const ids = ['strip-ability-pct', 'strip-cp-pct', 'strip-si-hits', 'strip-si-per-hit'];
+  const ids = ['strip-ability-pct', 'strip-cp-pct'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', updateArmorStripDisplay);
