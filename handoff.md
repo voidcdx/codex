@@ -96,6 +96,9 @@ Two new features: full Armor Strip panel (backend + frontend) and a panel help (
 - Tests: 290 passing
 - Railway deploy branch: `codex`
 
+## Private notes
+`~/.claude/codex-accuracy.md` — accuracy self-assessment (what the calculator gets right, where the gaps are). Outside the repo, never pushed. Read on request.
+
 ---
 
 ## Start-of-session checklist
