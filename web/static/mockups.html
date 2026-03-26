@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stat Layout Mockups — Void Codex</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #050505;
+  --surf:    #0d0d0d;
+  --surf2:   #161616;
+  --crim:    #8b0000;
+  --crim2:   #dc143c;
+  --white:   #f0f0f0;
+  --dim:     #888;
+  --faint:   #444;
+  --gold:    #e8a830;
+  --cyan:    #40ccf0;
+}
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  padding: 32px 24px 60px;
+  min-height: 100vh;
+}
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  color: var(--crim2);
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+}
+.subtitle {
+  font-size: 12px;
+  color: var(--dim);
+  margin-bottom: 32px;
+}
+.grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.panel {
+  width: 290px;
+  background: var(--surf);
+  flex-shrink: 0;
+  position: relative;
+}
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--crim2);
+  opacity: 0.7;
+}
+.panel-label {
+  font-size: 9px;
+  color: var(--crim2);
+  letter-spacing: 0.1em;
+  padding: 10px 14px 0;
+  font-weight: 600;
+}
+.weapon-header {
+  padding: 6px 14px 10px;
+  border-bottom: 1px solid rgba(139,0,0,0.25);
+}
+.weapon-name { font-size: 14px; font-weight: 700; }
+.weapon-sub  { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+/* ── A: SPEC SHEET ─────────────────────────────────── */
+.spec { padding: 0 14px 14px; font-family: 'Share Tech Mono', monospace; }
+.spec-attack {
+  font-size: 10px;
+  color: var(--dim);
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(139,0,0,0.15);
+  margin-bottom: 4px;
+}
+.spec-section {
+  font-size: 9px;
+  color: var(--crim2);
+  padding: 8px 0 4px;
+  letter-spacing: 0.05em;
+}
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 9px;
+  line-height: 1.8;
+  color: var(--dim);
+  gap: 4px;
+}
+.spec-dots {
+  flex: 1;
+  overflow: hidden;
+  color: var(--faint);
+  white-space: nowrap;
+  padding: 0 3px;
+}
+.spec-dots::after { content: '···············································'; }
+.spec-val { color: var(--white); flex-shrink: 0; }
+.spec-val.gold   { color: var(--gold); }
+.spec-val.cyan   { color: var(--cyan); }
+.spec-val.red    { color: var(--crim2); }
+.spec-mod {
+  font-size: 8px;
+  color: var(--cyan);
+  padding-left: 10px;
+  line-height: 1.6;
+}
+.spec-divider { border-top: 1px solid rgba(139,0,0,0.18); margin: 4px 0; }
+
+/* ── B: HUD BARS ───────────────────────────────────── */
+.hud { padding: 0 14px 14px; }
+.hud-attack {
+  background: var(--surf2);
+  border-left: 3px solid var(--crim2);
+  font-size: 10px;
+  padding: 5px 8px;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.hud-section {
+  font-size: 9px;
+  color: var(--crim2);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.hud-stat { margin-bottom: 14px; }
+.hud-stat-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+.hud-stat-label { color: var(--dim); }
+.hud-stat-val   { font-weight: 700; font-size: 11px; }
+.hud-stat-val.gold { color: var(--gold); }
+.hud-stat-val.cyan { color: var(--cyan); }
+.hud-bar-track {
+  height: 3px;
+  background: var(--surf2);
+  position: relative;
+  overflow: hidden;
+}
+.hud-bar-fill {
+  height: 100%;
+  background: var(--crim2);
+  opacity: 0.55;
+}
+.hud-bar-fill.gold { background: var(--gold); }
+.hud-bar-fill.cyan { background: var(--cyan); }
+.hud-mod {
+  background: rgba(64,204,240,0.06);
+  font-size: 9px;
+  color: var(--cyan);
+  padding: 3px 6px;
+  margin-top: 4px;
+}
+.hud-dmg {
+  border-top: 1px solid rgba(139,0,0,0.2);
+  padding-top: 8px;
+  font-size: 10px;
+  color: var(--dim);
+}
+.hud-dmg strong { color: var(--crim2); font-size: 12px; }
+
+/* ── C: TWO-COLUMN SPLIT ───────────────────────────── */
+.split-wrap { padding: 0 14px 14px; }
+.split-attack {
+  font-size: 10px; color: var(--dim);
+  padding: 7px 0; border-bottom: 1px solid rgba(139,0,0,0.15);
+  margin-bottom: 10px;
+}
+.split-cols {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0 10px;
+  margin-bottom: 12px;
+}
+.split-divider-line { background: rgba(139,0,0,0.25); }
+.split-col-title {
+  font-size: 9px; color: var(--crim2); font-weight: 600;
+  letter-spacing: 0.08em; margin-bottom: 8px;
+}
+.split-stat { margin-bottom: 10px; }
+.split-stat-label { font-size: 9px; color: var(--dim); margin-bottom: 1px; }
+.split-stat-val { font-size: 20px; font-weight: 700; line-height: 1.1; }
+.split-stat-val.gold { color: var(--gold); }
+.split-stat-val.cyan { color: var(--cyan); }
+.split-stat-mod { font-size: 10px; color: var(--cyan); margin-top: 1px; }
+.split-mech { margin-bottom: 6px; }
+.split-mech-label { font-size: 9px; color: var(--dim); }
+.split-mech-val {
+  font-size: 14px; font-weight: 700;
+  display: flex; align-items: baseline; gap: 5px;
+}
+.split-mech-mod { font-size: 10px; color: var(--cyan); }
+.split-dmg {
+  border-top: 1px solid rgba(139,0,0,0.2);
+  padding-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 3px 12px;
+  font-size: 10px;
+}
+.split-dmg-head { color: var(--faint); font-size: 8px; }
+.split-dmg-type { color: var(--dim); }
+.split-dmg-type.total { color: var(--white); font-weight: 700; border-top: 1px solid rgba(139,0,0,0.2); padding-top: 3px; margin-top: 2px; }
+.split-dmg-val  { color: var(--crim2); text-align: right; }
+.split-dmg-val.total { color: var(--white); font-weight: 700; }
+.split-dmg-base { color: var(--faint); text-align: right; }
+
+/* ── D: CORNER BRACKETS ────────────────────────────── */
+.brk { padding: 0 14px 14px; }
+.brk-attack {
+  position: relative;
+  font-size: 10px; color: var(--dim);
+  padding: 6px 8px;
+  margin-bottom: 12px;
+}
+.brk-attack::before, .brk-attack::after { content:''; position:absolute; }
+.corner {
+  position: relative;
+  padding: 10px 12px 10px;
+  margin-bottom: 14px;
+}
+.corner::before, .corner::after {
+  content: '';
+  position: absolute;
+  width: 10px; height: 10px;
+  border-color: rgba(220,20,60,0.5);
+  border-style: solid;
+}
+.corner::before {
+  top: 0; left: 0;
+  border-width: 1px 0 0 1px;
+}
+.corner::after {
+  top: 0; right: 0;
+  border-width: 1px 1px 0 0;
+}
+.corner-inner {
+  position: relative;
+}
+.corner-inner::before, .corner-inner::after {
+  content: '';
+  position: absolute;
+  width: 10px; height: 10px;
+  border-color: rgba(220,20,60,0.5);
+  border-style: solid;
+}
+.corner-inner::before {
+  bottom: -10px; left: 0;
+  border-width: 0 0 1px 1px;
+}
+.corner-inner::after {
+  bottom: -10px; right: 0;
+  border-width: 0 1px 1px 0;
+}
+.corner-title {
+  font-size: 9px; color: var(--crim2); font-weight: 600;
+  letter-spacing: 0.08em; margin-bottom: 8px;
+}
+.brk-row {
+  display: flex; justify-content: space-between;
+  align-items: baseline; font-size: 11px;
+  padding: 3px 0;
+}
+.brk-label { color: var(--dim); }
+.brk-val   { font-weight: 700; font-size: 12px; }
+.brk-val.gold { color: var(--gold); }
+.brk-val.cyan { color: var(--cyan); }
+.brk-val.red  { color: var(--crim2); }
+.brk-mod { font-size: 9px; color: var(--cyan); padding-left: 16px; margin-top: -2px; }
+
+/* ── E: MINIMAL RULES ──────────────────────────────── */
+.min { padding: 0 0 14px; }
+.min-attack {
+  font-size: 10px; color: var(--dim);
+  padding: 7px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.min-row {
+  display: flex; justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 12px;
+}
+.min-row:last-child { border-bottom: none; }
+.min-label { color: var(--dim); font-size: 11px; }
+.min-val   { font-weight: 600; }
+.min-val.gold { color: var(--gold); }
+.min-val.cyan { color: var(--cyan); }
+.min-val.red  { color: var(--crim2); }
+.min-sep {
+  border-top: 1px solid rgba(220,20,60,0.3) !important;
+  margin: 0;
+}
+.min-total .min-label { color: var(--white); font-weight: 700; }
+.min-total .min-val   { color: var(--white); font-weight: 700; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>STAT PANEL LAYOUT MOCKUPS</h1>
+<p class="subtitle">5 options — Acceltra · Rocket Explosion · vs Corrupted Heavy Gunner</p>
+
+<div class="grid">
+
+<!-- ── A: SPEC SHEET ──────────────────────────────────────── -->
+<div class="panel">
+  <div class="panel-label">A — SPEC SHEET</div>
+  <div class="weapon-header">
+    <div class="weapon-name">ACCELTRA</div>
+    <div class="weapon-sub">Primary · Rifle · Auto</div>
+  </div>
+  <div class="spec">
+    <div class="spec-attack">ATTACK &nbsp;·&nbsp; Rocket Explosion</div>
+
+    <div class="spec-section">[ COMBAT ]</div>
+    <div class="spec-row">
+      <span>Crit Chance</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val gold">32.0%</span>
+    </div>
+    <div class="spec-row">
+      <span>Crit Mult</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val gold">2.8×</span>
+    </div>
+    <div class="spec-row">
+      <span>Status</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val cyan">6.0%</span>
+    </div>
+    <div class="spec-mod">▶ 13.2% per pellet (modded)</div>
+
+    <div class="spec-divider"></div>
+    <div class="spec-section">[ MECHANICS ]</div>
+    <div class="spec-row">
+      <span>Fire Rate</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val">12 <span style="color:var(--cyan)">→ 68</span></span>
+    </div>
+    <div class="spec-row">
+      <span>Magazine</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val">48</span>
+    </div>
+    <div class="spec-row">
+      <span>Max Ammo</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val">96</span>
+    </div>
+    <div class="spec-row">
+      <span>Reload</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val">2s</span>
+    </div>
+    <div class="spec-row">
+      <span>Multishot</span>
+      <span class="spec-dots"></span>
+      <span class="spec-val">1.0</span>
+    </div>
+
+    <div class="spec-divider"></div>
+    <div class="spec-section">[ DAMAGE ]</div>
+    <div class="spec-row" style="font-size:8px;color:var(--faint);margin-bottom:2px">
+      <span>TYPE</span><span class="spec-dots"></span><span>BASE &nbsp; MOD</span>
+    </div>
+    <div class="spec-row">
+      <span>Impact</span><span class="spec-dots"></span>
+      <span class="spec-val" style="color:var(--dim)">35.0 &nbsp; <span style="color:var(--white)">35.0</span></span>
+    </div>
+    <div class="spec-row">
+      <span>Viral</span><span class="spec-dots"></span>
+      <span class="spec-val" style="color:var(--dim)">— &nbsp; <span class="red" style="color:var(--crim2)">40.5</span></span>
+    </div>
+    <div class="spec-row">
+      <span>Magnetic</span><span class="spec-dots"></span>
+      <span class="spec-val" style="color:var(--dim)">— &nbsp; <span style="color:var(--crim2)">19.7</span></span>
+    </div>
+    <div class="spec-divider"></div>
+    <div class="spec-row" style="font-size:10px">
+      <span style="color:var(--white);font-weight:700">Total</span><span class="spec-dots"></span>
+      <span class="spec-val" style="color:var(--dim)">35.0 &nbsp; <span style="color:var(--white);font-weight:700">95.2</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── B: HUD BARS ────────────────────────────────────────── -->
+<div class="panel">
+  <div class="panel-label">B — HUD BARS</div>
+  <div class="weapon-header">
+    <div class="weapon-name">Acceltra</div>
+    <div class="weapon-sub">Primary · Rifle · Auto</div>
+  </div>
+  <div class="hud">
+    <div class="hud-attack">Rocket Explosion</div>
+
+    <div class="hud-section">[COMBAT]</div>
+    <div class="hud-stat">
+      <div class="hud-stat-head">
+        <span class="hud-stat-label">Crit Chance</span>
+        <span class="hud-stat-val gold">32.0%</span>
+      </div>
+      <div class="hud-bar-track"><div class="hud-bar-fill gold" style="width:32%"></div></div>
+    </div>
+    <div class="hud-stat">
+      <div class="hud-stat-head">
+        <span class="hud-stat-label">Crit Mult</span>
+        <span class="hud-stat-val gold">2.8×</span>
+      </div>
+      <div class="hud-bar-track"><div class="hud-bar-fill gold" style="width:56%"></div></div>
+    </div>
+    <div class="hud-stat">
+      <div class="hud-stat-head">
+        <span class="hud-stat-label">Status</span>
+        <span class="hud-stat-val cyan">6.0%</span>
+      </div>
+      <div class="hud-bar-track"><div class="hud-bar-fill cyan" style="width:6%"></div></div>
+      <div class="hud-mod">▶ 13.2% per pellet (modded)</div>
+    </div>
+
+    <div class="hud-section" style="margin-top:10px">[MECHANICS]</div>
+    <div class="hud-stat">
+      <div class="hud-stat-head">
+        <span class="hud-stat-label">Fire Rate</span>
+        <span class="hud-stat-val">12 <span style="color:var(--cyan);font-size:10px">→ 68</span></span>
+      </div>
+      <div class="hud-bar-track"><div class="hud-bar-fill" style="width:68%"></div></div>
+    </div>
+    <div class="hud-stat">
+      <div class="hud-stat-head">
+        <span class="hud-stat-label">Magazine</span>
+        <span class="hud-stat-val">48</span>
+      </div>
+      <div class="hud-bar-track"><div class="hud-bar-fill" style="width:48%"></div></div>
+    </div>
+    <div class="hud-stat">
+      <div class="hud-stat-head">
+        <span class="hud-stat-label">Reload</span>
+        <span class="hud-stat-val">2s</span>
+      </div>
+      <div class="hud-bar-track"><div class="hud-bar-fill" style="width:40%"></div></div>
+    </div>
+    <div class="hud-stat">
+      <div class="hud-stat-head">
+        <span class="hud-stat-label">Multishot</span>
+        <span class="hud-stat-val">1.0</span>
+      </div>
+      <div class="hud-bar-track"><div class="hud-bar-fill" style="width:33%"></div></div>
+    </div>
+
+    <div class="hud-dmg">
+      Base <strong>35.0</strong> &nbsp;·&nbsp; Modded <strong>95.2</strong>
+      <div style="font-size:9px;color:var(--faint);margin-top:3px">Impact · Viral · Magnetic</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── C: TWO-COLUMN SPLIT ───────────────────────────────── -->
+<div class="panel">
+  <div class="panel-label">C — TWO-COLUMN SPLIT</div>
+  <div class="weapon-header">
+    <div class="weapon-name">Acceltra</div>
+    <div class="weapon-sub">Primary · Rifle · Auto</div>
+  </div>
+  <div class="split-wrap">
+    <div class="split-attack">Rocket Explosion</div>
+    <div class="split-cols">
+      <div>
+        <div class="split-col-title">COMBAT</div>
+        <div class="split-stat">
+          <div class="split-stat-label">Crit Chance</div>
+          <div class="split-stat-val gold">32.0%</div>
+        </div>
+        <div class="split-stat">
+          <div class="split-stat-label">Crit Mult</div>
+          <div class="split-stat-val gold">2.8×</div>
+        </div>
+        <div class="split-stat">
+          <div class="split-stat-label">Status</div>
+          <div class="split-stat-val cyan">6.0%</div>
+          <div class="split-stat-mod">▶ 13.2%</div>
+        </div>
+      </div>
+      <div class="split-divider-line"></div>
+      <div>
+        <div class="split-col-title">MECHANICS</div>
+        <div class="split-mech">
+          <div class="split-mech-label">Fire Rate</div>
+          <div class="split-mech-val">12 <span class="split-mech-mod">→68</span></div>
+        </div>
+        <div class="split-mech">
+          <div class="split-mech-label">Magazine</div>
+          <div class="split-mech-val">48</div>
+        </div>
+        <div class="split-mech">
+          <div class="split-mech-label">Max Ammo</div>
+          <div class="split-mech-val">96</div>
+        </div>
+        <div class="split-mech">
+          <div class="split-mech-label">Reload</div>
+          <div class="split-mech-val">2s</div>
+        </div>
+        <div class="split-mech">
+          <div class="split-mech-label">Multishot</div>
+          <div class="split-mech-val">1.0</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-dmg">
+      <span class="split-dmg-head">TYPE</span>
+      <span class="split-dmg-head">BASE</span>
+      <span class="split-dmg-head">MOD</span>
+      <span class="split-dmg-type">Impact</span><span class="split-dmg-base">35.0</span><span class="split-dmg-val">35.0</span>
+      <span class="split-dmg-type">Viral</span><span class="split-dmg-base">—</span><span class="split-dmg-val">40.5</span>
+      <span class="split-dmg-type">Magnetic</span><span class="split-dmg-base">—</span><span class="split-dmg-val">19.7</span>
+      <span class="split-dmg-type total">Total</span><span class="split-dmg-base total" style="color:var(--faint);border-top:1px solid rgba(139,0,0,0.2);padding-top:3px;margin-top:2px">35.0</span><span class="split-dmg-val total">95.2</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── D: CORNER BRACKETS ─────────────────────────────────── -->
+<div class="panel">
+  <div class="panel-label">D — CORNER BRACKETS</div>
+  <div class="weapon-header">
+    <div class="weapon-name">Acceltra</div>
+    <div class="weapon-sub">Primary · Rifle · Auto</div>
+  </div>
+  <div class="brk">
+    <div class="corner" style="margin-bottom:10px">
+      <div class="corner-inner">
+        <div style="font-size:10px;color:var(--dim)">Rocket Explosion</div>
+      </div>
+    </div>
+
+    <div class="corner">
+      <div class="corner-inner">
+        <div class="corner-title">COMBAT</div>
+        <div class="brk-row">
+          <span class="brk-label">Crit Chance</span>
+          <span class="brk-val gold">32.0%</span>
+        </div>
+        <div class="brk-row">
+          <span class="brk-label">Crit Mult</span>
+          <span class="brk-val gold">2.8×</span>
+        </div>
+        <div class="brk-row">
+          <span class="brk-label">Status</span>
+          <span class="brk-val cyan">6.0%</span>
+        </div>
+        <div class="brk-mod">▶ 13.2% per pellet</div>
+      </div>
+    </div>
+
+    <div class="corner">
+      <div class="corner-inner">
+        <div class="corner-title">MECHANICS</div>
+        <div class="brk-row"><span class="brk-label">Fire Rate</span><span class="brk-val">12 <span style="color:var(--cyan);font-size:10px">→ 68</span></span></div>
+        <div class="brk-row"><span class="brk-label">Magazine</span><span class="brk-val">48</span></div>
+        <div class="brk-row"><span class="brk-label">Max Ammo</span><span class="brk-val">96</span></div>
+        <div class="brk-row"><span class="brk-label">Reload</span><span class="brk-val">2s</span></div>
+        <div class="brk-row"><span class="brk-label">Multishot</span><span class="brk-val">1.0</span></div>
+      </div>
+    </div>
+
+    <div class="corner">
+      <div class="corner-inner">
+        <div class="corner-title">DAMAGE</div>
+        <div class="brk-row" style="font-size:9px">
+          <span class="brk-label">Impact</span>
+          <span style="color:var(--faint)">35.0 &nbsp;<span style="color:var(--white)">35.0</span></span>
+        </div>
+        <div class="brk-row" style="font-size:9px">
+          <span class="brk-label">Viral</span>
+          <span style="color:var(--faint)">— &nbsp;<span style="color:var(--crim2)">40.5</span></span>
+        </div>
+        <div class="brk-row" style="font-size:9px">
+          <span class="brk-label">Magnetic</span>
+          <span style="color:var(--faint)">— &nbsp;<span style="color:var(--crim2)">19.7</span></span>
+        </div>
+        <div style="border-top:1px solid rgba(139,0,0,0.2);margin-top:4px;padding-top:4px">
+          <div class="brk-row">
+            <span style="color:var(--white);font-weight:700;font-size:11px">Total</span>
+            <span style="color:var(--faint);font-size:10px">35.0 &nbsp;<span style="color:var(--white);font-weight:700">95.2</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── E: MINIMAL RULES ───────────────────────────────────── -->
+<div class="panel">
+  <div class="panel-label">E — MINIMAL RULES</div>
+  <div class="weapon-header">
+    <div class="weapon-name">Acceltra</div>
+    <div class="weapon-sub">Primary · Rifle · Auto</div>
+  </div>
+  <div class="min">
+    <div class="min-attack">Rocket Explosion</div>
+    <div class="min-row"><span class="min-label">Crit Chance</span><span class="min-val gold">32.0%</span></div>
+    <div class="min-row"><span class="min-label">Crit Mult</span><span class="min-val gold">2.8×</span></div>
+    <div class="min-row"><span class="min-label">Status</span><span class="min-val cyan">6.0% <span style="font-size:10px;opacity:.7">▶ 13.2%</span></span></div>
+    <div class="min-row min-sep" style="border-top:1px solid rgba(220,20,60,0.3)"></div>
+    <div class="min-row"><span class="min-label">Fire Rate</span><span class="min-val">12 <span style="color:var(--cyan);font-size:10px">→ 68</span></span></div>
+    <div class="min-row"><span class="min-label">Magazine</span><span class="min-val">48</span></div>
+    <div class="min-row"><span class="min-label">Max Ammo</span><span class="min-val">96</span></div>
+    <div class="min-row"><span class="min-label">Reload</span><span class="min-val">2s</span></div>
+    <div class="min-row"><span class="min-label">Multishot</span><span class="min-val">1.0</span></div>
+    <div class="min-row" style="border-top:1px solid rgba(220,20,60,0.3)"></div>
+    <div class="min-row"><span class="min-label">Impact</span><span class="min-val" style="color:var(--dim)">35.0 <span style="color:var(--white)">35.0</span></span></div>
+    <div class="min-row"><span class="min-label">Viral</span><span class="min-val" style="color:var(--dim)">— <span style="color:var(--crim2)">40.5</span></span></div>
+    <div class="min-row"><span class="min-label">Magnetic</span><span class="min-val" style="color:var(--dim)">— <span style="color:var(--crim2)">19.7</span></span></div>
+    <div class="min-row min-total" style="border-top:1px solid rgba(220,20,60,0.35)">
+      <span class="min-label">Total</span>
+      <span class="min-val">35.0 → 95.2</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+</body>
+</html>
