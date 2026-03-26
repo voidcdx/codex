@@ -436,6 +436,9 @@ class CalcRequest(BaseModel):
     buffs:        list[BuffSpec] = []    # Warframe ability buffs
     arcanes:      list[ArcaneSpec] = []  # Weapon arcanes (max 2)
     cold_stacks:  int = Field(default=0, ge=0, le=10)  # Cold proc stacks (flat +0.1 CDM each)
+    ability_strip_pct:      float = Field(default=0.0, ge=0.0, le=1.0)
+    cp_strip_pct:           float = Field(default=0.0, ge=0.0, le=1.0)
+    shattering_impact_flat: float = Field(default=0.0, ge=0.0)
 
 
 @app.post("/api/calculate")
@@ -527,6 +530,9 @@ def calculate(req: CalcRequest) -> dict:
         multishot=modded_ms,
         viral_stacks=req.viral_stacks,
         corrosive_stacks=req.corrosive_stacks,
+        ability_strip_pct=req.ability_strip_pct,
+        cp_strip_pct=req.cp_strip_pct,
+        shattering_impact_flat=req.shattering_impact_flat,
         enemy_level=req.enemy_level,
         steel_path=req.steel_path,
         eximus=req.eximus,
@@ -567,6 +573,9 @@ def calculate(req: CalcRequest) -> dict:
                     multishot=modded_ms,
                     viral_stacks=req.viral_stacks,
                     corrosive_stacks=req.corrosive_stacks,
+                    ability_strip_pct=req.ability_strip_pct,
+                    cp_strip_pct=req.cp_strip_pct,
+                    shattering_impact_flat=req.shattering_impact_flat,
                     enemy_level=req.enemy_level,
                     steel_path=req.steel_path,
                     eximus=req.eximus,
@@ -590,6 +599,9 @@ def calculate(req: CalcRequest) -> dict:
         "body_part":     effective_part,
         "viral_stacks":    req.viral_stacks,
         "corrosive_stacks": req.corrosive_stacks,
+        "ability_strip_pct": req.ability_strip_pct,
+        "cp_strip_pct": req.cp_strip_pct,
+        "shattering_impact_flat": req.shattering_impact_flat,
         "galvanized_stacks": galv_stacks,
         "buffs":         [{"name": b.name, "strength": bs.strength} for b, bs in zip(buff_objects, req.buffs)],
         "arcanes":       [{"name": a.name, "stacks": a.stacks} for a in arcane_objects],

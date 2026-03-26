@@ -25,6 +25,7 @@
   <script defer src="/static/js/weapons.js"></script>
   <script defer src="/static/js/enemy.js"></script>
   <script defer src="/static/js/modals.js"></script>
+  <script defer src="/static/js/armorstrip.js"></script>
   <script defer src="/static/js/calculate.js"></script>
   <script defer src="/static/js/app.js"></script>
 </head>
@@ -482,10 +483,64 @@
       <p class="coming-soon-text">Side-by-side build comparison coming soon.</p>
     </div>
 
-    <!-- Placeholder: Armor Strip -->
-    <div class="panel placeholder-panel">
+    <!-- Armor Strip -->
+    <div class="panel" id="armor-strip-panel">
       <h2>Armor Strip</h2>
-      <p class="coming-soon-text">Model remaining armor after Corrosive procs coming soon.</p>
+
+      <div class="strip-row">
+        <div class="strip-label-row">
+          <label for="strip-ability-pct" class="strip-label">Ability Strip</label>
+          <span class="strip-pct-badge" id="strip-ability-badge">0%</span>
+        </div>
+        <input type="range" id="strip-ability-pct" class="strip-slider" min="0" max="100" value="0" step="1">
+      </div>
+
+      <div class="strip-row">
+        <div class="strip-label-row">
+          <label for="strip-cp-pct" class="strip-label">Corrosive Projection</label>
+          <span class="strip-pct-badge" id="strip-cp-badge">0%</span>
+        </div>
+        <input type="range" id="strip-cp-pct" class="strip-slider" min="0" max="100" value="0" step="1">
+      </div>
+
+      <div class="strip-row">
+        <div class="strip-label-row">
+          <label class="strip-label">Shattering Impact</label>
+        </div>
+        <div class="strip-si-row">
+          <div class="strip-si-field">
+            <label for="strip-si-hits" class="strip-sublabel">Hits</label>
+            <input type="number" id="strip-si-hits" class="input-sm-wide" min="0" max="500" value="0">
+          </div>
+          <span class="strip-si-sep">×</span>
+          <div class="strip-si-field">
+            <label for="strip-si-per-hit" class="strip-sublabel">Per Hit</label>
+            <input type="number" id="strip-si-per-hit" class="input-sm-wide" min="0" max="100" value="6" step="0.5">
+          </div>
+          <div class="strip-si-field">
+            <label class="strip-sublabel">Removed</label>
+            <span class="strip-si-total" id="strip-si-total">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="strip-result-block">
+        <div class="strip-result-row">
+          <span class="strip-result-label">Remaining Armor</span>
+          <span class="strip-result-val" id="strip-armor-val">—</span>
+        </div>
+        <div class="strip-result-row">
+          <span class="strip-result-label">Damage Reduction</span>
+          <span class="strip-result-val" id="strip-dr-val">—</span>
+        </div>
+        <div class="strip-bar-wrap">
+          <div class="strip-bar-fill" id="strip-bar-fill"></div>
+        </div>
+        <div class="strip-bar-labels">
+          <span class="strip-bar-label-left">Original</span>
+          <span class="strip-bar-label-right" id="strip-stripped-pct">0% stripped</span>
+        </div>
+      </div>
     </div>
 
     <!-- Mods — 2×4 card grid -->
