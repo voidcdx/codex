@@ -4,22 +4,22 @@
 
 :root {
   --bg:              #050505;
-  --surface:         rgba(13, 13, 13, 0.7);
-  --surface2:        rgba(10, 10, 10, 0.8);
-  --surface-solid:   #0d0d0d;
-  --border:          rgba(139, 0, 0, 0.15);
-  --border-highlight: rgba(220, 20, 60, 0.4);
-  --border-red:      rgba(139, 0, 0, 0.3);
+  --surface:         #181818;
+  --surface2:        #131313;
+  --surface-solid:   #181818;
+  --border:          rgba(139, 0, 0, 0.25);
+  --border-highlight: rgba(220, 20, 60, 0.5);
+  --border-red:      rgba(139, 0, 0, 0.4);
   --accent:          #8b0000;
   --accent2:         #dc143c;
   --accent-glow:     rgba(139, 0, 0, 0.2);
   --accent-green:    #8b0000;
   --accent-green2:   #dc143c;
-  --text:            #888888;
-  --text-primary:    #e8e8e8;
-  --text-dim:        #444444;
-  --text-field:      #808080;
-  --text-muted:      #444444;
+  --text:            #a0a0a0;
+  --text-primary:    #d8d8d8;
+  --text-dim:        #666666;
+  --text-field:      #909090;
+  --text-muted:      #666666;
   --good:            #888888;
   --bad:             #dc143c;
   --riven:           #5a8a3a;
