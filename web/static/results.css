@@ -62,7 +62,7 @@
   flex-shrink: 0;
 }
 .weapon-stats-name { font-size: 15px; font-weight: 600; color: var(--text); }
-.weapon-stats-sub { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+.weapon-stats-sub { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
 
 .attack-tabs {
   display: flex;
