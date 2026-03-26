@@ -46,7 +46,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: clamp(13px, 1.1vw, 16px);
   height: 100%;
   position: relative;
   overflow: hidden;
