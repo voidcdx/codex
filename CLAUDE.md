@@ -454,6 +454,9 @@ DE's official endpoint: `https://content.warframe.com/dynamic/worldState.php` (a
 - **Pure functions:** `quantize()`, `combine()` must have no side effects.
 - **Type hints** on all function signatures.
 
+## Private Notes
+`~/.claude/codex-accuracy.md` — accuracy self-assessment covering what the calculator gets right, known gaps, and where confidence is lowest. Outside the repo, never pushed to git. Read on user request.
+
 ## Rules
 - Short answers only. Don't rewrite entire files — only the parts that need changing. Ask questions when uncertain.
 
