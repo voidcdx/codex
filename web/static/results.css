@@ -221,17 +221,17 @@
 
 /* ── Tippy.js Warframe Theme ─────────────────────────── */
 .tippy-box[data-theme~='warframe'] {
-  background: rgba(20, 20, 35, 0.95);
+  background: rgba(28, 10, 10, 0.97);
   backdrop-filter: blur(8px);
-  color: #c8c8d8;
-  border: 1px solid rgba(196, 154, 31, 0.25);
+  color: var(--text-primary);
+  border: 1px solid var(--border-red);
   border-radius: var(--radius-sm);
-  font-size: 12px;
+  font-size: 0.8rem;
   line-height: 1.5;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 .tippy-box[data-theme~='warframe'] .tippy-arrow {
-  color: rgba(20, 20, 35, 0.95);
+  color: rgba(28, 10, 10, 0.97);
 }
 .stat-label[data-tooltip] {
   cursor: default;

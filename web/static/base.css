@@ -40,7 +40,7 @@
 
 /* Scrollbar — hidden but functional */
 ::-webkit-scrollbar { display: none; }
-html { scrollbar-width: none; height: 100%; }
+html { scrollbar-width: none; height: 100%; overflow-x: hidden; }
 
 body {
   background: var(--bg);
