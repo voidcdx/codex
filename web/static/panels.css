@@ -766,14 +766,6 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   letter-spacing: 0.1em;
   color: var(--text-dim);
 }
-.strip-sublabel {
-  display: block;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-dim);
-  margin-bottom: 2px;
-}
 .strip-pct-badge {
   font-size: 11px;
   font-family: var(--font-display);
@@ -810,30 +802,6 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   cursor: pointer;
   border: none;
   border-radius: 0;
-}
-.strip-si-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.strip-si-field {
-  display: flex;
-  flex-direction: column;
-}
-.strip-si-sep {
-  font-size: 14px;
-  color: var(--text-dim);
-  align-self: flex-end;
-  margin-bottom: 6px;
-}
-.strip-si-total {
-  font-family: var(--font-display);
-  font-size: 12px;
-  color: var(--accent2);
-  font-weight: 600;
-  padding: 2px 0;
-  line-height: 1.6;
 }
 .strip-result-block {
   border-top: 1px solid var(--border);
