@@ -85,3 +85,74 @@ function getBonusElement() {
   };
 }
 
+// ── Select Dropdown ────────────────────────────────────────
+// Hides native <select>, builds a themed button+dropdown using
+// the same .combobox-dropdown / .combobox-item CSS as search boxes.
+
+function setupSelectDropdown(selectId, onChange) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  sel.style.display = 'none';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'sel-wrap';
+  sel.parentNode.insertBefore(wrap, sel.nextSibling);
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'sel-btn';
+
+  const dd = document.createElement('div');
+  dd.className = 'combobox-dropdown sel-dropdown';
+
+  wrap.appendChild(btn);
+  wrap.appendChild(dd);
+
+  function rebuild() {
+    dd.innerHTML = '';
+    for (const opt of sel.options) {
+      const div = document.createElement('div');
+      div.className = 'combobox-item' + (opt.value === sel.value ? ' sel-selected' : '');
+      div.textContent = opt.text;
+      div.dataset.value = opt.value;
+      div.addEventListener('mousedown', e => {
+        e.preventDefault();
+        sel.value = opt.value;
+        sel.dispatchEvent(new Event('change'));
+        close();
+        if (onChange) onChange();
+      });
+      div.addEventListener('touchend', e => {
+        e.preventDefault();
+        sel.value = opt.value;
+        sel.dispatchEvent(new Event('change'));
+        close();
+        if (onChange) onChange();
+      });
+      dd.appendChild(div);
+    }
+    btn.textContent = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : '';
+  }
+
+  function open()  { dd.classList.add('open');    wrap.classList.add('open'); }
+  function close() { dd.classList.remove('open'); wrap.classList.remove('open'); }
+
+  rebuild();
+
+  btn.addEventListener('click', () => dd.classList.contains('open') ? close() : open());
+  document.addEventListener('mousedown', e => { if (!wrap.contains(e.target)) close(); });
+
+  sel.addEventListener('change', () => {
+    if (sel.options[sel.selectedIndex]) btn.textContent = sel.options[sel.selectedIndex].text;
+    dd.querySelectorAll('.combobox-item').forEach(d => d.classList.toggle('sel-selected', d.dataset.value === sel.value));
+  });
+
+  wrap._rebuild = rebuild;
+}
+
+function refreshSelectDropdown(selectId) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const wrap = sel.parentNode.querySelector('.sel-wrap');
+  if (wrap && wrap._rebuild) wrap._rebuild();
+}

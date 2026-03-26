@@ -65,7 +65,9 @@ async function loadData() {
 
   initModGrid();
 
-  document.getElementById('bonus-element-type').addEventListener('change', () => {
+  setupSelectDropdown('crit-mode');
+  setupSelectDropdown('body-part-select');
+  setupSelectDropdown('bonus-element-type', () => {
     updateModdedStats();
     updateElementBadges();
   });

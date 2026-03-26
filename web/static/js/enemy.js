@@ -28,6 +28,7 @@ function showEnemyStats(enemy) {
       bpSelect.appendChild(opt);
     }
     bpSelect.value = (enemy.body_parts[prevVal] != null) ? prevVal : 'Body';
+    refreshSelectDropdown('body-part-select');
   }
 
   const headMult = enemy.body_parts && enemy.body_parts['Head'];
