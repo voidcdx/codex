@@ -85,7 +85,7 @@
 .attack-tab.active {
   border-bottom-color: var(--accent2);
   color: var(--accent2);
-  box-shadow: 0 2px 8px -2px var(--crimson-glow);
+  text-shadow: 0 0 6px var(--accent2), 0 0 12px var(--accent-glow);
 }
 
 .stat-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
