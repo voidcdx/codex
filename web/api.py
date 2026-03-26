@@ -227,6 +227,7 @@ class ModdedWeaponRequest(BaseModel):
     mods: list[str] = []
     attack: str | None = None
     galvanized_stacks: int = Field(default=0, ge=0, le=5)
+    combo_counter: int = 0                # melee combo raw hit count
     riven: RivenSpec | None = None
     bonus_element: str | None = None      # "heat" | "cold" | "electricity" | "toxin"
     bonus_element_pct: float = 0.0        # 0.25–0.60
@@ -282,10 +283,13 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
     arcane_cd_bonus = sum(a.cd_bonus for a in arcane_objects)
     arcane_reload_bonus = sum(a.reload_bonus for a in arcane_objects)
 
+    combo_tiers = math.floor(req.combo_counter / 5)
     total_damage_bonus = sum(m.damage_bonus for m in mods) + arcane_damage_bonus
-    total_cc_bonus = sum(m.cc_bonus for m in mods) + galv_cc_bonus + arcane_cc_bonus
+    combo_cc_bonus = sum(m.cc_per_combo_tier for m in mods) * combo_tiers
+    total_cc_bonus = sum(m.cc_bonus for m in mods) + galv_cc_bonus + arcane_cc_bonus + combo_cc_bonus
     total_cd_bonus = sum(m.cd_bonus for m in mods) + galv_cd_bonus + arcane_cd_bonus
-    total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc_bonus
+    combo_sc_bonus = sum(m.sc_per_combo_tier for m in mods) * combo_tiers
+    total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc_bonus + combo_sc_bonus
     total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms_bonus
     total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
     total_mag_bonus = sum(m.magazine_bonus for m in mods)
@@ -389,7 +393,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "modded_damage": modded_dmg_dict,
         "modded_total":  round(modded_total, 4),
         "base_cc":  base_cc,
-        "modded_cc": round(base_cc + total_cc_bonus, 6),
+        "modded_cc": round(base_cc * (1.0 + total_cc_bonus), 6),
         "base_cm":  base_cm,
         "modded_cm": round(base_cm * (1.0 + total_cd_bonus), 6),
         "base_sc":  base_sc,
@@ -492,7 +496,10 @@ def calculate(req: CalcRequest) -> dict:
     galv_sc = sum(m.galv_kill_pct * min(galv_stacks, m.galv_max_stacks)
                   for m in mods if m.galv_kill_stat == "sc_bonus")
 
-    base_cc = weapon.crit_chance + sum(m.cc_bonus for m in mods) + galv_cc + arcane_cc
+    calc_combo_tiers = math.floor(req.combo_counter / 5)
+    combo_cc = sum(m.cc_per_combo_tier for m in mods) * calc_combo_tiers
+    combo_sc = sum(m.sc_per_combo_tier for m in mods) * calc_combo_tiers
+    base_cc = weapon.crit_chance * (1.0 + sum(m.cc_bonus for m in mods) + galv_cc + arcane_cc + combo_cc)
     base_cm = weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd + arcane_cd)
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
@@ -501,7 +508,7 @@ def calculate(req: CalcRequest) -> dict:
     magazine    = float(raw_w.get("magazine")   or 1.0)
     reload_time = float(raw_w.get("reload")     or 0.0)
     base_sc     = weapon.status_chance
-    total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc
+    total_sc_bonus = sum(m.sc_bonus for m in mods) + galv_sc + combo_sc
     total_ms_bonus = sum(m.multishot_bonus for m in mods) + galv_ms
     total_fr_bonus = sum(m.fire_rate_bonus for m in mods)
     total_reload_bonus = sum(m.reload_bonus for m in mods) + arcane_reload

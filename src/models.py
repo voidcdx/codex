@@ -64,6 +64,8 @@ class Mod:
     ammo_max_bonus: float = 0.0                  # additive, e.g. 0.90 for Ammo Drum (reserve)
     reload_bonus: float = 0.0                    # additive, e.g. 0.30 for Fast Hands
     condition_overload_bonus: float = 0.0        # additive per unique status on enemy (Condition Overload)
+    cc_per_combo_tier: float = 0.0               # CC bonus per combo tier (Blood Rush family)
+    sc_per_combo_tier: float = 0.0               # SC bonus per combo tier (Weeping Wounds family)
     galv_kill_stat: str = ""                     # which stat the on-kill stack bonus applies to
     galv_kill_pct: float = 0.0                   # per-stack bonus amount (e.g. 0.30 for Chamber)
     galv_max_stacks: int = 0                     # mod-specific stack cap
