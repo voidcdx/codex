@@ -232,6 +232,7 @@ class ModdedWeaponRequest(BaseModel):
     bonus_element: str | None = None      # "heat" | "cold" | "electricity" | "toxin"
     bonus_element_pct: float = 0.0        # 0.25–0.60
     arcanes: list[ArcaneSpec] = []        # weapon arcanes (max 2)
+    cold_stacks: int = Field(default=0, ge=0, le=10)  # Cold proc stacks (flat +0.1 CDM each)
 
 
 @app.post("/api/modded-weapon")
@@ -395,7 +396,7 @@ def modded_weapon(req: ModdedWeaponRequest) -> dict:
         "base_cc":  base_cc,
         "modded_cc": round(base_cc * (1.0 + total_cc_bonus), 6),
         "base_cm":  base_cm,
-        "modded_cm": round(base_cm * (1.0 + total_cd_bonus), 6),
+        "modded_cm": round(base_cm * (1.0 + total_cd_bonus) + min(req.cold_stacks, 10) * 0.1, 6),
         "base_sc":  base_sc,
         "modded_sc": round(base_sc * (1.0 + total_sc_bonus), 6),
         "sc_per_pellet": round(status_chance_per_pellet(base_sc * (1.0 + total_sc_bonus), weapon.multishot), 6),
@@ -434,6 +435,7 @@ class CalcRequest(BaseModel):
     bonus_element_pct: float = 0.0      # 0.25–0.60
     buffs:        list[BuffSpec] = []    # Warframe ability buffs
     arcanes:      list[ArcaneSpec] = []  # Weapon arcanes (max 2)
+    cold_stacks:  int = Field(default=0, ge=0, le=10)  # Cold proc stacks (flat +0.1 CDM each)
 
 
 @app.post("/api/calculate")
@@ -500,7 +502,7 @@ def calculate(req: CalcRequest) -> dict:
     combo_cc = sum(m.cc_per_combo_tier for m in mods) * calc_combo_tiers
     combo_sc = sum(m.sc_per_combo_tier for m in mods) * calc_combo_tiers
     base_cc = weapon.crit_chance * (1.0 + sum(m.cc_bonus for m in mods) + galv_cc + arcane_cc + combo_cc)
-    base_cm = weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd + arcane_cd)
+    base_cm = weapon.crit_multiplier * (1.0 + sum(m.cd_bonus for m in mods) + galv_cd + arcane_cd) + min(req.cold_stacks, 10) * 0.1
     crit_mult = calculate_crit_multiplier(base_cc, base_cm, mode=req.crit_mode)
 
     raw_w = _raw_weapons().get(weapon.name, {})
