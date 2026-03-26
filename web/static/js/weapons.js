@@ -562,50 +562,53 @@ function showWeaponStats(weapon) {
   document.getElementById('weapon-stats-content').innerHTML = `
     ${imgHtml}
     ${attackTabsHtml}
-    <div class="stat-rows">
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="crit-chance">Crit Chance</div>
-          <div class="stat-value crit" id="sv-cc">${pct((atk ? atk.crit_chance : weapon.crit_chance) || 0)}</div>
-          <div class="stat-modded" id="sm-cc" style="display:none"></div>
+    <div class="sc-wrap">
+      <div>
+        <div class="sc-title">Combat</div>
+        <div class="sc-stat">
+          <div class="sc-label" data-tooltip="crit-chance">Crit Chance</div>
+          <div class="sc-val-lg crit" id="sv-cc">${pct((atk ? atk.crit_chance : weapon.crit_chance) || 0)}</div>
+          <div class="sc-modded" id="sm-cc" style="display:none"></div>
         </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="crit-mult">Crit Mult</div>
-          <div class="stat-value crit" id="sv-cm">${fmt((atk ? atk.crit_multiplier : weapon.crit_multiplier), 'x')}</div>
-          <div class="stat-modded" id="sm-cm" style="display:none"></div>
+        <div class="sc-stat">
+          <div class="sc-label" data-tooltip="crit-mult">Crit Mult</div>
+          <div class="sc-val-lg crit" id="sv-cm">${fmt((atk ? atk.crit_multiplier : weapon.crit_multiplier), 'x')}</div>
+          <div class="sc-modded" id="sm-cm" style="display:none"></div>
         </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="status">Status</div>
-          <div class="stat-value status" id="sv-sc">${pct((atk ? atk.status_chance : weapon.status_chance) || 0)}${(atk && atk.multishot > 1) ? ' <span style="font-size:0.7rem;color:var(--text-muted)">\u00d7' + atk.multishot + ' pellets</span>' : ''}</div>
-          <div class="stat-modded" id="sm-sc" style="display:none"></div>
-          <div class="stat-modded" id="sm-sc-pellet" style="display:none"></div>
+        <div class="sc-stat">
+          <div class="sc-label" data-tooltip="status">Status</div>
+          <div class="sc-val-lg status" id="sv-sc">${pct((atk ? atk.status_chance : weapon.status_chance) || 0)}${(atk && atk.multishot > 1) ? ' <span style="font-size:0.7rem;color:var(--text-muted)">\u00d7' + atk.multishot + ' pellets</span>' : ''}</div>
+          <div class="sc-modded" id="sm-sc" style="display:none"></div>
+          <div class="sc-modded" id="sm-sc-pellet" style="display:none"></div>
         </div>
       </div>
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="fire-rate">Fire Rate</div>
-          <div class="stat-value">${fmt(atk ? atk.fire_rate : weapon.fire_rate)}</div>
-          <div class="stat-modded" id="sm-fr" style="display:none"></div>
+      <div class="sc-div"></div>
+      <div>
+        <div class="sc-title">Mechanics</div>
+        <div class="sc-stat">
+          <div class="sc-label" data-tooltip="fire-rate">Fire Rate</div>
+          <div class="sc-val-sm">${fmt(atk ? atk.fire_rate : weapon.fire_rate)}</div>
+          <div class="sc-modded" id="sm-fr" style="display:none"></div>
         </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="magazine">Magazine</div>
-          <div class="stat-value" id="sv-mag">${fmt(weapon.magazine)}</div>
-          <div class="stat-modded" id="sm-mag" style="display:none"></div>
+        <div class="sc-stat">
+          <div class="sc-label" data-tooltip="magazine">Magazine</div>
+          <div class="sc-val-sm" id="sv-mag">${fmt(weapon.magazine)}</div>
+          <div class="sc-modded" id="sm-mag" style="display:none"></div>
         </div>
-        ${weapon.max_ammo ? `<div class="stat-block">
-          <div class="stat-label" data-tooltip="max-ammo">Max Ammo</div>
-          <div class="stat-value" id="sv-ammo">${fmt(weapon.max_ammo)}</div>
-          <div class="stat-modded" id="sm-ammo" style="display:none"></div>
+        ${weapon.max_ammo ? `<div class="sc-stat">
+          <div class="sc-label" data-tooltip="max-ammo">Max Ammo</div>
+          <div class="sc-val-sm" id="sv-ammo">${fmt(weapon.max_ammo)}</div>
+          <div class="sc-modded" id="sm-ammo" style="display:none"></div>
         </div>` : ''}
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="reload">Reload</div>
-          <div class="stat-value" id="sv-reload">${fmt(weapon.reload, 's')}</div>
-          <div class="stat-modded" id="sm-reload" style="display:none"></div>
+        <div class="sc-stat">
+          <div class="sc-label" data-tooltip="reload">Reload</div>
+          <div class="sc-val-sm" id="sv-reload">${fmt(weapon.reload, 's')}</div>
+          <div class="sc-modded" id="sm-reload" style="display:none"></div>
         </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="multishot">Multishot</div>
-          <div class="stat-value" id="sv-ms">1.0</div>
-          <div class="stat-modded" id="sm-ms" style="display:none"></div>
+        <div class="sc-stat">
+          <div class="sc-label" data-tooltip="multishot">Multishot</div>
+          <div class="sc-val-sm" id="sv-ms">1.0</div>
+          <div class="sc-modded" id="sm-ms" style="display:none"></div>
         </div>
       </div>
     </div>
