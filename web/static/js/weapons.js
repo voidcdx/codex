@@ -715,7 +715,7 @@ async function _doUpdateModdedStats() {
     const resp = await fetch('/api/modded-weapon', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec(), galvanized_stacks: parseInt(document.getElementById('galv-stacks').value, 10) || 0, arcanes: getActiveArcanes(), ...getBonusElement() }),
+      body: JSON.stringify({ weapon: weapon.name, mods, attack: selectedAttack, riven: getRivenSpec(), galvanized_stacks: parseInt(document.getElementById('galv-stacks').value, 10) || 0, combo_counter: (Math.max(1, parseInt(document.getElementById('combo-counter')?.value, 10) || 1) - 1) * 10, arcanes: getActiveArcanes(), ...getBonusElement() }),
     });
     if (!resp.ok) return;
     const data = await resp.json();
