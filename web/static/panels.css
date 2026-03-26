@@ -53,14 +53,7 @@
   background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.4), transparent);
   pointer-events: none;
 }
-.panel::after {
-  content: '';
-  position: absolute;
-  inset: -24px;
-  background: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, var(--accent-glow) 60%, transparent 75%);
-  z-index: -1;
-  pointer-events: none;
-}
+.panel::after { content: none; }
 .panel:hover { border-color: rgba(139, 0, 0, 0.3); }
 .panel h2 {
   font-family: var(--font-display);
