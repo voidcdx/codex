@@ -146,6 +146,9 @@ Exalted weapons (`class === 'Exalted Weapon'`) and Garuda Talons are hidden from
 ### Combobox (Weapon + Enemy Search)
 `setupCombobox()` in `combobox.js` — intentionally simple. Read the source for closure internals (`_confirmed`, z-index lift, touch/mouse event handling).
 
+### Select Dropdowns (Hit Type, Body Part, Bonus Element)
+**Never use native `<select>` elements** — they render as iOS pickers on mobile and can't be CSS-styled cross-platform. Use `setupSelectDropdown(selectId, onChange)` in `utils.js` instead. This hides the native select, builds a `.sel-btn` trigger + `.combobox-dropdown` div using `.combobox-item` rows — identical look to the search comboboxes. Call `refreshSelectDropdown(selectId)` after programmatically updating options.
+
 ### Mod Slot Compatibility
 `onWeaponChange()` clears any mod slots whose `mod.type` is not in `getCompatibleModTypes()` for the new weapon. Mod picker always enforces type compatibility — no fallback to showing all mods.
 

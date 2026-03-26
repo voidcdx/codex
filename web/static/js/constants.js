@@ -200,6 +200,16 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.5.2',
+    date: '2026-03-26',
+    sections: [
+      { heading: 'Fixed', items: [
+        'Hit Type / Body Part / Bonus Element dropdowns styled to match the rest of the UI',
+        'Stack inputs (Viral, Corrosive, Cold) clamped to 0\u201310',
+      ]},
+    ],
+  },
+  {
     version: '0.5.1',
     date: '2026-03-26',
     sections: [

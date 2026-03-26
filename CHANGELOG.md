@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.5.2] — 2026-03-26
+
+### Fixed
+- Hit Type / Body Part / Bonus Element dropdowns now match the rest of the UI (themed, cross-platform — no more iOS picker)
+- Stack inputs (Viral, Corrosive, Cold) clamped to 0–10 via oninput
+
 ## [0.5.1] — 2026-03-26
 
 ### Fixed
