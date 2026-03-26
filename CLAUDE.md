@@ -69,11 +69,12 @@ web/
                    #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
   static/js/
     constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
-    utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy()
+    utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy(), setupSelectDropdown(), togglePanelHelp()
     combobox.js    # setupCombobox(), clearCombobox() — reusable widget
     weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
     enemy.js       # enemy panel, level scaling, Steel Path, Eximus
     modals.js      # Alchemy Guide, Riven Builder, Guide, Changelog, Buffs
+    armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
     calculate.js   # runCalculation(), showResults(), showError()
     app.js         # loadData() bootstrap, DOMContentLoaded, version fetch
 run_web.py          # python run_web.py → dev server on port 8000
@@ -128,6 +129,9 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--
 |---|---|
 | `.panel-sub-h` | Section heading divider within merged panels |
 | `.btn-add` | `+ ADD` button (buffs row, arcane row) |
+| `.btn-help` | `?` help toggle button — borderless, `var(--crimson)`, no border-radius |
+| `.panel-help` / `.panel-help.hidden` | Inline help text block below a panel heading; hidden by default |
+| `.panel-toggle-with-help` | Modifier on collapsible h2: transfers `margin-left: auto` from chevron to `.btn-help` |
 | `.input-sm` | Compact 44px number input (stacks inputs) |
 | `.input-sm-wide` | Compact 52px number input |
 | `.input-level` | 72px enemy level input |
@@ -136,6 +140,11 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--
 | `.panel-toggle` | Clickable `h2` header that collapses/expands panel |
 | `.chevron` | Rotating arrow SVG inside `.panel-toggle` |
 | `.collapsible-body` | Collapses with `.hidden` class |
+| `.strip-row` / `.strip-label-row` | Armor strip panel row layout |
+| `.strip-slider` | Range input — crimson thumb, no border-radius, `margin-bottom: 0` |
+| `.strip-pct-badge` | Live % readout next to slider |
+| `.strip-result-block` / `.strip-result-row` | Armor/DR summary section |
+| `.strip-bar-wrap` / `.strip-bar-fill` | Strip progress bar (crimson fill, `transition: width 0.2s`) |
 
 ### Faction Effectiveness Badges
 Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `web/static/js/constants.js` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
