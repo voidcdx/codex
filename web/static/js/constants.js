@@ -207,6 +207,10 @@ const CHANGELOG_ENTRIES = [
         'Armor Strip panel \u2014 models ability strip %, Corrosive Projection aura %, and Shattering Impact flat removal; shows remaining armor and DR% live',
         'Panel help (?) buttons on all panels \u2014 click to expand inline explanation of mechanics for each section',
         'CDM quantization \u2014 critical damage multiplier snapped to game\u2019s internal precision grid',
+        'Faction Weakness Cheatsheet (/factions) \u2014 matrix + cards views for all 13 factions; search and filter by vulnerable/resistant; mobile-responsive',
+      ]},
+      { heading: 'Fixed', items: [
+        'Attack mode tabs restyled \u2014 gradient underline + neon text-shadow glow replaces box border',
       ]},
     ],
   },
