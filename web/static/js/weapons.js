@@ -562,51 +562,66 @@ function showWeaponStats(weapon) {
   document.getElementById('weapon-stats-content').innerHTML = `
     ${imgHtml}
     ${attackTabsHtml}
-    <div class="stat-rows">
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="crit-chance">Crit Chance</div>
-          <div class="stat-value crit" id="sv-cc">${pct((atk ? atk.crit_chance : weapon.crit_chance) || 0)}</div>
-          <div class="stat-modded" id="sm-cc" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="crit-mult">Crit Mult</div>
-          <div class="stat-value crit" id="sv-cm">${fmt((atk ? atk.crit_multiplier : weapon.crit_multiplier), 'x')}</div>
-          <div class="stat-modded" id="sm-cm" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="status">Status</div>
-          <div class="stat-value status" id="sv-sc">${pct((atk ? atk.status_chance : weapon.status_chance) || 0)}${(atk && atk.multishot > 1) ? ' <span style="font-size:0.7rem;color:var(--text-muted)">\u00d7' + atk.multishot + ' pellets</span>' : ''}</div>
-          <div class="stat-modded" id="sm-sc" style="display:none"></div>
-          <div class="stat-modded" id="sm-sc-pellet" style="display:none"></div>
-        </div>
+    <div class="kv-stats">
+      <div class="kv-section-title">Combat</div>
+      <div class="kv-row">
+        <span class="kv-label" data-tooltip="crit-chance">Crit Chance</span>
+        <span class="kv-val-group">
+          <span class="stat-value crit" id="sv-cc">${pct((atk ? atk.crit_chance : weapon.crit_chance) || 0)}</span>
+          <span class="stat-modded" id="sm-cc" style="display:none"></span>
+        </span>
       </div>
-      <div class="stat-row">
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="fire-rate">Fire Rate</div>
-          <div class="stat-value">${fmt(atk ? atk.fire_rate : weapon.fire_rate)}</div>
-          <div class="stat-modded" id="sm-fr" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="magazine">Magazine</div>
-          <div class="stat-value" id="sv-mag">${fmt(weapon.magazine)}</div>
-          <div class="stat-modded" id="sm-mag" style="display:none"></div>
-        </div>
-        ${weapon.max_ammo ? `<div class="stat-block">
-          <div class="stat-label" data-tooltip="max-ammo">Max Ammo</div>
-          <div class="stat-value" id="sv-ammo">${fmt(weapon.max_ammo)}</div>
-          <div class="stat-modded" id="sm-ammo" style="display:none"></div>
-        </div>` : ''}
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="reload">Reload</div>
-          <div class="stat-value" id="sv-reload">${fmt(weapon.reload, 's')}</div>
-          <div class="stat-modded" id="sm-reload" style="display:none"></div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-label" data-tooltip="multishot">Multishot</div>
-          <div class="stat-value" id="sv-ms">1.0</div>
-          <div class="stat-modded" id="sm-ms" style="display:none"></div>
-        </div>
+      <div class="kv-row">
+        <span class="kv-label" data-tooltip="crit-mult">Crit Mult</span>
+        <span class="kv-val-group">
+          <span class="stat-value crit" id="sv-cm">${fmt((atk ? atk.crit_multiplier : weapon.crit_multiplier), 'x')}</span>
+          <span class="stat-modded" id="sm-cm" style="display:none"></span>
+        </span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-label" data-tooltip="status">Status</span>
+        <span class="kv-val-group">
+          <span class="stat-value status" id="sv-sc">${pct((atk ? atk.status_chance : weapon.status_chance) || 0)}${(atk && atk.multishot > 1) ? ' <span style="font-size:0.7rem;color:var(--text-muted)">\u00d7' + atk.multishot + ' pellets</span>' : ''}</span>
+          <span class="stat-modded" id="sm-sc" style="display:none"></span>
+          <span class="stat-modded" id="sm-sc-pellet" style="display:none"></span>
+        </span>
+      </div>
+      <div class="kv-divider"></div>
+      <div class="kv-section-title">Mechanics</div>
+      <div class="kv-row">
+        <span class="kv-label" data-tooltip="fire-rate">Fire Rate</span>
+        <span class="kv-val-group">
+          <span class="stat-value">${fmt(atk ? atk.fire_rate : weapon.fire_rate)}</span>
+          <span class="stat-modded" id="sm-fr" style="display:none"></span>
+        </span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-label" data-tooltip="magazine">Magazine</span>
+        <span class="kv-val-group">
+          <span class="stat-value" id="sv-mag">${fmt(weapon.magazine)}</span>
+          <span class="stat-modded" id="sm-mag" style="display:none"></span>
+        </span>
+      </div>
+      ${weapon.max_ammo ? `<div class="kv-row">
+        <span class="kv-label" data-tooltip="max-ammo">Max Ammo</span>
+        <span class="kv-val-group">
+          <span class="stat-value" id="sv-ammo">${fmt(weapon.max_ammo)}</span>
+          <span class="stat-modded" id="sm-ammo" style="display:none"></span>
+        </span>
+      </div>` : ''}
+      <div class="kv-row">
+        <span class="kv-label" data-tooltip="reload">Reload</span>
+        <span class="kv-val-group">
+          <span class="stat-value" id="sv-reload">${fmt(weapon.reload, 's')}</span>
+          <span class="stat-modded" id="sm-reload" style="display:none"></span>
+        </span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-label" data-tooltip="multishot">Multishot</span>
+        <span class="kv-val-group">
+          <span class="stat-value" id="sv-ms">1.0</span>
+          <span class="stat-modded" id="sm-ms" style="display:none"></span>
+        </span>
       </div>
     </div>
     <div id="damage-table-wrap"></div>

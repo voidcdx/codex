@@ -14,8 +14,6 @@
   .mod-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .stat-row { flex-wrap: wrap; }
-  .stat-block { min-width: 80px; }
   .bar-cell { width: 80px; }
   .result-header { flex-direction: column; gap: 6px; }
   .result-total { font-size: 18px; }
