@@ -118,6 +118,22 @@
 }
 .stat-modded::before { content: '▶ '; font-size: 9px; opacity: 0.7; }
 
+/* ── Two-column split layout (Option C) ─────────────── */
+.sc-wrap  { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0 12px; margin-bottom: 10px; }
+.sc-div   { background: var(--border-red); opacity: 0.35; }
+.sc-title { font-size: 9px; font-weight: 600; color: var(--accent2); letter-spacing: 0.08em;
+            text-transform: uppercase; margin-bottom: 8px; }
+.sc-stat  { margin-bottom: 10px; }
+.sc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+            color: var(--text-dim); margin-bottom: 2px; }
+.sc-label[data-tooltip] { border-bottom: 1px dashed var(--border-highlight); cursor: help; }
+.sc-val-lg { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.1; }
+.sc-val-lg.crit   { color: #d45a2a; }
+.sc-val-lg.status { color: #60b0e0; }
+.sc-val-sm { font-size: 13px; font-weight: 700; color: var(--text); }
+.sc-modded { font-size: 11px; font-weight: 600; color: var(--accent2); margin-top: 1px; }
+.sc-modded::before { content: '▶ '; font-size: 9px; opacity: 0.7; }
+
 /* ── Results ────────────────────────────────────────── */
 .no-results {
   color: var(--text-dim);
