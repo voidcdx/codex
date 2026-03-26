@@ -29,7 +29,7 @@ pytest -k "test_viral_combo"        # run single test by name
 src/
   enums.py          # DamageType, FactionType, HealthType, ArmorType
   models.py         # Weapon, WeaponAttack, Mod, Enemy, DamageComponent dataclasses
-  quantizer.py      # quantize() — pure function, no side effects
+  quantizer.py      # quantize(), quantize_cdm() — pure functions, no side effects
   arcanes.py        # weapon arcane presets — Merciless, Deadhead, Cascadia, Dexterity
   combiner.py       # elemental combination by mod slot order; innate primary/secondary split
   calculator.py     # DamageCalculator — 6-step pipeline + crit + armor + faction + Viral stacks + calculate_procs()
@@ -256,6 +256,17 @@ quantized = warframe_round(Decimal(str(raw_amount)) / Decimal(str(scale))) * Dec
 - Applied **independently per damage type** (Impact, Puncture, Slash, each elemental)
 - Applied **before** faction/damage multipliers
 - Combined elements (e.g. Viral from Cold+Toxin) quantize their **combined total** at 1/32 of base
+
+### CDM Quantization
+Critical damage multiplier is quantized to the game's internal precision grid:
+```python
+quantized_cdm = Round(CDM × 4095/32) × 32/4095
+```
+- Grid step ≈ 0.00781 (32/4095)
+- Applied **after** all CD bonuses (mods, arcanes, cold stacks) are summed
+- Applied **before** `calculate_crit_multiplier()` uses the value
+- `quantize_cdm()` in `src/quantizer.py` — Decimal precision, ROUND_HALF_UP
+- Both `/api/modded-weapon` and `/api/calculate` call `quantize_cdm()` on the final modded CDM
 
 ## Elemental Combination
 **Primary elements:** Heat, Cold, Electricity, Toxin
