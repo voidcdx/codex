@@ -352,8 +352,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 /* ── Panel help (?) button ── */
 .btn-help {
   background: none;
-  border: 1px solid var(--text-dim);
-  color: var(--text-dim);
+  border: none;
+  color: var(--crimson);
   border-radius: 0;
   width: 16px;
   height: 16px;
@@ -364,11 +364,10 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   line-height: 16px;
   text-align: center;
   flex-shrink: 0;
-  transition: border-color 0.15s, color 0.15s;
+  transition: color 0.15s;
 }
 .btn-help:hover, .btn-help.active {
-  border-color: var(--text);
-  color: var(--text);
+  color: var(--crimson-bright);
 }
 /* Position: direct child of h2 or panel-sub-h → push to far right */
 .panel h2 > .btn-help,
