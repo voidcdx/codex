@@ -466,7 +466,7 @@ DE's official endpoint: `https://content.warframe.com/dynamic/worldState.php` (a
 - **Type hints** on all function signatures.
 
 ## Private Notes
-`~/.claude/codex-accuracy.md` — accuracy self-assessment covering what the calculator gets right, known gaps, and where confidence is lowest. Outside the repo, never pushed to git. Read on user request.
+`accuracy-notes.md` — accuracy self-assessment covering what the calculator gets right, known gaps, and where confidence is lowest. Read on user request.
 
 ## Rules
 - Short answers only. Don't rewrite entire files — only the parts that need changing. Ask questions when uncertain.
