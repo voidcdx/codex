@@ -736,3 +736,8 @@ def index() -> FileResponse:
 @app.get("/live")
 def live() -> FileResponse:
     return FileResponse(str(_static / "live.html"))
+
+
+@app.get("/factions")
+def factions() -> FileResponse:
+    return FileResponse(str(_static / "factions.html"))
