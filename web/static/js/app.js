@@ -65,9 +65,7 @@ async function loadData() {
 
   initModGrid();
 
-  setupCustomSelect('crit-mode');
-  setupCustomSelect('body-part-select');
-  setupCustomSelect('bonus-element-type', () => {
+  document.getElementById('bonus-element-type').addEventListener('change', () => {
     updateModdedStats();
     updateElementBadges();
   });
