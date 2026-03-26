@@ -852,14 +852,16 @@ class TestMultishot:
             assert r2[dtype] == pytest.approx(r1[dtype] * 2.0)
 
     def test_multishot_split_chamber(self):
-        """Split Chamber (multishot_bonus=0.65) → modded_ms=1.65 scales total correctly."""
+        """Split Chamber (multishot_bonus=0.65) → modded_ms=1.65; each component is floored."""
         mods = [Mod(name="Split Chamber", multishot_bonus=0.65)]
         modded_ms = 1.0 + sum(m.multishot_bonus for m in mods)
         r_base = calc.calculate(self._weapon(), [], self._enemy())
         r_ms   = calc.calculate(self._weapon(), mods, self._enemy(), multishot=modded_ms)
-        total_base = sum(r_base.values())
-        total_ms   = sum(r_ms.values())
-        assert total_ms == pytest.approx(total_base * 1.65)
+        # Each component must be floor(base_val * 1.65) — no fractional damage
+        for dtype, base_val in r_base.items():
+            assert r_ms[dtype] == math.floor(base_val * 1.65), (
+                f"{dtype}: expected {math.floor(base_val * 1.65)}, got {r_ms[dtype]}"
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -1639,4 +1641,50 @@ class TestXatasWhisperBuff:
         total_with = sum(result.values())
         total_without = sum(result_no.values())
         assert total_with > total_without
+
+
+# ---------------------------------------------------------------------------
+# Multishot rounding
+# ---------------------------------------------------------------------------
+
+class TestMultishotRounding:
+    """Fractional multishot must produce integer damage values (math.floor)."""
+
+    def test_fractional_multishot_produces_integers(self):
+        # Braton: Impact 5, Puncture 35, Slash 10 = 50 base
+        # Split Chamber gives +1.65 multishot → total multishot = 2.65
+        # 5 × 2.65 = 13.25 → floor → 13  (not 13.25)
+        # 35 × 2.65 = 92.75 → floor → 92
+        # 10 × 2.65 = 26.5  → floor → 26
+        weapon = Weapon(
+            name="Test",
+            base_damage={DamageType.IMPACT: 5.0, DamageType.PUNCTURE: 35.0, DamageType.SLASH: 10.0},
+        )
+        enemy = Enemy(
+            name="Test",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        result = calc.calculate(weapon, [], enemy, multishot=2.65)
+        for dtype, val in result.items():
+            assert val == math.floor(val), (
+                f"{dtype}: {val} is not an integer after fractional multishot"
+            )
+
+    def test_integer_multishot_unchanged(self):
+        """Integer multishot (×2) should still produce clean integers."""
+        weapon = Weapon(
+            name="Test",
+            base_damage={DamageType.SLASH: 33.0},
+        )
+        enemy = Enemy(
+            name="Test",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        result = calc.calculate(weapon, [], enemy, multishot=2.0)
+        for val in result.values():
+            assert val == math.floor(val)
 
