@@ -382,6 +382,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .panel-toggle-with-help .chevron  { margin-left: 0; }
 
 /* ── Panel help text block ── */
+.panel-help.hidden { display: none; }
 .panel-help {
   background: var(--surface-solid);
   border-left: 2px solid var(--border-highlight);
