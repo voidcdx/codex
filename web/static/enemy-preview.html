@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enemy Panel Previews</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/base.css">
+  <link rel="stylesheet" href="/static/panels.css">
+  <style>
+    body { padding: 32px; display: flex; flex-direction: column; gap: 40px; }
+    .preview-label {
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--crimson-bright);
+      margin-bottom: 10px;
+    }
+    .preview-wrap {
+      max-width: 380px;
+    }
+
+    /* ── Option A — Threat Intel Card ── */
+    .threat-card {
+      background: var(--surface-solid);
+      border: 1px solid var(--border);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .threat-card-name {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .threat-badges {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .threat-badge {
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid;
+    }
+    .threat-badge-faction {
+      border-color: rgba(220,20,60,0.4);
+      color: var(--crimson-bright);
+      background: rgba(139,0,0,0.12);
+    }
+    .threat-badge-health {
+      border-color: rgba(160,160,160,0.25);
+      color: var(--text);
+      background: rgba(160,160,160,0.05);
+    }
+    .threat-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .threat-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .threat-stat-label {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .threat-stat-val {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .threat-bars { display: flex; flex-direction: column; gap: 6px; }
+    .threat-bar-row { display: flex; align-items: center; gap: 8px; }
+    .threat-bar-label {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      width: 44px;
+      flex-shrink: 0;
+    }
+    .threat-bar-track {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      position: relative;
+    }
+    .threat-bar-fill {
+      position: absolute;
+      top: 0; left: 0; height: 100%;
+    }
+    .threat-bar-fill-hp   { background: linear-gradient(90deg, rgba(180,50,50,0.8), var(--crimson-bright)); }
+    .threat-bar-fill-sh   { background: linear-gradient(90deg, rgba(60,100,180,0.8), rgba(100,160,255,0.9)); }
+    .threat-bar-fill-ar   { background: linear-gradient(90deg, rgba(140,120,60,0.8), rgba(220,190,80,0.9)); }
+    .threat-bar-val {
+      font-family: var(--font-display);
+      font-size: 10px;
+      color: var(--text);
+      width: 60px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── Option B — Faction Badges inline ── */
+    .eff-inline-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 10px 0 4px;
+    }
+    .eff-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border: 1px solid;
+    }
+    .eff-pill-vuln {
+      border-color: rgba(61,107,42,0.4);
+      color: #5a8a3a;
+      background: rgba(61,107,42,0.1);
+    }
+    .eff-pill-res {
+      border-color: rgba(148,30,30,0.3);
+      color: #c53030;
+      background: rgba(148,30,30,0.08);
+    }
+    .eff-section-label {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .b-stat-rows { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .b-stat-row { display: flex; gap: 8px; }
+    .b-stat { flex: 1; }
+    .b-stat-label { font-size: 0.68rem; color: var(--text-dim); }
+    .b-stat-val { font-size: 0.9rem; color: var(--text-primary); font-weight: 600; }
+
+    /* ── Option C — Level-first layout ── */
+    .c-level-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .c-level-group { display: flex; flex-direction: column; gap: 3px; }
+    .c-level-group label { font-size: 0.68rem; color: var(--text-dim); }
+    .c-level-input {
+      width: 72px;
+      background: var(--surface-solid);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      padding: 6px 8px;
+      text-align: center;
+    }
+    .c-toggle {
+      padding: 6px 12px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      height: 36px;
+    }
+    .c-toggle.active {
+      border-color: var(--crimson-bright);
+      color: var(--crimson-bright);
+      background: rgba(139,0,0,0.12);
+    }
+    .c-live-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .c-live-stat {
+      background: rgba(139,0,0,0.05);
+      border: 1px solid rgba(139,0,0,0.15);
+      padding: 10px 12px;
+    }
+    .c-live-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+    .c-live-val {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+    .c-live-val.big { font-size: 20px; }
+    .c-info-strip {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-top: 1px solid rgba(139,0,0,0.12);
+      border-bottom: 1px solid rgba(139,0,0,0.12);
+      margin-bottom: 12px;
+    }
+    .c-info-item { display: flex; flex-direction: column; gap: 1px; }
+    .c-info-label { font-size: 0.63rem; color: var(--text-dim); }
+    .c-info-val { font-size: 0.8rem; color: var(--text); }
+
+    /* ── Option D — Combined ── */
+    .d-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .d-name {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+    .d-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+    .d-faction-badge {
+      font-family: var(--font-display);
+      font-size: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border: 1px solid rgba(220,20,60,0.4);
+      color: var(--crimson-bright);
+      background: rgba(139,0,0,0.12);
+    }
+    .d-health-badge {
+      font-family: var(--font-display);
+      font-size: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border: 1px solid rgba(160,160,160,0.2);
+      color: var(--text-dim);
+    }
+    .d-eff-section { margin-bottom: 10px; }
+    .d-eff-label {
+      font-size: 0.63rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+    .d-eff-row { display: flex; flex-wrap: wrap; gap: 4px; }
+    .d-eff-pill {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border: 1px solid;
+    }
+    .d-eff-pill-vuln {
+      border-color: rgba(61,107,42,0.4);
+      color: #6aaa3a;
+      background: rgba(61,107,42,0.1);
+    }
+    .d-eff-pill-res {
+      border-color: rgba(148,30,30,0.3);
+      color: #c53030;
+      background: rgba(148,30,30,0.08);
+    }
+    .d-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.25), transparent);
+      margin: 10px 0;
+    }
+    .d-level-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .d-level-group { display: flex; flex-direction: column; gap: 2px; }
+    .d-level-group label { font-size: 0.65rem; color: var(--text-dim); }
+    .d-level-input {
+      width: 68px;
+      background: var(--surface-solid);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      padding: 5px 8px;
+      text-align: center;
+    }
+    .d-toggle {
+      padding: 5px 11px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      height: 34px;
+    }
+    .d-toggle.active {
+      border-color: var(--crimson-bright);
+      color: var(--crimson-bright);
+      background: rgba(139,0,0,0.12);
+    }
+    .d-scaled-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .d-scaled-stat {
+      padding: 8px 10px;
+      background: rgba(139,0,0,0.04);
+      border: 1px solid rgba(139,0,0,0.12);
+    }
+    .d-scaled-label { font-size: 0.63rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+    .d-scaled-val {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+    .d-scaled-sub {
+      font-size: 0.6rem;
+      color: var(--crimson-bright);
+      margin-top: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ OPTION A — Threat Intel Card ══ -->
+  <div class="preview-wrap">
+    <div class="preview-label">Option A — Threat Intel Card</div>
+    <div class="panel">
+      <h2>Enemy</h2>
+
+      <!-- search placeholder -->
+      <div style="margin-bottom:12px">
+        <div class="search-wrap">
+          <input class="search-input" type="text" value="Corrupted Heavy Gunner" readonly>
+        </div>
+      </div>
+
+      <!-- threat card -->
+      <div class="threat-card">
+        <div class="threat-card-name">Corrupted Heavy Gunner</div>
+        <div class="threat-badges">
+          <span class="threat-badge threat-badge-faction">Corrupted</span>
+          <span class="threat-badge threat-badge-health">Cloned Flesh</span>
+        </div>
+        <div class="threat-stats-row">
+          <div class="threat-stat">
+            <span class="threat-stat-label">Base Lvl</span>
+            <span class="threat-stat-val">15</span>
+          </div>
+          <div class="threat-stat">
+            <span class="threat-stat-label">Head ×</span>
+            <span class="threat-stat-val">3.0×</span>
+          </div>
+          <div class="threat-stat">
+            <span class="threat-stat-label">Base Armor</span>
+            <span class="threat-stat-val">500</span>
+          </div>
+        </div>
+        <!-- live stat bars -->
+        <div class="threat-bars">
+          <div class="threat-bar-row">
+            <span class="threat-bar-label">HP</span>
+            <div class="threat-bar-track"><div class="threat-bar-fill threat-bar-fill-hp" style="width:78%"></div></div>
+            <span class="threat-bar-val">184,320</span>
+          </div>
+          <div class="threat-bar-row">
+            <span class="threat-bar-label">Shield</span>
+            <div class="threat-bar-track"><div class="threat-bar-fill threat-bar-fill-sh" style="width:0%"></div></div>
+            <span class="threat-bar-val">—</span>
+          </div>
+          <div class="threat-bar-row">
+            <span class="threat-bar-label">Armor</span>
+            <div class="threat-bar-track"><div class="threat-bar-fill threat-bar-fill-ar" style="width:54%"></div></div>
+            <span class="threat-bar-val">1,460 · 83% DR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- level controls -->
+      <div class="enemy-level-row">
+        <div class="enemy-level-col">
+          <label for="a-level">Level</label>
+          <input type="number" id="a-level" class="input-level" value="85">
+        </div>
+        <button class="toggle-btn active">Steel Path</button>
+        <button class="toggle-btn">Eximus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OPTION B — Faction Effectiveness Inline ══ -->
+  <div class="preview-wrap">
+    <div class="preview-label">Option B — Faction Effectiveness Inline</div>
+    <div class="panel">
+      <h2>Enemy</h2>
+
+      <div style="margin-bottom:12px">
+        <div class="search-wrap">
+          <input class="search-input" type="text" value="Corrupted Heavy Gunner" readonly>
+        </div>
+      </div>
+
+      <!-- base stats (same layout as today) -->
+      <div class="b-stat-rows">
+        <div class="b-stat-row">
+          <div class="b-stat"><div class="b-stat-label">Faction</div><div class="b-stat-val">Corrupted</div></div>
+          <div class="b-stat"><div class="b-stat-label">Health Type</div><div class="b-stat-val">Cloned Flesh</div></div>
+          <div class="b-stat"><div class="b-stat-label">Base Level</div><div class="b-stat-val">15</div></div>
+        </div>
+        <div class="b-stat-row">
+          <div class="b-stat"><div class="b-stat-label">Base HP</div><div class="b-stat-val">2,500</div></div>
+          <div class="b-stat"><div class="b-stat-label">Shield</div><div class="b-stat-val">—</div></div>
+          <div class="b-stat"><div class="b-stat-label">Armor</div><div class="b-stat-val">500</div></div>
+        </div>
+      </div>
+
+      <!-- faction effectiveness row — NEW -->
+      <div class="eff-section-label">Faction Effectiveness</div>
+      <div class="eff-inline-row">
+        <span class="eff-pill eff-pill-vuln">+Radiation</span>
+        <span class="eff-pill eff-pill-vuln">+Viral</span>
+        <span class="eff-pill eff-pill-vuln">+Slash</span>
+        <span class="eff-pill eff-pill-res">−Toxin</span>
+        <span class="eff-pill eff-pill-res">−Gas</span>
+      </div>
+
+      <div class="enemy-level-row" style="margin-top:10px">
+        <div class="enemy-level-col">
+          <label for="b-level">Level</label>
+          <input type="number" id="b-level" class="input-level" value="85">
+        </div>
+        <button class="toggle-btn active">Steel Path</button>
+        <button class="toggle-btn">Eximus</button>
+      </div>
+
+      <div class="enemy-scaled-stats" style="margin-top:8px">
+        <div class="scaled-stat-block">Lvl <span>85 <span style="color:var(--accent);font-size:10px">(SP ×2.5)</span></span></div>
+        <div class="scaled-stat-block">HP <span>184,320</span></div>
+        <div class="scaled-stat-block">Armor <span>1,460</span></div>
+        <div class="scaled-stat-block">Shield <span>—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OPTION C — Level-first ══ -->
+  <div class="preview-wrap">
+    <div class="preview-label">Option C — Level-first, Large Numbers</div>
+    <div class="panel">
+      <h2>Enemy</h2>
+
+      <div style="margin-bottom:12px">
+        <div class="search-wrap">
+          <input class="search-input" type="text" value="Corrupted Heavy Gunner" readonly>
+        </div>
+      </div>
+
+      <!-- level + toggles FIRST -->
+      <div class="c-level-row">
+        <div class="c-level-group">
+          <label for="c-level">Level</label>
+          <input type="number" id="c-level" class="c-level-input" value="85">
+        </div>
+        <button class="c-toggle active">Steel Path</button>
+        <button class="c-toggle">Eximus</button>
+      </div>
+
+      <!-- live stats prominent -->
+      <div class="c-live-stats">
+        <div class="c-live-stat">
+          <div class="c-live-label">Health</div>
+          <div class="c-live-val big">184,320</div>
+        </div>
+        <div class="c-live-stat">
+          <div class="c-live-label">Armor · DR</div>
+          <div class="c-live-val big">1,460</div>
+          <div style="font-size:0.65rem;color:var(--crimson-bright);margin-top:1px">83% damage reduction</div>
+        </div>
+        <div class="c-live-stat">
+          <div class="c-live-label">Shield</div>
+          <div class="c-live-val">—</div>
+        </div>
+        <div class="c-live-stat">
+          <div class="c-live-label">Overguard</div>
+          <div class="c-live-val">—</div>
+        </div>
+      </div>
+
+      <!-- base info collapsed into strip -->
+      <div class="c-info-strip">
+        <div class="c-info-item">
+          <span class="c-info-label">Faction</span>
+          <span class="c-info-val">Corrupted</span>
+        </div>
+        <div class="c-info-item">
+          <span class="c-info-label">Health</span>
+          <span class="c-info-val">Cloned Flesh</span>
+        </div>
+        <div class="c-info-item">
+          <span class="c-info-label">Head</span>
+          <span class="c-info-val">3.0×</span>
+        </div>
+        <div class="c-info-item">
+          <span class="c-info-label">Base Lvl</span>
+          <span class="c-info-val">15</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OPTION D — Combined (recommended) ══ -->
+  <div class="preview-wrap">
+    <div class="preview-label">Option D — Combined (recommended)</div>
+    <div class="panel">
+      <h2>Enemy</h2>
+
+      <div style="margin-bottom:12px">
+        <div class="search-wrap">
+          <input class="search-input" type="text" value="Corrupted Heavy Gunner" readonly>
+        </div>
+      </div>
+
+      <!-- header: name + faction + health type badges -->
+      <div class="d-header">
+        <div>
+          <div class="d-name">Corrupted Heavy Gunner</div>
+          <div class="d-badges">
+            <span class="d-faction-badge">Corrupted</span>
+            <span class="d-health-badge">Cloned Flesh</span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:0.65rem;color:var(--text-dim)">Head</div>
+          <div style="font-family:var(--font-display);font-size:13px;color:var(--text-primary);font-weight:700">3.0×</div>
+        </div>
+      </div>
+
+      <!-- faction effectiveness -->
+      <div class="d-eff-section">
+        <div class="d-eff-label">Effective vs</div>
+        <div class="d-eff-row">
+          <span class="d-eff-pill d-eff-pill-vuln">+Radiation</span>
+          <span class="d-eff-pill d-eff-pill-vuln">+Viral</span>
+          <span class="d-eff-pill d-eff-pill-vuln">+Slash</span>
+          <span class="d-eff-pill d-eff-pill-res">−Toxin</span>
+          <span class="d-eff-pill d-eff-pill-res">−Gas</span>
+        </div>
+      </div>
+
+      <div class="d-divider"></div>
+
+      <!-- level + toggles -->
+      <div class="d-level-row">
+        <div class="d-level-group">
+          <label for="d-level">Level</label>
+          <input type="number" id="d-level" class="d-level-input" value="85">
+        </div>
+        <button class="d-toggle active">Steel Path</button>
+        <button class="d-toggle">Eximus</button>
+      </div>
+
+      <!-- scaled stats -->
+      <div class="d-scaled-grid">
+        <div class="d-scaled-stat">
+          <div class="d-scaled-label">Health</div>
+          <div class="d-scaled-val">184,320</div>
+        </div>
+        <div class="d-scaled-stat">
+          <div class="d-scaled-label">Armor</div>
+          <div class="d-scaled-val">1,460</div>
+          <div class="d-scaled-sub">83% DR</div>
+        </div>
+        <div class="d-scaled-stat">
+          <div class="d-scaled-label">Shield</div>
+          <div class="d-scaled-val">—</div>
+        </div>
+        <div class="d-scaled-stat">
+          <div class="d-scaled-label">Base Level</div>
+          <div class="d-scaled-val">15</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
