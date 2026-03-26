@@ -737,3 +737,8 @@ def live() -> FileResponse:
 @app.get("/factions")
 def factions() -> FileResponse:
     return FileResponse(str(_static / "factions.html"))
+
+
+@app.get("/enemy-preview")
+def enemy_preview() -> FileResponse:
+    return FileResponse(str(_static / "enemy-preview.html"))
