@@ -57,7 +57,7 @@
   content: '';
   position: absolute;
   inset: -24px;
-  background: radial-gradient(ellipse 80% 70% at 50% 50%, var(--accent-glow) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 70% at 50% 50%, var(--panel-glow) 0%, transparent 70%);
   z-index: -1;
   pointer-events: none;
 }
