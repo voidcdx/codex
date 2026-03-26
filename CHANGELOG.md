@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.5.1] — 2026-03-26
+
+### Fixed
+- Mod family exclusivity — Primed/Umbral/Archon variants no longer stack with base version in mod picker or Alchemy Mixer
+- Crit chance formula corrected to multiplicative (`base × (1 + mods)`, was additive)
+- Blood Rush now scales with combo tiers (contributed 0 at ×1, not flat +40%)
+- Multishot result floored to integer per in-game behaviour
+- Torid attack stats corrected (all 3 attacks); Mutalist Quanta and Synoid Simulor crit multipliers fixed
+
+### Added
+- Cold proc stacks (+0.1 flat CDM each, max 10) in Hit Options
+- Weapon data validation script (`scripts/validate_weapons.py`)
+
 ## [0.5.0] — 2026-03-25
 
 ### Changed

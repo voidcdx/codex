@@ -200,6 +200,23 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: '0.5.1',
+    date: '2026-03-26',
+    sections: [
+      { heading: 'Fixed', items: [
+        'Mod family exclusivity \u2014 Primed/Umbral/Archon variants no longer stack with base version',
+        'Crit chance formula corrected to multiplicative (base \u00d7 (1 + mods))',
+        'Blood Rush now scales with combo tiers; contributed 0 at \u00d71, not flat +40%',
+        'Multishot result floored to integer per in-game behaviour',
+        'Torid attack stats corrected; Mutalist Quanta + Synoid Simulor crit multipliers fixed',
+      ]},
+      { heading: 'Added', items: [
+        'Cold proc stacks (+0.1 flat CDM each, max 10) in Hit Options',
+        'Weapon data validation script (scripts/validate_weapons.py)',
+      ]},
+    ],
+  },
+  {
     version: '0.5.0',
     date: '2026-03-25',
     sections: [
