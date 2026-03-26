@@ -1,4 +1,4 @@
-"""Tests for ability armor strip, Corrosive Projection, and Shattering Impact."""
+"""Tests for ability armor strip and Corrosive Projection."""
 import pytest
 from src.calculator import DamageCalculator, calculate_armor_multiplier
 from src.models import Weapon, Mod, Enemy
@@ -70,36 +70,6 @@ class TestAbilityStrip:
         # With armor=0, no DR; Impact vs GRINEER ×1.5: floor(60*1.5)=90
         assert result[DamageType.IMPACT] == pytest.approx(90.0)
 
-    def test_shattering_impact_flat(self):
-        """shattering_impact_flat=60 on 300-armor enemy → armor=240."""
-        result = calc.calculate(
-            impact_weapon(), no_mods(), armored_enemy(300.0),
-            shattering_impact_flat=60.0,
-        )
-        # 240 armor; DR=240/540=0.4444...; mult=0.5555...
-        # Impact vs GRINEER ×1.5: floor(60*1.5)=90; floor(90*(300/(300+240)))=floor(90*0.5555...)=floor(50)=50
-        assert result[DamageType.IMPACT] == pytest.approx(50.0)
-
-    def test_si_cannot_go_below_zero(self):
-        """shattering_impact_flat=9999 on 300-armor enemy → armor clamped to 0, not negative."""
-        result = calc.calculate(
-            impact_weapon(), no_mods(), armored_enemy(300.0),
-            shattering_impact_flat=9999.0,
-        )
-        # armor=0, no DR; Impact vs GRINEER ×1.5: floor(60*1.5)=90
-        assert result[DamageType.IMPACT] == pytest.approx(90.0)
-
-    def test_all_combined(self):
-        """ability_strip_pct=0.5 + shattering_impact_flat=60 → armor = 300*0.5 - 60 = 90."""
-        result = calc.calculate(
-            impact_weapon(), no_mods(), armored_enemy(300.0),
-            ability_strip_pct=0.5,
-            shattering_impact_flat=60.0,
-        )
-        # 90 armor; DR=90/390=0.2307...; mult=0.7692...
-        # Impact vs GRINEER ×1.5: floor(60*1.5)=90; floor(90*(300/(300+90)))=floor(90*0.7692...)=floor(69.23)=69
-        assert result[DamageType.IMPACT] == pytest.approx(69.0)
-
     def test_zero_armor_enemy_no_op(self):
         """Enemy with base_armor=0 → strip params have no effect."""
         baseline = calc.calculate(
@@ -109,6 +79,5 @@ class TestAbilityStrip:
             impact_weapon(), no_mods(), armored_enemy(0.0),
             ability_strip_pct=0.5,
             cp_strip_pct=0.25,
-            shattering_impact_flat=100.0,
         )
         assert sum(stripped.values()) == pytest.approx(sum(baseline.values()))
