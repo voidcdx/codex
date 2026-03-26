@@ -1,24 +1,33 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Added the Faction Weakness Cheatsheet page (`/factions`) — a new standalone page with a full matrix and cards view for all faction/damage-type effectiveness data. Also fixed attack mode tab styling (gradient underline + neon text-shadow glow).
+Removed Shattering Impact from the Armor Strip panel entirely. It was rarely used and added unnecessary complexity. Also completed the panel help (?) system and cleaned up all SI references across the codebase.
 
 ---
 
 ## Changes made this session
 
-### Faction Weakness Cheatsheet (`/factions`)
-- `web/static/factions.html` — new page; same shell as live.html; sidebar nav "Factions" item active
-- `web/static/factions.css` — matrix grid layout (sticky faction column, element-color cells), cards grid, filter pills, search, responsive breakpoints
-- `web/static/js/factions.js` — renders matrix + cards from `FACTION_EFFECTIVENESS` / `ELEM_COLORS` / `DMG_ICONS`; filter (All/Vulnerable/Resistant), search, Matrix↔Cards toggle, row/col hover highlights
-- `web/api.py` — added `GET /factions` route
-- `web/static/index.html` + `web/static/live.html` — Factions nav-item added to sidebar
+### Shattering Impact removal
+- `src/calculator.py` — removed `shattering_impact_flat` param and flat-subtraction block from Step 4
+- `web/api.py` — removed `shattering_impact_flat` from `CalcRequest`, all forwarding calls removed
+- `web/static/index.html` — SI row and help text removed from Armor Strip panel
+- `web/static/js/armorstrip.js` — SI inputs, logic, and payload field removed
+- `tests/test_armor_strip.py` — removed 4 SI test cases (`test_shattering_impact_flat`, `test_si_cannot_go_below_zero`, `test_all_combined`, cleaned `test_zero_armor_enemy_no_op`)
+- `web/static/panels.css` — removed `.strip-si-row`, `.strip-si-field`, `.strip-si-sep`, `.strip-si-total`, `.strip-sublabel`
 
-### Attack tab fix
-- `web/static/results.css` — active attack tab: gradient underline via `background-image` trick + `text-shadow` neon glow; removed old box border and hardcoded amber rgba
+### Armor Strip panel (completed previous session, documented here)
+Armor Strip models two inputs only:
+- **Ability strip %** (0–100%) — Warframe ability-based strip (e.g. Seeking Shuriken, Tharros Strike)
+- **Corrosive Projection %** (0–100%) — aura mod strip per player count
 
-### Changelog
-- `CHANGELOG.md` + `CHANGELOG_ENTRIES` in `constants.js` — entries added under 0.5.3
+Both are additive, capped at 100%. Formula: `armor × (1 − min(1, ability_pct + cp_pct))`
+
+### Panel help (?) system (completed previous session)
+- `togglePanelHelp(btn)` in `utils.js` — finds `.panel-help` sibling of nearest h2/.panel-sub-h, toggles `.hidden`
+- `.btn-help` in `panels.css` — crimson, no border, hover `var(--crimson-bright)`
+- `.panel-help` / `.panel-help.hidden` in `panels.css`
+- `.panel-toggle-with-help` modifier — transfers `margin-left: auto` from `.chevron` to `.btn-help`
+- Help blocks added to: Results, Options, Warframe Buffs, Armor Strip, Mods, Weapon Arcanes panels
 
 ---
 
@@ -100,7 +109,7 @@ Added the Faction Weakness Cheatsheet page (`/factions`) — a new standalone pa
 - Branch: `claude/review-handoff-IMvk9`
 - Version: `0.5.3`
 - Game data: Update 41 — The Old Peace
-- Tests: 297 passing
+- Tests: 294 passing
 - Railway deploy branch: `codex`
 
 ## Private notes
@@ -116,7 +125,7 @@ Added the Faction Weakness Cheatsheet page (`/factions`) — a new standalone pa
 > Do NOT auto-bump or add entries without confirmation.
 > Update BOTH `CHANGELOG.md` AND `CHANGELOG_ENTRIES` in `web/static/js/constants.js`.
 
-- [ ] Run `pytest` — confirm 297 passing
+- [ ] Run `pytest` — confirm 294 passing
 - [ ] `git log --oneline -5` to orient
 - [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism / `▶` in CSS
 - [ ] Update Guide modal when adding UI features
