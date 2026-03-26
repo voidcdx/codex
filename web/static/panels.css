@@ -349,6 +349,53 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .panel-toggle.open .chevron { transform: rotate(180deg); }
 .collapsible-body.hidden { display: none; }
 
+/* ── Panel help (?) button ── */
+.btn-help {
+  background: none;
+  border: 1px solid var(--text-dim);
+  color: var(--text-dim);
+  border-radius: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  line-height: 16px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-help:hover, .btn-help.active {
+  border-color: var(--text);
+  color: var(--text);
+}
+/* Position: direct child of h2 or panel-sub-h → push to far right */
+.panel h2 > .btn-help,
+.panel-sub-h > .btn-help {
+  margin-left: auto;
+}
+/* Inside mod-panel-actions the span already handles positioning */
+.mod-panel-actions .btn-help { margin-left: 0; }
+/* Toggle h2: btn-help takes the auto margin, chevron follows naturally */
+.panel-toggle-with-help .btn-help { margin-left: auto; }
+.panel-toggle-with-help .chevron  { margin-left: 0; }
+
+/* ── Panel help text block ── */
+.panel-help {
+  background: var(--surface-solid);
+  border-left: 2px solid var(--border-highlight);
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.panel-help p { margin: 0 0 6px; }
+.panel-help p:last-child { margin-bottom: 0; }
+.panel-help strong { color: var(--text); }
+
 /* ── Legacy Mod Slots (select-based, will be replaced) */
 .mods-list { margin-bottom: 4px; }
 .mod-slot {
