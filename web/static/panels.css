@@ -105,7 +105,7 @@
   border-radius: 0;
   padding: 2px 8px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 0.73rem;
   font-family: 'Share Tech Mono', monospace;
   letter-spacing: 0.06em;
 }
@@ -131,7 +131,7 @@
 .placeholder-panel { opacity: 0.5; }
 .coming-soon-text {
   color: var(--text-dim);
-  font-size: 12px;
+  font-size: 0.8rem;
   text-align: center;
   padding: 24px 0;
   font-style: italic;
@@ -142,7 +142,7 @@ label {
   display: block;
   margin-bottom: 4px;
   color: var(--text-dim);
-  font-size: 10px;
+  font-size: 0.67rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-family: var(--font-body);
@@ -287,7 +287,7 @@ select option {
   color: var(--accent2);
 }
 .combobox-img { width: 22px; height: 22px; object-fit: contain; vertical-align: middle; margin-right: 6px; border-radius: 0; }
-.combobox-hint { padding: 4px 8px; font-size: 11px; color: var(--text-dim); text-align: center; }
+.combobox-hint { padding: 4px 8px; font-size: 0.73rem; color: var(--text-dim); text-align: center; }
 
 /* ── Enemy Level Controls ───────────────────────────── */
 .enemy-level-row {
@@ -297,7 +297,7 @@ select option {
   margin-top: 10px;
   flex-wrap: wrap;
 }
-.enemy-level-row label { font-size: 11px; color: var(--text-dim); margin-bottom: 2px; }
+.enemy-level-row label { font-size: 0.73rem; color: var(--text-dim); margin-bottom: 2px; }
 .toggle-btn {
   padding: 5px 10px;
   font-size: 11px;
@@ -324,7 +324,7 @@ select option {
   margin-top: 8px;
 }
 .scaled-stat-block {
-  font-size: 11px;
+  font-size: 0.73rem;
   color: var(--text-dim);
 }
 .scaled-stat-block span { color: var(--text); font-weight: 600; }
@@ -366,7 +366,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   height: 16px;
   padding: 0;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 0.67rem;
   font-family: 'Share Tech Mono', monospace;
   line-height: 16px;
   text-align: center;
@@ -585,7 +585,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .mod-picker-overlay.active { display: flex; overflow: hidden; touch-action: none; }
 .mod-picker {
-  background: rgba(5, 9, 4, 0.96);
+  background: rgba(5, 5, 5, 0.96);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   border: 1px solid var(--border-red);
@@ -774,7 +774,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   color: var(--text-dim);
 }
 .strip-pct-badge {
-  font-size: 11px;
+  font-size: 0.73rem;
   font-family: var(--font-display);
   color: var(--accent2);
   font-weight: 600;
@@ -822,14 +822,14 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   margin-bottom: 4px;
 }
 .strip-result-label {
-  font-size: 10px;
+  font-size: 0.67rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-dim);
 }
 .strip-result-val {
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 0.8rem;
   color: var(--text);
   font-weight: 600;
 }
@@ -852,7 +852,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .strip-bar-label-left,
 .strip-bar-label-right {
-  font-size: 9px;
+  font-size: 0.6rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.07em;
