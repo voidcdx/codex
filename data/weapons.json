@@ -21923,11 +21923,11 @@
       {
         "name": "Incarnon Form",
         "innate_elements": {
-          "toxin": 51.0
+          "toxin": 102.0
         },
-        "crit_chance": 0.29,
+        "crit_chance": 0.44,
         "crit_multiplier": 3.1,
-        "status_chance": 0.39,
+        "status_chance": 0.54,
         "fire_rate": 12.8,
         "shot_type": "Hit-Scan"
       }
