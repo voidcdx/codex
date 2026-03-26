@@ -190,13 +190,12 @@
           <div id="bonus-element-div" style="display:none">
             <label class="bonus-element-label">Bonus Element (Kuva / Tenet)</label>
             <div class="bonus-element-row">
-              <select id="bonus-element-type" style="display:none">
+              <select id="bonus-element-type">
                 <option value="heat">Heat</option>
                 <option value="cold">Cold</option>
                 <option value="electricity">Electricity</option>
                 <option value="toxin">Toxin</option>
               </select>
-              <div class="custom-select-wrap" data-for="bonus-element-type"></div>
               <input type="number" id="bonus-element-pct" class="input-sm-wide" min="25" max="60" value="25"
                      oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
               <span class="bonus-element-unit">%</span>
@@ -433,17 +432,15 @@
         <div class="options-row">
           <div>
             <label for="crit-mode">Hit Type</label>
-            <select id="crit-mode" style="display:none">
+            <select id="crit-mode">
               <option value="average">Average</option>
               <option value="guaranteed">Guaranteed Crit</option>
               <option value="max">Max Crit</option>
             </select>
-            <div class="custom-select-wrap" data-for="crit-mode"></div>
           </div>
           <div>
             <label for="body-part-select">Body Part</label>
-            <select id="body-part-select" style="display:none"><option value="Body">Body</option></select>
-            <div class="custom-select-wrap" data-for="body-part-select"></div>
+            <select id="body-part-select"><option value="Body">Body</option></select>
           </div>
           <div>
             <label for="viral-stacks">Viral Stacks</label>
