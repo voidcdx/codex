@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased] — 2026-03-26
+
+### Changed
+- Panel surfaces made semi-transparent (`rgba(18,10,10,0.50)`) with local crimson radial glow (`::after` pseudo-element) — glassmorphism-style blur visible without a page-wide background
+- Fluid typography — body font now `clamp(13px, 1.1vw, 16px)`; all text sizes converted to `rem` so they scale proportionally with viewport width
+- Mods panel moved under Weapon/Enemy panel in the main column (left side)
+- Options panel collapsed by default
+- Help panel text raised to `var(--text)` (#a0a0a0) from `var(--text-dim)` (#666666) — significantly easier to read
+- Tooltip bubbles restyled to crimson theme — dark crimson-black background, `--border-red` border, `var(--text-primary)` text
+
+### Fixed
+- Armor Strip panel labels (Ability Strip %, Corrosive Projection %) were hardcoded 10px — now `0.67rem`
+- Mobile horizontal scroll caused by `panel::after` extending 24px past edges — fixed with `overflow-x: hidden` on `html`
+- Combobox/mod-picker dropdowns had green tint (`rgba(5,9,4)`) — corrected to `rgba(5,5,5)`
+
 ## [0.5.3] — 2026-03-26
 
 ### Added

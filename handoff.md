@@ -1,33 +1,54 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Removed Shattering Impact from the Armor Strip panel entirely. It was rarely used and added unnecessary complexity. Also completed the panel help (?) system and cleaned up all SI references across the codebase.
+UI/UX pass: improved panel visibility with local-glow glassmorphism, fluid typography (clamp + rem), layout tweaks (mods panel repositioned, options collapsed by default), help text readability, crimson tooltip theme, mobile horizontal scroll fix, and armor strip label fix.
 
 ---
 
 ## Changes made this session
 
-### Shattering Impact removal
-- `src/calculator.py` — removed `shattering_impact_flat` param and flat-subtraction block from Step 4
-- `web/api.py` — removed `shattering_impact_flat` from `CalcRequest`, all forwarding calls removed
-- `web/static/index.html` — SI row and help text removed from Armor Strip panel
-- `web/static/js/armorstrip.js` — SI inputs, logic, and payload field removed
-- `tests/test_armor_strip.py` — removed 4 SI test cases (`test_shattering_impact_flat`, `test_si_cannot_go_below_zero`, `test_all_combined`, cleaned `test_zero_armor_enemy_no_op`)
-- `web/static/panels.css` — removed `.strip-si-row`, `.strip-si-field`, `.strip-si-sep`, `.strip-si-total`, `.strip-sublabel`
+### Panel glassmorphism (local-glow pattern)
+- `web/static/base.css` — `--surface` changed to `rgba(18,10,10,0.50)` (was `#181818` solid), `--surface2` to `rgba(12,6,6,0.55)`, `--surface-solid: #201818`
+- `web/static/base.css` — `--panel-glow: rgba(139, 0, 0, 0.13)` added (NEW variable)
+- `web/static/panels.css` — `.panel::after` now renders a local radial glow halo (`inset: -24px; background: radial-gradient(...var(--panel-glow)...); z-index: -1`) giving `backdrop-filter` something to work with per panel
 
-### Armor Strip panel (completed previous session, documented here)
-Armor Strip models two inputs only:
-- **Ability strip %** (0–100%) — Warframe ability-based strip (e.g. Seeking Shuriken, Tharros Strike)
-- **Corrosive Projection %** (0–100%) — aura mod strip per player count
+**Key insight:** `backdrop-filter` on `#050505` blurs nothing (no content behind it). Solved by making each panel generate its own crimson atmosphere behind itself via `::after`. Semi-transparent surface (`rgba`) then blurs that glow.
 
-Both are additive, capped at 100%. Formula: `armor × (1 − min(1, ability_pct + cp_pct))`
+### Fluid typography
+- `web/static/base.css` — `body { font-size: clamp(13px, 1.1vw, 16px) }` (was 14px fixed)
+- All text sizes across `panels.css` and `results.css` converted from `px` to `rem` so they scale proportionally with the body font
 
-### Panel help (?) system (completed previous session)
-- `togglePanelHelp(btn)` in `utils.js` — finds `.panel-help` sibling of nearest h2/.panel-sub-h, toggles `.hidden`
-- `.btn-help` in `panels.css` — crimson, no border, hover `var(--crimson-bright)`
-- `.panel-help` / `.panel-help.hidden` in `panels.css`
-- `.panel-toggle-with-help` modifier — transfers `margin-left: auto` from `.chevron` to `.btn-help`
-- Help blocks added to: Results, Options, Warframe Buffs, Armor Strip, Mods, Weapon Arcanes panels
+### Layout changes
+- `web/static/index.html` — Mods panel moved from `.content-side` to `.content-main` (now below weapon/enemy grid)
+- `web/static/index.html` — Options panel collapsed by default (removed `open` class from h2, added `hidden` to `options-body`)
+
+### Help panel readability
+- `web/static/panels.css` — `.panel-help { color: var(--text) }` (was `var(--text-dim)` = #666666 — too dark against `--surface-solid: #201818`)
+
+### Crimson tooltip theme
+- `web/static/results.css` — `.tippy-box[data-theme~='warframe']` restyled:
+  - `background: rgba(28,10,10,0.97)` (dark crimson-black)
+  - `border: 1px solid var(--border-red)`
+  - `color: var(--text-primary)`
+  - `font-size: 0.8rem`
+  - `.tippy-arrow` color matches new background
+
+### Mobile horizontal scroll fix
+- `web/static/base.css` — `html { overflow-x: hidden }` added
+- Root cause: `.panel::after { inset: -24px }` extends 24px past every panel edge including left/right
+
+### Armor strip label fix
+- `web/static/panels.css` — `.strip-label { font-size: 0.67rem }` (was hardcoded `10px`)
+- Also fixed: `.strip-pct-badge`, `.strip-result-label`, `.strip-result-val`, `.strip-bar-label-left/right`
+
+### Green dropdown fix
+- `web/static/panels.css` — Two instances of `rgba(5, 9, 4)` (R=5, G=9, B=4 → green tint) fixed to `rgba(5, 5, 5)`:
+  - `.combobox-dropdown` (line ~262)
+  - `.mod-picker` (line ~588)
+
+### Changelog
+- `CHANGELOG.md` — Added `[Unreleased]` entry documenting all session changes
+- `web/static/js/constants.js` — Added matching entry to `CHANGELOG_ENTRIES`
 
 ---
 
@@ -38,13 +59,15 @@ Both are additive, capped at 100%. Formula: `armor × (1 − min(1, ability_pct 
 | No hardcoded `rgba()` | Always use CSS variables |
 | No `style=` inline attrs | Extract to CSS classes (SVG attrs + CSS custom property `--elem-color` via `style.setProperty()` excepted) |
 | No rounded corners | `--radius: 0`, `--radius-sm: 0` everywhere |
-| No glassmorphism | `backdrop-filter` on `#050505` is invisible. Rejected 5+ times. Do not retry. |
+| No glassmorphism WITHOUT local glow | `backdrop-filter` on `#050505` is invisible. Use the `.panel::after` local-glow pattern. |
 | No `▶` in CSS `content:` | Renders as emoji on iOS. Use `→` (U+2192) |
 | No native `<select>` | Use `setupSelectDropdown()` — native renders as iOS picker |
+| No green UI accents | `--accent-green` maps to crimson. Only game-data colors stay green. |
 | Element colors | Game-data colors (`ELEM_COLORS`) set via `el.style.setProperty('--elem-color', ...)` — CSS uses `var(--elem-color)`. Not inline style attrs. |
+| Font sizes | Use `rem` for text content sizes. `px` only for structural/icon sizes. Body uses `clamp(13px, 1.1vw, 16px)`. |
 
 **CSS variable reference:**
-`--bg` `--surface` `--surface-solid` `--surface2` `--border` `--border-highlight` `--border-red` `--accent` `--accent2` `--accent-glow` `--text` `--text-field` `--text-dim` `--crimson` `--crimson-bright` `--crimson-glow` `--riven`
+`--bg` `--surface` `--surface-solid` `--surface2` `--border` `--border-highlight` `--border-red` `--accent` `--accent2` `--accent-glow` `--panel-glow` `--text` `--text-field` `--text-dim` `--text-primary` `--crimson` `--crimson-bright` `--crimson-glow` `--riven`
 
 ---
 
@@ -106,7 +129,7 @@ Both are additive, capped at 100%. Formula: `armor × (1 − min(1, ability_pct 
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-IMvk9`
+- Branch: `claude/review-handoff-notes-pszW5`
 - Version: `0.5.3`
 - Game data: Update 41 — The Old Peace
 - Tests: 294 passing
@@ -127,6 +150,6 @@ Both are additive, capped at 100%. Formula: `armor × (1 − min(1, ability_pct 
 
 - [ ] Run `pytest` — confirm 294 passing
 - [ ] `git log --oneline -5` to orient
-- [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism / `▶` in CSS
+- [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism without local glow / `▶` in CSS
 - [ ] Update Guide modal when adding UI features
 - [ ] Railway deploys from `codex` — push feature branch AND merge to `codex`

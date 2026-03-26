@@ -108,13 +108,14 @@ The calculator page uses a mirrored stalker-dashboard layout:
 - **`.content`** — `grid-template-columns: 1fr 480px`; `.content-main` (inputs) + `.content-side` (results)
 - **`aside.sidebar`** — right 260px; brand icon, `.nav-menu` with `.nav-item` links, `.sidebar-tools`, `.sidebar-footer` (copyright + `Data: wiki.warframe.com`)
 - **`.content-left`** — Builds panel, currently `display: none` (hidden). Grid column removed.
-- **`.content-side` order** — Results → Options (collapsible) → Calculate button → Build Compare → Armor Strip → Mods panel
+- **`.content-main` order** — Weapon+Enemy grid → Mods panel (moved here from content-side)
+- **`.content-side` order** — Results → Options (collapsible, **collapsed by default**) → Calculate button → Build Compare → Armor Strip
 - **`.app`** — `max-width: 1440px; margin: 0 auto` — full layout centered
 - **Mobile ≤900px** — sidebar hidden, `.burger-btn` shows (fixed top-right), sidebar slides in from right with `.sidebar-overlay` backdrop
 - `toggleDrawer()` in `app.js` toggles `#sidebar` + `#sidebar-overlay` CSS classes
 
 ### CSS Variables
-Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--border: rgba(139,0,0,0.15)`, `--crimson: #8b0000`, `--crimson-bright: #dc143c`, `--font-display: 'Orbitron'`, `--font-body: 'Rajdhani'`, `--radius: 0` (sharp edges everywhere).
+Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(18,10,10,0.50)`, `--surface-solid: #201818`, `--surface2: rgba(12,6,6,0.55)`, `--border: rgba(139,0,0,0.4)`, `--panel-glow: rgba(139,0,0,0.13)`, `--crimson: #8b0000`, `--crimson-bright: #dc143c`, `--font-display: 'Orbitron'`, `--font-body: 'Rajdhani'`, `--radius: 0` (sharp edges everywhere).
 **No green UI accents** — `--accent-green` maps to crimson. Only game-data colors (element types, mod rarities, riven olive `--riven: #5a8a3a`) stay green.
 
 ### CSS Design Rules (STRICT)
@@ -122,7 +123,8 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(13,13,13,0.7)`, `--
 - **No hardcoded `rgba()` for theme colors** — use CSS variables (see variable list above).
 - **No rounded corners** — `--radius: 0`, `--radius-sm: 0` everywhere.
 - **No scan-line or noise overlays** — both removed. Do not re-add.
-- **No glassmorphism attempts** on `#050505` background — `backdrop-filter` has nothing to work with. All attempts rejected. Do not revisit without a new approach.
+- **Glassmorphism — local-glow pattern only.** `backdrop-filter` on `#050505` blurs nothing. Each `.panel` generates its own crimson atmosphere via `::after` (`inset: -24px; radial-gradient(...var(--panel-glow)...); z-index: -1`) so blur works without a page-wide background. Do NOT attempt page-level glassmorphism.
+- **Font sizes** — use `rem` for text content. `px` only for structural/icon sizes. Body: `clamp(13px, 1.1vw, 16px)`.
 
 ### Key CSS Classes (panels.css)
 | Class | Purpose |
