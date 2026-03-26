@@ -196,6 +196,9 @@ class DamageCalculator:
         multishot: float = 1.0,         # total projectiles per trigger (1 + Σ multishot mods)
         viral_stacks: int = 0,          # 0–10 Viral status stacks on the enemy
         corrosive_stacks: int = 0,     # 0–10 Corrosive status stacks on the enemy
+        ability_strip_pct: float = 0.0,       # 0.0–1.0 ability-based armor strip fraction
+        cp_strip_pct: float = 0.0,            # 0.0–1.0 Corrosive Projection strip fraction
+        shattering_impact_flat: float = 0.0,  # flat armor removed by Shattering Impact hits
         enemy_level: int = 1,          # target enemy level (1–9999)
         steel_path: bool = False,      # Steel Path: +100 level, ×2.5 HP/shields
         eximus: bool = False,          # Eximus unit
@@ -358,6 +361,10 @@ class DamageCalculator:
             enemy.base_level, enemy_level, steel_path, eximus,
         )
         armor = scaled["armor"]
+        # Armor strip (pre-corrosive-procs)
+        if ability_strip_pct > 0.0 or cp_strip_pct > 0.0 or shattering_impact_flat > 0.0:
+            pct_stripped = min(1.0, ability_strip_pct + cp_strip_pct)
+            armor = max(0.0, armor * (1.0 - pct_stripped) - shattering_impact_flat)
         if corrosive_stacks > 0:
             corrosive_reduction = min(0.80, 0.20 + 0.06 * corrosive_stacks)
             armor = armor * (1.0 - corrosive_reduction)

@@ -109,6 +109,7 @@ async function refreshEnemyScaling() {
     });
     const d = await r.json();
     lastScaledEnemy = d;
+    if (typeof updateArmorStripDisplay === 'function') updateArmorStripDisplay();
     const fmt = v => {
       if (v <= 0) return '\u2014';
       return Number(v.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits: 2});

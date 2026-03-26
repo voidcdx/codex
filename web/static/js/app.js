@@ -75,6 +75,7 @@ async function loadData() {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
+  if (typeof initArmorStrip === 'function') initArmorStrip();
   fetch('/api/version').then(r => r.json()).then(v => {
     document.getElementById('guide-app-ver').textContent  = `Void Codex v${v.app}`;
     document.getElementById('guide-game-ver').textContent = `Game data: ${v.game_data}`;

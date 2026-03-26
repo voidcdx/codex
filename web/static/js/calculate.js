@@ -29,7 +29,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, cold_stacks: coldStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, buffs: getActiveBuffs(), arcanes: getActiveArcanes(), ...getBonusElement()}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, cold_stacks: coldStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, buffs: getActiveBuffs(), arcanes: getActiveArcanes(), ...getBonusElement(), ...getArmorStripPayload()}),
     });
     const data = await resp.json();
     if (!resp.ok) {
