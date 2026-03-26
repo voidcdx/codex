@@ -200,6 +200,25 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
+    version: 'Unreleased',
+    date: '2026-03-26',
+    sections: [
+      { heading: 'Changed', items: [
+        'Panel glassmorphism \u2014 surfaces semi-transparent with local crimson glow; blur visible without a page-wide background',
+        'Fluid typography \u2014 font scales with viewport width (clamp 13\u201316px); all text sizes in rem',
+        'Mods panel moved under Weapon/Enemy panel',
+        'Options panel collapsed by default',
+        'Help panel text brighter \u2014 now readable against dark surface',
+        'Tooltip bubbles restyled to crimson theme',
+      ]},
+      { heading: 'Fixed', items: [
+        'Armor Strip labels were hardcoded 10px \u2014 now scale with viewport',
+        'Mobile horizontal scroll from panel glow extending past edges',
+        'Combobox/mod-picker dropdowns had green tint \u2014 corrected to neutral dark',
+      ]},
+    ],
+  },
+  {
     version: '0.5.3',
     date: '2026-03-26',
     sections: [
