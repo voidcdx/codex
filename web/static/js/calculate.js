@@ -15,6 +15,7 @@ async function runCalculation() {
   const comboCounter    = (comboTier - 1) * 10; // tier → raw hits: tier=1→0 (×1), tier=12→110 (×12)
   const uniqueStatuses  = parseInt(document.getElementById('unique-statuses').value, 10) || 0;
   const galvStacks      = parseInt(document.getElementById('galv-stacks').value, 10) || 0;
+  const distance        = parseFloat(document.getElementById('distance-input').value) || 0;
 
   if (!weapon || !enemy) {
     showError('Please select a weapon and enemy.');
@@ -29,7 +30,7 @@ async function runCalculation() {
     const resp = await fetch('/api/calculate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, cold_stacks: coldStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, buffs: getActiveBuffs(), arcanes: getActiveArcanes(), ...getBonusElement(), ...getArmorStripPayload()}),
+      body: JSON.stringify({weapon, mods, enemy, crit_mode: critMode, body_part: bodyPart, viral_stacks: viralStacks, corrosive_stacks: corrosiveStacks, cold_stacks: coldStacks, combo_counter: comboCounter, unique_statuses: uniqueStatuses, galvanized_stacks: galvStacks, distance, attack: selectedAttack, riven: getRivenSpec(), enemy_level: parseInt(document.getElementById('enemy-level').value) || 1, steel_path: steelPathOn, eximus: eximusOn, buffs: getActiveBuffs(), arcanes: getActiveArcanes(), ...getBonusElement(), ...getArmorStripPayload()}),
     });
     const data = await resp.json();
     if (!resp.ok) {
@@ -77,6 +78,7 @@ function showResults(data) {
     data.corrosive_stacks > 0 ? `Corrosive: ${data.corrosive_stacks} stacks (−${Math.min(80, 20 + 6*data.corrosive_stacks)}% armor)` : null,
     data.galvanized_stacks > 0 ? `Galv. Stacks: ${data.galvanized_stacks}` : null,
     data.buffs && data.buffs.length > 0 ? `Buffs: ${data.buffs.map(b => b.name + (b.strength !== 1 ? ` (${Math.round(b.strength*100)}%)` : '')).join(', ')}` : null,
+    data.falloff_multiplier != null && data.falloff_multiplier < 1.0 ? `Falloff: ×${data.falloff_multiplier.toFixed(3)} @ ${data.distance}m` : null,
   ].filter(Boolean).join(' &nbsp;|&nbsp; ');
 
   const _effEnemy = getCurrentEnemy();

@@ -30,7 +30,7 @@ import math
 from pydantic import Field
 from src.arcanes import ARCANE_PRESETS, ARCANE_DISPLAY_NAMES, ARCANE_RESTRICTIONS, ARCANE_MAX_STACKS, make_arcane
 from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
-from src.calculator import DamageCalculator, calculate_crit_multiplier, status_chance_per_pellet
+from src.calculator import DamageCalculator, calculate_crit_multiplier, calculate_falloff_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
     _mod_family, _raw_enemies, _raw_mods, _raw_weapons,
@@ -100,6 +100,9 @@ def get_weapons() -> list[dict]:
                     "status_chance": a.get("status_chance", 0),
                     "fire_rate": a.get("fire_rate", 0),
                     "multishot": a.get("multishot", 1),
+                    "falloff_start": a.get("falloff_start"),
+                    "falloff_end": a.get("falloff_end"),
+                    "falloff_reduction": a.get("falloff_reduction", 0),
                 }
                 for a in attacks
             ],
@@ -438,6 +441,7 @@ class CalcRequest(BaseModel):
     cold_stacks:  int = Field(default=0, ge=0, le=10)  # Cold proc stacks (flat +0.1 CDM each)
     ability_strip_pct: float = Field(default=0.0, ge=0.0, le=1.0)
     cp_strip_pct:      float = Field(default=0.0, ge=0.0, le=1.0)
+    distance:          float = Field(default=0.0, ge=0.0)  # firing distance in meters
 
 
 @app.post("/api/calculate")
@@ -539,6 +543,7 @@ def calculate(req: CalcRequest) -> dict:
         galvanized_stacks=galv_stacks,
         buffs=buff_objects,
         arcanes=arcane_objects,
+        distance=req.distance,
     )
     procs = calc.calculate_procs(
         weapon=weapon,
@@ -581,6 +586,7 @@ def calculate(req: CalcRequest) -> dict:
                     galvanized_stacks=galv_stacks,
                     buffs=buff_objects,
                     arcanes=arcane_objects,
+                    distance=req.distance,
                 )
                 co_curve.append(round(sum(r.values()), 2))
 
@@ -614,6 +620,10 @@ def calculate(req: CalcRequest) -> dict:
         "sc_per_pellet": round(status_chance_per_pellet(modded_sc, weapon.multishot), 6),
         "inherent_multishot": weapon.multishot,
         "modded_ms":     round(modded_ms, 6),
+        "distance":      req.distance,
+        "falloff_multiplier": round(calculate_falloff_multiplier(
+            req.distance, weapon.falloff_start, weapon.falloff_end, weapon.falloff_reduction
+        ), 6),
     }
 
 

@@ -25,8 +25,7 @@
     "max_rank": 3,
     "base_drain": 6,
     "puncture_pct": 0.6,
-    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture",
-    "fire_rate_pct": 0.6
+    "effect_raw": "+60% Fire Rate\r\n+60% <DT_PUNCTURE_COLOR>Puncture"
   },
   "Accelerated Deflection": {
     "name": "Accelerated Deflection",
@@ -45,8 +44,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "radiation_pct": 0.6,
-    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate",
-    "fire_rate_pct": 0.4
+    "effect_raw": "+60% <DT_RADIATION_COLOR>Radiation\r\n+40% Fire Rate"
   },
   "Accumulating Whipclaw": {
     "name": "Accumulating Whipclaw",
@@ -1213,8 +1211,8 @@
     "rarity": "Uncommon",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+40% Critical Chance stacks with Combo Multiplier",
-    "cc_per_combo_tier": 0.4
+    "crit_chance_pct": 0.4,
+    "effect_raw": "+40% Critical Chance stacks with Combo Multiplier"
   },
   "Bloodthirst": {
     "name": "Bloodthirst",
@@ -1963,7 +1961,6 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 10,
-    "condition_overload_pct": 0.8,
     "effect_raw": "+80% Melee Damage per Status Type affecting the target"
   },
   "Condition's Perfection": {
@@ -2217,8 +2214,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
-    "fire_rate_pct": -0.2
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
   },
   "Creeping Terrify": {
     "name": "Creeping Terrify",
@@ -2273,8 +2269,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate",
-    "fire_rate_pct": -0.2
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate"
   },
   "Critical Delay": {
     "name": "Critical Delay",
@@ -2284,8 +2279,7 @@
     "max_rank": 5,
     "base_drain": 4,
     "crit_chance_pct": 2.0,
-    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)",
-    "fire_rate_pct": -0.2
+    "effect_raw": "+200% Critical Chance\r\n-20% Fire Rate (x2 for Bows)"
   },
   "Critical Focus": {
     "name": "Critical Focus",
@@ -5030,11 +5024,11 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "status_chance_pct": 0.8,
+    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x.",
     "galv_kill_stat": "aptitude_damage_bonus",
     "galv_kill_pct": 0.4,
     "galv_max_stacks": 2,
-    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
+    "status_chance_pct": 0.8
   },
   "Galvanized Chamber": {
     "name": "Galvanized Chamber",
@@ -5044,10 +5038,10 @@
     "max_rank": 10,
     "base_drain": 6,
     "multishot_pct": 0.8,
+    "effect_raw": "+80% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 5x.",
     "galv_kill_stat": "multishot_bonus",
     "galv_kill_pct": 0.3,
-    "galv_max_stacks": 5,
-    "effect_raw": "+80% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 5x."
+    "galv_max_stacks": 5
   },
   "Galvanized Crosshairs": {
     "name": "Galvanized Crosshairs",
@@ -5057,10 +5051,10 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.2,
+    "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x.",
     "galv_kill_stat": "cc_bonus",
     "galv_kill_pct": 0.4,
-    "galv_max_stacks": 5,
-    "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x."
+    "galv_max_stacks": 5
   },
   "Galvanized Diffusion": {
     "name": "Galvanized Diffusion",
@@ -5070,10 +5064,10 @@
     "max_rank": 10,
     "base_drain": 4,
     "multishot_pct": 1.1,
+    "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x.",
     "galv_kill_stat": "multishot_bonus",
     "galv_kill_pct": 0.3,
-    "galv_max_stacks": 4,
-    "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x."
+    "galv_max_stacks": 4
   },
   "Galvanized Elementalist": {
     "name": "Galvanized Elementalist",
@@ -5082,11 +5076,11 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "status_damage_pct": 0.8,
+    "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x.",
     "galv_kill_stat": "sc_bonus",
     "galv_kill_pct": 0.3,
     "galv_max_stacks": 4,
-    "effect_raw": "+80% Status Damage\r\nOn Melee Kill:\r\n+30% Status Chance for 20s. Stacks up to 4x."
+    "status_damage_pct": 0.8
   },
   "Galvanized Hell": {
     "name": "Galvanized Hell",
@@ -5096,10 +5090,10 @@
     "max_rank": 10,
     "base_drain": 6,
     "multishot_pct": 1.1,
+    "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x.",
     "galv_kill_stat": "multishot_bonus",
     "galv_kill_pct": 0.3,
-    "galv_max_stacks": 4,
-    "effect_raw": "+110% Multishot\r\nOn Kill:\r\n+30% Multishot for 20s. Stacks up to 4x."
+    "galv_max_stacks": 4
   },
   "Galvanized Reflex": {
     "name": "Galvanized Reflex",
@@ -5117,11 +5111,11 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "status_chance_pct": 0.8,
+    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x.",
     "galv_kill_stat": "aptitude_damage_bonus",
     "galv_kill_pct": 0.4,
     "galv_max_stacks": 2,
-    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 20s. Stacks up to 2x."
+    "status_chance_pct": 0.8
   },
   "Galvanized Scope": {
     "name": "Galvanized Scope",
@@ -5131,10 +5125,10 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.2,
+    "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x.",
     "galv_kill_stat": "cc_bonus",
     "galv_kill_pct": 0.4,
-    "galv_max_stacks": 5,
-    "effect_raw": "On Headshot:\r\n+120% Critical Chance when Aiming for 12s\r\nOn Headshot Kill:\r\n+40% Critical Chance when Aiming for 12s. Stacks up to 5x."
+    "galv_max_stacks": 5
   },
   "Galvanized Shot": {
     "name": "Galvanized Shot",
@@ -5143,11 +5137,11 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 2,
-    "status_chance_pct": 0.8,
+    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 14s. Stacks up to 3x.",
     "galv_kill_stat": "aptitude_damage_bonus",
     "galv_kill_pct": 0.4,
     "galv_max_stacks": 3,
-    "effect_raw": "+80% Status Chance\r\nOn Kill:\r\n+40% Direct Damage per Status Type affecting the target for 14s. Stacks up to 3x."
+    "status_chance_pct": 0.8
   },
   "Galvanized Steel": {
     "name": "Galvanized Steel",
@@ -5157,10 +5151,10 @@
     "max_rank": 10,
     "base_drain": 2,
     "crit_chance_pct": 1.1,
+    "effect_raw": "+110% Critical Chance (x2 for Heavy Attacks)\r\nOn Melee Kill:\r\n+30% Critical Damage for 20s. Stacks up to 4x.",
     "galv_kill_stat": "cd_bonus",
     "galv_kill_pct": 0.3,
-    "galv_max_stacks": 4,
-    "effect_raw": "+110% Critical Chance (x2 for Heavy Attacks)\r\nOn Melee Kill:\r\n+30% Critical Damage for 20s. Stacks up to 4x."
+    "galv_max_stacks": 4
   },
   "Gastro": {
     "name": "Gastro",
@@ -6047,7 +6041,7 @@
     "rarity": "Common",
     "max_rank": 3,
     "base_drain": 0,
-    "effect_raw": "Gain 15% Disinfection and gain 10,000 H\ufffdllars"
+    "effect_raw": "Gain 15% Disinfection and gain 10,000 H�llars"
   },
   "Insulation": {
     "name": "Insulation",
@@ -6777,8 +6771,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+20% Attack Speed",
-    "fire_rate_pct": 0.2
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+20% Attack Speed"
   },
   "Magnetic Strafe": {
     "name": "Magnetic Strafe",
@@ -6788,8 +6781,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate",
-    "fire_rate_pct": 0.4
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+40% Fire Rate"
   },
   "Magnetic Strike": {
     "name": "Magnetic Strike",
@@ -6828,8 +6820,7 @@
     "max_rank": 3,
     "base_drain": 4,
     "magnetic_pct": 0.6,
-    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate",
-    "fire_rate_pct": 0.3
+    "effect_raw": "+60% <DT_MAGNETIC_COLOR>Magnetic\r\n+30% Fire Rate"
   },
   "Magnetized Discharge": {
     "name": "Magnetized Discharge",
@@ -11273,8 +11264,7 @@
     "rarity": "Rare",
     "max_rank": 3,
     "base_drain": 4,
-    "effect_raw": "+100% Melee Damage\r\n-20% Attack Speed",
-    "fire_rate_pct": -0.2
+    "effect_raw": "+100% Melee Damage\r\n-20% Attack Speed"
   },
   "Spontaneous Singularity": {
     "name": "Spontaneous Singularity",
@@ -11821,8 +11811,7 @@
     "rarity": "Rare",
     "max_rank": 10,
     "base_drain": 4,
-    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate",
-    "fire_rate_pct": -0.55
+    "effect_raw": "+77% Accuracy\r\n-55% Fire Rate"
   },
   "Talsek-An": {
     "name": "Talsek-An",
@@ -12850,8 +12839,7 @@
     "rarity": "Rare",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)",
-    "fire_rate_pct": -0.36
+    "effect_raw": "-90% Weapon Recoil\r\n-36% Fire Rate (x2 for Bows)"
   },
   "Viral Quills": {
     "name": "Viral Quills",
@@ -13105,8 +13093,7 @@
     "rarity": "Uncommon",
     "max_rank": 5,
     "base_drain": 4,
-    "effect_raw": "+40% Status Chance per Combo Multiplier",
-    "sc_per_combo_tier": 0.4
+    "effect_raw": "+40% Status Chance per Combo Multiplier"
   },
   "Whipclaw": {
     "name": "Whipclaw",

@@ -7,7 +7,7 @@ M10: Integration — Nagantaka Prime full wiki example
 """
 import math
 import pytest
-from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, crit_tier, status_chance_per_pellet, BANE_MODS, VIRAL_STACK_MULTIPLIERS
+from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, calculate_falloff_multiplier, crit_tier, status_chance_per_pellet, BANE_MODS, VIRAL_STACK_MULTIPLIERS
 from src.loader import make_riven_mod
 from src.models import Weapon, Mod, Enemy, DamageComponent
 from src.enums import DamageType, FactionType, HealthType, ArmorType
@@ -1687,4 +1687,101 @@ class TestMultishotRounding:
         result = calc.calculate(weapon, [], enemy, multishot=2.0)
         for val in result.values():
             assert val == math.floor(val)
+
+
+# ---------------------------------------------------------------------------
+# Falloff tests
+# ---------------------------------------------------------------------------
+
+class TestFalloff:
+    """Test distance-based damage falloff."""
+
+    def test_falloff_multiplier_before_start(self):
+        assert calculate_falloff_multiplier(5.0, 10.0, 30.0, 0.8) == 1.0
+
+    def test_falloff_multiplier_at_start(self):
+        assert calculate_falloff_multiplier(10.0, 10.0, 30.0, 0.8) == 1.0
+
+    def test_falloff_multiplier_midpoint(self):
+        m = calculate_falloff_multiplier(20.0, 10.0, 30.0, 0.8)
+        assert abs(m - 0.6) < 1e-9  # 1 - 0.8 * 0.5
+
+    def test_falloff_multiplier_at_end(self):
+        m = calculate_falloff_multiplier(30.0, 10.0, 30.0, 0.8)
+        assert abs(m - 0.2) < 1e-9  # 1 - 0.8
+
+    def test_falloff_multiplier_beyond_end(self):
+        m = calculate_falloff_multiplier(50.0, 10.0, 30.0, 0.8)
+        assert abs(m - 0.2) < 1e-9  # clamped at floor
+
+    def test_falloff_multiplier_no_falloff(self):
+        assert calculate_falloff_multiplier(50.0, None, None, 0.0) == 1.0
+
+    def test_falloff_multiplier_zero_reduction(self):
+        assert calculate_falloff_multiplier(50.0, 10.0, 30.0, 0.0) == 1.0
+
+    def test_calculate_with_falloff(self):
+        """Weapon with falloff: damage at distance should be reduced."""
+        weapon = Weapon(
+            name="Test Shotgun",
+            base_damage={DamageType.IMPACT: 100.0},
+            falloff_start=10.0,
+            falloff_end=30.0,
+            falloff_reduction=0.8,
+        )
+        enemy = Enemy(
+            name="Test",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        result_0 = calc.calculate(weapon, [], enemy, distance=0.0)
+        result_20 = calc.calculate(weapon, [], enemy, distance=20.0)
+        result_50 = calc.calculate(weapon, [], enemy, distance=50.0)
+
+        total_0 = sum(result_0.values())
+        total_20 = sum(result_20.values())
+        total_50 = sum(result_50.values())
+
+        assert total_0 > total_20 > total_50
+        # At midpoint: multiplier ≈ 0.6 → floor(150 * 0.6) = 90
+        assert total_20 == 90
+        # Beyond end: multiplier ≈ 0.2 → floor(150 * ~0.2) = 29 (float precision)
+        assert total_50 == 29
+
+    def test_no_falloff_weapon_unaffected(self):
+        """Weapon without falloff data: distance should not change damage."""
+        weapon = Weapon(
+            name="Test Rifle",
+            base_damage={DamageType.IMPACT: 50.0, DamageType.SLASH: 50.0},
+        )
+        enemy = Enemy(
+            name="Test",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        result_0 = calc.calculate(weapon, [], enemy, distance=0.0)
+        result_100 = calc.calculate(weapon, [], enemy, distance=100.0)
+        assert result_0 == result_100
+
+    def test_procs_unaffected_by_falloff(self):
+        """DoT procs should not change regardless of distance."""
+        weapon = Weapon(
+            name="Test Shotgun",
+            base_damage={DamageType.SLASH: 100.0},
+            falloff_start=10.0,
+            falloff_end=30.0,
+            falloff_reduction=0.8,
+        )
+        enemy = Enemy(
+            name="Test",
+            faction=FactionType.GRINEER,
+            health_type=HealthType.FLESH,
+            armor_type=ArmorType.NONE,
+        )
+        # calculate_procs does not take distance — procs are unaffected
+        procs = calc.calculate_procs(weapon, [], enemy)
+        assert "slash" in procs
+        assert procs["slash"]["damage_per_tick"] > 0
 

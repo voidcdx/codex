@@ -173,6 +173,28 @@ def status_chance_per_pellet(total_sc: float, pellet_count: int) -> float:
     return 1.0 - (1.0 - total_sc) ** (1.0 / pellet_count)
 
 
+def calculate_falloff_multiplier(
+    distance: float,
+    falloff_start: float | None,
+    falloff_end: float | None,
+    falloff_reduction: float,
+) -> float:
+    """Damage multiplier from distance-based falloff.
+
+    Full damage at distances <= start. Linear interpolation to end.
+    Beyond end: multiplier = 1 - reduction (the floor).
+    Returns 1.0 if weapon has no falloff data.
+    """
+    if falloff_start is None or falloff_end is None or falloff_reduction <= 0:
+        return 1.0
+    if distance <= falloff_start:
+        return 1.0
+    if falloff_end <= falloff_start:
+        return 1.0 - falloff_reduction
+    t = min(1.0, (distance - falloff_start) / (falloff_end - falloff_start))
+    return 1.0 - falloff_reduction * t
+
+
 class DamageCalculator:
     """Implements the 5-step Warframe damage pipeline.
 
@@ -206,6 +228,7 @@ class DamageCalculator:
         galvanized_stacks: int = 0,    # 0–5 galvanized mod kill-stacks active
         buffs: list[Buff] | None = None,  # Warframe ability buffs
         arcanes: list[WeaponArcane] | None = None,  # Weapon arcanes (Merciless, Deadhead, etc.)
+        distance: float = 0.0,                       # firing distance in meters (0 = point blank)
     ) -> dict[DamageType, float]:
         """Return final per-trigger damage values after the full pipeline (includes multishot)."""
         _buffs = buffs or []
@@ -418,6 +441,13 @@ class DamageCalculator:
         # --- Multishot: multiply all damage by projectile count ---
         if multishot != 1.0:
             final = {dtype: math.floor(v * multishot) for dtype, v in final.items()}
+
+        # --- Falloff: distance-based damage reduction (post-pipeline) ---
+        falloff_mult = calculate_falloff_multiplier(
+            distance, weapon.falloff_start, weapon.falloff_end, weapon.falloff_reduction
+        )
+        if falloff_mult != 1.0:
+            final = {dtype: math.floor(v * falloff_mult) for dtype, v in final.items()}
 
         return final
 
