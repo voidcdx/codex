@@ -73,13 +73,12 @@ web/
     combobox.js    # setupCombobox(), clearCombobox() — reusable widget
     weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
     enemy.js       # enemy panel, level scaling, Steel Path, Eximus
-    modals.js      # Alchemy Guide, Riven Builder, Guide, Changelog, Buffs
+    modals.js      # Alchemy Guide, Riven Builder, Guide, Buffs
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
     calculate.js   # runCalculation(), showResults(), showError()
     app.js         # loadData() bootstrap, DOMContentLoaded, version fetch
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
-CHANGELOG.md        # Keep a Changelog format — user-facing version history
 handoff.md          # session handoff notes for next Claude instance
 ```
 
@@ -96,8 +95,6 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 - CLI `--version` prints `Void Codex v{APP_VERSION} · {GAME_DATA_VERSION}`
 - Guide modal footer shows both strings (fetched on DOMContentLoaded)
 - **At the start of each new session, ask the user if the version should be bumped.**
-- **At the start of each new session, ask the user if this session's changes should be tracked in the changelog.** Do NOT automatically add changelog entries — only update when the user confirms. Not every session warrants a changelog update.
-- **Changelog:** When bumping the version, update both `CHANGELOG.md` (repo root) and the `CHANGELOG_ENTRIES` JS constant in `web/static/js/constants.js` (powers the "What's New" modal in the Web UI).
 - **User Guide:** When adding new features or panels to the Web UI, always update the Guide modal in `web/static/index.html` (`#guide-overlay`) to document the new functionality. The Guide is the user-facing reference for all calculator features.
 
 ## Web UI Notes
