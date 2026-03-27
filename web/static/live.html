@@ -359,18 +359,18 @@ async function loadData() {
     '<div class="loading-msg">Acquiring worldstate…</div>';
   try {
     const res = await fetch(`/api/worldstate?platform=${currentPlatform}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.detail || `HTTP ${res.status}`);
+    }
     const data = await res.json();
     renderAll(data);
   } catch (err) {
     document.getElementById('live-content').innerHTML = `
       <div class="panel">
         <div class="error-msg">
-          Failed to load worldstate: ${esc(err.message)}
-          <small>Download worldstate manually from
-          <a href="https://content.warframe.com/dynamic/worldState.php" target="_blank">content.warframe.com</a>
-          and save as <code>data/worldstate_raw.json</code>, then run
-          <code>python scripts/fetch_worldstate.py</code>.</small>
+          Live data temporarily unavailable.
+          <small>${esc(err.message)}</small>
         </div>
       </div>`;
   }
