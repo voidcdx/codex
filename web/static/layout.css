@@ -306,7 +306,7 @@
 
 @media (max-width: 900px) {
   .burger-btn { display: flex; }
-  .burger-btn.open { top: 14px; right: 16px; }
+  .burger-btn.open { top: 22px; right: 16px; }
   .sidebar {
     position: fixed;
     top: 0; right: 0;
