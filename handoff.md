@@ -1,41 +1,28 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-UI polish pass: changelog removed, riven modal color overhaul (green/purple → crimson), results table alignment fixes, double-arrow bug, mobile header height + burger alignment.
+Implemented damage falloff feature (full stack: data pipeline → models → loader → calculator → API → UI), added falloff tooltip, fixed mobile sidebar layout (removed hexagon brand icon, aligned burger/X button).
 
 ---
 
 ## Changes made this session
 
-### Changelog removed
-- `CHANGELOG.md` deleted
-- `CHANGELOG_ENTRIES` constant removed from `constants.js`
-- What's New modal + nav buttons removed from `index.html`, `live.html`, `factions.html`
-- `renderChangelog/openChangelog/closeChangelog` removed from `modals.js`
-- All `.changelog-*` CSS removed from `modals.css`
-- `CLAUDE.md`, `handoff.md`, `.claude/hooks/handoff-reminder.sh` updated accordingly
-- **Tracking deferred until v1.0.0 — do not re-add**
+### Damage Falloff — full stack implementation
+- `scripts/parse_wiki_data.py` — `_parse_attack()` now extracts `Falloff` dict (`StartRange`, `EndRange`, `Reduction`) from raw wiki data
+- `data/weapons.json` — regenerated; ~410/590 weapons now have `falloff_start`, `falloff_end`, `falloff_reduction` per attack
+- `src/models.py` — added `falloff_start: float | None`, `falloff_end: float | None`, `falloff_reduction: float` to both `WeaponAttack` and `Weapon` dataclasses
+- `src/loader.py` — reads falloff fields from JSON into models; copies selected attack's falloff to Weapon; includes falloff in `list_attacks()` API output
+- `src/calculator.py` — `calculate_falloff_multiplier()` helper + `distance: float = 0.0` param on `calculate()`. Applied after multishot as `math.floor(v * multiplier)`. DoT procs unaffected.
+- `web/api.py` — `distance` field on `CalcRequest`; passed to `calculate()` and CO curve calls; falloff fields in `GET /api/weapons` per-attack response
+- `web/static/js/weapons.js` — displays `Falloff: 10–20m (20% min)` on weapon card when attack has falloff data; `data-tooltip="falloff"` added
+- `web/static/js/constants.js` — `TOOLTIPS.falloff` added
+- `web/static/js/calculate.js` — sends `distance` in POST body
+- `web/static/index.html` — distance input in Options panel (hidden for weapons without falloff)
+- `tests/test_calculator.py` — 10 new tests: falloff multiplier unit tests, integration with calculate(), no-falloff unchanged, procs unaffected
 
-### Riven modal — full color + UX overhaul
-- `web/static/riven.css` — olive green (`--riven: #5a8a3a`) and purple (`#c49aff`, `rgba(155,109,208,0.25)`) fully replaced with crimson theme vars
-- All hardcoded `rgba(139,0,0,...)` replaced with `color-mix(in srgb, var(--crimson) N%, transparent)` and `var(--border-highlight)`
-- `.riven-stat-pos` / `.riven-stat-neg` classes added — positive stats white, negative red on mod card
-- `web/static/js/weapons.js` — removed inline `style=` from editor hex icon (→ `.riven-header-icon`), removed `style="color:var(--riven)"` from card label (→ `.riven-mod-name`), removed `setTimeout` hack, added pos/neg stat class to card rendering
-- `web/static/js/modals.js` — duplicate stat prevention (already-used stats greyed/unclickable in dropdown), viewport clamp on dropdown (flips above button if no room below, clamps left edge)
-
-### Double-arrow bug fixed
-- `web/static/js/weapons.js` — `.sc-modded::before` in CSS already injects `→`; JS was also prepending `'→ '` in `textContent`. Removed JS prefix from all 5 stats (multishot, fire rate, reload, magazine, max ammo).
-
-### Results table
-- Removed "Bar" column header — `calculate.js`
-- Bar column shrinks 180px → 80px on mobile (≤520px) — `results.css`
-- Last column (`th` + `td`) right-aligned — `results.css`
-- Middle column (`th` + `td`) center-aligned (tbody only rule) — `results.css`
-- TOTAL row changed from `colspan="2"` to proper 3 cells — `calculate.js`
-
-### Mobile header
-- `responsive.css` — `.header { padding: 14px 16px }` on ≤900px (was 16px 28px desktop)
-- `.burger-btn { top: 5px }` on ≤900px — centers 38px burger in 48px header, clears browser chrome
+### Mobile sidebar layout fix
+- `web/static/index.html` — removed `.brand-icon` hexagon SVG from sidebar brand area
+- `web/static/layout.css` — removed `.burger-btn.open` position override (no movement on toggle); reduced mobile sidebar `padding-top: 10px` to align brand text with burger button at `top: 14px`
 
 ---
 
@@ -100,7 +87,6 @@ UI polish pass: changelog removed, riven modal color overhaul (green/purple → 
 - Refresh `weapons.json` + `mods.json` via wiki ApiSandbox (27 MEDIUM 100.0 placeholder issues remain)
 - Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses (low priority)
 - Cycles + Events not yet rendered in `live.html` (data parsed, cards not built)
-- Mobile header burger may still need fine-tuning — user was iterating on alignment at end of session
 
 ---
 
@@ -108,20 +94,19 @@ UI polish pass: changelog removed, riven modal color overhaul (green/purple → 
 
 1. Side-by-side Build Compare (panel hidden, placeholder exists)
 2. Mod Optimizer — brute-force best mod per slot
-3. Damage Falloff
-4. EHP Calculator (needs Warframe DB)
-5. Status Simulator (needs research — complex proc weighting)
-6. Build Cards (export image)
-7. Build Sharing (URL-encoded state)
-8. Live Data — Cycles + Events cards
+3. EHP Calculator (needs Warframe DB)
+4. Status Simulator (needs research — complex proc weighting)
+5. Build Cards (export image)
+6. Build Sharing (URL-encoded state)
+7. Live Data — Cycles + Events cards
 
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-notes-VhtlY`
+- Branch: `claude/review-handoff-nElCt`
 - Version: `0.5.4`
 - Game data: Update 41 — The Old Peace
-- Tests: 294 passing
+- Tests: 304 passing
 - Railway deploy branch: `codex`
 
 ## Private notes
@@ -135,7 +120,7 @@ UI polish pass: changelog removed, riven modal color overhaul (green/purple → 
 > 1. "Should I bump the version? Current: `0.5.4`"
 > Changelog tracking deferred until v1.0.0 — do not ask about it.
 
-- [ ] Run `pytest` — confirm 294 passing
+- [ ] Run `pytest` — confirm 304 passing
 - [ ] `git log --oneline -5` to orient
 - [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism without local glow / `▶` in CSS / Share Tech Mono / purple in UI
 - [ ] Update Guide modal when adding UI features
