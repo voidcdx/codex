@@ -100,6 +100,7 @@ MT_MISSION_TYPES: dict[str, str] = {
     "MT_ENDLESS_DEFENSE":  "Endurance Defense",
     "MT_EXTERMINATION":    "Exterminate",
     "MT_ARTIFACT":         "Capture",
+    "MT_CORRUPTION":       "Corrupted Fissure",
 }
 
 FACTION_NAMES: dict[str, str] = {
