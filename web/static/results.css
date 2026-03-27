@@ -185,7 +185,8 @@
   letter-spacing: 0.06em;
   border-bottom: 1px solid var(--border);
 }
-.breakdown-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.breakdown-table td:last-child,
+.breakdown-table th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .breakdown-table tr:hover td { background: var(--surface2); }
 .bar-cell { width: 180px; }
 @media (max-width: 520px) { .bar-cell { width: 80px; } }
