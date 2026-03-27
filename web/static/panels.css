@@ -305,7 +305,6 @@ select option {
   color: var(--crimson-bright);
   letter-spacing: 0.5px;
   margin-bottom: 7px;
-  padding: 2px 6px 2px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
