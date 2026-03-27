@@ -82,6 +82,459 @@ FACTION_NAMES: dict[str, str] = {
     "FC_TECHROT":   "Techrot",
 }
 
+SORTIE_BOSSES: dict[str, str] = {
+    "SORTIE_BOSS_VOR":            "Captain Vor",
+    "SORTIE_BOSS_HEK":            "Councilor Vay Hek",
+    "SORTIE_BOSS_RUK":            "General Sargas Ruk",
+    "SORTIE_BOSS_KELA":           "Kela De Thaym",
+    "SORTIE_BOSS_TUSK":           "Tusk Thumper",
+    "SORTIE_BOSS_KRIL":           "Lieutenant Lech Kril",
+    "SORTIE_BOSS_TYL":            "Tyl Regor",
+    "SORTIE_BOSS_JACKAL":         "Jackal",
+    "SORTIE_BOSS_ALAD":           "Alad V",
+    "SORTIE_BOSS_AMBULAS":        "Ambulas",
+    "SORTIE_BOSS_HYENA":          "Hyena Pack",
+    "SORTIE_BOSS_NEF":            "Nef Anyo",
+    "SORTIE_BOSS_RAPTOR":         "Raptor",
+    "SORTIE_BOSS_LEPHANTIS":      "Lephantis",
+    "SORTIE_BOSS_PHORID":         "Phorid",
+    "SORTIE_BOSS_MUTALIST_ALAD":  "Mutalist Alad V",
+    "SORTIE_BOSS_CORRUPTED_VOR":  "Corrupted Vor",
+    "SORTIE_BOSS_INFALAD":        "Infested Alad V",
+    "SORTIE_BOSS_ROPALOLYST":     "Ropalolyst",
+}
+
+SORTIE_MODIFIERS: dict[str, str] = {
+    "SORTIE_MODIFIER_IMPACT":           "Physical Enhancement: Impact",
+    "SORTIE_MODIFIER_PUNCTURE":         "Physical Enhancement: Puncture",
+    "SORTIE_MODIFIER_SLASH":            "Physical Enhancement: Slash",
+    "SORTIE_MODIFIER_FIRE":             "Elemental Enhancement: Heat",
+    "SORTIE_MODIFIER_FREEZE":           "Elemental Enhancement: Cold",
+    "SORTIE_MODIFIER_ELECTRICITY":      "Elemental Enhancement: Electricity",
+    "SORTIE_MODIFIER_TOXIN":            "Elemental Enhancement: Toxin",
+    "SORTIE_MODIFIER_RADIATION":        "Elemental Enhancement: Radiation",
+    "SORTIE_MODIFIER_MAGNETIC":         "Elemental Enhancement: Magnetic",
+    "SORTIE_MODIFIER_GAS":              "Elemental Enhancement: Gas",
+    "SORTIE_MODIFIER_VIRAL":            "Elemental Enhancement: Viral",
+    "SORTIE_MODIFIER_CORROSIVE":        "Elemental Enhancement: Corrosive",
+    "SORTIE_MODIFIER_BLAST":            "Elemental Enhancement: Blast",
+    "SORTIE_MODIFIER_ARMOR":            "Augmented Enemy Armor",
+    "SORTIE_MODIFIER_SHIELDS":          "Augmented Enemy Shields",
+    "SORTIE_MODIFIER_LOW_ENERGY":       "Energy Reduction",
+    "SORTIE_MODIFIER_EXIMUS":           "Eximus Stronghold",
+    "SORTIE_MODIFIER_SECONDARY_ONLY":   "Secondary Only",
+    "SORTIE_MODIFIER_SHOTGUN_ONLY":     "Shotgun Only",
+    "SORTIE_MODIFIER_SNIPER_ONLY":      "Sniper Only",
+    "SORTIE_MODIFIER_MELEE_ONLY":       "Melee Only",
+    "SORTIE_MODIFIER_BOW_ONLY":         "Bow Only",
+    "SORTIE_MODIFIER_RIFLE_ONLY":       "Assault Rifle Only",
+    "SORTIE_MODIFIER_HAZARD_RADIATION": "Environmental Hazard: Radiation",
+    "SORTIE_MODIFIER_HAZARD_MAGNETIC":  "Environmental Hazard: Magnetic",
+    "SORTIE_MODIFIER_HAZARD_FOG":       "Environmental Hazard: Dense Fog",
+    "SORTIE_MODIFIER_HAZARD_FIRE":      "Environmental Hazard: Fire",
+    "SORTIE_MODIFIER_HAZARD_ICE":       "Environmental Hazard: Cryogenic",
+    "SORTIE_MODIFIER_HAZARD_COLD":      "Environmental Hazard: Cryogenic",
+}
+ALL_NODES: dict[str, str] = {
+    # Mercury
+    "SolNode94":    "Apollodorus (Mercury)",
+    "SolNode130":   "Lares (Mercury)",
+    "SolNode119":   "Caloris (Mercury)",
+    "SolNode12":    "Elion (Mercury)",
+    "SolNode103":   "M Prime (Mercury)",
+    "SolNode28":    "Terminus (Mercury)",
+    "SolNode108":   "Tolstoj (Mercury)",
+    "SolNode223":   "Boethius (Mercury)",
+    "SolNode224":   "Odin (Mercury)",
+    "SolNode225":   "Suisei (Mercury)",
+    "SolNode226":   "Pantheon (Mercury)",
+    "MercuryHUB":   "Larunda Relay (Mercury)",
+    # Venus
+    "SolNode129":   "Orb Vallis (Venus)",
+    "SolNode123":   "V Prime (Venus)",
+    "SolNode61":    "Ishtar (Venus)",
+    "SolNode2":     "Aphrodite (Venus)",
+    "SolNode23":    "Cytherean (Venus)",
+    "SolNode128":   "E Gate (Venus)",
+    "SolNode109":   "Linea (Venus)",
+    "SolNode104":   "Fossa (Venus)",
+    "SolNode66":    "Unda (Venus)",
+    "ClanNode1":    "Malva (Venus)",
+    "SolNode107":   "Venera (Venus)",
+    "SolNode22":    "Tessera (Venus)",
+    "SolNode101":   "Kiliken (Venus)",
+    "SolNode145":   "Romula (Venus)",
+    "SolNode146":   "Montes (Venus)",
+    "VenusHUB":     "Vesper Relay (Venus)",
+    # Earth
+    "SolNode149":   "Plains of Eidolon (Earth)",
+    "SolNode7":     "Cervantes (Earth)",
+    "SolNode56":    "Mantle (Earth)",
+    "SolNode63":    "Cambria (Earth)",
+    "SolNode100":   "Oro (Earth)",
+    "SolNode106":   "Pacific (Earth)",
+    "SolNode96":    "Eurasia (Earth)",
+    "SolNode87":    "Everest (Earth)",
+    "SolNode89":    "Mariana (Earth)",
+    "SolNode131":   "Cetus (Earth)",
+    "SolNode76":    "Lith (Earth)",
+    "EarthHUB":     "Strata Relay (Earth)",
+    # Mars
+    "SolNode38":    "War (Mars)",
+    "SolNode64":    "Alator (Mars)",
+    "SolNode85":    "Kadesh (Mars)",
+    "SolNode11":    "Gradivus (Mars)",
+    "SolNode67":    "Olympus (Mars)",
+    "SolNode86":    "Ara (Mars)",
+    "SolNode16":    "Augustus (Mars)",
+    "SolNode50":    "Arval (Mars)",
+    "SolNode15":    "Spear (Mars)",
+    "SolNode216":   "Hellas Basin (Mars)",
+    "SolNode82":    "Martialis (Mars)",
+    "SolNode170":   "Wahiba (Mars)",
+    "SolNode117":   "Valle (Mars)",
+    "SolNode44":    "Ultor (Mars)",
+    "SolNode79":    "Ares (Mars)",
+    "SolNode99":    "Manics (Mars)",
+    # Ceres
+    "SolNode157":   "Draco (Ceres)",
+    "SolNode158":   "Gabii (Ceres)",
+    "SolNode148":   "Cinxia (Ceres)",
+    "SolNode147":   "Seimeni (Ceres)",
+    "SolNode169":   "Casta (Ceres)",
+    "SolNode140":   "Nuovo (Ceres)",
+    "SolNode141":   "Kiste (Ceres)",
+    "SolNode142":   "Bode (Ceres)",
+    "SolNode144":   "Lex (Ceres)",
+    "SolNode75":    "Ludi (Ceres)",
+    "SolNode143":   "Exta (Ceres)",
+    "SolNode29":    "Paimon (Ceres)",
+    "SolNode39":    "Olla (Ceres)",
+    "SolNode19":    "Egeria (Ceres)",
+    "SolNode150":   "Ker (Ceres)",
+    "SolNode151":   "Thon (Ceres)",
+    "SolNode152":   "Hapke (Ceres)",
+    # Phobos
+    "SettlementNode1":  "Roche (Phobos)",
+    "SettlementNode3":  "Stickney (Phobos)",
+    "SettlementNode2":  "Skyresh (Phobos)",
+    "SettlementNode12": "Monolith (Phobos)",
+    "SettlementNode10": "Kepler (Phobos)",
+    "SettlementNode15": "Sharpless (Phobos)",
+    "SettlementNode11": "Gulliver (Phobos)",
+    "SettlementNode14": "Shklovsky (Phobos)",
+    "ClanNode10":       "Memphis (Phobos)",
+    "SettlementNode20": "Iliad (Phobos)",
+    "ClanNode11":       "Zeugma (Phobos)",
+    # Jupiter
+    "SolNode55":  "Themisto (Jupiter)",
+    "SolNode65":  "Adrastea (Jupiter)",
+    "SolNode46":  "Amalthea (Jupiter)",
+    "SolNode164": "Elara (Jupiter)",
+    "SolNode167": "Io (Jupiter)",
+    "SolNode163": "Carpo (Jupiter)",
+    "SolNode177": "Metis (Jupiter)",
+    "SolNode183": "Callisto (Jupiter)",
+    "SolNode187": "Sinai (Jupiter)",
+    "SolNode188": "Ananke (Jupiter)",
+    "SolNode196": "Ganymede (Jupiter)",
+    "SolNode805": "The Ropalolyst (Jupiter)",
+    "SolNode173": "Europa (Jupiter)",
+    "SolNode31":  "Carme (Jupiter)",
+    "SolNode195": "Io B (Jupiter)",
+    # Saturn
+    "SolNode47":  "Pandora (Saturn)",
+    "SolNode90":  "Anthe (Saturn)",
+    "SolNode20":  "Tethys (Saturn)",
+    "SolNode14":  "Cassini (Saturn)",
+    "SolNode24":  "Titan (Saturn)",
+    "SolNode91":  "Telesto (Saturn)",
+    "SolNode92":  "Calypso (Saturn)",
+    "SolNode93":  "Dione (Saturn)",
+    "SolNode41":  "Rhea (Saturn)",
+    "SolNode52":  "Helene (Saturn)",
+    "SolNode53":  "Caracol (Saturn)",
+    "SolNode54":  "Pallene (Saturn)",
+    "SolNode110": "Mimas (Saturn)",
+    "SolNode111": "Enceladus (Saturn)",
+    "SolNode25":  "Phoebe (Saturn)",
+    "SaturnHUB":  "Kronia Relay (Saturn)",
+    # Uranus
+    "SolNode120": "Ophelia (Uranus)",
+    "SolNode83":  "Cressida (Uranus)",
+    "SolNode98":  "Desdemona (Uranus)",
+    "SolNode9":   "Rosalind (Uranus)",
+    "SolNode60":  "Caliban (Uranus)",
+    "SolNode114": "Puck (Uranus)",
+    "ClanNode16": "Ur (Uranus)",
+    "SolNode34":  "Sycorax (Uranus)",
+    "SolNode122": "Stephano (Uranus)",
+    "SolNode907": "Caelus (Uranus)",
+    "ClanNode17": "Assur (Uranus)",
+    # Neptune
+    "SolNode57":  "Sao (Neptune)",
+    "SolNode62":  "Neso (Neptune)",
+    "SolNode908": "Salacia (Neptune)",
+    "SolNode127": "Psamathe (Neptune)",
+    "SolNode118": "Laomedeia (Neptune)",
+    "SolNode84":  "Nereid (Neptune)",
+    "ClanNode20": "Yursa (Neptune)",
+    "ClanNode21": "Kelashin (Neptune)",
+    "SolNode49":  "Larissa (Neptune)",
+    "SolNode1":   "Galatea (Neptune)",
+    "SolNode17":  "Proteus (Neptune)",
+    "SolNode78":  "Triton (Neptune)",
+    "SolNode6":   "Despina (Neptune)",
+    # Pluto
+    "SolNode42":  "Acheron (Pluto)",
+    "SolNode43":  "Outer Terminus (Pluto)",
+    "SolNode102": "Hydra (Pluto)",
+    "SolNode37":  "Oceanum (Pluto)",
+    "SolNode4":   "Narcissus (Pluto)",
+    "SolNode35":  "Regna (Pluto)",
+    "SolNode36":  "Sechura (Pluto)",
+    "SolNode80":  "Cypress (Pluto)",
+    "SolNode81":  "Palus (Pluto)",
+    "SolNode112": "Minthe (Pluto)",
+    "SolNode113": "Hieracon (Pluto)",
+    "SolNode48":  "Hades (Pluto)",
+    "SolNode73":  "Cerberus (Pluto)",
+    "PlutoHUB":   "Orcus Relay (Pluto)",
+    # Sedna
+    "SolNode115": "Hydron (Sedna)",
+    "SolNode116": "Rusalka (Sedna)",
+    "SolNode40":  "Tikoloshe (Sedna)",
+    "SolNode8":   "Merrow (Sedna)",
+    "SolNode51":  "Kelpie (Sedna)",
+    "SolNode77":  "Charybdis (Sedna)",
+    "SolNode70":  "Berehynia (Sedna)",
+    "SolNode69":  "Selkie (Sedna)",
+    "SolNode71":  "Vodyanoi (Sedna)",
+    "SolNode72":  "Nakki (Sedna)",
+    "SolNode68":  "Marid (Sedna)",
+    "SolNode74":  "Adaro (Sedna)",
+    "SolNode88":  "Yam (Sedna)",
+    # Europa
+    "SolNode300": "Cervantes (Europa)",
+    "SolNode301": "Morax (Europa)",
+    "SolNode302": "Armaros (Europa)",
+    "SolNode303": "Abaddon (Europa)",
+    "SolNode304": "Valac (Europa)",
+    "SolNode305": "Baal (Europa)",
+    "SolNode306": "Paimon (Europa)",
+    "SolNode307": "Valefor (Europa)",
+    "SolNode308": "Ose (Europa)",
+    "SolNode309": "Naamah (Europa)",
+    "SolNode310": "Kokabiel (Europa)",
+    "SolNode311": "Sorath (Europa)",
+    "SolNode312": "Orias (Europa)",
+    "SolNode313": "Lillith (Europa)",
+    "SolNode314": "Larzac (Europa)",
+    "ClanNode14": "Cholistan (Europa)",
+    "ClanNode15": "Viver (Europa)",
+    "EuropaHUB":  "Leonov Relay (Europa)",
+    # Lua
+    "SolNode132": "Stöfler (Lua)",
+    "SolNode133": "Tycho (Lua)",
+    "SolNode134": "Plato (Lua)",
+    "SolNode135": "Zeipel (Lua)",
+    "SolNode136": "Pavlov (Lua)",
+    "SolNode137": "Copernicus (Lua)",
+    "SolNode138": "Grimaldi (Lua)",
+    "SolNode139": "Apollo (Lua)",
+    "SolNode802": "Circulus (Lua)",
+    # Eris
+    "SolNode125": "Zabala (Eris)",
+    "SolNode126": "Akkad (Eris)",
+    "SolNode121": "Xini (Eris)",
+    "SolNode105": "Naeglar (Eris)",
+    "SolNode97":  "Brugia (Eris)",
+    "SolNode95":  "Kala-azar (Eris)",
+    "SolNode27":  "Histo (Eris)",
+    "SolNode26":  "Isos (Eris)",
+    "SolNode33":  "Nimus (Eris)",
+    "SolNode32":  "Saxis (Eris)",
+    "SolNode30":  "Oestrus (Eris)",
+    "ErisHUB":    "Kuiper Relay (Eris)",
+    # Void
+    "SolNode400": "Teshub (Void)",
+    "SolNode401": "Hepit (Void)",
+    "SolNode402": "Taranis (Void)",
+    "SolNode403": "Tiwaz (Void)",
+    "SolNode404": "Stribog (Void)",
+    "SolNode405": "Ani (Void)",
+    "SolNode406": "Ukko (Void)",
+    "SolNode407": "Oxomoco (Void)",
+    "SolNode408": "Belenus (Void)",
+    "SolNode409": "Mot (Void)",
+    "SolNode410": "Aten (Void)",
+    "SolNode411": "Marduk (Void)",
+    "SolNode412": "Mithra (Void)",
+    # Kuva Fortress
+    "SolNode500": "Koro (Kuva Fortress)",
+    "SolNode501": "Nabuk (Kuva Fortress)",
+    "SolNode502": "Taveuni (Kuva Fortress)",
+    "SolNode503": "Pago (Kuva Fortress)",
+    "SolNode504": "Dakata (Kuva Fortress)",
+    "SolNode505": "Rotuma (Kuva Fortress)",
+    "SolNode506": "Tamu (Kuva Fortress)",
+    "SolNode507": "Kuva Survival (Kuva Fortress)",
+    # Deimos
+    "SolNode706": "Horend (Deimos)",
+    "SolNode707": "Hyf (Deimos)",
+    "SolNode708": "Phlegyas (Deimos)",
+    "SolNode709": "Magnacidium (Deimos)",
+    "SolNode710": "Terrorem (Deimos)",
+    "SolNode711": "Formido (Deimos)",
+    "SolNode712": "Persto (Deimos)",
+    "SolNode713": "Effervo (Deimos)",
+    "SolNode714": "Nex (Deimos)",
+    "SolNode715": "Munio (Deimos)",
+    "SolNode716": "Cambire (Deimos)",
+    "SolNode717": "Sanctum Anatomica (Deimos)",
+    # Zariman
+    "SolNode780": "Everview Arc (Zariman)",
+    "SolNode781": "Tuvul Commons (Zariman)",
+    "SolNode782": "Oro Works (Zariman)",
+    "SolNode783": "Halako Perimeter (Zariman)",
+    # Duviri
+    "SolNode751": "Duviri (Duviri)",
+    "SolNode752": "The Duviri Experience (Duviri)",
+    "SolNode753": "The Lone Story (Duviri)",
+    "SolNode754": "The Circuit (Duviri)",
+    "SolNode755": "The Steel Path Circuit (Duviri)",
+    # Railjack Proxima — Earth
+    "CrewBattleNode500": "Sover Strait (Earth Proxima)",
+    "CrewBattleNode501": "Ogal Cluster (Earth Proxima)",
+    "CrewBattleNode502": "Ganalen's Grave (Earth Proxima)",
+    "CrewBattleNode503": "Rempei Cluster (Earth Proxima)",
+    "CrewBattleNode504": "Iota Temple (Earth Proxima)",
+    "CrewBattleNode505": "Korms Belt (Earth Proxima)",
+    # Railjack Proxima — Venus
+    "CrewBattleNode510": "Kasio's Rest (Venus Proxima)",
+    "CrewBattleNode511": "Falling Glory (Venus Proxima)",
+    "CrewBattleNode512": "Luckless Expanse (Venus Proxima)",
+    "CrewBattleNode513": "Beacon of Affliction (Venus Proxima)",
+    "CrewBattleNode514": "Vesper Strait (Venus Proxima)",
+    "CrewBattleNode515": "Calabash Depot (Venus Proxima)",
+    "CrewBattleNode516": "Enkidu Ice Drifts (Venus Proxima)",
+    # Railjack Proxima — Neptune
+    "CrewBattleNode520": "Lu-Yan Station (Neptune Proxima)",
+    "CrewBattleNode521": "Nu-Gua Mines (Neptune Proxima)",
+    "CrewBattleNode522": "Mammon's Prospect (Neptune Proxima)",
+    "CrewBattleNode523": "Sovereign Grasp (Neptune Proxima)",
+    "CrewBattleNode524": "Arva Vector (Neptune Proxima)",
+    # Railjack Proxima — Pluto
+    "CrewBattleNode525": "Brom Cluster (Pluto Proxima)",
+    "CrewBattleNode526": "Peregrine Axis (Pluto Proxima)",
+    "CrewBattleNode527": "Obol Crossing (Pluto Proxima)",
+    "CrewBattleNode528": "Fenton's Field (Pluto Proxima)",
+    # Railjack Proxima — Veil
+    "CrewBattleNode529": "Flexa (Veil Proxima)",
+    "CrewBattleNode530": "H-2 Cloud (Veil Proxima)",
+    "CrewBattleNode531": "R-9 Cloud (Veil Proxima)",
+    "CrewBattleNode532": "Nsu Grid (Veil Proxima)",
+    "CrewBattleNode533": "Gian Point (Veil Proxima)",
+    "CrewBattleNode534": "Arc Silver (Veil Proxima)",
+}
+ITEM_NAMES: dict[str, str] = {
+    # Warframes
+    "/Lotus/StoreItems/Powersuits/AntiMatter/NovaPrime":                                                              "Nova Prime",
+    "/Lotus/StoreItems/Powersuits/DemonFrame/DemonFrame":                                                             "Uriel",
+    "/Lotus/StoreItems/Powersuits/Inkblot/Inkblot":                                                                   "Follie",
+    "/Lotus/StoreItems/Powersuits/MonkeyKing/MonkeyKing":                                                             "Wukong",
+    "/Lotus/StoreItems/Powersuits/Rhino/Rhino":                                                                       "Rhino",
+    "/Lotus/StoreItems/Powersuits/Trinity/TrinityPrime":                                                              "Trinity Prime",
+    "/Lotus/StoreItems/Powersuits/Wisp/Wisp":                                                                         "Wisp",
+    # Weapons
+    "/Lotus/StoreItems/Weapons/Tenno/Bows/PrimeBow2/PrimeBow2":                                                       "Paris Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Melee/Dagger/FangPrimeDagger":                                                   "Fang Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Melee/PrimeDualKamas/PrimeDualKamas":                                            "Dual Kamas Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Melee/SwordsAndBoards/MeleeContestWinnerOne/TennoSwordShield":                   "Silva & Aegis",
+    "/Lotus/StoreItems/Weapons/Tenno/Pistol/HandShotGun":                                                             "Bronco",
+    "/Lotus/StoreItems/Weapons/Tenno/Pistols/PrimeLex/PrimeLex":                                                      "Lex Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Pistols/PrimeVasto/PrimeVastoPistol":                                            "Vasto Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Rifle/BratonPrime":                                                              "Braton Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Shotgun/Shotgun":                                                                "Strun",
+    # Blueprints & recipes
+    "/Lotus/StoreItems/Types/Recipes/Helmets/NyxPrimeHelmetBlueprint":                                               "Nyx Prime Neuroptics Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/Helmets/WukongPrimeHelmetBlueprint":                                             "Wukong Prime Neuroptics Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/NovaPrimeBlueprintRecipe":                                       "Nova Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/NyxPrimeBlueprintRecipe":                                        "Nyx Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/TrinityPrimeBlueprintRecipe":                                    "Trinity Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/WukongPrimeBlueprintRecipe":                                     "Wukong Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/Weapons/CrpScopePistolBlueprint":                                               "Arca Scisco Blueprint",
+    "/Lotus/Types/Recipes/Weapons/WeaponParts/DeraVandalReceiver":                                                    "Dera Vandal Receiver",
+    "/Lotus/Types/Recipes/Weapons/WeaponParts/GrineerCombatKnifeHilt":                                               "Sheev Hilt",
+    "/Lotus/Types/Recipes/Weapons/WeaponParts/GrineerCombatKnifeBlade":                                              "Sheev Blade",
+    # Relics
+    "/Lotus/StoreItems/Types/Game/Projections/T1VoidProjectionNovaTrinityVaultABronze":                               "Lith K4 Relic",
+    "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionNovaTrinityVaultABronze":                               "Meso D5 Relic",
+    "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionNovaTrinityVaultABronze":                               "Neo N12 Relic",
+    "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionNovaTrinityVaultABronze":                               "Axi S7 Relic",
+    # Resources & research
+    "/Lotus/Types/Items/MiscItems/InfestedAladCoordinate":                                                            "Mutalist Alad V Nav Coordinate",
+    "/Lotus/Types/Items/Research/BioComponent":                                                                       "Mutagen Mass",
+    "/Lotus/Types/Items/Research/ChemComponent":                                                                      "Detonite Injector",
+    "/Lotus/Types/Items/Research/EnergyComponent":                                                                    "Fieldron",
+    # Mods & shards
+    "/Lotus/StoreItems/Upgrades/Mods/FusionBundles/CircuitSilverSteelPathFusionBundle":                               "Silver Archon Shard",
+    # Cosmetics — skins
+    "/Lotus/StoreItems/Upgrades/Skins/Bows/BowPrime2TwitchSkin":                                                     "Paris Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Dagger/FangPrimeTwitchSkin":                                                   "Fang Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/DualKamas/DualKamasPrimeTwitchSkin":                                           "Dual Kamas Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Glaives/GlaivePrimeTwitchSkin":                                                "Glaive Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/LexPrime/LexPrimeTwitchSkin":                                                  "Lex Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/MonkeyKing/WukongDeluxeBSkin":                                                 "Wukong Qitian Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Necramech/TefilahIridosSkin":                                                  "Iridos Voidrig Necramech Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Rifles/BratonPrimeTwitchSkin":                                                 "Braton Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Shotguns/StrunTwitchSkin":                                                     "Strun Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Swords/SilvaAegisTwitchSkin":                                                  "Silva & Aegis Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/VastoPrime/VastoPrimeTwitchSkin":                                              "Vasto Prime Iridos Skin",
+    # Cosmetics — Promo/Twitch skins
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/AkjagaraIridosSkin":                                              "Akjagara Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/ExcaliburTwitchSkin":                                             "Excalibur Prominence Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/LisetSkinTwitch":                                                 "Liset Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/OgrisTwitchSkin":                                                 "Ogris Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/PyranaTwitchSkin":                                                "Pyrana Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/TigrisTwitchSkin":                                               "Tigris Prominence Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021AfurisSkin":                                            "Afuris Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021LandinCraftSkin":                                       "Landing Craft Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021LatronSkin":                                            "Latron Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021NikanasSkin":                                           "Nikana Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2023BoltoSkin":                                             "Bolto Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2023OdonataWingSkin":                                       "Odonata Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2023TrinityIridosSkin":                                     "Trinity Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2024DethcubeIridosSkin":                                    "Dethcube Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2024SomaTwitchSkin":                                        "Soma Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2024ValkyrIridosSkin":                                      "Valkyr Iridos Skin",
+    # Cosmetics — sugatras & sigils
+    "/Lotus/StoreItems/Upgrades/Skins/MeleeDangles/ScrollingPrimeMeleeDangle":                                       "Naviga Prime Sugatra",
+    "/Lotus/StoreItems/Upgrades/Skins/MeleeDangles/TwitchPrimeMeleeDangle":                                          "Spektaka Prime Sugatra",
+    "/Lotus/StoreItems/Upgrades/Skins/Sigils/PromoTwitchEmblemB":                                                    "Iridos Emblem",
+    "/Lotus/StoreItems/Upgrades/Skins/Sigils/PromoTwitchEmblemC":                                                    "Verv Emblem",
+    "/Lotus/StoreItems/Upgrades/Skins/Sigils/PromoTwitchEmblemD":                                                    "Prominence Emblem",
+    # Cosmetics — syandanas & colour pickers
+    "/Lotus/StoreItems/Characters/Tenno/Accessory/Scarves/U17IntermScarf/IridosUdyatSkin/UdyatPrimeGamingSyandana":  "Udyat Iridos Syandana",
+    "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerEmberHeirloom":                               "Ember Heirloom",
+    "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerPrimeDayItemA":                               "Spektaka",
+    "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerPrimeDayItemB":                               "Spektaka Prime",
+    # Cosmetics — glyphs & heirlooms
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomEmberGlyph":                                            "Ember Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomRhinoGlyph":                                            "Rhino Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomValkyrGlyph":                                           "Valkyr Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomVaubanGlyph":                                           "Vauban Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomVaubanGlyphSumo":                                       "Vauban Heirloom Tondo Glyph",
+    # Cosmetics — ship decos & wallpapers
+    "/Lotus/StoreItems/Types/Game/QuartersWallpapers/TwitchPrimeNovemberWallpaper":                                  "Iridos Quarters Wallpaper",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/TwitchPrimeOctoberDisplay":                                             "Voidshell Decoration",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/TwitchPrimeOctoberNoggles/NogglesDisplayTwitchPrime":                   "Noggle Statue - Grendel Iridos",
+    # Store packages
+    "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemA":                                    "Last Chance Offerings",
+    "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemB":                                    "Varzia's Offerings - Part 2",
+    "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemC":                                    "Varzia's Offerings",
+}
+
 # ---------------------------------------------------------------------------
 # Date helpers
 # ---------------------------------------------------------------------------
@@ -142,15 +595,27 @@ def _load_solnode_map() -> dict[str, dict]:
     return {}
 
 
+def _item_name(path: str) -> str:
+    """Resolve a /Lotus/... item path to a display name, falling back to the last path segment."""
+    if path in ITEM_NAMES:
+        return ITEM_NAMES[path]
+    return path.rstrip("/").rsplit("/", 1)[-1]
+
+
 def _node_display(node_key: str, solnode_map: dict[str, dict]) -> str:
     """
     Convert a node key to human-readable 'Name (Planet)'.
     node_key may be:
-      - 'SolNode1' → look up in solnode_map
+      - 'SolNode1' → look up in ALL_NODES, then solnode_map
       - '/Lotus/Levels/.../MercuryCapture' → strip path, look up last segment
       - 'MercuryCapture' → look up directly
     """
     key = node_key.rstrip("/").rsplit("/", 1)[-1] if "/" in node_key else node_key
+
+    if key in ALL_NODES:
+        return ALL_NODES[key]
+    if node_key in ALL_NODES:
+        return ALL_NODES[node_key]
 
     info = solnode_map.get(key) or solnode_map.get(node_key) or {}
     name = info.get("name", "")
@@ -232,10 +697,10 @@ def _parse_alerts(raw: list, solnode_map: dict) -> list[dict]:
         reward_parts = []
         for ci in counted:
             ct = ci.get("ItemCount", 1)
-            nm = ci.get("ItemType", "").rstrip("/").rsplit("/", 1)[-1]
+            nm = _item_name(ci.get("ItemType", ""))
             reward_parts.append(f"{ct}× {nm}" if ct > 1 else nm)
         for it in items:
-            reward_parts.append(it.rstrip("/").rsplit("/", 1)[-1])
+            reward_parts.append(_item_name(it))
         if credits:
             reward_parts.append(f"{credits:,} Credits")
 
@@ -257,13 +722,14 @@ def _parse_sortie(raw: list, solnode_map: dict) -> dict | None:
     variants = s.get("Variants", [])
     missions = []
     for v in variants:
+        mod_key = v.get("modifierType", "")
         missions.append({
             "node":         _node_display(v.get("node", ""), solnode_map),
             "mission_type": _mission_type(v.get("missionType", "")),
-            "modifier":     v.get("modifierType", ""),
+            "modifier":     SORTIE_MODIFIERS.get(mod_key, mod_key),
         })
-    boss_path = s.get("Boss", "")
-    boss = boss_path.rstrip("/").rsplit("/", 1)[-1].replace("Boss", "").strip()
+    boss_key = s.get("Boss", "")
+    boss = SORTIE_BOSSES.get(boss_key, boss_key.rstrip("/").rsplit("/", 1)[-1].replace("Boss", "").strip())
     faction_key = s.get("Faction", "")
     return {
         "boss":     boss or "Unknown",
@@ -315,7 +781,7 @@ def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
     inventory = []
     for item in trader.get("Manifest", []):
         item_path = item.get("ItemType", "")
-        item_name = item_path.rstrip("/").rsplit("/", 1)[-1]
+        item_name = _item_name(item_path)
         inventory.append({
             "item":    item_name,
             "ducats":  item.get("PrimePrice", 0),
@@ -484,10 +950,10 @@ def _parse_invasions(raw: list, solnode_map: dict) -> list[dict]:
             parts = []
             for ci in counted:
                 ct = ci.get("ItemCount", 1)
-                nm = ci.get("ItemType", "").rstrip("/").rsplit("/", 1)[-1]
+                nm = _item_name(ci.get("ItemType", ""))
                 parts.append(f"{ct}× {nm}" if ct > 1 else nm)
             for it in items:
-                parts.append(it.rstrip("/").rsplit("/", 1)[-1])
+                parts.append(_item_name(it))
             cr = reward.get("credits", 0)
             if cr:
                 parts.append(f"{cr:,} cr")
