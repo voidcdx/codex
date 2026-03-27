@@ -309,7 +309,7 @@ select option {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background: linear-gradient(90deg, rgba(220, 20, 60, 0.18), transparent);
+  background: radial-gradient(ellipse 90% 100% at 0% 50%, rgba(220, 20, 60, 0.18), transparent);
 }
 .threat-badges {
   display: flex;
