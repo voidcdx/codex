@@ -1,7 +1,7 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Implemented damage falloff feature (full stack: data pipeline → models → loader → calculator → API → UI), added falloff tooltip, fixed mobile sidebar layout (removed hexagon brand icon, aligned burger/X button).
+Added background worldstate scheduler (DE servers never hit by user requests), per-IP rate limiting on `/api/worldstate` (30 req/min, slowapi), fixed `_fetch_worldstate` security issues (cached module, removed unused os import, added logging). Enforced Railway deploy rule — must merge feature branch to `codex` after every push.
 
 ---
 
@@ -103,7 +103,7 @@ Implemented damage falloff feature (full stack: data pipeline → models → loa
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-nElCt`
+- Branch: `claude/review-handoff-eFkdq`
 - Version: `0.5.4`
 - Game data: Update 41 — The Old Peace
 - Tests: 304 passing
@@ -124,4 +124,8 @@ Implemented damage falloff feature (full stack: data pipeline → models → loa
 - [ ] `git log --oneline -5` to orient
 - [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism without local glow / `▶` in CSS / Share Tech Mono / purple in UI
 - [ ] Update Guide modal when adding UI features
-- [ ] Railway deploys from `codex` — push feature branch AND merge to `codex`
+- [ ] **Railway deploy** — after every `git push` to the feature branch, immediately run:
+  ```bash
+  git checkout codex && git merge <feature-branch> --no-ff && git push -u origin codex && git checkout <feature-branch>
+  ```
+  Never leave the session without doing this — do NOT make the user merge manually.
