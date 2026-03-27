@@ -619,7 +619,7 @@ function showWeaponStats(weapon) {
           <div class="sc-modded" id="sm-ms" style="display:none"></div>
         </div>
         ${atk && atk.falloff_start != null ? `<div class="sc-stat">
-          <div class="sc-label">Falloff</div>
+          <div class="sc-label" data-tooltip="falloff">Falloff</div>
           <div class="sc-val-sm">${atk.falloff_start}–${atk.falloff_end}m (${Math.round((1 - atk.falloff_reduction) * 100)}% min)</div>
         </div>` : ''}
       </div>
