@@ -261,7 +261,7 @@ function showResults(data) {
     </div>
     <div class="result-meta">${meta}</div>
     <table class="breakdown-table">
-      <thead><tr><th>Type</th><th>Bar</th><th>Damage</th></tr></thead>
+      <thead><tr><th>Type</th><th></th><th>Damage</th></tr></thead>
       <tbody>${rows}</tbody>
       <tfoot class="total-row">
         <tr><td colspan="2">TOTAL</td><td>${data.total.toFixed(2)}</td></tr>
