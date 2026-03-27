@@ -65,7 +65,6 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--crimson-bright);
-  text-shadow: 0 0 18px rgba(220, 20, 60, 0.7), 0 0 40px rgba(220, 20, 60, 0.3);
 }
 .weapon-stats-sub { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
 

@@ -308,7 +308,6 @@ select option {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 0 0 18px rgba(220, 20, 60, 0.7), 0 0 40px rgba(220, 20, 60, 0.3);
 }
 .threat-badges {
   display: flex;
