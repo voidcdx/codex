@@ -776,7 +776,7 @@ async function _doUpdateModdedStats() {
       const ms = data.modded_multishot || 1.0;
       _currentMultishot = ms;
       if (hasSomeMods && ms > 1.0001) {
-        smMS.textContent = '→ ' + ms.toFixed(2) + 'x';
+        smMS.textContent = ms.toFixed(2) + 'x';
         smMS.style.display = 'block';
       } else {
         smMS.style.display = 'none';
@@ -789,7 +789,7 @@ async function _doUpdateModdedStats() {
       const baseFr  = data.base_fr  || 0;
       const moddedFr = data.modded_fr || 0;
       if (hasSomeMods && baseFr > 0 && Math.abs(moddedFr - baseFr) > 0.001) {
-        smFR.textContent = '→ ' + moddedFr.toFixed(2) + '/s';
+        smFR.textContent = moddedFr.toFixed(2) + '/s';
         smFR.style.display = 'block';
       } else {
         smFR.style.display = 'none';
@@ -801,7 +801,7 @@ async function _doUpdateModdedStats() {
       const baseRel   = data.base_reload   || 0;
       const moddedRel = data.modded_reload || 0;
       if (hasSomeMods && baseRel > 0 && Math.abs(moddedRel - baseRel) > 0.001) {
-        smReload.textContent = '→ ' + moddedRel.toFixed(2) + 's';
+        smReload.textContent = moddedRel.toFixed(2) + 's';
         smReload.style.display = 'block';
       } else {
         smReload.style.display = 'none';
@@ -814,7 +814,7 @@ async function _doUpdateModdedStats() {
       const baseMag   = data.base_magazine   || 0;
       const moddedMag = data.modded_magazine || 0;
       if (hasSomeMods && baseMag > 0 && moddedMag !== baseMag) {
-        smMag.textContent = '→ ' + moddedMag;
+        smMag.textContent = moddedMag;
         smMag.style.display = 'block';
       } else {
         smMag.style.display = 'none';
@@ -827,7 +827,7 @@ async function _doUpdateModdedStats() {
       const baseAmmo   = data.base_ammo_max   || 0;
       const moddedAmmo = data.modded_ammo_max || 0;
       if (hasSomeMods && baseAmmo > 0 && moddedAmmo !== baseAmmo) {
-        smAmmo.textContent = '→ ' + moddedAmmo;
+        smAmmo.textContent = moddedAmmo;
         smAmmo.style.display = 'block';
       } else {
         smAmmo.style.display = 'none';
