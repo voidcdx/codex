@@ -93,6 +93,7 @@ const TOOLTIPS = {
   'max-ammo':     'Maximum ammo reserve (excludes magazine).',
   'reload':       'Time in seconds to reload the weapon.',
   'multishot':    'Projectiles fired per trigger pull. Each projectile deals full damage and independently rolls status/crit. Base is 1.0 for all weapons.',
+  'falloff':      'Distance-based damage reduction. Full damage up to the start range, then linearly drops to the minimum at end range. % shown is the floor damage you deal at max distance.',
   'impact':       'Strong vs. Machinery, Robotic. Weak vs. Infested Sinew.',
   'puncture':     'Strong vs. Corpus, Corrupted/Orokin. No DoT.',
   'slash':        'Strong vs. Infested, Narmer. Procs a bleed DoT that bypasses armor.',
