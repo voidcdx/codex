@@ -595,15 +595,27 @@ def _load_solnode_map() -> dict[str, dict]:
     return {}
 
 
+def _item_name(path: str) -> str:
+    """Resolve a /Lotus/... item path to a display name, falling back to the last path segment."""
+    if path in ITEM_NAMES:
+        return ITEM_NAMES[path]
+    return path.rstrip("/").rsplit("/", 1)[-1]
+
+
 def _node_display(node_key: str, solnode_map: dict[str, dict]) -> str:
     """
     Convert a node key to human-readable 'Name (Planet)'.
     node_key may be:
-      - 'SolNode1' → look up in solnode_map
+      - 'SolNode1' → look up in ALL_NODES, then solnode_map
       - '/Lotus/Levels/.../MercuryCapture' → strip path, look up last segment
       - 'MercuryCapture' → look up directly
     """
     key = node_key.rstrip("/").rsplit("/", 1)[-1] if "/" in node_key else node_key
+
+    if key in ALL_NODES:
+        return ALL_NODES[key]
+    if node_key in ALL_NODES:
+        return ALL_NODES[node_key]
 
     info = solnode_map.get(key) or solnode_map.get(node_key) or {}
     name = info.get("name", "")
@@ -685,10 +697,10 @@ def _parse_alerts(raw: list, solnode_map: dict) -> list[dict]:
         reward_parts = []
         for ci in counted:
             ct = ci.get("ItemCount", 1)
-            nm = ci.get("ItemType", "").rstrip("/").rsplit("/", 1)[-1]
+            nm = _item_name(ci.get("ItemType", ""))
             reward_parts.append(f"{ct}× {nm}" if ct > 1 else nm)
         for it in items:
-            reward_parts.append(it.rstrip("/").rsplit("/", 1)[-1])
+            reward_parts.append(_item_name(it))
         if credits:
             reward_parts.append(f"{credits:,} Credits")
 
@@ -710,13 +722,14 @@ def _parse_sortie(raw: list, solnode_map: dict) -> dict | None:
     variants = s.get("Variants", [])
     missions = []
     for v in variants:
+        mod_key = v.get("modifierType", "")
         missions.append({
             "node":         _node_display(v.get("node", ""), solnode_map),
             "mission_type": _mission_type(v.get("missionType", "")),
-            "modifier":     v.get("modifierType", ""),
+            "modifier":     SORTIE_MODIFIERS.get(mod_key, mod_key),
         })
-    boss_path = s.get("Boss", "")
-    boss = boss_path.rstrip("/").rsplit("/", 1)[-1].replace("Boss", "").strip()
+    boss_key = s.get("Boss", "")
+    boss = SORTIE_BOSSES.get(boss_key, boss_key.rstrip("/").rsplit("/", 1)[-1].replace("Boss", "").strip())
     faction_key = s.get("Faction", "")
     return {
         "boss":     boss or "Unknown",
@@ -768,7 +781,7 @@ def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
     inventory = []
     for item in trader.get("Manifest", []):
         item_path = item.get("ItemType", "")
-        item_name = item_path.rstrip("/").rsplit("/", 1)[-1]
+        item_name = _item_name(item_path)
         inventory.append({
             "item":    item_name,
             "ducats":  item.get("PrimePrice", 0),
@@ -937,10 +950,10 @@ def _parse_invasions(raw: list, solnode_map: dict) -> list[dict]:
             parts = []
             for ci in counted:
                 ct = ci.get("ItemCount", 1)
-                nm = ci.get("ItemType", "").rstrip("/").rsplit("/", 1)[-1]
+                nm = _item_name(ci.get("ItemType", ""))
                 parts.append(f"{ct}× {nm}" if ct > 1 else nm)
             for it in items:
-                parts.append(it.rstrip("/").rsplit("/", 1)[-1])
+                parts.append(_item_name(it))
             cr = reward.get("credits", 0)
             if cr:
                 parts.append(f"{cr:,} cr")
