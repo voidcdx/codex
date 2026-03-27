@@ -468,6 +468,139 @@ ALL_NODES: dict[str, str] = {
     "CrewBattleNode533": "Gian Point (Veil Proxima)",
     "CrewBattleNode534": "Arc Silver (Veil Proxima)",
 }
+
+# Node key → faction name, derived from factionIndex (element [2]) in ExportRegions
+# NODE_DATA. FACTION_INDEX: 0=Grineer 1=Corpus 2=Infested 3=Orokin 5=Sentient
+# 7=Murmur 8=Scaldra 9=Techrot 10=Duviri 11=Neutral 13=Corrupted
+NODE_FACTION: dict[str, str] = {
+    # Mercury
+    "SolNode94": "Infested",   "SolNode130": "Infested",  "SolNode119": "Grineer",
+    "SolNode12": "Grineer",    "SolNode103": "Grineer",   "SolNode28":  "Infested",
+    "SolNode108": "Grineer",   "SolNode223": "Infested",  "SolNode224": "Grineer",
+    "SolNode225": "Grineer",   "SolNode226": "Grineer",   "MercuryHUB": "Neutral",
+    # Venus
+    "SolNode129": "Corpus",    "SolNode123": "Corpus",    "SolNode61":  "Corpus",
+    "SolNode2":   "Corpus",    "SolNode23":  "Corpus",    "SolNode128": "Corpus",
+    "SolNode109": "Corpus",    "SolNode104": "Corpus",    "SolNode66":  "Corpus",
+    "ClanNode1":  "Infested",  "SolNode107": "Corpus",    "SolNode22":  "Corpus",
+    "SolNode101": "Corpus",    "SolNode145": "Corpus",    "SolNode146": "Corpus",
+    "VenusHUB":   "Neutral",
+    # Earth
+    "SolNode149": "Grineer",   "SolNode7":   "Grineer",   "SolNode56":  "Grineer",
+    "SolNode63":  "Grineer",   "SolNode100": "Grineer",   "SolNode106": "Grineer",
+    "SolNode96":  "Grineer",   "SolNode87":  "Grineer",   "SolNode89":  "Grineer",
+    "SolNode131": "Grineer",   "SolNode76":  "Grineer",   "EarthHUB":   "Neutral",
+    # Mars
+    "SolNode38":  "Grineer",   "SolNode64":  "Grineer",   "SolNode85":  "Grineer",
+    "SolNode11":  "Grineer",   "SolNode67":  "Grineer",   "SolNode86":  "Grineer",
+    "SolNode16":  "Grineer",   "SolNode50":  "Grineer",   "SolNode15":  "Grineer",
+    "SolNode216": "Grineer",   "SolNode82":  "Grineer",   "SolNode170": "Grineer",
+    "SolNode117": "Grineer",   "SolNode44":  "Grineer",   "SolNode79":  "Grineer",
+    "SolNode99":  "Grineer",
+    # Ceres
+    "SolNode157": "Grineer",   "SolNode158": "Infested",  "SolNode148": "Grineer",
+    "SolNode147": "Infested",  "SolNode169": "Scaldra",   "SolNode140": "Grineer",
+    "SolNode141": "Grineer",   "SolNode142": "Grineer",   "SolNode144": "Grineer",
+    "SolNode75":  "Grineer",   "SolNode143": "Grineer",   "SolNode29":  "Grineer",
+    "SolNode39":  "Grineer",   "SolNode19":  "Grineer",   "SolNode150": "Grineer",
+    "SolNode151": "Grineer",   "SolNode152": "Grineer",
+    # Phobos
+    "SettlementNode1":  "Corpus",  "SettlementNode3":  "Corpus",
+    "SettlementNode2":  "Corpus",  "SettlementNode12": "Corpus",
+    "SettlementNode10": "Corpus",  "SettlementNode15": "Corpus",
+    "SettlementNode11": "Corpus",  "SettlementNode14": "Corpus",
+    "ClanNode10":       "Infested","SettlementNode20": "Corpus",
+    "ClanNode11":       "Infested",
+    # Jupiter
+    "SolNode55":  "Corpus",    "SolNode65":  "Grineer",   "SolNode46":  "Corpus",
+    "SolNode164": "Infested",  "SolNode167": "Infested",  "SolNode163": "Corpus",
+    "SolNode177": "Corpus",    "SolNode183": "Corpus",    "SolNode187": "Corpus",
+    "SolNode188": "Corpus",    "SolNode196": "Corpus",    "SolNode805": "Sentient",
+    "SolNode173": "Corpus",    "SolNode31":  "Corpus",    "SolNode195": "Corpus",
+    # Saturn
+    "SolNode47":  "Grineer",   "SolNode90":  "Grineer",   "SolNode20":  "Grineer",
+    "SolNode14":  "Grineer",   "SolNode24":  "Infested",  "SolNode91":  "Corpus",
+    "SolNode92":  "Grineer",   "SolNode93":  "Corpus",    "SolNode41":  "Grineer",
+    "SolNode52":  "Grineer",   "SolNode53":  "Grineer",   "SolNode54":  "Corpus",
+    "SolNode110": "Infested",  "SolNode111": "Corpus",    "SolNode25":  "Corpus",
+    "SaturnHUB":  "Neutral",
+    # Uranus
+    "SolNode120": "Grineer",   "SolNode83":  "Grineer",   "SolNode98":  "Grineer",
+    "SolNode9":   "Grineer",   "SolNode60":  "Grineer",   "SolNode114": "Grineer",
+    "ClanNode16": "Infested",  "SolNode34":  "Grineer",   "SolNode122": "Grineer",
+    "SolNode907": "Grineer",   "ClanNode17": "Infested",
+    # Neptune
+    "SolNode57":  "Corpus",    "SolNode62":  "Corpus",    "SolNode908": "Corpus",
+    "SolNode127": "Corpus",    "SolNode118": "Corpus",    "SolNode84":  "Corpus",
+    "ClanNode20": "Infested",  "ClanNode21": "Infested",  "SolNode49":  "Corpus",
+    "SolNode1":   "Corpus",    "SolNode17":  "Corpus",    "SolNode78":  "Corpus",
+    "SolNode6":   "Corpus",
+    # Pluto
+    "SolNode42":  "Corpus",    "SolNode43":  "Scaldra",   "SolNode102": "Corpus",
+    "SolNode37":  "Corpus",    "SolNode4":   "Corpus",    "SolNode35":  "Infested",
+    "SolNode36":  "Infested",  "SolNode80":  "Corpus",    "SolNode81":  "Infested",
+    "SolNode112": "Murmur",    "SolNode113": "Infested",  "SolNode48":  "Corpus",
+    "SolNode73":  "Corrupted", "PlutoHUB":   "Neutral",
+    # Sedna
+    "SolNode115": "Grineer",   "SolNode116": "Grineer",   "SolNode40":  "Grineer",
+    "SolNode8":   "Grineer",   "SolNode51":  "Grineer",   "SolNode77":  "Grineer",
+    "SolNode70":  "Grineer",   "SolNode69":  "Infested",  "SolNode71":  "Grineer",
+    "SolNode72":  "Grineer",   "SolNode68":  "Grineer",   "SolNode74":  "Grineer",
+    "SolNode88":  "Grineer",
+    # Europa
+    "SolNode300": "Corpus",    "SolNode301": "Corpus",    "SolNode302": "Corpus",
+    "SolNode303": "Corpus",    "SolNode304": "Corpus",    "SolNode305": "Corpus",
+    "SolNode306": "Corpus",    "SolNode307": "Corpus",    "SolNode308": "Corrupted",
+    "SolNode309": "Corpus",    "SolNode310": "Corpus",    "SolNode311": "Corpus",
+    "SolNode312": "Corpus",    "SolNode313": "Corpus",    "SolNode314": "Corpus",
+    "ClanNode14": "Infested",  "ClanNode15": "Infested",  "EuropaHUB":  "Neutral",
+    # Lua
+    "SolNode132": "Orokin",    "SolNode133": "Orokin",    "SolNode134": "Orokin",
+    "SolNode135": "Orokin",    "SolNode136": "Orokin",    "SolNode137": "Orokin",
+    "SolNode138": "Orokin",    "SolNode139": "Orokin",    "SolNode802": "Orokin",
+    # Eris
+    "SolNode125": "Infested",  "SolNode126": "Infested",  "SolNode121": "Infested",
+    "SolNode105": "Infested",  "SolNode97":  "Techrot",   "SolNode95":  "Infested",
+    "SolNode27":  "Infested",  "SolNode26":  "Infested",  "SolNode33":  "Infested",
+    "SolNode32":  "Infested",  "SolNode30":  "Infested",  "ErisHUB":    "Neutral",
+    # Void
+    "SolNode400": "Orokin",    "SolNode401": "Orokin",    "SolNode402": "Orokin",
+    "SolNode403": "Orokin",    "SolNode404": "Orokin",    "SolNode405": "Orokin",
+    "SolNode406": "Orokin",    "SolNode407": "Orokin",    "SolNode408": "Orokin",
+    "SolNode409": "Orokin",    "SolNode410": "Orokin",    "SolNode411": "Orokin",
+    "SolNode412": "Orokin",
+    # Kuva Fortress
+    "SolNode500": "Grineer",   "SolNode501": "Grineer",   "SolNode502": "Infested",
+    "SolNode503": "Grineer",   "SolNode504": "Grineer",   "SolNode505": "Grineer",
+    "SolNode506": "Grineer",   "SolNode507": "Grineer",
+    # Deimos
+    "SolNode706": "Infested",  "SolNode707": "Infested",  "SolNode708": "Infested",
+    "SolNode709": "Infested",  "SolNode710": "Infested",  "SolNode711": "Infested",
+    "SolNode712": "Infested",  "SolNode713": "Murmur",    "SolNode714": "Murmur",
+    "SolNode715": "Murmur",    "SolNode716": "Murmur",    "SolNode717": "Murmur",
+    # Zariman
+    "SolNode780": "Corpus",    "SolNode781": "Corpus",    "SolNode782": "Corpus",
+    "SolNode783": "Corpus",
+    # Duviri
+    "SolNode751": "Duviri",    "SolNode752": "Duviri",    "SolNode753": "Duviri",
+    "SolNode754": "Duviri",    "SolNode755": "Duviri",
+    # Railjack Proxima
+    "CrewBattleNode500": "Grineer",  "CrewBattleNode501": "Grineer",
+    "CrewBattleNode502": "Grineer",  "CrewBattleNode503": "Grineer",
+    "CrewBattleNode504": "Grineer",  "CrewBattleNode505": "Grineer",
+    "CrewBattleNode510": "Corpus",   "CrewBattleNode511": "Corpus",
+    "CrewBattleNode512": "Corpus",   "CrewBattleNode513": "Corpus",
+    "CrewBattleNode514": "Corpus",   "CrewBattleNode515": "Corpus",
+    "CrewBattleNode516": "Corpus",   "CrewBattleNode520": "Corpus",
+    "CrewBattleNode521": "Corpus",   "CrewBattleNode522": "Corpus",
+    "CrewBattleNode523": "Corpus",   "CrewBattleNode524": "Corpus",
+    "CrewBattleNode525": "Corpus",   "CrewBattleNode526": "Corpus",
+    "CrewBattleNode527": "Corpus",   "CrewBattleNode528": "Corpus",
+    "CrewBattleNode529": "Grineer",  "CrewBattleNode530": "Grineer",
+    "CrewBattleNode531": "Grineer",  "CrewBattleNode532": "Grineer",
+    "CrewBattleNode533": "Grineer",  "CrewBattleNode534": "Grineer",
+}
+
 ITEM_NAMES: dict[str, str] = {
     # Warframes
     "/Lotus/StoreItems/Powersuits/AntiMatter/NovaPrime":                                                              "Nova Prime",
@@ -701,7 +834,7 @@ def _parse_fissures(raw: list, solnode_map: dict) -> list[dict]:
         out.append({
             "node":         _node_display(f.get("Node", ""), solnode_map),
             "mission_type": _mission_type(mission_key),
-            "enemy":        _faction(f.get("Faction", "")),
+            "enemy":        _faction(f.get("Faction", "")) or NODE_FACTION.get(f.get("Node", ""), ""),
             "tier":         tier,
             "eta":          _eta(expiry),
             "is_storm":     is_storm,
