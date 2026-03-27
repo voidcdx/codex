@@ -291,8 +291,12 @@ select option {
 
 /* ── Enemy Threat Card ──────────────────────────────── */
 .threat-card {
-  padding: 12px 0;
-  margin-bottom: 2px;
+  background: var(--surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border);
+  padding: 12px;
+  margin-bottom: 10px;
 }
 .threat-card-name {
   font-family: var(--font-display);
