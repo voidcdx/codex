@@ -163,6 +163,9 @@ def _parse_weapon_attack(raw_attack: dict) -> WeaponAttack:
         shot_type=raw_attack.get("shot_type", ""),
         fire_rate=float(raw_attack.get("fire_rate") or 0.0),
         multishot=int(raw_attack.get("multishot") or 1),
+        falloff_start=raw_attack.get("falloff_start"),
+        falloff_end=raw_attack.get("falloff_end"),
+        falloff_reduction=float(raw_attack.get("falloff_reduction") or 0.0),
     )
 
 
@@ -211,6 +214,9 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         selected_cm = float(entry.get("crit_multiplier") or 1.0)
         selected_sc = float(entry.get("status_chance") or 0.0)
         selected_ms_count = 1
+        selected_falloff_start = None
+        selected_falloff_end = None
+        selected_falloff_reduction = 0.0
     else:
         # Select attack by name or default to first
         if attack_name:
@@ -233,6 +239,9 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         selected_cm = selected_attack.crit_multiplier
         selected_sc = selected_attack.status_chance
         selected_ms_count = selected_attack.multishot
+        selected_falloff_start = selected_attack.falloff_start
+        selected_falloff_end = selected_attack.falloff_end
+        selected_falloff_reduction = selected_attack.falloff_reduction
 
     is_kuva_tenet = bool(entry.get("is_kuva_tenet", False))
     family = str(entry.get("family", "") or "")
@@ -249,6 +258,9 @@ def load_weapon(name: str, attack_name: str | None = None) -> Weapon:
         crit_multiplier=selected_cm,
         status_chance=selected_sc,
         multishot=selected_ms_count,
+        falloff_start=selected_falloff_start,
+        falloff_end=selected_falloff_end,
+        falloff_reduction=selected_falloff_reduction,
     )
 
 
@@ -510,6 +522,9 @@ def list_attacks(weapon_name: str) -> list[dict]:
             "fire_rate": a.fire_rate,
             "shot_type": a.shot_type,
             "multishot": a.multishot,
+            "falloff_start": a.falloff_start,
+            "falloff_end": a.falloff_end,
+            "falloff_reduction": a.falloff_reduction,
         }
         for a in weapon.attacks
     ]

@@ -137,6 +137,14 @@ def _parse_attack(raw_attack: dict) -> dict:
         except (TypeError, ValueError):
             pass
 
+    falloff = raw_attack.get("Falloff")
+    if isinstance(falloff, dict):
+        for fk, ck in (("StartRange", "falloff_start"), ("EndRange", "falloff_end"), ("Reduction", "falloff_reduction")):
+            v = falloff.get(fk)
+            if v is not None:
+                try: attack_out[ck] = float(v)
+                except (TypeError, ValueError): pass
+
     return attack_out
 
 

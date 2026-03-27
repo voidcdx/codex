@@ -24,6 +24,9 @@ class WeaponAttack:
     shot_type: str = ""
     fire_rate: float = 0.0
     multishot: int = 1
+    falloff_start: float | None = None
+    falloff_end: float | None = None
+    falloff_reduction: float = 0.0
 
 
 @dataclass
@@ -39,6 +42,9 @@ class Weapon:
     crit_multiplier: float = 1.0
     status_chance: float = 0.0
     multishot: int = 1
+    falloff_start: float | None = None
+    falloff_end: float | None = None
+    falloff_reduction: float = 0.0
 
     @property
     def total_base_damage(self) -> float:

@@ -15,10 +15,10 @@ GALV_STATS: dict[str, dict] = {
     "Galvanized Crosshairs":   {"galv_kill_stat": "cc_bonus",              "galv_kill_pct": 0.40, "galv_max_stacks": 5},
     "Galvanized Scope":        {"galv_kill_stat": "cc_bonus",              "galv_kill_pct": 0.40, "galv_max_stacks": 5},
     "Galvanized Steel":        {"galv_kill_stat": "cd_bonus",              "galv_kill_pct": 0.30, "galv_max_stacks": 4},
-    "Galvanized Aptitude":     {"galv_kill_stat": "aptitude_damage_bonus", "galv_kill_pct": 0.40, "galv_max_stacks": 2},
-    "Galvanized Savvy":        {"galv_kill_stat": "aptitude_damage_bonus", "galv_kill_pct": 0.40, "galv_max_stacks": 2},
-    "Galvanized Shot":         {"galv_kill_stat": "aptitude_damage_bonus", "galv_kill_pct": 0.40, "galv_max_stacks": 3},
-    "Galvanized Elementalist": {"galv_kill_stat": "sc_bonus",              "galv_kill_pct": 0.30, "galv_max_stacks": 4},
+    "Galvanized Aptitude":     {"galv_kill_stat": "aptitude_damage_bonus", "galv_kill_pct": 0.40, "galv_max_stacks": 2, "status_chance_pct": 0.80},
+    "Galvanized Savvy":        {"galv_kill_stat": "aptitude_damage_bonus", "galv_kill_pct": 0.40, "galv_max_stacks": 2, "status_chance_pct": 0.80},
+    "Galvanized Shot":         {"galv_kill_stat": "aptitude_damage_bonus", "galv_kill_pct": 0.40, "galv_max_stacks": 3, "status_chance_pct": 0.80},
+    "Galvanized Elementalist": {"galv_kill_stat": "sc_bonus",              "galv_kill_pct": 0.30, "galv_max_stacks": 4, "status_damage_pct": 0.80},
 }
 
 path = pathlib.Path("data/mods.json")

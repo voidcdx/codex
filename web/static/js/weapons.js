@@ -618,6 +618,10 @@ function showWeaponStats(weapon) {
           <div class="sc-val-sm" id="sv-ms">1.0</div>
           <div class="sc-modded" id="sm-ms" style="display:none"></div>
         </div>
+        ${atk && atk.falloff_start != null ? `<div class="sc-stat">
+          <div class="sc-label">Falloff</div>
+          <div class="sc-val-sm">${atk.falloff_start}–${atk.falloff_end}m (${Math.round((1 - atk.falloff_reduction) * 100)}% min)</div>
+        </div>` : ''}
       </div>
     </div>
     <div id="damage-table-wrap"></div>
@@ -625,6 +629,14 @@ function showWeaponStats(weapon) {
 
   renderDamageTable(atk ? atk.base_damage : weapon.base_damage, null);
   initTooltips();
+
+  // Show/hide distance input based on whether weapon has falloff data
+  const distDiv = document.getElementById('distance-div');
+  if (distDiv) {
+    const hasFalloff = atk && atk.falloff_start != null;
+    distDiv.style.display = hasFalloff ? '' : 'none';
+    if (!hasFalloff) document.getElementById('distance-input').value = 0;
+  }
 }
 
 function renderDamageTable(baseDmg, moddedData) {
