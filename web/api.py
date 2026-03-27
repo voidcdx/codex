@@ -744,7 +744,7 @@ import requests as _requests  # noqa: E402
 # In-memory cache: platform → (parsed_data, timestamp)
 _ws_cache: dict[str, tuple[dict, float]] = {}
 _ws_error: dict[str, str] = {}  # last fetch error per platform
-_WS_TTL = 300  # 5 minutes
+_WS_TTL = 60  # 1 minute
 
 _PLATFORM_URLS: dict[str, str] = {
     "pc":  "https://api.warframe.com/cdn/worldState.php",
@@ -791,23 +791,30 @@ def _load_parse_worldstate_mod():
 
 
 def _fetch_worldstate(platform: str) -> dict:
-    """Fetch and parse live worldstate for the given platform."""
+    """Fetch and parse live worldstate for the given platform.
+
+    Retries up to 3 times with 2-second backoff before giving up.
+    Falls back to a local snapshot if one exists.
+    """
     mod = _load_parse_worldstate_mod()
     url = _PLATFORM_URLS[platform]
-    try:
-        r = _ws_session.get(url, timeout=15)
-        r.raise_for_status()
-        raw = r.json()
-    except Exception as exc:
-        # Fall back to local snapshot if available
-        raw_path = Path(__file__).parent.parent / "data" / "worldstate_raw.json"
-        if raw_path.exists():
-            _logger.warning("Worldstate fetch failed for %s (%s); using local snapshot", platform, exc)
-            raw = json.loads(raw_path.read_text())
-        else:
-            raise RuntimeError(f"Worldstate fetch failed: {exc}") from exc
+    last_exc: Exception | None = None
+    for attempt in range(3):
+        try:
+            r = _ws_session.get(url, timeout=15)
+            r.raise_for_status()
+            return mod.parse(r.json())
+        except Exception as exc:
+            last_exc = exc
+            if attempt < 2:
+                time.sleep(2)
 
-    return mod.parse(raw)
+    # All attempts failed — fall back to local snapshot if available
+    raw_path = Path(__file__).parent.parent / "data" / "worldstate_raw.json"
+    if raw_path.exists():
+        _logger.warning("Worldstate fetch failed for %s (%s); using local snapshot", platform, last_exc)
+        return mod.parse(json.loads(raw_path.read_text()))
+    raise RuntimeError(f"Worldstate fetch failed: {last_exc}") from last_exc
 
 
 @app.get("/api/worldstate")
@@ -820,16 +827,6 @@ def get_worldstate(request: Request, platform: str = "pc") -> dict:
         raise HTTPException(503, f"Worldstate unavailable — {err}")
     data, _ = _ws_cache[platform]
     return data
-
-
-@app.post("/api/worldstate/parse")
-async def parse_worldstate_raw(raw: dict) -> dict:
-    """Accept raw DE worldstate JSON from the client, return parsed structured data."""
-    try:
-        mod = _load_parse_worldstate_mod()
-        return await asyncio.to_thread(mod.parse, raw)
-    except Exception as exc:
-        raise HTTPException(500, f"Parse error: {exc}") from exc
 
 
 # ---------------------------------------------------------------------------

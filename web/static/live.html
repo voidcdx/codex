@@ -93,9 +93,8 @@
 
 </div><!-- .app -->
 
-<script type="module">
+<script>
 'use strict';
-import { parseWorldState } from '/static/js/worldstate-parser.js';
 
 let currentPlatform = 'pc';
 let countdownTimer  = null;
@@ -354,35 +353,17 @@ function buildEventsCard(events) {
 }
 
 /* ── Data loading ── */
-const DE_URLS = {
-  pc:  'https://api.warframe.com/cdn/worldState.php',
-  ps4: 'https://ps4.warframe.com/dynamic/worldState.php',
-  xb1: 'https://xb1.warframe.com/dynamic/worldState.php',
-  swi: 'https://swi.warframe.com/dynamic/worldState.php',
-};
-
 async function loadData() {
   resetCountdown();
   document.getElementById('live-content').innerHTML =
     '<div class="loading-msg">Acquiring worldstate…</div>';
   try {
-    let data;
-    // Try client-side fetch first — browser IP is never blocked by DE's CDN
-    try {
-      const deRes = await fetch(DE_URLS[currentPlatform] || DE_URLS.pc, { mode: 'cors' });
-      if (!deRes.ok) throw new Error(`DE ${deRes.status}`);
-      const raw = await deRes.json();
-      data = parseWorldState(raw);
-    } catch (_) {
-      // Fall back to server-cached GET (works on localhost dev)
-      const res = await fetch(`/api/worldstate?platform=${currentPlatform}`);
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || `HTTP ${res.status}`);
-      }
-      data = await res.json();
+    const res = await fetch(`/api/worldstate?platform=${currentPlatform}`);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.detail || `HTTP ${res.status}`);
     }
-    renderAll(data);
+    renderAll(await res.json());
   } catch (err) {
     document.getElementById('live-content').innerHTML = `
       <div class="panel">
