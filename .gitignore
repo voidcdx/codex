@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 .pytest_cache/
 *.local.md
+data/worldState_raw.json
+data/worldstate_raw.json
