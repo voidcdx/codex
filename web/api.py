@@ -747,13 +747,12 @@ _ws_error: dict[str, str] = {}  # last fetch error per platform
 _WS_TTL = 300  # 5 minutes
 
 _PLATFORM_URLS: dict[str, str] = {
-    "pc":  "https://content.warframe.com/dynamic/worldState.php",
+    "pc":  "https://api.warframe.com/cdn/worldState.php",
     "ps4": "https://ps4.warframe.com/dynamic/worldState.php",
     "xb1": "https://xb1.warframe.com/dynamic/worldState.php",
     "swi": "https://swi.warframe.com/dynamic/worldState.php",
 }
 
-# Session preserves headers across redirects (content.warframe.com → api.warframe.com/cdn)
 # trust_env=False fully disables HTTPS_PROXY/HTTP_PROXY env vars (proxies={} does not)
 _ws_session = _requests.Session()
 _ws_session.trust_env = False
