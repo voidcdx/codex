@@ -18,7 +18,7 @@
   .stat-block { min-width: 80px; }
   .bar-cell { width: 80px; }
   .result-header { flex-direction: column; gap: 6px; }
-  .result-total { font-size: 18px; }
+  .result-total { font-size: 1.1rem; }
   .options-row { flex-direction: column; }
   header { padding: 0 16px; }
   .mod-picker { width: 95vw; max-height: 80vh; }
@@ -34,12 +34,12 @@
   /* Riven builder — compact for mobile */
   .riven-fullgrid { padding: 12px; gap: 8px; }
   .riven-fullgrid-rows { gap: 6px; }
-  .riven-fullgrid-title { font-size: 14px; }
+  .riven-fullgrid-title { font-size: 1rem; }
   .riven-stat-row { grid-template-columns: 1fr 64px 28px; gap: 6px; }
   .riven-stat-btn {
     padding: 0 10px !important; font-size: 16px !important;
   }
-  .riven-stat-btn .arrow { font-size: 9px; padding-left: 6px; }
+  .riven-stat-btn .arrow { font-size: 0.67rem; padding-left: 6px; }
   input[type=number].riven-stat-input {
     padding: 0 8px !important; font-size: 16px !important;
     text-align: center !important;
@@ -49,7 +49,7 @@
     padding: 0 !important;
   }
   .btn-riven-apply, .btn-riven-reset {
-    height: 36px; border-radius: 0; font-size: 13px;
+    height: 36px; border-radius: 0; font-size: 0.85rem;
   }
   .riven-fullgrid-btns { gap: 6px; margin-top: 0; }
   .riven-portal-dropdown { border-radius: 0; }

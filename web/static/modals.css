@@ -37,14 +37,14 @@
 .alchemy-modal-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 0.73rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text);
 }
 .alch-clear-btn {
-  font-size: 10px;
+  font-size: 0.73rem;
   color: var(--text-dim);
   background: none;
   border: 1px solid var(--border);
@@ -62,7 +62,7 @@
 /* Element palette */
 .alchemy-palette { margin-bottom: 12px; flex-shrink: 0; }
 .alchemy-palette-label {
-  font-size: 10px;
+  font-size: 0.73rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -77,7 +77,7 @@
   border: 1px solid var(--border);
   background: rgba(139,0,0,0.06);
   cursor: pointer;
-  font-size: 11px;
+  font-size: 0.73rem;
   font-weight: 600;
   text-transform: capitalize;
   letter-spacing: 0.3px;
@@ -107,7 +107,7 @@
 .alchemy-suggestions::-webkit-scrollbar-track { background: transparent; }
 .alchemy-suggestions::-webkit-scrollbar-thumb { background: rgba(139,0,0,0.35); border-radius: 0; }
 .alch-section-label {
-  font-size: 10px;
+  font-size: 0.73rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -121,7 +121,7 @@
 }
 .alch-section-first { border-top: none; margin-top: 0; }
 .alch-col-header {
-  font-size: 10px;
+  font-size: 0.73rem;
   font-weight: 600;
   text-transform: capitalize;
   letter-spacing: 0.3px;
@@ -166,14 +166,14 @@
 
 .alch-mod-name {
   flex: 1;
-  font-size: 11px;
+  font-size: 0.73rem;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .alch-tier-badge {
-  font-size: 8px;
+  font-size: 0.67rem;
   font-weight: 700;
   padding: 1px 4px;
   border-radius: 0;
@@ -182,14 +182,14 @@
 }
 .alch-tier-galv { background: rgba(64,200,200,0.15); color: #40c8c8; }
 .alch-mod-pct {
-  font-size: 11px;
+  font-size: 0.73rem;
   font-weight: 600;
   flex-shrink: 0;
   min-width: 34px;
   text-align: center;
 }
 .alch-stat-pill {
-  font-size: 9px;
+  font-size: 0.67rem;
   color: var(--elem-color, var(--text-dim));
   background: rgba(139,0,0,0.10);
   border-radius: 0;
@@ -204,7 +204,7 @@
   border: 1px solid var(--border-red);
   background: rgba(139,0,0,0.08);
   color: var(--text);
-  font-size: 14px;
+  font-size: 1rem;
   cursor: pointer;
   line-height: 1;
   display: flex;
@@ -273,7 +273,7 @@
   border: 1px solid var(--border-red);
   background: color-mix(in srgb, var(--accent) 8%, transparent);
   color: var(--text-dim);
-  font-size: 18px;
+  font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
   display: flex;
@@ -298,7 +298,7 @@
 }
 .guide-modal-title {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -306,7 +306,7 @@
   margin: 0 0 4px;
 }
 .guide-modal-subtitle {
-  font-size: 11px;
+  font-size: 0.73rem;
   color: var(--text-dim);
   margin: 0;
   letter-spacing: 0.04em;
@@ -315,7 +315,7 @@
   margin-top: 28px;
   padding-top: 14px;
   border-top: 1px solid var(--border);
-  font-size: 11px;
+  font-size: 0.73rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
   text-align: center;
@@ -323,7 +323,7 @@
 .footer-sep { margin: 0 8px; opacity: 0.35; }
 .guide-content h3 {
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 0.73rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -334,7 +334,7 @@
 }
 .guide-content h3:first-child { margin-top: 0; }
 .guide-content p, .guide-content li {
-  font-size: 13px;
+  font-size: 0.85rem;
   color: var(--text-dim);
   line-height: 1.65;
   margin: 4px 0;
@@ -342,7 +342,7 @@
 .guide-content ul { padding-left: 18px; margin: 6px 0 10px; }
 .guide-content code {
   font-family: monospace;
-  font-size: 12px;
+  font-size: 0.85rem;
   background: var(--surface2);
   border: 1px solid var(--border-red);
   border-radius: 0;
@@ -352,14 +352,14 @@
 .guide-content table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 0.85rem;
   margin: 8px 0 12px;
 }
 .guide-content th {
   text-align: left;
   color: var(--accent2);
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 0.73rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
   background: color-mix(in srgb, var(--accent) 6%, transparent);
@@ -374,7 +374,7 @@
   line-height: 1.5;
 }
 .guide-content tr:hover td { background: color-mix(in srgb, var(--accent) 4%, transparent); }
-.guide-content td:first-child { color: var(--text); white-space: nowrap; font-size: 12px; }
+.guide-content td:first-child { color: var(--text); white-space: nowrap; font-size: 0.85rem; }
 .guide-content ol { padding-left: 18px; margin: 6px 0 10px; line-height: 1.65; }
 .guide-content strong { color: var(--text); }
 .guide-content .badge-vuln { color: #4caf50; background: #1a3a1a; border-color: transparent; }
@@ -393,7 +393,7 @@
 }
 .changelog-modal-title {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -401,7 +401,7 @@
   margin: 0 0 4px;
 }
 .changelog-modal-subtitle {
-  font-size: 11px;
+  font-size: 0.73rem;
   color: var(--text-dim);
   margin: 0;
   letter-spacing: 0.04em;
@@ -416,19 +416,19 @@
 }
 .changelog-ver {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--accent2);
   letter-spacing: 0.04em;
 }
 .changelog-date {
-  font-size: 11px;
+  font-size: 0.73rem;
   color: var(--text-dim);
   letter-spacing: 0.04em;
 }
 .changelog-section-heading {
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 0.73rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent2);
@@ -439,7 +439,7 @@
 .changelog-entry:first-child .changelog-section-heading:first-of-type { margin-top: 0; }
 .changelog-list { margin: 0; padding-left: 18px; }
 .changelog-list li {
-  font-size: 13px;
+  font-size: 0.85rem;
   color: var(--text-dim);
   line-height: 1.65;
   margin-bottom: 4px;
@@ -461,7 +461,7 @@
   .changelog-modal-header { border-radius: 0; padding: 12px 12px 10px; }
   .guide-modal-body { padding: 10px 10px 24px; }
   .changelog-modal-body { padding: 10px 10px 24px; }
-  .guide-modal-title, .changelog-modal-title { font-size: 15px; }
+  .guide-modal-title, .changelog-modal-title { font-size: 1rem; }
   .guide-content h3 { margin-top: 18px; }
   .guide-content td:first-child { white-space: normal; }
 }
