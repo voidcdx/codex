@@ -42,13 +42,6 @@
 
 <aside class="sidebar" id="sidebar">
   <div class="brand">
-    <div class="brand-icon">
-      <svg viewBox="0 0 40 40">
-        <path d="M20 2 L35 10 L35 25 L20 35 L5 25 L5 10 Z"/>
-        <path d="M20 8 L28 13 L28 22 L20 28 L12 22 L12 13 Z"/>
-        <circle cx="20" cy="18" r="4"/>
-      </svg>
-    </div>
     <div class="brand-text">VOID <span>CODEX</span></div>
   </div>
 
@@ -156,7 +149,7 @@ function renderFissureRows(fissures) {
   if (!list.length) return '<div class="live-empty">No fissures for selected tier</div>';
   return '<div class="fissure-list">' + list.map(f => `
     <div class="fissure-row">
-      <span class="fissure-tier" style="color:${TIER_COLORS[f.tier]||'#888'}">${esc(f.tier)}</span>
+      <span class="fissure-tier" ${TIER_COLORS[f.tier] ? `style="--tier-color:${TIER_COLORS[f.tier]}"` : ''}>${esc(f.tier)}</span>
       <div class="fissure-info">
         <div class="fissure-node">${esc(f.node)}${f.is_storm ? '<span class="fissure-tag">Storm</span>' : ''}${f.is_steel_path ? '<span class="fissure-tag">SP</span>' : ''}</div>
         <div class="fissure-sub">${esc(f.mission_type)} · ${esc(f.enemy)}</div>
@@ -169,9 +162,7 @@ function buildFissureCard(fissures) {
   window._fissureData = fissures;
   const tiers = ['All','Lith','Meso','Neo','Axi','Requiem','Omnia'];
   const btns = tiers.map(t => {
-    const col = TIER_COLORS[t]
-      ? `style="color:${TIER_COLORS[t]};border-color:${TIER_COLORS[t]}55"`
-      : 'style="color:#888;border-color:#333"';
+    const col = TIER_COLORS[t] ? `style="--tier-color:${TIER_COLORS[t]}"` : '';
     return `<button class="tier-btn${t === activeTier ? ' active' : ''}" data-tier="${t}" onclick="setTier('${t}')" ${col}>${t}</button>`;
   }).join('');
   return `<div class="panel live-card-full">
@@ -315,7 +306,7 @@ function buildInvasionsCard(invasions) {
         <span class="eta-chip">${esc(inv.eta)}</span>
       </div>
       <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" style="width:${inv.progress}%"></div>
+        <div class="progress-bar-fill" data-progress="${inv.progress}"></div>
       </div>
       <div class="invasion-rewards">
         <span class="reward-chip">⚔ ${esc(inv.attacker_reward)}</span>
@@ -404,6 +395,9 @@ function renderAll(data) {
   const el = document.getElementById('live-content');
   el.innerHTML = '';
   el.appendChild(grid);
+  grid.querySelectorAll('.progress-bar-fill[data-progress]').forEach(bar => {
+    bar.style.width = bar.dataset.progress + '%';
+  });
 }
 
 /* ── Countdown ── */

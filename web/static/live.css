@@ -108,7 +108,8 @@
 }
 .tier-btn {
   background: none;
-  border: 1px solid;
+  border: 1px solid color-mix(in srgb, var(--tier-color, var(--border)) 40%, transparent);
+  color: var(--tier-color, var(--text-dim));
   font-family: var(--font-display);
   font-size: 0.67rem;
   padding: 2px 8px;
@@ -136,6 +137,7 @@
   letter-spacing: 0.05em;
   min-width: 58px;
   flex-shrink: 0;
+  color: var(--tier-color, var(--text-dim));
 }
 .fissure-info { flex: 1; min-width: 0; }
 .fissure-node {
