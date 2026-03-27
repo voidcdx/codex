@@ -754,7 +754,9 @@ _PLATFORM_URLS: dict[str, str] = {
 }
 
 # Session preserves headers across redirects (content.warframe.com → api.warframe.com/cdn)
+# trust_env=False fully disables HTTPS_PROXY/HTTP_PROXY env vars (proxies={} does not)
 _ws_session = _requests.Session()
+_ws_session.trust_env = False
 _ws_session.headers.update({
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -794,7 +796,7 @@ def _fetch_worldstate(platform: str) -> dict:
     mod = _load_parse_worldstate_mod()
     url = _PLATFORM_URLS[platform]
     try:
-        r = _ws_session.get(url, timeout=15, proxies={})
+        r = _ws_session.get(url, timeout=15)
         r.raise_for_status()
         raw = r.json()
     except Exception as exc:
