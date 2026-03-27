@@ -787,7 +787,7 @@ def _fetch_worldstate(platform: str) -> dict:
     mod = _load_parse_worldstate_mod()
     url = _PLATFORM_URLS[platform]
     try:
-        r = _requests.get(url, headers=_WS_HEADERS, timeout=15)
+        r = _requests.get(url, headers=_WS_HEADERS, timeout=15, proxies={})
         r.raise_for_status()
         raw = r.json()
     except Exception as exc:
@@ -797,8 +797,7 @@ def _fetch_worldstate(platform: str) -> dict:
             _logger.warning("Worldstate fetch failed for %s (%s); using local snapshot", platform, exc)
             raw = json.loads(raw_path.read_text())
         else:
-            raise HTTPException(503, "Worldstate unavailable and no local cache found. "
-                                     "Run: python scripts/fetch_worldstate.py") from exc
+            raise RuntimeError(f"Worldstate fetch failed: {exc}") from exc
 
     return mod.parse(raw)
 
