@@ -189,7 +189,7 @@
 .breakdown-table th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .breakdown-table tr:hover td { background: var(--surface2); }
 .bar-cell { width: 180px; }
-.breakdown-table td:nth-child(2),
+.breakdown-table tbody td:nth-child(2),
 .breakdown-table th:nth-child(2) { text-align: center; }
 @media (max-width: 520px) { .bar-cell { width: 80px; } }
 .bar-bg { background: var(--surface2); border-radius: 0; height: 8px; }
