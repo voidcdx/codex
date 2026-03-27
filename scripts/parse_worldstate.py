@@ -36,37 +36,68 @@ FISSURE_TIERS: dict[str, str] = {
     "VoidT6": "Omnia",
 }
 
-# Mission type path suffix → display name
+# Mission type path suffix → display name (used by some API endpoints)
 MISSION_TYPES: dict[str, str] = {
-    "Assassination":       "Assassination",
-    "Assault":             "Assault",
-    "Capture":             "Capture",
-    "Defense":             "Defense",
-    "Disruption":          "Disruption",
-    "Excavation":          "Excavation",
-    "Exterminate":         "Exterminate",
-    "Hive":                "Hive",
-    "Hijack":              "Hijack",
-    "Infested":            "Infested Salvage",
-    "InfestedSalvage":     "Infested Salvage",
-    "Interception":        "Interception",
-    "Junction":            "Junction",
-    "MobileDefense":       "Mobile Defense",
-    "Pursuit":             "Pursuit",
-    "Rescue":              "Rescue",
-    "Sabotage":            "Sabotage",
-    "Spy":                 "Spy",
-    "Survival":            "Survival",
-    "Excavation":          "Excavation",
-    "LongSurvival":        "Endurance",
-    "RailjackAerial":      "Skirmish",
-    "RailjackMission":     "Railjack",
-    "VoidCascade":         "Void Cascade",
-    "VoidFlood":           "Void Flood",
-    "VoidArmageddon":      "Void Armageddon",
-    "Assassination":       "Assassination",
-    "GasCity":             "Gas City",
-    "ArchwingAssassination": "Archwing Assassination",
+    "Assassination":          "Assassination",
+    "Assault":                "Assault",
+    "Capture":                "Capture",
+    "Defense":                "Defense",
+    "Disruption":             "Disruption",
+    "Excavation":             "Excavation",
+    "Exterminate":            "Exterminate",
+    "Hive":                   "Hive",
+    "Hijack":                 "Hijack",
+    "Infested":               "Infested Salvage",
+    "InfestedSalvage":        "Infested Salvage",
+    "Interception":           "Interception",
+    "Junction":               "Junction",
+    "MobileDefense":          "Mobile Defense",
+    "Pursuit":                "Pursuit",
+    "Rescue":                 "Rescue",
+    "Sabotage":               "Sabotage",
+    "Spy":                    "Spy",
+    "Survival":               "Survival",
+    "LongSurvival":           "Endurance",
+    "RailjackAerial":         "Skirmish",
+    "RailjackMission":        "Railjack",
+    "VoidCascade":            "Void Cascade",
+    "VoidFlood":              "Void Flood",
+    "VoidArmageddon":         "Void Armageddon",
+    "GasCity":                "Gas City",
+    "ArchwingAssassination":  "Archwing Assassination",
+}
+
+# MT_ prefix style used in raw worldstate JSON
+MT_MISSION_TYPES: dict[str, str] = {
+    "MT_ASSASSINATION":    "Assassination",
+    "MT_ASSAULT":          "Assault",
+    "MT_CAPTURE":          "Capture",
+    "MT_DEFENSE":          "Defense",
+    "MT_TERRITORY":        "Disruption",
+    "MT_EXCAVATE":         "Excavation",
+    "MT_EXTERMINATE":      "Exterminate",
+    "MT_HIVE":             "Hive",
+    "MT_HIJACK":           "Hijack",
+    "MT_INFESTED_SALVAGE": "Infested Salvage",
+    "MT_INTERCEPTION":     "Interception",
+    "MT_JUNCTION":         "Junction",
+    "MT_MOBILE_DEFENSE":   "Mobile Defense",
+    "MT_PURSUIT":          "Pursuit",
+    "MT_RESCUE":           "Rescue",
+    "MT_SABOTAGE":         "Sabotage",
+    "MT_INTEL":            "Spy",
+    "MT_SURVIVAL":         "Survival",
+    "MT_LONG_SURVIVAL":    "Endurance",
+    "MT_RAILJACK":         "Railjack",
+    "MT_VOID_CASCADE":     "Void Cascade",
+    "MT_VOID_FLOOD":       "Void Flood",
+    "MT_VOID_ARMAGEDDON":  "Void Armageddon",
+    "MT_LANDSCAPE":        "Free Roam",
+    "MT_ARENA":            "Arena",
+    "MT_ALCHEMY":          "Alchemy",
+    "MT_ORPHIX":           "Orphix",
+    "MT_CIRCUIT":          "The Circuit",
+    "MT_ENDLESS_DEFENSE":  "Endurance Defense",
 }
 
 FACTION_NAMES: dict[str, str] = {
@@ -638,8 +669,10 @@ def _node_display(node_key: str, solnode_map: dict[str, dict]) -> str:
 
 
 def _mission_type(type_key: str) -> str:
-    """Strip Lotus path and look up human name."""
+    """Strip Lotus path and look up human name. Handles both MT_RESCUE and path-suffix styles."""
     suffix = type_key.rstrip("/").rsplit("/", 1)[-1] if "/" in type_key else type_key
+    if suffix in MT_MISSION_TYPES:
+        return MT_MISSION_TYPES[suffix]
     return MISSION_TYPES.get(suffix, suffix)
 
 
@@ -938,13 +971,13 @@ def _parse_events(raw: dict) -> list[dict]:
 def _parse_invasions(raw: list, solnode_map: dict) -> list[dict]:
     out = []
     for inv in raw:
-        # Skip completed invasions
         if inv.get("Completed", False):
             continue
         expiry = _parse_date(inv.get("Expiry"))
 
-        def _reward(side: dict) -> str:
-            reward = side.get("MissionInfo", {}).get("missionReward", {})
+        def _reward(reward: dict | list) -> str:
+            if not isinstance(reward, dict):
+                reward = {}
             counted = reward.get("countedItems", [])
             items = reward.get("items", [])
             parts = []
@@ -959,25 +992,21 @@ def _parse_invasions(raw: list, solnode_map: dict) -> list[dict]:
                 parts.append(f"{cr:,} cr")
             return ", ".join(parts) or "Unknown"
 
-        attacker = inv.get("AttackerInfo", {})
-        defender = inv.get("DefenderInfo", {})
-
-        # Progress: positive = attacker winning, negative = defender winning
-        # Count field: number of runs completed; goal varies
+        attacker_faction = inv.get("Faction", "")
+        defender_faction = inv.get("DefenderFaction", "")
         count = inv.get("Count", 0)
         required = inv.get("Goal", 1)
-        # Invaders start at Goal (negative) and go to 0; or 0 to Goal for normal
         progress = min(100.0, max(0.0, abs(count) / max(required, 1) * 100))
 
         out.append({
-            "node":              _node_display(inv.get("Node", ""), solnode_map),
-            "attacker":          _faction(attacker.get("faction", "")),
-            "defender":          _faction(defender.get("faction", "")),
-            "attacker_reward":   _reward(attacker),
-            "defender_reward":   _reward(defender),
-            "progress":          round(progress, 1),
-            "eta":               _eta(expiry),
-            "vs_infestation":    attacker.get("faction", "") == "FC_INFESTATION" or defender.get("faction", "") == "FC_INFESTATION",
+            "node":            _node_display(inv.get("Node", ""), solnode_map),
+            "attacker":        _faction(attacker_faction),
+            "defender":        _faction(defender_faction),
+            "attacker_reward": _reward(inv.get("AttackerReward", {})),
+            "defender_reward": _reward(inv.get("DefenderReward", {})),
+            "progress":        round(progress, 1),
+            "eta":             _eta(expiry),
+            "vs_infestation":  attacker_faction == "FC_INFESTATION" or defender_faction == "FC_INFESTATION",
         })
     return out
 
