@@ -753,14 +753,21 @@ _PLATFORM_URLS: dict[str, str] = {
     "swi": "https://swi.warframe.com/dynamic/worldState.php",
 }
 
-_WS_HEADERS = {
+# Session preserves headers across redirects (content.warframe.com → api.warframe.com/cdn)
+_ws_session = _requests.Session()
+_ws_session.headers.update({
     "User-Agent": (
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
     ),
-    "Accept": "application/json, */*",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Origin": "https://www.warframe.com",
     "Referer": "https://www.warframe.com/",
-}
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "cross-site",
+})
 
 
 _parse_worldstate_mod = None  # loaded once on first call
@@ -787,7 +794,7 @@ def _fetch_worldstate(platform: str) -> dict:
     mod = _load_parse_worldstate_mod()
     url = _PLATFORM_URLS[platform]
     try:
-        r = _requests.get(url, headers=_WS_HEADERS, timeout=15, proxies={})
+        r = _ws_session.get(url, timeout=15, proxies={})
         r.raise_for_status()
         raw = r.json()
     except Exception as exc:
