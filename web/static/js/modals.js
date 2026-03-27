@@ -337,43 +337,10 @@ document.addEventListener('click', e => {
   const guide = document.getElementById('guide-overlay');
   if (guide && guide.classList.contains('active') && e.target === guide)
     closeGuide();
-  const cl = document.getElementById('changelog-overlay');
-  if (cl && cl.classList.contains('active') && e.target === cl)
-    closeChangelog();
 });
 
 function openGuide()  { document.getElementById('guide-overlay').classList.add('active'); }
 function closeGuide() { document.getElementById('guide-overlay').classList.remove('active'); }
-
-// ---------------------------------------------------------------------------
-// What's New (Changelog) — CHANGELOG_ENTRIES in constants.js
-// ---------------------------------------------------------------------------
-function renderChangelog() {
-  const body = document.getElementById('changelog-body');
-  if (!body) return;
-  let html = '';
-  for (const entry of CHANGELOG_ENTRIES) {
-    html += `<div class="changelog-entry">`;
-    html += `<div class="changelog-version-row"><span class="changelog-ver">v${entry.version}</span><span class="changelog-date">${entry.date}</span></div>`;
-    for (const sec of entry.sections) {
-      html += `<h4 class="changelog-section-heading">${sec.heading}</h4><ul class="changelog-list">`;
-      for (const item of sec.items) {
-        html += `<li>${item}</li>`;
-      }
-      html += `</ul>`;
-    }
-    html += `</div>`;
-  }
-  body.innerHTML = html;
-}
-
-function openChangelog() {
-  renderChangelog();
-  document.getElementById('changelog-overlay').classList.add('active');
-}
-function closeChangelog() {
-  document.getElementById('changelog-overlay').classList.remove('active');
-}
 
 // ---------------------------------------------------------------------------
 // Warframe Buffs — BUFF_OPTIONS and buffRowId in constants.js

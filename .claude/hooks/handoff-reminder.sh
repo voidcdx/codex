@@ -9,7 +9,7 @@ case "$FILE" in
     jq -n '{
       "hookSpecificOutput": {
         "hookEventName": "PostToolUse",
-        "additionalContext": "The user just read handoff.md. Before doing anything else, ask them these two questions:\n1. Should I bump the version in src/version.py? (check current value first)\n2. Should this session'\''s changes be tracked in the changelog?"
+        "additionalContext": "The user just read handoff.md. Before doing anything else, ask them: Should I bump the version in src/version.py? (check current value first)"
       }
     }'
     ;;

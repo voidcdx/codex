@@ -224,8 +224,7 @@
 
 /* ── Shared modal shell ─────────────────────────────────── */
 /* Same surface/border/glow as .panel */
-.guide-modal,
-.changelog-modal {
+.guide-modal {
   background: var(--surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -237,8 +236,7 @@
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
   transition: border-color 0.2s;
 }
-.guide-modal::before,
-.changelog-modal::before {
+.guide-modal::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; height: 1px;
@@ -247,11 +245,9 @@
   z-index: 1;
 }
 .guide-modal    { width: min(820px, calc(100vw - 48px)); max-height: min(88vh, 88dvh); }
-.changelog-modal { width: min(560px, calc(100vw - 48px)); max-height: min(88vh, calc(100dvh - 40px)); }
 
 /* shared header — uses surface2 to distinguish from body, same as panel sub-surfaces */
-.guide-modal-header,
-.changelog-modal-header {
+.guide-modal-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -381,87 +377,21 @@
 .guide-content .badge-res  { color: #f44336; background: #3a1a1a; border-color: transparent; }
 .guide-content .code-riven { color: var(--riven); border-color: rgba(208, 160, 255, 0.3); }
 
-/* ── What's New (Changelog) Modal ── */
-.changelog-modal-body {
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-  padding: 16px 24px 28px;
-  flex: 1;
-  min-height: 0;
-}
-.changelog-modal-title {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text);
-  margin: 0 0 4px;
-}
-.changelog-modal-subtitle {
-  font-size: 0.73rem;
-  color: var(--text-dim);
-  margin: 0;
-  letter-spacing: 0.04em;
-}
-.changelog-entry { margin-bottom: 28px; }
-.changelog-entry:last-child { margin-bottom: 0; }
-.changelog-version-row {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-.changelog-ver {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--accent2);
-  letter-spacing: 0.04em;
-}
-.changelog-date {
-  font-size: 0.73rem;
-  color: var(--text-dim);
-  letter-spacing: 0.04em;
-}
-.changelog-section-heading {
-  font-family: var(--font-display);
-  font-size: 0.73rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent2);
-  margin: 14px 0 6px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--border-red);
-}
-.changelog-entry:first-child .changelog-section-heading:first-of-type { margin-top: 0; }
-.changelog-list { margin: 0; padding-left: 18px; }
-.changelog-list li {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  line-height: 1.65;
-  margin-bottom: 4px;
-}
-.changelog-list li:last-child { margin-bottom: 0; }
+
 
 /* ── Modal responsive ───────────────────────────────────── */
 /* Bottom-sheet: centred with margin until 480px, then full-width edge-to-edge */
 @media (max-width: 520px) {
-  #guide-overlay, #changelog-overlay { align-items: flex-end; }
-  .guide-modal, .changelog-modal {
+  #guide-overlay { align-items: flex-end; }
+  .guide-modal {
     width: calc(100vw - 32px);
     border-radius: 0;
     border-bottom: none;
   }
   .guide-modal    { max-height: min(92vh, 92dvh); }
-  .changelog-modal { max-height: min(92vh, calc(100dvh - 20px)); }
-  .guide-modal-header,
-  .changelog-modal-header { border-radius: 0; padding: 12px 12px 10px; }
+  .guide-modal-header { border-radius: 0; padding: 12px 12px 10px; }
   .guide-modal-body { padding: 10px 10px 24px; }
-  .changelog-modal-body { padding: 10px 10px 24px; }
-  .guide-modal-title, .changelog-modal-title { font-size: 1rem; }
+  .guide-modal-title { font-size: 1rem; }
   .guide-content h3 { margin-top: 18px; }
   .guide-content td:first-child { white-space: normal; }
 }
@@ -474,6 +404,4 @@
   .guide-modal-body { padding: 12px 12px 20px; }
   .guide-content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .guide-content td, .guide-content th { padding: 5px 8px; }
-  .changelog-modal-header { padding: 14px 14px 10px; }
-  .changelog-modal-body { padding: 12px 12px 20px; }
 }

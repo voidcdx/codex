@@ -133,9 +133,7 @@ Two-session UI pass: mobile scroll fix, enemy panel redesign (Threat Intel Card)
 
 > **Ask at HANDOFF, not session start:**
 > 1. "Should I bump the version? Current: `0.5.4`"
-> 2. "Should this session be tracked in the changelog?"
-> Do NOT auto-bump or add entries without confirmation.
-> Update BOTH `CHANGELOG.md` AND `CHANGELOG_ENTRIES` in `web/static/js/constants.js`.
+> Changelog tracking deferred until v1.0.0 — do not ask about it.
 
 - [ ] Run `pytest` — confirm 294 passing
 - [ ] `git log --oneline -5` to orient

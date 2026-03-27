@@ -324,8 +324,7 @@ function toggleDrawer() {
   btn.classList.toggle('open', open);
 }
 
-function openGuide()     {}
-function openChangelog() {}
+function openGuide() {}
 
 /* ── Init ─────────────────────────────────────────────── */
 
