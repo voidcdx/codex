@@ -264,7 +264,7 @@ function showResults(data) {
       <thead><tr><th>Type</th><th></th><th>Damage</th></tr></thead>
       <tbody>${rows}</tbody>
       <tfoot class="total-row">
-        <tr><td colspan="2">TOTAL</td><td>${data.total.toFixed(2)}</td></tr>
+        <tr><td>TOTAL</td><td></td><td>${data.total.toFixed(2)}</td></tr>
       </tfoot>
     </table>
     ${msNote}
