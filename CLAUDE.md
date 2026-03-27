@@ -59,7 +59,7 @@ web/
   static/index.html # SPA HTML — stalker-dashboard layout: inner header + .content grid (1fr 480px) + right .sidebar
                    #   .content-main: Weapon+Enemy (.we-grid), Mods+Arcanes panel
                    #   .content-side: Results → Options (collapsible, merged Hit Options+Buffs) → Calculate → Build Compare (hidden) → Armor Strip → Mods panel
-                   #   aside.sidebar (260px): brand icon, nav-menu (.nav-item), sidebar-tools, sidebar-footer (copyright + data source)
+                   #   aside.sidebar (260px): brand text, nav-menu (.nav-item), sidebar-tools, sidebar-footer (copyright + data source)
                    #   .content-left (Builds panel): hidden via CSS, grid column removed from layout
                    #   Mobile: .burger-btn (fixed top-right) + .sidebar-overlay backdrop
   static/style.css  # Stalker/Shadow Acolyte theme: #050505 bg, crimson #8b0000/#dc143c, Orbitron/Rajdhani fonts
@@ -103,7 +103,7 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 The calculator page uses a mirrored stalker-dashboard layout:
 - **`.main`** — left flex:1 column; contains `.header` (inner top bar) + `.content` grid
 - **`.content`** — `grid-template-columns: 1fr 480px`; `.content-main` (inputs) + `.content-side` (results)
-- **`aside.sidebar`** — right 260px; brand icon, `.nav-menu` with `.nav-item` links, `.sidebar-tools`, `.sidebar-footer` (copyright + `Data: wiki.warframe.com`)
+- **`aside.sidebar`** — right 260px; brand text ("VOID CODEX"), `.nav-menu` with `.nav-item` links, `.sidebar-tools`, `.sidebar-footer` (copyright + `Data: wiki.warframe.com`)
 - **`.content-left`** — Builds panel, currently `display: none` (hidden). Grid column removed.
 - **`.content-main` order** — Weapon+Enemy grid → Mods panel (moved here from content-side)
 - **`.content-side` order** — Results → Options (collapsible, **collapsed by default**) → Calculate button → Build Compare → Armor Strip
@@ -428,6 +428,32 @@ Conclave-exclusive mods (wings icon) are filtered automatically during `parse_mo
 ### Usage
 - **CLI:** `--buff roar:1.5` (name:strength). **API:** `buffs: [{name, strength}]`. **Web UI:** Buffs panel with dropdown + strength input.
 - Presets: `roar`, `eclipse`, `xatas_whisper`, `nourish` in `src/buffs.py`.
+
+## Damage Falloff
+
+Distance-based damage reduction for hitscan/projectile weapons. ~410/590 weapons have falloff data.
+
+### Data Schema
+Per-attack fields in `weapons.json`: `falloff_start` (full damage up to this range in meters), `falloff_end` (minimum damage beyond this range), `falloff_reduction` (max reduction fraction, e.g. 0.8 = 80% reduction at end range).
+
+### Formula
+```
+multiplier = 1 - reduction × clamp((distance - start) / (end - start), 0, 1)
+```
+- `distance ≤ start` → ×1.0 (full damage)
+- `start < distance < end` → linear ramp down
+- `distance ≥ end` → ×(1 − reduction) (floor)
+
+### Pipeline Placement
+- Applied **after** all 6 quantized pipeline steps + multishot, as `math.floor(v * multiplier)`
+- **DoT procs are NOT affected** by falloff — they tick at full damage regardless of distance
+- `calculate_falloff_multiplier()` helper in `src/calculator.py`
+- `distance: float = 0.0` param on `calculate()` — default 0 = point blank = no reduction
+
+### Usage
+- **API:** `distance` field on POST `/api/calculate`. Response includes `falloff_multiplier`.
+- **Web UI:** Distance input in Options panel, hidden for weapons without falloff. Weapon card shows `Falloff: 10–20m (20% min)`.
+- **CLI:** Not yet exposed as a flag.
 
 ## Live Data / Worldstate (`/live`)
 
