@@ -42,7 +42,7 @@
     ctx.fillStyle = 'rgba(5,5,5,0.07)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.font = `${FONT_SZ}px 'Share Tech Mono', monospace`;
+    ctx.font = `${FONT_SZ}px 'Rajdhani', sans-serif`;
 
     const maxY = canvas.height * MAX_FRAC;
 
