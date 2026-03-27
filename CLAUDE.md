@@ -114,6 +114,7 @@ The calculator page uses a mirrored stalker-dashboard layout:
 ### CSS Variables
 Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(18,10,10,0.50)`, `--surface-solid: #201818`, `--surface2: rgba(12,6,6,0.55)`, `--border: rgba(139,0,0,0.4)`, `--panel-glow: rgba(139,0,0,0.13)`, `--crimson: #8b0000`, `--crimson-bright: #dc143c`, `--font-display: 'Orbitron'`, `--font-body: 'Rajdhani'`, `--radius: 0` (sharp edges everywhere).
 **No green UI accents** — `--accent-green` maps to crimson. Only game-data colors (element types, mod rarities, riven olive `--riven: #5a8a3a`) stay green.
+**No purple UI accents** — no `#c49aff`, no `rgba(155,109,208,...)`. Crimson theme only.
 
 ### CSS Design Rules (STRICT)
 - **No inline `style=` attributes** on HTML elements — all styles go to CSS classes. SVG presentation attributes excepted.
@@ -123,6 +124,7 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(18,10,10,0.50)`, `-
 - **Glassmorphism — local-glow pattern only.** `backdrop-filter` on `#050505` blurs nothing. Each `.panel` generates its own crimson atmosphere via `::after` (`inset: -24px; radial-gradient(...var(--panel-glow)...); z-index: -1`) so blur works without a page-wide background. Do NOT attempt page-level glassmorphism.
 - **Font sizes** — use `rem` for text content. `px` only for structural/icon sizes. Body: `clamp(13px, 1.1vw, 16px)`. 7-step rem scale: `0.67rem` (8–9px) · `0.73rem` (10–11px) · `0.85rem` (12–13px) · `1rem` (14–15px) · `1.1rem` (18px) · `1.5rem` (24px). iOS anti-zoom overrides (`16px !important`) are intentional — do not convert.
 - **Fonts** — Orbitron (`var(--font-display)`) for headings, names, and stat values. Rajdhani (`var(--font-body)`) for labels, descriptions, and button text. **No Share Tech Mono** — removed entirely.
+- **`.sc-modded` arrows** — CSS `::before { content: '→ ' }` injects the arrow. Never prepend `'→ '` in JS `textContent` — it will double up.
 
 ### Key CSS Classes (panels.css)
 | Class | Purpose |
