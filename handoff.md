@@ -1,28 +1,22 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Added background worldstate scheduler (DE servers never hit by user requests), per-IP rate limiting on `/api/worldstate` (30 req/min, slowapi), fixed `_fetch_worldstate` security issues (cached module, removed unused os import, added logging). Enforced Railway deploy rule — must merge feature branch to `codex` after every push.
+Fixed worldstate live data endpoint for Railway deployment. Iterated through several approaches to resolve DE's CDN blocking Railway's cloud IP range: tried client-side fetch (CORS blocked), tried `content.warframe.com` (host_not_allowed), settled on server-side fetch from `api.warframe.com/cdn/worldState.php` with 3-attempt retry + 2s backoff, 60s TTL cache, stale-on-error fallback. Removed all client-side DE fetch machinery (worldstate-parser.js, POST /api/worldstate/parse endpoint).
 
 ---
 
 ## Changes made this session
 
-### Damage Falloff — full stack implementation
-- `scripts/parse_wiki_data.py` — `_parse_attack()` now extracts `Falloff` dict (`StartRange`, `EndRange`, `Reduction`) from raw wiki data
-- `data/weapons.json` — regenerated; ~410/590 weapons now have `falloff_start`, `falloff_end`, `falloff_reduction` per attack
-- `src/models.py` — added `falloff_start: float | None`, `falloff_end: float | None`, `falloff_reduction: float` to both `WeaponAttack` and `Weapon` dataclasses
-- `src/loader.py` — reads falloff fields from JSON into models; copies selected attack's falloff to Weapon; includes falloff in `list_attacks()` API output
-- `src/calculator.py` — `calculate_falloff_multiplier()` helper + `distance: float = 0.0` param on `calculate()`. Applied after multishot as `math.floor(v * multiplier)`. DoT procs unaffected.
-- `web/api.py` — `distance` field on `CalcRequest`; passed to `calculate()` and CO curve calls; falloff fields in `GET /api/weapons` per-attack response
-- `web/static/js/weapons.js` — displays `Falloff: 10–20m (20% min)` on weapon card when attack has falloff data; `data-tooltip="falloff"` added
-- `web/static/js/constants.js` — `TOOLTIPS.falloff` added
-- `web/static/js/calculate.js` — sends `distance` in POST body
-- `web/static/index.html` — distance input in Options panel (hidden for weapons without falloff)
-- `tests/test_calculator.py` — 10 new tests: falloff multiplier unit tests, integration with calculate(), no-falloff unchanged, procs unaffected
+### Worldstate live data — server-side fetch, Railway-compatible
+- `web/api.py` — `_PLATFORM_URLS["pc"]` updated to `https://api.warframe.com/cdn/worldState.php` (content.warframe.com returns `host_not_allowed`)
+- `web/api.py` — `_WS_TTL` reduced from 300s to 60s
+- `web/api.py` — `_fetch_worldstate()` now retries 3× with 2s backoff before falling back to local snapshot; cleaner exception chain
+- `web/api.py` — removed `POST /api/worldstate/parse` endpoint (client-side parse approach abandoned)
+- `web/static/live.html` — reverted to plain `<script>` (was `type="module"`); `loadData()` simplified to single `GET /api/worldstate` call; removed `DE_URLS`, client-side fetch, and `parseWorldState()` call
+- `web/static/js/worldstate-parser.js` — deleted (JS translation of parse_worldstate.py, no longer needed)
 
-### Mobile sidebar layout fix
-- `web/static/index.html` — removed `.brand-icon` hexagon SVG from sidebar brand area
-- `web/static/layout.css` — removed `.burger-btn.open` position override (no movement on toggle); reduced mobile sidebar `padding-top: 10px` to align brand text with burger button at `top: 14px`
+### Architecture note
+The server-side `/api/worldstate` is the only data path. Background scheduler (`_worldstate_bg_loop`) refreshes every 60s. On fetch failure the loop logs the error but leaves the cache intact, so the endpoint always returns the last good data once warm. Cold-start 503 is expected until the first fetch succeeds (~first 30s on deploy).
 
 ---
 
@@ -86,7 +80,7 @@ Added background worldstate scheduler (DE servers never hit by user requests), p
 
 - Refresh `weapons.json` + `mods.json` via wiki ApiSandbox (27 MEDIUM 100.0 placeholder issues remain)
 - Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses (low priority)
-- Cycles + Events not yet rendered in `live.html` (data parsed, cards not built)
+- Worldstate: `api.warframe.com/cdn/worldState.php` still returns 403 from Railway's cloud IP — root cause unresolved; 60s retry loop will keep hammering until DE allows it or Railway's IP changes. Consider a residential proxy or Cloudflare Worker if this remains blocked.
 
 ---
 
@@ -98,7 +92,7 @@ Added background worldstate scheduler (DE servers never hit by user requests), p
 4. Status Simulator (needs research — complex proc weighting)
 5. Build Cards (export image)
 6. Build Sharing (URL-encoded state)
-7. Live Data — Cycles + Events cards
+7. Live Data — Cycles + Events cards (data parsed server-side, JS card builders exist but untested with real data)
 
 ---
 

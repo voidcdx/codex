@@ -460,14 +460,16 @@ multiplier = 1 - reduction × clamp((distance - start) / (end - start), 0, 1)
 `GET /live` serves `web/static/live.html` — a separate SPA from the main calculator.
 
 ### Data source
-DE's official endpoint: `https://content.warframe.com/dynamic/worldState.php` (and platform variants for ps4/xb1/swi). No third-party API.
+DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platform variants for ps4/xb1/swi). No third-party API. **Do not use `content.warframe.com`** — it returns `403 host_not_allowed` for non-game-client requests.
 
 ### Server-side (`web/api.py`)
-- `GET /api/worldstate?platform=pc` — fetches, parses, and returns structured worldstate JSON.
-- **Cache:** In-memory `_ws_cache` dict, TTL = 5 minutes (`_WS_TTL = 300`).
-- **Stale fallback:** If the upstream fetch fails and a cached entry exists (even expired), the stale data is returned silently. Only raises 503 on a cold cache with no data at all.
-- **HTTP timeout:** 15 seconds on the upstream request.
-- **Parsing:** `scripts/parse_worldstate.py` — imported dynamically by `_fetch_worldstate()`. `parse(raw)` is the entry point.
+- `GET /api/worldstate?platform=pc` — only endpoint the client calls; returns cached parsed JSON.
+- **Cache:** In-memory `_ws_cache` dict, TTL = 60 seconds (`_WS_TTL = 60`).
+- **Retry:** `_fetch_worldstate()` retries 3× with 2-second backoff before raising.
+- **Stale fallback:** On fetch failure the background loop leaves `_ws_cache` intact. The endpoint raises 503 only on a cold cache (first fetch not yet complete). Once warm, always returns last good data.
+- **HTTP timeout:** 15 seconds per attempt.
+- **Parsing:** `scripts/parse_worldstate.py` — imported dynamically by `_fetch_worldstate()` via `_load_parse_worldstate_mod()`. `parse(raw)` is the entry point.
+- **No client-side fetch:** `live.html` never contacts DE directly — all data flows through `/api/worldstate`.
 
 ### Parsed sections
 | Key | Source function | Rendered in live.html |
@@ -479,12 +481,12 @@ DE's official endpoint: `https://content.warframe.com/dynamic/worldState.php` (a
 | `nightwave` | `_parse_nightwave()` | Yes |
 | `alerts` | `_parse_alerts()` | Yes |
 | `invasions` | `_parse_invasions()` | Yes |
-| `cycles` | `_parse_cycles()` | **Not yet** — data present, no card built |
-| `events` | `_parse_events()` | **Not yet** — data present, no card built |
+| `cycles` | `_parse_cycles()` | Yes |
+| `events` | `_parse_events()` | Yes |
 
 ### UI auto-refresh
 - Countdown timer in `live.html`: refreshes every **180 seconds**.
-- Most polls hit the server cache; actual upstream fetches happen at most every 5 minutes.
+- Actual upstream fetches happen at most every 60 seconds (TTL).
 - Manual refresh button always triggers a fresh `/api/worldstate` call.
 
 ## Coding Standards
