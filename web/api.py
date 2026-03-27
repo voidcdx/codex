@@ -81,15 +81,22 @@ _limiter = Limiter(key_func=_get_client_ip)
 # since Python resolves globals at call time, not definition time.
 
 async def _worldstate_bg_loop() -> None:
-    """Refresh worldstate for all platforms every _WS_TTL seconds."""
+    """Refresh worldstate for all platforms.
+
+    Retries every 30 s until PC is successfully cached, then switches to the
+    full _WS_TTL interval so we stay respectful to DE's servers.
+    """
     while True:
         for platform in _PLATFORM_URLS:
             try:
                 parsed = await asyncio.to_thread(_fetch_worldstate, platform)
                 _ws_cache[platform] = (parsed, time.time())
+                _ws_error.pop(platform, None)
             except Exception as exc:
+                _ws_error[platform] = str(exc)
                 _logger.warning("Worldstate refresh failed for %s: %s", platform, exc)
-        await asyncio.sleep(_WS_TTL)
+        sleep_time = 30 if "pc" not in _ws_cache else _WS_TTL
+        await asyncio.sleep(sleep_time)
 
 
 @asynccontextmanager
@@ -736,6 +743,7 @@ import requests as _requests  # noqa: E402
 
 # In-memory cache: platform → (parsed_data, timestamp)
 _ws_cache: dict[str, tuple[dict, float]] = {}
+_ws_error: dict[str, str] = {}  # last fetch error per platform
 _WS_TTL = 300  # 5 minutes
 
 _PLATFORM_URLS: dict[str, str] = {
@@ -801,7 +809,8 @@ def get_worldstate(request: Request, platform: str = "pc") -> dict:
     if platform not in _PLATFORM_URLS:
         raise HTTPException(400, f"Unknown platform: {platform!r}")
     if platform not in _ws_cache:
-        raise HTTPException(503, "Worldstate not yet loaded — try again in a few seconds")
+        err = _ws_error.get(platform, "first fetch in progress")
+        raise HTTPException(503, f"Worldstate unavailable — {err}")
     data, _ = _ws_cache[platform]
     return data
 
