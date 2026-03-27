@@ -82,6 +82,11 @@ FACTION_NAMES: dict[str, str] = {
     "FC_TECHROT":   "Techrot",
 }
 
+SORTIE_BOSSES:    dict[str, str] = {}
+SORTIE_MODIFIERS: dict[str, str] = {}
+ALL_NODES:        dict[str, str] = {}
+ITEM_NAMES:       dict[str, str] = {}
+
 # ---------------------------------------------------------------------------
 # Date helpers
 # ---------------------------------------------------------------------------
