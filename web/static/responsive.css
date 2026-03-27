@@ -4,6 +4,8 @@
   .nav-links { display: none; }
   .r-sidebar { display: none; }
   .calc-wrap-inner { padding: 16px 14px; }
+  .header { padding: 10px 16px; }
+  .burger-btn { top: 1px; }
 }
 
 @media (max-width: 768px) {
