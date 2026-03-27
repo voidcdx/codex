@@ -12,9 +12,12 @@ Endpoints:
 """
 from __future__ import annotations
 
+import asyncio
+import logging
 import sys
 import time
 import json
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 # Ensure project root on path when run from web/ directory
@@ -22,9 +25,13 @@ _root = Path(__file__).parent.parent
 if str(_root) not in sys.path:
     sys.path.insert(0, str(_root))
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from slowapi import Limiter
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
 import math
 from pydantic import Field
@@ -42,11 +49,80 @@ from src.quantizer import quantize, quantize_cdm
 from src.scaling import scale_enemy_stats
 from src.version import APP_VERSION, GAME_DATA_VERSION
 
-app = FastAPI(title="Warframe Damage Calculator", version=APP_VERSION)
+_logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Rate limiting — per-IP on worldstate endpoint
+# ---------------------------------------------------------------------------
+
+def _get_client_ip(request: Request) -> str:
+    """Extract the real client IP, respecting X-Forwarded-For from Railway's proxy."""
+    xff = request.headers.get("X-Forwarded-For")
+    if xff:
+        ip = xff.split(",")[0].strip()
+    else:
+        ip = request.client.host if request.client else "unknown"
+    # Strip port from IPv4 (e.g. "1.2.3.4:12345" → "1.2.3.4")
+    # IPv6 literals start with "[" when port is appended — leave those alone
+    if ip and ":" in ip and not ip.startswith("["):
+        ip = ip.rsplit(":", 1)[0]
+    return ip
+
+
+_limiter = Limiter(key_func=_get_client_ip)
+
+
+# ---------------------------------------------------------------------------
+# Background worldstate refresh
+# ---------------------------------------------------------------------------
+
+# Populated at module level (after worldstate section); referenced here by name
+# since Python resolves globals at call time, not definition time.
+
+async def _worldstate_bg_loop() -> None:
+    """Refresh worldstate for all platforms every _WS_TTL seconds."""
+    while True:
+        for platform in _PLATFORM_URLS:
+            try:
+                parsed = await asyncio.to_thread(_fetch_worldstate, platform)
+                _ws_cache[platform] = (parsed, time.time())
+            except Exception as exc:
+                _logger.warning("Worldstate refresh failed for %s: %s", platform, exc)
+        await asyncio.sleep(_WS_TTL)
+
+
+@asynccontextmanager
+async def _lifespan(app: FastAPI):
+    task = asyncio.create_task(_worldstate_bg_loop())
+    try:
+        yield
+    finally:
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+
+
+app = FastAPI(title="Warframe Damage Calculator", version=APP_VERSION, lifespan=_lifespan)
 
 # Serve static files (HTML/CSS/JS/images)
 _static = Path(__file__).parent / "static"
 app.mount("/static", StaticFiles(directory=str(_static)), name="static")
+
+app.state.limiter = _limiter
+app.add_middleware(SlowAPIMiddleware)
+
+
+@app.exception_handler(RateLimitExceeded)
+async def _rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONResponse:
+    retry_after = getattr(exc, "retry_after", 60)
+    return JSONResponse(
+        status_code=429,
+        headers={"Retry-After": str(retry_after)},
+        content={"detail": "Too Many Requests", "retry_after": retry_after},
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -679,53 +755,55 @@ _WS_HEADERS = {
 }
 
 
-def _fetch_worldstate(platform: str) -> dict:
-    """Fetch and parse live worldstate for the given platform."""
-    # Import here to avoid circular issues; scripts/ is not a package
-    import importlib.util, os
+_parse_worldstate_mod = None  # loaded once on first call
+
+
+def _load_parse_worldstate_mod():
+    """Load scripts/parse_worldstate.py once and cache the module reference."""
+    global _parse_worldstate_mod
+    if _parse_worldstate_mod is not None:
+        return _parse_worldstate_mod
+    import importlib.util
     spec = importlib.util.spec_from_file_location(
         "parse_worldstate",
         Path(__file__).parent.parent / "scripts" / "parse_worldstate.py",
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)  # type: ignore[union-attr]
+    _parse_worldstate_mod = mod
+    return mod
 
-    url = _PLATFORM_URLS.get(platform, _PLATFORM_URLS["pc"])
+
+def _fetch_worldstate(platform: str) -> dict:
+    """Fetch and parse live worldstate for the given platform."""
+    mod = _load_parse_worldstate_mod()
+    url = _PLATFORM_URLS[platform]
     try:
         r = _requests.get(url, headers=_WS_HEADERS, timeout=15)
         r.raise_for_status()
         raw = r.json()
-    except Exception:
-        # Fall back to cached file if available
+    except Exception as exc:
+        # Fall back to local snapshot if available
         raw_path = Path(__file__).parent.parent / "data" / "worldstate_raw.json"
         if raw_path.exists():
+            _logger.warning("Worldstate fetch failed for %s (%s); using local snapshot", platform, exc)
             raw = json.loads(raw_path.read_text())
         else:
             raise HTTPException(503, "Worldstate unavailable and no local cache found. "
-                                     "Run: python scripts/fetch_worldstate.py")
+                                     "Run: python scripts/fetch_worldstate.py") from exc
 
     return mod.parse(raw)
 
 
 @app.get("/api/worldstate")
-def get_worldstate(platform: str = "pc") -> dict:
+@_limiter.limit("30/minute")
+def get_worldstate(request: Request, platform: str = "pc") -> dict:
     if platform not in _PLATFORM_URLS:
         raise HTTPException(400, f"Unknown platform: {platform!r}")
-    now = time.time()
-    if platform in _ws_cache:
-        data, ts = _ws_cache[platform]
-        if now - ts < _WS_TTL:
-            return data
-    try:
-        parsed = _fetch_worldstate(platform)
-        _ws_cache[platform] = (parsed, now)
-        return parsed
-    except Exception:
-        # Serve stale cache rather than erroring if upstream is temporarily down
-        if platform in _ws_cache:
-            data, _ = _ws_cache[platform]
-            return data
-        raise
+    if platform not in _ws_cache:
+        raise HTTPException(503, "Worldstate not yet loaded — try again in a few seconds")
+    data, _ = _ws_cache[platform]
+    return data
 
 
 # ---------------------------------------------------------------------------
