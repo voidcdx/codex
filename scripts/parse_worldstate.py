@@ -98,6 +98,8 @@ MT_MISSION_TYPES: dict[str, str] = {
     "MT_ORPHIX":           "Orphix",
     "MT_CIRCUIT":          "The Circuit",
     "MT_ENDLESS_DEFENSE":  "Endurance Defense",
+    "MT_EXTERMINATION":    "Exterminate",
+    "MT_ARTIFACT":         "Capture",
 }
 
 FACTION_NAMES: dict[str, str] = {
