@@ -200,8 +200,8 @@ const ALCH_ELEM_PCT_FIELD = {
 // --- Changelog ---
 const CHANGELOG_ENTRIES = [
   {
-    version: 'Unreleased',
-    date: '2026-03-26',
+    version: '0.5.4',
+    date: '2026-03-27',
     sections: [
       { heading: 'Changed', items: [
         'Panel glassmorphism \u2014 surfaces semi-transparent with local crimson glow; blur visible without a page-wide background',
@@ -210,6 +210,9 @@ const CHANGELOG_ENTRIES = [
         'Options panel collapsed by default',
         'Help panel text brighter \u2014 now readable against dark surface',
         'Tooltip bubbles restyled to crimson theme',
+        'Enemy panel redesigned as Threat Intel Card \u2014 badges + live scaling bars',
+        'Font scale standardized (7-step rem); Share Tech Mono removed; Orbitron + Rajdhani only',
+        'Weapon and enemy names consistently styled \u2014 Orbitron, crimson',
       ]},
       { heading: 'Fixed', items: [
         'Armor Strip labels were hardcoded 10px \u2014 now scale with viewport',

@@ -124,7 +124,8 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(18,10,10,0.50)`, `-
 - **No rounded corners** — `--radius: 0`, `--radius-sm: 0` everywhere.
 - **No scan-line or noise overlays** — both removed. Do not re-add.
 - **Glassmorphism — local-glow pattern only.** `backdrop-filter` on `#050505` blurs nothing. Each `.panel` generates its own crimson atmosphere via `::after` (`inset: -24px; radial-gradient(...var(--panel-glow)...); z-index: -1`) so blur works without a page-wide background. Do NOT attempt page-level glassmorphism.
-- **Font sizes** — use `rem` for text content. `px` only for structural/icon sizes. Body: `clamp(13px, 1.1vw, 16px)`.
+- **Font sizes** — use `rem` for text content. `px` only for structural/icon sizes. Body: `clamp(13px, 1.1vw, 16px)`. 7-step rem scale: `0.67rem` (8–9px) · `0.73rem` (10–11px) · `0.85rem` (12–13px) · `1rem` (14–15px) · `1.1rem` (18px) · `1.5rem` (24px). iOS anti-zoom overrides (`16px !important`) are intentional — do not convert.
+- **Fonts** — Orbitron (`var(--font-display)`) for headings, names, and stat values. Rajdhani (`var(--font-body)`) for labels, descriptions, and button text. **No Share Tech Mono** — removed entirely.
 
 ### Key CSS Classes (panels.css)
 | Class | Purpose |
