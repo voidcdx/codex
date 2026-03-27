@@ -302,12 +302,14 @@ select option {
   font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--crimson-bright);
   letter-spacing: 0.5px;
   margin-bottom: 7px;
+  padding-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background: linear-gradient(90deg, var(--crimson-bright), transparent) bottom / 60% 1px no-repeat;
 }
 .threat-badges {
   display: flex;

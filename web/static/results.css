@@ -61,7 +61,13 @@
   border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
-.weapon-stats-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.weapon-stats-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--crimson-bright);
+  padding-bottom: 4px;
+  background: linear-gradient(90deg, var(--crimson-bright), transparent) bottom / 60% 1px no-repeat;
+}
 .weapon-stats-sub { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
 
 .attack-tabs {
