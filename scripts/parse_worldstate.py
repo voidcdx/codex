@@ -437,7 +437,103 @@ ALL_NODES: dict[str, str] = {
     "CrewBattleNode533": "Gian Point (Veil Proxima)",
     "CrewBattleNode534": "Arc Silver (Veil Proxima)",
 }
-ITEM_NAMES:       dict[str, str] = {}
+ITEM_NAMES: dict[str, str] = {
+    # Warframes
+    "/Lotus/StoreItems/Powersuits/AntiMatter/NovaPrime":                                                              "Nova Prime",
+    "/Lotus/StoreItems/Powersuits/DemonFrame/DemonFrame":                                                             "Uriel",
+    "/Lotus/StoreItems/Powersuits/Inkblot/Inkblot":                                                                   "Follie",
+    "/Lotus/StoreItems/Powersuits/MonkeyKing/MonkeyKing":                                                             "Wukong",
+    "/Lotus/StoreItems/Powersuits/Rhino/Rhino":                                                                       "Rhino",
+    "/Lotus/StoreItems/Powersuits/Trinity/TrinityPrime":                                                              "Trinity Prime",
+    "/Lotus/StoreItems/Powersuits/Wisp/Wisp":                                                                         "Wisp",
+    # Weapons
+    "/Lotus/StoreItems/Weapons/Tenno/Bows/PrimeBow2/PrimeBow2":                                                       "Paris Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Melee/Dagger/FangPrimeDagger":                                                   "Fang Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Melee/PrimeDualKamas/PrimeDualKamas":                                            "Dual Kamas Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Melee/SwordsAndBoards/MeleeContestWinnerOne/TennoSwordShield":                   "Silva & Aegis",
+    "/Lotus/StoreItems/Weapons/Tenno/Pistol/HandShotGun":                                                             "Bronco",
+    "/Lotus/StoreItems/Weapons/Tenno/Pistols/PrimeLex/PrimeLex":                                                      "Lex Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Pistols/PrimeVasto/PrimeVastoPistol":                                            "Vasto Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Rifle/BratonPrime":                                                              "Braton Prime",
+    "/Lotus/StoreItems/Weapons/Tenno/Shotgun/Shotgun":                                                                "Strun",
+    # Blueprints & recipes
+    "/Lotus/StoreItems/Types/Recipes/Helmets/NyxPrimeHelmetBlueprint":                                               "Nyx Prime Neuroptics Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/Helmets/WukongPrimeHelmetBlueprint":                                             "Wukong Prime Neuroptics Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/NovaPrimeBlueprintRecipe":                                       "Nova Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/NyxPrimeBlueprintRecipe":                                        "Nyx Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/TrinityPrimeBlueprintRecipe":                                    "Trinity Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/WukongPrimeBlueprintRecipe":                                     "Wukong Prime Blueprint",
+    "/Lotus/StoreItems/Types/Recipes/Weapons/CrpScopePistolBlueprint":                                               "Arca Scisco Blueprint",
+    "/Lotus/Types/Recipes/Weapons/WeaponParts/DeraVandalReceiver":                                                    "Dera Vandal Receiver",
+    "/Lotus/Types/Recipes/Weapons/WeaponParts/GrineerCombatKnifeHilt":                                               "Sheev Hilt",
+    "/Lotus/Types/Recipes/Weapons/WeaponParts/GrineerCombatKnifeBlade":                                              "Sheev Blade",
+    # Relics
+    "/Lotus/StoreItems/Types/Game/Projections/T1VoidProjectionNovaTrinityVaultABronze":                               "Lith K4 Relic",
+    "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionNovaTrinityVaultABronze":                               "Meso D5 Relic",
+    "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionNovaTrinityVaultABronze":                               "Neo N12 Relic",
+    "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionNovaTrinityVaultABronze":                               "Axi S7 Relic",
+    # Resources & research
+    "/Lotus/Types/Items/MiscItems/InfestedAladCoordinate":                                                            "Mutalist Alad V Nav Coordinate",
+    "/Lotus/Types/Items/Research/BioComponent":                                                                       "Mutagen Mass",
+    "/Lotus/Types/Items/Research/ChemComponent":                                                                      "Detonite Injector",
+    "/Lotus/Types/Items/Research/EnergyComponent":                                                                    "Fieldron",
+    # Mods & shards
+    "/Lotus/StoreItems/Upgrades/Mods/FusionBundles/CircuitSilverSteelPathFusionBundle":                               "Silver Archon Shard",
+    # Cosmetics — skins
+    "/Lotus/StoreItems/Upgrades/Skins/Bows/BowPrime2TwitchSkin":                                                     "Paris Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Dagger/FangPrimeTwitchSkin":                                                   "Fang Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/DualKamas/DualKamasPrimeTwitchSkin":                                           "Dual Kamas Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Glaives/GlaivePrimeTwitchSkin":                                                "Glaive Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/LexPrime/LexPrimeTwitchSkin":                                                  "Lex Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/MonkeyKing/WukongDeluxeBSkin":                                                 "Wukong Qitian Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Necramech/TefilahIridosSkin":                                                  "Iridos Voidrig Necramech Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Rifles/BratonPrimeTwitchSkin":                                                 "Braton Prime Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Shotguns/StrunTwitchSkin":                                                     "Strun Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Swords/SilvaAegisTwitchSkin":                                                  "Silva & Aegis Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/VastoPrime/VastoPrimeTwitchSkin":                                              "Vasto Prime Iridos Skin",
+    # Cosmetics — Promo/Twitch skins
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/AkjagaraIridosSkin":                                              "Akjagara Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/ExcaliburTwitchSkin":                                             "Excalibur Prominence Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/LisetSkinTwitch":                                                 "Liset Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/OgrisTwitchSkin":                                                 "Ogris Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/PyranaTwitchSkin":                                                "Pyrana Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/TigrisTwitchSkin":                                               "Tigris Prominence Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021AfurisSkin":                                            "Afuris Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021LandinCraftSkin":                                       "Landing Craft Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021LatronSkin":                                            "Latron Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2021NikanasSkin":                                           "Nikana Verv Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2023BoltoSkin":                                             "Bolto Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2023OdonataWingSkin":                                       "Odonata Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2023TrinityIridosSkin":                                     "Trinity Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2024DethcubeIridosSkin":                                    "Dethcube Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2024SomaTwitchSkin":                                        "Soma Iridos Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Promo/Twitch/Twitch2024ValkyrIridosSkin":                                      "Valkyr Iridos Skin",
+    # Cosmetics — sugatras & sigils
+    "/Lotus/StoreItems/Upgrades/Skins/MeleeDangles/ScrollingPrimeMeleeDangle":                                       "Naviga Prime Sugatra",
+    "/Lotus/StoreItems/Upgrades/Skins/MeleeDangles/TwitchPrimeMeleeDangle":                                          "Spektaka Prime Sugatra",
+    "/Lotus/StoreItems/Upgrades/Skins/Sigils/PromoTwitchEmblemB":                                                    "Iridos Emblem",
+    "/Lotus/StoreItems/Upgrades/Skins/Sigils/PromoTwitchEmblemC":                                                    "Verv Emblem",
+    "/Lotus/StoreItems/Upgrades/Skins/Sigils/PromoTwitchEmblemD":                                                    "Prominence Emblem",
+    # Cosmetics — syandanas & colour pickers
+    "/Lotus/StoreItems/Characters/Tenno/Accessory/Scarves/U17IntermScarf/IridosUdyatSkin/UdyatPrimeGamingSyandana":  "Udyat Iridos Syandana",
+    "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerEmberHeirloom":                               "Ember Heirloom",
+    "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerPrimeDayItemA":                               "Spektaka",
+    "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerPrimeDayItemB":                               "Spektaka Prime",
+    # Cosmetics — glyphs & heirlooms
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomEmberGlyph":                                            "Ember Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomRhinoGlyph":                                            "Rhino Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomValkyrGlyph":                                           "Valkyr Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomVaubanGlyph":                                           "Vauban Heirloom Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/HeirloomVaubanGlyphSumo":                                       "Vauban Heirloom Tondo Glyph",
+    # Cosmetics — ship decos & wallpapers
+    "/Lotus/StoreItems/Types/Game/QuartersWallpapers/TwitchPrimeNovemberWallpaper":                                  "Iridos Quarters Wallpaper",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/TwitchPrimeOctoberDisplay":                                             "Voidshell Decoration",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/TwitchPrimeOctoberNoggles/NogglesDisplayTwitchPrime":                   "Noggle Statue - Grendel Iridos",
+    # Store packages
+    "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemA":                                    "Last Chance Offerings",
+    "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemB":                                    "Varzia's Offerings - Part 2",
+    "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemC":                                    "Varzia's Offerings",
+}
 
 # ---------------------------------------------------------------------------
 # Date helpers
