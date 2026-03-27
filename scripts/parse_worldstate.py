@@ -82,8 +82,59 @@ FACTION_NAMES: dict[str, str] = {
     "FC_TECHROT":   "Techrot",
 }
 
-SORTIE_BOSSES:    dict[str, str] = {}
-SORTIE_MODIFIERS: dict[str, str] = {}
+SORTIE_BOSSES: dict[str, str] = {
+    "SORTIE_BOSS_VOR":            "Captain Vor",
+    "SORTIE_BOSS_HEK":            "Councilor Vay Hek",
+    "SORTIE_BOSS_RUK":            "General Sargas Ruk",
+    "SORTIE_BOSS_KELA":           "Kela De Thaym",
+    "SORTIE_BOSS_TUSK":           "Tusk Thumper",
+    "SORTIE_BOSS_KRIL":           "Lieutenant Lech Kril",
+    "SORTIE_BOSS_TYL":            "Tyl Regor",
+    "SORTIE_BOSS_JACKAL":         "Jackal",
+    "SORTIE_BOSS_ALAD":           "Alad V",
+    "SORTIE_BOSS_AMBULAS":        "Ambulas",
+    "SORTIE_BOSS_HYENA":          "Hyena Pack",
+    "SORTIE_BOSS_NEF":            "Nef Anyo",
+    "SORTIE_BOSS_RAPTOR":         "Raptor",
+    "SORTIE_BOSS_LEPHANTIS":      "Lephantis",
+    "SORTIE_BOSS_PHORID":         "Phorid",
+    "SORTIE_BOSS_MUTALIST_ALAD":  "Mutalist Alad V",
+    "SORTIE_BOSS_CORRUPTED_VOR":  "Corrupted Vor",
+    "SORTIE_BOSS_INFALAD":        "Infested Alad V",
+    "SORTIE_BOSS_ROPALOLYST":     "Ropalolyst",
+}
+
+SORTIE_MODIFIERS: dict[str, str] = {
+    "SORTIE_MODIFIER_IMPACT":           "Physical Enhancement: Impact",
+    "SORTIE_MODIFIER_PUNCTURE":         "Physical Enhancement: Puncture",
+    "SORTIE_MODIFIER_SLASH":            "Physical Enhancement: Slash",
+    "SORTIE_MODIFIER_FIRE":             "Elemental Enhancement: Heat",
+    "SORTIE_MODIFIER_FREEZE":           "Elemental Enhancement: Cold",
+    "SORTIE_MODIFIER_ELECTRICITY":      "Elemental Enhancement: Electricity",
+    "SORTIE_MODIFIER_TOXIN":            "Elemental Enhancement: Toxin",
+    "SORTIE_MODIFIER_RADIATION":        "Elemental Enhancement: Radiation",
+    "SORTIE_MODIFIER_MAGNETIC":         "Elemental Enhancement: Magnetic",
+    "SORTIE_MODIFIER_GAS":              "Elemental Enhancement: Gas",
+    "SORTIE_MODIFIER_VIRAL":            "Elemental Enhancement: Viral",
+    "SORTIE_MODIFIER_CORROSIVE":        "Elemental Enhancement: Corrosive",
+    "SORTIE_MODIFIER_BLAST":            "Elemental Enhancement: Blast",
+    "SORTIE_MODIFIER_ARMOR":            "Augmented Enemy Armor",
+    "SORTIE_MODIFIER_SHIELDS":          "Augmented Enemy Shields",
+    "SORTIE_MODIFIER_LOW_ENERGY":       "Energy Reduction",
+    "SORTIE_MODIFIER_EXIMUS":           "Eximus Stronghold",
+    "SORTIE_MODIFIER_SECONDARY_ONLY":   "Secondary Only",
+    "SORTIE_MODIFIER_SHOTGUN_ONLY":     "Shotgun Only",
+    "SORTIE_MODIFIER_SNIPER_ONLY":      "Sniper Only",
+    "SORTIE_MODIFIER_MELEE_ONLY":       "Melee Only",
+    "SORTIE_MODIFIER_BOW_ONLY":         "Bow Only",
+    "SORTIE_MODIFIER_RIFLE_ONLY":       "Assault Rifle Only",
+    "SORTIE_MODIFIER_HAZARD_RADIATION": "Environmental Hazard: Radiation",
+    "SORTIE_MODIFIER_HAZARD_MAGNETIC":  "Environmental Hazard: Magnetic",
+    "SORTIE_MODIFIER_HAZARD_FOG":       "Environmental Hazard: Dense Fog",
+    "SORTIE_MODIFIER_HAZARD_FIRE":      "Environmental Hazard: Fire",
+    "SORTIE_MODIFIER_HAZARD_ICE":       "Environmental Hazard: Cryogenic",
+    "SORTIE_MODIFIER_HAZARD_COLD":      "Environmental Hazard: Cryogenic",
+}
 ALL_NODES:        dict[str, str] = {}
 ITEM_NAMES:       dict[str, str] = {}
 
