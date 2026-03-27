@@ -291,15 +291,21 @@ function toggleRivenDropdown(idx) {
   const btn = document.querySelector(`.riven-stat-btn[data-idx="${idx}"]`);
   const r = btn.getBoundingClientRect();
   const cur = rivenDraft[idx].stat;
+  const used = new Set(rivenDraft.filter((s, i) => i !== idx && s.stat).map(s => s.stat));
 
   dd.innerHTML = RIVEN_STAT_OPTIONS.map(o =>
-    `<div class="combobox-item${o.value === cur ? ' selected' : ''}" data-value="${esc(o.value)}">${esc(o.label)}</div>`
+    `<div class="combobox-item${o.value === cur ? ' selected' : ''}${used.has(o.value) ? ' disabled' : ''}" data-value="${esc(o.value)}">${esc(o.label)}</div>`
   ).join('');
 
-  dd.style.top = r.bottom + 'px';
-  dd.style.left = r.left + 'px';
   dd.style.width = r.width + 'px';
+  dd.style.left = Math.max(8, Math.min(r.left, window.innerWidth - r.width - 8)) + 'px';
   dd.classList.add('open');
+  const ddH = dd.offsetHeight;
+  if (r.bottom + ddH + 4 > window.innerHeight - 8) {
+    dd.style.top = (r.top - ddH - 2) + 'px';
+  } else {
+    dd.style.top = (r.bottom + 2) + 'px';
+  }
 }
 
 function closeRivenDropdown() {

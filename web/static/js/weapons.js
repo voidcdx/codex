@@ -38,7 +38,7 @@ function renderModCards() {
     grid.innerHTML = `
       <div class="riven-fullgrid">
         <div class="riven-fullgrid-header">
-          <span class="riven-card-icon" style="font-size:20px">⬡</span>
+          <span class="riven-header-icon">⬡</span>
           <span class="riven-fullgrid-title">Create Riven</span>
         </div>
         <div id="riven-rows" class="riven-fullgrid-rows"></div>
@@ -47,7 +47,7 @@ function renderModCards() {
           <button class="btn-riven-reset" onclick="clearRiven()">Reset</button>
         </div>
       </div>`;
-    setTimeout(() => renderRivenRows(grid.querySelector('#riven-rows')), 0);
+    renderRivenRows(grid.querySelector('#riven-rows'));
     updateElementBadges();
     return;
   }
@@ -66,12 +66,12 @@ function renderModCards() {
     if (modName === '__riven__') {
       card.className = 'mod-card riven-mod-card';
       const lines = (rivenApplied || []).filter(s => s.stat)
-        .map(s => `<div class="riven-card-stat">${s.pct >= 0 ? '+' : ''}${s.pct}% ${esc(STAT_LABELS[s.stat] || s.stat)}</div>`)
+        .map(s => `<div class="riven-card-stat ${s.pct >= 0 ? 'riven-stat-pos' : 'riven-stat-neg'}">${s.pct >= 0 ? '+' : ''}${s.pct}% ${esc(STAT_LABELS[s.stat] || s.stat)}</div>`)
         .join('');
       card.innerHTML = `
         <button class="mod-clear" onclick="event.stopPropagation();clearRiven()" title="Remove riven">&times;</button>
         <div class="riven-card-icon">⬡</div>
-        <div class="mod-name" style="color:var(--riven)">Riven</div>
+        <div class="mod-name riven-mod-name">Riven</div>
         <div class="riven-card-stats">${lines}</div>`;
       card.onclick = openRivenBuilder;
     } else if (modName) {
