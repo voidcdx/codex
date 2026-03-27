@@ -93,8 +93,9 @@
 
 </div><!-- .app -->
 
-<script>
+<script type="module">
 'use strict';
+import { parseWorldState } from './js/worldstate-parser.js';
 
 let currentPlatform = 'pc';
 let countdownTimer  = null;
@@ -371,13 +372,7 @@ async function loadData() {
       const deRes = await fetch(DE_URLS[currentPlatform] || DE_URLS.pc, { mode: 'cors' });
       if (!deRes.ok) throw new Error(`DE ${deRes.status}`);
       const raw = await deRes.json();
-      const parseRes = await fetch('/api/worldstate/parse', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(raw),
-      });
-      if (!parseRes.ok) throw new Error('parse failed');
-      data = await parseRes.json();
+      data = parseWorldState(raw);
     } catch (_) {
       // Fall back to server-cached GET (works on localhost dev)
       const res = await fetch(`/api/worldstate?platform=${currentPlatform}`);
