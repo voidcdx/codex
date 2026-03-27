@@ -823,6 +823,16 @@ def get_worldstate(request: Request, platform: str = "pc") -> dict:
     return data
 
 
+@app.post("/api/worldstate/parse")
+async def parse_worldstate_raw(raw: dict) -> dict:
+    """Accept raw DE worldstate JSON from the client, return parsed structured data."""
+    try:
+        mod = _load_parse_worldstate_mod()
+        return await asyncio.to_thread(mod.parse, raw)
+    except Exception as exc:
+        raise HTTPException(500, f"Parse error: {exc}") from exc
+
+
 # ---------------------------------------------------------------------------
 # Root — serve the SPA
 # ---------------------------------------------------------------------------
