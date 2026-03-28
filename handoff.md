@@ -1,22 +1,34 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Fixed worldstate live data endpoint for Railway deployment. Iterated through several approaches to resolve DE's CDN blocking Railway's cloud IP range: tried client-side fetch (CORS blocked), tried `content.warframe.com` (host_not_allowed), settled on server-side fetch from `api.warframe.com/cdn/worldState.php` with 3-attempt retry + 2s backoff, 60s TTL cache, stale-on-error fallback. Removed all client-side DE fetch machinery (worldstate-parser.js, POST /api/worldstate/parse endpoint).
+Two sessions of worldstate work. `scripts/parse_worldstate.py` is now fully
+populated with lookup tables and all parsing functions use them. Verified live
+output on localhost — fissures, invasions, sortie, void trader, cycles all
+resolve to human-readable names.
 
 ---
 
 ## Changes made this session
 
-### Worldstate live data — server-side fetch, Railway-compatible
-- `web/api.py` — `_PLATFORM_URLS["pc"]` updated to `https://api.warframe.com/cdn/worldState.php` (content.warframe.com returns `host_not_allowed`)
-- `web/api.py` — `_WS_TTL` reduced from 300s to 60s
-- `web/api.py` — `_fetch_worldstate()` now retries 3× with 2s backoff before falling back to local snapshot; cleaner exception chain
-- `web/api.py` — removed `POST /api/worldstate/parse` endpoint (client-side parse approach abandoned)
-- `web/static/live.html` — reverted to plain `<script>` (was `type="module"`); `loadData()` simplified to single `GET /api/worldstate` call; removed `DE_URLS`, client-side fetch, and `parseWorldState()` call
-- `web/static/js/worldstate-parser.js` — deleted (JS translation of parse_worldstate.py, no longer needed)
+### parse_worldstate.py — lookup tables + parsing
+- `FISSURE_TIERS`: VoidT5→Requiem, VoidT6→Omnia added
+- `MT_MISSION_TYPES`: 33-entry dict for raw `MT_*` mission keys
+- `SORTIE_BOSSES`: 19 bosses
+- `SORTIE_MODIFIERS`: 29 modifiers
+- `BOSS_FACTION`: 20-entry dict — sortie faction derived from boss key when raw Faction field is empty
+- `ALL_NODES`: ~290 entries across all planets, proxima, relays, Zariman, Deimos, Duviri
+- `NODE_FACTION`: parallel dict (node key → faction) used as fallback in `_parse_fissures`
+- `ITEM_NAMES`: 80 paths → display names
+- `_parse_fissures`: enemy field populated via NODE_FACTION fallback
+- `_parse_invasions`: fixed field names (Faction/DefenderFaction/AttackerReward/DefenderReward); `_reward()` returns `""` not `"Unknown"` for empty rewards
+- `_parse_sortie`: faction derived from BOSS_FACTION when raw Faction is empty
+- `_mission_type()`: checks MT_MISSION_TYPES first, then MISSION_TYPES
 
-### Architecture note
-The server-side `/api/worldstate` is the only data path. Background scheduler (`_worldstate_bg_loop`) refreshes every 60s. On fetch failure the loop logs the error but leaves the cache intact, so the endpoint always returns the last good data once warm. Cold-start 503 is expected until the first fetch succeeds (~first 30s on deploy).
+### Node corrections
+- SolNode153: was "Seimeni (Ceres)" / Infested → "Coba (Sedna)" / Grineer
+- SolNode181: was "Helene (Saturn)" / Grineer → "Cinxia (Ceres)" / Grineer
+- SolNode718 / 744 / 747: added (Deimos / Murmur)
+- SolNode230 / 232: added (Zariman / Corpus)
 
 ---
 
@@ -78,9 +90,10 @@ The server-side `/api/worldstate` is the only data path. Background scheduler (`
 
 ## Known issues / pending
 
+- **SolNode45** — appears as "Node45 (Sol)" in live fissure data; unknown what node this is
+- **Railway 403** — `api.warframe.com/cdn/worldState.php` still blocked from Railway's cloud IP; server retries every 60s but always fails. Live data works on localhost. Consider Cloudflare Worker proxy if this remains blocked long-term.
 - Refresh `weapons.json` + `mods.json` via wiki ApiSandbox (27 MEDIUM 100.0 placeholder issues remain)
 - Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses (low priority)
-- Worldstate: `api.warframe.com/cdn/worldState.php` still returns 403 from Railway's cloud IP — root cause unresolved; 60s retry loop will keep hammering until DE allows it or Railway's IP changes. Consider a residential proxy or Cloudflare Worker if this remains blocked.
 
 ---
 
@@ -93,12 +106,13 @@ The server-side `/api/worldstate` is the only data path. Background scheduler (`
 5. Build Cards (export image)
 6. Build Sharing (URL-encoded state)
 7. Live Data — Cycles + Events cards (data parsed server-side, JS card builders exist but untested with real data)
+8. Live Data — surface worldstate on main calculator page (fissure banner? void trader alert?)
 
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-eFkdq`
-- Version: `0.5.4`
+- Branch: `claude/review-handoff-dgOJU`
+- Version: `0.5.5`
 - Game data: Update 41 — The Old Peace
 - Tests: 304 passing
 - Railway deploy branch: `codex`
@@ -111,7 +125,7 @@ The server-side `/api/worldstate` is the only data path. Background scheduler (`
 ## Start-of-session checklist
 
 > **Ask at HANDOFF, not session start:**
-> 1. "Should I bump the version? Current: `0.5.4`"
+> 1. "Should I bump the version? Current: `0.5.5`"
 > Changelog tracking deferred until v1.0.0 — do not ask about it.
 
 - [ ] Run `pytest` — confirm 304 passing
