@@ -1037,64 +1037,42 @@ def _parse_nightwave(raw: list) -> dict | None:
 
 
 def _parse_cycles(raw: dict) -> list[dict]:
-    """Parse open-world day/night and warm/cold cycle states."""
+    from datetime import timedelta
     cycles: list[dict] = []
     now = datetime.now(tz=timezone.utc)
+    ts  = now.timestamp()
 
-    # ── Cetus / Plains of Eidolon (computed from known cycle constants) ──────
-    # Community-derived: total 9000 s cycle, 6000 s day, 3000 s night.
-    # Reference epoch ≈ Nov 4 2017 (Plains of Eidolon launch).
-    try:
-        from datetime import timedelta
-        day_s, night_s = 6000, 3000
-        cycle_s = day_s + night_s
-        epoch_s = 1509785490
-        elapsed = int(now.timestamp() - epoch_s) % cycle_s
-        is_day   = elapsed < day_s
-        secs_left = (day_s - elapsed) if is_day else (cycle_s - elapsed)
-        cycles.append({
-            "location": "Cetus",
-            "state":    "Day"   if is_day else "Night",
-            "eta":      _eta(now + timedelta(seconds=secs_left)),
-        })
-    except Exception:
-        pass
+    try:  # Cetus — epoch=1510444800, cycle=8998s, day=5998s, night=3000s
+        epoch_s, cycle_s, day_s = 1510444800, 8998, 5998
+        elapsed   = int(ts - epoch_s) % cycle_s
+        is_night  = elapsed >= day_s
+        secs_left = (cycle_s - elapsed) if is_night else (day_s - elapsed)
+        cycles.append({"location": "Cetus", "state": "Night" if is_night else "Day", "eta": _eta(now + timedelta(seconds=secs_left))})
+    except Exception: pass
 
-    # ── Orb Vallis warm / cold ────────────────────────────────────────────────
-    vallis = raw.get("VallisCycle")
-    if isinstance(vallis, dict):
-        expiry_dt = _parse_date(vallis.get("expiry") or vallis.get("Expiry"))
-        raw_state = vallis.get("state", vallis.get("isDay", "cold"))
-        is_warm   = (raw_state is True) or str(raw_state).lower() in ("warm", "true", "day")
-        cycles.append({
-            "location": "Orb Vallis",
-            "state":    "Warm" if is_warm else "Cold",
-            "eta":      _eta(expiry_dt),
-        })
+    try:  # Orb Vallis — epoch=1542318000, cycle=1600s, warm=400s
+        epoch_s, cycle_s, warm_s = 1542318000, 1600, 400
+        elapsed   = int(ts - epoch_s) % cycle_s
+        is_warm   = elapsed < warm_s
+        secs_left = (warm_s - elapsed) if is_warm else (cycle_s - elapsed)
+        cycles.append({"location": "Orb Vallis", "state": "Warm" if is_warm else "Cold", "eta": _eta(now + timedelta(seconds=secs_left))})
+    except Exception: pass
 
-    # ── Cambion Drift fass / vome ─────────────────────────────────────────────
-    cambion = raw.get("CambionCycle")
-    if isinstance(cambion, dict):
-        expiry_dt = _parse_date(cambion.get("expiry") or cambion.get("Expiry"))
-        active    = str(cambion.get("active", cambion.get("state", ""))).lower()
-        is_fass   = active == "fass" or cambion.get("isDay", False) is True
-        cycles.append({
-            "location": "Cambion Drift",
-            "state":    "Fass" if is_fass else "Vome",
-            "eta":      _eta(expiry_dt),
-        })
+    try:  # Cambion Drift — epoch=1604085600, cycle=8998s, fass=4499s
+        epoch_s, cycle_s, fass_s = 1604085600, 8998, 4499
+        elapsed   = int(ts - epoch_s) % cycle_s
+        is_fass   = elapsed < fass_s
+        secs_left = (fass_s - elapsed) if is_fass else (cycle_s - elapsed)
+        cycles.append({"location": "Cambion Drift", "state": "Fass" if is_fass else "Vome", "eta": _eta(now + timedelta(seconds=secs_left))})
+    except Exception: pass
 
-    # ── Zariman Ten Zero corpus / grineer ─────────────────────────────────────
-    zariman = raw.get("ZarimanCycle")
-    if isinstance(zariman, dict):
-        expiry_dt = _parse_date(zariman.get("expiry") or zariman.get("Expiry"))
-        raw_state = zariman.get("state", zariman.get("isDay", "grineer"))
-        is_corpus = (raw_state is True) or str(raw_state).lower() in ("corpus", "true", "day")
-        cycles.append({
-            "location": "Zariman Ten Zero",
-            "state":    "Corpus" if is_corpus else "Grineer",
-            "eta":      _eta(expiry_dt),
-        })
+    try:  # Zariman — from raw API
+        z = raw.get("ZarimanCycle")
+        if isinstance(z, dict):
+            expiry_dt = _parse_date(z.get("expiry") or z.get("Expiry"))
+            is_corpus = str(z.get("state", "grineer")).lower() in ("corpus", "true")
+            cycles.append({"location": "Zariman Ten Zero", "state": "Corpus" if is_corpus else "Grineer", "eta": _eta(expiry_dt)})
+    except Exception: pass
 
     return cycles
 
