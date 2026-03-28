@@ -896,8 +896,8 @@ def _parse_fissures(raw: list, solnode_map: dict) -> list[dict]:
         mission_display = _mission_type(mission_key)
         # is_storm = display tag only (Void Storm badge); Zariman shares these types
         is_storm = mission_display in {"Void Cascade", "Void Flood", "Void Armageddon"}
-        # is_railjack = drives Railjack tab; must be a Proxima node, not a SolNode
-        is_railjack = raw_node.startswith("CrewBattleNode")
+        # is_railjack = drives Railjack tab; Proxima nodes OR railjack mission type
+        is_railjack = raw_node.startswith("CrewBattleNode") or mission_display in {"Railjack", "Skirmish"}
         is_hard = f.get("Hard", False)
 
         out.append({
@@ -1315,7 +1315,7 @@ def parse(raw: dict) -> dict:
     solnode_map = _load_solnode_map()
 
     return {
-        "fissures":    _parse_fissures(raw.get("ActiveMissions", []), solnode_map),
+        "fissures":    _parse_fissures(raw.get("ActiveMissions", []) + raw.get("VoidStorms", []), solnode_map),
         "alerts":      _parse_alerts(raw.get("Alerts", []), solnode_map),
         "sortie":      _parse_sortie(raw.get("Sorties", []), solnode_map),
         "archon_hunt": _parse_archon_hunt(raw.get("LiteSorties", []), solnode_map),
