@@ -321,7 +321,7 @@
 .cycle-grid::-webkit-scrollbar { display: none; }
 .cycle-item {
   flex: 1;
-  min-width: 140px;
+  min-width: 160px;
   padding: 10px 16px;
   text-align: center;
   position: relative;
