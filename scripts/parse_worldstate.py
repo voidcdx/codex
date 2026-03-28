@@ -1098,6 +1098,43 @@ def _parse_cycles(raw: dict) -> list[dict]:
     return cycles
 
 
+def _parse_news(raw: dict) -> list[dict]:
+    """Parse news/announcement entries from Events[].
+
+    News items have Messages[] with LanguageCode + Message, plus Prop (URL),
+    ImageUrl, and Date fields. Game-event entries (operations, alerts) use
+    Description/Tag instead and are skipped by the missing-Messages guard.
+    """
+    out: list[dict] = []
+    for ev in raw.get("Events", []):
+        try:
+            messages = ev.get("Messages")
+            if not messages:
+                continue
+            msg_en = ""
+            for m in messages:
+                if not isinstance(m, dict):
+                    continue
+                if m.get("LanguageCode", "").lower() in ("en", ""):
+                    msg_en = m.get("Message", "")
+                    break
+            if not msg_en and messages:
+                first = messages[0]
+                msg_en = first.get("Message", "") if isinstance(first, dict) else ""
+            if not msg_en or msg_en.startswith("/Lotus/") or len(msg_en) <= 10:
+                continue
+            dt = _parse_date(ev.get("Date"))
+            out.append({
+                "message": msg_en,
+                "url":     ev.get("Prop") or "",
+                "image":   ev.get("ImageUrl") or None,
+                "date":    dt.isoformat() if dt else None,
+            })
+        except Exception:
+            continue
+    return out[:10]
+
+
 def _parse_events(raw: dict) -> list[dict]:
     """Parse active, non-expired game events."""
     out: list[dict] = []
@@ -1204,6 +1241,7 @@ def parse(raw: dict) -> dict:
         "invasions":   _parse_invasions(raw.get("Invasions", []), solnode_map),
         "cycles":      _parse_cycles(raw),
         "events":      _parse_events(raw),
+        "news":        _parse_news(raw),
     }
 
 
