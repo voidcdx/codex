@@ -491,6 +491,20 @@ DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platf
 - Actual upstream fetches happen at most every 60 seconds (TTL).
 - Manual refresh button always triggers a fresh `/api/worldstate` call.
 
+### Node Name Lookup (`ALL_NODES` / `NODE_FACTION` in `parse_worldstate.py`)
+`ALL_NODES` maps SolNode/SettlementNode/ClanNode/CrewBattleNode keys → `"Name (Planet)"`. `NODE_FACTION` maps same keys → faction string (used as fallback when the worldstate `Faction` field is absent).
+
+**When fissures show raw node IDs (e.g. `SolNode10` instead of a name):**
+1. Open `https://api.warframe.com/cdn/worldState.php` in the browser
+2. Run JS: `JSON.parse(document.body.innerText).ActiveMissions.map(f => f.Node)` to get active node keys
+3. Cross-reference against `ALL_NODES` keys to find what's missing
+4. Look up the node name on the relevant planet wiki page at `wiki.warframe.com/w/PlanetName`
+5. Add to both `ALL_NODES` (display name) and `NODE_FACTION` (faction) in the correct section
+
+**Known data quality issue:** Jupiter and Eris node IDs in `ALL_NODES` are partially stale. The wiki now lists different SolNode IDs for several nodes on those planets (e.g. wiki shows `SolNode164`=Kala-azar/Eris but our code has `SolNode164`=Elara/Jupiter). Both old and new IDs appear active in the worldstate. A full Jupiter + Eris audit is pending.
+
+`solnode_map.json` (secondary fallback) does not exist — do not rely on it.
+
 ### Live page typography scale (do not regress)
 | Tier | Size | Examples |
 |---|---|---|
