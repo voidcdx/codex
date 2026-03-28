@@ -1,34 +1,37 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Two sessions of worldstate work. `scripts/parse_worldstate.py` is now fully
-populated with lookup tables and all parsing functions use them. Verified live
-output on localhost — fissures, invasions, sortie, void trader, cycles all
-resolve to human-readable names.
+Live page typography pass. Established a clear three-tier type scale across
+all live cards: primary row data at 1rem, secondary text at 0.85rem,
+tags/badges/buttons at 0.73rem. Also removed the hardcoded inner border rect
+from the news placeholder SVG so PH and real-image cards render consistently.
 
 ---
 
 ## Changes made this session
 
-### parse_worldstate.py — lookup tables + parsing
-- `FISSURE_TIERS`: VoidT5→Requiem, VoidT6→Omnia added
-- `MT_MISSION_TYPES`: 33-entry dict for raw `MT_*` mission keys
-- `SORTIE_BOSSES`: 19 bosses
-- `SORTIE_MODIFIERS`: 29 modifiers
-- `BOSS_FACTION`: 20-entry dict — sortie faction derived from boss key when raw Faction field is empty
-- `ALL_NODES`: ~290 entries across all planets, proxima, relays, Zariman, Deimos, Duviri
-- `NODE_FACTION`: parallel dict (node key → faction) used as fallback in `_parse_fissures`
-- `ITEM_NAMES`: 80 paths → display names
-- `_parse_fissures`: enemy field populated via NODE_FACTION fallback
-- `_parse_invasions`: fixed field names (Faction/DefenderFaction/AttackerReward/DefenderReward); `_reward()` returns `""` not `"Unknown"` for empty rewards
-- `_parse_sortie`: faction derived from BOSS_FACTION when raw Faction is empty
-- `_mission_type()`: checks MT_MISSION_TYPES first, then MISSION_TYPES
+### web/static/panels.css
+- `.panel h2`: 0.85rem → 1rem, letter-spacing 2px → 3px (global — affects all pages)
 
-### Node corrections
-- SolNode153: was "Seimeni (Ceres)" / Infested → "Coba (Sedna)" / Grineer
-- SolNode181: was "Helene (Saturn)" / Grineer → "Cinxia (Ceres)" / Grineer
-- SolNode718 / 744 / 747: added (Deimos / Murmur)
-- SolNode230 / 232: added (Zariman / Corpus)
+### web/static/live.css — font scale promotion
+**Primary row data (0.85rem → 1rem):**
+`.fissure-node`, `.mission-node`, `.trader-location`, `.nw-title`,
+`.alert-reward`, `.invasion-node`, `.event-title`
+
+**ETA chip (0.73rem → 0.85rem):**
+`.eta-chip`
+
+**Secondary text (0.73rem → 0.85rem):**
+`.fissure-sub`, `.mission-sub`, `.trader-eta`, `.nw-eta`, `.alert-sub`,
+`.invasion-factions`, `.cycle-eta`, `.event-desc`, `.live-eta`
+
+**Unchanged (tags/badges/buttons stay at 0.73rem):**
+`.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`,
+`.invasion-vs`, `.live-count`, `.refresh-btn`, `.news-section-label`
+
+### web/static/live.html
+- `_NEWS_PH` SVG: removed inner `<rect stroke="#8b0000">` border rect — all
+  news cards now have only the uniform `.news-card` outer border
 
 ---
 
@@ -51,6 +54,18 @@ resolve to human-readable names.
 
 **CSS variable reference:**
 `--bg` `--surface` `--surface-solid` `--surface2` `--border` `--border-highlight` `--border-red` `--accent` `--accent2` `--accent-glow` `--panel-glow` `--text` `--text-field` `--text-dim` `--text-primary` `--crimson` `--crimson-bright` `--crimson-glow` `--riven`
+
+---
+
+## Live page typography scale (established — do not regress)
+
+| Tier | Size | Classes |
+|---|---|---|
+| Panel headings | 1rem Orbitron | `.panel h2` (global, panels.css) |
+| Primary row data | 1rem Rajdhani | `.fissure-node`, `.mission-node`, `.trader-location`, `.nw-title`, `.alert-reward`, `.invasion-node`, `.event-title`, `.cycle-state`, `.sortie-boss` |
+| Secondary text / ETAs | 0.85rem | `.fissure-sub`, `.mission-sub`, `.trader-eta`, `.nw-eta`, `.alert-sub`, `.invasion-factions`, `.cycle-eta`, `.event-desc`, `.live-eta`, `.eta-chip` |
+| Tags / badges / buttons | 0.73rem | `.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`, `.invasion-vs`, `.live-count`, `.refresh-btn`, `.news-section-label` |
+| Micro labels | 0.67rem | `.tier-btn`, `.news-section-label` (section category labels) |
 
 ---
 
@@ -105,13 +120,12 @@ resolve to human-readable names.
 4. Status Simulator (needs research — complex proc weighting)
 5. Build Cards (export image)
 6. Build Sharing (URL-encoded state)
-7. Live Data — Cycles + Events cards (data parsed server-side, JS card builders exist but untested with real data)
-8. Live Data — surface worldstate on main calculator page (fissure banner? void trader alert?)
+7. Live Data — surface worldstate on main calculator page (fissure banner? void trader alert?)
 
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-dgOJU`
+- Branch: `claude/review-handoff-notes-NtuWr`
 - Version: `0.5.5`
 - Game data: Update 41 — The Old Peace
 - Tests: 304 passing
