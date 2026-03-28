@@ -1098,12 +1098,6 @@ def _parse_cycles(raw: dict) -> list[dict]:
     return cycles
 
 
-_NEWS_URL_PATTERNS = (
-    "forums.warframe.com",
-    "www.warframe.com/news",
-    "warframe.com/updates",
-)
-
 _NEWS_GENERIC_MESSAGES = {
     "check out the official warframe wiki",
     "visit the official warframe forums",
@@ -1137,11 +1131,9 @@ def _parse_news(raw: dict) -> list[dict]:
             if msg_en.lower().strip() in _NEWS_GENERIC_MESSAGES:
                 continue
             url = ev.get("Prop") or ""
-            if not any(p in url for p in _NEWS_URL_PATTERNS):
+            if "warframe.com" not in url:
                 continue
             image = ev.get("ImageUrl") or None
-            if not image:
-                continue
             dt = _parse_date(ev.get("Date"))
             out.append({
                 "message": msg_en,
@@ -1182,13 +1174,10 @@ def _debug_news(raw: dict) -> dict:
                 rejected.append({"reason": "generic message", "message": msg_en})
                 continue
             url = ev.get("Prop") or ""
-            if not any(p in url for p in _NEWS_URL_PATTERNS):
+            if "warframe.com" not in url:
                 rejected.append({"reason": "url mismatch", "message": msg_en, "url": url})
                 continue
             image = ev.get("ImageUrl") or None
-            if not image:
-                rejected.append({"reason": "no image", "message": msg_en, "url": url})
-                continue
             accepted.append({"message": msg_en, "url": url, "image": image})
         except Exception as exc:
             rejected.append({"reason": f"exception: {exc}"})
