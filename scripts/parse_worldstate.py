@@ -1387,4 +1387,4 @@ def main() -> None:
     print(f"  Void Trader: {'active' if result.get('void_trader', {}).get('active') else 'inactive'}")
     nw = result.get("nightwave")
     print(f"  Nightwave:  {len(nw['active_challenges']) if nw else 0} challenges")
-    print(f"  Invasions:
+    print(f"  Invasions:  {len(result['invasions'])}")
