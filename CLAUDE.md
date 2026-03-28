@@ -489,6 +489,16 @@ DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platf
 - Actual upstream fetches happen at most every 60 seconds (TTL).
 - Manual refresh button always triggers a fresh `/api/worldstate` call.
 
+### Live page typography scale (do not regress)
+| Tier | Size | Examples |
+|---|---|---|
+| Panel headings | `1rem` Orbitron | `.panel h2` (global via `panels.css`) |
+| Primary row data | `1rem` | `.fissure-node`, `.mission-node`, `.trader-location`, `.nw-title`, `.alert-reward`, `.invasion-node`, `.event-title`, `.cycle-state`, `.sortie-boss` |
+| Secondary text / ETAs | `0.85rem` | `.fissure-sub`, `.mission-sub`, `.trader-eta`, `.nw-eta`, `.alert-sub`, `.invasion-factions`, `.cycle-eta`, `.event-desc`, `.live-eta`, `.eta-chip` |
+| Tags / badges / buttons | `0.73rem` | `.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`, `.invasion-vs`, `.live-count`, `.refresh-btn` |
+
+When adding new live page sections, follow this tier assignment. Do not drop primary row data below `1rem` or secondary text below `0.85rem`.
+
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.
 - **Test before implement:** Write the `pytest` case from a wiki example, then write logic until it passes.
