@@ -85,8 +85,8 @@ async def _worldstate_bg_loop() -> None:
     global _ws_cache, _ws_error
     while True:
         try:
-            parsed = await asyncio.to_thread(_fetch_worldstate)
-            _ws_cache = (parsed, time.time())
+            parsed, raw = await asyncio.to_thread(_fetch_worldstate)
+            _ws_cache = (parsed, raw, time.time())
             _ws_error = ""
         except Exception as exc:
             _ws_error = str(exc)
@@ -739,7 +739,7 @@ import requests as _requests  # noqa: E402
 
 _WS_URL = "https://api.warframe.com/cdn/worldState.php"
 _WS_TTL = 60  # 1 minute
-_ws_cache: tuple[dict, float] | None = None
+_ws_cache: tuple[dict, dict, float] | None = None  # (parsed, raw, timestamp)
 _ws_error: str = ""
 
 # trust_env=False fully disables HTTPS_PROXY/HTTP_PROXY env vars (proxies={} does not)
@@ -791,7 +791,8 @@ def _fetch_worldstate() -> dict:
         try:
             r = _ws_session.get(_WS_URL, timeout=15)
             r.raise_for_status()
-            return mod.parse(r.json())
+            raw = r.json()
+            return mod.parse(raw), raw
         except Exception as exc:
             last_exc = exc
             if attempt < 2:
@@ -801,7 +802,8 @@ def _fetch_worldstate() -> dict:
     raw_path = Path(__file__).parent.parent / "data" / "worldstate_raw.json"
     if raw_path.exists():
         _logger.warning("Worldstate fetch failed (%s); using local snapshot", last_exc)
-        return mod.parse(json.loads(raw_path.read_text()))
+        raw = json.loads(raw_path.read_text())
+        return mod.parse(raw), raw
     raise RuntimeError(f"Worldstate fetch failed: {last_exc}") from last_exc
 
 
@@ -810,8 +812,18 @@ def _fetch_worldstate() -> dict:
 def get_worldstate(request: Request) -> dict:
     if _ws_cache is None:
         raise HTTPException(503, f"Worldstate unavailable — {_ws_error or 'first fetch in progress'}")
-    data, _ = _ws_cache
+    data, _raw, _ = _ws_cache
     return data
+
+
+@app.get("/api/worldstate/debug-news")
+@_limiter.limit("10/minute")
+def debug_worldstate_news(request: Request) -> dict:
+    if _ws_cache is None:
+        raise HTTPException(503, f"Worldstate unavailable — {_ws_error or 'first fetch in progress'}")
+    _parsed, raw, _ = _ws_cache
+    mod = _load_parse_worldstate_mod()
+    return mod._debug_news(raw)
 
 
 # ---------------------------------------------------------------------------
