@@ -108,7 +108,6 @@ cp $TMPDIR/fresh /sessions/relaxed-beautiful-fermi/mnt/codex/.git/index
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-- **Jupiter/Eris node ID audit** — Old IDs in ALL_NODES conflict with current wiki IDs; needs browser + wiki cross-reference.
 
 ### Partially wired
 - **Condition Overload** — parsed and stored on Mod. Calculator uses `unique_statuses` parameter but UI doesn't pass actual unique status counts.
