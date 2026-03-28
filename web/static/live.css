@@ -117,7 +117,7 @@
 }
 .fissure-sub {
   color: var(--text-dim);
-  font-size: 0.73rem;
+  font-size: 0.85rem;
   margin-top: 1px;
 }
 .fissure-tag {
@@ -156,7 +156,7 @@
 }
 .mission-block:last-child { border-bottom: none; }
 .mission-node { color: var(--text-primary); font-size: 1rem; }
-.mission-sub { color: var(--text-dim); font-size: 0.73rem; margin-top: 2px; }
+.mission-sub { color: var(--text-dim); font-size: 0.85rem; margin-top: 2px; }
 .modifier-badge {
   display: inline-block;
   margin-top: 5px;
@@ -183,7 +183,7 @@
 .trader-dot.active   { background: #4caf50; box-shadow: 0 0 6px rgba(76,175,80,0.5); }
 .trader-dot.inactive { background: var(--text-dim); }
 .trader-location { color: var(--text-primary); font-size: 1rem; }
-.trader-eta      { color: var(--text-dim); font-size: 0.73rem; margin-left: auto; }
+.trader-eta      { color: var(--text-dim); font-size: 0.85rem; margin-left: auto; }
 
 .inventory-table {
   width: 100%;
@@ -233,7 +233,7 @@
 .nw-tag.elite  { color: var(--accent2); border-color: var(--border-red); }
 .nw-challenge-info { flex: 1; min-width: 0; }
 .nw-title { color: var(--text-primary); font-size: 1rem; }
-.nw-eta   { color: var(--text-dim); font-size: 0.73rem; margin-top: 1px; }
+.nw-eta   { color: var(--text-dim); font-size: 0.85rem; margin-top: 1px; }
 .nw-rep {
   color: var(--accent2);
   font-size: 0.85rem;
@@ -258,7 +258,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.alert-sub { color: var(--text-dim); font-size: 0.73rem; margin-top: 1px; }
+.alert-sub { color: var(--text-dim); font-size: 0.85rem; margin-top: 1px; }
 
 /* ── Invasions ── */
 .invasion-row {
@@ -271,7 +271,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.73rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
 }
 .invasion-factions .eta-chip { margin-left: auto; }
@@ -328,7 +328,7 @@
   letter-spacing: 0.08em;
 }
 .cycle-eta {
-  font-size: 0.73rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
   margin-top: 4px;
 }
@@ -397,8 +397,8 @@ a.news-msg:hover { color: var(--text-primary); }
 }
 .event-row:last-child { border-bottom: none; }
 .event-title { color: var(--text-primary); font-size: 1rem; }
-.event-desc  { color: var(--text-dim); font-size: 0.73rem; margin-top: 2px; }
-.live-eta    { color: var(--text-dim); font-size: 0.73rem; margin-top: 2px; }
+.event-desc  { color: var(--text-dim); font-size: 0.85rem; margin-top: 2px; }
+.live-eta    { color: var(--text-dim); font-size: 0.85rem; margin-top: 2px; }
 
 /* ── Empty / loading / error states ── */
 .live-empty {
