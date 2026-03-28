@@ -316,6 +316,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   gap: 0;
+  touch-action: pan-x;
 }
 .cycle-grid::-webkit-scrollbar { display: none; }
 .cycle-item {
