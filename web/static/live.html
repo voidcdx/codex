@@ -139,7 +139,7 @@ function renderFissureRows(fissures) {
     <div class="fissure-row">
       <span class="fissure-tier" ${TIER_COLORS[f.tier] ? `style="--tier-color:${TIER_COLORS[f.tier]}"` : ''}>${esc(f.tier)}</span>
       <div class="fissure-info">
-        <div class="fissure-node">${esc(f.node)}${f.is_storm ? '<span class="fissure-tag">Storm</span>' : ''}${f.is_steel_path ? '<span class="fissure-tag">SP</span>' : ''}</div>
+        <div class="fissure-node">${esc(f.node)}${f.is_steel_path ? '<span class="fissure-tag">SP</span>' : ''}${f.is_railjack ? '<span class="fissure-tag fissure-tag--railjack">Railjack</span>' : ''}</div>
         <div class="fissure-sub">${esc(f.mission_type)} · ${esc(f.enemy)}</div>
       </div>
       <span class="eta-chip">${esc(f.eta)}</span>
@@ -438,3 +438,4 @@ loadData();
 </script>
 </body>
 </html>
+                                                                                         
