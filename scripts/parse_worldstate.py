@@ -138,6 +138,28 @@ SORTIE_BOSSES: dict[str, str] = {
     "SORTIE_BOSS_ROPALOLYST":     "Ropalolyst",
 }
 
+BOSS_FACTION: dict[str, str] = {
+    "SORTIE_BOSS_VOR":           "Grineer",
+    "SORTIE_BOSS_HEK":           "Grineer",
+    "SORTIE_BOSS_RUK":           "Grineer",
+    "SORTIE_BOSS_KELA":          "Grineer",
+    "SORTIE_BOSS_TUSK":          "Grineer",
+    "SORTIE_BOSS_KRIL":          "Grineer",
+    "SORTIE_BOSS_TYL":           "Grineer",
+    "SORTIE_BOSS_JACKAL":        "Corpus",
+    "SORTIE_BOSS_ALAD":          "Corpus",
+    "SORTIE_BOSS_AMBULAS":       "Corpus",
+    "SORTIE_BOSS_HYENA":         "Corpus",
+    "SORTIE_BOSS_NEF":           "Corpus",
+    "SORTIE_BOSS_RAPTOR":        "Corpus",
+    "SORTIE_BOSS_ROPALOLYST":    "Corpus",
+    "SORTIE_BOSS_LEPHANTIS":     "Infested",
+    "SORTIE_BOSS_PHORID":        "Infested",
+    "SORTIE_BOSS_MUTALIST_ALAD": "Infested",
+    "SORTIE_BOSS_INFALAD":       "Infested",
+    "SORTIE_BOSS_CORRUPTED_VOR": "Corrupted",
+}
+
 SORTIE_MODIFIERS: dict[str, str] = {
     "SORTIE_MODIFIER_IMPACT":           "Physical Enhancement: Impact",
     "SORTIE_MODIFIER_PUNCTURE":         "Physical Enhancement: Puncture",
@@ -912,9 +934,10 @@ def _parse_sortie(raw: list, solnode_map: dict) -> dict | None:
     boss_key = s.get("Boss", "")
     boss = SORTIE_BOSSES.get(boss_key, boss_key.rstrip("/").rsplit("/", 1)[-1].replace("Boss", "").strip())
     faction_key = s.get("Faction", "")
+    faction = _faction(faction_key) or BOSS_FACTION.get(boss_key, "")
     return {
         "boss":     boss or "Unknown",
-        "faction":  _faction(faction_key),
+        "faction":  faction,
         "eta":      _eta(expiry),
         "missions": missions,
     }
@@ -1138,7 +1161,7 @@ def _parse_invasions(raw: list, solnode_map: dict) -> list[dict]:
             cr = reward.get("credits", 0)
             if cr:
                 parts.append(f"{cr:,} cr")
-            return ", ".join(parts) or "Unknown"
+            return ", ".join(parts)
 
         attacker_faction = inv.get("Faction", "")
         defender_faction = inv.get("DefenderFaction", "")
