@@ -337,6 +337,21 @@ function buildCyclesCard(cycles) {
   </div>`;
 }
 
+/* ── News ── */
+function buildNewsSection(news) {
+  if (!news || !news.length) return '';
+  const cards = news.map(n => {
+    const img = n.image
+      ? `<img class="news-thumb" src="${esc(n.image)}" alt="" loading="lazy">`
+      : '';
+    const link = n.url
+      ? `<a class="news-msg" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
+      : `<span class="news-msg">${esc(n.message)}</span>`;
+    return `<div class="news-card">${img}${link}</div>`;
+  }).join('');
+  return `<div class="news-row" id="news-row">${cards}</div>`;
+}
+
 /* ── Events ── */
 function buildEventsCard(events) {
   if (!events || !events.length) return '';
@@ -376,6 +391,8 @@ async function loadData() {
 }
 
 function renderAll(data) {
+  const newsHtml = buildNewsSection(data.news || []);
+
   const cards = [
     buildCyclesCard(data.cycles || []),
     buildFissureCard(data.fissures || []),
@@ -388,11 +405,11 @@ function renderAll(data) {
     buildEventsCard(data.events || []),
   ].filter(Boolean).join('');
 
+  const el = document.getElementById('live-content');
+  el.innerHTML = newsHtml;
   const grid = document.createElement('div');
   grid.className = 'live-grid';
   grid.innerHTML = cards;
-  const el = document.getElementById('live-content');
-  el.innerHTML = '';
   el.appendChild(grid);
   grid.querySelectorAll('.progress-bar-fill[data-progress]').forEach(bar => {
     bar.style.width = bar.dataset.progress + '%';
