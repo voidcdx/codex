@@ -1,32 +1,53 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional: dark theme, mod card grid, special slots (stance/exilus), weapon images, riven mod builder, enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks, inline SVG damage type icons. Live page (`/live`) with fissures, sorties, archon hunt, void trader, nightwave, alerts, invasions, cycles, events.
+**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional: dark theme, mod card grid, special slots (stance/exilus), weapon images, riven mod builder, enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks, inline SVG damage type icons. Live page (`/live`) with fissures (two-column, with cycles strip), sorties, archon hunt, void trader, nightwave, alert banner, invasions, events.
 
-Branch: `codex`
+Branch: `codex` — last commit `f40b8c2`
 
 ---
 
 ## What Was Done This Session
 
-### 1. Teal Railjack label in fissure tier column (`live.html` + `live.css`)
-Railjack fissures now show a teal "Railjack" label in the tier column (same position as the red "Requiem" label). Removed the inline Storm tag that was previously in the node name line.
+### 1. Panel gradient lines — top + bottom
+`.panel::before` in `panels.css` updated from a single top gradient to two-layer top + bottom gradient lines (opacity 0.55). Alert banner `::after` uses the same pattern.
 
-- `--void-teal: #3ddcb8` and `--void-teal-glow` added as CSS variables in `live.css`
-- `TIER_COLORS` in `live.html` extended with `Railjack: '#3ddcb8'`
-- Tier span logic updated: `f.is_railjack ? 'Railjack' : esc(f.tier)` with matching color
-- SP tag retained in node name line; Storm tag removed
+### 2. Theme CSS variable changes (`base.css`)
+- `--border: rgba(139, 0, 0, 0.2)` — reduced opacity (less visible borders)
+- `--radius: 4px` and `--radius-sm: 3px` — slight rounding (was 0)
 
-### 2. Fixed truncated f-string in `scripts/parse_worldstate.py`
-Line 1390 was cut mid-line: `print(f"  Invasions:` — completed to `print(f"  Invasions:  {len(result['invasions'])}")`. This caused a `SyntaxError` on import, taking down the entire live page.
+### 3. Mobile horizontal overflow fix (`live.css`)
+- `.live-grid` column template: `minmax(min(360px, 100%), 1fr)` prevents columns forcing wider than viewport
+- `overflow-x: hidden` on `.live-wrap`
+- Single-column breakpoint raised 600px → 768px
 
-### 3. Git index corruption — diagnosed and fixed
-The sandbox git (2.34.1) couldn't read the index written by Windows git (newer format). Root causes found and fixed:
+### 4. Fissures panel — cycles strip + two-column layout
+- Open World Cycles absorbed into Fissures panel as a strip above tier filter tabs (`.fissure-cycles-strip`)
+- `.fissure-list` — two-column grid desktop, single column ≤768px
+- `buildCyclesCard()` returns strip fragment only (no panel wrapper)
+- `buildFissureCard(fissures, cycles)` embeds cycle strip; `renderAll` no longer renders standalone Cycles card
 
-- `.git/HEAD` had null bytes padded after the content — fixed by rewriting the file cleanly
-- `.git/refs/heads/codex` had leading whitespace before the hash — stripped
-- Added `[index] version = 2` to `.git/config` to force Windows git to always write v2 format (which sandbox git understands). This should prevent recurrence.
-- If the index breaks again: use `GIT_INDEX_FILE=/sessions/relaxed-beautiful-fermi/tmp/<dir>/fresh_index git read-tree <sha>` then copy the result to `.git/index`
+### 5. Alert banner (`live.html` + `live.css`)
+Sticky auto-scrolling ticker between header and `.live-wrap`. Hidden when no alerts.
+- `#alert-banner` div in HTML; `buildAlertBanner(alerts)` builds doubled ticker for seamless loop
+- `ab-scroll` keyframe: `translateX(0) → translateX(-50%)` over 28s
+- Top + bottom gradient lines via `::after`; side borders only
+- Alerts panel in grid suppressed when banner is active (null → filtered by `.filter(Boolean)`)
+
+### 6. Touch scroll fixes (`live.css`)
+- `.news-row`, `.news-slider`, `.cycle-grid`: `touch-action: pan-x pan-y`
+  (was `pan-x` only — blocked vertical page scroll after horizontal swipe)
+
+### 7. News nav arrows — bare style (`live.css`)
+`.news-nav-btn`: removed circle background and border. Now bare crimson arrows (`background: none; border: none; opacity: 0.8`).
+
+### 8. No-flash auto-refresh (`live.html`)
+`_hasLoaded` flag: loading spinner only shown on first load. Subsequent auto-refreshes update silently in place.
+
+### 9. SolNode748, credits format, CamelCase fix (`parse_worldstate.py`)
+- `SolNode748` added to `ALL_NODES` as "Garus (Kuva Fortress)" and `NODE_FACTION` as "Grineer"
+- Credits format: `f"{credits:,} Credits"` changed to `f"{credits:,}c"` (two locations)
+- `_item_name()` fallback now splits CamelCase via `re.sub(r'([A-Z])', r' \1', raw).strip()`
 
 ---
 
@@ -56,9 +77,10 @@ The sandbox git (2.34.1) couldn't read the index written by Windows git (newer f
 | `web/api.py` | FastAPI endpoints |
 | `web/static/index.html` | Calculator SPA |
 | `web/static/live.html` | Live Data SPA — worldstate, fissures, etc. |
-| `web/static/live.css` | Live page styles — includes `--void-teal` game color var |
-| `web/static/panels.css` | Shared panel/component styles — `--radius: 0` everywhere |
-| `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)` entry point; `ALL_NODES` + `NODE_FACTION` dicts |
+| `web/static/base.css` | CSS variables: `--radius: 4px`, `--border: rgba(139,0,0,0.2)` |
+| `web/static/live.css` | Live page styles — fissure layout, alert banner, news ticker |
+| `web/static/panels.css` | Shared panel styles — top+bottom gradient lines via `::before` |
+| `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)` entry point; `ALL_NODES` + `NODE_FACTION` |
 | `__main__.py` | CLI interface |
 
 ### Data Files
@@ -68,13 +90,14 @@ The sandbox git (2.34.1) couldn't read the index written by Windows git (newer f
 | `data/mods.json` | 1,405 mods |
 | `data/enemies.json` | 983 enemies |
 
-### Combobox Architecture
-`setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl)` in `index.html`:
-- Dropdown is `position: absolute` inside `.combobox-wrap` — no portal
-- `_confirmed` tracks last committed name; restored to input on abandon
-- `.panel.combobox-open` lifts parent panel z-index when open
-- Selection: `mousedown` (desktop) + `touchend` (mobile), both with `e.preventDefault()`
-- Close: `mousedown` outside only (no touchstart)
+### Live Page — Key JS Functions (`live.html`)
+| Function | Purpose |
+|----------|---------|
+| `buildFissureCard(fissures, cycles)` | Main fissures panel — embeds cycle strip + tier tabs + two-col list |
+| `buildCyclesCard(cycles)` | Returns `.fissure-cycles-strip` fragment only (no panel wrapper) |
+| `buildAlertBanner(alerts)` | Populates `#alert-banner` ticker; hides when empty |
+| `renderAll(data)` | Sets `_hasLoaded = true`; omits Alerts card when banner is active |
+| `loadData()` | Fetch + render; shows loading spinner on first load only |
 
 ### Live Page Fissure Categories
 | Key | Condition |
@@ -84,34 +107,26 @@ The sandbox git (2.34.1) couldn't read the index written by Windows git (newer f
 | `steelpath` | `f.is_steel_path === true` |
 | `origin` | everything else |
 
-Tier column shows the label ("Railjack", "Requiem", tier name) with its color from `TIER_COLORS`. SP tag shown inline in node name for steel path rows.
+Tier column shows label + color from `TIER_COLORS`. Railjack uses `--void-teal: #3ddcb8`. SP tag shown inline in node name for steel path rows.
 
-### Sandbox Git Notes
-The sandbox runs git 2.34.1. Windows git writes a newer index format by default. We've set `[index] version = 2` in `.git/config` to prevent this. If the index breaks again (error: `unknown index entry format`):
-```bash
-# In sandbox:
-TMPDIR=/sessions/relaxed-beautiful-fermi/tmp/fix
-mkdir -p $TMPDIR
-GIT_DIR=/sessions/relaxed-beautiful-fermi/mnt/codex/.git \
-GIT_INDEX_FILE=$TMPDIR/fresh \
-git read-tree <HEAD_SHA>
-cp $TMPDIR/fresh /sessions/relaxed-beautiful-fermi/mnt/codex/.git/index
-# Also check .git/HEAD for null bytes — rewrite clean if needed
+### Sandbox Git — Commit Workaround
+Cowork's background git sync holds `index.lock`, blocking sandbox commits. Commit from Windows terminal instead:
 ```
+cd C:\Users\jesse\Desktop\codex
+git add -A && git commit -m "..."
+```
+`.git/config` has `[index] version = 2` to keep index format compatible between Windows git and sandbox git 2.34.1.
 
 ---
 
 ## Known Gaps / TODO
 
-### Not yet implemented
 - **Kill Time (TTK)** — Shots and seconds to kill at given enemy level.
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-- **Jupiter/Eris node ID audit** — Old IDs in ALL_NODES conflict with current wiki IDs; needs browser + wiki cross-reference.
-
-### Partially wired
-- **Condition Overload** — parsed and stored on Mod. Calculator uses `unique_statuses` parameter but UI doesn't pass actual unique status counts.
+- **Condition Overload** — Calculator uses `unique_statuses` but UI doesn't pass actual unique status counts yet.
+- **Jupiter/Eris node ID audit** — Some IDs in `ALL_NODES` may be stale; needs browser + wiki cross-reference.
 
 ---
 

@@ -121,7 +121,7 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(18,10,10,0.50)`, `-
 ### CSS Design Rules (STRICT)
 - **No inline `style=` attributes** on HTML elements — all styles go to CSS classes. SVG presentation attributes excepted.
 - **No hardcoded `rgba()` for theme colors** — use CSS variables (see variable list above).
-- **No rounded corners** — `--radius: 0`, `--radius-sm: 0` everywhere.
+- **Slight rounding** — `--radius: 4px`, `--radius-sm: 3px`. Small enough to feel sharp, not pill-shaped.
 - **No scan-line or noise overlays** — both removed. Do not re-add.
 - **Glassmorphism — local-glow pattern only.** `backdrop-filter` on `#050505` blurs nothing. Each `.panel` generates its own crimson atmosphere via `::after` (`inset: -24px; radial-gradient(...var(--panel-glow)...); z-index: -1`) so blur works without a page-wide background. Do NOT attempt page-level glassmorphism.
 - **Font sizes** — use `rem` for text content. `px` only for structural/icon sizes. Body: `clamp(13px, 1.1vw, 16px)`. 7-step rem scale: `0.67rem` (8–9px) · `0.73rem` (10–11px) · `0.85rem` (12–13px) · `1rem` (14–15px) · `1.1rem` (18px) · `1.5rem` (24px). iOS anti-zoom overrides (`16px !important`) are intentional — do not convert.
@@ -530,6 +530,10 @@ When adding new live page sections, follow this tier assignment. Do not drop pri
 
 ## Private Notes
 `accuracy-notes.md` — accuracy self-assessment covering what the calculator gets right, known gaps, and where confidence is lowest. Read on user request.
+
+## Git / Commit Notes
+- The Cowork desktop app holds `index.lock` in the background, blocking sandbox git commits. If `git commit` fails with a lock error, ask the user to run the commit from their Windows terminal: `cd C:\Users\jesse\Desktop\codex && git add -A && git commit -m "..."`
+- `.git/config` has `[index] version = 2` — keeps index format compatible between Windows git and sandbox git 2.34.1. Do not remove.
 
 ## Rules
 - Short answers only. Don't rewrite entire files — only the parts that need changing. Ask questions when uncertain.
