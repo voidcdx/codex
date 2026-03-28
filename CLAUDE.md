@@ -11,6 +11,8 @@ Create a Python-based damage calculator that accurately emulates in-game damage 
 
 **NEVER use the Fandom wiki (warframe.fandom.com) — it is no longer updated. Always use the official wiki at wiki.warframe.com.**
 
+**DATA SOURCE RULE: wiki.warframe.com is the ONLY permitted source for all Warframe game data, constants, formulas, and scraping. Never use third-party community tools, GitHub repos, or any other external source for game data — not even as a reference or fallback.**
+
 ## Technical Stack
 - **Language:** Python 3.11+
 - **Testing:** `pytest`
