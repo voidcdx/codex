@@ -343,12 +343,7 @@ function buildNewsSection(news) {
       : `<span class="news-msg">${esc(n.message)}</span>`;
     return `<div class="news-card">${img}${inner}</div>`;
   }).join('');
-  return `<div class="news-section">
-    <div class="news-section-label">News</div>
-    <div class="news-row" id="news-row">${cards}</div>
-    <button class="news-nav news-nav-prev" onclick="document.getElementById('news-row').scrollBy({left:-240,behavior:'smooth'})">&#8249;</button>
-    <button class="news-nav news-nav-next" onclick="document.getElementById('news-row').scrollBy({left:240,behavior:'smooth'})">&#8250;</button>
-  </div>`;
+  return `<div class="news-section"><div class="news-section-label">News</div><div class="news-row">${cards}</div></div>`;
 }
 
 /* ── Events ── */
