@@ -21,7 +21,7 @@
 <header class="header">
   <h1 class="header-title">Live Data</h1>
 </header>
-
+<div id="alert-banner" class="alert-banner"></div>
 <div class="live-wrap">
   <div class="live-controls">
     <div class="refresh-info">
@@ -146,7 +146,7 @@ function renderFissureRows(fissures) {
     </div>`).join('') + '</div>';
 }
 
-function buildFissureCard(fissures) {
+function buildFissureCard(fissures, cycles) {
   window._fissureData = fissures;
   const cats = [
     { key: 'origin',    label: 'Origin System' },
@@ -157,8 +157,10 @@ function buildFissureCard(fissures) {
   const btns = cats.map(c =>
     `<button class="tier-btn${c.key === activeCategory ? ' active' : ''}" data-category="${c.key}" onclick="setCategory('${c.key}')">${c.label}</button>`
   ).join('');
+  const cycleStrip = buildCyclesCard(cycles || []);
   return `<div class="panel live-card-full">
     <h2>Void Fissures <span class="live-count">${fissures.length} active</span></h2>
+    ${cycleStrip}
     <div class="tier-btns">${btns}</div>
     <div id="fissure-rows">${renderFissureRows(fissures)}</div>
   </div>`;
@@ -323,10 +325,7 @@ function buildCyclesCard(cycles) {
       <div class="cycle-eta">${esc(c.eta)}</div>
     </div>`;
   }).join('');
-  return `<div class="panel live-card-full">
-    <h2>Open World Cycles</h2>
-    <div class="cycle-grid">${items}</div>
-  </div>`;
+  return `<div class="cycle-grid fissure-cycles-strip">${items}</div>`;
 }
 
 /* ── News ── */
@@ -369,10 +368,13 @@ function buildEventsCard(events) {
 }
 
 /* ── Data loading ── */
+let _hasLoaded = false;
 async function loadData() {
   resetCountdown();
-  document.getElementById('live-content').innerHTML =
-    '<div class="loading-msg">Acquiring worldstate…</div>';
+  if (!_hasLoaded) {
+    document.getElementById('live-content').innerHTML =
+      '<div class="loading-msg">Acquiring worldstate…</div>';
+  }
   try {
     const res = await fetch('/api/worldstate');
     if (!res.ok) {
@@ -391,26 +393,40 @@ async function loadData() {
   }
 }
 
+function buildAlertBanner(alerts) {
+  const el = document.getElementById('alert-banner');
+  if (!el) return;
+  if (!alerts || !alerts.length) { el.style.display = 'none'; return; }
+  const items = alerts.map(a => {
+    const reward = esc(a.reward);
+    const node   = esc(a.node);
+    const type   = esc(a.mission_type);
+    const eta    = esc(a.eta);
+    return `<span class="ab-item">${reward} &nbsp;·&nbsp; ${node} &nbsp;·&nbsp; ${type} &nbsp;·&nbsp; <span class="ab-eta">${eta}</span></span>`;
+  }).join('<span class="ab-sep">|</span>');
+  el.innerHTML = `<span class="ab-label">ALERTS</span><div class="ab-track"><div class="ab-inner">${items}${items}</div></div>`;
+  el.style.display = 'flex';
+}
 function renderAll(data) {
+  _hasLoaded = true;
   const cards = [
-    buildCyclesCard(data.cycles || []),
-    buildFissureCard(data.fissures || []),
+    buildFissureCard(data.fissures || [], data.cycles || []),
     buildSortieCard(data.sortie),
     buildArchonCard(data.archon_hunt),
     buildTraderCard(data.void_trader),
     buildNightwaveCard(data.nightwave),
-    buildAlertsCard(data.alerts || []),
+    (data.alerts && data.alerts.length ? null : buildAlertsCard([])),
     buildInvasionsCard(data.invasions || []),
     buildEventsCard(data.events || []),
   ].filter(Boolean).join('');
 
   document.getElementById('live-news').innerHTML = buildNewsSection(data.news || []);
+  buildAlertBanner(data.alerts || []);
   const el = document.getElementById('live-content');
-  el.innerHTML = '';
   const grid = document.createElement('div');
   grid.className = 'live-grid';
   grid.innerHTML = cards;
-  el.appendChild(grid);
+  el.replaceChildren(grid);
   grid.querySelectorAll('.progress-bar-fill[data-progress]').forEach(bar => {
     bar.style.width = bar.dataset.progress + '%';
   });

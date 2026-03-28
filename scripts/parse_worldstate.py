@@ -452,6 +452,7 @@ ALL_NODES: dict[str, str] = {
     "SolNode745":   "Tamu (Kuva Fortress)",
     "SolNode746":   "Dakata (Kuva Fortress)",
     "SolNode747":   "Pago (Kuva Fortress)",
+    "SolNode748":   "Garus (Kuva Fortress)",
     "SolNode500":   "Koro (Kuva Fortress)",
     "SolNode501":   "Nabuk (Kuva Fortress)",
     "SolNode502":   "Taveuni (Kuva Fortress)",
@@ -650,7 +651,7 @@ NODE_FACTION: dict[str, str] = {
     # Kuva Fortress
     "SolNode741": "Grineer",   "SolNode742": "Grineer",   "SolNode743": "Grineer",
     "SolNode744": "Grineer",   "SolNode745": "Grineer",   "SolNode746": "Grineer",
-    "SolNode747": "Grineer",
+    "SolNode747": "Grineer",   "SolNode748": "Grineer",
     "SolNode500": "Grineer",   "SolNode501": "Grineer",   "SolNode502": "Grineer",
     "SolNode503": "Grineer",   "SolNode504": "Grineer",   "SolNode505": "Grineer",
     "SolNode506": "Grineer",   "SolNode507": "Grineer",
@@ -861,7 +862,10 @@ def _item_name(path: str) -> str:
     """Resolve a /Lotus/... item path to a display name, falling back to the last path segment."""
     if path in ITEM_NAMES:
         return ITEM_NAMES[path]
-    return path.rstrip("/").rsplit("/", 1)[-1]
+    raw = path.rstrip("/").rsplit("/", 1)[-1]
+    # Split CamelCase into words: "OrokinCatalystBlueprint" → "Orokin Catalyst Blueprint"
+    import re
+    return re.sub(r'([A-Z])', r' \1', raw).strip()
 
 
 def _node_display(node_key: str, solnode_map: dict[str, dict]) -> str:
@@ -974,7 +978,7 @@ def _parse_alerts(raw: list, solnode_map: dict) -> list[dict]:
         for it in items:
             reward_parts.append(_item_name(it))
         if credits:
-            reward_parts.append(f"{credits:,} Credits")
+            reward_parts.append(f"{credits:,}c")
 
         out.append({
             "node":         _node_display(mission.get("location", ""), solnode_map),
@@ -1286,7 +1290,7 @@ def _parse_events(raw: dict) -> list[dict]:
                     first = items[0]
                     reward = first if isinstance(first, str) else first.get("ItemType", "").rsplit("/", 1)[-1]
                 elif credits:
-                    reward = f"{int(credits):,} Credits"
+                    reward = f"{int(credits):,}c"
 
             out.append({
                 "name":   name[:60],

@@ -8,10 +8,77 @@
    Shared theme: base.css · layout.css · panels.css · responsive.css
    ═══════════════════════════════════════════════════════ */
 
+/* ── Alert banner ── */
+.alert-banner {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 20px;
+  background: rgba(139, 0, 0, 0.10);
+  border: 1px solid rgba(139, 0, 0, 0.2);
+  border-top: none;
+  border-bottom: none;
+  border-radius: 4px;
+  margin: 8px 16px 0;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.alert-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) bottom / 100% 1px no-repeat;
+  pointer-events: none;
+}
+.ab-label {
+  font-family: var(--font-display);
+  font-size: 0.67rem;
+  letter-spacing: 0.12em;
+  color: var(--crimson-bright);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ab-track {
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+.ab-inner {
+  display: inline-flex;
+  gap: 0;
+  white-space: nowrap;
+  animation: ab-scroll 28s linear infinite;
+}
+.ab-inner:hover { animation-play-state: paused; }
+@keyframes ab-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ab-item {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  padding: 0 32px 0 0;
+}
+.ab-eta {
+  color: var(--text-dim);
+  font-size: 0.73rem;
+}
+.ab-sep {
+  color: rgba(139, 0, 0, 0.4);
+  padding: 0 16px 0 0;
+  font-size: 0.73rem;
+  align-self: center;
+}
+
 /* ── Scrollable content column ── */
 .live-wrap {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px 28px;
   display: flex;
   flex-direction: column;
@@ -54,7 +121,7 @@
 /* ── Card grid ── */
 .live-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
   gap: 12px;
   align-items: start;
 }
@@ -101,7 +168,18 @@
 }
 
 /* ── Fissure rows ── */
-.fissure-list { display: flex; flex-direction: column; }
+.fissure-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 24px;
+}
+
+/* Cycles strip embedded inside fissures panel */
+.fissure-cycles-strip {
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
 .fissure-row {
   display: flex;
   align-items: center;
@@ -327,7 +405,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   gap: 0;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y;
 }
 .cycle-grid::-webkit-scrollbar { display: none; }
 .cycle-item {
@@ -380,30 +458,32 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid rgba(220,20,60,0.35);
-  border-radius: 50%;
+  background: none;
+  border: none;
   color: var(--crimson-bright);
-  font-size: 1.1rem;
-  width: 30px;
-  height: 30px;
+  font-size: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-  padding: 0;
+  padding: 4px;
   line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.15s, color 0.15s;
 }
 .news-nav-btn:first-child { left: 6px; }
 .news-nav-btn:last-child  { right: 6px; }
-.news-nav-btn:hover { background: rgba(139,0,0,0.55); border-color: var(--crimson-bright); color: #fff; }
+.news-nav-btn:hover { opacity: 1; color: #fff; }
 .news-row {
   width: 100%;
   display: flex;
   gap: 10px;
   overflow-x: auto;
   scrollbar-width: none;
+  touch-action: pan-x pan-y;
+}
+.news-slider {
+  touch-action: pan-x pan-y;
 }
 .news-row::-webkit-scrollbar { display: none; }
 .news-card {
@@ -495,9 +575,10 @@ a.news-msg { text-decoration: none; color: #fff; }
 @media (max-width: 900px) {
   .live-wrap { padding: 16px; }
 }
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .live-grid { grid-template-columns: minmax(0, 1fr); }
   .live-card-wide { grid-column: 1 / -1; }
   .live-controls { gap: 8px; }
+  .fissure-list { grid-template-columns: 1fr; }
 }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

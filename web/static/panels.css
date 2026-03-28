@@ -49,8 +49,10 @@
 .panel::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.4), transparent);
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) bottom / 100% 1px no-repeat;
   pointer-events: none;
 }
 .panel::after {
@@ -324,7 +326,7 @@ select option {
   border: 1px solid;
 }
 .threat-badge-faction {
-  border-color: rgba(220, 20, 60, 0.4);
+  border-color: rgba(220, 20, 60, 0.55);
   color: var(--crimson-bright);
   background: rgba(139, 0, 0, 0.12);
 }

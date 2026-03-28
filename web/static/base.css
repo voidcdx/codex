@@ -7,7 +7,7 @@
   --surface:         rgba(18, 10, 10, 0.50);
   --surface2:        rgba(12, 6, 6, 0.55);
   --surface-solid:   #201818;
-  --border:          rgba(139, 0, 0, 0.4);
+  --border:          rgba(139, 0, 0, 0.2);
   --border-highlight: rgba(220, 20, 60, 0.6);
   --border-red:      rgba(139, 0, 0, 0.55);
   --accent:          #8b0000;
@@ -32,8 +32,8 @@
   --font-display:    'Orbitron', monospace;
   --font-body:       'Rajdhani', sans-serif;
   --glass-blur:      20px;
-  --radius:          0;
-  --radius-sm:       0;
+  --radius:          4px;
+  --radius-sm:       3px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
