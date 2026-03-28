@@ -311,6 +311,7 @@
 /* ── Open World Cycles ── */
 .cycle-grid {
   display: flex;
+  width: 100%;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -461,7 +462,7 @@ a.news-msg:hover { color: var(--text-primary); }
   .live-wrap { padding: 16px; }
 }
 @media (max-width: 600px) {
-  .live-grid { grid-template-columns: 1fr; }
+  .live-grid { grid-template-columns: minmax(0, 1fr); }
   .live-card-wide { grid-column: 1 / -1; }
   .live-controls { gap: 8px; }
 }
