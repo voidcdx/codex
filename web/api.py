@@ -81,21 +81,17 @@ _limiter = Limiter(key_func=_get_client_ip)
 # since Python resolves globals at call time, not definition time.
 
 async def _worldstate_bg_loop() -> None:
-    """Refresh worldstate for all platforms.
-
-    Retries every 30 s until PC is successfully cached, then switches to the
-    full _WS_TTL interval so we stay respectful to DE's servers.
-    """
+    """Refresh worldstate on a fixed interval."""
+    global _ws_cache, _ws_error
     while True:
-        for platform in _PLATFORM_URLS:
-            try:
-                parsed = await asyncio.to_thread(_fetch_worldstate, platform)
-                _ws_cache[platform] = (parsed, time.time())
-                _ws_error.pop(platform, None)
-            except Exception as exc:
-                _ws_error[platform] = str(exc)
-                _logger.warning("Worldstate refresh failed for %s: %s", platform, exc)
-        sleep_time = 30 if "pc" not in _ws_cache else _WS_TTL
+        try:
+            parsed = await asyncio.to_thread(_fetch_worldstate)
+            _ws_cache = (parsed, time.time())
+            _ws_error = ""
+        except Exception as exc:
+            _ws_error = str(exc)
+            _logger.warning("Worldstate refresh failed: %s", exc)
+        sleep_time = 30 if _ws_cache is None else _WS_TTL
         await asyncio.sleep(sleep_time)
 
 
@@ -741,17 +737,10 @@ def scaled_enemy(req: ScaleRequest) -> dict:
 
 import requests as _requests  # noqa: E402
 
-# In-memory cache: platform → (parsed_data, timestamp)
-_ws_cache: dict[str, tuple[dict, float]] = {}
-_ws_error: dict[str, str] = {}  # last fetch error per platform
+_WS_URL = "https://api.warframe.com/cdn/worldState.php"
 _WS_TTL = 60  # 1 minute
-
-_PLATFORM_URLS: dict[str, str] = {
-    "pc":  "https://api.warframe.com/cdn/worldState.php",
-    "ps4": "https://ps4.warframe.com/dynamic/worldState.php",
-    "xb1": "https://xb1.warframe.com/dynamic/worldState.php",
-    "swi": "https://swi.warframe.com/dynamic/worldState.php",
-}
+_ws_cache: tuple[dict, float] | None = None
+_ws_error: str = ""
 
 # trust_env=False fully disables HTTPS_PROXY/HTTP_PROXY env vars (proxies={} does not)
 _ws_session = _requests.Session()
@@ -790,18 +779,17 @@ def _load_parse_worldstate_mod():
     return mod
 
 
-def _fetch_worldstate(platform: str) -> dict:
-    """Fetch and parse live worldstate for the given platform.
+def _fetch_worldstate() -> dict:
+    """Fetch and parse live worldstate.
 
     Retries up to 3 times with 2-second backoff before giving up.
     Falls back to a local snapshot if one exists.
     """
     mod = _load_parse_worldstate_mod()
-    url = _PLATFORM_URLS[platform]
     last_exc: Exception | None = None
     for attempt in range(3):
         try:
-            r = _ws_session.get(url, timeout=15)
+            r = _ws_session.get(_WS_URL, timeout=15)
             r.raise_for_status()
             return mod.parse(r.json())
         except Exception as exc:
@@ -812,20 +800,17 @@ def _fetch_worldstate(platform: str) -> dict:
     # All attempts failed — fall back to local snapshot if available
     raw_path = Path(__file__).parent.parent / "data" / "worldstate_raw.json"
     if raw_path.exists():
-        _logger.warning("Worldstate fetch failed for %s (%s); using local snapshot", platform, last_exc)
+        _logger.warning("Worldstate fetch failed (%s); using local snapshot", last_exc)
         return mod.parse(json.loads(raw_path.read_text()))
     raise RuntimeError(f"Worldstate fetch failed: {last_exc}") from last_exc
 
 
 @app.get("/api/worldstate")
 @_limiter.limit("30/minute")
-def get_worldstate(request: Request, platform: str = "pc") -> dict:
-    if platform not in _PLATFORM_URLS:
-        raise HTTPException(400, f"Unknown platform: {platform!r}")
-    if platform not in _ws_cache:
-        err = _ws_error.get(platform, "first fetch in progress")
-        raise HTTPException(503, f"Worldstate unavailable — {err}")
-    data, _ = _ws_cache[platform]
+def get_worldstate(request: Request) -> dict:
+    if _ws_cache is None:
+        raise HTTPException(503, f"Worldstate unavailable — {_ws_error or 'first fetch in progress'}")
+    data, _ = _ws_cache
     return data
 
 
