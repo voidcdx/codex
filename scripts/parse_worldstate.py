@@ -1098,12 +1098,26 @@ def _parse_cycles(raw: dict) -> list[dict]:
     return cycles
 
 
+_NEWS_URL_PATTERNS = (
+    "forums.warframe.com",
+    "www.warframe.com/news",
+    "warframe.com/updates",
+)
+
+_NEWS_GENERIC_MESSAGES = {
+    "check out the official warframe wiki",
+    "visit the official warframe forums",
+}
+
+
 def _parse_news(raw: dict) -> list[dict]:
     """Parse news/announcement entries from Events[].
 
-    News items have Messages[] with LanguageCode + Message, plus Prop (URL),
-    ImageUrl, and Date fields. Game-event entries (operations, alerts) use
-    Description/Tag instead and are skipped by the missing-Messages guard.
+    Keeps only entries that:
+    - Have an English Message (len > 20, not a /Lotus/ path, not a known generic string)
+    - Have an image (blank card otherwise)
+    - Link to forums.warframe.com, www.warframe.com/news, or warframe.com/updates
+    Results are sorted newest-first by Date.
     """
     out: list[dict] = []
     for ev in raw.get("Events", []):
@@ -1120,18 +1134,27 @@ def _parse_news(raw: dict) -> list[dict]:
                     break
             if not msg_en or msg_en.startswith("/Lotus/") or len(msg_en) <= 20:
                 continue
+            if msg_en.lower().strip() in _NEWS_GENERIC_MESSAGES:
+                continue
             url = ev.get("Prop") or ""
-            if "warframe.com" not in url:
+            if not any(p in url for p in _NEWS_URL_PATTERNS):
+                continue
+            image = ev.get("ImageUrl") or None
+            if not image:
                 continue
             dt = _parse_date(ev.get("Date"))
             out.append({
                 "message": msg_en,
                 "url":     url,
-                "image":   ev.get("ImageUrl") or None,
+                "image":   image,
                 "date":    dt.isoformat() if dt else None,
+                "_dt":     dt,
             })
         except Exception:
             continue
+    out.sort(key=lambda x: x["_dt"] or datetime.min.replace(tzinfo=timezone.utc), reverse=True)
+    for item in out:
+        del item["_dt"]
     return out[:10]
 
 
