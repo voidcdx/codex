@@ -1,37 +1,47 @@
 # Void Codex — Session Handoff
 
 ## Session summary
-Live page typography pass. Established a clear three-tier type scale across
-all live cards: primary row data at 1rem, secondary text at 0.85rem,
-tags/badges/buttons at 0.73rem. Also removed the hardcoded inner border rect
-from the news placeholder SVG so PH and real-image cards render consistently.
+Live page work: refactored Void Fissures filter tabs from tier-based to
+gameplay category tabs (Origin System / Steel Path / Requiem / Railjack),
+updated tier badge colors, fixed open world cycles (added Earth epoch formula,
+Duviri API read, moved Zariman to epoch-based), replaced _parse_cycles with
+cleaner epoch-formula approach for Cetus/Vallis/Cambion, and enforced
+wiki.warframe.com as sole data source in CLAUDE.md.
 
 ---
 
 ## Changes made this session
 
-### web/static/panels.css
-- `.panel h2`: 0.85rem → 1rem, letter-spacing 2px → 3px (global — affects all pages)
+### CLAUDE.md
+- Added hard rule: `wiki.warframe.com` is the **only** permitted source for
+  all Warframe game data, constants, formulas, and scraping. No third-party
+  community tools, GitHub repos, or other external sources.
 
-### web/static/live.css — font scale promotion
-**Primary row data (0.85rem → 1rem):**
-`.fissure-node`, `.mission-node`, `.trader-location`, `.nw-title`,
-`.alert-reward`, `.invasion-node`, `.event-title`
+### scripts/parse_worldstate.py
+- `_parse_fissures()`: added `expiry_ts` field (Unix timestamp float) for
+  frontend sort-by-ETA
+- `_parse_cycles()`: full replacement with cleaner epoch-formula blocks:
+  - Cetus: epoch=1510444800, cycle=8998s, day=5998s
+  - Orb Vallis: epoch=1542318000, cycle=1600s, warm=400s
+  - Cambion Drift: epoch=1604085600, cycle=8998s, fass=4499s
+  - **Earth (new)**: epoch=0, cycle=14400s, day=10800s, night=3600s
+  - **Duviri (new)**: reads `DuviriCycle` from raw worldstate API
+  - Zariman: reads `ZarimanCycle` from raw worldstate API
 
-**ETA chip (0.73rem → 0.85rem):**
-`.eta-chip`
+### web/static/live.css
+- `.tier-btn`: replaced bordered pill style with underline-gradient tabs
+  matching `.attack-tab` (0.85rem body font, crimson gradient, text-shadow
+  glow on active, no border)
 
-**Secondary text (0.73rem → 0.85rem):**
-`.fissure-sub`, `.mission-sub`, `.trader-eta`, `.nw-eta`, `.alert-sub`,
-`.invasion-factions`, `.cycle-eta`, `.event-desc`, `.live-eta`
-
-**Unchanged (tags/badges/buttons stay at 0.73rem):**
-`.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`,
-`.invasion-vs`, `.live-count`, `.refresh-btn`, `.news-section-label`
-
-### web/static/live.html
-- `_NEWS_PH` SVG: removed inner `<rect stroke="#8b0000">` border rect — all
-  news cards now have only the uniform `.news-card` outer border
+### web/static/live.html (inline JS)
+- `TIER_COLORS`: Lith=`#b87333`, Meso=`#00bcd4`, Neo=`#3949ab`,
+  Axi=`#ffd700`, Requiem=`#8b0000`, Omnia=`#e0e0e0`
+- Fissure filter: `activeTier` → `activeCategory`; added `getFissureCategory()`
+  (origin / steelpath / requiem / railjack based on `is_storm`, `is_steel_path`,
+  `tier`); `setTier()` → `setCategory()`; removed "All" tab; default = `'origin'`
+- `renderFissureRows()`: filters by category, sorts by `expiry_ts` ascending
+- `buildFissureCard()`: 4 tabs — Origin System / Steel Path / Requiem / Railjack
+- `buildCyclesCard()`: added `Joy`, `Anger` to WARM set for Duviri styling
 
 ---
 
@@ -51,6 +61,7 @@ from the news placeholder SVG so PH and real-image cards render consistently.
 | Font sizes | `rem` for text. `px` only for icons/structural. `16px !important` iOS anti-zoom overrides are intentional — do not convert. |
 | Bar widths | Set via `fill.style.width` in JS after innerHTML render — never inline HTML `style=` attribute |
 | `.sc-modded` arrows | CSS `::before { content: '→ ' }` provides the arrow — never add it in JS `textContent` too |
+| Data sources | **wiki.warframe.com ONLY** — no third-party sources for any game data, constants, or formulas |
 
 **CSS variable reference:**
 `--bg` `--surface` `--surface-solid` `--surface2` `--border` `--border-highlight` `--border-red` `--accent` `--accent2` `--accent-glow` `--panel-glow` `--text` `--text-field` `--text-dim` `--text-primary` `--crimson` `--crimson-bright` `--crimson-glow` `--riven`
@@ -65,7 +76,12 @@ from the news placeholder SVG so PH and real-image cards render consistently.
 | Primary row data | 1rem Rajdhani | `.fissure-node`, `.mission-node`, `.trader-location`, `.nw-title`, `.alert-reward`, `.invasion-node`, `.event-title`, `.cycle-state`, `.sortie-boss` |
 | Secondary text / ETAs | 0.85rem | `.fissure-sub`, `.mission-sub`, `.trader-eta`, `.nw-eta`, `.alert-sub`, `.invasion-factions`, `.cycle-eta`, `.event-desc`, `.live-eta`, `.eta-chip` |
 | Tags / badges / buttons | 0.73rem | `.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`, `.invasion-vs`, `.live-count`, `.refresh-btn`, `.news-section-label` |
-| Micro labels | 0.67rem | `.tier-btn`, `.news-section-label` (section category labels) |
+| Micro labels | 0.67rem | `.news-section-label` (section category labels) |
+
+### Fissure category tab style (`.tier-btn`)
+Matches `.attack-tab` in `results.css`: borderless, 0.85rem body font,
+`background: transparent no-repeat bottom / 0% 2px`, hover slides in crimson
+gradient underline, active adds text-shadow glow. No `--tier-color` on tabs.
 
 ---
 
@@ -92,7 +108,7 @@ from the news placeholder SVG so PH and real-image cards render consistently.
 | `.sc-wrap` | results.css | Two-column weapon stat split |
 | `.sc-val-lg` / `.sc-val-sm` | results.css | Large/small stat values |
 | `.sc-modded` | results.css | Modded stat row — `::before` injects `→ ` arrow |
-| `.attack-tab` | results.css | Multi-attack mode tab |
+| `.attack-tab` | results.css | Multi-attack mode tab (underline-gradient style) |
 | `.riven-header-icon` | riven.css | 20px crimson hex icon in riven editor header |
 | `.riven-mod-name` | riven.css | "Riven" label on mod card — crimson |
 | `.riven-stat-pos` | riven.css | Positive stat on riven card — white |
@@ -106,7 +122,7 @@ from the news placeholder SVG so PH and real-image cards render consistently.
 ## Known issues / pending
 
 - **SolNode45** — appears as "Node45 (Sol)" in live fissure data; unknown what node this is
-- **Railway 403** — `api.warframe.com/cdn/worldState.php` still blocked from Railway's cloud IP; server retries every 60s but always fails. Live data works on localhost. Consider Cloudflare Worker proxy if this remains blocked long-term.
+- **Railway 403** — `api.warframe.com/cdn/worldState.php` blocked from Railway's cloud IP. Duviri and Zariman cycles won't display on Railway (Earth/Cetus/Vallis/Cambion always work — epoch formula). Live data works on localhost. Consider Cloudflare Worker proxy if block remains long-term.
 - Refresh `weapons.json` + `mods.json` via wiki ApiSandbox (27 MEDIUM 100.0 placeholder issues remain)
 - Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses (low priority)
 
@@ -125,7 +141,7 @@ from the news placeholder SVG so PH and real-image cards render consistently.
 ---
 
 ## Current state
-- Branch: `claude/review-handoff-notes-NtuWr`
+- Branch: `claude/review-handoff-w0wqr`
 - Version: `0.5.5`
 - Game data: Update 41 — The Old Peace
 - Tests: 304 passing
@@ -146,6 +162,7 @@ from the news placeholder SVG so PH and real-image cards render consistently.
 - [ ] `git log --oneline -5` to orient
 - [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism without local glow / `▶` in CSS / Share Tech Mono / purple in UI
 - [ ] Update Guide modal when adding UI features
+- [ ] **wiki.warframe.com ONLY** for all game data — no third-party sources ever
 - [ ] **Railway deploy** — after every `git push` to the feature branch, immediately run:
   ```bash
   git checkout codex && git merge <feature-branch> --no-ff && git push -u origin codex && git checkout <feature-branch>
