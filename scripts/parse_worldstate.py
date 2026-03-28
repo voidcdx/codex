@@ -256,6 +256,7 @@ ALL_NODES: dict[str, str] = {
     "SolNode170":   "Wahiba (Mars)",
     "SolNode117":   "Valle (Mars)",
     "SolNode44":    "Ultor (Mars)",
+    "SolNode45":    "Ara (Mars)",
     "SolNode79":    "Ares (Mars)",
     "SolNode99":    "Manics (Mars)",
     # Ceres
@@ -366,6 +367,7 @@ ALL_NODES: dict[str, str] = {
     # Sedna
     "SolNode115": "Hydron (Sedna)",
     "SolNode116": "Rusalka (Sedna)",
+    "SolNode184": "Rusalka (Sedna)",
     "SolNode40":  "Tikoloshe (Sedna)",
     "SolNode8":   "Merrow (Sedna)",
     "SolNode51":  "Kelpie (Sedna)",
@@ -394,6 +396,9 @@ ALL_NODES: dict[str, str] = {
     "SolNode312": "Orias (Europa)",
     "SolNode313": "Lillith (Europa)",
     "SolNode314": "Larzac (Europa)",
+    "SolNode203": "Abaddon (Europa)",
+    "SolNode204": "Armaros (Europa)",
+    "SolNode215": "Valac (Europa)",
     "ClanNode14": "Cholistan (Europa)",
     "ClanNode15": "Viver (Europa)",
     "EuropaHUB":  "Leonov Relay (Europa)",
@@ -443,25 +448,31 @@ ALL_NODES: dict[str, str] = {
     "SolNode505": "Rotuma (Kuva Fortress)",
     "SolNode506": "Tamu (Kuva Fortress)",
     "SolNode507": "Kuva Survival (Kuva Fortress)",
-    # Deimos
+    # Deimos (Orokin Derelict nodes)
     "SolNode706": "Horend (Deimos)",
     "SolNode707": "Hyf (Deimos)",
     "SolNode708": "Phlegyas (Deimos)",
-    "SolNode709": "Magnacidium (Deimos)",
-    "SolNode710": "Terrorem (Deimos)",
-    "SolNode711": "Formido (Deimos)",
-    "SolNode712": "Persto (Deimos)",
-    "SolNode713": "Effervo (Deimos)",
-    "SolNode714": "Nex (Deimos)",
-    "SolNode715": "Munio (Deimos)",
-    "SolNode716": "Cambire (Deimos)",
-    "SolNode717": "Sanctum Anatomica (Deimos)",
-    "SolNode741": "Armatus (Deimos)",
-    "SolNode742": "Effervo (Deimos)",
-    "SolNode743": "Munio (Deimos)",
-    "SolNode718": "Rictus (Deimos)",
-    "SolNode744": "Exsequias (Deimos)",
-    "SolNode747": "Fervicustos (Deimos)",
+    "SolNode709": "Dirus (Deimos)",
+    "SolNode710": "Formido (Deimos)",
+    "SolNode711": "Terrorem (Deimos)",
+    "SolNode712": "Magnacidium (Deimos)",
+    "SolNode713": "Exequias (Deimos)",
+    "SolNode715": "Effervo (Deimos)",
+    "SolNode716": "Nex (Deimos)",
+    "SolNode717": "Persto (Deimos)",
+    "SolNode718": "Cambire (Deimos)",
+    "SolNode719": "Munio (Deimos)",
+    "SolNode720": "Testudo (Deimos)",
+    "SolNode721": "Armatus (Deimos)",
+    "SolNode229": "Cambion Drift (Deimos)",
+    # Kuva Fortress (741–747 are the current worldstate IDs; 500–507 retained as fallback)
+    "SolNode741": "Koro (Kuva Fortress)",
+    "SolNode742": "Nabuk (Kuva Fortress)",
+    "SolNode743": "Rotuma (Kuva Fortress)",
+    "SolNode744": "Taveuni (Kuva Fortress)",
+    "SolNode745": "Tamu (Kuva Fortress)",
+    "SolNode746": "Dakata (Kuva Fortress)",
+    "SolNode747": "Pago (Kuva Fortress)",
     # Zariman
     "SolNode780": "Everview Arc (Zariman)",
     "SolNode781": "Tuvul Commons (Zariman)",
@@ -870,18 +881,25 @@ def _parse_fissures(raw: list, solnode_map: dict) -> list[dict]:
         modifier = f.get("Modifier", "")
         tier = FISSURE_TIERS.get(modifier, modifier)
 
+        node_key = f.get("Node", "")
+        raw_node = node_key.rsplit("/", 1)[-1] if "/" in node_key else node_key
         mission_key = f.get("MissionType", "")
-        is_storm = "VoidStorm" in mission_key or "VoidArmageddon" in mission_key or "VoidCascade" in mission_key or "VoidFlood" in mission_key
+        mission_display = _mission_type(mission_key)
+        # is_storm = display tag only (Void Storm badge); Zariman shares these types
+        is_storm = mission_display in {"Void Cascade", "Void Flood", "Void Armageddon"}
+        # is_railjack = drives Railjack tab; must be a Proxima node, not a SolNode
+        is_railjack = raw_node.startswith("CrewBattleNode")
         is_hard = f.get("Hard", False)
 
         out.append({
-            "node":         _node_display(f.get("Node", ""), solnode_map),
-            "mission_type": _mission_type(mission_key),
-            "enemy":        _faction(f.get("Faction", "")) or NODE_FACTION.get(f.get("Node", ""), ""),
+            "node":         _node_display(node_key, solnode_map),
+            "mission_type": mission_display,
+            "enemy":        _faction(f.get("Faction", "")) or NODE_FACTION.get(node_key, ""),
             "tier":         tier,
             "eta":          _eta(expiry),
             "expiry_ts":    expiry.timestamp() if expiry else 0,
             "is_storm":     is_storm,
+            "is_railjack":  is_railjack,
             "is_steel_path": is_hard,
         })
 
