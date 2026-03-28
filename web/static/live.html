@@ -330,7 +330,7 @@ function buildCyclesCard(cycles) {
 }
 
 /* ── News ── */
-const _NEWS_PH = `<svg class="news-thumb" viewBox="0 0 175 175" xmlns="http://www.w3.org/2000/svg"><rect width="175" height="175" fill="#201818"/><text x="87" y="94" font-family="Orbitron,sans-serif" font-size="11" fill="#a0a0a0" text-anchor="middle" letter-spacing="4">WARFRAME</text></svg>`;
+const _NEWS_PH = `<div class="news-thumb news-thumb-ph"><span>WARFRAME</span></div>`;
 
 function buildNewsSection(news) {
   if (!news || !news.length) return '';
@@ -344,14 +344,12 @@ function buildNewsSection(news) {
     return `<div class="news-card">${img}${inner}</div>`;
   }).join('');
   return `<div class="panel live-card-full"><div class="news-section">
-    <div class="news-header">
-      <h2>News</h2>
-      <div class="news-nav-btns">
-        <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:-200,behavior:'smooth'})">&#8249;</button>
-        <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:200,behavior:'smooth'})">&#8250;</button>
-      </div>
+    <h2>News</h2>
+    <div class="news-slider">
+      <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:-200,behavior:'smooth'})">&#8249;</button>
+      <div class="news-row" id="news-row">${cards}</div>
+      <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:200,behavior:'smooth'})">&#8250;</button>
     </div>
-    <div class="news-row" id="news-row">${cards}</div>
   </div></div>`;
 }
 

@@ -362,32 +362,31 @@
 
 /* ── News section ── */
 .news-section { margin-bottom: 0; }
-.news-header {
+.news-slider {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  gap: 8px;
 }
-.news-header h2 { margin: 0; width: auto; padding-bottom: 0; border-bottom: none; }
-.news-nav-btns { display: flex; gap: 6px; }
 .news-nav-btn {
+  flex-shrink: 0;
   background: none;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 50%;
   color: var(--crimson-bright);
-  font-size: 1rem;
-  width: 28px;
-  height: 28px;
+  font-size: 1.1rem;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
-  line-height: 1;
   padding: 0;
+  line-height: 1;
 }
 .news-nav-btn:hover { border-color: var(--crimson-bright); color: #fff; }
 .news-row {
+  flex: 1;
   display: flex;
   gap: 10px;
   overflow-x: auto;
@@ -409,6 +408,18 @@
   object-fit: cover;
   display: block;
   border-radius: 8px;
+}
+.news-thumb-ph {
+  background: var(--surface-solid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.news-thumb-ph span {
+  font-family: var(--font-display);
+  font-size: 0.67rem;
+  letter-spacing: 4px;
+  color: var(--text-dim);
 }
 .news-msg {
   position: absolute;
