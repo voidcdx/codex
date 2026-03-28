@@ -36,6 +36,7 @@
       <button class="refresh-btn" onclick="loadData()">↻ Now</button>
     </div>
   </div>
+  <div id="live-news"></div>
   <div id="live-content"></div>
 </div>
 </main>
@@ -399,10 +400,9 @@ function renderAll(data) {
     buildEventsCard(data.events || []),
   ].filter(Boolean).join('');
 
+  document.getElementById('live-news').innerHTML = buildNewsSection(data.news || []);
   const el = document.getElementById('live-content');
   el.innerHTML = '';
-  const newsHtml = buildNewsSection(data.news || []);
-  if (newsHtml) el.insertAdjacentHTML('afterbegin', newsHtml);
   const grid = document.createElement('div');
   grid.className = 'live-grid';
   grid.innerHTML = cards;
