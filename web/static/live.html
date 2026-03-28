@@ -314,7 +314,7 @@ function buildInvasionsCard(invasions) {
 /* ── Open World Cycles ── */
 function buildCyclesCard(cycles) {
   if (!cycles || !cycles.length) return '';
-  const WARM = new Set(['Day', 'Warm', 'Fass', 'Corpus', 'Joy', 'Anger']);
+  const WARM = new Set(['Day', 'Warm', 'Fass', 'Corpus', 'Joy']);
   const items = cycles.map(c => {
     const cls = WARM.has(c.state) ? 'cycle-warm' : 'cycle-cool';
     return `<div class="cycle-item">

@@ -1073,21 +1073,34 @@ def _parse_cycles(raw: dict) -> list[dict]:
         cycles.append({"location": "Earth", "state": "Day" if is_day else "Night", "eta": _eta(now + timedelta(seconds=secs_left))})
     except Exception: pass
 
-    try:  # Duviri — server-authoritative, reads DuviriCycle from worldstate API
-        d = raw.get("DuviriCycle")
-        if isinstance(d, dict):
-            expiry_dt = _parse_date(d.get("expiry") or d.get("Expiry"))
-            state = str(d.get("state", "")).strip().capitalize() or "Unknown"
-            cycles.append({"location": "Duviri", "state": state, "eta": _eta(expiry_dt)})
-    except Exception: pass
+    # ── Zariman Ten Zero ──────────────────────────────────────────────────────
+    try:
+        epoch_s, cycle_s, corpus_s = 1651018740, 18000, 9000
+        elapsed   = int(ts - epoch_s) % cycle_s
+        is_corpus = elapsed < corpus_s
+        secs_left = (corpus_s - elapsed) if is_corpus else (cycle_s - elapsed)
+        cycles.append({
+            "location": "Zariman Ten Zero",
+            "state":    "Corpus" if is_corpus else "Grineer",
+            "eta":      _eta(now + timedelta(seconds=secs_left)),
+        })
+    except Exception:
+        pass
 
-    try:  # Zariman — from raw API
-        z = raw.get("ZarimanCycle")
-        if isinstance(z, dict):
-            expiry_dt = _parse_date(z.get("expiry") or z.get("Expiry"))
-            is_corpus = str(z.get("state", "grineer")).lower() in ("corpus", "true")
-            cycles.append({"location": "Zariman Ten Zero", "state": "Corpus" if is_corpus else "Grineer", "eta": _eta(expiry_dt)})
-    except Exception: pass
+    # ── Duviri ────────────────────────────────────────────────────────────────
+    try:
+        _DUVIRI = ["Joy", "Anger", "Envy", "Sorrow", "Fear"]
+        epoch_s, cycle_s, phase_s = 1685498400, 36000, 7200
+        elapsed   = int(ts - epoch_s) % cycle_s
+        idx       = elapsed // phase_s
+        secs_left = phase_s - (elapsed % phase_s)
+        cycles.append({
+            "location": "Duviri",
+            "state":    _DUVIRI[idx],
+            "eta":      _eta(now + timedelta(seconds=secs_left)),
+        })
+    except Exception:
+        pass
 
     return cycles
 
