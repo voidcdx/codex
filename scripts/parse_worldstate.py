@@ -1158,6 +1158,43 @@ def _parse_news(raw: dict) -> list[dict]:
     return out[:10]
 
 
+def _debug_news(raw: dict) -> dict:
+    """Debug helper — same filter logic as _parse_news but returns accepted + rejected with reasons."""
+    accepted: list[dict] = []
+    rejected: list[dict] = []
+    for ev in raw.get("Events", []):
+        try:
+            messages = ev.get("Messages")
+            if not messages:
+                rejected.append({"reason": "no Messages[]"})
+                continue
+            msg_en = ""
+            for m in messages:
+                if not isinstance(m, dict):
+                    continue
+                if m.get("LanguageCode", "").lower() in ("en", ""):
+                    msg_en = m.get("Message", "")
+                    break
+            if not msg_en or msg_en.startswith("/Lotus/") or len(msg_en) <= 20:
+                rejected.append({"reason": "message missing/short/Lotus", "message": msg_en})
+                continue
+            if msg_en.lower().strip() in _NEWS_GENERIC_MESSAGES:
+                rejected.append({"reason": "generic message", "message": msg_en})
+                continue
+            url = ev.get("Prop") or ""
+            if not any(p in url for p in _NEWS_URL_PATTERNS):
+                rejected.append({"reason": "url mismatch", "message": msg_en, "url": url})
+                continue
+            image = ev.get("ImageUrl") or None
+            if not image:
+                rejected.append({"reason": "no image", "message": msg_en, "url": url})
+                continue
+            accepted.append({"message": msg_en, "url": url, "image": image})
+        except Exception as exc:
+            rejected.append({"reason": f"exception: {exc}"})
+    return {"accepted": accepted, "rejected": rejected}
+
+
 def _parse_events(raw: dict) -> list[dict]:
     """Parse active, non-expired game events."""
     out: list[dict] = []
