@@ -494,14 +494,21 @@ DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platf
 ### Node Name Lookup (`ALL_NODES` / `NODE_FACTION` in `parse_worldstate.py`)
 `ALL_NODES` maps SolNode/SettlementNode/ClanNode/CrewBattleNode keys → `"Name (Planet)"`. `NODE_FACTION` maps same keys → faction string (used as fallback when the worldstate `Faction` field is absent).
 
+**Both dicts were fully audited and rewritten** against wiki.warframe.com planet pages (session 2025-03). All planets had wrong IDs — DE renumbered SolNodes in a star chart update. Key corrections: Earth/Mars/Ceres/Jupiter/Saturn/Sedna/Pluto/Europa/Eris/Lua all replaced. Railjack Proxima IDs completely reshuffled. `SolNode195`=Hydron (Sedna) was the most critical fix — it was wrongly labeled "Io B (Jupiter)".
+
+**NODE_FACTION** is only a fallback — the worldstate `Faction` field is present on most fissures, so NODE_FACTION errors rarely surface. `ALL_NODES` matters more for display.
+
 **When fissures show raw node IDs (e.g. `SolNode10` instead of a name):**
 1. Open `https://api.warframe.com/cdn/worldState.php` in the browser
 2. Run JS: `JSON.parse(document.body.innerText).ActiveMissions.map(f => f.Node)` to get active node keys
 3. Cross-reference against `ALL_NODES` keys to find what's missing
-4. Look up the node name on the relevant planet wiki page at `wiki.warframe.com/w/PlanetName`
-5. Add to both `ALL_NODES` (display name) and `NODE_FACTION` (faction) in the correct section
-
-**Known data quality issue:** Jupiter and Eris node IDs in `ALL_NODES` are partially stale. The wiki now lists different SolNode IDs for several nodes on those planets (e.g. wiki shows `SolNode164`=Kala-azar/Eris but our code has `SolNode164`=Elara/Jupiter). Both old and new IDs appear active in the worldstate. A full Jupiter + Eris audit is pending.
+4. Navigate to `wiki.warframe.com/w/PlanetName` and run in browser console:
+   ```js
+   [...document.querySelectorAll('tr')].map(r => r.innerText.trim())
+     .filter(t => /\t(SolNode|ClanNode|CrewBattleNode|SettlementNode)\d+\t/.test(t))
+     .map(t => { const node = t.match(/(SolNode|ClanNode|CrewBattleNode|SettlementNode)\d+/)[0]; return `"${node}": "${t.split('\t')[0]}"` })
+   ```
+5. Add missing entries to both `ALL_NODES` and `NODE_FACTION`
 
 `solnode_map.json` (secondary fallback) does not exist — do not rely on it.
 

@@ -9,26 +9,34 @@ Branch: `codex`
 
 ## What Was Done Recently
 
-### Fissure Node Mapping Audit (`scripts/parse_worldstate.py`)
-Pulled live worldstate from `api.warframe.com` via browser and cross-referenced against `ALL_NODES` + `NODE_FACTION`. Added 5 missing nodes that were showing as raw IDs in fissure display:
+### Complete `ALL_NODES` + `NODE_FACTION` Rewrite (`scripts/parse_worldstate.py`)
+Full planet-by-planet audit against wiki.warframe.com planet pages via Claude in Chrome browser tool. Both dicts completely replaced. Key changes:
 
-| Node | Name | Faction |
-|---|---|---|
-| `SolNode10` | Thebe (Jupiter) | Corpus |
-| `SolNode18` | Rhea (Saturn) | Grineer |
-| `SolNode166` | Nimus (Eris) | Infested |
-| `SolNode175` | Naeglar (Eris) | Infested |
-| `SolNode220` | Kokabiel (Europa) | Corpus |
+**Planets with wholesale ID changes (DE renumbered these):**
+- **Earth** — all nodes wrong (76→26=Lith, 149→228=Plains, 87→39=Everest, 63→79=Cambria, etc.)
+- **Mars** — all nodes wrong (38→99=War, 64→106=Alator, 67→30=Olympus, 11→65=Gradivus, etc.)
+- **Ceres** — all nodes wrong (157–181 range → 131–149 range)
+- **Jupiter** — all nodes wrong (55/164/167/177/183/196 etc. → 53/100/125/126/74/87 etc.)
+  - SolNode125=Io, SolNode195=Hydron (**was labeled "Io B (Jupiter)" — critical fix**)
+- **Saturn** — all nodes wrong (47/90/14/24/91/92/93 etc. → 906/67/70/96/42/20/31 etc.)
+- **Uranus** — mostly wrong (120→69=Ophelia, added 64=Umbriel, 33=Ariel, 105=Titania, 723=Brutus)
+- **Sedna** — all wrong (115/116/40/8/51/77/70 etc. → 195/184/185/187/188/189/190 etc.)
+- **Europa** — old code had 300–314 (those are **Lua**); correct IDs are 203–220
+- **Lua** — old code had 132–139 (those are **Ceres**); correct IDs are 300–310
+- **Eris** — all wrong (125/126/121/97/95/27/26/33/32/30 → 172/164/153/162/173/171/166/167/175 etc.)
+- **Pluto** — all wrong (42/43/102/37/4/35/36/80/81/112/113/48/73 → 38/43/76/72/102/21/56/4/48/51 etc.)
+- **Venus** — SolNode145/146 (wrong) → ClanNode0=Romula, SolNode902=Montes
 
-`SettlementNode15` (Sharpless/Phobos) was already correctly mapped. `SolNode714` is not on the Deimos wiki and not currently appearing in live fissures — left as-is.
+**Railjack Proxima — complete reshuffle:**
+- Old code had Earth Proxima as CrewBattleNode500–505 (now those are split differently)
+- Correct current IDs: Earth=502/509/518/519/522/556/559, Venus=503/511–515, Saturn=501/530/533–535/557, Neptune=504/516/521/523–525/558, Pluto=526–529/531/536, Veil=538–543/550/553–555
 
-### Known Data Quality Issue — Jupiter/Eris Node IDs
-The wiki now shows different SolNode IDs for Jupiter and Eris than what we have in `ALL_NODES`. Example conflicts:
-- Wiki: `SolNode164` = Kala-azar (Eris); our code: `SolNode164` = Elara (Jupiter)
-- Wiki: `SolNode167` = Oestrus (Eris); our code: `SolNode167` = Io (Jupiter)
-- Wiki: `SolNode166` = Nimus (Eris) — added this session ✓
+**Nodes confirmed still correct:** Mercury, Phobos (SettlementNodes), Void, Deimos, Duviri
 
-This suggests Jupiter/Eris nodes were re-numbered in an update. Both old and new IDs appear to be active in the worldstate simultaneously (observed `SolNode195` still active as Io B/Jupiter). A full audit of Jupiter and Eris IDs is needed but deferred.
+**Zariman:** corrected to SolNode230–235 (old 780–783 kept as fallback with correct names)
+
+### Data Quality Note — Why Node IDs Change
+DE re-exports `ExportRegions.json` with new SolNode IDs when they rework the star chart or move missions. The old IDs may remain in the worldstate simultaneously during transitions. The wiki community tracks these in planet pages and is the best available source. NODE_FACTION is only a **fallback** — the worldstate `Faction` field is present on most fissures, so wrong factions in NODE_FACTION only affect edge cases where the field is absent.
 
 ---
 
@@ -85,6 +93,18 @@ This suggests Jupiter/Eris nodes were re-numbered in an update. Both old and new
 - `solnode_map.json` does not exist — no secondary fallback currently active
 - When fissures show raw node IDs: pull `api.warframe.com/cdn/worldState.php` in browser, check `ActiveMissions[].Node`, look up on wiki planet pages to find the name
 
+### When Node IDs Are Wrong Again
+1. Open `https://api.warframe.com/cdn/worldState.php` in browser
+2. Run: `JSON.parse(document.body.innerText).ActiveMissions.map(f => f.Node)` to get active fissure keys
+3. Cross-ref against `ALL_NODES` — anything missing shows as raw ID in the fissure list
+4. Navigate to `wiki.warframe.com/w/PlanetName` and run this JS in browser console to scrape:
+   ```js
+   [...document.querySelectorAll('tr')].map(r => r.innerText.trim())
+     .filter(t => /\t(SolNode|ClanNode|CrewBattleNode|SettlementNode)\d+\t/.test(t))
+     .map(t => { const node = t.match(/(SolNode|ClanNode|CrewBattleNode|SettlementNode)\d+/)[0]; return `"${node}": "${t.split('\t')[0]}"` })
+   ```
+5. Add missing entries to both `ALL_NODES` and `NODE_FACTION`
+
 ---
 
 ## Known Gaps / TODO
@@ -94,10 +114,12 @@ This suggests Jupiter/Eris nodes were re-numbered in an update. Both old and new
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-- **Jupiter/Eris node ID audit** — Old IDs in ALL_NODES conflict with current wiki IDs; needs full planet-by-planet check via browser + wiki.
 
 ### Partially wired
 - **Condition Overload** — parsed and stored on Mod. Calculator uses `unique_statuses` parameter but UI doesn't pass actual unique status counts.
+
+### Node data drift
+DE periodically re-exports `ExportRegions.json` with new IDs. The complete rewrite this session used wiki.warframe.com as source of truth, which is community-maintained and generally current but may lag. If raw IDs appear in fissures after a major update, run the audit workflow above.
 
 ---
 
