@@ -104,7 +104,7 @@ function esc(s) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-let activeCategory = 'All';
+let activeCategory = 'origin';
 function getFissureCategory(f) {
   if (f.is_storm)           return 'railjack';
   if (f.tier === 'Requiem') return 'requiem';
@@ -132,7 +132,7 @@ function openGuide() {}
 
 /* ── Fissures ── */
 function renderFissureRows(fissures) {
-  const filtered = activeCategory === 'All' ? fissures : fissures.filter(f => getFissureCategory(f) === activeCategory);
+  const filtered = fissures.filter(f => getFissureCategory(f) === activeCategory);
   const list = filtered.slice().sort((a, b) => (a.expiry_ts || 0) - (b.expiry_ts || 0));
   if (!list.length) return '<div class="live-empty">No fissures for selected category</div>';
   return '<div class="fissure-list">' + list.map(f => `
@@ -149,7 +149,6 @@ function renderFissureRows(fissures) {
 function buildFissureCard(fissures) {
   window._fissureData = fissures;
   const cats = [
-    { key: 'All',       label: 'All' },
     { key: 'origin',    label: 'Origin System' },
     { key: 'steelpath', label: 'Steel Path' },
     { key: 'requiem',   label: 'Requiem' },
