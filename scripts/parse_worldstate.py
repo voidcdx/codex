@@ -1066,6 +1066,21 @@ def _parse_cycles(raw: dict) -> list[dict]:
         cycles.append({"location": "Cambion Drift", "state": "Fass" if is_fass else "Vome", "eta": _eta(now + timedelta(seconds=secs_left))})
     except Exception: pass
 
+    try:  # Earth — epoch=0, cycle=14400s, day=10800s, night=3600s
+        elapsed   = int(ts) % 14400
+        is_day    = elapsed < 10800
+        secs_left = (10800 - elapsed) if is_day else (14400 - elapsed)
+        cycles.append({"location": "Earth", "state": "Day" if is_day else "Night", "eta": _eta(now + timedelta(seconds=secs_left))})
+    except Exception: pass
+
+    try:  # Duviri — server-authoritative, reads DuviriCycle from worldstate API
+        d = raw.get("DuviriCycle")
+        if isinstance(d, dict):
+            expiry_dt = _parse_date(d.get("expiry") or d.get("Expiry"))
+            state = str(d.get("state", "")).strip().capitalize() or "Unknown"
+            cycles.append({"location": "Duviri", "state": state, "eta": _eta(expiry_dt)})
+    except Exception: pass
+
     try:  # Zariman — from raw API
         z = raw.get("ZarimanCycle")
         if isinstance(z, dict):
