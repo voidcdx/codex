@@ -110,7 +110,7 @@
 .fissure-info { flex: 1; min-width: 0; }
 .fissure-node {
   color: var(--text-primary);
-  font-size: 0.85rem;
+  font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -130,7 +130,7 @@
   vertical-align: middle;
 }
 .eta-chip {
-  font-size: 0.73rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
   flex-shrink: 0;
   white-space: nowrap;
@@ -155,7 +155,7 @@
   border-bottom: 1px solid var(--border);
 }
 .mission-block:last-child { border-bottom: none; }
-.mission-node { color: var(--text-primary); font-size: 0.85rem; }
+.mission-node { color: var(--text-primary); font-size: 1rem; }
 .mission-sub { color: var(--text-dim); font-size: 0.73rem; margin-top: 2px; }
 .modifier-badge {
   display: inline-block;
@@ -182,7 +182,7 @@
 }
 .trader-dot.active   { background: #4caf50; box-shadow: 0 0 6px rgba(76,175,80,0.5); }
 .trader-dot.inactive { background: var(--text-dim); }
-.trader-location { color: var(--text-primary); font-size: 0.85rem; }
+.trader-location { color: var(--text-primary); font-size: 1rem; }
 .trader-eta      { color: var(--text-dim); font-size: 0.73rem; margin-left: auto; }
 
 .inventory-table {
@@ -232,7 +232,7 @@
 .nw-tag.weekly { color: #e8a060; border-color: rgba(232,160,96,0.3); }
 .nw-tag.elite  { color: var(--accent2); border-color: var(--border-red); }
 .nw-challenge-info { flex: 1; min-width: 0; }
-.nw-title { color: var(--text-primary); font-size: 0.85rem; }
+.nw-title { color: var(--text-primary); font-size: 1rem; }
 .nw-eta   { color: var(--text-dim); font-size: 0.73rem; margin-top: 1px; }
 .nw-rep {
   color: var(--accent2);
@@ -253,7 +253,7 @@
 .alert-info { flex: 1; min-width: 0; }
 .alert-reward {
   color: var(--text-primary);
-  font-size: 0.85rem;
+  font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -266,7 +266,7 @@
   border-bottom: 1px solid var(--border);
 }
 .invasion-row:last-child { border-bottom: none; }
-.invasion-node { color: var(--text-primary); font-size: 0.85rem; margin-bottom: 4px; }
+.invasion-node { color: var(--text-primary); font-size: 1rem; margin-bottom: 4px; }
 .invasion-factions {
   display: flex;
   align-items: center;
@@ -396,7 +396,7 @@ a.news-msg:hover { color: var(--text-primary); }
   border-bottom: 1px solid var(--border);
 }
 .event-row:last-child { border-bottom: none; }
-.event-title { color: var(--text-primary); font-size: 0.85rem; }
+.event-title { color: var(--text-primary); font-size: 1rem; }
 .event-desc  { color: var(--text-dim); font-size: 0.73rem; margin-top: 2px; }
 .live-eta    { color: var(--text-dim); font-size: 0.73rem; margin-top: 2px; }
 
