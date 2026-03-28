@@ -106,7 +106,7 @@ function esc(s) {
 
 let activeCategory = 'origin';
 function getFissureCategory(f) {
-  if (f.is_storm)           return 'railjack';
+  if (f.is_railjack)        return 'railjack';
   if (f.tier === 'Requiem') return 'requiem';
   if (f.is_steel_path)      return 'steelpath';
   return 'origin';
@@ -216,7 +216,7 @@ function buildTraderCard(trader) {
     : '<span class="trader-dot inactive"></span>';
   const status = trader.active
     ? `${dot}<span class="trader-location">${esc(trader.node)}</span><span class="trader-eta">Departs ${esc(trader.eta)}</span>`
-    : `${dot}<span class="trader-location">Not available</span><span class="trader-eta">Arrives ${esc(trader.eta)}</span>`;
+    : `${dot}<span class="trader-location">${trader.node ? esc(trader.node) : 'Location unknown'}</span><span class="trader-eta">Arrives ${esc(trader.eta)}</span>`;
   let inventory = '';
   if (trader.active && trader.inventory && trader.inventory.length) {
     const rows = trader.inventory.map(it => `
@@ -232,7 +232,7 @@ function buildTraderCard(trader) {
   }
   const wideClass = trader.active && trader.inventory && trader.inventory.length > 6 ? ' live-card-wide' : '';
   return `<div class="panel${wideClass}">
-    <h2>Void Trader — Baro Ki'Tec</h2>
+    <h2>Void Trader — Baro Ki'Teer</h2>
     <div class="trader-status">${status}</div>
     ${inventory}
   </div>`;
@@ -343,7 +343,12 @@ function buildNewsSection(news) {
       : `<span class="news-msg">${esc(n.message)}</span>`;
     return `<div class="news-card">${img}${inner}</div>`;
   }).join('');
-  return `<div class="news-section"><div class="news-section-label">News</div><div class="news-row">${cards}</div></div>`;
+  return `<div class="news-section">
+    <div class="news-section-label">News</div>
+    <div class="news-row" id="news-row">${cards}</div>
+    <button class="news-nav news-nav-prev" onclick="document.getElementById('news-row').scrollBy({left:-240,behavior:'smooth'})">&#8249;</button>
+    <button class="news-nav news-nav-next" onclick="document.getElementById('news-row').scrollBy({left:240,behavior:'smooth'})">&#8250;</button>
+  </div>`;
 }
 
 /* ── Events ── */
