@@ -95,7 +95,7 @@ let countdownVal    = 180;
 
 const TIER_COLORS = {
   Lith: '#b87333', Meso: '#00bcd4', Neo: '#3949ab',
-  Axi: '#ffd700', Requiem: '#8b0000', Omnia: '#e0e0e0',
+  Axi: '#ffd700', Requiem: '#8b0000', Omnia: '#e0e0e0', Railjack: '#3ddcb8',
 };
 
 function esc(s) {
@@ -137,9 +137,9 @@ function renderFissureRows(fissures) {
   if (!list.length) return '<div class="live-empty">No fissures for selected category</div>';
   return '<div class="fissure-list">' + list.map(f => `
     <div class="fissure-row">
-      <span class="fissure-tier" ${TIER_COLORS[f.tier] ? `style="--tier-color:${TIER_COLORS[f.tier]}"` : ''}>${esc(f.tier)}</span>
+      <span class="fissure-tier" ${(f.is_railjack ? TIER_COLORS['Railjack'] : TIER_COLORS[f.tier]) ? `style="--tier-color:${f.is_railjack ? TIER_COLORS['Railjack'] : TIER_COLORS[f.tier]}"` : ''}>${f.is_railjack ? 'Railjack' : esc(f.tier)}</span>
       <div class="fissure-info">
-        <div class="fissure-node">${esc(f.node)}${f.is_steel_path ? '<span class="fissure-tag">SP</span>' : ''}${f.is_railjack ? '<span class="fissure-tag fissure-tag--railjack">Railjack</span>' : ''}</div>
+        <div class="fissure-node">${esc(f.node)}${f.is_steel_path ? '<span class="fissure-tag">SP</span>' : ''}</div>
         <div class="fissure-sub">${esc(f.mission_type)} · ${esc(f.enemy)}</div>
       </div>
       <span class="eta-chip">${esc(f.eta)}</span>
