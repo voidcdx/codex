@@ -401,12 +401,12 @@ function renderAll(data) {
 
   const el = document.getElementById('live-content');
   el.innerHTML = '';
+  const newsHtml = buildNewsSection(data.news || []);
+  if (newsHtml) el.insertAdjacentHTML('afterbegin', newsHtml);
   const grid = document.createElement('div');
   grid.className = 'live-grid';
   grid.innerHTML = cards;
   el.appendChild(grid);
-  const newsHtml = buildNewsSection(data.news || []);
-  if (newsHtml) el.insertAdjacentHTML('beforeend', newsHtml);
   grid.querySelectorAll('.progress-bar-fill[data-progress]').forEach(bar => {
     bar.style.width = bar.dataset.progress + '%';
   });

@@ -374,8 +374,8 @@
   overflow-x: auto;
   white-space: nowrap;
   padding: 6px 0 8px;
-  margin-top: 14px;
-  border-top: 1px solid var(--border);
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
   scrollbar-width: none;
 }
 .news-ticker::-webkit-scrollbar { display: none; }
