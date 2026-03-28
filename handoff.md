@@ -59,7 +59,7 @@ This suggests Jupiter/Eris nodes were re-numbered in an update. Both old and new
 | `web/static/index.html` | Calculator SPA — all JS inline |
 | `web/static/live.html` | Live Data SPA — worldstate, fissures, news, etc. |
 | `web/static/live.css` | Live page styles |
-| `web/static/panels.css` | Shared panel/component styles (border-radius: 8px) |
+| `web/static/panels.css` | Shared panel/component styles (sharp edges, radius:0) |
 | `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)` entry point; `ALL_NODES` + `NODE_FACTION` dicts |
 | `__main__.py` | CLI interface |
 
