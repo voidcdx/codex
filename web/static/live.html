@@ -24,13 +24,6 @@
 
 <div class="live-wrap">
   <div class="live-controls">
-    <span class="controls-label">Platform</span>
-    <div class="platform-pills">
-      <button class="platform-pill active" onclick="setPlatform('pc')">PC</button>
-      <button class="platform-pill" onclick="setPlatform('ps4')">PS4</button>
-      <button class="platform-pill" onclick="setPlatform('xb1')">Xbox</button>
-      <button class="platform-pill" onclick="setPlatform('swi')">Switch</button>
-    </div>
     <div class="refresh-info">
       <span>Refresh in <span id="refresh-countdown">180</span>s</span>
       <button class="refresh-btn" onclick="loadData()">↻ Now</button>
@@ -97,7 +90,6 @@
 <script>
 'use strict';
 
-let currentPlatform = 'pc';
 let countdownTimer  = null;
 let countdownVal    = 180;
 
@@ -110,18 +102,6 @@ function esc(s) {
   return String(s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function setPlatform(p) {
-  currentPlatform = p;
-  document.querySelectorAll('.platform-pill').forEach(el => {
-    el.classList.toggle('active',
-      el.textContent.toLowerCase() === p ||
-      (p === 'xb1' && el.textContent === 'Xbox') ||
-      (p === 'swi' && el.textContent === 'Switch')
-    );
-  });
-  loadData();
 }
 
 let activeTier = 'All';
@@ -370,7 +350,7 @@ async function loadData() {
   document.getElementById('live-content').innerHTML =
     '<div class="loading-msg">Acquiring worldstate…</div>';
   try {
-    const res = await fetch(`/api/worldstate?platform=${currentPlatform}`);
+    const res = await fetch('/api/worldstate');
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.detail || `HTTP ${res.status}`);
