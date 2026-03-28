@@ -136,6 +136,9 @@ SORTIE_BOSSES: dict[str, str] = {
     "SORTIE_BOSS_CORRUPTED_VOR":  "Corrupted Vor",
     "SORTIE_BOSS_INFALAD":        "Infested Alad V",
     "SORTIE_BOSS_ROPALOLYST":     "Ropalolyst",
+    "SORTIE_BOSS_AMAR":           "Amar",
+    "SORTIE_BOSS_BOREAL":         "Boreal",
+    "SORTIE_BOSS_NIRA":           "Nira",
 }
 
 BOSS_FACTION: dict[str, str] = {
@@ -158,6 +161,9 @@ BOSS_FACTION: dict[str, str] = {
     "SORTIE_BOSS_MUTALIST_ALAD": "Infested",
     "SORTIE_BOSS_INFALAD":       "Infested",
     "SORTIE_BOSS_CORRUPTED_VOR": "Corrupted",
+    "SORTIE_BOSS_AMAR":          "Sentient",
+    "SORTIE_BOSS_BOREAL":        "Sentient",
+    "SORTIE_BOSS_NIRA":          "Sentient",
 }
 
 SORTIE_MODIFIERS: dict[str, str] = {
@@ -944,31 +950,29 @@ def _parse_sortie(raw: list, solnode_map: dict) -> dict | None:
 
 
 def _parse_archon_hunt(raw: list, solnode_map: dict) -> dict | None:
-    # Archon Hunt is often in Goals[] filtered by tag, or its own key
+    # LiteSorties[0] — uses Missions[] with missionType + node, no Variants, no modifier
     if not raw:
         return None
-    # Take the first entry that looks like an archon hunt (has Boss field)
-    for entry in raw:
-        if not entry.get("Boss"):
-            continue
-        expiry = _parse_date(entry.get("Expiry"))
-        variants = entry.get("Variants", [])
-        missions = []
-        for v in variants:
-            missions.append({
-                "node":         _node_display(v.get("node", ""), solnode_map),
-                "mission_type": _mission_type(v.get("missionType", "")),
-                "modifier":     v.get("modifierType", ""),
-            })
-        boss_path = entry.get("Boss", "")
-        boss = boss_path.rstrip("/").rsplit("/", 1)[-1]
-        return {
-            "boss":     boss,
-            "faction":  _faction(entry.get("Faction", "")),
-            "eta":      _eta(expiry),
-            "missions": missions,
-        }
-    return None
+    s = raw[0]
+    expiry = _parse_date(s.get("Expiry"))
+    missions_raw = s.get("Missions", [])
+    missions = []
+    for m in missions_raw:
+        missions.append({
+            "node":         _node_display(m.get("node", ""), solnode_map),
+            "mission_type": _mission_type(m.get("missionType", "")),
+            "modifier":     "",
+        })
+    boss_key = s.get("Boss", "")
+    boss = SORTIE_BOSSES.get(boss_key, boss_key.rstrip("/").rsplit("/", 1)[-1])
+    faction_key = s.get("Faction", "")
+    faction = _faction(faction_key) or BOSS_FACTION.get(boss_key, "")
+    return {
+        "boss":     boss or "Unknown",
+        "faction":  faction,
+        "eta":      _eta(expiry),
+        "missions": missions,
+    }
 
 
 def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
@@ -1194,7 +1198,7 @@ def parse(raw: dict) -> dict:
         "fissures":    _parse_fissures(raw.get("ActiveMissions", []), solnode_map),
         "alerts":      _parse_alerts(raw.get("Alerts", []), solnode_map),
         "sortie":      _parse_sortie(raw.get("Sorties", []), solnode_map),
-        "archon_hunt": _parse_archon_hunt(raw.get("LevelOverrides", []) or raw.get("Goals", []), solnode_map),
+        "archon_hunt": _parse_archon_hunt(raw.get("LiteSorties", []), solnode_map),
         "void_trader": _parse_void_trader(raw.get("VoidTraders", []), solnode_map),
         "nightwave":   _parse_nightwave(raw.get("SyndicateMissions", [])),
         "invasions":   _parse_invasions(raw.get("Invasions", []), solnode_map),
