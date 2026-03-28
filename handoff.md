@@ -104,13 +104,9 @@ cp $TMPDIR/fresh /sessions/relaxed-beautiful-fermi/mnt/codex/.git/index
 ## Known Gaps / TODO
 
 ### Not yet implemented
-- **Kill Time (TTK)** — Shots and seconds to kill at given enemy level.
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-
-### Partially wired
-- **Condition Overload** — parsed and stored on Mod. Calculator uses `unique_statuses` parameter but UI doesn't pass actual unique status counts.
 
 ---
 
