@@ -321,12 +321,16 @@ function buildCyclesCard(cycles) {
 /* ── News ── */
 function buildNewsSection(news) {
   if (!news || !news.length) return '';
-  const items = news.map(n =>
-    n.url
-      ? `<a class="news-item" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
-      : `<span class="news-item">${esc(n.message)}</span>`
-  ).join('<span class="news-sep">·</span>');
-  return `<div class="news-ticker" id="news-row">${items}</div>`;
+  const cards = news.map(n => {
+    const img = n.image
+      ? `<img class="news-thumb" src="${esc(n.image)}" alt="" loading="lazy">`
+      : '';
+    const inner = n.url
+      ? `<a class="news-msg" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
+      : `<span class="news-msg">${esc(n.message)}</span>`;
+    return `<div class="news-card">${img}${inner}</div>`;
+  }).join('');
+  return `<div class="news-section"><div class="news-section-label">News</div><div class="news-row">${cards}</div></div>`;
 }
 
 /* ── Events ── */
