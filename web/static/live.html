@@ -319,12 +319,14 @@ function buildCyclesCard(cycles) {
 }
 
 /* ── News ── */
+const _NEWS_PH = `<svg class="news-thumb" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="100" fill="#201818"/><rect x="0.5" y="0.5" width="219" height="99" fill="none" stroke="#8b0000"/><text x="110" y="56" font-family="Orbitron,sans-serif" font-size="11" fill="#a0a0a0" text-anchor="middle" letter-spacing="4">WARFRAME</text></svg>`;
+
 function buildNewsSection(news) {
   if (!news || !news.length) return '';
   const cards = news.map(n => {
     const img = n.image
       ? `<img class="news-thumb" src="${esc(n.image)}" alt="" loading="lazy">`
-      : '';
+      : _NEWS_PH;
     const inner = n.url
       ? `<a class="news-msg" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
       : `<span class="news-msg">${esc(n.message)}</span>`;
