@@ -248,7 +248,7 @@ ALL_NODES: dict[str, str] = {
     "SolNode150":   "Ker (Ceres)",
     "SolNode151":   "Thon (Ceres)",
     "SolNode152":   "Hapke (Ceres)",
-    "SolNode153":   "Seimeni (Ceres)",
+    "SolNode181":   "Cinxia (Ceres)",
     # Phobos
     "SettlementNode1":  "Roche (Phobos)",
     "SettlementNode3":  "Stickney (Phobos)",
@@ -293,7 +293,6 @@ ALL_NODES: dict[str, str] = {
     "SolNode110": "Mimas (Saturn)",
     "SolNode111": "Enceladus (Saturn)",
     "SolNode25":  "Phoebe (Saturn)",
-    "SolNode181": "Helene (Saturn)",
     "SaturnHUB":  "Kronia Relay (Saturn)",
     # Uranus
     "SolNode120": "Ophelia (Uranus)",
@@ -350,6 +349,7 @@ ALL_NODES: dict[str, str] = {
     "SolNode68":  "Marid (Sedna)",
     "SolNode74":  "Adaro (Sedna)",
     "SolNode88":  "Yam (Sedna)",
+    "SolNode153": "Coba (Sedna)",
     # Europa
     "SolNode300": "Cervantes (Europa)",
     "SolNode301": "Morax (Europa)",
@@ -431,11 +431,16 @@ ALL_NODES: dict[str, str] = {
     "SolNode741": "Armatus (Deimos)",
     "SolNode742": "Effervo (Deimos)",
     "SolNode743": "Munio (Deimos)",
+    "SolNode718": "Rictus (Deimos)",
+    "SolNode744": "Exsequias (Deimos)",
+    "SolNode747": "Fervicustos (Deimos)",
     # Zariman
     "SolNode780": "Everview Arc (Zariman)",
     "SolNode781": "Tuvul Commons (Zariman)",
     "SolNode782": "Oro Works (Zariman)",
     "SolNode783": "Halako Perimeter (Zariman)",
+    "SolNode230": "Halako Perimeter (Zariman)",
+    "SolNode232": "Tuvul Commons (Zariman)",
     # Duviri
     "SolNode751": "Duviri (Duviri)",
     "SolNode752": "The Duviri Experience (Duviri)",
@@ -511,7 +516,7 @@ NODE_FACTION: dict[str, str] = {
     "SolNode141": "Grineer",   "SolNode142": "Grineer",   "SolNode144": "Grineer",
     "SolNode75":  "Grineer",   "SolNode143": "Grineer",   "SolNode29":  "Grineer",
     "SolNode39":  "Grineer",   "SolNode19":  "Grineer",   "SolNode150": "Grineer",
-    "SolNode151": "Grineer",   "SolNode152": "Grineer",   "SolNode153": "Infested",
+    "SolNode151": "Grineer",   "SolNode152": "Grineer",   "SolNode181": "Grineer",
     # Phobos
     "SettlementNode1":  "Corpus",  "SettlementNode3":  "Corpus",
     "SettlementNode2":  "Corpus",  "SettlementNode12": "Corpus",
@@ -531,7 +536,7 @@ NODE_FACTION: dict[str, str] = {
     "SolNode92":  "Grineer",   "SolNode93":  "Corpus",    "SolNode41":  "Grineer",
     "SolNode52":  "Grineer",   "SolNode53":  "Grineer",   "SolNode54":  "Corpus",
     "SolNode110": "Infested",  "SolNode111": "Corpus",    "SolNode25":  "Corpus",
-    "SolNode181": "Grineer",   "SaturnHUB":  "Neutral",
+    "SaturnHUB":  "Neutral",
     # Uranus
     "SolNode120": "Grineer",   "SolNode83":  "Grineer",   "SolNode98":  "Grineer",
     "SolNode9":   "Grineer",   "SolNode60":  "Grineer",   "SolNode114": "Grineer",
@@ -554,7 +559,7 @@ NODE_FACTION: dict[str, str] = {
     "SolNode8":   "Grineer",   "SolNode51":  "Grineer",   "SolNode77":  "Grineer",
     "SolNode70":  "Grineer",   "SolNode69":  "Infested",  "SolNode71":  "Grineer",
     "SolNode72":  "Grineer",   "SolNode68":  "Grineer",   "SolNode74":  "Grineer",
-    "SolNode88":  "Grineer",
+    "SolNode88":  "Grineer",   "SolNode153": "Grineer",
     # Europa
     "SolNode300": "Corpus",    "SolNode301": "Corpus",    "SolNode302": "Corpus",
     "SolNode303": "Corpus",    "SolNode304": "Corpus",    "SolNode305": "Corpus",
@@ -587,9 +592,10 @@ NODE_FACTION: dict[str, str] = {
     "SolNode712": "Infested",  "SolNode713": "Murmur",    "SolNode714": "Murmur",
     "SolNode715": "Murmur",    "SolNode716": "Murmur",    "SolNode717": "Murmur",
     "SolNode741": "Murmur",    "SolNode742": "Murmur",    "SolNode743": "Murmur",
+    "SolNode718": "Murmur",    "SolNode744": "Murmur",    "SolNode747": "Murmur",
     # Zariman
     "SolNode780": "Corpus",    "SolNode781": "Corpus",    "SolNode782": "Corpus",
-    "SolNode783": "Corpus",
+    "SolNode783": "Corpus",    "SolNode230": "Corpus",    "SolNode232": "Corpus",
     # Duviri
     "SolNode751": "Duviri",    "SolNode752": "Duviri",    "SolNode753": "Duviri",
     "SolNode754": "Duviri",    "SolNode755": "Duviri",
