@@ -391,8 +391,6 @@ async function loadData() {
 }
 
 function renderAll(data) {
-  const newsHtml = buildNewsSection(data.news || []);
-
   const cards = [
     buildCyclesCard(data.cycles || []),
     buildFissureCard(data.fissures || []),
@@ -406,11 +404,13 @@ function renderAll(data) {
   ].filter(Boolean).join('');
 
   const el = document.getElementById('live-content');
-  el.innerHTML = newsHtml;
+  el.innerHTML = '';
   const grid = document.createElement('div');
   grid.className = 'live-grid';
   grid.innerHTML = cards;
   el.appendChild(grid);
+  const newsHtml = buildNewsSection(data.news || []);
+  if (newsHtml) el.insertAdjacentHTML('beforeend', newsHtml);
   grid.querySelectorAll('.progress-bar-fill[data-progress]').forEach(bar => {
     bar.style.width = bar.dataset.progress + '%';
   });

@@ -1118,15 +1118,15 @@ def _parse_news(raw: dict) -> list[dict]:
                 if m.get("LanguageCode", "").lower() in ("en", ""):
                     msg_en = m.get("Message", "")
                     break
-            if not msg_en and messages:
-                first = messages[0]
-                msg_en = first.get("Message", "") if isinstance(first, dict) else ""
-            if not msg_en or msg_en.startswith("/Lotus/") or len(msg_en) <= 10:
+            if not msg_en or msg_en.startswith("/Lotus/") or len(msg_en) <= 20:
+                continue
+            url = ev.get("Prop") or ""
+            if "warframe.com" not in url:
                 continue
             dt = _parse_date(ev.get("Date"))
             out.append({
                 "message": msg_en,
-                "url":     ev.get("Prop") or "",
+                "url":     url,
                 "image":   ev.get("ImageUrl") or None,
                 "date":    dt.isoformat() if dt else None,
             })
