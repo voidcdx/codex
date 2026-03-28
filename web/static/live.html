@@ -94,8 +94,8 @@ let countdownTimer  = null;
 let countdownVal    = 180;
 
 const TIER_COLORS = {
-  Lith: '#e8a060', Meso: '#c0c0c0', Neo: '#ffd700',
-  Axi: '#80c8ff', Requiem: '#c39bd3', Omnia: '#c0c0c0',
+  Lith: '#b87333', Meso: '#00bcd4', Neo: '#3949ab',
+  Axi: '#ffd700', Requiem: '#8b0000', Omnia: '#e0e0e0',
 };
 
 function esc(s) {
@@ -104,11 +104,17 @@ function esc(s) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-let activeTier = 'All';
-function setTier(tier) {
-  activeTier = tier;
+let activeCategory = 'All';
+function getFissureCategory(f) {
+  if (f.is_storm)           return 'railjack';
+  if (f.tier === 'Requiem') return 'requiem';
+  if (f.is_steel_path)      return 'steelpath';
+  return 'origin';
+}
+function setCategory(cat) {
+  activeCategory = cat;
   document.querySelectorAll('.tier-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.tier === tier));
+    b.classList.toggle('active', b.dataset.category === cat));
   const el = document.getElementById('fissure-rows');
   if (el) el.innerHTML = renderFissureRows(window._fissureData || []);
 }
@@ -126,8 +132,9 @@ function openGuide() {}
 
 /* ── Fissures ── */
 function renderFissureRows(fissures) {
-  const list = activeTier === 'All' ? fissures : fissures.filter(f => f.tier === activeTier);
-  if (!list.length) return '<div class="live-empty">No fissures for selected tier</div>';
+  const filtered = activeCategory === 'All' ? fissures : fissures.filter(f => getFissureCategory(f) === activeCategory);
+  const list = filtered.slice().sort((a, b) => (a.expiry_ts || 0) - (b.expiry_ts || 0));
+  if (!list.length) return '<div class="live-empty">No fissures for selected category</div>';
   return '<div class="fissure-list">' + list.map(f => `
     <div class="fissure-row">
       <span class="fissure-tier" ${TIER_COLORS[f.tier] ? `style="--tier-color:${TIER_COLORS[f.tier]}"` : ''}>${esc(f.tier)}</span>
@@ -141,11 +148,16 @@ function renderFissureRows(fissures) {
 
 function buildFissureCard(fissures) {
   window._fissureData = fissures;
-  const tiers = ['All','Lith','Meso','Neo','Axi','Requiem','Omnia'];
-  const btns = tiers.map(t => {
-    const col = TIER_COLORS[t] ? `style="--tier-color:${TIER_COLORS[t]}"` : '';
-    return `<button class="tier-btn${t === activeTier ? ' active' : ''}" data-tier="${t}" onclick="setTier('${t}')" ${col}>${t}</button>`;
-  }).join('');
+  const cats = [
+    { key: 'All',       label: 'All' },
+    { key: 'origin',    label: 'Origin System' },
+    { key: 'steelpath', label: 'Steel Path' },
+    { key: 'requiem',   label: 'Requiem' },
+    { key: 'railjack',  label: 'Railjack' },
+  ];
+  const btns = cats.map(c =>
+    `<button class="tier-btn${c.key === activeCategory ? ' active' : ''}" data-category="${c.key}" onclick="setCategory('${c.key}')">${c.label}</button>`
+  ).join('');
   return `<div class="panel live-card-full">
     <h2>Void Fissures <span class="live-count">${fissures.length} active</span></h2>
     <div class="tier-btns">${btns}</div>

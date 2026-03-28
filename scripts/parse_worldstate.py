@@ -880,6 +880,7 @@ def _parse_fissures(raw: list, solnode_map: dict) -> list[dict]:
             "enemy":        _faction(f.get("Faction", "")) or NODE_FACTION.get(f.get("Node", ""), ""),
             "tier":         tier,
             "eta":          _eta(expiry),
+            "expiry_ts":    expiry.timestamp() if expiry else 0,
             "is_storm":     is_storm,
             "is_steel_path": is_hard,
         })
