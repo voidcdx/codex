@@ -291,6 +291,7 @@ ALL_NODES: dict[str, str] = {
     "SettlementNode20": "Iliad (Phobos)",
     "ClanNode11":       "Zeugma (Phobos)",
     # Jupiter
+    "SolNode10":  "Thebe (Jupiter)",
     "SolNode55":  "Themisto (Jupiter)",
     "SolNode65":  "Adrastea (Jupiter)",
     "SolNode46":  "Amalthea (Jupiter)",
@@ -307,6 +308,7 @@ ALL_NODES: dict[str, str] = {
     "SolNode31":  "Carme (Jupiter)",
     "SolNode195": "Io B (Jupiter)",
     # Saturn
+    "SolNode18":  "Rhea (Saturn)",
     "SolNode47":  "Pandora (Saturn)",
     "SolNode90":  "Anthe (Saturn)",
     "SolNode20":  "Tethys (Saturn)",
@@ -399,6 +401,7 @@ ALL_NODES: dict[str, str] = {
     "SolNode203": "Abaddon (Europa)",
     "SolNode204": "Armaros (Europa)",
     "SolNode215": "Valac (Europa)",
+    "SolNode220": "Kokabiel (Europa)",
     "ClanNode14": "Cholistan (Europa)",
     "ClanNode15": "Viver (Europa)",
     "EuropaHUB":  "Leonov Relay (Europa)",
@@ -422,8 +425,10 @@ ALL_NODES: dict[str, str] = {
     "SolNode27":  "Histo (Eris)",
     "SolNode26":  "Isos (Eris)",
     "SolNode33":  "Nimus (Eris)",
+    "SolNode166": "Nimus (Eris)",
     "SolNode32":  "Saxis (Eris)",
     "SolNode30":  "Oestrus (Eris)",
+    "SolNode175": "Naeglar (Eris)",
     "ErisHUB":    "Kuiper Relay (Eris)",
     # Void
     "SolNode400": "Teshub (Void)",
@@ -564,12 +569,14 @@ NODE_FACTION: dict[str, str] = {
     "ClanNode10":       "Infested","SettlementNode20": "Corpus",
     "ClanNode11":       "Infested",
     # Jupiter
+    "SolNode10":  "Corpus",
     "SolNode55":  "Corpus",    "SolNode65":  "Grineer",   "SolNode46":  "Corpus",
     "SolNode164": "Infested",  "SolNode167": "Infested",  "SolNode163": "Corpus",
     "SolNode177": "Corpus",    "SolNode183": "Corpus",    "SolNode187": "Corpus",
     "SolNode188": "Corpus",    "SolNode196": "Corpus",    "SolNode805": "Sentient",
     "SolNode173": "Corpus",    "SolNode31":  "Corpus",    "SolNode195": "Corpus",
     # Saturn
+    "SolNode18":  "Grineer",
     "SolNode47":  "Grineer",   "SolNode90":  "Grineer",   "SolNode20":  "Grineer",
     "SolNode14":  "Grineer",   "SolNode24":  "Infested",  "SolNode91":  "Corpus",
     "SolNode92":  "Grineer",   "SolNode93":  "Corpus",    "SolNode41":  "Grineer",
@@ -605,6 +612,7 @@ NODE_FACTION: dict[str, str] = {
     "SolNode306": "Corpus",    "SolNode307": "Corpus",    "SolNode308": "Corrupted",
     "SolNode309": "Corpus",    "SolNode310": "Corpus",    "SolNode311": "Corpus",
     "SolNode312": "Corpus",    "SolNode313": "Corpus",    "SolNode314": "Corpus",
+    "SolNode220": "Corpus",
     "ClanNode14": "Infested",  "ClanNode15": "Infested",  "EuropaHUB":  "Neutral",
     # Lua
     "SolNode132": "Orokin",    "SolNode133": "Orokin",    "SolNode134": "Orokin",
@@ -615,6 +623,7 @@ NODE_FACTION: dict[str, str] = {
     "SolNode105": "Infested",  "SolNode97":  "Techrot",   "SolNode95":  "Infested",
     "SolNode27":  "Infested",  "SolNode26":  "Infested",  "SolNode33":  "Infested",
     "SolNode32":  "Infested",  "SolNode30":  "Infested",  "ErisHUB":    "Neutral",
+    "SolNode166": "Infested",  "SolNode175": "Infested",
     # Void
     "SolNode400": "Orokin",    "SolNode401": "Orokin",    "SolNode402": "Orokin",
     "SolNode403": "Orokin",    "SolNode404": "Orokin",    "SolNode405": "Orokin",
