@@ -426,6 +426,7 @@ ALL_NODES: dict[str, str] = {
     "SolNode26":  "Isos (Eris)",
     "SolNode33":  "Nimus (Eris)",
     "SolNode166": "Nimus (Eris)",
+    "SolNode162": "Isos (Eris)",
     "SolNode32":  "Saxis (Eris)",
     "SolNode30":  "Oestrus (Eris)",
     "SolNode175": "Naeglar (Eris)",
@@ -497,6 +498,7 @@ ALL_NODES: dict[str, str] = {
     "CrewBattleNode502": "Ganalen's Grave (Earth Proxima)",
     "CrewBattleNode503": "Rempei Cluster (Earth Proxima)",
     "CrewBattleNode504": "Iota Temple (Earth Proxima)",
+    "CrewBattleNode509": "Iota Temple (Earth Proxima)",
     "CrewBattleNode505": "Korms Belt (Earth Proxima)",
     # Railjack Proxima — Venus
     "CrewBattleNode510": "Kasio's Rest (Venus Proxima)",
@@ -623,7 +625,7 @@ NODE_FACTION: dict[str, str] = {
     "SolNode105": "Infested",  "SolNode97":  "Techrot",   "SolNode95":  "Infested",
     "SolNode27":  "Infested",  "SolNode26":  "Infested",  "SolNode33":  "Infested",
     "SolNode32":  "Infested",  "SolNode30":  "Infested",  "ErisHUB":    "Neutral",
-    "SolNode166": "Infested",  "SolNode175": "Infested",
+    "SolNode166": "Infested",  "SolNode175": "Infested",  "SolNode162": "Infested",
     # Void
     "SolNode400": "Orokin",    "SolNode401": "Orokin",    "SolNode402": "Orokin",
     "SolNode403": "Orokin",    "SolNode404": "Orokin",    "SolNode405": "Orokin",
@@ -650,7 +652,7 @@ NODE_FACTION: dict[str, str] = {
     # Railjack Proxima
     "CrewBattleNode500": "Grineer",  "CrewBattleNode501": "Grineer",
     "CrewBattleNode502": "Grineer",  "CrewBattleNode503": "Grineer",
-    "CrewBattleNode504": "Grineer",  "CrewBattleNode505": "Grineer",
+    "CrewBattleNode504": "Grineer",  "CrewBattleNode505": "Grineer",  "CrewBattleNode509": "Grineer",
     "CrewBattleNode510": "Corpus",   "CrewBattleNode511": "Corpus",
     "CrewBattleNode512": "Corpus",   "CrewBattleNode513": "Corpus",
     "CrewBattleNode514": "Corpus",   "CrewBattleNode515": "Corpus",
