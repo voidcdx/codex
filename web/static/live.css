@@ -395,7 +395,7 @@
 .news-row::-webkit-scrollbar { display: none; }
 .news-card {
   position: relative;
-  flex: 0 0 175px;
+  flex: 0 0 220px;
   flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -404,10 +404,9 @@
 .news-card:hover { opacity: 0.85; }
 .news-thumb {
   width: 100%;
-  height: 175px;
+  height: 130px;
   object-fit: cover;
   display: block;
-  border-radius: 8px;
 }
 .news-thumb-ph {
   background: var(--surface-solid);
