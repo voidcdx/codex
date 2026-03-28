@@ -310,14 +310,31 @@
 
 /* ── Open World Cycles ── */
 .cycle-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-  gap: 8px;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 0;
 }
+.cycle-grid::-webkit-scrollbar { display: none; }
 .cycle-item {
-  padding: 10px;
-  border: 1px solid var(--border);
+  flex: 1;
+  min-width: 140px;
+  padding: 10px 16px;
   text-align: center;
+  position: relative;
+  scroll-snap-align: start;
+}
+.cycle-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 55%;
+  background: linear-gradient(to bottom, transparent, var(--border-red), transparent);
 }
 .cycle-name {
   font-size: 0.67rem;
@@ -329,12 +346,12 @@
 }
 .cycle-state {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.08em;
 }
 .cycle-eta {
-  font-size: 0.85rem;
+  font-size: 0.73rem;
   color: var(--text-dim);
   margin-top: 4px;
 }
@@ -446,5 +463,4 @@ a.news-msg:hover { color: var(--text-primary); }
   .live-grid { grid-template-columns: 1fr; }
   .live-card-wide { grid-column: 1 / -1; }
   .live-controls { gap: 8px; }
-  .cycle-grid { grid-template-columns: repeat(2, 1fr); }
 }
