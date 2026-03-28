@@ -341,9 +341,9 @@ function buildNewsSection(news) {
     const inner = n.url
       ? `<a class="news-msg" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
       : `<span class="news-msg">${esc(n.message)}</span>`;
-    return `<div class="news-card">${img}${inner}</div>`;
+    return `<div class="news-card"><div class="news-thumb-wrap">${img}</div>${inner}</div>`;
   }).join('');
-  return `<div class="news-section"><div class="news-section-label">News</div><div class="news-row">${cards}</div></div>`;
+  return `<div class="panel live-card-full"><div class="news-section"><div class="news-section-label">News</div><div class="news-row">${cards}</div></div></div>`;
 }
 
 /* ── Events ── */
