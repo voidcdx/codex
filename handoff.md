@@ -1,170 +1,128 @@
-# Void Codex — Session Handoff
+# Handoff — Warframe Damage Calculator
 
-## Session summary
-Live page work: refactored Void Fissures filter tabs from tier-based to
-gameplay category tabs (Origin System / Steel Path / Requiem / Railjack),
-updated tier badge colors, fixed open world cycles (added Earth epoch formula,
-Duviri API read, moved Zariman to epoch-based), replaced _parse_cycles with
-cleaner epoch-formula approach for Cetus/Vallis/Cambion, and enforced
-wiki.warframe.com as sole data source in CLAUDE.md.
+## Current Status
+**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional: dark theme, mod card grid, special slots (stance/exilus), weapon images, riven mod builder, enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks, inline SVG damage type icons.
+
+Branch: `claude/continue-handoff-aMsDx`
 
 ---
 
-## Changes made this session
+## What Was Done This Session
 
-### CLAUDE.md
-- Added hard rule: `wiki.warframe.com` is the **only** permitted source for
-  all Warframe game data, constants, formulas, and scraping. No third-party
-  community tools, GitHub repos, or other external sources.
+### 1. Mod grid — fix scroll on mobile (SortableJS)
+SortableJS was immediately capturing touch events on mod cards, blocking page scroll. Fixed by adding `delay: 150` + `delayOnTouchOnly: true` to the Sortable config. Desktop drag is instant; mobile requires a 150ms long-press before drag begins.
 
-### scripts/parse_worldstate.py
-- `_parse_fissures()`: added `expiry_ts` field (Unix timestamp float) for
-  frontend sort-by-ETA
-- `_parse_cycles()`: full replacement with cleaner epoch-formula blocks:
-  - Cetus: epoch=1510444800, cycle=8998s, day=5998s
-  - Orb Vallis: epoch=1542318000, cycle=1600s, warm=400s
-  - Cambion Drift: epoch=1604085600, cycle=8998s, fass=4499s
-  - **Earth (new)**: epoch=0, cycle=14400s, day=10800s, night=3600s
-  - **Duviri (new)**: reads `DuviriCycle` from raw worldstate API
-  - Zariman: reads `ZarimanCycle` from raw worldstate API
+### 2. Tighter text field sizing (desktop + mobile)
+Reduced padding and font sizes across all form inputs for a more compact UI:
+- Global inputs/selects: `padding 8px 10px → 5px 8px`, `font 13px → 12px`, margins reduced
+- Riven modal inputs: `height 36px → 30px`, `font 14px → 12px`
+- Mobile (≤768px): preserves `font-size: 16px !important` (iOS zoom prevention), adds tight padding override
+- Combobox dropdown items: padding reduced
 
-### web/static/live.css
-- `.tier-btn`: replaced bordered pill style with underline-gradient tabs
-  matching `.attack-tab` (0.85rem body font, crimson gradient, text-shadow
-  glow on active, no border)
+### 3. Weapon/enemy search — bare-bones rewrite
+Stripped the combobox of all overcomplicated machinery that caused bugs on mobile and desktop:
 
-### web/static/live.html (inline JS)
-- `TIER_COLORS`: Lith=`#b87333`, Meso=`#00bcd4`, Neo=`#3949ab`,
-  Axi=`#ffd700`, Requiem=`#8b0000`, Omnia=`#e0e0e0`
-- Fissure filter: `activeTier` → `activeCategory`; added `getFissureCategory()`
-  (origin / steelpath / requiem / railjack based on `is_storm`, `is_steel_path`,
-  `tier`); `setTier()` → `setCategory()`; removed "All" tab; default = `'origin'`
-- `renderFissureRows()`: filters by category, sorts by `expiry_ts` ascending
-- `buildFissureCard()`: 4 tabs — Origin System / Steel Path / Requiem / Railjack
-- `buildCyclesCard()`: added `Joy`, `Anger` to WARM set for Duviri styling
+**Removed:**
+- Body portal (`document.body.appendChild`) + `position: fixed` + JS repositioning on every scroll/resize
+- `ignoreBlur` mousedown/mouseup hack
+- `tabindex` on every dropdown item (fought touch scrolling)
+- Arrow key navigation inside dropdown
+- `blur` timeout close
 
----
+**Added/fixed:**
+- `position: absolute` inside `.combobox-wrap` — natural DOM positioning
+- `overscroll-behavior: contain` — dropdown scroll no longer bleeds to page
+- `-webkit-overflow-scrolling: touch` — iOS momentum scrolling
+- `mousedown` + `e.preventDefault()` for desktop selection (no blur)
+- Clean `touchend` handler for mobile item selection
+- Click-outside-to-close via single `mousedown` document listener
 
-## Design system rules (ENFORCE THESE)
+### 4. Dropdown z-index fix (behind tables)
+`.panel` uses `backdrop-filter` which creates a CSS stacking context, trapping the dropdown's z-index. Fix: when a dropdown opens, its parent `.panel` gets `.combobox-open` class (`z-index: 50; position: relative`) to lift it above sibling panels. Removed on close.
 
-| Rule | Detail |
-|---|---|
-| No hardcoded `rgba()` | Always use CSS variables or `color-mix()` |
-| No `style=` inline attrs | Extract to CSS classes (SVG attrs + `el.style.setProperty('--elem-color', …)` excepted) |
-| No rounded corners | `--radius: 0`, `--radius-sm: 0` everywhere |
-| No glassmorphism WITHOUT local glow | `backdrop-filter` on `#050505` is invisible — use `.panel::after` local-glow pattern |
-| No `▶` in CSS `content:` | Renders as emoji on iOS — use `→` (U+2192) |
-| No native `<select>` | Use `setupSelectDropdown()` — native renders as iOS picker |
-| No green UI accents | `--accent-green` maps to crimson. Only game-data colors stay green (`--riven`, Exilus slot, faction badges). |
-| No Share Tech Mono | Orbitron + Rajdhani only |
-| No purple in UI | No `#c49aff`, no `rgba(155,109,208,...)` — crimson theme only |
-| Font sizes | `rem` for text. `px` only for icons/structural. `16px !important` iOS anti-zoom overrides are intentional — do not convert. |
-| Bar widths | Set via `fill.style.width` in JS after innerHTML render — never inline HTML `style=` attribute |
-| `.sc-modded` arrows | CSS `::before { content: '→ ' }` provides the arrow — never add it in JS `textContent` too |
-| Data sources | **wiki.warframe.com ONLY** — no third-party sources for any game data, constants, or formulas |
+### 5. Dropdown collapses on touch scroll — fixed
+`document.addEventListener('touchstart', ...)` was firing when scrolling inside the dropdown, closing it. Removed the touchstart close listener entirely. Mobile close now relies on tapping outside (mousedown fires on mobile too after touch).
 
-**CSS variable reference:**
-`--bg` `--surface` `--surface-solid` `--surface2` `--border` `--border-highlight` `--border-red` `--accent` `--accent2` `--accent-glow` `--panel-glow` `--text` `--text-field` `--text-dim` `--text-primary` `--crimson` `--crimson-bright` `--crimson-glow` `--riven`
+### 6. Search UX — clear on click, persist stats
+Two UX improvements to the search flow:
+- **Click-to-clear:** Focusing the search input now clears the text and opens the full dropdown immediately. No need to manually delete the name or click X first.
+- **Persist stats:** Clicking X or abandoning a search no longer wipes the stats panel. Stats remain visible showing the last confirmed selection until a new one is committed. Achieved via `_confirmed` variable inside `setupCombobox` — restored to input on close-without-commit (Escape or click-outside).
 
 ---
 
-## Live page typography scale (established — do not regress)
+## Architecture Quick Reference
 
-| Tier | Size | Classes |
-|---|---|---|
-| Panel headings | 1rem Orbitron | `.panel h2` (global, panels.css) |
-| Primary row data | 1rem Rajdhani | `.fissure-node`, `.mission-node`, `.trader-location`, `.nw-title`, `.alert-reward`, `.invasion-node`, `.event-title`, `.cycle-state`, `.sortie-boss` |
-| Secondary text / ETAs | 0.85rem | `.fissure-sub`, `.mission-sub`, `.trader-eta`, `.nw-eta`, `.alert-sub`, `.invasion-factions`, `.cycle-eta`, `.event-desc`, `.live-eta`, `.eta-chip` |
-| Tags / badges / buttons | 0.73rem | `.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`, `.invasion-vs`, `.live-count`, `.refresh-btn`, `.news-section-label` |
-| Micro labels | 0.67rem | `.news-section-label` (section category labels) |
+### Damage Pipeline (6 Steps)
+```
+1. Base Damage × (1 + ΣDamageMods)         → Modded Base   [floor]
+2. Modded Base × Body Part × Crit           → Part Damage   [round nearest]
+3. Part Damage × Faction Type Effectiveness  → Typed Damage   [floor]
+4. Typed Damage × Armor Mitigation          → Mitigated     [floor]
+5. Mitigated × (1 + FactionMod + Roar)      → Final         [floor]
+5.5. Final × Eclipse multiplier             → Buffed Final   [floor]
+6. Buffed Final × Viral stacks              → Viral Damage   [floor]
+```
 
-### Fissure category tab style (`.tier-btn`)
-Matches `.attack-tab` in `results.css`: borderless, 0.85rem body font,
-`background: transparent no-repeat bottom / 0% 2px`, hover slides in crimson
-gradient underline, active adds text-shadow glow. No `--tier-color` on tabs.
+### Key Files
+| File | Purpose |
+|------|---------|
+| `src/calculator.py` | 6-step pipeline + crit + armor + faction + Viral + procs |
+| `src/loader.py` | JSON → Weapon/Mod/Enemy; case-insensitive; attack selection |
+| `src/buffs.py` | 4 buff presets (Roar, Eclipse, Xata's Whisper, Nourish) |
+| `src/models.py` | Weapon, WeaponAttack, Mod, Enemy, Buff, DamageComponent |
+| `src/scaling.py` | Enemy level scaling per faction |
+| `src/combiner.py` | Elemental combination by mod slot order |
+| `src/quantizer.py` | quantize() — Decimal + ROUND_HALF_UP |
+| `web/api.py` | FastAPI endpoints |
+| `web/static/index.html` | SPA — all JS inline |
+| `web/static/style.css` | Dark theme styles |
+| `__main__.py` | CLI interface |
 
----
+### Data Files
+| File | Records |
+|------|---------|
+| `data/weapons.json` | 588 weapons |
+| `data/mods.json` | 1,405 mods |
+| `data/enemies.json` | 983 enemies |
 
-## CSS class inventory
-
-| Class | File | Purpose |
-|---|---|---|
-| `.threat-card` | panels.css | Enemy Threat Intel Card wrapper |
-| `.threat-card-name` | panels.css | Enemy name — Orbitron 0.85rem 700 crimson |
-| `.threat-badge-faction` | panels.css | Faction/health-type pill badges |
-| `.threat-bar-row` | panels.css | Label + track + sub-label row |
-| `.threat-bar-fill-hp/sh/ar/og` | panels.css | Gradient fills per stat type |
-| `.panel-sub-h` | panels.css | Section heading divider |
-| `.btn-add` | panels.css | `+ ADD` button |
-| `.btn-help` | panels.css | `?` help toggle (crimson, no border) |
-| `.panel-help` / `.panel-help.hidden` | panels.css | Inline help block; hidden by default |
-| `.panel-toggle-with-help` | panels.css | Transfers auto-margin from chevron to btn-help |
-| `.input-sm` | panels.css | Compact 44px number input |
-| `.input-sm-wide` | panels.css | Compact 52px number input |
-| `.input-level` | panels.css | 72px enemy level input |
-| `.strip-row` / `.strip-label-row` | panels.css | Armor strip panel row layout |
-| `.strip-slider` | panels.css | Range input (crimson thumb, no border-radius) |
-| `.strip-result-block` / `.strip-bar-fill` | panels.css | Armor/DR summary + progress bar |
-| `.sc-wrap` | results.css | Two-column weapon stat split |
-| `.sc-val-lg` / `.sc-val-sm` | results.css | Large/small stat values |
-| `.sc-modded` | results.css | Modded stat row — `::before` injects `→ ` arrow |
-| `.attack-tab` | results.css | Multi-attack mode tab (underline-gradient style) |
-| `.riven-header-icon` | riven.css | 20px crimson hex icon in riven editor header |
-| `.riven-mod-name` | riven.css | "Riven" label on mod card — crimson |
-| `.riven-stat-pos` | riven.css | Positive stat on riven card — white |
-| `.riven-stat-neg` | riven.css | Negative stat on riven card — red |
-| `.faction-matrix` | factions.css | CSS grid: `170px repeat(13, minmax(68px, 1fr))` |
-| `.dmg-badge` / `.badge-weak` / `.badge-resist` | factions.css | Inline element badges |
-| `.filter-pill` / `.filter-pill.active` | factions.css | All/Vulnerable/Resistant filter buttons |
+### Combobox Architecture (post-rewrite)
+`setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl)` in `index.html`:
+- Dropdown is `position: absolute` inside `.combobox-wrap` — **no portal**
+- `_confirmed` tracks last committed name; restored to input on abandon
+- `.panel.combobox-open` lifts parent panel z-index when open
+- `overscroll-behavior: contain` on `.combobox-dropdown` prevents scroll bleed
+- Selection: `mousedown` (desktop) + `touchend` (mobile), both with `e.preventDefault()`
+- Close: `mousedown` outside only (no touchstart — it caused scroll collapse)
+- X button dispatches `combobox-clear` custom event to reset `_confirmed` without calling `onSelect`
 
 ---
 
-## Known issues / pending
+## Known Gaps / TODO
 
-- **SolNode45** — appears as "Node45 (Sol)" in live fissure data; unknown what node this is
-- **Railway 403** — `api.warframe.com/cdn/worldState.php` blocked from Railway's cloud IP. Duviri and Zariman cycles won't display on Railway (Earth/Cetus/Vallis/Cambion always work — epoch formula). Live data works on localhost. Consider Cloudflare Worker proxy if block remains long-term.
-- Refresh `weapons.json` + `mods.json` via wiki ApiSandbox (27 MEDIUM 100.0 placeholder issues remain)
-- Arcane Crepuscular, Tenacious Bond, Shroud of Dynar absolute CD bonuses (low priority)
+### Not yet implemented
+- **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare. Stack-based bonuses not modelled.
+- **Kill Time (TTK)** — Shots and seconds to kill at given enemy level.
+- **Build saving / URL sharing** — Encode build state in URL params.
+- **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
+- **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
 
----
+### Partially wired
+- **Condition Overload** — `condition_overload_bonus` parsed and stored on Mod. Calculator uses `unique_statuses` parameter. API/CLI don't pass actual unique status counts from UI — caller-side wiring missing.
 
-## Feature backlog
-
-1. Side-by-side Build Compare (panel hidden, placeholder exists)
-2. Mod Optimizer — brute-force best mod per slot
-3. EHP Calculator (needs Warframe DB)
-4. Status Simulator (needs research — complex proc weighting)
-5. Build Cards (export image)
-6. Build Sharing (URL-encoded state)
-7. Live Data — surface worldstate on main calculator page (fissure banner? void trader alert?)
+### Design unsettled
+- **Header / Branding** — Current plain header works but user wants something better. Previous attempts (SVG wings, hero banner) all removed. Needs mobile-first design (≤375px).
+- **Combobox styling** — Intentionally stripped bare this session. Ready to be restyled (border, hover states, shadow, etc.) now that the core mechanics are stable.
 
 ---
 
-## Current state
-- Branch: `claude/review-handoff-w0wqr`
-- Version: `0.5.5`
-- Game data: Update 41 — The Old Peace
-- Tests: 304 passing
-- Railway deploy branch: `codex`
+## Scripts (run order after rescrape)
+```bash
+python scripts/parse_wiki_data.py      # rebuild weapons.json + mods.json from raw
+python scripts/fix_secondary_stats.py  # backfill 109 secondary stat fields
+python scripts/fix_galv_stats.py       # restore 10 galvanized mod fields
+```
 
-## Private notes
-`accuracy-notes.md` — accuracy self-assessment (what the calculator gets right, where the gaps are). In repo, deletable any time. Read on request.
-
----
-
-## Start-of-session checklist
-
-> **Ask at HANDOFF, not session start:**
-> 1. "Should I bump the version? Current: `0.5.5`"
-> Changelog tracking deferred until v1.0.0 — do not ask about it.
-
-- [ ] Run `pytest` — confirm 304 passing
-- [ ] `git log --oneline -5` to orient
-- [ ] No hardcoded rgba / inline styles / rounded corners / native selects / glassmorphism without local glow / `▶` in CSS / Share Tech Mono / purple in UI
-- [ ] Update Guide modal when adding UI features
-- [ ] **wiki.warframe.com ONLY** for all game data — no third-party sources ever
-- [ ] **Railway deploy** — after every `git push` to the feature branch, immediately run:
-  ```bash
-  git checkout codex && git merge <feature-branch> --no-ff && git push -u origin codex && git checkout <feature-branch>
-  ```
-  Never leave the session without doing this — do NOT make the user merge manually.
+## Tests
+```bash
+pytest   # 248 passing — run before every commit
+```
