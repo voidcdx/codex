@@ -1241,9 +1241,10 @@ def _parse_cycles(raw: dict) -> list[dict]:
         idx       = elapsed // phase_s
         secs_left = phase_s - (elapsed % phase_s)
         cycles.append({
-            "location": "Duviri",
-            "state":    _DUVIRI[idx],
-            "eta":      _eta(now + timedelta(seconds=secs_left)),
+            "location":  "Duviri",
+            "state":     _DUVIRI[idx],
+            "eta":       _eta(now + timedelta(seconds=secs_left)),
+            "expiry_ts": ts + secs_left,
         })
     except Exception:
         pass
