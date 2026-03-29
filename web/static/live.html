@@ -294,7 +294,7 @@ function buildInvasionsCard(invasions) {
     <div class="invasion-row">
       <div class="invasion-header">
         <span class="invasion-node">${esc(inv.node)}</span>
-        <span class="eta-chip">${esc(inv.eta)}</span>
+        ${inv.eta && inv.eta !== '?' ? `<span class="eta-chip">${esc(inv.eta)}</span>` : ''}
       </div>
       <div class="invasion-sides">
         <div class="invasion-side invasion-attacker">
