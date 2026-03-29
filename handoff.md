@@ -4,7 +4,7 @@
 **304 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional. Live page (`/live`) fully rebuilt.
 
 **Version:** `0.5.7`
-**Branch:** `claude/review-handoff-docs-ZSlIJ` — last commit `2ce5253`
+**Branch:** `claude/review-handoff-docs-ZSlIJ` — last commit `d08e60e`
 
 ---
 
@@ -17,10 +17,23 @@
 
 - `web/static/index.html`: removed standalone `#armor-strip-panel` block; added `<div class="panel-sub-h">Armor Strip</div>` + `?` help block + all strip-row/strip-result-block divs inside `#options-body`
 - No JS or CSS changes needed — `armorstrip.js` uses element IDs which travel with the HTML
-- Options panel `?` help text updated to include an **Armor Strip** entry explaining ability strip %, CP %, and order of operations
+- Options panel `?` help text updated to include an **Armor Strip** entry
 
 ### 2. Element wheel prototype (abandoned)
-Explored replacing the Alchemy Mixer flat pill-row with an in-game-style radial element wheel (two rings: 4 primary inner + 6 combined outer). Prototype built as `preview-wheel.html` but could not be served to user (Windows dev server requires git pull + restart for new FastAPI routes). All prototype files and temporary API routes were removed. **No persistent UI change made.**
+Explored replacing the Alchemy Mixer flat pill-row with a radial element wheel. Prototype built, could not be served to user (Windows dev server requires git pull + restart for new FastAPI routes). All files removed. **No persistent UI change.**
+
+### 3. SVG panel background experiment (reverted)
+Tried replacing `::after` radial-gradient center halo with an SVG (`panel-bg.svg`) providing edge-only glow (4 linear-gradient rects, transparent center). Reverted after tuning — original radial-gradient restored intact.
+
+### 4. Live page — news ticker fixes
+- Removed `"warframe.com" not in url` filter from `_parse_news` — new articles linking to Steam, patch-notes pages, or forums now pass through
+- Added `"visit the official warframe forums!"` (with `!`) to `_NEWS_GENERIC_MESSAGES`
+- Fixed `_debug_news` to match the same filter logic
+- News thumbnails: `object-fit: contain`, fixed `height: 130px`, dark bg letterbox for off-ratio images
+- Debug endpoint `/api/worldstate/debug-news` — shows `accepted` + `rejected` with reasons
+
+### 5. `SORTIE_MODIFIER_EXPLOSION` mapped
+Added to `SORTIE_MODIFIERS` dict in `scripts/parse_worldstate.py` → `"Environmental Hazard: Explosion"`.
 
 ---
 
@@ -51,12 +64,11 @@ Explored replacing the Alchemy Mixer flat pill-row with an in-game-style radial 
 | `web/static/index.html` | Calculator SPA — all CSS/JS links use `?v=3` cache-busting |
 | `web/static/live.html` | Live Data SPA |
 | `web/static/base.css` | CSS variables |
-| `web/static/live.css` | Live page styles |
-| `web/static/panels.css` | Shared panel styles — `.threat-card` margin-top:10px |
+| `web/static/live.css` | Live page styles — news thumbnail CSS at line ~518 |
+| `web/static/panels.css` | Shared panel styles — `.panel::after` radial halo, `.panel::before` 1px lines |
 | `web/static/results.css` | `.weapon-stats-img-row` align-items: flex-start |
-| `web/static/js/enemy.js` | Enemy panel — name/sub now outside `.threat-card` |
 | `web/static/js/armorstrip.js` | updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip() — uses IDs only |
-| `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)`; `_parse_nightwave(raw)`; `ALL_NODES`; `_NW_NAMES` |
+| `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)`; `_parse_news()`; `SORTIE_MODIFIERS` (~L169); `ALL_NODES`; `_NW_NAMES` |
 | `__main__.py` | CLI interface |
 
 ### Data Files
@@ -66,39 +78,46 @@ Explored replacing the Alchemy Mixer flat pill-row with an in-game-style radial 
 | `data/mods.json` | 1,405 mods |
 | `data/enemies.json` | 983 enemies |
 
-### Options Panel Structure (post this session)
+### Options Panel Structure
 ```html
 #options-panel  ← collapsible, collapsed by default
   #options-body
     <!-- Hit Options (crit mode, headshot, distance, combo) -->
     <div class="panel-sub-h">Warframe Buffs</div>
     <div id="buff-rows">...</div>
-
     <div class="panel-sub-h">Armor Strip  <button class="btn-help">?</button></div>
     <div class="panel-help hidden">...</div>
-    <!-- strip-row x2 (ability, CP) -->
-    <!-- strip-result-block (remaining armor + DR bar) -->
+    <!-- strip-row x2 (ability, CP) + strip-result-block -->
 ```
 
 ### Alchemy Mixer — Current State
 Flat pill-row element picker (two rows: 4 primary + 6 combined). No redesign yet.
-- Radial wheel concept discussed but not built. Key design notes if revisited:
+- Radial wheel concept discussed, on hold. Design notes:
   - Two rings: 4 primary inner (90° spacing) + 6 combined outer (60° spacing)
   - CSS pattern: `transform: rotate(Ndeg) translateY(-R) rotate(-Ndeg)`
-  - Mobile sizing: CSS vars `--inner-r` / `--outer-r`, media query at ≤520px
+  - Mobile: CSS vars `--inner-r` / `--outer-r`, media query ≤520px
   - Trapezoid petal shapes via `clip-path: polygon()`
-  - Dev server requires git pull + restart on Windows before new FastAPI routes take effect
 
 ### Live Page — Key JS Functions (`live.html`)
 | Function | Purpose |
 |----------|---------|
 | `buildCyclesCard(cycles)` | Standalone full-width cycles block (no `.panel`) |
-| `buildFissureCard(fissures)` | Fissures panel — tier tabs + two-col list (no cycles) |
+| `buildFissureCard(fissures)` | Fissures panel — tier tabs + two-col list |
 | `buildInvasionsCard(invasions)` | 3-col attacker/VS/defender layout |
 | `buildNightwaveCard(nw)` | Nightwave challenges — Daily/Weekly/Elite tags + rep |
 | `buildAlertBanner(alerts)` | Populates `#alert-banner` ticker; hides when empty |
+| `buildNewsSection(news)` | Horizontal scrollable news cards — `#live-news` |
 | `renderAll(data)` | Panel order: cycles, fissures, invasions, sortie+archon stack, nightwave+baro stack, events |
 | `loadData()` | Fetch + render; spinner on first load only |
+
+### News Parsing (`_parse_news` in `scripts/parse_worldstate.py`)
+Filters `Events[]` from worldstate. Keeps entries with:
+- English message, length > 20, not `/Lotus/` path, not in `_NEWS_GENERIC_MESSAGES`
+- Any URL (or no URL — shown as non-linked span in frontend)
+Debug endpoint: `GET /api/worldstate/debug-news` → `{accepted, rejected}` with reasons.
+
+### Sortie Modifier Map
+`SORTIE_MODIFIERS` dict at `scripts/parse_worldstate.py` ~L169. Add missing keys as they appear in-game. Raw keys look like `SORTIE_MODIFIER_EXPLOSION`.
 
 ### Sandbox Git — Commit Workaround
 Cowork's background git sync holds `index.lock`, blocking sandbox commits. Commit from Windows terminal instead:
@@ -106,19 +125,20 @@ Cowork's background git sync holds `index.lock`, blocking sandbox commits. Commi
 cd C:\Users\jesse\Desktop\codex
 git add -A && git commit -m "..."
 ```
-`.git/config` has `[index] version = 2` to keep index format compatible between Windows git and sandbox git 2.34.1.
+`.git/config` has `[index] version = 2` — do not remove.
 
 ---
 
 ## Known Gaps / TODO
 
-- **Alchemy Mixer wheel** — Radial wheel redesign discussed, on hold. User wants to think about it. See design notes above.
+- **Alchemy Mixer wheel** — On hold. User wants to think about it.
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-- **Nightwave challenge names** — Some path keys still fall back to CamelCase split. Add to `_NW_NAMES` as they're identified in-game.
-- **Deployment** — Railway blocks `api.warframe.com`. Use VPS (DigitalOcean, Hetzner) or Fly.io for hosting.
+- **Nightwave challenge names** — Some path keys still fall back to CamelCase split. Add to `_NW_NAMES` as identified.
+- **Deployment** — Railway blocks `api.warframe.com`. Use VPS (DigitalOcean, Hetzner) or Fly.io.
 - **Cache-busting** — Currently manual `?v=N` in index.html. Consider auto-versioning from `APP_VERSION`.
+- **Sortie modifiers** — Add any new `SORTIE_MODIFIER_*` keys as they appear in-game.
 
 ---
 
