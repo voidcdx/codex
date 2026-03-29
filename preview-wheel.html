@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Element Wheel — Preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap">
+<style>
+/* ─── Theme (mirrors app) ─── */
+:root {
+  --bg:             #050505;
+  --surface:        rgba(18,10,10,0.92);
+  --border:         rgba(139,0,0,0.35);
+  --crimson:        #8b0000;
+  --crimson-bright: #dc143c;
+  --font-d:         'Orbitron', sans-serif;
+  --font-b:         'Rajdhani', sans-serif;
+
+  /* ── Wheel sizing (desktop) ── */
+  --inner-r:    82px;
+  --outer-r:   152px;
+  --inner-w:    54px;
+  --inner-h:    42px;
+  --outer-w:    62px;
+  --outer-h:    48px;
+  --center-d:   68px;
+  --wheel-size: 362px;   /* 2*(outer-r + outer-h/2) + padding */
+}
+
+/* ── Mobile override (JS toggle) ── */
+html.sm {
+  --inner-r:    60px;
+  --outer-r:   112px;
+  --inner-w:    42px;
+  --inner-h:    34px;
+  --outer-w:    48px;
+  --outer-h:    38px;
+  --center-d:   52px;
+  --wheel-size: 268px;
+}
+
+/* ── Mobile override (real viewport) ── */
+@media (max-width: 520px) {
+  :root {
+    --inner-r:    60px;
+    --outer-r:   112px;
+    --inner-w:    42px;
+    --inner-h:    34px;
+    --outer-w:    48px;
+    --outer-h:    38px;
+    --center-d:   52px;
+    --wheel-size: 268px;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-b);
+  color: #fff;
+  gap: 22px;
+  padding: 24px;
+}
+
+.preview-label {
+  font-family: var(--font-d);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+/* ─── Wheel ─── */
+.wheel-wrap {
+  position: relative;
+  width:  var(--wheel-size);
+  height: var(--wheel-size);
+  /* atmospheric glow */
+  filter: drop-shadow(0 0 32px rgba(139,0,0,0.18));
+}
+
+/* decorative orbit rings */
+.deco-ring {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px dashed rgba(139,0,0,0.20);
+  pointer-events: none;
+}
+
+/* ─── Petals ─── */
+.petal {
+  position: absolute;
+  left: 50%; top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  /* trapezoid: wide at top = outer edge, narrow at bottom = inner edge */
+  clip-path: polygon(10% 0%, 90% 0%, 74% 100%, 26% 100%);
+  transition: filter 0.13s, opacity 0.13s;
+  opacity: 0.78;
+  user-select: none;
+}
+
+.petal.primary {
+  width:       var(--inner-w);
+  height:      var(--inner-h);
+  margin-left: calc(-0.5 * var(--inner-w));
+  margin-top:  calc(-0.5 * var(--inner-h));
+}
+
+.petal.combined {
+  width:       var(--outer-w);
+  height:      var(--outer-h);
+  margin-left: calc(-0.5 * var(--outer-w));
+  margin-top:  calc(-0.5 * var(--outer-h));
+}
+
+.petal:hover  { opacity: 1; filter: brightness(1.25) saturate(1.15); }
+.petal.active { opacity: 1; filter: brightness(1.5) saturate(1.2) drop-shadow(0 0 7px var(--petal-color)); }
+
+.petal svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.petal-lbl {
+  font-family: var(--font-d);
+  font-size: 0.38rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.88);
+  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+html.sm .petal-lbl { display: none; }
+@media (max-width: 520px) { .petal-lbl { display: none; } }
+
+/* ─── Center circle ─── */
+.wheel-center {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width:  var(--center-d);
+  height: var(--center-d);
+  border-radius: 50%;
+  background: rgba(6,2,2,0.96);
+  border: 1px solid rgba(139,0,0,0.4);
+  box-shadow: 0 0 16px rgba(139,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  pointer-events: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  z-index: 20;
+}
+
+.center-icon {
+  display: block;
+  transition: color 0.2s;
+}
+
+.center-name {
+  font-family: var(--font-d);
+  font-size: 0.38rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  transition: color 0.2s;
+  text-align: center;
+  padding: 0 4px;
+}
+
+/* ─── Info row ─── */
+.info-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.info-chip {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.38);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-chip b { color: rgba(255,255,255,0.6); font-weight: 600; }
+
+/* ─── Toggle button ─── */
+.ctrl-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.toggle-btn {
+  background: rgba(139,0,0,0.12);
+  border: 1px solid rgba(139,0,0,0.38);
+  color: rgba(255,255,255,0.55);
+  font-family: var(--font-b);
+  font-size: 0.85rem;
+  padding: 6px 18px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: background 0.14s, color 0.14s;
+  border-radius: 0;
+}
+
+.toggle-btn:hover { background: rgba(139,0,0,0.28); color: #fff; }
+
+.size-badge {
+  font-family: var(--font-d);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.28);
+}
+</style>
+</head>
+<body>
+
+<div class="preview-label">Alchemy Wheel — Preview</div>
+
+<div class="wheel-wrap" id="wheel">
+  <div class="wheel-center" id="center">
+    <svg class="center-icon" id="c-svg" viewBox="0 0 16 16" fill="rgba(255,255,255,0.35)" width="22" height="22"></svg>
+    <span class="center-name" id="c-name">Select</span>
+  </div>
+</div>
+
+<div class="info-row">
+  <div class="info-chip"><b>Inner</b> 4 primary elements</div>
+  <div class="info-chip"><b>Outer</b> 6 combined elements</div>
+</div>
+
+<div class="ctrl-row">
+  <button class="toggle-btn" onclick="toggleMobile()">Toggle Mobile Size</button>
+  <span class="size-badge" id="sz-lbl">DESKTOP</span>
+</div>
+
+<script>
+// ── Element data (colors + SVG paths from the app) ──────────────────────────
+const COLORS = {
+  heat: '#ff7a30', cold: '#60b0e0', electricity: '#f0e040', toxin: '#60d030',
+  blast: '#ffd040', corrosive: '#a0e040', gas: '#00c8a0',
+  magnetic: '#c060f0', radiation: '#f0a020', viral: '#f060a0',
+};
+
+const ICONS = {
+  heat:        '<path d="M8 1.5 L6 6 L3.5 9 C3 10 3 11.5 4.5 13 C5.5 14 7 14.5 8 14.5 C9 14.5 10.5 14 11.5 13 C13 11.5 13 10 12.5 9 L10 6 L8 1.5Z" stroke="currentColor" stroke-width="0.8" fill="currentColor" stroke-linejoin="round"/>',
+  cold:        '<line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="2.8" y1="5" x2="13.2" y2="11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="2.8" y1="11" x2="13.2" y2="5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="8" y1="2" x2="6" y2="4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="8" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
+  electricity: '<polygon points="9,1 5,7.5 7.5,7.5 6,15 12,7 9,7" fill="currentColor"/>',
+  toxin:       '<path d="M8 2 C8 2 3 8 3 11 C3 13.2 5.2 15 8 15 C10.8 15 13 13.2 13 11 C13 8 8 2 8 2Z" fill="currentColor"/>',
+  blast:       '<circle cx="8" cy="8" r="2" fill="currentColor"/><polygon points="8,0.5 9,5.5 14,5 10,7 14.5,8 10,9 14,11 9,10.5 8,15.5 7,10.5 2,11 6,9 1.5,8 6,7 2,5 7,5.5" fill="currentColor" opacity="0.85"/>',
+  corrosive:   '<path d="M5.5 2 C5.5 2 2 7 2 9.5 C2 11.5 3.6 13 5.5 13 C7.4 13 9 11.5 9 9.5 C9 7 5.5 2 5.5 2Z" fill="currentColor"/><path d="M11 6 C11 6 8.5 9.5 8.5 11 C8.5 12.4 9.6 13.5 11 13.5 C12.4 13.5 13.5 12.4 13.5 11 C13.5 9.5 11 6 11 6Z" fill="currentColor" opacity="0.7"/>',
+  gas:         '<circle cx="6" cy="9" r="3.5" fill="currentColor" opacity="0.7"/><circle cx="10.5" cy="7.5" r="3" fill="currentColor" opacity="0.55"/><circle cx="8.5" cy="11.5" r="2.5" fill="currentColor" opacity="0.45"/>',
+  magnetic:    '<rect x="2" y="2" width="4" height="3.5" rx="0.5" fill="currentColor"/><rect x="10" y="2" width="4" height="3.5" rx="0.5" fill="currentColor"/><path d="M4 5.5 L4 7 C4 10.9 5.8 13 8 13 C10.2 13 12 10.9 12 7 L12 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>',
+  radiation:   '<circle cx="8" cy="8" r="1.6" fill="currentColor"/><path d="M9.04 2.09 A6 6 0 0 1 13.64 10.05 L10.63 8.96 A2.8 2.8 0 0 0 8.49 5.24Z" fill="currentColor"/><path d="M12.6 11.86 A6 6 0 0 1 3.4 11.86 L5.86 9.8 A2.8 2.8 0 0 0 10.14 9.8Z" fill="currentColor"/><path d="M2.36 10.05 A6 6 0 0 1 6.96 2.09 L7.51 5.24 A2.8 2.8 0 0 0 5.37 8.96Z" fill="currentColor"/>',
+  viral:       '<path d="M5 2 C5 5 11 6 11 9 C11 12 5 13 5 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M11 2 C11 5 5 6 5 9 C5 12 11 13 11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>',
+};
+
+// ── Element definitions ─────────────────────────────────────────────────────
+//  angle: degrees from 12-o'clock, clockwise positive
+const PRIMARIES = [
+  { key: 'heat',        label: 'Heat',        angle: -90 },
+  { key: 'electricity', label: 'Electricity', angle:   0 },
+  { key: 'cold',        label: 'Cold',        angle:  90 },
+  { key: 'toxin',       label: 'Toxin',       angle: 180 },
+];
+
+const COMBINED = [
+  { key: 'radiation', label: 'Radiation', angle: -60 },  // Heat + Electricity
+  { key: 'gas',       label: 'Gas',       angle:   0 },  // Heat + Toxin
+  { key: 'blast',     label: 'Blast',     angle:  60 },  // Heat + Cold
+  { key: 'corrosive', label: 'Corrosive', angle: 120 },  // Electricity + Toxin
+  { key: 'viral',     label: 'Viral',     angle: 180 },  // Cold + Toxin
+  { key: 'magnetic',  label: 'Magnetic',  angle: 240 },  // Cold + Electricity
+];
+
+// ── Build wheel ─────────────────────────────────────────────────────────────
+const wheel = document.getElementById('wheel');
+
+function makeDecoRing(rVar) {
+  const el = document.createElement('div');
+  el.className = 'deco-ring';
+  el.style.width  = `calc(2 * ${rVar})`;
+  el.style.height = `calc(2 * ${rVar})`;
+  wheel.appendChild(el);
+}
+
+function makePetal(elem, ring) {
+  const rVar     = ring === 'primary' ? 'var(--inner-r)' : 'var(--outer-r)';
+  const iconSize = ring === 'primary' ? 16 : 18;
+
+  const div = document.createElement('div');
+  div.className = `petal ${ring}`;
+  div.dataset.key = elem.key;
+  div.style.setProperty('--petal-color', COLORS[elem.key]);
+  div.style.background = COLORS[elem.key] + 'bb';   // slightly transparent fill
+  div.style.color       = '#fff';
+  // radial positioning: rotate → translate outward → counter-rotate to stay upright
+  div.style.transform   =
+    `rotate(${elem.angle}deg) translateY(calc(-1 * ${rVar})) rotate(${-elem.angle}deg)`;
+
+  div.innerHTML = `
+    <svg viewBox="0 0 16 16" width="${iconSize}" height="${iconSize}"
+         fill="rgba(255,255,255,0.95)" style="display:block;flex-shrink:0">
+      ${ICONS[elem.key]}
+    </svg>
+    <span class="petal-lbl">${elem.label}</span>`;
+
+  div.addEventListener('click', () => selectElem(elem));
+  return div;
+}
+
+// Decorative orbit lines
+makeDecoRing('var(--inner-r)');
+makeDecoRing('var(--outer-r)');
+
+// Build petals (primary first so combined renders on top if they overlap)
+for (const e of PRIMARIES) wheel.appendChild(makePetal(e, 'primary'));
+for (const e of COMBINED)  wheel.appendChild(makePetal(e, 'combined'));
+
+// ── Selection ───────────────────────────────────────────────────────────────
+function selectElem(elem) {
+  // deactivate all
+  wheel.querySelectorAll('.petal').forEach(p => p.classList.remove('active'));
+  // activate selected
+  const p = wheel.querySelector(`[data-key="${elem.key}"]`);
+  if (p) p.classList.add('active');
+
+  // update center
+  const color = COLORS[elem.key];
+  document.getElementById('c-svg').innerHTML = ICONS[elem.key];
+  document.getElementById('c-svg').style.color = color;
+  document.getElementById('c-name').textContent = elem.label;
+  document.getElementById('c-name').style.color  = color;
+  const ctr = document.getElementById('center');
+  ctr.style.borderColor = color;
+  ctr.style.boxShadow   = `0 0 20px ${color}44`;
+}
+
+// ── Mobile toggle ────────────────────────────────────────────────────────────
+let isMobile = false;
+function toggleMobile() {
+  isMobile = !isMobile;
+  document.documentElement.classList.toggle('sm', isMobile);
+  document.getElementById('sz-lbl').textContent = isMobile ? 'MOBILE' : 'DESKTOP';
+}
+</script>
+</body>
+</html>
