@@ -848,8 +848,3 @@ def factions() -> FileResponse:
 @app.get("/enemy-preview")
 def enemy_preview() -> FileResponse:
     return FileResponse(str(_static / "enemy-preview.html"))
-
-
-@app.get("/wheel-preview")
-def wheel_preview() -> FileResponse:
-    return FileResponse(str(_static / "preview-wheel.html"))
