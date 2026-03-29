@@ -1073,9 +1073,9 @@ def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
     }
 
 
-def _parse_nightwave(raw: list) -> dict | None:
-    # Nightwave is a syndicate; look for the RadioLegion tag
-    nw = next((s for s in raw if "RadioLegion" in s.get("Tag", "")), None)
+def _parse_nightwave(raw: dict) -> dict | None:
+    # Nightwave data lives in top-level SeasonInfo (not SyndicateMissions)
+    nw = raw.get("SeasonInfo")
     if not nw:
         return None
 
@@ -1083,14 +1083,22 @@ def _parse_nightwave(raw: list) -> dict | None:
     challenges = []
     for ch in nw.get("ActiveChallenges", []):
         ch_expiry = _parse_date(ch.get("Expiry"))
-        info = ch.get("Challenge", "")
-        # Challenge path like /Lotus/Types/Challenges/...
-        title = info.rstrip("/").rsplit("/", 1)[-1] if "/" in info else info
+        path = ch.get("Challenge", "")
+        # Extract last segment, strip Season/Daily/Weekly/EliteWeekly prefix, split CamelCase
+        segment = path.rstrip("/").rsplit("/", 1)[-1] if "/" in path else path
+        segment = re.sub(r"^Season(EliteWeekly|Daily|Weekly)", "", segment)
+        title = re.sub(r"([A-Z])", r" \1", segment).strip()
+
+        is_daily = bool(ch.get("Daily", False))
+        is_elite = "EliteWeekly" in path or bool(ch.get("isElite", False))
+        # Rep defaults by type if xpAmount not present
+        rep = ch.get("xpAmount", 7000 if is_elite else 1000 if is_daily else 4500)
+
         challenges.append({
             "title":      title,
-            "reputation": ch.get("xpAmount", 0),
-            "is_daily":   ch.get("isDaily", False),
-            "is_elite":   ch.get("isElite", False),
+            "reputation": rep,
+            "is_daily":   is_daily,
+            "is_elite":   is_elite,
             "eta":        _eta(ch_expiry),
         })
 
@@ -1359,7 +1367,7 @@ def parse(raw: dict) -> dict:
         "sortie":      _parse_sortie(raw.get("Sorties", []), solnode_map),
         "archon_hunt": _parse_archon_hunt(raw.get("LiteSorties", []), solnode_map),
         "void_trader": _parse_void_trader(raw.get("VoidTraders", []), solnode_map),
-        "nightwave":   _parse_nightwave(raw.get("SyndicateMissions", [])),
+        "nightwave":   _parse_nightwave(raw),
         "invasions":   _parse_invasions(raw.get("Invasions", []), solnode_map),
         "cycles":      _parse_cycles(raw),
         "events":      _parse_events(raw),
