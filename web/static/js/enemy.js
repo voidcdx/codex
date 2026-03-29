@@ -42,10 +42,7 @@ function showEnemyStats(enemy) {
   statsEl.innerHTML = `
     <div class="threat-card">
       <div class="threat-card-name">${esc(enemy.name)}</div>
-      <div class="threat-badges">
-        <span class="threat-badge threat-badge-faction">${cap(enemy.faction)}</span>
-        <span class="threat-badge threat-badge-health">${cap(enemy.health_type)}</span>
-      </div>
+      <div class="weapon-stats-sub">${cap(enemy.faction)} · ${cap(enemy.health_type)}</div>
       <div class="threat-stats-row">
         <div>
           <div class="threat-stat-label">Base Lvl</div>
