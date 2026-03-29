@@ -179,9 +179,18 @@
 .cycles-standalone {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-top: none;
+  border-radius: var(--radius);
+  margin-top: 4px;
   position: relative;
   padding: 10px 16px;
+}
+.cycles-standalone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, transparent, rgba(220,20,60,0.55), transparent) top / 100% 1px no-repeat;
+  pointer-events: none;
 }
 .cycles-standalone::after {
   content: '';
