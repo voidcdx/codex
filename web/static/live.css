@@ -270,8 +270,7 @@
   margin-top: 5px;
   font-size: 0.73rem;
   padding: 1px 6px;
-  border: 1px solid var(--border-red);
-  color: var(--accent2);
+  color: var(--crimson-bright);
 }
 
 /* ── Void Trader ── */
