@@ -837,7 +837,7 @@ def index() -> FileResponse:
 
 @app.get("/favicon.ico")
 def favicon() -> FileResponse:
-    return FileResponse(str(_static / "favicon.svg"), media_type="image/svg+xml")
+    return FileResponse(str(_static / "favicon.png"), media_type="image/png")
 
 
 @app.get("/live")
