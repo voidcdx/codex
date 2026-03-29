@@ -142,7 +142,7 @@ function renderFissureRows(fissures) {
         <div class="fissure-node">${esc(f.node)}${f.is_steel_path ? '<span class="fissure-tag">SP</span>' : ''}</div>
         <div class="fissure-sub">${esc(f.mission_type)} · ${esc(f.enemy)}</div>
       </div>
-      <span class="eta-chip">${esc(f.eta)}</span>
+      <span class="eta-chip" data-expiry="${f.expiry_ts || 0}">${esc(f.eta)}</span>
     </div>`).join('') + '</div>';
 }
 
@@ -177,7 +177,7 @@ function buildSortieCard(sortie) {
       ${m.modifier ? `<span class="modifier-badge">${esc(m.modifier)}</span>` : ''}
     </div>`).join('');
   return `<div class="panel">
-    <h2>Sortie <span class="live-count">${esc(sortie.eta)}</span></h2>
+    <h2>Sortie <span class="live-count" data-expiry="${sortie.expiry_ts || 0}">${esc(sortie.eta)}</span></h2>
     <div class="sortie-meta">
       <span class="sortie-boss">${esc(sortie.boss)}</span>
       <span>${esc(sortie.faction)}</span>
@@ -199,7 +199,7 @@ function buildArchonCard(archon) {
       ${m.modifier ? `<span class="modifier-badge">${esc(m.modifier)}</span>` : ''}
     </div>`).join('');
   return `<div class="panel">
-    <h2>Archon Hunt <span class="live-count">${esc(archon.eta)}</span></h2>
+    <h2>Archon Hunt <span class="live-count" data-expiry="${archon.expiry_ts || 0}">${esc(archon.eta)}</span></h2>
     <div class="sortie-meta">
       <span class="sortie-boss">${esc(archon.boss)}</span>
       <span>${esc(archon.faction)}</span>
@@ -215,8 +215,8 @@ function buildTraderCard(trader) {
     ? '<span class="trader-dot active"></span>'
     : '<span class="trader-dot inactive"></span>';
   const status = trader.active
-    ? `${dot}<span class="trader-location">${esc(trader.node)}</span><span class="trader-eta">Departs ${esc(trader.eta)}</span>`
-    : `${dot}<span class="trader-location">${trader.node ? esc(trader.node) : 'Location unknown'}</span><span class="trader-eta">Arrives ${esc(trader.eta)}</span>`;
+    ? `${dot}<span class="trader-location">${esc(trader.node)}</span><span class="trader-eta">Departs <span data-expiry="${trader.expiry_ts || 0}">${esc(trader.eta)}</span></span>`
+    : `${dot}<span class="trader-location">${trader.node ? esc(trader.node) : 'Location unknown'}</span><span class="trader-eta">Arrives <span data-expiry="${trader.expiry_ts || 0}">${esc(trader.eta)}</span></span>`;
   let inventory = '';
   if (trader.active && trader.inventory && trader.inventory.length) {
     const rows = trader.inventory.map(it => `
@@ -251,13 +251,13 @@ function buildNightwaveCard(nw) {
       <span class="nw-tag ${cls}">${lbl}</span>
       <div class="nw-challenge-info">
         <div class="nw-title">${esc(ch.title)}</div>
-        <div class="nw-eta">${esc(ch.eta)}</div>
+        <div class="nw-eta" data-expiry="${ch.expiry_ts || 0}">${esc(ch.eta)}</div>
       </div>
       <span class="nw-rep">+${ch.reputation.toLocaleString()}</span>
     </div>`;
   }).join('');
   return `<div class="panel">
-    <h2>Nightwave <span class="live-count">S${nw.season} · ${esc(nw.eta)}</span></h2>
+    <h2>Nightwave <span class="live-count">S${nw.season} · <span data-expiry="${nw.expiry_ts || 0}">${esc(nw.eta)}</span></span></h2>
     ${challenges || '<div class="live-empty">No active challenges</div>'}
   </div>`;
 }
@@ -274,7 +274,7 @@ function buildAlertsCard(alerts) {
         <div class="alert-reward">${esc(a.reward)}</div>
         <div class="alert-sub">${esc(a.node)} · ${esc(a.mission_type)} · ${esc(a.faction)}</div>
       </div>
-      <span class="eta-chip">${esc(a.eta)}</span>
+      <span class="eta-chip" data-expiry="${a.expiry_ts || 0}">${esc(a.eta)}</span>
     </div>`).join('');
   return `<div class="panel">
     <h2>Alerts <span class="live-count">${alerts.length} active</span></h2>
@@ -324,7 +324,7 @@ function buildCyclesCard(cycles) {
     return `<div class="cycle-item">
       <div class="cycle-name">${esc(c.location)}</div>
       <div class="cycle-state ${cls}">${esc(c.state)}</div>
-      <div class="cycle-eta">${esc(c.eta)}</div>
+      <div class="cycle-eta" data-expiry="${c.expiry_ts || 0}">${esc(c.eta)}</div>
     </div>`;
   }).join('');
   return `<div class="cycles-standalone live-card-full"><div class="cycle-grid">${items}</div></div>`;
@@ -361,7 +361,7 @@ function buildEventsCard(events) {
     <div class="event-row">
       <div class="event-title">${esc(ev.name)}</div>
       ${ev.reward ? `<div class="event-desc">${esc(ev.reward)}</div>` : ''}
-      <div class="live-eta">${esc(ev.eta)}</div>
+      <div class="live-eta" data-expiry="${ev.expiry_ts || 0}">${esc(ev.eta)}</div>
     </div>`).join('');
   return `<div class="panel live-card-full">
     <h2>Events <span class="live-count">${events.length} active</span></h2>
@@ -431,9 +431,40 @@ function renderAll(data) {
   grid.querySelectorAll('.progress-bar-fill[data-progress]').forEach(bar => {
     bar.style.width = bar.dataset.progress + '%';
   });
+  startEtaTimer();
 }
 
-/* ── Countdown ── */
+/* ── ETA Countdown Engine ── */
+let _etaTimer = null;
+
+function fmtCountdown(secs) {
+  if (secs <= 0) return '—';
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  if (h >= 24) {
+    const d = Math.floor(h / 24);
+    const rh = h % 24;
+    return rh > 0 ? `${d}d ${rh}h` : `${d}d`;
+  }
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
+}
+
+function startEtaTimer() {
+  if (_etaTimer) clearInterval(_etaTimer);
+  _etaTimer = setInterval(() => {
+    const now = Date.now() / 1000;
+    document.querySelectorAll('[data-expiry]').forEach(el => {
+      const exp = parseFloat(el.dataset.expiry);
+      if (!exp) return;
+      el.textContent = fmtCountdown(Math.round(exp - now));
+    });
+  }, 1000);
+}
+
+/* ── Page Countdown ── */
 function resetCountdown() {
   countdownVal = 180;
   document.getElementById('refresh-countdown').textContent = countdownVal;
