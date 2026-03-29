@@ -159,8 +159,8 @@ function buildFissureCard(fissures, cycles) {
   ).join('');
   const cycleStrip = buildCyclesCard(cycles || []);
   return `<div class="panel live-card-full">
-    <h2>Void Fissures <span class="live-count">${fissures.length} active</span></h2>
     ${cycleStrip}
+    <h2>Void Fissures <span class="live-count">${fissures.length} active</span></h2>
     <div class="tier-btns">${btns}</div>
     <div id="fissure-rows">${renderFissureRows(fissures)}</div>
   </div>`;
