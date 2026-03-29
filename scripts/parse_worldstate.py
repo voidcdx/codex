@@ -1276,8 +1276,6 @@ def _parse_news(raw: dict) -> list[dict]:
             if msg_en.lower().strip() in _NEWS_GENERIC_MESSAGES:
                 continue
             url = ev.get("Prop") or ""
-            if not url:
-                continue
             image = ev.get("ImageUrl") or None
             dt = _parse_date(ev.get("Date"))
             out.append({
@@ -1319,9 +1317,6 @@ def _debug_news(raw: dict) -> dict:
                 rejected.append({"reason": "generic message", "message": msg_en})
                 continue
             url = ev.get("Prop") or ""
-            if not url:
-                rejected.append({"reason": "no url", "message": msg_en})
-                continue
             image = ev.get("ImageUrl") or None
             accepted.append({"message": msg_en, "url": url, "image": image})
         except Exception as exc:
