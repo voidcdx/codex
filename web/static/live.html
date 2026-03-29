@@ -413,10 +413,10 @@ function renderAll(data) {
     buildFissureCard(data.fissures || [], data.cycles || []),
     buildSortieCard(data.sortie),
     buildArchonCard(data.archon_hunt),
+    buildInvasionsCard(data.invasions || []),
     buildTraderCard(data.void_trader),
     buildNightwaveCard(data.nightwave),
     (data.alerts && data.alerts.length ? null : buildAlertsCard([])),
-    buildInvasionsCard(data.invasions || []),
     buildEventsCard(data.events || []),
   ].filter(Boolean).join('');
 
