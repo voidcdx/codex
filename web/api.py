@@ -835,6 +835,11 @@ def index() -> FileResponse:
     return FileResponse(str(_static / "index.html"), headers={"Cache-Control": "no-store"})
 
 
+@app.get("/favicon.ico")
+def favicon() -> FileResponse:
+    return FileResponse(str(_static / "favicon.svg"), media_type="image/svg+xml")
+
+
 @app.get("/live")
 def live() -> FileResponse:
     return FileResponse(str(_static / "live.html"), headers={"Cache-Control": "no-store"})
