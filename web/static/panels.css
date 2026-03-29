@@ -298,6 +298,7 @@ select option {
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--border);
   padding: 12px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 .threat-card-name {
