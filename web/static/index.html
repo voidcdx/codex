@@ -528,6 +528,45 @@
           <p>Enter ability strength as a decimal (e.g. 1.5 for 150% strength).</p>
         </div>
         <div id="buff-rows"></div>
+        <div class="panel-sub-h">Armor Strip
+          <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
+        </div>
+        <div class="panel-help hidden">
+          <p><strong>Ability Strip %:</strong> Armor removed by a Warframe ability (e.g. 100% for max-strength Terrify, 50% for Breach Surge). Check the ability's description for the exact value.</p>
+          <p><strong>Corrosive Projection:</strong> Aura mod that strips a flat % of base armor — stacks additively with ability strip. Per-player: 18% → 36% → 54% → 72% at full squad.</p>
+          <p><strong>Order of operations:</strong> Ability % + CP % (additive, capped at 100%) → Corrosive proc stacks from Options. Void and True damage bypass armor entirely.</p>
+        </div>
+        <div class="strip-row">
+          <div class="strip-label-row">
+            <label for="strip-ability-pct" class="strip-label">Ability Strip</label>
+            <span class="strip-pct-badge" id="strip-ability-badge">0%</span>
+          </div>
+          <input type="range" id="strip-ability-pct" class="strip-slider" min="0" max="100" value="0" step="1">
+        </div>
+        <div class="strip-row">
+          <div class="strip-label-row">
+            <label for="strip-cp-pct" class="strip-label">Corrosive Projection</label>
+            <span class="strip-pct-badge" id="strip-cp-badge">0%</span>
+          </div>
+          <input type="range" id="strip-cp-pct" class="strip-slider" min="0" max="100" value="0" step="1">
+        </div>
+        <div class="strip-result-block">
+          <div class="strip-result-row">
+            <span class="strip-result-label">Remaining Armor</span>
+            <span class="strip-result-val" id="strip-armor-val">—</span>
+          </div>
+          <div class="strip-result-row">
+            <span class="strip-result-label">Damage Reduction</span>
+            <span class="strip-result-val" id="strip-dr-val">—</span>
+          </div>
+          <div class="strip-bar-wrap">
+            <div class="strip-bar-fill" id="strip-bar-fill"></div>
+          </div>
+          <div class="strip-bar-labels">
+            <span class="strip-bar-label-left">Original</span>
+            <span class="strip-bar-label-right" id="strip-stripped-pct">0% stripped</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -537,52 +576,6 @@
     <div class="panel placeholder-panel">
       <h2>Build Compare</h2>
       <p class="coming-soon-text">Side-by-side build comparison coming soon.</p>
-    </div>
-
-    <!-- Armor Strip -->
-    <div class="panel" id="armor-strip-panel">
-      <h2>Armor Strip
-        <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
-      </h2>
-      <div class="panel-help hidden">
-        <p><strong>Ability Strip %:</strong> Armor removed by a Warframe ability (e.g. 100% for max-strength Terrify, 50% for Breach Surge). Check the ability's description for the exact value.</p>
-        <p><strong>Corrosive Projection:</strong> Aura mod that strips a flat % of base armor — stacks additively with ability strip. Per-player: 18% → 36% → 54% → 72% at full squad.</p>
-        <p><strong>Order of operations:</strong> Ability % + CP % (additive, capped at 100%) → Corrosive proc stacks from Options. Void and True damage bypass armor entirely.</p>
-      </div>
-
-      <div class="strip-row">
-        <div class="strip-label-row">
-          <label for="strip-ability-pct" class="strip-label">Ability Strip</label>
-          <span class="strip-pct-badge" id="strip-ability-badge">0%</span>
-        </div>
-        <input type="range" id="strip-ability-pct" class="strip-slider" min="0" max="100" value="0" step="1">
-      </div>
-
-      <div class="strip-row">
-        <div class="strip-label-row">
-          <label for="strip-cp-pct" class="strip-label">Corrosive Projection</label>
-          <span class="strip-pct-badge" id="strip-cp-badge">0%</span>
-        </div>
-        <input type="range" id="strip-cp-pct" class="strip-slider" min="0" max="100" value="0" step="1">
-      </div>
-
-      <div class="strip-result-block">
-        <div class="strip-result-row">
-          <span class="strip-result-label">Remaining Armor</span>
-          <span class="strip-result-val" id="strip-armor-val">—</span>
-        </div>
-        <div class="strip-result-row">
-          <span class="strip-result-label">Damage Reduction</span>
-          <span class="strip-result-val" id="strip-dr-val">—</span>
-        </div>
-        <div class="strip-bar-wrap">
-          <div class="strip-bar-fill" id="strip-bar-fill"></div>
-        </div>
-        <div class="strip-bar-labels">
-          <span class="strip-bar-label-left">Original</span>
-          <span class="strip-bar-label-right" id="strip-stripped-pct">0% stripped</span>
-        </div>
-      </div>
     </div>
 
 
