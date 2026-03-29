@@ -109,7 +109,7 @@ The calculator page uses a mirrored stalker-dashboard layout:
 - **`aside.sidebar`** — right 260px; brand text ("VOID CODEX"), `.nav-menu` with `.nav-item` links, `.sidebar-tools`, `.sidebar-footer` (copyright + `Data: wiki.warframe.com`)
 - **`.content-left`** — Builds panel, currently `display: none` (hidden). Grid column removed.
 - **`.content-main` order** — Weapon+Enemy grid → Mods panel (moved here from content-side)
-- **`.content-side` order** — Results → Options (collapsible, **collapsed by default**) → Calculate button → Build Compare → Armor Strip
+- **`.content-side` order** — Results → Options (collapsible, **collapsed by default**, contains Warframe Buffs + Armor Strip sub-sections) → Calculate button → Build Compare
 - **`.app`** — `max-width: 1440px; margin: 0 auto` — full layout centered
 - **Mobile ≤900px** — sidebar hidden, `.burger-btn` shows (fixed top-right), sidebar slides in from right with `.sidebar-overlay` backdrop
 - `toggleDrawer()` in `app.js` toggles `#sidebar` + `#sidebar-overlay` CSS classes

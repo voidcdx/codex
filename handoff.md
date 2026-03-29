@@ -3,33 +3,24 @@
 ## Current Status
 **304 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional. Live page (`/live`) fully rebuilt.
 
-**Version:** `0.5.6`
-**Branch:** `claude/review-handoff-notes-2Cmip` — last commit `0ba17fa`
+**Version:** `0.5.7`
+**Branch:** `claude/review-handoff-docs-ZSlIJ` — last commit `2ce5253`
 
 ---
 
 ## What Was Done This Session
 
-### 1. Code cleanup (dead code removal + import consolidation)
-- `web/api.py`: merged duplicate `pydantic` imports; moved late `FileResponse` import to top
-- `tests/test_arcanes.py`: removed unused `import math`
-- `tests/test_calculator.py`: moved mid-file `Buff`/`make_buff` imports to top
-- `__main__.py`: moved inline `import math as _math` to module level
-- `utils.js`: removed dead `setSelectValue()` and `setSelectByText()`
-- `combobox.js`: removed dead `setupSearch()`
-- `app.js`: merged two `DOMContentLoaded` listeners into one
+### 1. Armor Strip merged into Options panel
+**Before:** Armor Strip was a standalone always-visible panel below the Build Compare placeholder in `.content-side`.
 
-### 2. Enemy picker — name/subtitle alignment
-**Before:** Enemy name and faction/health were inside `.threat-card` (which has `padding: 12px`), causing the name to sit 12px lower than the weapon name.
+**After:** Armor Strip is a collapsible sub-section inside the Options panel (`#options-body`), below Warframe Buffs. It hides/shows with the Options collapse toggle.
 
-**After:** Name and subtitle are now **outside** the `.threat-card`, sitting directly in `#enemy-stats-content` with no padding above them — same structure as the weapon name in `#weapon-stats-content`.
+- `web/static/index.html`: removed standalone `#armor-strip-panel` block; added `<div class="panel-sub-h">Armor Strip</div>` + `?` help block + all strip-row/strip-result-block divs inside `#options-body`
+- No JS or CSS changes needed — `armorstrip.js` uses element IDs which travel with the HTML
+- Options panel `?` help text updated to include an **Armor Strip** entry explaining ability strip %, CP %, and order of operations
 
-- `enemy.js`: name uses `.weapon-stats-name`, subtitle uses `.weapon-stats-sub` (plain dim text)
-- `panels.css`: `.threat-card` gains `margin-top: 10px` to space it below the name
-- `results.css`: `.weapon-stats-img-row` changed from `align-items: center` → `align-items: flex-start` so weapon name aligns to top of image, not mid-image
-
-### 3. Cache-busting
-Added `?v=3` version params to all CSS and JS `<link>`/`<script>` tags in `index.html` to force fresh loads after changes.
+### 2. Element wheel prototype (abandoned)
+Explored replacing the Alchemy Mixer flat pill-row with an in-game-style radial element wheel (two rings: 4 primary inner + 6 combined outer). Prototype built as `preview-wheel.html` but could not be served to user (Windows dev server requires git pull + restart for new FastAPI routes). All prototype files and temporary API routes were removed. **No persistent UI change made.**
 
 ---
 
@@ -64,6 +55,7 @@ Added `?v=3` version params to all CSS and JS `<link>`/`<script>` tags in `index
 | `web/static/panels.css` | Shared panel styles — `.threat-card` margin-top:10px |
 | `web/static/results.css` | `.weapon-stats-img-row` align-items: flex-start |
 | `web/static/js/enemy.js` | Enemy panel — name/sub now outside `.threat-card` |
+| `web/static/js/armorstrip.js` | updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip() — uses IDs only |
 | `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)`; `_parse_nightwave(raw)`; `ALL_NODES`; `_NW_NAMES` |
 | `__main__.py` | CLI interface |
 
@@ -74,16 +66,28 @@ Added `?v=3` version params to all CSS and JS `<link>`/`<script>` tags in `index
 | `data/mods.json` | 1,405 mods |
 | `data/enemies.json` | 983 enemies |
 
-### Enemy Panel Structure (post this session)
+### Options Panel Structure (post this session)
 ```html
-#enemy-stats-content
-  <div class="weapon-stats-name">Enemy Name</div>       ← same class as weapon
-  <div class="weapon-stats-sub">Faction · Health Type</div>  ← plain dim text
-  <div class="threat-card">                             ← margin-top:10px
-    <div class="threat-stats-row">Base Lvl / Head / Armor</div>
-    <div class="threat-bars" id="threat-bars"></div>
-  </div>
+#options-panel  ← collapsible, collapsed by default
+  #options-body
+    <!-- Hit Options (crit mode, headshot, distance, combo) -->
+    <div class="panel-sub-h">Warframe Buffs</div>
+    <div id="buff-rows">...</div>
+
+    <div class="panel-sub-h">Armor Strip  <button class="btn-help">?</button></div>
+    <div class="panel-help hidden">...</div>
+    <!-- strip-row x2 (ability, CP) -->
+    <!-- strip-result-block (remaining armor + DR bar) -->
 ```
+
+### Alchemy Mixer — Current State
+Flat pill-row element picker (two rows: 4 primary + 6 combined). No redesign yet.
+- Radial wheel concept discussed but not built. Key design notes if revisited:
+  - Two rings: 4 primary inner (90° spacing) + 6 combined outer (60° spacing)
+  - CSS pattern: `transform: rotate(Ndeg) translateY(-R) rotate(-Ndeg)`
+  - Mobile sizing: CSS vars `--inner-r` / `--outer-r`, media query at ≤520px
+  - Trapezoid petal shapes via `clip-path: polygon()`
+  - Dev server requires git pull + restart on Windows before new FastAPI routes take effect
 
 ### Live Page — Key JS Functions (`live.html`)
 | Function | Purpose |
@@ -108,6 +112,7 @@ git add -A && git commit -m "..."
 
 ## Known Gaps / TODO
 
+- **Alchemy Mixer wheel** — Radial wheel redesign discussed, on hold. User wants to think about it. See design notes above.
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
