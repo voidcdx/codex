@@ -1010,10 +1010,11 @@ def _parse_sortie(raw: list, solnode_map: dict) -> dict | None:
     faction_key = s.get("Faction", "")
     faction = _faction(faction_key) or BOSS_FACTION.get(boss_key, "")
     return {
-        "boss":     boss or "Unknown",
-        "faction":  faction,
-        "eta":      _eta(expiry),
-        "missions": missions,
+        "boss":      boss or "Unknown",
+        "faction":   faction,
+        "eta":       _eta(expiry),
+        "expiry_ts": expiry.timestamp() if expiry else 0,
+        "missions":  missions,
     }
 
 
@@ -1036,10 +1037,11 @@ def _parse_archon_hunt(raw: list, solnode_map: dict) -> dict | None:
     faction_key = s.get("Faction", "")
     faction = _faction(faction_key) or BOSS_FACTION.get(boss_key, "")
     return {
-        "boss":     boss or "Unknown",
-        "faction":  faction,
-        "eta":      _eta(expiry),
-        "missions": missions,
+        "boss":      boss or "Unknown",
+        "faction":   faction,
+        "eta":       _eta(expiry),
+        "expiry_ts": expiry.timestamp() if expiry else 0,
+        "missions":  missions,
     }
 
 
@@ -1064,10 +1066,12 @@ def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
             "credits": item.get("RegularPrice", 0),
         })
 
+    eta_dt = expiry if active else activation
     return {
         "active":    active,
         "node":      _node_display(trader.get("Node", ""), solnode_map),
-        "eta":       _eta(expiry if active else activation),
+        "eta":       _eta(eta_dt),
+        "expiry_ts": eta_dt.timestamp() if eta_dt else 0,
         "arrives":   activation.isoformat() if activation else None,
         "departs":   expiry.isoformat() if expiry else None,
         "inventory": inventory,
@@ -1165,12 +1169,14 @@ def _parse_nightwave(raw: dict) -> dict | None:
             "is_daily":   is_daily,
             "is_elite":   is_elite,
             "eta":        _eta(ch_expiry),
+            "expiry_ts":  ch_expiry.timestamp() if ch_expiry else 0,
         })
 
     return {
-        "season": nw.get("Season", 0),
-        "phase":  nw.get("Phase", 0),
-        "eta":    _eta(expiry),
+        "season":    nw.get("Season", 0),
+        "phase":     nw.get("Phase", 0),
+        "eta":       _eta(expiry),
+        "expiry_ts": expiry.timestamp() if expiry else 0,
         "active_challenges": challenges,
     }
 
@@ -1186,7 +1192,7 @@ def _parse_cycles(raw: dict) -> list[dict]:
         elapsed   = int(ts - epoch_s) % cycle_s
         is_night  = elapsed >= day_s
         secs_left = (cycle_s - elapsed) if is_night else (day_s - elapsed)
-        cycles.append({"location": "Cetus", "state": "Night" if is_night else "Day", "eta": _eta(now + timedelta(seconds=secs_left))})
+        cycles.append({"location": "Cetus", "state": "Night" if is_night else "Day", "eta": _eta(now + timedelta(seconds=secs_left)), "expiry_ts": ts + secs_left})
     except Exception: pass
 
     try:  # Orb Vallis — epoch=1542318000, cycle=1600s, warm=400s
@@ -1194,7 +1200,7 @@ def _parse_cycles(raw: dict) -> list[dict]:
         elapsed   = int(ts - epoch_s) % cycle_s
         is_warm   = elapsed < warm_s
         secs_left = (warm_s - elapsed) if is_warm else (cycle_s - elapsed)
-        cycles.append({"location": "Orb Vallis", "state": "Warm" if is_warm else "Cold", "eta": _eta(now + timedelta(seconds=secs_left))})
+        cycles.append({"location": "Orb Vallis", "state": "Warm" if is_warm else "Cold", "eta": _eta(now + timedelta(seconds=secs_left)), "expiry_ts": ts + secs_left})
     except Exception: pass
 
     try:  # Cambion Drift — epoch=1604085600, cycle=8998s, fass=4499s
@@ -1202,14 +1208,14 @@ def _parse_cycles(raw: dict) -> list[dict]:
         elapsed   = int(ts - epoch_s) % cycle_s
         is_fass   = elapsed < fass_s
         secs_left = (fass_s - elapsed) if is_fass else (cycle_s - elapsed)
-        cycles.append({"location": "Cambion Drift", "state": "Fass" if is_fass else "Vome", "eta": _eta(now + timedelta(seconds=secs_left))})
+        cycles.append({"location": "Cambion Drift", "state": "Fass" if is_fass else "Vome", "eta": _eta(now + timedelta(seconds=secs_left)), "expiry_ts": ts + secs_left})
     except Exception: pass
 
     try:  # Earth — epoch=0, cycle=14400s, day=10800s, night=3600s
         elapsed   = int(ts) % 14400
         is_day    = elapsed < 10800
         secs_left = (10800 - elapsed) if is_day else (14400 - elapsed)
-        cycles.append({"location": "Earth", "state": "Day" if is_day else "Night", "eta": _eta(now + timedelta(seconds=secs_left))})
+        cycles.append({"location": "Earth", "state": "Day" if is_day else "Night", "eta": _eta(now + timedelta(seconds=secs_left)), "expiry_ts": ts + secs_left})
     except Exception: pass
 
     # ── Zariman Ten Zero ──────────────────────────────────────────────────────
@@ -1219,9 +1225,10 @@ def _parse_cycles(raw: dict) -> list[dict]:
         is_corpus = elapsed < corpus_s
         secs_left = (corpus_s - elapsed) if is_corpus else (cycle_s - elapsed)
         cycles.append({
-            "location": "Zariman Ten Zero",
-            "state":    "Corpus" if is_corpus else "Grineer",
-            "eta":      _eta(now + timedelta(seconds=secs_left)),
+            "location":  "Zariman Ten Zero",
+            "state":     "Corpus" if is_corpus else "Grineer",
+            "eta":       _eta(now + timedelta(seconds=secs_left)),
+            "expiry_ts": ts + secs_left,
         })
     except Exception:
         pass
@@ -1361,9 +1368,10 @@ def _parse_events(raw: dict) -> list[dict]:
                     reward = f"{int(credits):,}c"
 
             out.append({
-                "name":   name[:60],
-                "eta":    _eta(expiry),
-                "reward": reward[:50],
+                "name":      name[:60],
+                "eta":       _eta(expiry),
+                "expiry_ts": expiry.timestamp() if expiry else 0,
+                "reward":    reward[:50],
             })
         except Exception:
             continue
