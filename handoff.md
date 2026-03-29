@@ -1,53 +1,68 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional: dark theme, mod card grid, special slots (stance/exilus), weapon images, riven mod builder, enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks, inline SVG damage type icons. Live page (`/live`) with fissures (two-column, with cycles strip), sorties, archon hunt, void trader, nightwave, alert banner, invasions, events.
+**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional. Live page (`/live`) fully rebuilt: cycles standalone panel, fissures, invasions (reformatted), sortie, archon hunt, nightwave (fully populated), baro, alert banner, events.
 
-Branch: `codex` — last commit `f40b8c2`
+**Version:** `0.5.6`
+**Branch:** `claude/review-handoff-notes-ciJK9` — last commit `869b28d`
 
 ---
 
 ## What Was Done This Session
 
-### 1. Panel gradient lines — top + bottom
-`.panel::before` in `panels.css` updated from a single top gradient to two-layer top + bottom gradient lines (opacity 0.55). Alert banner `::after` uses the same pattern.
+### 1. Version bump
+`0.5.5` → `0.5.6`
 
-### 2. Theme CSS variable changes (`base.css`)
-- `--border: rgba(139, 0, 0, 0.2)` — reduced opacity (less visible borders)
-- `--radius: 4px` and `--radius-sm: 3px` — slight rounding (was 0)
+### 2. Invasions panel — full reformat
+- New 3-column layout: `[Attacker + reward] | VS | [Defender + reward]`
+- ETA chip hidden when no expiry (was showing `?`)
+- Empty reward chips hidden (Infested side has no reward)
+- Reward chip borders removed
+- `.invasion-header`, `.invasion-sides`, `.invasion-side`, `.invasion-attacker`, `.invasion-defender`, `.invasion-faction` CSS classes
 
-### 3. Mobile horizontal overflow fix (`live.css`)
-- `.live-grid` column template: `minmax(min(360px, 100%), 1fr)` prevents columns forcing wider than viewport
-- `overflow-x: hidden` on `.live-wrap`
-- Single-column breakpoint raised 600px → 768px
+### 3. Live page panel order (final)
+```
+Cycles (standalone) → Void Fissures → Invasions → Sortie+Archon Hunt (stacked) → Nightwave+Baro (stacked) → Events
+```
+- `.panel-stack` wrapper: `display: flex; flex-direction: column; gap: 12px` — keeps paired panels in same grid column at any width
+- Mobile: collapses naturally to single column
 
-### 4. Fissures panel — cycles strip + two-column layout
-- Open World Cycles absorbed into Fissures panel as a strip above tier filter tabs (`.fissure-cycles-strip`)
-- `.fissure-list` — two-column grid desktop, single column ≤768px
-- `buildCyclesCard()` returns strip fragment only (no panel wrapper)
-- `buildFissureCard(fissures, cycles)` embeds cycle strip; `renderAll` no longer renders standalone Cycles card
+### 4. Nightwave panel — fully populated
+**Root cause:** challenges were in top-level `SeasonInfo`, not `SyndicateMissions`.
 
-### 5. Alert banner (`live.html` + `live.css`)
-Sticky auto-scrolling ticker between header and `.live-wrap`. Hidden when no alerts.
-- `#alert-banner` div in HTML; `buildAlertBanner(alerts)` builds doubled ticker for seamless loop
-- `ab-scroll` keyframe: `translateX(0) → translateX(-50%)` over 28s
-- Top + bottom gradient lines via `::after`; side borders only
-- Alerts panel in grid suppressed when banner is active (null → filtered by `.filter(Boolean)`)
+**Parser fixes (`scripts/parse_worldstate.py`):**
+- `_parse_nightwave(raw: dict)` now reads `raw.get("SeasonInfo")`
+- Call site changed: `_parse_nightwave(raw)` instead of `_parse_nightwave(raw.get("SyndicateMissions", []))`
+- Field names corrected: `Daily` (not `isDaily`), elite detected via `SeasonWeeklyHard` in segment
+- `_NW_PREFIX` regex: `^Season(EliteWeekly|Daily|Weekly)(Permanent|Hard)?` — strips both primary and secondary prefixes
+- `_NW_TRAIL_NUM`: strips trailing variant numbers (e.g. `22`)
+- `_nw_title(path)` helper: extracts segment, strips prefix+number, looks up `_NW_NAMES`, falls back to CamelCase split
 
-### 6. Touch scroll fixes (`live.css`)
-- `.news-row`, `.news-slider`, `.cycle-grid`: `touch-action: pan-x pan-y`
-  (was `pan-x` only — blocked vertical page scroll after horizontal swipe)
+**Known challenge name mappings (`_NW_NAMES`):**
+| Path key | Display name |
+|---|---|
+| `VisitFeaturedDojo` | Just Visiting |
+| `DeployAirSupport` | Air It Out |
+| `DonateLeverian` | Donate to the Leverian |
+| `CompleteMissions` | Mission Complete |
+| `KillEximus` | Eximus Eliminator |
+| `KillEnemies` | Not a Warning Shot |
+| `UnlockDragonVaults` | Vault Looter |
+| `CompleteTreasures` | Animator |
+| `KillOrCaptureRainalyst` | Hydrolyst Hunter |
+| + many more | see `_NW_NAMES` dict |
 
-### 7. News nav arrows — bare style (`live.css`)
-`.news-nav-btn`: removed circle background and border. Now bare crimson arrows (`background: none; border: none; opacity: 0.8`).
+**UI:** Nightwave tag borders removed. Daily=blue, Weekly=orange, Elite=crimson.
 
-### 8. No-flash auto-refresh (`live.html`)
-`_hasLoaded` flag: loading spinner only shown on first load. Subsequent auto-refreshes update silently in place.
+### 5. Open World Cycles — standalone panel
+- Decoupled from Void Fissures panel
+- `buildCyclesCard()` returns `<div class="cycles-standalone live-card-full">` (no `.panel` class)
+- `.cycles-standalone` styled manually: `background: var(--surface)`, `border: 1px solid var(--border)`, `border-radius: 8px`, `margin-top: 4px`, `padding: 10px 16px`
+- `::before`: top + bottom crimson gradient matching `.panel::before` (`rgba(220,20,60,0.55)`)
+- `::before` suppresses the top panel glow to avoid double border with news ticker
 
-### 9. SolNode748, credits format, CamelCase fix (`parse_worldstate.py`)
-- `SolNode748` added to `ALL_NODES` as "Garus (Kuva Fortress)" and `NODE_FACTION` as "Grineer"
-- Credits format: `f"{credits:,} Credits"` changed to `f"{credits:,}c"` (two locations)
-- `_item_name()` fallback now splits CamelCase via `re.sub(r'([A-Z])', r' \1', raw).strip()`
+### 6. Void Fissures heading moved
+`<h2>Void Fissures</h2>` now renders **after** the cycles strip (which is now standalone), above tier tabs. `buildFissureCard(fissures)` — cycles param removed.
 
 ---
 
@@ -76,11 +91,11 @@ Sticky auto-scrolling ticker between header and `.live-wrap`. Hidden when no ale
 | `src/quantizer.py` | quantize() — Decimal + ROUND_HALF_UP |
 | `web/api.py` | FastAPI endpoints |
 | `web/static/index.html` | Calculator SPA |
-| `web/static/live.html` | Live Data SPA — worldstate, fissures, etc. |
-| `web/static/base.css` | CSS variables: `--radius: 4px`, `--border: rgba(139,0,0,0.2)` |
-| `web/static/live.css` | Live page styles — fissure layout, alert banner, news ticker |
-| `web/static/panels.css` | Shared panel styles — top+bottom gradient lines via `::before` |
-| `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)` entry point; `ALL_NODES` + `NODE_FACTION` |
+| `web/static/live.html` | Live Data SPA |
+| `web/static/base.css` | CSS variables |
+| `web/static/live.css` | Live page styles |
+| `web/static/panels.css` | Shared panel styles — top+bottom gradient via `::before` |
+| `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)`; `_parse_nightwave(raw)`; `ALL_NODES`; `_NW_NAMES` |
 | `__main__.py` | CLI interface |
 
 ### Data Files
@@ -93,11 +108,13 @@ Sticky auto-scrolling ticker between header and `.live-wrap`. Hidden when no ale
 ### Live Page — Key JS Functions (`live.html`)
 | Function | Purpose |
 |----------|---------|
-| `buildFissureCard(fissures, cycles)` | Main fissures panel — embeds cycle strip + tier tabs + two-col list |
-| `buildCyclesCard(cycles)` | Returns `.fissure-cycles-strip` fragment only (no panel wrapper) |
+| `buildCyclesCard(cycles)` | Standalone full-width cycles block (no `.panel`) |
+| `buildFissureCard(fissures)` | Fissures panel — tier tabs + two-col list (no cycles) |
+| `buildInvasionsCard(invasions)` | 3-col attacker/VS/defender layout |
+| `buildNightwaveCard(nw)` | Nightwave challenges — Daily/Weekly/Elite tags + rep |
 | `buildAlertBanner(alerts)` | Populates `#alert-banner` ticker; hides when empty |
-| `renderAll(data)` | Sets `_hasLoaded = true`; omits Alerts card when banner is active |
-| `loadData()` | Fetch + render; shows loading spinner on first load only |
+| `renderAll(data)` | Panel order: cycles, fissures, invasions, sortie+archon stack, nightwave+baro stack, events |
+| `loadData()` | Fetch + render; spinner on first load only |
 
 ### Live Page Fissure Categories
 | Key | Condition |
@@ -106,8 +123,6 @@ Sticky auto-scrolling ticker between header and `.live-wrap`. Hidden when no ale
 | `requiem` | `f.tier === 'Requiem'` |
 | `steelpath` | `f.is_steel_path === true` |
 | `origin` | everything else |
-
-Tier column shows label + color from `TIER_COLORS`. Railjack uses `--void-teal: #3ddcb8`. SP tag shown inline in node name for steel path rows.
 
 ### Sandbox Git — Commit Workaround
 Cowork's background git sync holds `index.lock`, blocking sandbox commits. Commit from Windows terminal instead:
@@ -124,11 +139,8 @@ git add -A && git commit -m "..."
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-
-### Already Done (remove from TODO)
-- ~~**Kill Time (TTK)**~~ — Implemented in `web/static/js/calculate.js`.
-- ~~**Condition Overload**~~ — UI passes `unique_statuses` correctly.
-- ~~**Jupiter/Eris node ID audit**~~ — `ALL_NODES` + `NODE_FACTION` fully audited in `parse_worldstate.py`.
+- **Nightwave challenge names** — Some path keys still fall back to CamelCase split. Add to `_NW_NAMES` as they're identified in-game.
+- **Deployment** — Railway blocks `api.warframe.com`. Use VPS (DigitalOcean, Hetzner) or Fly.io for hosting.
 
 ---
 
