@@ -196,6 +196,7 @@ SORTIE_MODIFIERS: dict[str, str] = {
     "SORTIE_MODIFIER_HAZARD_FIRE":      "Environmental Hazard: Fire",
     "SORTIE_MODIFIER_HAZARD_ICE":       "Environmental Hazard: Cryogenic",
     "SORTIE_MODIFIER_HAZARD_COLD":      "Environmental Hazard: Cryogenic",
+    "SORTIE_MODIFIER_EXPLOSION":        "Environmental Hazard: Explosion",
 }
 ALL_NODES: dict[str, str] = {
     # Mercury
