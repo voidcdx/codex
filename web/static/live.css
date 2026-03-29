@@ -179,8 +179,6 @@
 .cycles-standalone {
   padding: 10px 0;
   position: relative;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
 }
 .cycles-standalone::before { display: none; }
 .cycles-standalone::after {
