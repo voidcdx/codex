@@ -1,4 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" fill="#050505"/>
-  <polygon points="4,6 12,6 16,20 20,6 28,6 20,26 12,26" fill="#dc143c"/>
+  <!-- Twin Grakata barrels -->
+  <rect x="7" y="10" width="4" height="14" rx="1" fill="#dc143c"/>
+  <rect x="21" y="10" width="4" height="14" rx="1" fill="#dc143c"/>
+  <!-- Stock -->
+  <rect x="7" y="20" width="18" height="3" rx="1" fill="#dc143c"/>
+  <!-- CLEM text -->
+  <text x="16" y="9" font-family="monospace" font-size="6" font-weight="bold" fill="#dc143c" text-anchor="middle" letter-spacing="1">CLEM</text>
 </svg>
