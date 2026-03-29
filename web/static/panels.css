@@ -962,5 +962,28 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   gap: 3px;
 }
 .buff-subsumed {
-  accent-color: var(--crimson-bright);
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--crimson-bright);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+}
+.buff-subsumed:checked {
+  background: var(--crimson-bright);
+}
+.buff-subsumed:checked::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0px;
+  width: 4px;
+  height: 7px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
   
