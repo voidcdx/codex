@@ -411,7 +411,7 @@
   background: var(--accent2);
 }
 .reward-chip {
-  font-size: 0.73rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
   padding: 1px 0;
 }
