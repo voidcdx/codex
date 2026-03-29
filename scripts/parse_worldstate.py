@@ -1254,9 +1254,8 @@ def _parse_news(raw: dict) -> list[dict]:
 
     Keeps only entries that:
     - Have an English Message (len > 20, not a /Lotus/ path, not a known generic string)
-    - Have an image (blank card otherwise)
-    - Link to forums.warframe.com, www.warframe.com/news, or warframe.com/updates
-    Results are sorted newest-first by Date.
+    - Message is not in the generic messages set
+    Results are sorted newest-first by Date. URL and image are optional.
     """
     out: list[dict] = []
     for ev in raw.get("Events", []):
@@ -1276,8 +1275,6 @@ def _parse_news(raw: dict) -> list[dict]:
             if msg_en.lower().strip() in _NEWS_GENERIC_MESSAGES:
                 continue
             url = ev.get("Prop") or ""
-            if "warframe.com" not in url:
-                continue
             image = ev.get("ImageUrl") or None
             dt = _parse_date(ev.get("Date"))
             out.append({
