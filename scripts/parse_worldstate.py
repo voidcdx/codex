@@ -1119,6 +1119,7 @@ _NW_NAMES = {
     "KuvaSiphon":             "Don't Fear the Reaper",
     "SilverGroveSpecters":    "Grove Guardian",
     "LuaAscension":           "Ascendant",
+    "UnlockDragonVaults":     "Vault Looter",
     # Hard / Elite
     "KillOrCaptureRainalyst": "Hydrolyst Hunter",
     "Arbitration":            "Vital Arbiter",
