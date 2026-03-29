@@ -40,9 +40,9 @@ function showEnemyStats(enemy) {
   const headVal  = headMult && headMult !== 1 ? `${headMult}\u00d7` : '\u2014';
 
   statsEl.innerHTML = `
+    <div class="weapon-stats-name">${esc(enemy.name)}</div>
+    <div class="weapon-stats-sub">${cap(enemy.faction)} · ${cap(enemy.health_type)}</div>
     <div class="threat-card">
-      <div class="threat-card-name">${esc(enemy.name)}</div>
-      <div class="weapon-stats-sub">${cap(enemy.faction)} · ${cap(enemy.health_type)}</div>
       <div class="threat-stats-row">
         <div>
           <div class="threat-stat-label">Base Lvl</div>
