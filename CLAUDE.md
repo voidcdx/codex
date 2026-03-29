@@ -55,6 +55,7 @@ scripts/
   parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json (multi-attack aware)
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
+  parse_worldstate.py # worldstate parser: parse(raw); _parse_nightwave(raw) reads SeasonInfo root; ALL_NODES; _NW_NAMES
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
@@ -486,6 +487,15 @@ DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platf
 | `cycles` | `_parse_cycles()` | Yes |
 | `events` | `_parse_events()` | Yes |
 
+### Nightwave Parser (`_parse_nightwave`)
+- **Call site:** `_parse_nightwave(raw)` receives the **full raw worldstate dict**
+- **Data source:** `raw.get("SeasonInfo")` — challenges are in top-level `SeasonInfo.ActiveChallenges`, NOT in `SyndicateMissions`
+- **Prefix stripping:** `_NW_PREFIX = re.compile(r"^Season(EliteWeekly|Daily|Weekly)(Permanent|Hard)?")` — strips both primary and secondary prefix tokens
+- **Trail number stripping:** `_NW_TRAIL_NUM = re.compile(r"\d+$")` — strips variant numbers (e.g. `CompleteMissions22` → `CompleteMissions`)
+- **Elite detection:** `bool(re.search(r"Season(Weekly|EliteWeekly)?Hard|EliteWeekly", segment))`
+- **Name lookup:** `_NW_NAMES` dict maps 50+ path keys → display names. Falls back to CamelCase split for unknown keys.
+- **Unknown keys:** When a challenge shows garbled text, extract paths via `JSON.parse(document.body.innerText).SeasonInfo.ActiveChallenges.map(c => c.Challenge)` and add to `_NW_NAMES`.
+
 ### UI auto-refresh
 - Countdown timer in `live.html`: refreshes every **180 seconds**.
 - Actual upstream fetches happen at most every 60 seconds (TTL).
@@ -512,6 +522,31 @@ DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platf
 
 `solnode_map.json` (secondary fallback) does not exist — do not rely on it.
 
+### Live Page Panel Order (`renderAll` in `live.html`)
+```
+Cycles (standalone) → Void Fissures → Invasions → [Sortie + Archon Hunt] → [Nightwave + Baro] → Events
+```
+Paired panels use `.panel-stack` flex wrapper (column, 12px gap). Mobile collapses to single column naturally.
+
+### Live Page — Key JS Functions
+| Function | Purpose |
+|---|---|
+| `buildCyclesCard(cycles)` | Standalone full-width cycles block — `.cycles-standalone` (no `.panel` class) |
+| `buildFissureCard(fissures)` | Fissures panel — tier tabs + two-col list; `<h2>` above tabs; no cycles arg |
+| `buildInvasionsCard(invasions)` | 3-col attacker/VS/defender layout |
+| `buildNightwaveCard(nw)` | Nightwave challenges — Daily/Weekly/Elite tags + rep |
+| `buildAlertBanner(alerts)` | Populates `#alert-banner` ticker; hides when empty |
+| `renderAll(data)` | Panel order: cycles, fissures, invasions, sortie+archon stack, nightwave+baro stack, events |
+| `loadData()` | Fetch + render; spinner on first load only |
+
+### Live Page Fissure Categories
+| Key | Condition |
+|---|---|
+| `railjack` | `f.is_railjack === true` |
+| `requiem` | `f.tier === 'Requiem'` |
+| `steelpath` | `f.is_steel_path === true` |
+| `origin` | everything else |
+
 ### Live page typography scale (do not regress)
 | Tier | Size | Examples |
 |---|---|---|
@@ -521,6 +556,17 @@ DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platf
 | Tags / badges / buttons | `0.73rem` | `.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`, `.invasion-vs`, `.live-count`, `.refresh-btn` |
 
 When adding new live page sections, follow this tier assignment. Do not drop primary row data below `1rem` or secondary text below `0.85rem`.
+
+### New CSS Classes (live.css — v0.5.6)
+| Class | Purpose |
+|---|---|
+| `.cycles-standalone` | Standalone cycles panel: `background: var(--surface)`, `border: 1px solid var(--border)`, `border-radius: 8px`, `margin-top: 4px` |
+| `.cycles-standalone::before` | Top+bottom crimson gradient (same `rgba(220,20,60,0.55)` as `.panel::before`) |
+| `.panel-stack` | `display: flex; flex-direction: column; gap: 12px` — keeps paired panels in same grid column |
+| `.invasion-sides` | `display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px` |
+| `.invasion-attacker` | Left-aligned invasion side |
+| `.invasion-defender` | Right-aligned (`text-align: right`) invasion side |
+| `.invasion-vs` | Center "VS" badge |
 
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.
