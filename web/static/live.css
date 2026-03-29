@@ -175,11 +175,19 @@
   gap: 0 24px;
 }
 
-/* Cycles strip embedded inside fissures panel */
-.fissure-cycles-strip {
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+/* Cycles standalone block */
+.cycles-standalone {
+  padding: 10px 0;
+  position: relative;
+}
+.cycles-standalone::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--crimson-bright), transparent);
 }
 .fissure-row {
   display: flex;
