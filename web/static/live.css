@@ -177,10 +177,12 @@
 
 /* Cycles standalone block */
 .cycles-standalone {
-  padding: 10px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: none;
   position: relative;
+  padding: 10px 16px;
 }
-.cycles-standalone::before { display: none; }
 .cycles-standalone::after {
   content: '';
   position: absolute;
