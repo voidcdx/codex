@@ -179,7 +179,7 @@
 .cycles-standalone {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 8px;
   margin-top: 4px;
   position: relative;
   padding: 10px 16px;
