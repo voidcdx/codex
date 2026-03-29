@@ -517,12 +517,12 @@
 .news-card:hover { opacity: 0.85; }
 .news-thumb {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  height: 130px;
+  object-fit: contain;
+  background: var(--surface-solid);
   display: block;
 }
 .news-thumb-ph {
-  aspect-ratio: 16 / 9;
   background: var(--surface-solid);
   display: flex;
   align-items: center;
