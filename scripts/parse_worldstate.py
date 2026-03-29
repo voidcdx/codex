@@ -1246,6 +1246,7 @@ def _parse_cycles(raw: dict) -> list[dict]:
 _NEWS_GENERIC_MESSAGES = {
     "check out the official warframe wiki",
     "visit the official warframe forums",
+    "visit the official warframe forums!",
 }
 
 
@@ -1316,9 +1317,6 @@ def _debug_news(raw: dict) -> dict:
                 rejected.append({"reason": "generic message", "message": msg_en})
                 continue
             url = ev.get("Prop") or ""
-            if "warframe.com" not in url:
-                rejected.append({"reason": "url mismatch", "message": msg_en, "url": url})
-                continue
             image = ev.get("ImageUrl") or None
             accepted.append({"message": msg_en, "url": url, "image": image})
         except Exception as exc:
