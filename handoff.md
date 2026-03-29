@@ -1,68 +1,35 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional. Live page (`/live`) fully rebuilt: cycles standalone panel, fissures, invasions (reformatted), sortie, archon hunt, nightwave (fully populated), baro, alert banner, events.
+**304 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional. Live page (`/live`) fully rebuilt.
 
 **Version:** `0.5.6`
-**Branch:** `claude/review-handoff-notes-ciJK9` — last commit `869b28d`
+**Branch:** `claude/review-handoff-notes-2Cmip` — last commit `0ba17fa`
 
 ---
 
 ## What Was Done This Session
 
-### 1. Version bump
-`0.5.5` → `0.5.6`
+### 1. Code cleanup (dead code removal + import consolidation)
+- `web/api.py`: merged duplicate `pydantic` imports; moved late `FileResponse` import to top
+- `tests/test_arcanes.py`: removed unused `import math`
+- `tests/test_calculator.py`: moved mid-file `Buff`/`make_buff` imports to top
+- `__main__.py`: moved inline `import math as _math` to module level
+- `utils.js`: removed dead `setSelectValue()` and `setSelectByText()`
+- `combobox.js`: removed dead `setupSearch()`
+- `app.js`: merged two `DOMContentLoaded` listeners into one
 
-### 2. Invasions panel — full reformat
-- New 3-column layout: `[Attacker + reward] | VS | [Defender + reward]`
-- ETA chip hidden when no expiry (was showing `?`)
-- Empty reward chips hidden (Infested side has no reward)
-- Reward chip borders removed
-- `.invasion-header`, `.invasion-sides`, `.invasion-side`, `.invasion-attacker`, `.invasion-defender`, `.invasion-faction` CSS classes
+### 2. Enemy picker — name/subtitle alignment
+**Before:** Enemy name and faction/health were inside `.threat-card` (which has `padding: 12px`), causing the name to sit 12px lower than the weapon name.
 
-### 3. Live page panel order (final)
-```
-Cycles (standalone) → Void Fissures → Invasions → Sortie+Archon Hunt (stacked) → Nightwave+Baro (stacked) → Events
-```
-- `.panel-stack` wrapper: `display: flex; flex-direction: column; gap: 12px` — keeps paired panels in same grid column at any width
-- Mobile: collapses naturally to single column
+**After:** Name and subtitle are now **outside** the `.threat-card`, sitting directly in `#enemy-stats-content` with no padding above them — same structure as the weapon name in `#weapon-stats-content`.
 
-### 4. Nightwave panel — fully populated
-**Root cause:** challenges were in top-level `SeasonInfo`, not `SyndicateMissions`.
+- `enemy.js`: name uses `.weapon-stats-name`, subtitle uses `.weapon-stats-sub` (plain dim text)
+- `panels.css`: `.threat-card` gains `margin-top: 10px` to space it below the name
+- `results.css`: `.weapon-stats-img-row` changed from `align-items: center` → `align-items: flex-start` so weapon name aligns to top of image, not mid-image
 
-**Parser fixes (`scripts/parse_worldstate.py`):**
-- `_parse_nightwave(raw: dict)` now reads `raw.get("SeasonInfo")`
-- Call site changed: `_parse_nightwave(raw)` instead of `_parse_nightwave(raw.get("SyndicateMissions", []))`
-- Field names corrected: `Daily` (not `isDaily`), elite detected via `SeasonWeeklyHard` in segment
-- `_NW_PREFIX` regex: `^Season(EliteWeekly|Daily|Weekly)(Permanent|Hard)?` — strips both primary and secondary prefixes
-- `_NW_TRAIL_NUM`: strips trailing variant numbers (e.g. `22`)
-- `_nw_title(path)` helper: extracts segment, strips prefix+number, looks up `_NW_NAMES`, falls back to CamelCase split
-
-**Known challenge name mappings (`_NW_NAMES`):**
-| Path key | Display name |
-|---|---|
-| `VisitFeaturedDojo` | Just Visiting |
-| `DeployAirSupport` | Air It Out |
-| `DonateLeverian` | Donate to the Leverian |
-| `CompleteMissions` | Mission Complete |
-| `KillEximus` | Eximus Eliminator |
-| `KillEnemies` | Not a Warning Shot |
-| `UnlockDragonVaults` | Vault Looter |
-| `CompleteTreasures` | Animator |
-| `KillOrCaptureRainalyst` | Hydrolyst Hunter |
-| + many more | see `_NW_NAMES` dict |
-
-**UI:** Nightwave tag borders removed. Daily=blue, Weekly=orange, Elite=crimson.
-
-### 5. Open World Cycles — standalone panel
-- Decoupled from Void Fissures panel
-- `buildCyclesCard()` returns `<div class="cycles-standalone live-card-full">` (no `.panel` class)
-- `.cycles-standalone` styled manually: `background: var(--surface)`, `border: 1px solid var(--border)`, `border-radius: 8px`, `margin-top: 4px`, `padding: 10px 16px`
-- `::before`: top + bottom crimson gradient matching `.panel::before` (`rgba(220,20,60,0.55)`)
-- `::before` suppresses the top panel glow to avoid double border with news ticker
-
-### 6. Void Fissures heading moved
-`<h2>Void Fissures</h2>` now renders **after** the cycles strip (which is now standalone), above tier tabs. `buildFissureCard(fissures)` — cycles param removed.
+### 3. Cache-busting
+Added `?v=3` version params to all CSS and JS `<link>`/`<script>` tags in `index.html` to force fresh loads after changes.
 
 ---
 
@@ -90,11 +57,13 @@ Cycles (standalone) → Void Fissures → Invasions → Sortie+Archon Hunt (stac
 | `src/combiner.py` | Elemental combination by mod slot order |
 | `src/quantizer.py` | quantize() — Decimal + ROUND_HALF_UP |
 | `web/api.py` | FastAPI endpoints |
-| `web/static/index.html` | Calculator SPA |
+| `web/static/index.html` | Calculator SPA — all CSS/JS links use `?v=3` cache-busting |
 | `web/static/live.html` | Live Data SPA |
 | `web/static/base.css` | CSS variables |
 | `web/static/live.css` | Live page styles |
-| `web/static/panels.css` | Shared panel styles — top+bottom gradient via `::before` |
+| `web/static/panels.css` | Shared panel styles — `.threat-card` margin-top:10px |
+| `web/static/results.css` | `.weapon-stats-img-row` align-items: flex-start |
+| `web/static/js/enemy.js` | Enemy panel — name/sub now outside `.threat-card` |
 | `scripts/parse_worldstate.py` | Worldstate parser — `parse(raw)`; `_parse_nightwave(raw)`; `ALL_NODES`; `_NW_NAMES` |
 | `__main__.py` | CLI interface |
 
@@ -104,6 +73,17 @@ Cycles (standalone) → Void Fissures → Invasions → Sortie+Archon Hunt (stac
 | `data/weapons.json` | 588 weapons |
 | `data/mods.json` | 1,405 mods |
 | `data/enemies.json` | 983 enemies |
+
+### Enemy Panel Structure (post this session)
+```html
+#enemy-stats-content
+  <div class="weapon-stats-name">Enemy Name</div>       ← same class as weapon
+  <div class="weapon-stats-sub">Faction · Health Type</div>  ← plain dim text
+  <div class="threat-card">                             ← margin-top:10px
+    <div class="threat-stats-row">Base Lvl / Head / Armor</div>
+    <div class="threat-bars" id="threat-bars"></div>
+  </div>
+```
 
 ### Live Page — Key JS Functions (`live.html`)
 | Function | Purpose |
@@ -115,14 +95,6 @@ Cycles (standalone) → Void Fissures → Invasions → Sortie+Archon Hunt (stac
 | `buildAlertBanner(alerts)` | Populates `#alert-banner` ticker; hides when empty |
 | `renderAll(data)` | Panel order: cycles, fissures, invasions, sortie+archon stack, nightwave+baro stack, events |
 | `loadData()` | Fetch + render; spinner on first load only |
-
-### Live Page Fissure Categories
-| Key | Condition |
-|-----|-----------|
-| `railjack` | `f.is_railjack === true` |
-| `requiem` | `f.tier === 'Requiem'` |
-| `steelpath` | `f.is_steel_path === true` |
-| `origin` | everything else |
 
 ### Sandbox Git — Commit Workaround
 Cowork's background git sync holds `index.lock`, blocking sandbox commits. Commit from Windows terminal instead:
@@ -141,6 +113,7 @@ git add -A && git commit -m "..."
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
 - **Nightwave challenge names** — Some path keys still fall back to CamelCase split. Add to `_NW_NAMES` as they're identified in-game.
 - **Deployment** — Railway blocks `api.warframe.com`. Use VPS (DigitalOcean, Hetzner) or Fly.io for hosting.
+- **Cache-busting** — Currently manual `?v=N` in index.html. Consider auto-versioning from `APP_VERSION`.
 
 ---
 
@@ -153,5 +126,5 @@ python scripts/fix_galv_stats.py       # restore 10 galvanized mod fields
 
 ## Tests
 ```bash
-pytest   # 248 passing — run before every commit
+pytest   # 304 passing — run before every commit
 ```

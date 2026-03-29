@@ -86,7 +86,7 @@ handoff.md          # session handoff notes for next Claude instance
 ```
 
 ## Tests
-Run `pytest` before committing. All tests must pass.
+Run `pytest` before committing. All tests must pass. **304 tests** as of v0.5.6.
 
 ## Versioning
 `src/version.py` is the single source of truth:
@@ -150,6 +150,19 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(18,10,10,0.50)`, `-
 | `.strip-pct-badge` | Live % readout next to slider |
 | `.strip-result-block` / `.strip-result-row` | Armor/DR summary section |
 | `.strip-bar-wrap` / `.strip-bar-fill` | Strip progress bar (crimson fill, `transition: width 0.2s`) |
+
+### Enemy Picker Card Structure
+Enemy name and subtitle (faction · health type) sit **outside** `.threat-card`, directly in `#enemy-stats-content` — same pattern as weapon name in `#weapon-stats-content`. This keeps names vertically aligned across the two-column grid.
+```html
+#enemy-stats-content
+  <div class="weapon-stats-name">Name</div>
+  <div class="weapon-stats-sub">Faction · Health Type</div>
+  <div class="threat-card">          ← margin-top:10px; contains stats only
+    <div class="threat-stats-row">…</div>
+    <div class="threat-bars">…</div>
+  </div>
+```
+`.weapon-stats-img-row` uses `align-items: flex-start` so the weapon name aligns to the top of the image, not the middle.
 
 ### Faction Effectiveness Badges
 Results breakdown table shows `+50%` (green) or `−50%` (red) badges next to damage types based on the selected enemy's faction. Driven by `FACTION_EFFECTIVENESS` JS constant in `web/static/js/constants.js` (mirrors `src/calculator.py`). CSS: `.eff-badge`, `.eff-vuln`, `.eff-res` in `style.css`.
