@@ -361,8 +361,8 @@ function addBuffRow() {
   row.innerHTML = `<select style="flex:1;min-width:140px">${opts}</select>`
     + `<label style="font-size:12px;color:#aaa">Str%</label>`
     + `<input type="number" value="100" min="1" max="999" style="width:56px" title="Ability Strength %">`
-    + `<label style="font-size:11px;color:#b89d65;cursor:pointer;display:flex;align-items:center;gap:3px" title="Use Helminth (subsumed) reduced base values">`
-    + `<input type="checkbox" class="buff-subsumed" style="accent-color:#b89d65"> Helminth</label>`
+    + `<label class="buff-helminth-label" title="Use Helminth (subsumed) reduced base values">`
+    + `<input type="checkbox" class="buff-subsumed"> Helminth</label>`
     + `<button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;color:#c44;cursor:pointer;font-size:16px" title="Remove buff">&times;</button>`;
   container.appendChild(row);
 }
