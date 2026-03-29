@@ -518,11 +518,11 @@
   width: 100%;
   height: 130px;
   object-fit: contain;
-  background: var(--surface-solid);
+  background: var(--bg);
   display: block;
 }
 .news-thumb-ph {
-  background: var(--surface-solid);
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
