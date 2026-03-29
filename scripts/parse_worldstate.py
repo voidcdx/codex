@@ -1073,6 +1073,73 @@ def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
     }
 
 
+_NW_PREFIX   = re.compile(r"^Season(EliteWeekly|Permanent|Hard|Daily|Weekly)")
+_NW_TRAIL_NUM = re.compile(r"\d+$")
+_NW_NAMES = {
+    # Daily
+    "VisitFeaturedDojo":      "Just Visiting",
+    "DeployAirSupport":       "Air It Out",
+    "DonateLeverian":         "Donate to the Leverian",
+    "KillWithMelee":          "Sword Dance",
+    "MeleeOnly":              "Swordsman",
+    "PrimaryOnly":            "Hands Full",
+    "SecondaryOnly":          "Sidearm",
+    "KillWithPrimary":        "Mow Them Down",
+    "KillWithMagnetic":       "Attractive",
+    "KillWithExplosive":      "Detonator",
+    "KillWithViral":          "Sharing is Caring",
+    "KillWithToxin":          "Poisoner",
+    "KillWithCold":           "Deep Freeze",
+    "KillWithHeat":           "Arsonist",
+    "KillWithElectricity":    "Short Circuit",
+    "KillWithGas":            "Biohazard",
+    "KillWithFinisher":       "Executioner",
+    "GroundSlam":             "Comet Impact",
+    "AimGlideKills":          "Glider",
+    "Headshots":              "Marksman",
+    "PlayMinigame":           "Child at Heart",
+    "PickupCredits":          "Saver",
+    # Weekly / Permanent
+    "CompleteMissions":       "Mission Complete",
+    "KillEximus":             "Eximus Eliminator",
+    "KillEnemies":            "Kill Enemies",
+    "NightmareMissions":      "Sound Sleeper",
+    "SanctuaryOnslaught":     "Test Subject",
+    "Conservation":           "Conservationist",
+    "CacheSabotage":          "Cache Hunter",
+    "MineRare":               "Miner",
+    "FishRare":               "Fisher",
+    "CompleteBounties":       "Bounty Hunter",
+    "ZarimanBounties":        "Zariman Bounty Hunter",
+    "VoidArmageddon":         "Eternal Guardian",
+    "VoidFlood":              "High Ground",
+    "PickupMedallions":       "The Hunt is On",
+    "HijackCrewship":         "Confiscated",
+    "MarkResource":           "Communicator",
+    "KuvaSiphon":             "Don't Fear the Reaper",
+    "SilverGroveSpecters":    "Grove Guardian",
+    "LuaAscension":           "Ascendant",
+    # Hard / Elite
+    "KillOrCaptureRainalyst": "Hydrolyst Hunter",
+    "Arbitration":            "Vital Arbiter",
+    "CompleteSortie":         "Sortie Expert",
+    "NightmareMission":       "Night Terror",
+    "SteelPath":              "Cold Steel",
+    "ProfitTaker":            "Profit-Taker",
+    "EliteSanctuaryOnslaught":"Elite Test Subject",
+    "NecramechMissions":      "Rise of the Machine",
+    "VoidAngels":             "Fallen Angel",
+}
+
+def _nw_title(path: str) -> str:
+    segment = path.rstrip("/").rsplit("/", 1)[-1] if "/" in path else path
+    key = _NW_PREFIX.sub("", segment)
+    key = _NW_TRAIL_NUM.sub("", key)
+    if key in _NW_NAMES:
+        return _NW_NAMES[key]
+    return re.sub(r"([A-Z])", r" \1", key).strip()
+
+
 def _parse_nightwave(raw: dict) -> dict | None:
     # Nightwave data lives in top-level SeasonInfo (not SyndicateMissions)
     nw = raw.get("SeasonInfo")
@@ -1084,18 +1151,12 @@ def _parse_nightwave(raw: dict) -> dict | None:
     for ch in nw.get("ActiveChallenges", []):
         ch_expiry = _parse_date(ch.get("Expiry"))
         path = ch.get("Challenge", "")
-        # Extract last segment, strip Season/Daily/Weekly/EliteWeekly prefix, split CamelCase
-        segment = path.rstrip("/").rsplit("/", 1)[-1] if "/" in path else path
-        segment = re.sub(r"^Season(EliteWeekly|Daily|Weekly)", "", segment)
-        title = re.sub(r"([A-Z])", r" \1", segment).strip()
-
         is_daily = bool(ch.get("Daily", False))
-        is_elite = "EliteWeekly" in path or bool(ch.get("isElite", False))
-        # Rep defaults by type if xpAmount not present
+        is_elite = "SeasonHard" in path or "EliteWeekly" in path or bool(ch.get("isElite", False))
         rep = ch.get("xpAmount", 7000 if is_elite else 1000 if is_daily else 4500)
 
         challenges.append({
-            "title":      title,
+            "title":      _nw_title(path),
             "reputation": rep,
             "is_daily":   is_daily,
             "is_elite":   is_elite,
