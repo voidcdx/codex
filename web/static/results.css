@@ -46,7 +46,7 @@
 /* ── Weapon Stats ───────────────────────────────────── */
 .weapon-stats-img-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   margin-bottom: 12px;
   padding-bottom: 12px;
