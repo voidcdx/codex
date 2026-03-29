@@ -36,7 +36,9 @@
 
 /* ── Glass Panel (stalker style) ── */
 .panel {
-  background: var(--surface);
+  background-color: var(--surface);
+  background-image: url('/static/panel-bg.svg');
+  background-size: 100% 100%;
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--border);
@@ -44,7 +46,6 @@
   padding: 16px;
   position: relative;
   transition: border-color 0.2s;
-
 }
 .panel::before {
   content: '';
@@ -53,14 +54,6 @@
   background:
     linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) top / 100% 1px no-repeat,
     linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) bottom / 100% 1px no-repeat;
-  pointer-events: none;
-}
-.panel::after {
-  content: '';
-  position: absolute;
-  inset: -24px;
-  background: radial-gradient(ellipse 80% 70% at 50% 50%, var(--panel-glow) 0%, transparent 70%);
-  z-index: -1;
   pointer-events: none;
 }
 .panel:hover { border-color: rgba(139, 0, 0, 0.3); }
