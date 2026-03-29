@@ -292,19 +292,23 @@ function buildInvasionsCard(invasions) {
   </div>`;
   const rows = invasions.map(inv => `
     <div class="invasion-row">
-      <div class="invasion-node">${esc(inv.node)}</div>
-      <div class="invasion-factions">
-        <span>${esc(inv.attacker)}</span>
-        <span class="invasion-vs">VS</span>
-        <span>${esc(inv.defender)}</span>
+      <div class="invasion-header">
+        <span class="invasion-node">${esc(inv.node)}</span>
         <span class="eta-chip">${esc(inv.eta)}</span>
+      </div>
+      <div class="invasion-sides">
+        <div class="invasion-side invasion-attacker">
+          <span class="invasion-faction">${esc(inv.attacker)}</span>
+          <span class="reward-chip">${esc(inv.attacker_reward)}</span>
+        </div>
+        <span class="invasion-vs">VS</span>
+        <div class="invasion-side invasion-defender">
+          <span class="invasion-faction">${esc(inv.defender)}</span>
+          <span class="reward-chip">${esc(inv.defender_reward)}</span>
+        </div>
       </div>
       <div class="progress-bar-wrap">
         <div class="progress-bar-fill" data-progress="${inv.progress}"></div>
-      </div>
-      <div class="invasion-rewards">
-        <span class="reward-chip">⚔ ${esc(inv.attacker_reward)}</span>
-        <span class="reward-chip">🛡 ${esc(inv.defender_reward)}</span>
       </div>
     </div>`).join('');
   return `<div class="panel">

@@ -360,19 +360,33 @@
   border-bottom: 1px solid var(--border);
 }
 .invasion-row:last-child { border-bottom: none; }
-.invasion-node { color: var(--text-primary); font-size: 1rem; margin-bottom: 4px; }
-.invasion-factions {
+.invasion-header {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-dim);
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
 }
-.invasion-factions .eta-chip { margin-left: auto; }
+.invasion-node { color: var(--text-primary); font-size: 1rem; }
+.invasion-sides {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+.invasion-side {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.invasion-attacker { align-items: flex-start; }
+.invasion-defender { align-items: flex-end; text-align: right; }
+.invasion-faction { font-size: 0.85rem; color: var(--text-dim); }
 .invasion-vs {
   color: var(--accent2);
   font-size: 0.73rem;
   font-family: var(--font-display);
+  text-align: center;
 }
 .progress-bar-wrap {
   height: 3px;
@@ -382,12 +396,6 @@
 .progress-bar-fill {
   height: 100%;
   background: var(--accent2);
-}
-.invasion-rewards {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 4px;
 }
 .reward-chip {
   font-size: 0.73rem;
