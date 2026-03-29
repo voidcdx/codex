@@ -268,7 +268,7 @@
 .modifier-badge {
   display: inline-block;
   margin-top: 5px;
-  font-size: 0.73rem;
+  font-size: 0.85rem;
   padding: 1px 6px;
   color: var(--crimson-bright);
 }
