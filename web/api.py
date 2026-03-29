@@ -832,12 +832,12 @@ def debug_worldstate_news(request: Request) -> dict:
 
 @app.get("/")
 def index() -> FileResponse:
-    return FileResponse(str(_static / "index.html"))
+    return FileResponse(str(_static / "index.html"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/live")
 def live() -> FileResponse:
-    return FileResponse(str(_static / "live.html"))
+    return FileResponse(str(_static / "live.html"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/factions")
