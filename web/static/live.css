@@ -189,17 +189,10 @@
   position: absolute;
   inset: 0;
   border-radius: var(--radius);
-  background: linear-gradient(90deg, transparent, rgba(220,20,60,0.55), transparent) top / 100% 1px no-repeat;
+  background:
+    linear-gradient(90deg, transparent, rgba(220,20,60,0.55), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(220,20,60,0.55), transparent) bottom / 100% 1px no-repeat;
   pointer-events: none;
-}
-.cycles-standalone::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 5%;
-  right: 5%;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--crimson-bright), transparent);
 }
 .fissure-row {
   display: flex;
