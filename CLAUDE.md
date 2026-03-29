@@ -150,6 +150,9 @@ Key theme vars in `:root`: `--bg: #050505`, `--surface: rgba(18,10,10,0.50)`, `-
 | `.strip-pct-badge` | Live % readout next to slider |
 | `.strip-result-block` / `.strip-result-row` | Armor/DR summary section |
 | `.strip-bar-wrap` / `.strip-bar-fill` | Strip progress bar (crimson fill, `transition: width 0.2s`) |
+| `.strip-bar-label-left` / `.strip-bar-label-right` | "Original" / "X% stripped" labels under strip bar — `0.85rem` |
+| `.buff-helminth-label` | Helminth checkbox label — crimson, `0.73rem`, flex row |
+| `.buff-subsumed` | Helminth checkbox — fully custom styled (`appearance:none`), crimson border + fill, white checkmark |
 
 ### Enemy Picker Card Structure
 Enemy name and subtitle (faction · health type) sit **outside** `.threat-card`, directly in `#enemy-stats-content` — same pattern as weapon name in `#weapon-stats-content`. This keeps names vertically aligned across the two-column grid.
@@ -566,7 +569,8 @@ Paired panels use `.panel-stack` flex wrapper (column, 12px gap). Mobile collaps
 | Panel headings | `1rem` Orbitron | `.panel h2` (global via `panels.css`) |
 | Primary row data | `1rem` | `.fissure-node`, `.mission-node`, `.trader-location`, `.nw-title`, `.alert-reward`, `.invasion-node`, `.event-title`, `.cycle-state`, `.sortie-boss` |
 | Secondary text / ETAs | `0.85rem` | `.fissure-sub`, `.mission-sub`, `.trader-eta`, `.nw-eta`, `.alert-sub`, `.invasion-factions`, `.cycle-eta`, `.event-desc`, `.live-eta`, `.eta-chip` |
-| Tags / badges / buttons | `0.73rem` | `.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.modifier-badge`, `.reward-chip`, `.invasion-vs`, `.live-count`, `.refresh-btn` |
+| Tags / badges / buttons | `0.73rem` | `.fissure-tier`, `.fissure-tag`, `.nw-tag`, `.invasion-vs`, `.live-count`, `.refresh-btn` |
+| Rewards / modifiers | `0.85rem` | `.reward-chip`, `.modifier-badge` — bumped from `0.73rem`; reward content warrants secondary-text tier |
 
 When adding new live page sections, follow this tier assignment. Do not drop primary row data below `1rem` or secondary text below `0.85rem`.
 
