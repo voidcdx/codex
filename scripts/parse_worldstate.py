@@ -1073,7 +1073,7 @@ def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
     }
 
 
-_NW_PREFIX   = re.compile(r"^Season(EliteWeekly|Permanent|Hard|Daily|Weekly)")
+_NW_PREFIX   = re.compile(r"^Season(EliteWeekly|Daily|Weekly)(Permanent|Hard)?")
 _NW_TRAIL_NUM = re.compile(r"\d+$")
 _NW_NAMES = {
     # Daily
@@ -1152,7 +1152,8 @@ def _parse_nightwave(raw: dict) -> dict | None:
         ch_expiry = _parse_date(ch.get("Expiry"))
         path = ch.get("Challenge", "")
         is_daily = bool(ch.get("Daily", False))
-        is_elite = "SeasonHard" in path or "EliteWeekly" in path or bool(ch.get("isElite", False))
+        segment  = path.rstrip("/").rsplit("/", 1)[-1] if "/" in path else path
+        is_elite = bool(re.search(r"Season(Weekly|EliteWeekly)?Hard|EliteWeekly", segment)) or bool(ch.get("isElite", False))
         rep = ch.get("xpAmount", 7000 if is_elite else 1000 if is_daily else 4500)
 
         challenges.append({
