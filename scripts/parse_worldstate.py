@@ -1102,7 +1102,8 @@ _NW_NAMES = {
     # Weekly / Permanent
     "CompleteMissions":       "Mission Complete",
     "KillEximus":             "Eximus Eliminator",
-    "KillEnemies":            "Kill Enemies",
+    "KillEnemies":            "Not a Warning Shot",
+    "CompleteTreasures":      "Animator",
     "NightmareMissions":      "Sound Sleeper",
     "SanctuaryOnslaught":     "Test Subject",
     "Conservation":           "Conservationist",
