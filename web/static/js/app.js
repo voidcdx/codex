@@ -82,6 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const navVer = document.getElementById('nav-ver');
     if (navVer) navVer.textContent = `v${v.app}`;
   }).catch(() => {});
+  // Mod picker search
+  const search = document.getElementById('mod-picker-search');
+  if (search) search.addEventListener('input', function() {
+    renderPickerList(this.value);
+    toggleSearchClear(this);
+  });
 });
 
 // ── Mobile sidebar toggle ───────────────────────────────
@@ -94,12 +100,3 @@ function toggleDrawer() {
   if (overlay) overlay.classList.toggle('open', open);
   if (btn) btn.classList.toggle('open', open);
 }
-
-// Mod picker search
-document.addEventListener('DOMContentLoaded', () => {
-  const search = document.getElementById('mod-picker-search');
-  if (search) search.addEventListener('input', function() {
-    renderPickerList(this.value);
-    toggleSearchClear(this);
-  });
-});

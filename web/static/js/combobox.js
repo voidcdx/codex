@@ -89,13 +89,3 @@ function clearCombobox(which) {
   input.focus();
 }
 
-function setupSearch(inputId, selectId, getNames, onChange) {
-  const el = document.getElementById(inputId);
-  el.addEventListener('input', function() {
-    const q = this.value.toLowerCase();
-    const names = getNames().filter(n => n.toLowerCase().includes(q));
-    populateSelect(selectId, names);
-    if (onChange) onChange();
-    toggleSearchClear(this);
-  });
-}

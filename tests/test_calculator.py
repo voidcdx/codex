@@ -9,7 +9,8 @@ import math
 import pytest
 from src.calculator import DamageCalculator, calculate_armor_multiplier, calculate_crit_multiplier, calculate_falloff_multiplier, crit_tier, status_chance_per_pellet, BANE_MODS, VIRAL_STACK_MULTIPLIERS
 from src.loader import make_riven_mod
-from src.models import Weapon, Mod, Enemy, DamageComponent
+from src.models import Buff, Weapon, Mod, Enemy, DamageComponent
+from src.buffs import make_buff
 from src.enums import DamageType, FactionType, HealthType, ArmorType
 
 calc = DamageCalculator()
@@ -1331,9 +1332,6 @@ class TestStatusChancePerPellet:
 # ---------------------------------------------------------------------------
 # Warframe Buff Tests
 # ---------------------------------------------------------------------------
-from src.models import Buff
-from src.buffs import make_buff
-
 
 class TestRoarBuff:
     """Roar: faction-type buff, additive with Bane mods, double-dips on procs."""

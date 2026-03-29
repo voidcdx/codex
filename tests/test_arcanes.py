@@ -1,5 +1,4 @@
 """Weapon Arcane tests — Merciless, Deadhead, Cascadia damage integration."""
-import math
 import pytest
 from src.calculator import DamageCalculator
 from src.models import Weapon, Mod, Enemy, DamageComponent, WeaponArcane
