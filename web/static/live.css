@@ -400,8 +400,7 @@
 .reward-chip {
   font-size: 0.73rem;
   color: var(--text-dim);
-  padding: 1px 6px;
-  border: 1px solid var(--border);
+  padding: 1px 0;
 }
 
 /* ── Open World Cycles ── */
