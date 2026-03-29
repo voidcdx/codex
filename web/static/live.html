@@ -416,10 +416,8 @@ function renderAll(data) {
   const cards = [
     buildFissureCard(data.fissures || [], data.cycles || []),
     buildInvasionsCard(data.invasions || []),
-    buildSortieCard(data.sortie),
-    buildNightwaveCard(data.nightwave),
-    buildArchonCard(data.archon_hunt),
-    buildTraderCard(data.void_trader),
+    `<div class="panel-stack">${buildSortieCard(data.sortie)}${buildArchonCard(data.archon_hunt)}</div>`,
+    `<div class="panel-stack">${buildNightwaveCard(data.nightwave)}${buildTraderCard(data.void_trader)}</div>`,
     (data.alerts && data.alerts.length ? null : buildAlertsCard([])),
     buildEventsCard(data.events || []),
   ].filter(Boolean).join('');

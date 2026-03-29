@@ -127,6 +127,7 @@
 }
 .live-card-full { grid-column: 1 / -1; }
 .live-card-wide { grid-column: span 2; }
+.panel-stack { display: flex; flex-direction: column; gap: 12px; }
 
 /* ── Count badge in panel h2 ── */
 .live-count {
