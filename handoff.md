@@ -121,12 +121,14 @@ git add -A && git commit -m "..."
 
 ## Known Gaps / TODO
 
-- **Kill Time (TTK)** — Shots and seconds to kill at given enemy level.
 - **Build saving / URL sharing** — Encode build state in URL params.
 - **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
 - **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-- **Condition Overload** — Calculator uses `unique_statuses` but UI doesn't pass actual unique status counts yet.
-- **Jupiter/Eris node ID audit** — Some IDs in `ALL_NODES` may be stale; needs browser + wiki cross-reference.
+
+### Already Done (remove from TODO)
+- ~~**Kill Time (TTK)**~~ — Implemented in `web/static/js/calculate.js`.
+- ~~**Condition Overload**~~ — UI passes `unique_statuses` correctly.
+- ~~**Jupiter/Eris node ID audit**~~ — `ALL_NODES` + `NODE_FACTION` fully audited in `parse_worldstate.py`.
 
 ---
 
