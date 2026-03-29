@@ -417,9 +417,9 @@ function renderAll(data) {
     buildFissureCard(data.fissures || [], data.cycles || []),
     buildInvasionsCard(data.invasions || []),
     buildArchonCard(data.archon_hunt),
+    buildNightwaveCard(data.nightwave),
     buildSortieCard(data.sortie),
     buildTraderCard(data.void_trader),
-    buildNightwaveCard(data.nightwave),
     (data.alerts && data.alerts.length ? null : buildAlertsCard([])),
     buildEventsCard(data.events || []),
   ].filter(Boolean).join('');
