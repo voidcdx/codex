@@ -971,6 +971,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   cursor: pointer;
   flex-shrink: 0;
   position: relative;
+  overflow: hidden;
 }
 .buff-subsumed:checked {
   background: var(--crimson-bright);
