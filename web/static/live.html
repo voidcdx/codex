@@ -415,9 +415,9 @@ function renderAll(data) {
   _hasLoaded = true;
   const cards = [
     buildFissureCard(data.fissures || [], data.cycles || []),
-    buildSortieCard(data.sortie),
-    buildArchonCard(data.archon_hunt),
     buildInvasionsCard(data.invasions || []),
+    buildArchonCard(data.archon_hunt),
+    buildSortieCard(data.sortie),
     buildTraderCard(data.void_trader),
     buildNightwaveCard(data.nightwave),
     (data.alerts && data.alerts.length ? null : buildAlertsCard([])),
