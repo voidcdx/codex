@@ -26,15 +26,14 @@ if str(_root) not in sys.path:
     sys.path.insert(0, str(_root))
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
 import math
-from pydantic import Field
 from src.arcanes import ARCANE_PRESETS, ARCANE_DISPLAY_NAMES, ARCANE_RESTRICTIONS, ARCANE_MAX_STACKS, make_arcane
 from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, calculate_falloff_multiplier, status_chance_per_pellet
@@ -830,7 +829,6 @@ def debug_worldstate_news(request: Request) -> dict:
 # Root — serve the SPA
 # ---------------------------------------------------------------------------
 
-from fastapi.responses import FileResponse  # noqa: E402
 
 @app.get("/")
 def index() -> FileResponse:

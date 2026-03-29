@@ -14,6 +14,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import math
 import sys
 from pathlib import Path
 
@@ -151,8 +152,7 @@ def _print_results(
     if corrosive_stacks > 0:
         print(f"Corros.: {corrosive_stacks} stack{'s' if corrosive_stacks != 1 else ''}")
     if combo_counter > 0:
-        import math as _math
-        cmult = 1.0 + 0.5 * _math.floor(combo_counter / 5)
+        cmult = 1.0 + 0.5 * math.floor(combo_counter / 5)
         print(f"Combo  : {combo_counter} hits  (×{cmult:.2f})")
     if unique_statuses > 0:
         print(f"CO     : {unique_statuses} unique status type{'s' if unique_statuses != 1 else ''} on enemy")

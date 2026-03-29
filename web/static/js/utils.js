@@ -41,19 +41,6 @@ function populateSelect(id, names) {
   sel.innerHTML = names.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
 }
 
-function setSelectValue(id, value) {
-  const sel = document.getElementById(id);
-  for (const opt of sel.options) {
-    if (opt.value === value) { sel.value = value; return; }
-  }
-}
-
-function setSelectByText(sel, text) {
-  for (const opt of sel.options) {
-    if (opt.value === text) { sel.value = text; return; }
-  }
-}
-
 function toggleSearchClear(input) {
   const wrap = input.closest('.search-wrap');
   if (wrap) wrap.classList.toggle('has-value', input.value.length > 0);
