@@ -113,6 +113,7 @@ function openPickerModal(which) {
   const searchEl = document.getElementById('item-picker-search');
   searchEl.value = '';
   renderPickerResults('');
+  document.body.style.overflow = 'hidden';
   document.getElementById('item-picker-overlay').classList.add('active');
   setTimeout(() => searchEl.focus(), 50);
 }
@@ -124,6 +125,7 @@ function closePickerModal(e) {
 
 function _closePickerNow() {
   document.getElementById('item-picker-overlay').classList.remove('active');
+  document.body.style.overflow = '';
   _pickerActive = null;
 }
 
