@@ -15,7 +15,7 @@ async function loadData() {
     !HIDDEN_WEAPON_CLASSES.has(w.class) && !HIDDEN_WEAPON_NAMES.has(w.name)
   );
 
-  weaponCombo = setupCombobox('weapon-search', 'weapon-dropdown',
+  weaponCombo = setupPickerModal('weapon',
     visibleWeapons.map(w => w.name),
     () => onWeaponChange(),
     name => {
@@ -57,7 +57,7 @@ async function loadData() {
     !HIDDEN_ENEMY_PATTERNS.some(p => p.test(e.name))
   );
 
-  enemyCombo = setupCombobox('enemy-search', 'enemy-dropdown',
+  enemyCombo = setupPickerModal('enemy',
     visibleEnemies.map(e => e.name),
     () => { showEnemyStats(getCurrentEnemy()); }
   );

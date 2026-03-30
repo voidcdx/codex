@@ -89,3 +89,94 @@ function clearCombobox(which) {
   input.focus();
 }
 
+// ── Item Picker Modal (weapon / enemy) ──────────────────────────────────────
+const _pickerConfigs = {};
+let _pickerActive = null;
+
+function setupPickerModal(which, items, onSelect, getImageUrl) {
+  _pickerConfigs[which] = { items, onSelect, getImageUrl };
+  return {
+    set(name) {
+      const input = document.getElementById(`${which}-search`);
+      if (input) input.value = name;
+      if (onSelect) onSelect(name);
+    }
+  };
+}
+
+function openPickerModal(which) {
+  _pickerActive = which;
+  const cfg = _pickerConfigs[which];
+  if (!cfg) return;
+  document.getElementById('item-picker-title').textContent =
+    which === 'weapon' ? 'SELECT WEAPON' : 'SELECT ENEMY';
+  const searchEl = document.getElementById('item-picker-search');
+  searchEl.value = '';
+  renderPickerResults('');
+  document.getElementById('item-picker-overlay').classList.add('active');
+  setTimeout(() => searchEl.focus(), 50);
+}
+
+function closePickerModal(e) {
+  if (e && e.target !== document.getElementById('item-picker-overlay')) return;
+  _closePickerNow();
+}
+
+function _closePickerNow() {
+  document.getElementById('item-picker-overlay').classList.remove('active');
+  _pickerActive = null;
+}
+
+function renderPickerResults(q) {
+  if (!_pickerActive) return;
+  const cfg = _pickerConfigs[_pickerActive];
+  const lq = q.toLowerCase();
+  const matches = lq ? cfg.items.filter(n => n.toLowerCase().includes(lq)) : cfg.items;
+  const shown = matches.slice(0, 80);
+  const list = document.getElementById('item-picker-list');
+  list.innerHTML = shown.map(n => {
+    const img = cfg.getImageUrl
+      ? `<img class="combobox-img" src="${cfg.getImageUrl(n)}" alt="" onerror="this.style.display='none'">`
+      : '';
+    return `<div class="item-picker-item" data-value="${esc(n)}">${img}${esc(n)}</div>`;
+  }).join('') + (matches.length > 80
+    ? `<div class="combobox-hint">${matches.length} results — type to narrow</div>`
+    : '');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const list = document.getElementById('item-picker-list');
+  if (!list) return;
+
+  list.addEventListener('mousedown', e => {
+    const item = e.target.closest('.item-picker-item');
+    if (!item || !_pickerActive) return;
+    e.preventDefault();
+    const which = _pickerActive;
+    const name = item.dataset.value;
+    const input = document.getElementById(`${which}-search`);
+    if (input) input.value = name;
+    _closePickerNow();
+    _pickerConfigs[which]?.onSelect(name);
+  });
+
+  let _touchStartY = 0;
+  list.addEventListener('touchstart', e => { _touchStartY = e.touches[0].clientY; }, { passive: true });
+  list.addEventListener('touchend', e => {
+    const item = e.target.closest('.item-picker-item');
+    if (!item || !_pickerActive) return;
+    if (Math.abs(e.changedTouches[0].clientY - _touchStartY) >= 10) return;
+    e.preventDefault();
+    const which = _pickerActive;
+    const name = item.dataset.value;
+    const input = document.getElementById(`${which}-search`);
+    if (input) input.value = name;
+    _closePickerNow();
+    _pickerConfigs[which]?.onSelect(name);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && _pickerActive) _closePickerNow();
+  });
+});
+
