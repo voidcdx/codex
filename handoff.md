@@ -49,9 +49,7 @@
 
 ## Pending / TODO
 
-- **Subtext wording** — "WORLD STATUS" is a placeholder. User may want something more Warframe-flavored (ORIGIN CLUSTER, TENNO UPLINK, etc.)
-- **VOID CODEX title treatment** — user wanted to do something to the title itself (glitch, shimmer, layout) but didn't get to it.
-- **Live page review at normal resolution** — confirm dot grid + panel layout looks good at user's actual screen.
+- Live page — further work in progress this session.
 
 ---
 
