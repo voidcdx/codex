@@ -832,7 +832,7 @@ def debug_worldstate_news(request: Request) -> dict:
 
 @app.get("/")
 def index() -> FileResponse:
-    return FileResponse(str(_static / "live.html"), headers={"Cache-Control": "no-store"})
+    return FileResponse(str(_static / "index.html"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/favicon.ico")
@@ -842,12 +842,12 @@ def favicon() -> FileResponse:
 
 @app.get("/calculator")
 def calculator() -> FileResponse:
-    return FileResponse(str(_static / "index.html"), headers={"Cache-Control": "no-store"})
+    return FileResponse(str(_static / "calculator.html"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/live")
 def live() -> FileResponse:
-    return FileResponse(str(_static / "live.html"), headers={"Cache-Control": "no-store"})
+    return FileResponse(str(_static / "index.html"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/factions")

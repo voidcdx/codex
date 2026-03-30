@@ -3,586 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Void Codex — Calculator</title>
+  <title>Void Codex — Live Data</title>
   <link rel="icon" type="image/png" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/base.css?v=3">
-  <link rel="stylesheet" href="/static/layout.css?v=3">
-  <link rel="stylesheet" href="/static/panels.css?v=7">
-  <link rel="stylesheet" href="/static/results.css?v=3">
-  <link rel="stylesheet" href="/static/riven.css?v=3">
-  <link rel="stylesheet" href="/static/modals.css?v=3">
-  <link rel="stylesheet" href="/static/responsive.css?v=3">
-  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
-  <!-- CDN dependencies -->
-  <script defer src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
-  <script defer src="https://unpkg.com/@popperjs/core@2"></script>
-  <script defer src="https://unpkg.com/tippy.js@6"></script>
-  <!-- App scripts -->
-  <script defer src="/static/js/constants.js?v=3"></script>
-  <script defer src="/static/js/utils.js?v=3"></script>
-  <script defer src="/static/js/combobox.js?v=3"></script>
-  <script defer src="/static/js/weapons.js?v=3"></script>
-  <script defer src="/static/js/enemy.js?v=3"></script>
-  <script defer src="/static/js/modals.js?v=4"></script>
-  <script defer src="/static/js/armorstrip.js?v=3"></script>
-  <script defer src="/static/js/calculate.js?v=3"></script>
-  <script defer src="/static/js/app.js?v=3"></script>
+  <link rel="stylesheet" href="/static/base.css">
+  <link rel="stylesheet" href="/static/layout.css">
+  <link rel="stylesheet" href="/static/panels.css">
+  <link rel="stylesheet" href="/static/responsive.css">
+  <link rel="stylesheet" href="/static/live.css">
 </head>
 <body>
 <div class="atmo"></div>
+
+<div class="live-page-wrap">
+<div id="alert-banner" class="alert-banner"></div>
 
 <div class="app">
 
 <main class="main">
 <header class="header">
-  <div class="live-header-brand">VOID <span>CODEX</span><div class="live-subtext" data-text="DAMAGE CALCULATOR">DAMAGE CALCULATOR</div></div>
-</header>
-
-<div class="content">
-<div class="content-left">
-
-  <!-- Builds watchlist -->
-  <div class="panel">
-    <h2>Builds</h2>
-
-    <!-- Pinned -->
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><path d="M7 2 L12 7 L7 12 L2 7 Z"/></svg></div>
-        <span class="wl-name">Kuva Zarr</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">48,320</div>
-        <div class="wl-change up">+Viral</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/></svg></div>
-        <span class="wl-name">Felarx</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">31,880</div>
-        <div class="wl-change up">+Rad</div>
-      </div>
-    </div>
-
-    <div class="wl-section-title">Top Damage</div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><rect x="3" y="3" width="8" height="8"/></svg></div>
-        <span class="wl-name">Torid Inc.</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">62,104</div>
-        <div class="wl-change up">+Corr</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><path d="M3 7 L10 7 M7 4 L10 7 L7 10"/></svg></div>
-        <span class="wl-name">Cedo</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">55,670</div>
-        <div class="wl-change up">+Sla</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="4"/></svg></div>
-        <span class="wl-name">Acceltra P.</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">44,210</div>
-        <div class="wl-change up">+Blast</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><path d="M4 4 L10 10 M10 4 L4 10"/></svg></div>
-        <span class="wl-name">Tenet Cycron</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">38,900</div>
-        <div class="wl-change up">+Mag</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><path d="M7 2 L12 7 L7 12 L2 7 Z"/></svg></div>
-        <span class="wl-name">Praedos</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">33,450</div>
-        <div class="wl-change up">+Heat</div>
-      </div>
-    </div>
-
-    <div class="wl-section-title">Recent</div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><rect x="4" y="4" width="6" height="6"/></svg></div>
-        <span class="wl-name">Braton P.</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">8,420</div>
-        <div class="wl-change down">−Armor</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><path d="M3 7 L10 7"/></svg></div>
-        <span class="wl-name">Dread</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">14,880</div>
-        <div class="wl-change down">−Body</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/></svg></div>
-        <span class="wl-name">Soma P.</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">6,190</div>
-        <div class="wl-change down">−Corr</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><path d="M7 3 L7 11 M4 8 L7 11 L10 8"/></svg></div>
-        <span class="wl-name">Ignis W.</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">9,730</div>
-        <div class="wl-change down">−Res</div>
-      </div>
-    </div>
-    <div class="wl-item">
-      <div class="wl-pair">
-        <div class="wl-icon"><svg viewBox="0 0 14 14"><path d="M4 4 L10 4 L10 10 L4 10 Z"/></svg></div>
-        <span class="wl-name">Lex P.</span>
-      </div>
-      <div class="wl-data">
-        <div class="wl-value">11,200</div>
-        <div class="wl-change down">−Viral</div>
-      </div>
-    </div>
+  <div class="live-header-brand">VOID <span>CODEX</span><div class="live-subtext" data-text="WORLD STATUS">WORLD STATUS</div></div>
+  <div class="refresh-info">
+    <span>Refresh in <span id="refresh-countdown">180</span>s</span>
+    <button class="refresh-btn" onclick="loadData()">&#8635; Now</button>
   </div>
-
-</div><!-- .content-left -->
-
-<div class="content-main">
-    <!-- Weapon + Enemy (merged) -->
-    <div class="panel">
-      <div class="we-grid">
-        <div class="we-col">
-          <h2>Weapon</h2>
-          <div class="combobox-wrap" id="weapon-combobox">
-            <div class="search-wrap">
-              <input type="text" id="weapon-search" class="search-input" placeholder="Search weapon…" autocomplete="off">
-              <button class="search-clear" onclick="clearCombobox('weapon')" title="Clear">×</button>
-            </div>
-            <div class="combobox-dropdown" id="weapon-dropdown"></div>
-          </div>
-          <div id="bonus-element-div" style="display:none">
-            <label class="bonus-element-label">Bonus Element (Kuva / Tenet)</label>
-            <div class="bonus-element-row">
-              <select id="bonus-element-type">
-                <option value="heat">Heat</option>
-                <option value="cold">Cold</option>
-                <option value="electricity">Electricity</option>
-                <option value="toxin">Toxin</option>
-              </select>
-              <input type="number" id="bonus-element-pct" class="input-sm-wide" min="25" max="60" value="25"
-                     oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
-              <span class="bonus-element-unit">%</span>
-            </div>
-          </div>
-          <div id="weapon-stats-content"></div>
-        </div>
-        <div class="we-col">
-          <h2>Enemy</h2>
-          <div class="combobox-wrap" id="enemy-combobox">
-            <div class="search-wrap">
-              <input type="text" id="enemy-search" class="search-input" placeholder="Search enemy…" autocomplete="off">
-              <button class="search-clear" onclick="clearCombobox('enemy')" title="Clear">×</button>
-            </div>
-            <div class="combobox-dropdown" id="enemy-dropdown"></div>
-          </div>
-          <div id="enemy-stats-content"></div>
-          <div class="enemy-level-row">
-            <div class="enemy-level-col">
-              <label for="enemy-level">Level</label>
-              <input type="number" id="enemy-level" class="input-level" min="1" max="9999" value="1">
-            </div>
-            <button class="toggle-btn" id="steel-path-btn" onclick="toggleSteelPath()">Steel Path</button>
-            <button class="toggle-btn" id="eximus-btn" onclick="toggleEximus()">Eximus</button>
-          </div>
-          <div id="enemy-scaled-stats" class="enemy-scaled-stats"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mods — 2×4 card grid -->
-    <div class="panel">
-      <h2>Mods (in slot order)<span class="mod-panel-actions"><button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button><button class="btn-alchemy-mixer" onclick="openAlchemyMixer()" title="Alchemy Mixer"><svg class="riven-alchemy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <polygon points="4,1 20,1 23,4 23,20 20,23 4,23 1,20 1,4" fill="#1a1208" stroke="#D4A843" stroke-width="0.8"/>
-  <circle cx="12" cy="12" r="8" fill="none" stroke="#8B6914" stroke-width="0.5"/>
-  <circle cx="12" cy="3.5" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="12" cy="20.5" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="3.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <circle cx="20.5" cy="12" r="1.2" fill="#D4A843" opacity="0.9"/>
-  <path d="M12,5.5 L18,16.5 L6,16.5 Z" fill="none" stroke="#D4A843" stroke-width="1.1" stroke-linejoin="round"/>
-  <line x1="7.5" y1="13.5" x2="16.5" y2="13.5" stroke="#D4A843" stroke-width="1.1"/>
-  <rect x="9.5" y="1" width="5" height="1" fill="#D4A843" opacity="0.6"/>
-  <rect x="9.5" y="22" width="5" height="1" fill="#D4A843" opacity="0.6"/>
-</svg></button><button class="btn-add-riven" onclick="openRivenBuilder()" title="Add Riven mod">+</button></span></h2>
-      <div class="panel-help hidden">
-        <p>Mods apply in slot order — top-left first. Slot order determines elemental combination: the first two primary elements (Heat, Cold, Electricity, Toxin) encountered combine into a secondary (e.g. Cold + Toxin = Viral, Heat + Electricity = Radiation). Innate weapon elements occupy the last slot.</p>
-        <p>Primed, Umbral, and Archon variants block their base version — only one variant per mod family can be equipped at a time.</p>
-        <p>Click the purple slot to open the Riven Builder. Use the gold alchemy button to explore elemental combinations.</p>
-      </div>
-      <div id="mod-grid-wrapper">
-        <div id="special-slots" class="special-slots-row"></div>
-        <div id="mod-grid" class="mod-grid"></div>
-        <svg id="element-arcs"></svg>
-      </div>
-      <div id="element-badges" class="element-badges"></div>
-      <div class="panel-sub-h">Weapon Arcanes
-        <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
-        <button type="button" class="btn-add btn-add-arcane" onclick="addArcaneRow()" title="Add weapon arcane (max 2)">+ ADD</button>
-      </div>
-      <div class="panel-help hidden">
-        <p>Weapon arcanes slot into a max-rank built weapon and use no mod capacity. Up to 2 arcane slots per weapon.</p>
-        <p><strong>Merciless:</strong> Stacks on kill — up to +180% damage and −90% reload at 10 stacks.</p>
-        <p><strong>Deadhead:</strong> Stacks on headshot kill — up to +120% headshot bonus and −60% reload at 10 stacks.</p>
-        <p><strong>Cascadia Flare / Empowered:</strong> Proc on status hit, granting temporary crit chance or crit damage.</p>
-        <p><strong>Cascadia Overcharge:</strong> On reload, adds flat IPS damage distributed proportionally across Impact, Puncture, and Slash.</p>
-        <p>The stack count you enter represents active stacks at the moment of this hit.</p>
-      </div>
-      <div id="arcane-rows"></div>
-    </div>
-
-    <!-- Riven rows rendered inline in mod-grid by JS -->
-
-    <!-- Alchemy Guide Modal -->
-    <div class="mod-picker-overlay" id="alchemy-mixer-overlay">
-      <div class="alchemy-modal">
-        <div class="alchemy-modal-header">
-          <h2 class="alchemy-modal-title">Alchemy Guide</h2>
-          <button class="alch-clear-btn" onclick="clearAlchMods()" title="Remove all alchemy mods from slots">Clear Mods</button>
-          <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeAlchemyMixer()">×</button>
-        </div>
-        <div class="alchemy-palette" id="alchemy-palette"></div>
-        <div class="alchemy-suggestions" id="alchemy-suggestions"></div>
-      </div>
-    </div>
-
-    <!-- Mod Picker Modal -->
-    <div class="mod-picker-overlay" id="mod-picker-overlay">
-      <div class="mod-picker">
-        <div class="mod-picker-header">
-          <h3>Select Mod — Slot <span id="picker-slot-num"></span></h3>
-          <div class="search-wrap">
-            <input type="text" class="mod-picker-search" id="mod-picker-search" placeholder="Search mods…" autocomplete="off">
-            <button class="search-clear" onclick="clearSearch('mod-picker-search')" title="Clear">×</button>
-          </div>
-        </div>
-        <div class="mod-picker-list" id="mod-picker-list"></div>
-      </div>
-    </div>
-
-    <!-- User Guide Modal -->
-    <div class="mod-picker-overlay" id="guide-overlay">
-      <div class="guide-modal">
-        <div class="guide-modal-header">
-          <div>
-            <p class="guide-modal-title">Void Codex — User Guide</p>
-            <p class="guide-modal-subtitle">Warframe damage calculator · wiki.warframe.com formulas</p>
-          </div>
-          <button class="riven-modal-close" style="position:static;flex-shrink:0" onclick="closeGuide()">×</button>
-        </div>
-        <div class="guide-modal-body">
-        <div class="guide-content">
-
-          <h3>Quick Start</h3>
-          <ol>
-            <li>Search and select a <strong>Weapon</strong> in the top-left panel.</li>
-            <li>Equip mods by clicking any mod card slot. Drag cards to reorder them.</li>
-            <li>Search and select an <strong>Enemy</strong>. Set its level, Steel Path, and Eximus state if needed.</li>
-            <li>Adjust <strong>Options</strong> (crit mode, body part, status stacks, etc.).</li>
-            <li>Click <strong>Calculate</strong>. Results appear on the right.</li>
-          </ol>
-
-          <h3>Weapon Selector</h3>
-          <p>Type any part of a weapon name to search. Exalted weapons and Garuda Talons are hidden.</p>
-          <ul>
-            <li><strong>Attack tabs</strong> — weapons with multiple fire modes (e.g. Acceltra Prime's Rocket Impact vs Explosion, Torid's Grenade vs Cloud) show tabs below the weapon name. Each tab has its own damage, crit, status, and fire rate.</li>
-            <li><strong>Kuva / Tenet bonus element</strong> — a bonus element row appears automatically for Kuva and Tenet weapons. Pick the element type (Heat / Cold / Electricity / Toxin) and the bonus percentage (25–60%). The bonus is treated as an innate secondary element and combines with mod elements using HCET priority.</li>
-          </ul>
-
-          <h3>Mod Slots</h3>
-          <p>The mod panel has up to <strong>10 slots</strong>: 8 regular + 1 Stance (melee only) + 1 Exilus.</p>
-          <table>
-            <tr><th>Slot</th><th>What goes there</th></tr>
-            <tr><td>Regular (×8)</td><td>Any damage, elemental, IPS, crit, multishot, fire rate, reload, magazine, status, or faction mod compatible with the weapon type.</td></tr>
-            <tr><td>Stance ⚔</td><td>Melee stance mods only (shown for melee weapons). Provides combo multiplier bonuses and attack combos.</td></tr>
-            <tr><td>Exilus ✦</td><td>Utility mods: ammo drum, mutation, magazine, air recon, etc. The list is weapon-type-specific. Weapon-specific exilus mods (e.g. Ambush Optics for Rubico) only appear when that weapon is selected.</td></tr>
-            <tr><td>Riven ◆</td><td>Built via the Riven Builder (see below). Purple diamond card. Stats are fully custom.</td></tr>
-          </table>
-          <p>Drag mod cards left or right to reorder them. <strong>Slot order controls elemental combination priority</strong> — the top-left slot pairs with the next available element first.</p>
-
-          <h3>Elemental Combining</h3>
-          <p>Four primary elements (Heat, Cold, Electricity, Toxin) combine in mod-slot order to produce combined elements. Visual arc lines and badges below the mod grid show the active combos live.</p>
-          <table>
-            <tr><th>Combined</th><th>Recipe</th></tr>
-            <tr><td>Blast</td><td>Heat + Cold</td></tr>
-            <tr><td>Corrosive</td><td>Electricity + Toxin</td></tr>
-            <tr><td>Gas</td><td>Heat + Toxin</td></tr>
-            <tr><td>Magnetic</td><td>Cold + Electricity</td></tr>
-            <tr><td>Radiation</td><td>Heat + Electricity</td></tr>
-            <tr><td>Viral</td><td>Cold + Toxin</td></tr>
-          </table>
-          <p>A weapon's innate primary elements slot in <em>after</em> all mod slots (slot 9). Exception: Kuva/Tenet innate elements follow HCET priority (Heat → Cold → Electricity → Toxin) and merge with a matching mod slot if one exists. Secondary (combined) innate elements (e.g. Magnetic on Kuva Nukor) are a fixed bucket — they cannot be further combined.</p>
-
-          <h3>Riven Builder</h3>
-          <p>Click the <code class="code-riven">+</code> button in the mod panel header to open the Riven Builder.</p>
-          <ul>
-            <li>Up to <strong>4 stat rows</strong>. Each row: pick a stat from the dropdown, enter a % value (negative for penalties, e.g. <code>−50</code> for Recoil).</li>
-            <li>Click <strong>Add</strong> to equip the riven. The purple diamond card appears in the mod grid and shows each stat.</li>
-            <li>Click the card again (or re-open the builder) to edit. <strong>Reset</strong> clears all rows.</li>
-            <li>Available stats: Damage, Multishot, Crit Chance, Crit Damage, Status Chance, Fire Rate, Heat, Cold, Electricity, Toxin, Impact, Puncture, Slash.</li>
-          </ul>
-
-          <h3>Alchemy Mixer</h3>
-          <p>Click the gold seal icon in the mod panel header to open the Alchemy Mixer — a visual tool for exploring elemental combinations.</p>
-          <ul>
-            <li>Select two primary elements. An animated merge shows the result with its color and name.</li>
-            <li>Below the animation, compatible elemental mods for the selected weapon type are listed as chips.</li>
-            <li><strong>Equip These Mods</strong> fills empty mod slots with the suggested mods.</li>
-          </ul>
-
-          <h3>Weapon Arcanes</h3>
-          <p>Click <strong>+ Add</strong> in the Weapon Arcanes panel to add an arcane row (max 2). Each arcane has a stack count input clamped to its maximum.</p>
-          <table>
-            <tr><th>Arcane</th><th>Bonus per stack</th><th>Max</th><th>Slot</th></tr>
-            <tr><td>Primary Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Primary</td></tr>
-            <tr><td>Secondary Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Secondary</td></tr>
-            <tr><td>Shotgun Merciless</td><td>+30% damage, +7.5% reload</td><td>12</td><td>Shotgun</td></tr>
-            <tr><td>Primary Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Primary</td></tr>
-            <tr><td>Secondary Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Secondary</td></tr>
-            <tr><td>Shotgun Deadhead</td><td>+60% damage, +30% headshot</td><td>6</td><td>Shotgun</td></tr>
-            <tr><td>Primary Dexterity</td><td>+60% damage</td><td>6</td><td>Primary</td></tr>
-            <tr><td>Secondary Dexterity</td><td>+60% damage</td><td>6</td><td>Secondary</td></tr>
-            <tr><td>Cascadia Flare</td><td>+24% crit chance</td><td>12</td><td>Secondary</td></tr>
-            <tr><td>Cascadia Empowered</td><td>+30% crit damage</td><td>5</td><td>Secondary</td></tr>
-            <tr><td>Cascadia Overcharge</td><td>+4000 flat damage</td><td>1</td><td>Secondary</td></tr>
-          </table>
-          <p>Arcane damage bonus is additive with Serration in Step 1. Deadhead headshot bonus is additive with the body part multiplier in Step 2. Incompatible arcanes are cleared when switching weapons.</p>
-
-          <h3>Hit Options</h3>
-          <table>
-            <tr><th>Option</th><th>Range</th><th>What it does</th></tr>
-            <tr><td>Crit Mode</td><td>Average / Guaranteed / Max</td><td><em>Average</em> — weighted DPS average across all crit tiers (best for build comparison). <em>Guaranteed</em> — floor tier, worst-case per hit. <em>Max</em> — ceiling tier, best-case per hit.</td></tr>
-            <tr><td>Body Part</td><td>Populated from enemy data</td><td>Applies the body part damage multiplier (Step 2 of the pipeline). Head is typically ×2. On a crit + headshot, the crit multiplier is also doubled.</td></tr>
-            <tr><td>Viral Stacks</td><td>0–10</td><td>Viral status stacks on the enemy. Multiplies final damage: 1 stack = ×1.75, up to 10 stacks = ×4.25.</td></tr>
-            <tr><td>Corrosive Stacks</td><td>0–10</td><td>Corrosive status stacks strip enemy armor. Each stack removes ~6% (formula: min(80%, 20% + 6%×N)).</td></tr>
-            <tr><td>Combo Counter</td><td>1–12 (Venka Prime: 1–13)</td><td>Melee only. Sets the melee combo tier. Tier 1 = ×1.0, Tier 2 = ×2.0, …</td></tr>
-            <tr><td>Active Statuses</td><td>0–10</td><td>Unique status types currently on the enemy. Used by Condition Overload (+80% damage per unique status) and Galvanized Aptitude.</td></tr>
-            <tr><td>Galvanized Stacks</td><td>0–5</td><td>Kill stacks for Galvanized mods (e.g. Galvanized Chamber, Savvy, Crosshairs). Only shown when a Galvanized mod is equipped. Each mod has its own cap (4–5 stacks).</td></tr>
-          </table>
-
-          <h3>Warframe Buffs</h3>
-          <p>Click <strong>+ Add</strong> in the Warframe Buffs panel to add an ability buff row. Multiple buffs can be stacked.</p>
-          <table>
-            <tr><th>Buff</th><th>Base value</th><th>Pipeline step</th><th>Notes</th></tr>
-            <tr><td>Roar (Rhino)</td><td>50% / 30% subsumed</td><td>Step 5 — additive with Bane mods</td><td>Double-dips on DoT procs (Slash, Heat, Gas, Toxin, Electricity). Acts like a faction mod.</td></tr>
-            <tr><td>Eclipse (Mirage)</td><td>200% / 30% subsumed</td><td>Step 5.5 — multiplicative after faction</td><td>No double-dip on procs. Applies as a separate damage multiplier.</td></tr>
-            <tr><td>Xata's Whisper (Xaku)</td><td>26% (same subsumed)</td><td>Independent Void hit</td><td>Adds a separate Void damage instance that bypasses armor and double-dips faction + headshot multipliers.</td></tr>
-            <tr><td>Nourish (Grendel)</td><td>75% / 45% subsumed</td><td>Step 1 — adds Viral to the hit</td><td>Adds Viral elemental damage proportional to base damage. Participates in elemental combination.</td></tr>
-          </table>
-          <p><strong>Ability Strength %</strong> input scales the buff's base value (100% = default). <strong>Helminth</strong> checkbox applies the reduced subsumed base value.</p>
-
-          <h3>Enemy Panel</h3>
-          <ul>
-            <li><strong>Level</strong> (1–9999) — scales enemy health, shield, armor, and overguard using the faction-specific smoothstep formulas from the wiki. The live stat cards update instantly.</li>
-            <li><strong>Steel Path</strong> — applies ×2.5 to health and shields (not level). Does not affect armor or overguard scaling.</li>
-            <li><strong>Eximus</strong> — enables Overguard scaling. The Overguard card appears in the live stat display.</li>
-            <li><strong>Scaled stats cards</strong> — show the final HP, Shield, Armor, and Overguard at the current level and settings, formatted with thousands separators.</li>
-          </ul>
-
-          <h3>Reading Results</h3>
-          <p>After clicking Calculate, the results panel shows:</p>
-          <ul>
-            <li><strong>Total damage</strong> — final per-hit damage (after all 6 pipeline steps, including multishot).</li>
-            <li><strong>Breakdown table</strong> — damage per type (Impact, Puncture, Slash, elementals). <code class="badge-vuln">+50%</code> badges = enemy is vulnerable to that type. <code class="badge-res">−50%</code> badges = enemy is resistant. These are faction-based (Update 36+).</li>
-            <li><strong>Status Procs table</strong> — if the weapon has elemental damage, shows per-tick and 6-tick total for DoT procs (Slash bleed, Heat burn, Gas cloud, Toxin poison, Electricity arc). Faction mods double-dip on these.</li>
-            <li><strong>CC / Debuff Procs table</strong> — shows crowd-control effects for Viral (health vulnerability), Magnetic (shield damage), Radiation (confuse), Blast (accuracy debuff), Cold (slow).</li>
-            <li><strong>Condition Overload Curve</strong> — when a Condition Overload mod is equipped, shows a table of damage at 0–10 unique statuses with bar chart and % increase over baseline. The current status count row is highlighted.</li>
-            <li><strong>DPS section</strong> — Burst DPS (damage × fire rate), Sustained DPS (accounts for reload), and Proc DPS (steady-state average from status effects).</li>
-            <li><strong>Kill Time section</strong> — shots to kill, burst TTK, and sustained TTK based on the scaled enemy HP at the selected level.</li>
-          </ul>
-
-          <div class="guide-modal-version">
-            <span id="guide-app-ver">Void Codex v0.2.0</span>
-            <span class="footer-sep">·</span>
-            <span id="guide-game-ver">Game data: Update 41 — The Old Peace</span>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-
-
-
-</div><!-- .content-main -->
-
-<div class="content-side">
-
-    <!-- Results -->
-    <div class="panel results-panel" id="results-panel">
-      <h2>Results
-        <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
-      </h2>
-      <div class="panel-help hidden">
-        <p><strong>Damage Breakdown:</strong> Per-trigger damage after all 6 pipeline steps (base → mods → body part → type effectiveness → armor → faction). Each row is a damage type. The +50% / −50% badges show faction effectiveness (vulnerable or resistant) against the selected enemy.</p>
-        <p><strong>Status Procs:</strong> DoT procs (Slash, Heat, Gas, Toxin, Electricity) deal damage over 6 ticks (~7s). Faction mods double-dip — the proc inherits the bonus from the triggering hit and applies it again each tick. CC/Debuff procs (Viral, Magnetic, Radiation, Blast, Cold) show their crowd-control effect only — no tick damage.</p>
-        <p><strong>Burst DPS:</strong> Damage per trigger × fire rate × multishot — assumes infinite magazine with no reload downtime.</p>
-        <p><strong>Sustained DPS:</strong> Accounts for reload time. This is the realistic long-run DPS including the time spent reloading.</p>
-        <p><strong>Shots to Kill / TTK:</strong> Calculated against the selected enemy's scaled health, shields, and overguard at the chosen level, with the modelled armor already factored in.</p>
-      </div>
-      <div class="no-results" id="no-results">Select a weapon and enemy, then click Calculate.</div>
-      <div id="results-content" style="display:none"></div>
-    </div>
-
-    <!-- Options (collapsible) -->
-    <div class="panel">
-      <h2 class="panel-toggle panel-toggle-with-help" onclick="this.classList.toggle('open'); document.getElementById('options-body').classList.toggle('hidden')">
-        Options
-        <button type="button" class="btn-help" onclick="event.stopPropagation(); togglePanelHelp(this)">?</button>
-        <svg class="chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><polyline points="2,4 6,8 10,4"/></svg>
-      </h2>
-      <div class="panel-help hidden">
-        <p><strong>Hit Type:</strong> Average uses the mathematical expected value — best for DPS. Guaranteed Crit forces every shot to crit at the base tier. Max Crit forces the highest possible tier (e.g. 350% CC → Tier 3).</p>
-        <p><strong>Viral / Corrosive / Cold Stacks:</strong> Status effects already on the enemy. Viral multiplies health damage (×1.75 at 1 stack → ×4.25 at 10). Corrosive strips 26% armor on first stack, +6% each after (max 80%). Cold adds +0.1 flat to the crit damage multiplier per stack.</p>
-        <p><strong>Combo (melee only):</strong> Combo tier (1–12). Affects Blood Rush, Weeping Wounds, and combo-scaling mods.</p>
-        <p><strong>Active Status:</strong> Unique proc types on the enemy — used by Condition Overload (+80% per type) and Galvanized Aptitude.</p>
-        <p><strong>Galv. Stacks:</strong> Active kill-stacks on equipped Galvanized mods. Earned by kills, reset on mission start. Each mod has its own cap (typically 4–5).</p>
-        <p><strong>Armor Strip:</strong> Set Ability Strip % and Corrosive Projection % below to see remaining armor and damage reduction before calculating. Strips additively, capped at 100%.</p>
-      </div>
-      <div id="options-body" class="collapsible-body hidden">
-        <div class="options-row">
-          <div>
-            <label for="crit-mode">Hit Type</label>
-            <select id="crit-mode">
-              <option value="average">Average</option>
-              <option value="guaranteed">Guaranteed Crit</option>
-              <option value="max">Max Crit</option>
-            </select>
-          </div>
-          <div>
-            <label for="body-part-select">Body Part</label>
-            <select id="body-part-select"><option value="Body">Body</option></select>
-          </div>
-          <div>
-            <label for="viral-stacks">Viral Stacks</label>
-            <input type="number" id="viral-stacks" class="input-sm" min="0" max="10" value="0" oninput="if(+this.value>10)this.value=10;if(+this.value<0)this.value=0">
-          </div>
-          <div>
-            <label for="corrosive-stacks">Corr. Stacks</label>
-            <input type="number" id="corrosive-stacks" class="input-sm" min="0" max="10" value="0" oninput="if(+this.value>10)this.value=10;if(+this.value<0)this.value=0">
-          </div>
-          <div title="Cold status stacks on enemy — each adds +0.1 flat crit damage multiplier (max 10)">
-            <label for="cold-stacks">Cold Stacks</label>
-            <input type="number" id="cold-stacks" class="input-sm" min="0" max="10" value="0" oninput="if(+this.value>10)this.value=10;if(+this.value<0)this.value=0">
-          </div>
-          <div id="combo-div" title="Melee combo multiplier tier (1=×1, 2=×2, … 12=×12; Venka Prime allows 13)">
-            <label for="combo-counter">Combo</label>
-            <input type="number" id="combo-counter" class="input-sm" min="1" max="12" value="1" oninput="if(+this.value>+this.max)this.value=this.max;if(+this.value<1)this.value=1">
-          </div>
-          <div title="Unique proc types on enemy — used by Condition Overload (+80% per type)">
-            <label for="unique-statuses">Active Status</label>
-            <input type="number" id="unique-statuses" class="input-sm" min="0" max="10" value="0">
-          </div>
-          <div title="Galvanized mod kill-stacks active (0 = base stats only, max 5)">
-            <label for="galv-stacks">Galv. Stacks</label>
-            <input type="number" id="galv-stacks" class="input-sm" min="0" max="5" value="0">
-          </div>
-          <div id="distance-div" title="Firing distance in meters. Affects damage falloff for weapons with range limits. 0 = point blank (full damage)." style="display:none">
-            <label for="distance-input">Distance (m)</label>
-            <input type="number" id="distance-input" class="input-sm-wide" min="0" max="300" value="0" step="1" oninput="if(+this.value<0)this.value=0">
-          </div>
-        </div>
-        <div class="panel-sub-h">Warframe Buffs
-          <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
-          <button type="button" class="btn-add btn-add-buff" onclick="addBuffRow()" title="Add ability buff">+ ADD</button>
-        </div>
-        <div class="panel-help hidden">
-          <p><strong>Roar</strong> (Rhino/subsumed): Adds to faction mods — e.g. Roar 50% + Bane 30% = ×1.80. Double-dips on DoT procs (Slash bleed, Heat burn, Gas cloud).</p>
-          <p><strong>Eclipse</strong> (Mirage/subsumed): Separate multiplicative step after faction. Does not double-dip on procs.</p>
-          <p><strong>Xata's Whisper</strong> (Xaku/subsumed): Separate Void hit — double-dips faction bonus and headshot multiplier.</p>
-          <p><strong>Nourish</strong> (Grendel/subsumed): Adds Viral elemental damage proportional to base damage.</p>
-          <p>Enter ability strength as a percentage (e.g. 150 for 150% strength).</p>
-        </div>
-        <div id="buff-rows"></div>
-        <div class="panel-sub-h">Armor Strip
-          <button type="button" class="btn-help" onclick="togglePanelHelp(this)">?</button>
-        </div>
-        <div class="panel-help hidden">
-          <p><strong>Ability Strip %:</strong> Armor removed by a Warframe ability (e.g. 100% for max-strength Terrify, 50% for Breach Surge). Check the ability's description for the exact value.</p>
-          <p><strong>Corrosive Projection:</strong> Aura mod that strips a flat % of base armor — stacks additively with ability strip. Per-player: 18% → 36% → 54% → 72% at full squad.</p>
-          <p><strong>Order of operations:</strong> Ability % + CP % (additive, capped at 100%) → Corrosive proc stacks from Options. Void and True damage bypass armor entirely.</p>
-        </div>
-        <div class="strip-row">
-          <div class="strip-label-row">
-            <label for="strip-ability-pct" class="strip-label">Ability Strip</label>
-            <span class="strip-pct-badge" id="strip-ability-badge">0%</span>
-          </div>
-          <input type="range" id="strip-ability-pct" class="strip-slider" min="0" max="100" value="0" step="1">
-        </div>
-        <div class="strip-row">
-          <div class="strip-label-row">
-            <label for="strip-cp-pct" class="strip-label">Corrosive Projection</label>
-            <span class="strip-pct-badge" id="strip-cp-badge">0%</span>
-          </div>
-          <input type="range" id="strip-cp-pct" class="strip-slider" min="0" max="100" value="0" step="1">
-        </div>
-        <div class="strip-result-block">
-          <div class="strip-result-row">
-            <span class="strip-result-label">Remaining Armor</span>
-            <span class="strip-result-val" id="strip-armor-val">—</span>
-          </div>
-          <div class="strip-result-row">
-            <span class="strip-result-label">Damage Reduction</span>
-            <span class="strip-result-val" id="strip-dr-val">—</span>
-          </div>
-          <div class="strip-bar-wrap">
-            <div class="strip-bar-fill" id="strip-bar-fill"></div>
-          </div>
-          <div class="strip-bar-labels">
-            <span class="strip-bar-label-left">Original</span>
-            <span class="strip-bar-label-right" id="strip-stripped-pct">0% stripped</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn-calc" id="calc-btn" onclick="runCalculation()">Calculate</button>
-
-    <!-- Placeholder: Build Compare -->
-    <div class="panel placeholder-panel">
-      <h2>Build Compare</h2>
-      <p class="coming-soon-text">Side-by-side build comparison coming soon.</p>
-    </div>
-
-
-</div><!-- .content-side -->
-</div><!-- .content -->
+</header>
+<div class="live-wrap">
+  <div id="live-news"></div>
+  <div id="live-content"></div>
+</div>
 </main>
 
 <aside class="sidebar" id="sidebar">
@@ -591,13 +41,13 @@
   </div>
 
   <nav class="nav-menu">
-    <a href="/" class="nav-item active">
+    <a href="/calculator" class="nav-item">
       <div class="nav-icon">
         <svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>
       </div>
       Calculator
     </a>
-    <a href="/live" class="nav-item">
+    <a href="/live" class="nav-item active">
       <div class="nav-icon">
         <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="3"/><path d="M10 2 L10 5 M10 15 L10 18 M2 10 L5 10 M15 10 L18 10"/></svg>
       </div>
@@ -637,7 +87,405 @@
 </button>
 
 </div><!-- .app -->
+</div><!-- .live-page-wrap -->
 
+<script>
+'use strict';
 
+let countdownTimer  = null;
+let countdownVal    = 180;
+
+const TIER_COLORS = {
+  Lith: '#b87333', Meso: '#00bcd4', Neo: '#3949ab',
+  Axi: '#ffd700', Requiem: '#8b0000', Omnia: '#e0e0e0', Railjack: '#3ddcb8',
+};
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let activeCategory = 'origin';
+function getFissureCategory(f) {
+  if (f.is_railjack)        return 'railjack';
+  if (f.tier === 'Requiem') return 'requiem';
+  if (f.is_steel_path)      return 'steelpath';
+  return 'origin';
+}
+function setCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.tier-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.category === cat));
+  const el = document.getElementById('fissure-rows');
+  if (el) el.innerHTML = renderFissureRows(window._fissureData || []);
+}
+
+function toggleDrawer() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const btn     = document.getElementById('burger-btn');
+  const open    = sidebar.classList.toggle('open');
+  overlay.classList.toggle('open', open);
+  btn.classList.toggle('open', open);
+}
+
+function openGuide() {}
+
+/* ── Fissures ── */
+function renderFissureRows(fissures) {
+  const filtered = fissures.filter(f => getFissureCategory(f) === activeCategory);
+  const list = filtered.slice().sort((a, b) => (a.expiry_ts || 0) - (b.expiry_ts || 0));
+  if (!list.length) return '<div class="live-empty">No fissures for selected category</div>';
+  return '<div class="fissure-list">' + list.map(f => `
+    <div class="fissure-row">
+      <span class="fissure-tier" ${(f.is_railjack ? TIER_COLORS['Railjack'] : TIER_COLORS[f.tier]) ? `style="--tier-color:${f.is_railjack ? TIER_COLORS['Railjack'] : TIER_COLORS[f.tier]}"` : ''}>${f.is_railjack ? 'Railjack' : esc(f.tier)}</span>
+      <div class="fissure-info">
+        <div class="fissure-node">${esc(f.node)}${f.is_steel_path ? '<span class="fissure-tag">SP</span>' : ''}</div>
+        <div class="fissure-sub">${esc(f.mission_type)} · ${esc(f.enemy)}</div>
+      </div>
+      <span class="eta-chip" data-expiry="${f.expiry_ts || 0}">${esc(f.eta)}</span>
+    </div>`).join('') + '</div>';
+}
+
+function buildFissureCard(fissures) {
+  window._fissureData = fissures;
+  const cats = [
+    { key: 'origin',    label: 'Origin System' },
+    { key: 'steelpath', label: 'Steel Path' },
+    { key: 'requiem',   label: 'Requiem' },
+    { key: 'railjack',  label: 'Railjack' },
+  ];
+  const btns = cats.map(c =>
+    `<button class="tier-btn${c.key === activeCategory ? ' active' : ''}" data-category="${c.key}" onclick="setCategory('${c.key}')">${c.label}</button>`
+  ).join('');
+  return `<div class="panel live-card-full">
+    <h2>Void Fissures <span class="live-count">${fissures.length} active</span></h2>
+    <div class="tier-btns">${btns}</div>
+    <div id="fissure-rows">${renderFissureRows(fissures)}</div>
+  </div>`;
+}
+
+/* ── Sortie ── */
+function buildSortieCard(sortie) {
+  if (!sortie) return `<div class="panel">
+    <h2>Sortie</h2>
+    <div class="live-empty">No sortie data</div>
+  </div>`;
+  const missions = (sortie.missions || []).map(m => `
+    <div class="mission-block">
+      <div class="mission-node">${esc(m.node)}</div>
+      <div class="mission-sub">${esc(m.mission_type)}</div>
+      ${m.modifier ? `<span class="modifier-badge">${esc(m.modifier)}</span>` : ''}
+    </div>`).join('');
+  return `<div class="panel">
+    <h2>Sortie <span class="live-count" data-expiry="${sortie.expiry_ts || 0}">${esc(sortie.eta)}</span></h2>
+    <div class="sortie-meta">
+      <span class="sortie-boss">${esc(sortie.boss)}</span>
+      <span>${esc(sortie.faction)}</span>
+    </div>
+    <div class="mission-list">${missions}</div>
+  </div>`;
+}
+
+/* ── Archon Hunt ── */
+function buildArchonCard(archon) {
+  if (!archon) return `<div class="panel">
+    <h2>Archon Hunt</h2>
+    <div class="live-empty">No archon hunt data</div>
+  </div>`;
+  const missions = (archon.missions || []).map(m => `
+    <div class="mission-block">
+      <div class="mission-node">${esc(m.node)}</div>
+      <div class="mission-sub">${esc(m.mission_type)}</div>
+      ${m.modifier ? `<span class="modifier-badge">${esc(m.modifier)}</span>` : ''}
+    </div>`).join('');
+  return `<div class="panel">
+    <h2>Archon Hunt <span class="live-count" data-expiry="${archon.expiry_ts || 0}">${esc(archon.eta)}</span></h2>
+    <div class="sortie-meta">
+      <span class="sortie-boss">${esc(archon.boss)}</span>
+      <span>${esc(archon.faction)}</span>
+    </div>
+    <div class="mission-list">${missions}</div>
+  </div>`;
+}
+
+/* ── Void Trader ── */
+function buildTraderCard(trader) {
+  if (!trader) return '';
+  const dot = trader.active
+    ? '<span class="trader-dot active"></span>'
+    : '<span class="trader-dot inactive"></span>';
+  const status = trader.active
+    ? `${dot}<span class="trader-location">${esc(trader.node)}</span><span class="trader-eta">Departs <span data-expiry="${trader.expiry_ts || 0}">${esc(trader.eta)}</span></span>`
+    : `${dot}<span class="trader-location">${trader.node ? esc(trader.node) : 'Location unknown'}</span><span class="trader-eta">Arrives <span data-expiry="${trader.expiry_ts || 0}">${esc(trader.eta)}</span></span>`;
+  let inventory = '';
+  if (trader.active && trader.inventory && trader.inventory.length) {
+    const rows = trader.inventory.map(it => `
+      <tr>
+        <td>${esc(it.item)}</td>
+        <td class="ducat-val">${it.ducats > 0 ? it.ducats + ' ⟁' : '—'}</td>
+        <td class="credit-val">${it.credits > 0 ? it.credits.toLocaleString() + ' ¢' : '—'}</td>
+      </tr>`).join('');
+    inventory = `<table class="inventory-table">
+      <thead><tr><th>Item</th><th>Ducats</th><th>Credits</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+  const wideClass = trader.active && trader.inventory && trader.inventory.length > 6 ? ' live-card-wide' : '';
+  return `<div class="panel${wideClass}">
+    <h2>Void Trader — Baro Ki'Teer</h2>
+    <div class="trader-status">${status}</div>
+    ${inventory}
+  </div>`;
+}
+
+/* ── Nightwave ── */
+function buildNightwaveCard(nw) {
+  if (!nw) return `<div class="panel">
+    <h2>Nightwave</h2>
+    <div class="live-empty">No active Nightwave season</div>
+  </div>`;
+  const challenges = (nw.active_challenges || []).map(ch => {
+    const cls = ch.is_elite ? 'elite' : ch.is_daily ? 'daily' : 'weekly';
+    const lbl = ch.is_elite ? 'Elite' : ch.is_daily ? 'Daily' : 'Weekly';
+    return `<div class="nw-row">
+      <span class="nw-tag ${cls}">${lbl}</span>
+      <div class="nw-challenge-info">
+        <div class="nw-title">${esc(ch.title)}</div>
+        <div class="nw-eta" data-expiry="${ch.expiry_ts || 0}">${esc(ch.eta)}</div>
+      </div>
+      <span class="nw-rep">+${ch.reputation.toLocaleString()}</span>
+    </div>`;
+  }).join('');
+  return `<div class="panel">
+    <h2>Nightwave <span class="live-count">S${nw.season} · <span data-expiry="${nw.expiry_ts || 0}">${esc(nw.eta)}</span></span></h2>
+    ${challenges || '<div class="live-empty">No active challenges</div>'}
+  </div>`;
+}
+
+/* ── Alerts ── */
+function buildAlertsCard(alerts) {
+  if (!alerts || !alerts.length) return `<div class="panel">
+    <h2>Alerts</h2>
+    <div class="live-empty">No active alerts</div>
+  </div>`;
+  const rows = alerts.map(a => `
+    <div class="alert-row">
+      <div class="alert-info">
+        <div class="alert-reward">${esc(a.reward)}</div>
+        <div class="alert-sub">${esc(a.node)} · ${esc(a.mission_type)} · ${esc(a.faction)}</div>
+      </div>
+      <span class="eta-chip" data-expiry="${a.expiry_ts || 0}">${esc(a.eta)}</span>
+    </div>`).join('');
+  return `<div class="panel">
+    <h2>Alerts <span class="live-count">${alerts.length} active</span></h2>
+    ${rows}
+  </div>`;
+}
+
+/* ── Invasions ── */
+function buildInvasionsCard(invasions) {
+  if (!invasions || !invasions.length) return `<div class="panel">
+    <h2>Invasions</h2>
+    <div class="live-empty">No active invasions</div>
+  </div>`;
+  const rows = invasions.map(inv => `
+    <div class="invasion-row">
+      <div class="invasion-header">
+        <span class="invasion-node">${esc(inv.node)}</span>
+        ${inv.eta && inv.eta !== '?' ? `<span class="eta-chip">${esc(inv.eta)}</span>` : ''}
+      </div>
+      <div class="invasion-sides">
+        <div class="invasion-side invasion-attacker">
+          <span class="invasion-faction">${esc(inv.attacker)}</span>
+          ${inv.attacker_reward ? `<span class="reward-chip">${esc(inv.attacker_reward)}</span>` : ''}
+        </div>
+        <span class="invasion-vs">VS</span>
+        <div class="invasion-side invasion-defender">
+          <span class="invasion-faction">${esc(inv.defender)}</span>
+          ${inv.defender_reward ? `<span class="reward-chip">${esc(inv.defender_reward)}</span>` : ''}
+        </div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" data-progress="${inv.progress}"></div>
+      </div>
+    </div>`).join('');
+  return `<div class="panel">
+    <h2>Invasions <span class="live-count">${invasions.length} active</span></h2>
+    ${rows}
+  </div>`;
+}
+
+/* ── Open World Cycles ── */
+function buildCyclesCard(cycles) {
+  if (!cycles || !cycles.length) return '';
+  const WARM = new Set(['Day', 'Warm', 'Fass', 'Corpus', 'Joy']);
+  const items = cycles.map(c => {
+    const cls = WARM.has(c.state) ? 'cycle-warm' : 'cycle-cool';
+    return `<div class="cycle-item">
+      <div class="cycle-name">${esc(c.location)}</div>
+      <div class="cycle-state ${cls}">${esc(c.state)}</div>
+      <div class="cycle-eta" data-expiry="${c.expiry_ts || 0}">${esc(c.eta)}</div>
+    </div>`;
+  }).join('');
+  return `<div class="cycles-standalone live-card-full"><div class="cycle-grid">${items}</div></div>`;
+}
+
+/* ── News ── */
+const _NEWS_PH = `<div class="news-thumb news-thumb-ph"><span>WARFRAME</span></div>`;
+
+function buildNewsSection(news) {
+  if (!news || !news.length) return '';
+  const cards = news.map(n => {
+    const img = n.image
+      ? `<img class="news-thumb" src="${esc(n.image)}" alt="" loading="lazy">`
+      : _NEWS_PH;
+    const inner = n.url
+      ? `<a class="news-msg" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
+      : `<span class="news-msg">${esc(n.message)}</span>`;
+    return `<div class="news-card">${img}${inner}</div>`;
+  }).join('');
+  return `<div class="panel live-card-full"><div class="news-section">
+    <h2>News</h2>
+    <div class="news-slider">
+      <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:-200,behavior:'smooth'})">&#8249;</button>
+      <div class="news-row" id="news-row">${cards}</div>
+      <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:200,behavior:'smooth'})">&#8250;</button>
+    </div>
+  </div></div>`;
+}
+
+/* ── Events ── */
+function buildEventsCard(events) {
+  if (!events || !events.length) return '';
+  const rows = events.map(ev => `
+    <div class="event-row">
+      <div class="event-title">${esc(ev.name)}</div>
+      ${ev.reward ? `<div class="event-desc">${esc(ev.reward)}</div>` : ''}
+      <div class="live-eta" data-expiry="${ev.expiry_ts || 0}">${esc(ev.eta)}</div>
+    </div>`).join('');
+  return `<div class="panel live-card-full">
+    <h2>Events <span class="live-count">${events.length} active</span></h2>
+    <div class="event-list">${rows}</div>
+  </div>`;
+}
+
+/* ── Data loading ── */
+let _hasLoaded = false;
+async function loadData() {
+  resetCountdown();
+  if (!_hasLoaded) {
+    document.getElementById('live-content').innerHTML =
+      '<div class="loading-msg">Acquiring worldstate…</div>';
+  }
+  try {
+    const res = await fetch('/api/worldstate');
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.detail || `HTTP ${res.status}`);
+    }
+    renderAll(await res.json());
+  } catch (err) {
+    document.getElementById('live-content').innerHTML = `
+      <div class="panel">
+        <div class="error-msg">
+          Live data temporarily unavailable.
+          <small>${esc(err.message)}</small>
+        </div>
+      </div>`;
+  }
+}
+
+function buildAlertBanner(alerts) {
+  const el = document.getElementById('alert-banner');
+  if (!el) return;
+  if (!alerts || !alerts.length) { el.style.display = 'none'; return; }
+  const items = alerts.map(a => {
+    const reward = esc(a.reward);
+    const node   = esc(a.node);
+    const type   = esc(a.mission_type);
+    const eta    = esc(a.eta);
+    return `<span class="ab-item">${reward} &nbsp;·&nbsp; ${node} &nbsp;·&nbsp; ${type} &nbsp;·&nbsp; <span class="ab-eta">${eta}</span></span>`;
+  }).join('<span class="ab-sep">|</span>');
+  el.innerHTML = `<span class="ab-label">ALERTS</span><div class="ab-track"><div class="ab-inner">${items}${items}</div></div>`;
+  el.style.display = 'flex';
+}
+function renderAll(data) {
+  _hasLoaded = true;
+  const cards = [
+    buildCyclesCard(data.cycles || []),
+    buildFissureCard(data.fissures || []),
+    buildInvasionsCard(data.invasions || []),
+    `<div class="panel-stack">${buildSortieCard(data.sortie)}${buildArchonCard(data.archon_hunt)}</div>`,
+    `<div class="panel-stack">${buildNightwaveCard(data.nightwave)}${buildTraderCard(data.void_trader)}</div>`,
+    (data.alerts && data.alerts.length ? null : buildAlertsCard([])),
+    buildEventsCard(data.events || []),
+  ].filter(Boolean).join('');
+
+  document.getElementById('live-news').innerHTML = buildNewsSection(data.news || []);
+  buildAlertBanner(data.alerts || []);
+  const el = document.getElementById('live-content');
+  const grid = document.createElement('div');
+  grid.className = 'live-grid';
+  grid.innerHTML = cards;
+  el.replaceChildren(grid);
+  grid.querySelectorAll('.progress-bar-fill[data-progress]').forEach(bar => {
+    bar.style.width = bar.dataset.progress + '%';
+  });
+  startEtaTimer();
+}
+
+/* ── ETA Countdown Engine ── */
+let _etaTimer = null;
+
+function fmtCountdown(secs) {
+  if (secs <= 0) return '—';
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  if (h >= 24) {
+    const d = Math.floor(h / 24);
+    const rh = h % 24;
+    return rh > 0 ? `${d}d ${rh}h` : `${d}d`;
+  }
+  if (h > 0) return `${h}h ${m}m ${s}s`;
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
+}
+
+function startEtaTimer() {
+  if (_etaTimer) clearInterval(_etaTimer);
+  _etaTimer = setInterval(() => {
+    const now = Date.now() / 1000;
+    document.querySelectorAll('[data-expiry]').forEach(el => {
+      const exp = parseFloat(el.dataset.expiry);
+      if (!exp) return;
+      el.textContent = fmtCountdown(Math.round(exp - now));
+    });
+  }, 1000);
+}
+
+/* ── Page Countdown ── */
+function resetCountdown() {
+  countdownVal = 180;
+  document.getElementById('refresh-countdown').textContent = countdownVal;
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    countdownVal--;
+    document.getElementById('refresh-countdown').textContent = Math.max(0, countdownVal);
+    if (countdownVal <= 0) { clearInterval(countdownTimer); loadData(); }
+  }, 1000);
+}
+
+/* ── Version ── */
+fetch('/api/version').then(r => r.json()).then(d => {
+  const el = document.getElementById('nav-ver');
+  if (el) el.textContent = 'v' + d.app;
+}).catch(() => {});
+
+loadData();
+</script>
 </body>
 </html>
+                                                                                         
