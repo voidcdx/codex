@@ -60,35 +60,38 @@ web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
                    #   All HTML routes served with Cache-Control: no-store
-                   #   GET /favicon.ico → web/static/favicon.svg (explicit route, StaticFiles would 404)
-  static/index.html # SPA HTML — stalker-dashboard layout: inner header + .content grid (1fr 480px) + right .sidebar
-                   #   .content-main: Weapon+Enemy (.we-grid), Mods+Arcanes panel
-                   #   .content-side: Results → Options (collapsible, merged Hit Options+Buffs) → Calculate → Build Compare (hidden) → Armor Strip → Mods panel
-                   #   aside.sidebar (260px): brand text, nav-menu (.nav-item), sidebar-tools, sidebar-footer (copyright + data source)
-                   #   .content-left (Builds panel): hidden via CSS, grid column removed from layout
-                   #   Mobile: .burger-btn (fixed top-right) + .sidebar-overlay backdrop
-  static/style.css  # Stalker/Shadow Acolyte theme: #050505 bg, crimson #8b0000/#dc143c, Orbitron/Rajdhani fonts
-                   #   .panel: glass dark surface, sharp edges (radius:0), crimson top glow ::before
-                   #   .sidebar: right-side nav 260px with .brand, .nav-menu, .nav-item (.active has right border)
-                   #   .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
-                   #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
-  static/live.html # Live Data SPA (/live) — separate page from calculator
+                   #   GET /favicon.ico → web/static/favicon.png (explicit route, StaticFiles would 404)
+                   #   Routes: GET / → index.html (live tracker), GET /live → index.html (alias),
+                   #           GET /calculator → calculator.html, GET /factions → factions.html
+  static/index.html # Live Data SPA — default page at /
                    #   .live-page-wrap (flex-column): #alert-banner above .app for full-width ticker
                    #   header: .live-header-brand ("VOID CODEX" + .live-subtext "WORLD STATUS" glitch) left, .refresh-info right
-                   #   NO <h1 class="header-title"> — was removed; header has brand + timer only
                    #   .live-wrap → #live-news + #live-content (filled by renderAll())
-  static/live.css  # Live page styles — .live-page-wrap, .alert-banner, .live-grid (dot bg), .live-header-brand,
-                   #   .live-subtext (glitch keyframes: glitch-idle/before/after, cyan #00ffff + red #ff003c offsets, fires every 6s)
+  static/calculator.html # Damage Calculator SPA — at /calculator
+                   #   stalker-dashboard layout: inner header + .content grid (1fr 480px) + right .sidebar
+                   #   header: .live-header-brand "VOID CODEX" / "DAMAGE CALCULATOR" glitch subtext
+                   #   .content-main: .we-panel-row (weapon panel + enemy panel side-by-side), Mods+Arcanes panel
+                   #     Weapon/Enemy panels each have magnifier icon (picker-open-btn) in h2, hidden #weapon-search/#enemy-search inputs
+                   #     #item-picker-overlay modal for weapon/enemy selection
+                   #   .content-side: Results → Options → Calculate → Armor Strip
+                   #   Mobile ≤600px: .we-panel-row stacks to 1-col (weapon first, enemy second)
+  static/factions.html # Faction Weakness page — at /factions
+                   #   header: .live-header-brand "VOID CODEX" / "FACTION WEAKNESS" glitch subtext
+  static/live.css  # Live page styles — .live-page-wrap, .alert-banner, .live-grid (dot bg), .refresh-info
+                   #   Brand/glitch styles now in layout.css (shared)
+  static/layout.css # Shared layout + .live-header-brand, .live-subtext, glitch keyframes (used on all pages)
+  static/panels.css # .we-panel-row replaces old .we-grid/.we-col; .picker-open-btn; .item-picker-item
   static/js/
     constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
     utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy(), setupSelectDropdown(), togglePanelHelp()
-    combobox.js    # setupCombobox(), clearCombobox() — reusable widget
+    combobox.js    # setupCombobox(), clearCombobox(); setupPickerModal(), openPickerModal(),
+                   #   closePickerModal(), renderPickerResults() — modal-based weapon/enemy picker
     weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
     enemy.js       # enemy panel, level scaling, Steel Path, Eximus
     modals.js      # Alchemy Guide, Riven Builder, Guide, Buffs
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
     calculate.js   # runCalculation(), showResults(), showError()
-    app.js         # loadData() bootstrap, DOMContentLoaded, version fetch
+    app.js         # loadData() bootstrap — uses setupPickerModal for weapon/enemy; DOMContentLoaded, version fetch
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
@@ -96,7 +99,7 @@ ARCHITECTURE.md     # detailed implementation notes — damage pipeline, CSS, li
 ```
 
 ## Tests
-Run `pytest` before committing. All tests must pass. **304 tests** as of v0.5.6.
+Run `pytest` before committing. All tests must pass. **304 tests** as of v0.5.8.
 
 ## Versioning
 `src/version.py` is the single source of truth:
