@@ -658,28 +658,51 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .mod-picker-overlay.active { display: flex; overflow: hidden; touch-action: none; }
 .mod-picker {
-  background: #0c0606;
-  border: 1px solid var(--border-red);
-  border-top: 2px solid var(--crimson-bright);
-  border-radius: var(--radius);
+  background: var(--surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border);
+  border-radius: 8px;
   width: 440px;
   max-width: 100%;
   max-height: 70vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 40px rgba(139, 0, 0, 0.35), 0 12px 40px rgba(0, 0, 0, 0.7);
+  position: relative;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+.mod-picker::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) bottom / 100% 1px no-repeat;
+  pointer-events: none;
+  z-index: 1;
+}
+.mod-picker::after {
+  content: '';
+  position: absolute;
+  inset: -24px;
+  background: radial-gradient(ellipse 80% 70% at 50% 50%, var(--panel-glow) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
 }
 .mod-picker-header {
-  padding: 12px 14px 10px;
-  border-bottom: 1px solid var(--border-red);
-  background: rgba(139, 0, 0, 0.07);
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
 }
 .mod-picker-header h3 {
-  font-size: 0.8rem;
   font-family: var(--font-display);
-  color: var(--crimson-bright);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 3px;
   margin-bottom: 10px;
 }
 @media (max-width: 600px) {
@@ -711,6 +734,8 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   overflow-y: auto;
   flex: 1;
   padding: 4px 0;
+  position: relative;
+  z-index: 2;
 }
 .mod-picker-item {
   padding: 4px;
