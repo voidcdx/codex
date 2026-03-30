@@ -559,6 +559,7 @@ function showWeaponStats(weapon) {
         <div class="weapon-stats-sub">${esc(sub)}</div>
        </div>`;
 
+  const isMelee = weapon.slot === 'Melee';
   const hasMultiAttack = weapon.attacks && weapon.attacks.length > 1;
   const attackTabsHtml = hasMultiAttack
     ? `<div class="attack-tabs">${weapon.attacks.map(a =>
@@ -594,30 +595,30 @@ function showWeaponStats(weapon) {
       <div>
         <div class="sc-title">Mechanics</div>
         <div class="sc-stat">
-          <div class="sc-label" data-tooltip="fire-rate">Fire Rate</div>
+          <div class="sc-label" data-tooltip="fire-rate">${isMelee ? 'Atk Speed' : 'Fire Rate'}</div>
           <div class="sc-val-sm">${fmt(atk ? atk.fire_rate : weapon.fire_rate)}</div>
           <div class="sc-modded" id="sm-fr" style="display:none"></div>
         </div>
-        <div class="sc-stat">
+        ${!isMelee ? `<div class="sc-stat">
           <div class="sc-label" data-tooltip="magazine">Magazine</div>
           <div class="sc-val-sm" id="sv-mag">${fmt(weapon.magazine)}</div>
           <div class="sc-modded" id="sm-mag" style="display:none"></div>
-        </div>
-        ${weapon.max_ammo ? `<div class="sc-stat">
+        </div>` : ''}
+        ${!isMelee && weapon.max_ammo ? `<div class="sc-stat">
           <div class="sc-label" data-tooltip="max-ammo">Max Ammo</div>
           <div class="sc-val-sm" id="sv-ammo">${fmt(weapon.max_ammo)}</div>
           <div class="sc-modded" id="sm-ammo" style="display:none"></div>
         </div>` : ''}
-        <div class="sc-stat">
+        ${!isMelee ? `<div class="sc-stat">
           <div class="sc-label" data-tooltip="reload">Reload</div>
           <div class="sc-val-sm" id="sv-reload">${fmt(weapon.reload, 's')}</div>
           <div class="sc-modded" id="sm-reload" style="display:none"></div>
-        </div>
-        <div class="sc-stat">
+        </div>` : ''}
+        ${!isMelee ? `<div class="sc-stat">
           <div class="sc-label" data-tooltip="multishot">Multishot</div>
           <div class="sc-val-sm" id="sv-ms">1.0</div>
           <div class="sc-modded" id="sm-ms" style="display:none"></div>
-        </div>
+        </div>` : ''}
         ${atk && atk.falloff_start != null ? `<div class="sc-stat">
           <div class="sc-label" data-tooltip="falloff">Falloff</div>
           <div class="sc-val-sm">${atk.falloff_start}–${atk.falloff_end}m (${Math.round((1 - atk.falloff_reduction) * 100)}% min)</div>
