@@ -750,6 +750,34 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   margin-left: auto;
 }
 
+/* ── Weapon / Enemy picker icon button ── */
+.picker-open-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+.picker-open-btn:hover { color: var(--crimson-bright); }
+
+/* ── Item picker list rows ── */
+.item-picker-item {
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  color: var(--text-field);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.1s;
+}
+.item-picker-item:hover { background: var(--accent-glow); }
+
 
 
 /* ── Element Mixer Badges ───────────────────────────── */
