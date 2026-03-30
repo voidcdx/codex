@@ -1,37 +1,11 @@
-/* ── Weapon + Enemy merged 2-col grid ── */
-.we-grid {
+/* ── Weapon + Enemy side-by-side panels ── */
+.we-panel-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
+  gap: 12px;
 }
-.we-col { min-width: 0; }
-.we-col:first-child {
-  position: relative;
-  padding-right: 20px;
-}
-.we-col:first-child::after {
-  content: '';
-  position: absolute;
-  top: 0; right: 0; bottom: 0;
-  width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(220, 20, 60, 0.5), transparent);
-}
-.we-col:last-child { padding-left: 20px; }
-
-/* Mobile: vertical divider becomes horizontal */
 @media (max-width: 600px) {
-  .we-grid { grid-template-columns: 1fr; }
-  .we-col:first-child {
-    padding-right: 0;
-    padding-bottom: 14px;
-    margin-bottom: 14px;
-  }
-  .we-col:first-child::after {
-    top: auto; right: 0; bottom: 0; left: 0;
-    width: auto; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.5), transparent);
-  }
-  .we-col:last-child { padding-left: 0; }
+  .we-panel-row { grid-template-columns: 1fr; }
 }
 
 /* ── Glass Panel (stalker style) ── */
