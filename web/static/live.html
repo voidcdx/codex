@@ -16,20 +16,20 @@
 <body>
 <div class="atmo"></div>
 
+<div class="live-page-wrap">
+<div id="alert-banner" class="alert-banner"></div>
+
 <div class="app">
 
 <main class="main">
 <header class="header">
-  <h1 class="header-title">Live Data</h1>
-</header>
-<div id="alert-banner" class="alert-banner"></div>
-<div class="live-wrap">
-  <div class="live-controls">
-    <div class="refresh-info">
-      <span>Refresh in <span id="refresh-countdown">180</span>s</span>
-      <button class="refresh-btn" onclick="loadData()">↻ Now</button>
-    </div>
+  <div class="live-header-brand">VOID <span>CODEX</span></div>
+  <div class="refresh-info">
+    <span>Refresh in <span id="refresh-countdown">180</span>s</span>
+    <button class="refresh-btn" onclick="loadData()">&#8635; Now</button>
   </div>
+</header>
+<div class="live-wrap">
   <div id="live-news"></div>
   <div id="live-content"></div>
 </div>
@@ -87,6 +87,7 @@
 </button>
 
 </div><!-- .app -->
+</div><!-- .live-page-wrap -->
 
 <script>
 'use strict';

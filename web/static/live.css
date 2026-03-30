@@ -8,6 +8,22 @@
    Shared theme: base.css · layout.css · panels.css · responsive.css
    ═══════════════════════════════════════════════════════ */
 
+/* ── Live page wrapper (flex column so banner spans full width above .app) ── */
+.live-page-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.live-page-wrap > .app {
+  flex: 1;
+  min-height: 0;
+  max-width: none;
+  margin: 0;
+}
+
 /* ── Alert banner ── */
 .alert-banner {
   display: none;
@@ -15,11 +31,7 @@
   gap: 12px;
   padding: 7px 20px;
   background: rgba(139, 0, 0, 0.10);
-  border: 1px solid rgba(139, 0, 0, 0.2);
-  border-top: none;
-  border-bottom: none;
-  border-radius: 4px;
-  margin: 8px 16px 0;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.2);
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
@@ -74,6 +86,13 @@
   align-self: center;
 }
 
+@media (max-width: 900px) {
+  .alert-banner {
+    -webkit-mask-image: linear-gradient(to left, transparent 56px, black 110px);
+    mask-image: linear-gradient(to left, transparent 56px, black 110px);
+  }
+}
+
 /* ── Scrollable content column ── */
 .live-wrap {
   flex: 1;
@@ -83,6 +102,21 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* ── Live page header brand ── */
+.live-header-brand {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.live-header-brand span {
+  color: var(--crimson-bright);
+  text-shadow: 0 0 10px var(--crimson-glow);
 }
 
 /* ── Controls bar ── */
@@ -95,7 +129,6 @@
 }
 /* ── Refresh info ── */
 .refresh-info {
-  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -118,12 +151,15 @@
   color: var(--accent2);
 }
 
+
 /* ── Card grid ── */
 .live-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
   gap: 12px;
   align-items: start;
+  background-image: radial-gradient(circle, rgba(139, 0, 0, 0.18) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 .live-card-full { grid-column: 1 / -1; }
 .live-card-wide { grid-column: span 2; }
@@ -594,6 +630,14 @@ a.news-msg { text-decoration: none; color: #fff; }
 /* ── Mobile ── */
 @media (max-width: 900px) {
   .live-wrap { padding: 16px; }
+}
+/* Skip the 2-column zone — jump straight from 3 columns to 1.
+   Below ~1340px the content area can't fit 3×360px columns,
+   so collapse to single column instead of showing the mismatched 2-col layout. */
+@media (max-width: 1339px) {
+  .live-grid { grid-template-columns: minmax(0, 1fr); }
+  .live-card-wide { grid-column: 1 / -1; }
+  .fissure-list { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
   .live-grid { grid-template-columns: minmax(0, 1fr); }

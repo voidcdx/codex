@@ -1155,9 +1155,13 @@ def _parse_nightwave(raw: dict) -> dict | None:
 
     expiry = _parse_date(nw.get("Expiry"))
     challenges = []
+    seen_paths: set[str] = set()
     for ch in nw.get("ActiveChallenges", []):
         ch_expiry = _parse_date(ch.get("Expiry"))
         path = ch.get("Challenge", "")
+        if path in seen_paths:
+            continue
+        seen_paths.add(path)
         is_daily = bool(ch.get("Daily", False))
         segment  = path.rstrip("/").rsplit("/", 1)[-1] if "/" in path else path
         is_elite = bool(re.search(r"Season(Weekly|EliteWeekly)?Hard|EliteWeekly", segment)) or bool(ch.get("isElite", False))
