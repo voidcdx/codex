@@ -104,14 +104,6 @@ function setupPickerModal(which, items, onSelect, getImageUrl) {
   };
 }
 
-function _applyVisualViewport() {
-  const overlay = document.getElementById('item-picker-overlay');
-  if (!overlay || !_pickerActive) return;
-  const vv = window.visualViewport;
-  overlay.style.top    = vv.offsetTop + 'px';
-  overlay.style.height = vv.height + 'px';
-}
-
 function openPickerModal(which) {
   _pickerActive = which;
   const cfg = _pickerConfigs[which];
@@ -122,15 +114,7 @@ function openPickerModal(which) {
   searchEl.value = '';
   renderPickerResults('');
   document.body.style.overflow = 'hidden';
-  const overlay = document.getElementById('item-picker-overlay');
-  overlay.style.top = '';
-  overlay.style.height = '';
-  overlay.classList.add('active');
-  if (window.visualViewport) {
-    _applyVisualViewport();
-    window.visualViewport.addEventListener('resize', _applyVisualViewport);
-    window.visualViewport.addEventListener('scroll', _applyVisualViewport);
-  }
+  document.getElementById('item-picker-overlay').classList.add('active');
   setTimeout(() => searchEl.focus(), 50);
 }
 
@@ -140,15 +124,8 @@ function closePickerModal(e) {
 }
 
 function _closePickerNow() {
-  const overlay = document.getElementById('item-picker-overlay');
-  overlay.classList.remove('active');
-  overlay.style.top = '';
-  overlay.style.height = '';
+  document.getElementById('item-picker-overlay').classList.remove('active');
   document.body.style.overflow = '';
-  if (window.visualViewport) {
-    window.visualViewport.removeEventListener('resize', _applyVisualViewport);
-    window.visualViewport.removeEventListener('scroll', _applyVisualViewport);
-  }
   _pickerActive = null;
 }
 
