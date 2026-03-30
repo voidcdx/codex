@@ -177,42 +177,40 @@
 </div><!-- .content-left -->
 
 <div class="content-main">
-    <!-- Weapon + Enemy (merged) -->
-    <div class="panel">
-      <div class="we-grid">
-        <div class="we-col">
-          <h2>Weapon<button class="picker-open-btn" onclick="openPickerModal('weapon')" title="Search weapon"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg></button></h2>
-          <input type="hidden" id="weapon-search">
-          <div id="bonus-element-div" style="display:none">
-            <label class="bonus-element-label">Bonus Element (Kuva / Tenet)</label>
-            <div class="bonus-element-row">
-              <select id="bonus-element-type">
-                <option value="heat">Heat</option>
-                <option value="cold">Cold</option>
-                <option value="electricity">Electricity</option>
-                <option value="toxin">Toxin</option>
-              </select>
-              <input type="number" id="bonus-element-pct" class="input-sm-wide" min="25" max="60" value="25"
-                     oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
-              <span class="bonus-element-unit">%</span>
-            </div>
+    <!-- Weapon + Enemy (separate panels) -->
+    <div class="we-panel-row">
+      <div class="panel">
+        <h2>Weapon<button class="picker-open-btn" onclick="openPickerModal('weapon')" title="Search weapon"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg></button></h2>
+        <input type="hidden" id="weapon-search">
+        <div id="bonus-element-div" style="display:none">
+          <label class="bonus-element-label">Bonus Element (Kuva / Tenet)</label>
+          <div class="bonus-element-row">
+            <select id="bonus-element-type">
+              <option value="heat">Heat</option>
+              <option value="cold">Cold</option>
+              <option value="electricity">Electricity</option>
+              <option value="toxin">Toxin</option>
+            </select>
+            <input type="number" id="bonus-element-pct" class="input-sm-wide" min="25" max="60" value="25"
+                   oninput="if(+this.value>60)this.value=60;if(+this.value<25)this.value=25;updateModdedStats();updateElementBadges()">
+            <span class="bonus-element-unit">%</span>
           </div>
-          <div id="weapon-stats-content"></div>
         </div>
-        <div class="we-col">
-          <h2>Enemy<button class="picker-open-btn" onclick="openPickerModal('enemy')" title="Search enemy"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg></button></h2>
-          <input type="hidden" id="enemy-search">
-          <div id="enemy-stats-content"></div>
-          <div class="enemy-level-row">
-            <div class="enemy-level-col">
-              <label for="enemy-level">Level</label>
-              <input type="number" id="enemy-level" class="input-level" min="1" max="9999" value="1">
-            </div>
-            <button class="toggle-btn" id="steel-path-btn" onclick="toggleSteelPath()">Steel Path</button>
-            <button class="toggle-btn" id="eximus-btn" onclick="toggleEximus()">Eximus</button>
+        <div id="weapon-stats-content"></div>
+      </div>
+      <div class="panel">
+        <h2>Enemy<button class="picker-open-btn" onclick="openPickerModal('enemy')" title="Search enemy"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg></button></h2>
+        <input type="hidden" id="enemy-search">
+        <div id="enemy-stats-content"></div>
+        <div class="enemy-level-row">
+          <div class="enemy-level-col">
+            <label for="enemy-level">Level</label>
+            <input type="number" id="enemy-level" class="input-level" min="1" max="9999" value="1">
           </div>
-          <div id="enemy-scaled-stats" class="enemy-scaled-stats"></div>
+          <button class="toggle-btn" id="steel-path-btn" onclick="toggleSteelPath()">Steel Path</button>
+          <button class="toggle-btn" id="eximus-btn" onclick="toggleEximus()">Eximus</button>
         </div>
+        <div id="enemy-scaled-stats" class="enemy-scaled-stats"></div>
       </div>
     </div>
 
