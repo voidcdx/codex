@@ -717,12 +717,13 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 }
 .mod-picker-search {
   width: 100%;
-  background: var(--surface);
+  background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text-field);
-  padding: 4px;
+  padding: 5px 8px;
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
+  font-family: var(--font-body);
   outline: none;
   margin-bottom: 0;
 }
@@ -733,7 +734,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .mod-picker-list {
   overflow-y: auto;
   flex: 1;
-  padding: 4px 0;
+  padding: 6px 0;
   position: relative;
   z-index: 2;
 }
