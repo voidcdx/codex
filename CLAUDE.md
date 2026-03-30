@@ -70,6 +70,13 @@ web/
                    #   .sidebar: right-side nav 260px with .brand, .nav-menu, .nav-item (.active has right border)
                    #   .eff-badge/.eff-vuln/.eff-res for faction effectiveness badges in results table
                    #   .breakdown-table td/th have overflow-wrap:break-word so long CC/Debuff effect text wraps
+  static/live.html # Live Data SPA (/live) — separate page from calculator
+                   #   .live-page-wrap (flex-column): #alert-banner above .app for full-width ticker
+                   #   header: .live-header-brand ("VOID CODEX" + .live-subtext "WORLD STATUS" glitch) left, .refresh-info right
+                   #   NO <h1 class="header-title"> — was removed; header has brand + timer only
+                   #   .live-wrap → #live-news + #live-content (filled by renderAll())
+  static/live.css  # Live page styles — .live-page-wrap, .alert-banner, .live-grid (dot bg), .live-header-brand,
+                   #   .live-subtext (glitch keyframes: glitch-idle/before/after, cyan #00ffff + red #ff003c offsets, fires every 6s)
   static/js/
     constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
     utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy(), setupSelectDropdown(), togglePanelHelp()
