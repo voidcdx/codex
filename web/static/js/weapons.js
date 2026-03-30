@@ -735,7 +735,7 @@ async function _doUpdateModdedStats() {
 
     // Update damage table
     const atkData = getSelectedAttackData(weapon);
-    const qBase = data.quantized_base_damage || (atkData ? atkData.base_damage : weapon.base_damage);
+    const qBase = atkData ? atkData.base_damage : weapon.base_damage;
     const moddedDiffers = data && JSON.stringify(data.modded_damage) !== JSON.stringify(data.quantized_base_damage);
     const hasAnyMods = (mods.length > 0 || !!getRivenSpec()) && moddedDiffers;
     renderDamageTable(qBase, hasAnyMods ? data : null);
