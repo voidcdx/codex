@@ -101,6 +101,16 @@ ARCHITECTURE.md     # detailed implementation notes — damage pipeline, CSS, li
 ## Tests
 Run `pytest` before committing. All tests must pass. **304 tests** as of v0.5.8.
 
+## Data Refresh Notes
+- `fetch_wiki_data.py` is blocked by the wiki (403). **Do not attempt automated fetch.**
+- To refresh data: open browser → download raw Lua modules manually → run parse scripts.
+  1. `https://wiki.warframe.com/w/Module:Weapons/data?action=raw` → save as `data/weapons_data.lua`
+  2. `https://wiki.warframe.com/w/Module:Mods/data?action=raw` → save as `data/mods_data.lua`
+  3. `python scripts/parse_lua.py` → produces `weapons_raw.json` / `mods_raw.json`
+  4. `python scripts/parse_wiki_data.py` → produces `weapons.json` / `mods.json`
+  5. `git diff data/weapons.json` to review changes, then `pytest`
+- New weapons appear in `Module:Weapons/data` a few days after in-game release. If a weapon is missing, check the module directly in browser first before debugging the parse pipeline.
+
 ## Versioning
 `src/version.py` is the single source of truth:
 ```python
