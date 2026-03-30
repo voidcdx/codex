@@ -511,6 +511,7 @@ DE's official endpoint: `https://api.warframe.com/cdn/worldState.php` (and platf
 - **Elite detection:** `bool(re.search(r"Season(Weekly|EliteWeekly)?Hard|EliteWeekly", segment))`
 - **Name lookup:** `_NW_NAMES` dict maps 50+ path keys → display names. Falls back to CamelCase split for unknown keys.
 - **Unknown keys:** When a challenge shows garbled text, extract paths via `JSON.parse(document.body.innerText).SeasonInfo.ActiveChallenges.map(c => c.Challenge)` and add to `_NW_NAMES`.
+- **Dedup:** `seen_paths` set skips duplicate `ActiveChallenges` entries — DE returns dupes during rotation window.
 
 ### UI auto-refresh
 - Countdown timer in `live.html`: refreshes every **180 seconds**.
@@ -574,9 +575,29 @@ Paired panels use `.panel-stack` flex wrapper (column, 12px gap). Mobile collaps
 
 When adding new live page sections, follow this tier assignment. Do not drop primary row data below `1rem` or secondary text below `0.85rem`.
 
-### New CSS Classes (live.css — v0.5.6)
+### Live Page Layout Notes
+- **`.live-page-wrap`** — flex-column wrapper around `#alert-banner` + `.app`. Allows alert ticker to span full page width (including sidebar). `height: 100%; max-width: 1440px; margin: 0 auto`.
+- **`#alert-banner`** — sits above `.app` inside `.live-page-wrap`. `display: none` when no alerts (zero height). Mobile: `mask-image` fades right edge so ticker doesn't collide with hamburger button.
+- **`.live-grid` gap fix** — `@media (max-width: 1339px)` collapses to 1 column, avoiding the 2-column zone where INVASIONS (short) left dead space beside NIGHTWAVE. 3 columns at wide, 1 column at narrow.
+- **`.live-grid` dot background** — `radial-gradient` dot pattern on grid background; dots only show in empty areas beneath panel backgrounds.
+- **Live page header** — `VOID CODEX` brand left, refresh timer right. No center title. `.live-subtext` ("WORLD STATUS") sits below brand with CSS glitch animation (cyan/red offset layers, fires every 6s). HTML structure:
+  ```html
+  <header class="header">
+    <div class="live-header-brand">
+      VOID <span>CODEX</span>
+      <div class="live-subtext" data-text="WORLD STATUS">WORLD STATUS</div>
+    </div>
+    <div class="refresh-info">
+      <span>Refresh in <span id="refresh-countdown">180</span>s</span>
+      <button class="refresh-btn" onclick="loadData()">&#8635; Now</button>
+    </div>
+  </header>
+  ```
+
+### New CSS Classes (live.css — v0.5.6+)
 | Class | Purpose |
 |---|---|
+| `.live-page-wrap` | Flex-column wrapper: `#alert-banner` above `.app` for full-width ticker |
 | `.cycles-standalone` | Standalone cycles panel: `background: var(--surface)`, `border: 1px solid var(--border)`, `border-radius: 8px`, `margin-top: 4px` |
 | `.cycles-standalone::before` | Top+bottom crimson gradient (same `rgba(220,20,60,0.55)` as `.panel::before`) |
 | `.panel-stack` | `display: flex; flex-direction: column; gap: 12px` — keeps paired panels in same grid column |
@@ -584,6 +605,8 @@ When adding new live page sections, follow this tier assignment. Do not drop pri
 | `.invasion-attacker` | Left-aligned invasion side |
 | `.invasion-defender` | Right-aligned (`text-align: right`) invasion side |
 | `.invasion-vs` | Center "VS" badge |
+| `.live-header-brand` | Brand block in live page header — `display: block`, Orbitron `0.85rem`, letter-spacing `3px` |
+| `.live-subtext` | Glitch subtext under brand — `0.55rem`, crimson, `::before`/`::after` cyan/red offset layers, `glitch-idle` keyframe animation |
 
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.
