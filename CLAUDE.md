@@ -615,6 +615,24 @@ When adding new live page sections, follow this tier assignment. Do not drop pri
 | `.live-header-brand` | Brand block in live page header — `display: block`, Orbitron `0.85rem`, letter-spacing `3px` |
 | `.live-subtext` | Glitch subtext under brand — `0.55rem`, crimson, `::before`/`::after` cyan/red offset layers, `glitch-idle` keyframe animation |
 
+### Live Page — Countdown Timers
+All expiring sections carry `expiry_ts` (Unix float) from the parser. `live.html` runs a global `setInterval` every second that scans all `[data-expiry]` elements and rewrites their text to a live countdown (e.g. `"1h 23m"`). When expired, shows `"Expired"`. `.eta-chip` and `.live-eta` are the display classes.
+
+### API — HTML Routes
+`web/api.py` serves all HTML routes (`/`, `/live`, `/factions`) with `Cache-Control: no-store` headers to prevent stale page loads after deploys.
+
+### Favicon
+`GET /favicon.ico` is a dedicated route in `web/api.py` serving `web/static/favicon.svg`. Without the explicit route FastAPI's StaticFiles mount would 404.
+
+### News Thumbnails
+News items from the worldstate parser include an `image` field. In `live.html` the thumbnail renders as a `<div>` with `background-image` (not `<img>`), so it needs `background-size: cover; background-position: center` — do not switch to `<img>` or the aspect ratio breaks.
+
+### Warframe Buffs — Strength Input
+The buffs panel strength input sends `parseFloat(val) / 100` to the API. The label says **percentage** (e.g. enter `150` for 150% strength). Do not change it to decimal — the `/100` division is in the JS, not the API.
+
+### Helminth Checkbox
+`.buff-subsumed` — fully custom-styled checkbox (`appearance: none`), crimson border + crimson fill + white checkmark on `:checked`. Defined in `panels.css`. `.buff-helminth-label` is the accompanying label. **No inline `style=`** on either element — all styling is in CSS classes.
+
 ## Coding Standards
 - **Accuracy first:** Mathematical correctness over speed or brevity.
 - **Test before implement:** Write the `pytest` case from a wiki example, then write logic until it passes.
