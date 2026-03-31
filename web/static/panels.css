@@ -42,7 +42,6 @@
   color: var(--text-muted);
   margin-bottom: 14px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--accent-a10);
   display: flex;
   align-items: center;
   gap: 8px;
