@@ -37,7 +37,7 @@
   z-index: -1;
   pointer-events: none;
 }
-.panel:hover { border-color: var(--accent-a30); }
+
 .panel h2 {
   font-family: var(--font-display);
   font-size: 0.85rem;
