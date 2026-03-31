@@ -60,9 +60,7 @@
   letter-spacing: 0.22em;
   color: var(--crimson-bright);
   text-transform: uppercase;
-  margin-top: 4px;
-  padding-top: 4px;
-  border-top: 1px solid var(--accent-a25);
+  margin-top: 3px;
   line-height: 1;
   position: relative;
   animation: glitch-idle 6s infinite;
