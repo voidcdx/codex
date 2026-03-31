@@ -400,6 +400,15 @@
 @media (max-width: 900px) {
   .burger-btn { display: flex; }
 
+  /* Push theme switcher left of the burger button */
+  .theme-switcher { padding-right: 52px; }
+
+  /* Bigger tap targets for theme dots */
+  .theme-dot {
+    width: 18px;
+    height: 18px;
+  }
+
   .sidebar {
     position: fixed;
     top: 0; right: 0;
