@@ -505,14 +505,14 @@ a.ne-news-link:hover { color: var(--crimson-bright); }
 /* ── Events ── */
 .event-list { display: flex; flex-direction: column; }
 .event-row {
-  padding: 8px 0;
+  padding: 6px 0;
   border-bottom: 1px solid var(--border);
 }
 .event-row:last-child { border-bottom: none; }
 .event-row--gift {
   background: linear-gradient(90deg, color-mix(in srgb, var(--accent2) 8%, transparent) 0%, transparent 100%);
   border-radius: 4px;
-  padding: 8px 8px;
+  padding: 6px 8px;
   margin: 0 -8px;
   border-bottom-color: transparent;
 }
