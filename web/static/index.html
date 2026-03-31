@@ -249,8 +249,10 @@ function buildNightwaveCard(nw) {
     const lbl = ch.is_elite ? 'Elite' : ch.is_daily ? 'Daily' : 'Weekly';
     return `<div class="nw-row">
       <div class="nw-left">
-        <span class="nw-tag ${cls}">${lbl}</span>
-        <div class="nw-title">${esc(ch.title)}</div>
+        <div class="nw-title-row">
+          <span class="nw-tag ${cls}">${lbl}</span>
+          <div class="nw-title">${esc(ch.title)}</div>
+        </div>
         ${ch.description ? `<div class="nw-desc">${esc(ch.description)}</div>` : ''}
       </div>
       <div class="nw-right">
