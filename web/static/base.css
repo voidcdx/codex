@@ -29,8 +29,8 @@
   --accent-green2:   #e53e3e;
 
   /* ── Text ── */
-  --text:            #e8e8e8;
-  --text-primary:    #ffffff;
+  --text:            #c8c0bc;
+  --text-primary:    #ede0dc;
   --text-dim:        #666666;
   --text-field:      #cccccc;
   --text-muted:      #666666;
@@ -207,8 +207,8 @@ body.theme-jade {
   --crimson-glow:    rgba(0, 200, 160, 0.4);
   --blood-red:       #071512;
   --deep-red:        #040e0c;
-  --text:            #c8e8e0;
-  --text-primary:    #e0f8f0;
+  --text:            #a8c8c0;
+  --text-primary:    #cce8e0;
   --text-dim:        #3a6060;
   --text-field:      #90c0b8;
   --text-muted:      #3a6060;
@@ -270,8 +270,8 @@ body.theme-ash {
   --crimson-glow:    rgba(255, 255, 255, 0.30);
   --blood-red:       #111111;
   --deep-red:        #080808;
-  --text:            #cccccc;
-  --text-primary:    #ffffff;
+  --text:            #a8a49e;
+  --text-primary:    #d8d0c8;
   --text-dim:        #555555;
   --text-field:      #aaaaaa;
   --text-muted:      #555555;
