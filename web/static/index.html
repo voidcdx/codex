@@ -356,7 +356,7 @@ function buildNewsEventsPanel(news, events, gifts) {
       : `<span class="ne-news-link ne-news-plain">${esc(n.message)}</span>`;
     const timeStr = relativeTime(n.date);
     const timeEl = timeStr ? `<span class="ne-news-time">${timeStr}</span>` : '';
-    return `<li>${link}${timeEl}</li>`;
+    return `<li>${timeEl}${link}</li>`;
   }).join('');
 
   const newsCol = `<div class="ne-col ne-news">
