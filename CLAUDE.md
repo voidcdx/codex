@@ -71,6 +71,9 @@ web/
                    #   .live-wrap → #live-news (News & Events panel) + #live-content (grid filled by renderAll())
                    #   renderAll(): gifts from Goals (is_gift:true) go to Active Events column; alerts + plain events also in Events column; no separate Alerts card
                    #   buildNewsEventsPanel(news, events, gifts): auto two-column when events/gifts present, single-column otherwise
+                   #   relativeTime(iso): helper → "Xd/Xh/Xm ago"; news capped at 7 items; timestamp inline before title
+                   #   Event rows: .event-row-header (title + timer same line); reward in crimson (.event-desc)
+                   #   Nightwave rows: .nw-title-row (tag + title inline), desc below; .nw-right (rep + eta stacked)
   static/calculator.html # Damage Calculator SPA — at /calculator
                    #   stalker-dashboard layout: inner header + .content grid (1fr 480px) + right .sidebar
                    #   header: .live-header-brand "VOID CODEX" / "DAMAGE CALCULATOR" glitch subtext
@@ -82,8 +85,11 @@ web/
   static/factions.html # Faction Weakness page — at /factions
                    #   header: .live-header-brand "VOID CODEX" / "FACTION WEAKNESS" glitch subtext
   static/live.css  # Live page styles — .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
-                   #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events, .ne-news-list, .ne-news-link
-                   #   .event-row, .event-row--gift (gift styling), .alert-gift-label, .nw-desc
+                   #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
+                   #   .ne-news-list li (flex row), .ne-news-link (inline-flex, 1rem), .ne-news-time (0.85rem dim, inline before title)
+                   #   .event-row / .event-row--gift, .event-row-header (flex row: title left, eta right)
+                   #   .event-desc now crimson; .event-row padding 6px 0
+                   #   .nw-row: .nw-left (.nw-title-row tag+title inline, desc below) + .nw-right (rep above eta)
                    #   Brand/glitch styles now in layout.css (shared)
                    #   NOTE: alert banner (.alert-banner, .ab-*) was removed — do not re-add
   static/layout.css # Shared layout + .live-header-brand, .live-subtext, glitch keyframes (used on all pages)
