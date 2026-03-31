@@ -8,17 +8,17 @@
   .we-panel-row { grid-template-columns: 1fr; }
 }
 
-/* ── Glass Panel (stalker style) ── */
+/* ── Glass Panel (Zariman style) ── */
 .panel {
   background: var(--surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-metal);
   border-radius: 8px;
   padding: 16px;
   position: relative;
   transition: border-color 0.2s;
-
+  clip-path: var(--panel-clip);
 }
 .panel::before {
   content: '';
@@ -270,7 +270,7 @@ select option {
   background: var(--surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-metal);
   padding: 12px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -519,7 +519,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .mod-card {
   position: relative;
   background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-metal);
   border-radius: var(--radius-sm);
   padding: 10px 8px;
   min-height: 90px;
