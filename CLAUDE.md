@@ -55,7 +55,9 @@ scripts/
   parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json (multi-attack aware)
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
-  parse_worldstate.py # worldstate parser: parse(raw); _parse_nightwave(raw) reads SeasonInfo root; ALL_NODES; _NW_NAMES
+  parse_worldstate.py # worldstate parser: parse(raw); _parse_nightwave(raw); _parse_goals(raw) for anniversary gifts
+                   #   _NW_NAMES + _NW_DESCRIPTIONS (~120 entries each); _NW_ELITE_NAMES/_NW_ELITE_DESCRIPTIONS for weekly/elite key collisions
+                   #   Gifts of the Lotus: Goals array (Tag: Anniversary*TacAlert) → gift events; Alerts array (Tag: LotusGift) → regular alert rows
 web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
@@ -64,9 +66,11 @@ web/
                    #   Routes: GET / → index.html (live tracker), GET /live → index.html (alias),
                    #           GET /calculator → calculator.html, GET /factions → factions.html
   static/index.html # Live Data SPA — default page at /
-                   #   .live-page-wrap (flex-column): #alert-banner above .app for full-width ticker
+                   #   .live-page-wrap: centering wrapper (no banner — removed)
                    #   header: .live-header-brand ("VOID CODEX" + .live-subtext "WORLD STATUS" glitch) left, .refresh-info right
-                   #   .live-wrap → #live-news + #live-content (filled by renderAll())
+                   #   .live-wrap → #live-news (News & Events panel) + #live-content (grid filled by renderAll())
+                   #   renderAll(): gifts from Goals (is_gift:true) go to Active Events column; alerts + plain events also in Events column; no separate Alerts card
+                   #   buildNewsEventsPanel(news, events, gifts): auto two-column when events/gifts present, single-column otherwise
   static/calculator.html # Damage Calculator SPA — at /calculator
                    #   stalker-dashboard layout: inner header + .content grid (1fr 480px) + right .sidebar
                    #   header: .live-header-brand "VOID CODEX" / "DAMAGE CALCULATOR" glitch subtext
@@ -77,8 +81,11 @@ web/
                    #   Mobile ≤600px: .we-panel-row stacks to 1-col (weapon first, enemy second)
   static/factions.html # Faction Weakness page — at /factions
                    #   header: .live-header-brand "VOID CODEX" / "FACTION WEAKNESS" glitch subtext
-  static/live.css  # Live page styles — .live-page-wrap, .alert-banner, .live-grid (dot bg), .refresh-info
+  static/live.css  # Live page styles — .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
+                   #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events, .ne-news-list, .ne-news-link
+                   #   .event-row, .event-row--gift (gift styling), .alert-gift-label, .nw-desc
                    #   Brand/glitch styles now in layout.css (shared)
+                   #   NOTE: alert banner (.alert-banner, .ab-*) was removed — do not re-add
   static/layout.css # Shared layout + .live-header-brand, .live-subtext, glitch keyframes (used on all pages)
   static/panels.css # .we-panel-row replaces old .we-grid/.we-col; .picker-open-btn; .item-picker-item
   static/js/

@@ -17,8 +17,6 @@
 <div class="atmo"></div>
 
 <div class="live-page-wrap">
-<div id="alert-banner" class="alert-banner"></div>
-
 <div class="app">
 
 <main class="main">
@@ -253,6 +251,7 @@ function buildNightwaveCard(nw) {
       <span class="nw-tag ${cls}">${lbl}</span>
       <div class="nw-challenge-info">
         <div class="nw-title">${esc(ch.title)}</div>
+        ${ch.description ? `<div class="nw-desc">${esc(ch.description)}</div>` : ''}
         <div class="nw-eta" data-expiry="${ch.expiry_ts || 0}">${esc(ch.eta)}</div>
       </div>
       <span class="nw-rep">+${ch.reputation.toLocaleString()}</span>
@@ -332,42 +331,48 @@ function buildCyclesCard(cycles) {
   return `<div class="cycles-standalone live-card-full"><div class="cycle-grid">${items}</div></div>`;
 }
 
-/* ── News ── */
-const _NEWS_PH = `<div class="news-thumb news-thumb-ph"><span>WARFRAME</span></div>`;
-
-function buildNewsSection(news) {
+/* ── News & Events ── */
+function buildNewsEventsPanel(news, events, gifts) {
   if (!news || !news.length) return '';
-  const cards = news.map(n => {
-    const img = n.image
-      ? `<img class="news-thumb" src="${esc(n.image)}" alt="" loading="lazy">`
-      : _NEWS_PH;
-    const inner = n.url
-      ? `<a class="news-msg" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
-      : `<span class="news-msg">${esc(n.message)}</span>`;
-    return `<div class="news-card">${img}${inner}</div>`;
-  }).join('');
-  return `<div class="panel live-card-full"><div class="news-section">
-    <h2>News</h2>
-    <div class="news-slider">
-      <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:-200,behavior:'smooth'})">&#8249;</button>
-      <div class="news-row" id="news-row">${cards}</div>
-      <button class="news-nav-btn" onclick="document.getElementById('news-row').scrollBy({left:200,behavior:'smooth'})">&#8250;</button>
-    </div>
-  </div></div>`;
-}
+  const eventItems  = events && events.length  ? events  : [];
+  const giftItems   = gifts  && gifts.length   ? gifts   : [];
+  const hasRightCol = eventItems.length > 0 || giftItems.length > 0;
+  const title       = hasRightCol ? 'News &amp; Events' : 'News';
 
-/* ── Events ── */
-function buildEventsCard(events) {
-  if (!events || !events.length) return '';
-  const rows = events.map(ev => `
+  const newsItems = news.map(n => {
+    const inner = n.url
+      ? `<a class="ne-news-link" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
+      : `<span class="ne-news-link ne-news-plain">${esc(n.message)}</span>`;
+    return `<li>${inner}</li>`;
+  }).join('');
+
+  const newsCol = `<div class="ne-col ne-news">
+    ${hasRightCol ? '<div class="ne-sub-header">News</div>' : ''}
+    <ul class="ne-news-list">${newsItems}</ul>
+  </div>`;
+
+  const giftRows = giftItems.map(g => `
+    <div class="event-row event-row--gift">
+      <div class="event-title">${esc(g.name || 'Gift of the Lotus')}</div>
+      ${g.reward ? `<div class="event-desc">${esc(g.reward)}</div>` : ''}
+      <div class="live-eta" data-expiry="${g.expiry_ts || 0}">${esc(g.eta)}</div>
+    </div>`).join('');
+
+  const eventRows = eventItems.map(ev => `
     <div class="event-row">
       <div class="event-title">${esc(ev.name)}</div>
       ${ev.reward ? `<div class="event-desc">${esc(ev.reward)}</div>` : ''}
       <div class="live-eta" data-expiry="${ev.expiry_ts || 0}">${esc(ev.eta)}</div>
     </div>`).join('');
+
+  const eventsCol = hasRightCol ? `<div class="ne-col ne-events">
+    <div class="ne-sub-header">Active Events</div>
+    <div class="event-list">${giftRows}${eventRows}</div>
+  </div>` : '';
+
   return `<div class="panel live-card-full">
-    <h2>Events <span class="live-count">${events.length} active</span></h2>
-    <div class="event-list">${rows}</div>
+    <h2>${title}</h2>
+    <div class="ne-body${hasRightCol ? ' ne-body--split' : ''}">${newsCol}${eventsCol}</div>
   </div>`;
 }
 
@@ -397,34 +402,29 @@ async function loadData() {
   }
 }
 
-function buildAlertBanner(alerts) {
-  const el = document.getElementById('alert-banner');
-  if (!el) return;
-  if (!alerts || !alerts.length) { el.style.display = 'none'; return; }
-  const items = alerts.map(a => {
-    const reward = esc(a.reward);
-    const node   = esc(a.node);
-    const type   = esc(a.mission_type);
-    const eta    = esc(a.eta);
-    return `<span class="ab-item">${reward} &nbsp;·&nbsp; ${node} &nbsp;·&nbsp; ${type} &nbsp;·&nbsp; <span class="ab-eta">${eta}</span></span>`;
-  }).join('<span class="ab-sep">|</span>');
-  el.innerHTML = `<span class="ab-label">ALERTS</span><div class="ab-track"><div class="ab-inner">${items}${items}</div></div>`;
-  el.style.display = 'flex';
-}
 function renderAll(data) {
   _hasLoaded = true;
+  const allAlerts   = data.alerts || [];
+  const allEvents   = data.events || [];
+  // Gifts of the Lotus come through the Events array; fall back to alert-tagged gifts if present
+  const gifts       = [
+    ...allEvents.filter(e => e.is_gift),
+    ...allAlerts.filter(a => a.is_gift),
+  ];
+  const plainAlerts = allAlerts.filter(a => !a.is_gift);
+  const plainEvents = allEvents.filter(e => !e.is_gift);
+
   const cards = [
     buildCyclesCard(data.cycles || []),
     buildFissureCard(data.fissures || []),
     buildInvasionsCard(data.invasions || []),
     `<div class="panel-stack">${buildSortieCard(data.sortie)}${buildArchonCard(data.archon_hunt)}</div>`,
     `<div class="panel-stack">${buildNightwaveCard(data.nightwave)}${buildTraderCard(data.void_trader)}</div>`,
-    (data.alerts && data.alerts.length ? null : buildAlertsCard([])),
-    buildEventsCard(data.events || []),
   ].filter(Boolean).join('');
 
-  document.getElementById('live-news').innerHTML = buildNewsSection(data.news || []);
-  buildAlertBanner(data.alerts || []);
+  // Alerts and events all go in the right column — alerts first, then game events
+  const allEventsAndAlerts = [...plainAlerts, ...plainEvents];
+  document.getElementById('live-news').innerHTML = buildNewsEventsPanel(data.news || [], allEventsAndAlerts, gifts);
   const el = document.getElementById('live-content');
   const grid = document.createElement('div');
   grid.className = 'live-grid';

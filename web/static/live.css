@@ -8,7 +8,7 @@
    Shared theme: base.css · layout.css · panels.css · responsive.css
    ═══════════════════════════════════════════════════════ */
 
-/* ── Live page wrapper (flex column so banner spans full width above .app) ── */
+/* ── Live page wrapper ── */
 .live-page-wrap {
   display: flex;
   flex-direction: column;
@@ -24,74 +24,6 @@
   margin: 0;
 }
 
-/* ── Alert banner ── */
-.alert-banner {
-  display: none;
-  align-items: center;
-  gap: 12px;
-  padding: 7px 20px;
-  background: rgba(139, 0, 0, 0.10);
-  border-bottom: 1px solid rgba(139, 0, 0, 0.2);
-  position: relative;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-.alert-banner::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) top / 100% 1px no-repeat,
-    linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.55), transparent) bottom / 100% 1px no-repeat;
-  pointer-events: none;
-}
-.ab-label {
-  font-family: var(--font-display);
-  font-size: 0.67rem;
-  letter-spacing: 0.12em;
-  color: var(--crimson-bright);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.ab-track {
-  flex: 1;
-  overflow: hidden;
-  min-width: 0;
-}
-.ab-inner {
-  display: inline-flex;
-  gap: 0;
-  white-space: nowrap;
-  animation: ab-scroll 28s linear infinite;
-}
-.ab-inner:hover { animation-play-state: paused; }
-@keyframes ab-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.ab-item {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  color: var(--text-primary);
-  padding: 0 32px 0 0;
-}
-.ab-eta {
-  color: var(--text-dim);
-  font-size: 0.73rem;
-}
-.ab-sep {
-  color: rgba(139, 0, 0, 0.4);
-  padding: 0 16px 0 0;
-  font-size: 0.73rem;
-  align-self: center;
-}
-
-@media (max-width: 900px) {
-  .alert-banner {
-    -webkit-mask-image: linear-gradient(to left, transparent 56px, black 110px);
-    mask-image: linear-gradient(to left, transparent 56px, black 110px);
-  }
-}
 
 /* ── Scrollable content column ── */
 .live-wrap {
@@ -362,7 +294,8 @@
 .nw-tag.elite  { color: var(--accent2); }
 .nw-challenge-info { flex: 1; min-width: 0; }
 .nw-title { color: var(--text-primary); font-size: 1rem; }
-.nw-eta   { color: var(--text-dim); font-size: 0.85rem; margin-top: 1px; }
+.nw-desc  { color: var(--text-secondary); font-size: 0.82rem; margin-top: 2px; }
+.nw-eta   { color: var(--text-dim); font-size: 0.8rem; margin-top: 2px; }
 .nw-rep {
   color: var(--accent2);
   font-size: 0.85rem;
@@ -379,6 +312,14 @@
   border-bottom: 1px solid var(--border);
 }
 .alert-row:last-child { border-bottom: none; }
+.alert-gift-label {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 3px;
+}
 .alert-info { flex: 1; min-width: 0; }
 .alert-reward {
   color: var(--text-primary);
@@ -491,85 +432,70 @@
 .cycle-cool { color: #80c8ff; }
 
 /* ── News section ── */
-.news-section { margin-bottom: 0; }
-.news-slider {
-  position: relative;
+/* ── News & Events panel ── */
+.ne-body {
+  display: grid;
+  grid-template-columns: 1fr;
 }
-.news-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  background: none;
-  border: none;
-  color: var(--crimson-bright);
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 4px;
-  line-height: 1;
-  opacity: 0.8;
-  transition: opacity 0.15s, color 0.15s;
+.ne-body--split {
+  grid-template-columns: 1fr 1fr;
 }
-.news-nav-btn:first-child { left: 6px; }
-.news-nav-btn:last-child  { right: 6px; }
-.news-nav-btn:hover { opacity: 1; color: #fff; }
-.news-row {
-  width: 100%;
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  touch-action: pan-x pan-y;
-}
-.news-slider {
-  touch-action: pan-x pan-y;
-}
-.news-row::-webkit-scrollbar { display: none; }
-.news-card {
-  position: relative;
-  flex: 0 0 220px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: opacity 0.15s;
-}
-.news-card:hover { opacity: 0.85; }
-.news-thumb {
-  width: 100%;
-  height: 130px;
-  object-fit: contain;
-  background: var(--bg);
-  display: block;
-}
-.news-thumb-ph {
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.news-thumb-ph span {
-  font-family: var(--font-display);
-  font-size: 0.67rem;
-  letter-spacing: 4px;
+.ne-sub-header {
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   color: var(--text-dim);
+  margin-bottom: 10px;
 }
-.news-msg {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 28px 8px 8px;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.82) 100%);
-  font-size: 0.73rem;
-  color: #fff;
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.ne-col { padding: 0; }
+.ne-body--split .ne-news {
+  padding-right: 20px;
+  border-right: 1px solid var(--border);
 }
-a.news-msg { text-decoration: none; color: #fff; }
+.ne-body--split .ne-events {
+  padding-left: 20px;
+}
+.ne-news-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.ne-news-link {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+.ne-news-link::before {
+  content: '›';
+  color: var(--crimson-bright);
+  flex-shrink: 0;
+}
+a.ne-news-link:hover { color: var(--crimson-bright); }
+.ne-news-plain { opacity: 0.7; cursor: default; }
+
+@media (max-width: 600px) {
+  .ne-body--split {
+    grid-template-columns: 1fr;
+  }
+  .ne-body--split .ne-news {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+  .ne-body--split .ne-events {
+    padding-left: 0;
+  }
+}
 
 /* ── Events ── */
 .event-list { display: flex; flex-direction: column; }
@@ -578,6 +504,14 @@ a.news-msg { text-decoration: none; color: #fff; }
   border-bottom: 1px solid var(--border);
 }
 .event-row:last-child { border-bottom: none; }
+.event-row--gift {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent2) 8%, transparent) 0%, transparent 100%);
+  border-radius: 4px;
+  padding: 8px 8px;
+  margin: 0 -8px;
+  border-bottom-color: transparent;
+}
+.event-row--gift + .event-row { margin-top: 4px; }
 .event-title { color: var(--text-primary); font-size: 1rem; }
 .event-desc  { color: var(--text-dim); font-size: 0.85rem; margin-top: 2px; }
 .live-eta    { color: var(--text-dim); font-size: 0.85rem; margin-top: 2px; }

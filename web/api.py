@@ -825,6 +825,91 @@ def debug_worldstate_news(request: Request) -> dict:
     return mod._debug_news(raw)
 
 
+@app.get("/api/worldstate/debug-nightwave")
+@_limiter.limit("10/minute")
+def debug_worldstate_nightwave(request: Request) -> dict:
+    if _ws_cache is None:
+        raise HTTPException(503, f"Worldstate unavailable — {_ws_error or 'first fetch in progress'}")
+    _parsed, raw, _ = _ws_cache
+    nw = raw.get("SeasonInfo")
+    if not nw:
+        return {"SeasonInfo": None, "parsed": None}
+    challenges_raw = nw.get("ActiveChallenges", [])
+    mod = _load_parse_worldstate_mod()
+    return {
+        "SeasonInfo_keys": list(nw.keys()),
+        "challenge_count": len(challenges_raw),
+        "raw_paths": [
+            {"path": ch.get("Challenge", ""), "Daily": ch.get("Daily"), "isElite": ch.get("isElite"), "xpAmount": ch.get("xpAmount")}
+            for ch in challenges_raw
+        ],
+        "parsed": mod._parse_nightwave(raw),
+    }
+
+
+@app.get("/api/worldstate/debug-gifts")
+@_limiter.limit("10/minute")
+def debug_worldstate_gifts(request: Request) -> dict:
+    """Show every place in the worldstate where gifts might live."""
+    if _ws_cache is None:
+        raise HTTPException(503, f"Worldstate unavailable — {_ws_error or 'first fetch in progress'}")
+    import json as _json, time as _time
+    _parsed2, raw, fetched_at = _ws_cache
+
+    all_keys = list(raw.keys())
+
+    # Broad scan — any key whose serialized value contains "Gift" or "Lotus" (case-sensitive)
+    broad_hits: dict[str, str] = {}
+    for k, v in raw.items():
+        v_str = _json.dumps(v)
+        if "Gift" in v_str or ("Lotus" in v_str and k not in ("BuildLabel", "Time")):
+            broad_hits[k] = f"{len(v_str)} chars — preview: {v_str[:300]}"
+
+    # All alerts raw (unfiltered) with their Tag values
+    alerts_all = raw.get("Alerts", [])
+    alerts_summary = [
+        {"_id": a.get("_id"), "Tag": a.get("Tag"), "descText": a.get("MissionInfo", {}).get("descText"),
+         "Expiry": a.get("Expiry")}
+        for a in alerts_all
+    ]
+
+    return {
+        "cache_age_seconds":   round(_time.time() - fetched_at, 1),
+        "all_top_level_keys":  all_keys,
+        "alerts_total_count":  len(alerts_all),
+        "alerts_summary":      alerts_summary,
+        "broad_scan_keys":     list(broad_hits.keys()),
+        "broad_scan_previews": broad_hits,
+        "goals_full":          raw.get("Goals", []),
+        "parsed_alerts":       _parsed2.get("alerts", []),
+    }
+
+
+@app.get("/api/worldstate/debug-alerts")
+@_limiter.limit("10/minute")
+def debug_worldstate_alerts(request: Request) -> dict:
+    if _ws_cache is None:
+        raise HTTPException(503, f"Worldstate unavailable — {_ws_error or 'first fetch in progress'}")
+    _parsed, raw, _ = _ws_cache
+    import json as _json, time as _time
+    _parsed2, raw, fetched_at = _ws_cache
+    alerts_raw = raw.get("Alerts", [])
+    gift_hits = {}
+    for k, v in raw.items():
+        v_str = _json.dumps(v)
+        if "LotusGift" in v_str or "LotusGiftDesc" in v_str:
+            gift_hits[k] = v
+    return {
+        "cache_age_seconds": round(_time.time() - fetched_at, 1),
+        "all_top_level_keys": list(raw.keys()),
+        "alert_count": len(alerts_raw),
+        "alerts_raw": alerts_raw,
+        "parsed_alerts": _parsed2.get("alerts", []),
+        "keys_containing_lotusgift": list(gift_hits.keys()),
+        "lotusgift_raw": gift_hits,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Root — serve the SPA
 # ---------------------------------------------------------------------------

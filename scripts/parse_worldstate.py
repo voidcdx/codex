@@ -958,6 +958,43 @@ def _parse_fissures(raw: list, solnode_map: dict) -> list[dict]:
     return out
 
 
+def _parse_goals(raw: list) -> list[dict]:
+    """Parse anniversary/gift tactical alerts from the Goals array."""
+    out: list[dict] = []
+    now = datetime.now(tz=timezone.utc)
+    for g in raw:
+        try:
+            tag = g.get("Tag", "")
+            # Only process anniversary tactical alert goals
+            if "TacAlert" not in tag and "Anniversary" not in tag:
+                continue
+            expiry = _parse_date(g.get("Expiry"))
+            if expiry and expiry < now:
+                continue
+            reward_obj = g.get("Reward", {})
+            items = reward_obj.get("items", []) if isinstance(reward_obj, dict) else []
+            reward = _item_name(items[0]) if items else ""
+            # Determine display name: ChallengeMode variants are "Elite", others are "Stolen!"
+            mission_key = g.get("MissionKeyName", "")
+            if "ChallengeMode" in tag or "ChallengeMode" in mission_key or tag.endswith("CMA"):
+                name = "Gifts of the Lotus \u2013 Elite"
+            else:
+                name = "Gifts of the Lotus \u2013 Stolen!"
+            out.append({
+                "node":         "",
+                "mission_type": "",
+                "faction":      "",
+                "reward":       reward,
+                "eta":          _eta(expiry),
+                "expiry_ts":    expiry.timestamp() if expiry else 0,
+                "is_gift":      True,
+                "name":         name,
+            })
+        except Exception:
+            continue
+    return out
+
+
 def _parse_alerts(raw: list, solnode_map: dict) -> list[dict]:
     out = []
     for a in raw:
@@ -981,12 +1018,18 @@ def _parse_alerts(raw: list, solnode_map: dict) -> list[dict]:
         if credits:
             reward_parts.append(f"{credits:,}c")
 
+        node    = _node_display(mission.get("location", ""), solnode_map)
+        mtype   = _mission_type(mission.get("missionType", ""))
+        faction = _faction(mission.get("faction", ""))
         out.append({
-            "node":         _node_display(mission.get("location", ""), solnode_map),
-            "mission_type": _mission_type(mission.get("missionType", "")),
-            "faction":      _faction(mission.get("faction", "")),
+            "node":         node,
+            "mission_type": mtype,
+            "faction":      faction,
             "reward":       ", ".join(reward_parts) or "Unknown",
             "eta":          _eta(expiry),
+            "expiry_ts":    expiry.timestamp() if expiry else 0,
+            "is_gift":      False,
+            "name":         f"{mtype} \u2014 {node}" if mtype and node else (mtype or node or "Alert"),
         })
     return out
 
@@ -1082,9 +1125,11 @@ _NW_PREFIX   = re.compile(r"^Season(EliteWeekly|Daily|Weekly)(Permanent|Hard)?")
 _NW_TRAIL_NUM = re.compile(r"\d+$")
 _NW_NAMES = {
     # Daily
+    "Accelerator":            "Accelerator",
+    "Agent":                  "Agent",
     "VisitFeaturedDojo":      "Just Visiting",
     "DeployAirSupport":       "Air It Out",
-    "DonateLeverian":         "Donate to the Leverian",
+    "DonateLeverian":         "Patron",
     "KillWithMelee":          "Sword Dance",
     "MeleeOnly":              "Swordsman",
     "PrimaryOnly":            "Hands Full",
@@ -1092,18 +1137,42 @@ _NW_NAMES = {
     "KillWithPrimary":        "Mow Them Down",
     "KillWithMagnetic":       "Attractive",
     "KillWithExplosive":      "Detonator",
-    "KillWithViral":          "Sharing is Caring",
+    "KillWithViral":          "Go Viral",
     "KillWithToxin":          "Poisoner",
     "KillWithCold":           "Deep Freeze",
     "KillWithHeat":           "Arsonist",
     "KillWithElectricity":    "Short Circuit",
     "KillWithGas":            "Biohazard",
+    "KillWithCorrosive":      "Meltdown",
+    "KillWithRadiation":      "Reactor",
+    "KillWithSecondary":      "Smaller is Bigger",
     "KillWithFinisher":       "Executioner",
     "GroundSlam":             "Comet Impact",
+    "DeepImpact":             "Deep Impact",
     "AimGlideKills":          "Glider",
     "Headshots":              "Marksman",
     "PlayMinigame":           "Child at Heart",
     "PickupCredits":          "Saver",
+    "Shiny":                  "Shiny",
+    "Energizing":             "Energizing",
+    "Doppelganger":           "Doppelganger",
+    "Expressive":             "Expressive",
+    "Graffiti":               "Graffiti",
+    "Liquidation":            "Liquidation",
+    "Loyalty":                "Loyalty",
+    "BuildersTouch":          "Builder's Touch",
+    "PersonalTouch":          "The Personal Touch",
+    "ThrillRider":            "Thrill Rider",
+    "ToppingOffTheTank":      "Topping Off the Tank",
+    "Trampoline":             "Trampoline",
+    "TwoForOne":              "Two For One",
+    "WarningShot":            "Warning Shot",
+    "Swatter":                "Swatter",
+    "PowerTrip":              "Power Trip",
+    "Reactor":                "Reactor",
+    "Researcher":             "Researcher",
+    "Transmutation":          "Everything Old is New Again",
+    "AFirmShake":             "A Firm Shake",
     # Weekly / Permanent
     "CompleteMissions":       "Mission Complete",
     "KillEximus":             "Eximus Eliminator",
@@ -1116,6 +1185,8 @@ _NW_NAMES = {
     "MineRare":               "Miner",
     "FishRare":               "Fisher",
     "CompleteBounties":       "Bounty Hunter",
+    "EarthBounties":          "Earth Bounty Hunter",
+    "VenusBounties":          "Venus Bounty Hunter",
     "ZarimanBounties":        "Zariman Bounty Hunter",
     "VoidArmageddon":         "Eternal Guardian",
     "VoidFlood":              "High Ground",
@@ -1126,6 +1197,48 @@ _NW_NAMES = {
     "SilverGroveSpecters":    "Grove Guardian",
     "LuaAscension":           "Ascendant",
     "UnlockDragonVaults":     "Vault Looter",
+    "AncientObelisks":        "Ancient Obelisks",
+    "BeastSlayer":            "Beast Slayer",
+    "Bloodthirsty":           "Bloodthirsty",
+    "Collector":              "Collector",
+    "DontBlowIt":             "Don't Blow It",
+    "EarthFisher":            "Earth Fisher",
+    "EarthMiner":             "Earth Miner",
+    "Eliminator":             "Eliminator",
+    "Explorer":               "Explorer",
+    "FeedBeast":              "Feed the Beast",
+    "FinellyTuned":           "Finely Tuned",
+    "Flawless":               "Flawless",
+    "ForwardThinking":        "Forward Thinking",
+    "FriendlyFire":           "Friendly Fire",
+    "Gatherer":               "Gatherer",
+    "GoodFriend":             "Good Friend",
+    "Hacker":                 "Hacker",
+    "HeavyOrdnance":          "Heavy Ordnance",
+    "HorsingAround":          "Horsing Around",
+    "IDecree":                "I Decree",
+    "Invader":                "Invader",
+    "Jailer":                 "Jailer",
+    "Kleptomaniac":           "Kleptomaniac",
+    "Necralizer":             "Necralizer",
+    "NightAndDay":            "Night and Day",
+    "NowBoarding":            "Now Boarding",
+    "OllieOop":               "Ollie Oop!",
+    "Operative":              "Operative",
+    "Polarized":              "Polarized",
+    "Protector":              "Protector",
+    "Rescuer":                "Rescuer",
+    "Saboteur":               "Saboteur",
+    "SanctuaryResearcher":    "Sanctuary Researcher",
+    "SkeletonsInTheCloset":   "Skeletons in the Closet",
+    "SortieSpecialist":       "Sortie Specialist",
+    "Supporter":              "Supporter",
+    "OldWays":                "The Old Ways",
+    "TuskThumper":            "Tusk Thumpin'",
+    "UnlockRelics":           "Unlock Relics",
+    "VaultRaider":            "Vault Raider",
+    "VenusFisher":            "Venus Fisher",
+    "VenusMiner":             "Venus Miner",
     # Hard / Elite
     "KillOrCaptureRainalyst": "Hydrolyst Hunter",
     "Arbitration":            "Vital Arbiter",
@@ -1136,15 +1249,229 @@ _NW_NAMES = {
     "EliteSanctuaryOnslaught":"Elite Test Subject",
     "NecramechMissions":      "Rise of the Machine",
     "VoidAngels":             "Fallen Angel",
+    "Antiquarian":            "Antiquarian",
+    "ArchonHunter":           "Archon Hunter",
+    "CeremonialEvolution":    "Ceremonial Evolution",
+    "DayTrader":              "Day Trader",
+    "Defense":                "Defense",
+    "EliteBeastSlayer":       "Elite Beast Slayer",
+    "EliteExplorer":          "Elite Explorer",
+    "EximusExecutioner":      "Eximus Executioner",
+    "HoldYourBreath":         "Hold Your Breath",
+    "KillShot":               "Kill Shot",
+    "MirrorMirror":           "Mirror, Mirror",
+    "NothingButProfit":       "Nothing but Profit",
+    "Perplexed":              "Perplexed",
+    "ResourceScavenger":      "Resource Scavenger",
+    "Speedster":              "Speedster",
+    "Survival":               "Survival",
+    "Tanked":                 "Tanked",
+    "Terminated":             "Terminated",
+    "VoluntarySpecimen":      "Voluntary Specimen",
+    "ManyMadeWhole":          "The Many Made Whole",
+    "PathLessTravelled":      "The Path Less Travelled",
+    "PriceOfFreedom":         "The Price of Freedom",
+    "WalkWithoutRhythm":      "Walk Without Rhythm",
+    "ChooseWisely":           "Choose Wisely",
+    "MachineInterference":    "Machine Interference",
+    # Keys confirmed from live worldstate (actual path segment differs from assumed)
+    "KillEnemiesWithPoison":  "Poisoner",
+    "SolveCiphers":           "Hacker",
+    "KillEnemiesInMech":      "Necralizer",
+    "FriendsSurvival":        "Survival with Friends",
+    "Assassin":               "Assassin",
+    "Gilded":                 "Gilded",
 }
 
-def _nw_title(path: str) -> str:
+_NW_DESCRIPTIONS = {
+    # Daily
+    "Accelerator":            "Kill 10 Enemies while Sliding",
+    "Agent":                  "Complete a Mission",
+    "VisitFeaturedDojo":      "Visit a Featured Dojo",
+    "DeployAirSupport":       "Deploy an Air Support Charge in a Mission",
+    "DonateLeverian":         "Donate to the Leverian",
+    "KillWithMelee":          "Kill 150 Enemies with a Melee Weapon",
+    "MeleeOnly":              "Complete a Mission with only a Melee Weapon equipped",
+    "PrimaryOnly":            "Complete a Mission with only a Primary Weapon equipped",
+    "SecondaryOnly":          "Complete a Mission with only a Secondary Weapon equipped",
+    "KillWithPrimary":        "Kill 150 Enemies with a Primary Weapon",
+    "KillWithMagnetic":       "Kill 150 Enemies with Magnetic Damage",
+    "KillWithExplosive":      "Kill 150 Enemies with Blast Damage",
+    "KillWithViral":          "Kill 150 Enemies with Viral Damage",
+    "KillWithToxin":          "Kill 150 Enemies with Toxin Damage",
+    "KillWithCold":           "Kill 150 Enemies with Cold Damage",
+    "KillWithHeat":           "Kill 150 Enemies with Heat Damage",
+    "KillWithElectricity":    "Kill 150 Enemies with Electricity Damage",
+    "KillWithGas":            "Kill 150 Enemies with Gas Damage",
+    "KillWithCorrosive":      "Kill 150 Enemies with Corrosive Damage",
+    "KillWithRadiation":      "Kill 150 Enemies with Radiation Damage",
+    "KillWithSecondary":      "Kill 150 Enemies with a Secondary Weapon",
+    "KillWithFinisher":       "Kill 10 Enemies with Finishers",
+    "GroundSlam":             "Kill 20 Enemies with Ground Slams",
+    "DeepImpact":             "Suspend 5 or more enemies in the air at once with a Heavy Slam",
+    "AimGlideKills":          "Kill 15 Enemies while Aim Gliding",
+    "Headshots":              "Kill 40 Enemies with Headshots",
+    "PlayMinigame":           "Play a game of Frame Fighter, Happy Zephyr, or Wyrmius",
+    "PickupCredits":          "Pick up 15,000 Credits",
+    "Shiny":                  "Pick up 8 Mods",
+    "Energizing":             "Pick up 20 Energy Orbs",
+    "Doppelganger":           "Deploy a Specter",
+    "Expressive":             "Play 1 Emote",
+    "Graffiti":               "Deploy a Glyph while on a Mission",
+    "Liquidation":            "Sell any item in your Inventory for Credits",
+    "Loyalty":                "Interact with your Kubrow or Kavat",
+    "BuildersTouch":          "Claim an item from your Foundry",
+    "PersonalTouch":          "Place 1 decoration in your Orbiter",
+    "ThrillRider":            "Kill 20 Enemies while riding a K-Drive, Kaithe, or Merulina",
+    "ToppingOffTheTank":      "Defend an Excavator without letting it run out of power",
+    "Trampoline":             "Bullet Jump 150 times",
+    "TwoForOne":              "Pierce and kill 2 or more enemies in a single Bow shot",
+    "WarningShot":            "Kill 200 Enemies",
+    "Swatter":                "Kill 3 Drones or Ospreys with your Melee Weapon",
+    "PowerTrip":              "Kill 150 Enemies with Abilities",
+    "Reactor":                "Kill 150 Enemies with Radiation Damage",
+    "Researcher":             "Scan 15 Objects or Enemies",
+    "Transmutation":          "Complete 1 Transmutation",
+    "AFirmShake":             "Shake the hand of a fellow Tenno using the Handshake Emote",
+    # Weekly / Permanent
+    "CompleteMissions":       "Complete any 15 Missions",
+    "KillEximus":             "Kill 30 Eximus",
+    "KillEnemies":            "Kill 500 Enemies",
+    "CompleteTreasures":      "Retrieve the Ayatan Statue for Maroo in Maroo's Bazaar",
+    "NightmareMissions":      "Complete 3 Nightmare Missions of any type",
+    "SanctuaryOnslaught":     "Complete 8 Waves of Sanctuary Onslaught",
+    "Conservation":           "Complete 3 different Perfect Animal Captures in Orb Vallis",
+    "CacheSabotage":          "Find 6 Caches across any Sabotage Missions",
+    "MineRare":               "Mine 3 Rare Gems or Ore in the Plains of Eidolon",
+    "FishRare":               "Catch 3 Rare Fish in the Plains of Eidolon",
+    "CompleteBounties":       "Complete 3 different Bounties in the Plains of Eidolon",
+    "EarthBounties":          "Complete 3 different Bounties in the Plains of Eidolon",
+    "VenusBounties":          "Complete 3 different Bounties in the Orb Vallis",
+    "ZarimanBounties":        "Complete 4 different Bounties in the Zariman",
+    "VoidArmageddon":         "Complete 2 Void Armageddon Missions",
+    "VoidFlood":              "Complete 3 Void Flood Missions",
+    "PickupMedallions":       "Find 5 Syndicate Medallions",
+    "HijackCrewship":         "Hijack a Crewship from the enemy",
+    "MarkResource":           "Mark 5 Mods or Resources",
+    "KuvaSiphon":             "Complete 3 Kuva Siphon Missions",
+    "SilverGroveSpecters":    "Kill 1 Silver Grove Specter",
+    "LuaAscension":           "Complete 4 Halls of Ascension on Lua",
+    "UnlockDragonVaults":     "Unlock 4 Dragon Key Vaults on Deimos",
+    "AncientObelisks":        "Activate 3 Requiem Obelisks on Deimos",
+    "BeastSlayer":            "Defeat the Orowyrm",
+    "Bloodthirsty":           "Kill 20 enemies in 5 seconds",
+    "Collector":              "Collect 100 resources from Duviri",
+    "DontBlowIt":             "Complete 12 Conduits in Disruption",
+    "EarthFisher":            "Catch 3 Rare Fish in the Plains of Eidolon",
+    "EarthMiner":             "Mine 3 Rare Gems or Ore in the Plains of Eidolon",
+    "Eliminator":             "Complete 3 Exterminate Missions",
+    "Explorer":               "Complete 3 Railjack Missions",
+    "FeedBeast":              "Feed the Helminth any Resource",
+    "FinellyTuned":           "Play 2 different Shawzin songs in Duviri",
+    "Flawless":               "Clear a Railjack Boarding Party without taking damage",
+    "ForwardThinking":        "Destroy a Crewship with Forward Artillery",
+    "FriendlyFire":           "While piloting a hijacked Crewship, destroy 3 enemy Fighters",
+    "Gatherer":               "Collect 4,000 Resources",
+    "GoodFriend":             "Help Clem with his weekly mission",
+    "Hacker":                 "Hack 10 Consoles",
+    "HeavyOrdnance":          "Kill 500 enemies with an Arch Gun",
+    "HorsingAround":          "Fly your Kaithe for 1000 meters",
+    "IDecree":                "Collect 15 Decrees in a single Duviri session",
+    "Invader":                "Complete 6 Invasion Missions of any type",
+    "Jailer":                 "Complete 3 Capture Missions",
+    "Kleptomaniac":           "Open 30 Lockers",
+    "Necralizer":             "Kill 100 enemies with a Necramech",
+    "NightAndDay":            "Collect 10 Vome or Fass Residue in the Cambion Drift",
+    "NowBoarding":            "Complete 3 different K-Drive Races in Orb Vallis or Cambion Drift",
+    "OllieOop":               "Play Ollie's Crash Course and complete a race",
+    "Operative":              "Complete 3 Spy Missions",
+    "Polarized":              "Polarize with Forma 1 time",
+    "Protector":              "Complete 3 Mobile Defense Missions",
+    "Rescuer":                "Complete 3 Rescue Missions",
+    "Saboteur":               "Complete 3 Sabotage Missions",
+    "SanctuaryResearcher":    "Complete 3 Scans for Cephalon Simaris",
+    "SkeletonsInTheCloset":   "Kill 50 Dax enemies in Duviri",
+    "SortieSpecialist":       "Complete 1 Sortie",
+    "Supporter":              "Complete 5 Syndicate Missions",
+    "OldWays":                "Complete 1 mission with only a single pistol and a glaive equipped",
+    "TuskThumper":            "Kill a Tusk Thumper in the Plains of Eidolon",
+    "UnlockRelics":           "Unlock 3 Relics",
+    "VaultRaider":            "Complete an Isolation Vault Bounty in the Cambion Drift",
+    "VenusFisher":            "Catch 3 Rare Servofish in the Orb Vallis",
+    "VenusMiner":             "Mine 3 Rare Gems or Ore in the Orb Vallis",
+    # Hard / Elite
+    "KillOrCaptureRainalyst": "Kill or Capture an Eidolon Hydrolyst",
+    "Arbitration":            "Complete an Arbitration Mission",
+    "CompleteSortie":         "Complete 3 Sorties",
+    "NightmareMission":       "Complete 5 Nightmare Missions of any type",
+    "SteelPath":              "Kill 1000 Enemies on The Steel Path",
+    "ProfitTaker":            "Kill the Profit-Taker",
+    "EliteSanctuaryOnslaught":"Complete 8 Zones of Elite Sanctuary Onslaught",
+    "NecramechMissions":      "Kill 300 enemies using a Necramech without getting destroyed",
+    "VoidAngels":             "Defeat 5 Void Angels in the Zariman",
+    "Antiquarian":            "Open one of each era of Relic (Lith, Meso, Neo, Axi)",
+    "ArchonHunter":           "Complete an Archon Hunt",
+    "CeremonialEvolution":    "Evolve any Incarnon weapon in-mission 5 times",
+    "DayTrader":              "Win 3 wagers in a row without letting the enemy score in The Index",
+    "Defense":                "Complete a Defense mission reaching at least wave 12",
+    "EliteBeastSlayer":       "Defeat the Orowyrm in Steel Path",
+    "EliteExplorer":          "Complete 8 Railjack Missions",
+    "EximusExecutioner":      "Kill 100 Eximus",
+    "HoldYourBreath":         "Survive for over 20 minutes in Kuva Survival",
+    "KillShot":               "Kill 1,500 Enemies",
+    "MirrorMirror":           "Complete 3 waves of Mirror Defense",
+    "NothingButProfit":       "Kill The Exploiter Orb",
+    "Perplexed":              "Complete 3 puzzles in Duviri",
+    "ResourceScavenger":      "Collect 20 different types of Resources",
+    "Speedster":              "Finish a Capture mission in less than 90 seconds",
+    "Survival":               "Complete a Survival mission reaching at least 20 minutes",
+    "Tanked":                 "Defeat an H-09 Efervon Tank",
+    "Terminated":             "Destroy 3 Necramech Isolation Vault guardians",
+    "VoluntarySpecimen":      "Complete a run of Deep Archimedea or Temporal Archimedea",
+    "ManyMadeWhole":          "Exchange 10 Riven Slivers for a Riven Mod",
+    "PathLessTravelled":      "Complete 5 Steel Path Missions",
+    "PriceOfFreedom":         "Free one Captured Solaris using a Granum Crown",
+    "WalkWithoutRhythm":      "Kill a Tusk Thumper Doma in the Plains of Eidolon",
+    "ChooseWisely":           "Kill or Convert a Kuva Lich",
+    "MachineInterference":    "Complete a Spy mission with 3 manual console hacks and no alarms",
+    # Keys confirmed from live worldstate (actual path segment differs from assumed)
+    "KillEnemiesWithPoison":  "Kill 150 Enemies with Toxin Damage",
+    "SolveCiphers":           "Hack 10 Consoles",
+    "KillEnemiesInMech":      "Kill 100 enemies with a Necramech",
+    "FriendsSurvival":        "Complete a Survival mission reaching at least 20 minutes with a friend or clanmate",
+}
+
+# Elite-specific overrides — for keys shared between weekly and elite tiers
+# where the two challenges have different names/descriptions despite the same path segment.
+_NW_ELITE_NAMES: dict[str, str] = {
+    "KillEximus": "Eximus Executioner",
+}
+
+_NW_ELITE_DESCRIPTIONS: dict[str, str] = {
+    "KillEximus": "Kill 100 Eximus",
+}
+
+
+def _nw_key(path: str) -> str:
     segment = path.rstrip("/").rsplit("/", 1)[-1] if "/" in path else path
     key = _NW_PREFIX.sub("", segment)
-    key = _NW_TRAIL_NUM.sub("", key)
+    return _NW_TRAIL_NUM.sub("", key)
+
+
+def _nw_title(path: str, is_elite: bool = False) -> str:
+    key = _nw_key(path)
+    if is_elite and key in _NW_ELITE_NAMES:
+        return _NW_ELITE_NAMES[key]
     if key in _NW_NAMES:
         return _NW_NAMES[key]
     return re.sub(r"([A-Z])", r" \1", key).strip()
+
+
+def _nw_description(path: str, is_elite: bool = False) -> str:
+    key = _nw_key(path)
+    if is_elite and key in _NW_ELITE_DESCRIPTIONS:
+        return _NW_ELITE_DESCRIPTIONS[key]
+    return _NW_DESCRIPTIONS.get(key, "")
 
 
 def _parse_nightwave(raw: dict) -> dict | None:
@@ -1168,12 +1495,13 @@ def _parse_nightwave(raw: dict) -> dict | None:
         rep = ch.get("xpAmount", 7000 if is_elite else 1000 if is_daily else 4500)
 
         challenges.append({
-            "title":      _nw_title(path),
-            "reputation": rep,
-            "is_daily":   is_daily,
-            "is_elite":   is_elite,
-            "eta":        _eta(ch_expiry),
-            "expiry_ts":  ch_expiry.timestamp() if ch_expiry else 0,
+            "title":       _nw_title(path, is_elite),
+            "description": _nw_description(path, is_elite),
+            "reputation":  rep,
+            "is_daily":    is_daily,
+            "is_elite":    is_elite,
+            "eta":         _eta(ch_expiry),
+            "expiry_ts":   ch_expiry.timestamp() if ch_expiry else 0,
         })
 
     return {
@@ -1359,6 +1687,9 @@ def _parse_events(raw: dict) -> list[dict]:
             if not name:
                 continue
 
+            tag = ev.get("Tag", "")
+            is_gift = "LotusGift" in tag or "gift" in name.lower()
+
             # Reward hint
             rewards = ev.get("Rewards", [])
             reward = ""
@@ -1368,7 +1699,7 @@ def _parse_events(raw: dict) -> list[dict]:
                 credits = r.get("credits", r.get("Credits", 0))
                 if items:
                     first = items[0]
-                    reward = first if isinstance(first, str) else first.get("ItemType", "").rsplit("/", 1)[-1]
+                    reward = first if isinstance(first, str) else _item_name(first.get("ItemType", ""))
                 elif credits:
                     reward = f"{int(credits):,}c"
 
@@ -1377,6 +1708,7 @@ def _parse_events(raw: dict) -> list[dict]:
                 "eta":       _eta(expiry),
                 "expiry_ts": expiry.timestamp() if expiry else 0,
                 "reward":    reward[:50],
+                "is_gift":   is_gift,
             })
         except Exception:
             continue
@@ -1436,7 +1768,7 @@ def parse(raw: dict) -> dict:
 
     return {
         "fissures":    _parse_fissures(raw.get("ActiveMissions", []) + raw.get("VoidStorms", []), solnode_map),
-        "alerts":      _parse_alerts(raw.get("Alerts", []), solnode_map),
+        "alerts":      _parse_alerts(raw.get("Alerts", []), solnode_map) + _parse_goals(raw.get("Goals", [])),
         "sortie":      _parse_sortie(raw.get("Sorties", []), solnode_map),
         "archon_hunt": _parse_archon_hunt(raw.get("LiteSorties", []), solnode_map),
         "void_trader": _parse_void_trader(raw.get("VoidTraders", []), solnode_map),
