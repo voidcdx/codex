@@ -354,7 +354,7 @@ function buildNewsEventsPanel(news, events, gifts) {
   const hasRightCol = eventItems.length > 0 || giftItems.length > 0;
   const title       = hasRightCol ? 'News &amp; Events' : 'News';
 
-  const newsItems = news.slice(0, 5).map(n => {
+  const newsItems = news.slice(0, 7).map(n => {
     const link = n.url
       ? `<a class="ne-news-link" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
       : `<span class="ne-news-link ne-news-plain">${esc(n.message)}</span>`;
