@@ -1,8 +1,3 @@
-:root {
-  --void-teal: #3ddcb8;
-  --void-teal-glow: rgba(61, 220, 184, 0.18);
-}
-
 /* ═══════════════════════════════════════════════════════
    Live Data page — live-specific styles only
    Shared theme: base.css · layout.css · panels.css · responsive.css
@@ -77,7 +72,7 @@
   grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
   gap: 12px;
   align-items: start;
-  background-image: radial-gradient(circle, rgba(139, 0, 0, 0.18) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--accent-a18) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 .live-card-full { grid-column: 1 / -1; }
@@ -145,8 +140,8 @@
   inset: 0;
   border-radius: var(--radius);
   background:
-    linear-gradient(90deg, transparent, rgba(220,20,60,0.55), transparent) top / 100% 1px no-repeat,
-    linear-gradient(90deg, transparent, rgba(220,20,60,0.55), transparent) bottom / 100% 1px no-repeat;
+    linear-gradient(90deg, transparent, var(--panel-line-color), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, var(--panel-line-color), transparent) bottom / 100% 1px no-repeat;
   pointer-events: none;
 }
 .fissure-row {
@@ -242,7 +237,7 @@
   border-radius: 50%;
   flex-shrink: 0;
 }
-.trader-dot.active   { background: #4caf50; box-shadow: 0 0 6px rgba(76,175,80,0.5); }
+.trader-dot.active   { background: var(--color-positive); box-shadow: 0 0 6px var(--color-positive-glow); }
 .trader-dot.inactive { background: var(--text-dim); }
 .trader-location { color: var(--text-primary); font-size: 1rem; }
 .trader-eta      { color: var(--text-dim); font-size: 0.85rem; margin-left: auto; }
@@ -269,7 +264,7 @@
   color: var(--text);
 }
 .inventory-table tr:last-child td { border-bottom: none; }
-.ducat-val  { color: #e8a060; }
+.ducat-val  { color: var(--cycle-warm); }
 .credit-val { color: var(--text); }
 
 /* ── Nightwave ── */
@@ -291,8 +286,8 @@
   padding: 1px 5px 1px 0;
   font-family: var(--font-display);
 }
-.nw-tag.daily  { color: #80c8ff; }
-.nw-tag.weekly { color: #e8a060; }
+.nw-tag.daily  { color: var(--cycle-cool); }
+.nw-tag.weekly { color: var(--cycle-warm); }
 .nw-tag.elite  { color: var(--accent2); }
 .nw-title { color: var(--text-primary); font-size: 1rem; }
 .nw-desc  { color: var(--text-secondary); font-size: 0.82rem; }
@@ -428,8 +423,8 @@
   color: var(--text-dim);
   margin-top: 4px;
 }
-.cycle-warm { color: #e8a060; }
-.cycle-cool { color: #80c8ff; }
+.cycle-warm { color: var(--cycle-warm); }
+.cycle-cool { color: var(--cycle-cool); }
 
 /* ── News section ── */
 /* ── News & Events panel ── */
