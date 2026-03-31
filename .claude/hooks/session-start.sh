@@ -24,4 +24,17 @@ fi
 
 pip install -q -r requirements.txt
 
+# Install skills from repo into ~/.claude/skills/
+SKILLS_SRC="$CLAUDE_PROJECT_DIR/skills"
+if [ -d "$SKILLS_SRC" ]; then
+  mkdir -p "$HOME/.claude/skills"
+  for skill_dir in "$SKILLS_SRC"/*/; do
+    skill_name=$(basename "$skill_dir")
+    dest="$HOME/.claude/skills/$skill_name"
+    mkdir -p "$dest"
+    cp -r "$skill_dir"* "$dest/"
+    echo "session-start: installed skill $skill_name"
+  done
+fi
+
 echo 'export PYTHONPATH="$CLAUDE_PROJECT_DIR"' >> "$CLAUDE_ENV_FILE"
