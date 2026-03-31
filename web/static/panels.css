@@ -231,8 +231,6 @@ select option {
   top: 100%;
   left: 0; right: 0;
   background: var(--dropdown-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-red);
   border-top: none;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
