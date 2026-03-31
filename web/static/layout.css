@@ -157,11 +157,9 @@
   box-shadow: 0 0 6px currentColor;
   transform: scale(1.15);
 }
-.theme-dot[data-theme="stalker"]  { background: #8b0000; color: #e53e3e; }
-.theme-dot[data-theme="forge"]    { background: #c04a00; color: #ff6a00; }
-.theme-dot[data-theme="amber"]    { background: #b8780a; color: #f0a030; }
-.theme-dot[data-theme="infested"] { background: #22c55e; color: #39ff14; }
-.theme-dot[data-theme="ash"]      { background: #888888; color: #ffffff; }
+.theme-dot[data-theme="stalker"] { background: #8b0000; color: #e53e3e; }
+.theme-dot[data-theme="jade"]    { background: #00897b; color: #00e5c8; }
+.theme-dot[data-theme="ash"]     { background: #888888; color: #ffffff; }
 
 /* ── Content grid ── */
 .content {
