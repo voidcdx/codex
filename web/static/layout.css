@@ -360,6 +360,29 @@
   color: var(--border-highlight);
   font-weight: 600;
 }
+.sidebar-theme-switcher {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--accent-a8);
+}
+.sidebar-theme-label {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.sidebar-theme-switcher .theme-dot {
+  width: 20px;
+  height: 20px;
+  touch-action: manipulation;
+}
+@media (max-width: 900px) {
+  .sidebar-theme-switcher { display: flex; }
+}
 .sidebar-footer-copy {
   font-family: var(--font-body);
   font-size: 0.78rem;
@@ -416,14 +439,8 @@
 @media (max-width: 900px) {
   .burger-btn { display: flex; }
 
-  /* Push theme switcher left of the burger button */
-  .theme-switcher { padding-right: 52px; }
-
-  /* Bigger tap targets for theme dots */
-  .theme-dot {
-    width: 18px;
-    height: 18px;
-  }
+  /* Hide header theme switcher — available in sidebar instead */
+  .header .theme-switcher { display: none; }
 
   .sidebar {
     position: fixed;
