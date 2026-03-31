@@ -20,7 +20,20 @@
 
 }
 
-/* ── Void Ash panel gradient lines ── */
+/* ── Panel gradient lines (all themes) ── */
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, transparent 0%, var(--panel-line-color) 50%, transparent 100%) top    / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 0%, var(--panel-line-color) 50%, transparent 100%) bottom / 100% 1px no-repeat;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Void Ash override — warmer gold lines ── */
 body.theme-ash .panel::before {
   content: '';
   position: absolute;
