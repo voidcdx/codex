@@ -332,6 +332,17 @@ function buildCyclesCard(cycles) {
 }
 
 /* ── News & Events ── */
+function relativeTime(iso) {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(diff / 3600000);
+  if (hrs < 24) return hrs + 'h ago';
+  const days = Math.floor(diff / 86400000);
+  return days + 'd ago';
+}
+
 function buildNewsEventsPanel(news, events, gifts) {
   if (!news || !news.length) return '';
   const eventItems  = events && events.length  ? events  : [];
@@ -339,11 +350,13 @@ function buildNewsEventsPanel(news, events, gifts) {
   const hasRightCol = eventItems.length > 0 || giftItems.length > 0;
   const title       = hasRightCol ? 'News &amp; Events' : 'News';
 
-  const newsItems = news.map(n => {
-    const inner = n.url
+  const newsItems = news.slice(0, 5).map(n => {
+    const link = n.url
       ? `<a class="ne-news-link" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.message)}</a>`
       : `<span class="ne-news-link ne-news-plain">${esc(n.message)}</span>`;
-    return `<li>${inner}</li>`;
+    const timeStr = relativeTime(n.date);
+    const timeEl = timeStr ? `<span class="ne-news-time">${timeStr}</span>` : '';
+    return `<li>${link}${timeEl}</li>`;
   }).join('');
 
   const newsCol = `<div class="ne-col ne-news">
@@ -353,16 +366,20 @@ function buildNewsEventsPanel(news, events, gifts) {
 
   const giftRows = giftItems.map(g => `
     <div class="event-row event-row--gift">
-      <div class="event-title">${esc(g.name || 'Gift of the Lotus')}</div>
+      <div class="event-row-header">
+        <div class="event-title">${esc(g.name || 'Gift of the Lotus')}</div>
+        <div class="live-eta" data-expiry="${g.expiry_ts || 0}">${esc(g.eta)}</div>
+      </div>
       ${g.reward ? `<div class="event-desc">${esc(g.reward)}</div>` : ''}
-      <div class="live-eta" data-expiry="${g.expiry_ts || 0}">${esc(g.eta)}</div>
     </div>`).join('');
 
   const eventRows = eventItems.map(ev => `
     <div class="event-row">
-      <div class="event-title">${esc(ev.name)}</div>
+      <div class="event-row-header">
+        <div class="event-title">${esc(ev.name)}</div>
+        <div class="live-eta" data-expiry="${ev.expiry_ts || 0}">${esc(ev.eta)}</div>
+      </div>
       ${ev.reward ? `<div class="event-desc">${esc(ev.reward)}</div>` : ''}
-      <div class="live-eta" data-expiry="${ev.expiry_ts || 0}">${esc(ev.eta)}</div>
     </div>`).join('');
 
   const eventsCol = hasRightCol ? `<div class="ne-col ne-events">
