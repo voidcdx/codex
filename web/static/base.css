@@ -3,46 +3,55 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
+  /* ═══════════════════════════════════════════════════════
+     THEME: Ethereal Void Angel
+     bg-primary:   #2c3e50  Deep Slate
+     bg-surface:   #34495e  Gunmetal
+     text-main:    #f5f5f5  Ghostly White
+     accent-energy:#00ffff  Neon Turquoise
+     border-metal: #bdc3c7  Mercury Silver
+     ═══════════════════════════════════════════════════════ */
+
   /* ── Core surfaces ── */
-  --bg:              #050505;
-  --surface:         rgba(18, 10, 10, 0.50);
-  --surface2:        rgba(12, 6, 6, 0.55);
-  --surface-solid:   #201818;
+  --bg:              #2c3e50;
+  --surface:         rgba(52, 73, 94, 0.75);
+  --surface2:        rgba(44, 62, 80, 0.82);
+  --surface-solid:   #34495e;
 
   /* ── Borders ── */
-  --border:          rgba(139, 0, 0, 0.2);
-  --border-highlight: rgba(220, 20, 60, 0.6);
-  --border-red:      rgba(139, 0, 0, 0.55);
+  --border:           rgba(189, 195, 199, 0.2);
+  --border-highlight: rgba(0, 255, 255, 0.6);
+  --border-red:       rgba(189, 195, 199, 0.55);
 
   /* ── Primary accents ── */
-  --accent:          #8b0000;
-  --accent2:         #dc143c;
-  --accent-glow:     rgba(139, 0, 0, 0.2);
-  --panel-glow:      rgba(139, 0, 0, 0.13);
-  --accent-green:    #8b0000;
-  --accent-green2:   #dc143c;
+  --accent:          #007f7f;
+  --accent2:         #00ffff;
+  --accent-glow:     rgba(0, 255, 255, 0.2);
+  --panel-glow:      rgba(0, 255, 255, 0.13);
+  --accent-green:    #007f7f;
+  --accent-green2:   #00ffff;
 
   /* ── Text ── */
-  --text:            #a0a0a0;
-  --text-primary:    #d8d8d8;
-  --text-dim:        #666666;
-  --text-field:      #909090;
-  --text-muted:      #666666;
+  --text:            #c0cdd8;
+  --text-primary:    #f5f5f5;
+  --text-dim:        #7f8c8d;
+  --text-field:      #bdc3c7;
+  --text-muted:      #7f8c8d;
 
   /* ── Semantic ── */
-  --good:            #888888;
+  --good:            #95a5a6;
   --bad:             #dc143c;
 
   /* ── Riven / Exilus ── */
   --riven:           #5a8a3a;
   --riven-glow:      rgba(90, 138, 58, 0.22);
 
-  /* ── Crimson aliases ── */
-  --crimson:         #8b0000;
-  --crimson-bright:  #dc143c;
-  --crimson-glow:    rgba(220, 20, 60, 0.4);
-  --blood-red:       #4a0000;
-  --deep-red:        #1a0000;
+  /* ── Teal aliases (replaces crimson) ── */
+  --crimson:         #007f7f;
+  --crimson-bright:  #00ffff;
+  --crimson-glow:    rgba(0, 255, 255, 0.4);
+  --blood-red:       #1a2a3a;
+  --deep-red:        #0f1a25;
 
   /* ── Fonts / radii / blur ── */
   --font-display:    'Orbitron', monospace;
@@ -56,10 +65,10 @@
   --void-teal-glow:  rgba(61, 220, 184, 0.18);
 
   /* ── Backgrounds & overlays ── */
-  --header-bg:        rgba(5, 5, 5, 0.8);
-  --sidebar-bg-top:   #0a0a0a;
-  --dropdown-bg:      rgba(5, 5, 5, 0.97);
-  --tooltip-bg:       rgba(28, 10, 10, 0.97);
+  --header-bg:        rgba(44, 62, 80, 0.90);
+  --sidebar-bg-top:   #253040;
+  --dropdown-bg:      rgba(44, 62, 80, 0.97);
+  --tooltip-bg:       rgba(44, 62, 80, 0.97);
   --overlay-bg:       rgba(0, 0, 0, 0.6);
   --overlay-bg-heavy: rgba(0, 0, 0, 0.72);
   --white:            #fff;
@@ -73,38 +82,38 @@
   --glitch-cyan:    #00ffff;
   --glitch-magenta: #ff003c;
 
-  /* ── Accent alpha steps (base: #8b0000 / rgb 139,0,0) ── */
-  --accent-a4:  rgba(139, 0, 0, 0.04);
-  --accent-a5:  rgba(139, 0, 0, 0.05);
-  --accent-a6:  rgba(139, 0, 0, 0.06);
-  --accent-a7:  rgba(139, 0, 0, 0.07);
-  --accent-a8:  rgba(139, 0, 0, 0.08);
-  --accent-a10: rgba(139, 0, 0, 0.10);
-  --accent-a12: rgba(139, 0, 0, 0.12);
-  --accent-a15: rgba(139, 0, 0, 0.15);
-  --accent-a18: rgba(139, 0, 0, 0.18);
-  --accent-a20: rgba(139, 0, 0, 0.20);
-  --accent-a25: rgba(139, 0, 0, 0.25);
-  --accent-a30: rgba(139, 0, 0, 0.30);
-  --accent-a35: rgba(139, 0, 0, 0.35);
-  --accent-a45: rgba(139, 0, 0, 0.45);
+  /* ── Accent alpha steps (base: #00ffff / rgb 0,255,255) ── */
+  --accent-a4:  rgba(0, 255, 255, 0.04);
+  --accent-a5:  rgba(0, 255, 255, 0.05);
+  --accent-a6:  rgba(0, 255, 255, 0.06);
+  --accent-a7:  rgba(0, 255, 255, 0.07);
+  --accent-a8:  rgba(0, 255, 255, 0.08);
+  --accent-a10: rgba(0, 255, 255, 0.10);
+  --accent-a12: rgba(0, 255, 255, 0.12);
+  --accent-a15: rgba(0, 255, 255, 0.15);
+  --accent-a18: rgba(0, 255, 255, 0.18);
+  --accent-a20: rgba(0, 255, 255, 0.20);
+  --accent-a25: rgba(0, 255, 255, 0.25);
+  --accent-a30: rgba(0, 255, 255, 0.30);
+  --accent-a35: rgba(0, 255, 255, 0.35);
+  --accent-a45: rgba(0, 255, 255, 0.45);
 
-  /* ── Accent mid alpha steps (rgb 148,30,30) ── */
-  --accent-mid-a10: rgba(148, 30, 30, 0.10);
-  --accent-mid-a14: rgba(148, 30, 30, 0.14);
-  --accent-mid-a18: rgba(148, 30, 30, 0.18);
-  --accent-mid-a25: rgba(148, 30, 30, 0.25);
-  --accent-mid-a32: rgba(148, 30, 30, 0.32);
-  --accent-mid-a35: rgba(148, 30, 30, 0.35);
-  --accent-mid-a40: rgba(148, 30, 30, 0.40);
-  --accent-mid-a55: rgba(148, 30, 30, 0.55);
+  /* ── Accent mid alpha steps (rgb 0,200,200) ── */
+  --accent-mid-a10: rgba(0, 200, 200, 0.10);
+  --accent-mid-a14: rgba(0, 200, 200, 0.14);
+  --accent-mid-a18: rgba(0, 200, 200, 0.18);
+  --accent-mid-a25: rgba(0, 200, 200, 0.25);
+  --accent-mid-a32: rgba(0, 200, 200, 0.32);
+  --accent-mid-a35: rgba(0, 200, 200, 0.35);
+  --accent-mid-a40: rgba(0, 200, 200, 0.40);
+  --accent-mid-a55: rgba(0, 200, 200, 0.55);
 
-  /* ── Accent hi alpha steps (rgb 197,48,48) ── */
-  --accent-hi-a12: rgba(197, 48, 48, 0.12);
-  --accent-hi-a75: rgba(197, 48, 48, 0.75);
+  /* ── Accent hi alpha steps (rgb 0,230,230) ── */
+  --accent-hi-a12: rgba(0, 230, 230, 0.12);
+  --accent-hi-a75: rgba(0, 230, 230, 0.75);
 
   /* ── Panel decoration line ── */
-  --panel-line-color: rgba(220, 20, 60, 0.55);
+  --panel-line-color: rgba(0, 255, 255, 0.55);
 
   /* ── Status colors ── */
   --color-positive:      #4caf50;
@@ -169,9 +178,9 @@
   --rarity-primed-start:    #5a1010;
 
   /* ── Atmosphere layer colors ── */
-  --atmo-primary:   rgba(139, 0, 0, 0.10);
-  --atmo-secondary: rgba(80, 0, 0, 0.05);
-  --atmo-tertiary:  rgba(100, 0, 0, 0.03);
+  --atmo-primary:   rgba(0, 255, 255, 0.08);
+  --atmo-secondary: rgba(0, 200, 200, 0.05);
+  --atmo-tertiary:  rgba(0, 150, 150, 0.03);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
