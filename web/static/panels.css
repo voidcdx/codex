@@ -29,14 +29,6 @@
     linear-gradient(90deg, transparent, var(--panel-line-color), transparent) bottom / 100% 1px no-repeat;
   pointer-events: none;
 }
-.panel::after {
-  content: '';
-  position: absolute;
-  inset: -24px;
-  background: radial-gradient(ellipse 80% 70% at 50% 50%, var(--panel-glow) 0%, transparent 70%);
-  z-index: -1;
-  pointer-events: none;
-}
 
 .panel h2 {
   font-family: var(--font-display);
