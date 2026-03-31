@@ -27,7 +27,6 @@
   inset: 0;
   border-radius: inherit;
   background:
-    linear-gradient(90deg, transparent 0%, var(--panel-line-top)    50%, transparent 100%) top    / 100% 1px no-repeat,
     linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%) bottom / 100% 1px no-repeat;
   pointer-events: none;
   z-index: 1;
