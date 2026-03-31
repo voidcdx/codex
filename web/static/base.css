@@ -453,14 +453,6 @@ body {
   overflow: hidden;
 }
 
-/* ── Void Glow — applied to buttons (not attack tabs) ── */
-button:not(.attack-tab) {
-  box-shadow: var(--void-glow);
-}
-button:disabled,
-button[disabled] {
-  box-shadow: none;
-}
 
 /* ── Atmosphere layers — disabled ── */
 .atmo {
