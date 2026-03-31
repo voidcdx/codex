@@ -30,6 +30,20 @@
   -webkit-backdrop-filter: blur(20px);
   flex-shrink: 0;
 }
+body.theme-ash .header {
+  border-radius: 0 0 0 12px;
+  position: relative;
+}
+body.theme-ash .header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--panel-line-top) 0%, transparent 100%);
+  border-radius: 0 0 0 12px;
+  pointer-events: none;
+}
+
 .header-title {
   font-family: var(--font-display);
   font-size: 1rem;

@@ -277,7 +277,7 @@ body.theme-ash {
   --text-dim:        #555555;
   --text-field:      #aaaaaa;
   --text-muted:      #555555;
-  --header-bg:        rgba(8, 8, 8, 0.90);
+  --header-bg:        #0d0d0d;
   --sidebar-bg-top:   #050505;
   --dropdown-bg:      #0d0d0d;
   --tooltip-bg:       rgba(8, 8, 8, 0.97);
