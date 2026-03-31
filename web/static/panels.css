@@ -18,7 +18,7 @@
   padding: 16px;
   position: relative;
   transition: border-color 0.2s;
-  clip-path: var(--panel-clip);
+
 }
 .panel::before {
   content: '';
