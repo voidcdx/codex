@@ -289,7 +289,6 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 1px 5px;
-  align-self: flex-start;
   font-family: var(--font-display);
 }
 .nw-tag.daily  { color: #80c8ff; }
