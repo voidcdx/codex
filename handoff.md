@@ -3,34 +3,14 @@
 ## Current Status
 **304 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional.
 
-**Version:** `0.5.8`
-**Branch:** `claude/continue-handoff-docs-Zw93K` — last commit `94aa98a`
+**Version:** `0.5.9`
+**Branch:** `claude/continue-handoff-docs-POh8b`
 
 ---
 
 ## What Was Done This Session
 
-### 1. ui-ux-pro-max skill — persisted to repo
-- Skill was ephemeral (lived only in sandbox ~/.claude/skills/) — lost between sessions
-- Fixed: skill file now lives at `skills/ui-ux-pro-max/SKILL.md` in the repo
-- `session-start.sh` updated to loop over `skills/*/` and copy each to `~/.claude/skills/` on startup
-- Skill auto-installs every session going forward
-
-### 2. Factions page — complete redesign
-- Replaced matrix view + card grid with a single scrollable **faction roster**
-- No grids, no rows, no view toggle
-- Factions grouped by type: Grineer / Corpus / Infested / Other
-- Group labels colored by faction group (gold / blue / green / purple)
-- Each faction entry: name on left (180px), damage types on right
-- Only relevant damage types shown — neutral types absent entirely
-  - Weak (×1.5): element-colored icon + glow, element name, ×1.5 mult
-  - Resist (×0.5): crimson icon + glow, element name, ×0.5 mult
-  - Separator between weak and resist sections
-- Entry left border = faction group color; gradient bg bleed from left
-- Hover deepens faction color tint
-- Matrix view, cards view, view toggle, attachMatrixHover, renderMatrix,
-  renderCards, setView, cycleView all removed
-- Search + type filter (all/vulnerable/resistant) + group filter (all/grineer/corpus/infested/other) kept
+*(session in progress)*
 
 ---
 
@@ -97,5 +77,5 @@ other     #9060c0
 - `ActiveMissions` + `VoidStorms` — fissures
 
 ## Git Notes
-- Working branch: `claude/continue-handoff-docs-Zw93K`
+- Working branch: `claude/continue-handoff-docs-POh8b`
 - User is on branch `codex` locally on Windows — they merge from the claude branch

@@ -124,7 +124,7 @@ skills/
 ```
 
 ## Tests
-Run `pytest` before committing. All tests must pass. **304 tests** as of v0.5.8.
+Run `pytest` before committing. All tests must pass. **304 tests** as of v0.5.9.
 
 ## Data Refresh Notes
 - `fetch_wiki_data.py` is blocked by the wiki (403). **Do not attempt automated fetch.**
