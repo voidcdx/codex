@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Void Codex — Theme Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #111;
+    font-family: 'Rajdhani', sans-serif;
+    padding: 32px 24px;
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .themes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  /* ── Theme column ── */
+  .theme-col {
+    width: 220px;
+    flex-shrink: 0;
+  }
+
+  .theme-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 12px;
+    padding: 6px 0;
+    border-radius: 3px;
+  }
+
+  /* ── Mock page wrapper ── */
+  .mock-page {
+    padding: 14px;
+    border-radius: 4px;
+  }
+
+  /* ── Panel card ── */
+  .mock-panel {
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(12px);
+    margin-bottom: 10px;
+  }
+  .mock-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+  }
+  .mock-panel-header {
+    padding: 8px 12px 6px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+  .mock-panel-header span {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .mock-panel-body {
+    padding: 10px 12px;
+  }
+
+  /* ── Stat rows ── */
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+  }
+  .stat-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .stat-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  /* ── Buttons ── */
+  .mock-buttons {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .mock-btn {
+    flex: 1;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 6px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  /* ── Mod slot ── */
+  .mock-mod {
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: dashed;
+    padding: 10px 0;
+    text-align: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* ── Damage badge ── */
+  .mock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 3px 7px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  /* ══════════════════════════════════════
+     THEME 1: Stalker Classic
+  ══════════════════════════════════════ */
+  .t1 .theme-name  { color: #e53e3e; border: 1px solid rgba(139,0,0,0.5); }
+  .t1 .mock-page   { background: #0a0a0a; }
+  .t1 .mock-panel  { background: rgba(18,18,18,0.95); border: 1px solid rgba(255,255,255,0.08); }
+  .t1 .mock-panel::before { background: linear-gradient(90deg, transparent, #8b0000, transparent); }
+  .t1 .mock-panel-header  { border-bottom-color: rgba(139,0,0,0.25); }
+  .t1 .mock-panel-header span { color: #aaa; }
+  .t1 .stat-label  { color: #666; }
+  .t1 .stat-value  { color: #e53e3e; }
+  .t1 .stat-value.neutral { color: #e8e8e8; }
+  .t1 .mock-btn    { background: rgba(139,0,0,0.15); border-color: rgba(139,0,0,0.5); color: #e53e3e; }
+  .t1 .mock-btn.disabled { background: transparent; border-color: rgba(255,255,255,0.08); color: #444; }
+  .t1 .mock-mod    { border-color: rgba(255,255,255,0.12); color: #444; }
+  .t1 .mock-badge  { background: rgba(80,50,20,0.3); border-color: rgba(180,100,30,0.4); color: #c87830; }
+  .t1 .badge-dot   { background: #c87830; }
+
+  /* ══════════════════════════════════════
+     THEME 2: Grineer Forge
+  ══════════════════════════════════════ */
+  .t2 .theme-name  { color: #ff6a00; border: 1px solid rgba(192,74,0,0.5); }
+  .t2 .mock-page   { background: #0d0c0b; }
+  .t2 .mock-panel  { background: rgba(20,18,15,0.95); border: 1px solid rgba(255,255,255,0.07); }
+  .t2 .mock-panel::before { background: linear-gradient(90deg, transparent, #c04a00, transparent); }
+  .t2 .mock-panel-header  { border-bottom-color: rgba(192,74,0,0.25); }
+  .t2 .mock-panel-header span { color: #a89880; }
+  .t2 .stat-label  { color: #665a50; }
+  .t2 .stat-value  { color: #ff6a00; }
+  .t2 .stat-value.neutral { color: #e0d8d0; }
+  .t2 .mock-btn    { background: rgba(192,74,0,0.15); border-color: rgba(192,74,0,0.5); color: #ff6a00; }
+  .t2 .mock-btn.disabled { background: transparent; border-color: rgba(255,255,255,0.07); color: #443830; }
+  .t2 .mock-mod    { border-color: rgba(255,255,255,0.1); color: #443830; }
+  .t2 .mock-badge  { background: rgba(80,50,20,0.3); border-color: rgba(180,100,30,0.4); color: #c87830; }
+  .t2 .badge-dot   { background: #c87830; }
+
+  /* ══════════════════════════════════════
+     THEME 3: Orokin Amber
+  ══════════════════════════════════════ */
+  .t3 .theme-name  { color: #f0a030; border: 1px solid rgba(184,120,10,0.5); }
+  .t3 .mock-page   { background: #0c0a06; }
+  .t3 .mock-panel  { background: rgba(20,17,10,0.95); border: 1px solid rgba(255,220,100,0.09); }
+  .t3 .mock-panel::before { background: linear-gradient(90deg, transparent, #b8780a, transparent); }
+  .t3 .mock-panel-header  { border-bottom-color: rgba(184,120,10,0.2); }
+  .t3 .mock-panel-header span { color: #a09070; }
+  .t3 .stat-label  { color: #6a5a40; }
+  .t3 .stat-value  { color: #f0a030; }
+  .t3 .stat-value.neutral { color: #f0e8d0; }
+  .t3 .mock-btn    { background: rgba(184,120,10,0.14); border-color: rgba(184,120,10,0.45); color: #f0a030; }
+  .t3 .mock-btn.disabled { background: transparent; border-color: rgba(255,220,100,0.07); color: #4a3a20; }
+  .t3 .mock-mod    { border-color: rgba(255,220,100,0.1); color: #4a3a20; }
+  .t3 .mock-badge  { background: rgba(80,50,20,0.3); border-color: rgba(180,100,30,0.4); color: #c87830; }
+  .t3 .badge-dot   { background: #c87830; }
+
+  /* ══════════════════════════════════════
+     THEME 4: Infested
+  ══════════════════════════════════════ */
+  .t4 .theme-name  { color: #39ff14; border: 1px solid rgba(34,180,60,0.4); }
+  .t4 .mock-page   { background: #080d08; }
+  .t4 .mock-panel  { background: rgba(10,16,10,0.95); border: 1px solid rgba(34,180,60,0.12); }
+  .t4 .mock-panel::before { background: linear-gradient(90deg, transparent, #22c55e, transparent); }
+  .t4 .mock-panel-header  { border-bottom-color: rgba(34,180,60,0.18); }
+  .t4 .mock-panel-header span { color: #7a9a7a; }
+  .t4 .stat-label  { color: #3a5a3a; }
+  .t4 .stat-value  { color: #39ff14; }
+  .t4 .stat-value.neutral { color: #d4e8d0; }
+  .t4 .mock-btn    { background: rgba(34,180,60,0.12); border-color: rgba(34,180,60,0.4); color: #39ff14; }
+  .t4 .mock-btn.disabled { background: transparent; border-color: rgba(34,180,60,0.08); color: #2a3a2a; }
+  .t4 .mock-mod    { border-color: rgba(34,180,60,0.14); color: #2a3a2a; }
+  .t4 .mock-badge  { background: rgba(80,50,20,0.3); border-color: rgba(180,100,30,0.4); color: #c87830; }
+  .t4 .badge-dot   { background: #c87830; }
+
+  /* ══════════════════════════════════════
+     THEME 5: Void Ash
+  ══════════════════════════════════════ */
+  .t5 .theme-name  { color: #ccc; border: 1px solid rgba(255,255,255,0.2); }
+  .t5 .mock-page   { background: #080808; }
+  .t5 .mock-panel  { background: rgba(16,16,16,0.95); border: 1px solid rgba(255,255,255,0.09); }
+  .t5 .mock-panel::before { background: linear-gradient(90deg, transparent, #888, transparent); }
+  .t5 .mock-panel-header  { border-bottom-color: rgba(255,255,255,0.08); }
+  .t5 .mock-panel-header span { color: #888; }
+  .t5 .stat-label  { color: #555; }
+  .t5 .stat-value  { color: #ffffff; }
+  .t5 .stat-value.neutral { color: #e0e0e0; }
+  .t5 .mock-btn    { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); color: #ccc; }
+  .t5 .mock-btn.disabled { background: transparent; border-color: rgba(255,255,255,0.06); color: #333; }
+  .t5 .mock-mod    { border-color: rgba(255,255,255,0.1); color: #333; }
+  .t5 .mock-badge  { background: rgba(80,50,20,0.3); border-color: rgba(180,100,30,0.4); color: #c87830; }
+  .t5 .badge-dot   { background: #c87830; }
+</style>
+</head>
+<body>
+
+<h1>Void Codex — Theme Preview</h1>
+
+<div class="themes">
+
+  <!-- 1. Stalker Classic -->
+  <div class="theme-col t1">
+    <div class="theme-name">Stalker Classic</div>
+    <div class="mock-page">
+      <div class="mock-panel">
+        <div class="mock-panel-header"><span>Weapon</span></div>
+        <div class="mock-panel-body">
+          <div class="stat-row">
+            <span class="stat-label">Crit Chance</span>
+            <span class="stat-value">32.0%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Crit Mult</span>
+            <span class="stat-value">2.8×</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Fire Rate</span>
+            <span class="stat-value neutral">12</span>
+          </div>
+          <div class="stat-row" style="margin-top:6px">
+            <span class="mock-badge"><span class="badge-dot"></span>Impact</span>
+          </div>
+        </div>
+      </div>
+      <div class="mock-buttons">
+        <div class="mock-btn">Calculate</div>
+        <div class="mock-btn disabled">Reset</div>
+      </div>
+      <div class="mock-mod">+ Add Mod</div>
+    </div>
+  </div>
+
+  <!-- 2. Grineer Forge -->
+  <div class="theme-col t2">
+    <div class="theme-name">Grineer Forge</div>
+    <div class="mock-page">
+      <div class="mock-panel">
+        <div class="mock-panel-header"><span>Weapon</span></div>
+        <div class="mock-panel-body">
+          <div class="stat-row">
+            <span class="stat-label">Crit Chance</span>
+            <span class="stat-value">32.0%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Crit Mult</span>
+            <span class="stat-value">2.8×</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Fire Rate</span>
+            <span class="stat-value neutral">12</span>
+          </div>
+          <div class="stat-row" style="margin-top:6px">
+            <span class="mock-badge"><span class="badge-dot"></span>Impact</span>
+          </div>
+        </div>
+      </div>
+      <div class="mock-buttons">
+        <div class="mock-btn">Calculate</div>
+        <div class="mock-btn disabled">Reset</div>
+      </div>
+      <div class="mock-mod">+ Add Mod</div>
+    </div>
+  </div>
+
+  <!-- 3. Orokin Amber -->
+  <div class="theme-col t3">
+    <div class="theme-name">Orokin Amber</div>
+    <div class="mock-page">
+      <div class="mock-panel">
+        <div class="mock-panel-header"><span>Weapon</span></div>
+        <div class="mock-panel-body">
+          <div class="stat-row">
+            <span class="stat-label">Crit Chance</span>
+            <span class="stat-value">32.0%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Crit Mult</span>
+            <span class="stat-value">2.8×</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Fire Rate</span>
+            <span class="stat-value neutral">12</span>
+          </div>
+          <div class="stat-row" style="margin-top:6px">
+            <span class="mock-badge"><span class="badge-dot"></span>Impact</span>
+          </div>
+        </div>
+      </div>
+      <div class="mock-buttons">
+        <div class="mock-btn">Calculate</div>
+        <div class="mock-btn disabled">Reset</div>
+      </div>
+      <div class="mock-mod">+ Add Mod</div>
+    </div>
+  </div>
+
+  <!-- 4. Infested -->
+  <div class="theme-col t4">
+    <div class="theme-name">Infested</div>
+    <div class="mock-page">
+      <div class="mock-panel">
+        <div class="mock-panel-header"><span>Weapon</span></div>
+        <div class="mock-panel-body">
+          <div class="stat-row">
+            <span class="stat-label">Crit Chance</span>
+            <span class="stat-value">32.0%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Crit Mult</span>
+            <span class="stat-value">2.8×</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Fire Rate</span>
+            <span class="stat-value neutral">12</span>
+          </div>
+          <div class="stat-row" style="margin-top:6px">
+            <span class="mock-badge"><span class="badge-dot"></span>Impact</span>
+          </div>
+        </div>
+      </div>
+      <div class="mock-buttons">
+        <div class="mock-btn">Calculate</div>
+        <div class="mock-btn disabled">Reset</div>
+      </div>
+      <div class="mock-mod">+ Add Mod</div>
+    </div>
+  </div>
+
+  <!-- 5. Void Ash -->
+  <div class="theme-col t5">
+    <div class="theme-name">Void Ash</div>
+    <div class="mock-page">
+      <div class="mock-panel">
+        <div class="mock-panel-header"><span>Weapon</span></div>
+        <div class="mock-panel-body">
+          <div class="stat-row">
+            <span class="stat-label">Crit Chance</span>
+            <span class="stat-value">32.0%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Crit Mult</span>
+            <span class="stat-value">2.8×</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Fire Rate</span>
+            <span class="stat-value neutral">12</span>
+          </div>
+          <div class="stat-row" style="margin-top:6px">
+            <span class="mock-badge"><span class="badge-dot"></span>Impact</span>
+          </div>
+        </div>
+      </div>
+      <div class="mock-buttons">
+        <div class="mock-btn">Calculate</div>
+        <div class="mock-btn disabled">Reset</div>
+      </div>
+      <div class="mock-mod">+ Add Mod</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
