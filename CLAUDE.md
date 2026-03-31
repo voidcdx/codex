@@ -101,7 +101,10 @@ web/
                    #   Brand/glitch styles now in layout.css (shared)
                    #   NOTE: alert banner (.alert-banner, .ab-*) was removed — do not re-add
   static/layout.css # Shared layout + .live-header-brand, .live-subtext, glitch keyframes (used on all pages)
+                   #   .theme-switcher (flex row of dots in header) + .theme-dot[data-theme=*] styles
   static/panels.css # .we-panel-row replaces old .we-grid/.we-col; .picker-open-btn; .item-picker-item
+                   #   .panel::before — top/bottom gradient lines (all themes via --panel-line-color)
+                   #   body.theme-ash .panel::before — warm gold override
   static/js/
     constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
     utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy(), setupSelectDropdown(), togglePanelHelp()
@@ -115,9 +118,12 @@ web/
     app.js         # loadData() bootstrap — uses setupPickerModal for weapon/enemy; DOMContentLoaded, version fetch
     factions.js    # renderRoster() — grouped roster; FACTION_GROUPS, FACTION_GROUP_COLORS
                    #   setFilter(), setGroup(), applyFilter() (composes search+type+group)
+    theme.js       # theme switcher — applyTheme(name), initTheme(); localStorage key 'void-theme'
+                   #   THEME_NAMES = ['stalker','jade','ash']; default = 'stalker' (no body class)
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
+web/static/theme-preview.html  # standalone theme/color preview page — open at /static/theme-preview.html
 ARCHITECTURE.md     # detailed implementation notes — damage pipeline, CSS, live page, scaling formulas, etc.
 skills/
   ui-ux-pro-max/SKILL.md  # design system guidance — auto-installed by session-start.sh
@@ -164,9 +170,14 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 - **No inline `style=` attributes** on HTML elements — all styles go to CSS classes. SVG presentation attributes excepted.
 - **No hardcoded `rgba()` for theme colors** — use CSS variables.
 - **No scan-line or noise overlays** — both removed. Do not re-add.
-- **No green or purple UI accents** — crimson theme only. Game-data colors (element types, mod rarities, riven olive) stay as-is.
+- **No panel radial glow** (`::after` removed) — do not re-add.
+- **No global button box-shadow glow** — removed. Do not re-add.
+- **No panel hover border-color change** — removed. Do not re-add.
+- **No pure white text** — all themes use tinted off-whites for `--text` and `--text-primary`. See base.css per-theme values.
+- **Theme accents** — Stalker = crimson, Jade = teal, Ash = TBD parchment. Game-data colors stay as-is.
 - **Never use native `<select>` elements** — use `setupSelectDropdown()` in `utils.js` instead (iOS picker issue).
 - **Fonts** — Orbitron for headings/values, Rajdhani for labels/buttons. No Share Tech Mono.
+- **Theme system** — all color changes go in `base.css` `:root` (Stalker default) or `body.theme-jade` / `body.theme-ash` override blocks. Never hardcode colors outside these blocks.
 - See `ARCHITECTURE.md` for full CSS variable list, class tables, and layout details.
 
 ## Git / Commit Notes
