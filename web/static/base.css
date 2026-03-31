@@ -453,8 +453,8 @@ body {
   overflow: hidden;
 }
 
-/* ── Void Glow — applied to all buttons ── */
-button {
+/* ── Void Glow — applied to buttons (not attack tabs) ── */
+button:not(.attack-tab) {
   box-shadow: var(--void-glow);
 }
 button:disabled,
