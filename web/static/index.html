@@ -101,8 +101,7 @@
 <script>
 'use strict';
 
-let countdownTimer  = null;
-let countdownVal    = 180;
+let countdownTimer = null;
 
 const TIER_COLORS = {
   Lith: '#b87333', Meso: '#00bcd4', Neo: '#3949ab',
@@ -498,16 +497,10 @@ function startEtaTimer() {
   }, 1000);
 }
 
-/* ── Page Countdown ── */
+/* ── Auto-refresh ── */
 function resetCountdown() {
-  countdownVal = 180;
-  document.getElementById('refresh-countdown').textContent = countdownVal;
   clearInterval(countdownTimer);
-  countdownTimer = setInterval(() => {
-    countdownVal--;
-    document.getElementById('refresh-countdown').textContent = Math.max(0, countdownVal);
-    if (countdownVal <= 0) { clearInterval(countdownTimer); loadData(); }
-  }, 1000);
+  countdownTimer = setTimeout(() => loadData(), 180000);
 }
 
 /* ── Version ── */
