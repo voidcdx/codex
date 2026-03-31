@@ -516,7 +516,7 @@ a.ne-news-link:hover { color: var(--crimson-bright); }
 .event-title { color: var(--text-primary); font-size: 1rem; }
 .event-desc  { color: var(--crimson-bright); font-size: 0.85rem; margin-top: 2px; }
 .live-eta    { color: var(--text-dim); font-size: 0.8rem; white-space: nowrap; }
-.ne-news-time { display: block; font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
+.ne-news-time { display: inline; font-size: 0.75rem; color: var(--text-dim); margin-right: 6px; }
 
 /* ── Empty / loading / error states ── */
 .live-empty {
