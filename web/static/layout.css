@@ -132,6 +132,37 @@
   stroke: currentColor; fill: none; stroke-width: 1.5;
 }
 
+/* ── Theme switcher ── */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding-right: 4px;
+}
+.theme-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.theme-dot:hover {
+  transform: scale(1.25);
+}
+.theme-dot.active {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 6px currentColor;
+  transform: scale(1.15);
+}
+.theme-dot[data-theme="stalker"]  { background: #8b0000; color: #e53e3e; }
+.theme-dot[data-theme="forge"]    { background: #c04a00; color: #ff6a00; }
+.theme-dot[data-theme="amber"]    { background: #b8780a; color: #f0a030; }
+.theme-dot[data-theme="infested"] { background: #22c55e; color: #39ff14; }
+.theme-dot[data-theme="ash"]      { background: #888888; color: #ffffff; }
+
 /* ── Content grid ── */
 .content {
   flex: 1;
