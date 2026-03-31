@@ -190,7 +190,7 @@
    THEME: Jade (jade teal)
    ═══════════════════════════════════════════════════════ */
 body.theme-jade {
-  --bg:              #070d0c;
+  --bg:              #080808;
   --surface:         rgba(10, 18, 16, 0.85);
   --surface2:        rgba(160, 255, 230, 0.04);
   --surface-solid:   #0f1a18;
