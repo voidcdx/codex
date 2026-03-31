@@ -543,7 +543,6 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   transform: translateY(-1px);
 }
 .mod-card.empty {
-  border-style: dashed;
   border-color: var(--accent-a12);
 }
 .mod-card.empty:hover {
