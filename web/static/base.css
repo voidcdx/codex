@@ -181,6 +181,11 @@
   --atmo-primary:   rgba(0, 255, 255, 0.08);
   --atmo-secondary: rgba(0, 200, 200, 0.05);
   --atmo-tertiary:  rgba(0, 150, 150, 0.03);
+
+  /* ── Zariman effects ── */
+  --border-metal:   #bdc3c7;
+  --void-glow:      0 0 12px var(--accent2);
+  --panel-clip:     polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -197,6 +202,15 @@ body {
   height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+/* ── Void Glow — applied to all buttons ── */
+button {
+  box-shadow: var(--void-glow);
+}
+button:disabled,
+button[disabled] {
+  box-shadow: none;
 }
 
 /* ── Atmosphere layers (live.html style background) ── */
