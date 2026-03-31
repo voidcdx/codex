@@ -206,8 +206,8 @@
 }
 
 .dmg-item.dmg-weak {
-  border-color: color-mix(in srgb, var(--elem-color, #888) 40%, transparent);
-  background: color-mix(in srgb, var(--elem-color, #888) 8%, transparent);
+  border-color: color-mix(in srgb, var(--elem-color, var(--elem-fallback)) 40%, transparent);
+  background: color-mix(in srgb, var(--elem-color, var(--elem-fallback)) 8%, transparent);
 }
 
 .dmg-item.dmg-resist {
@@ -222,8 +222,8 @@
 }
 
 .dmg-item.dmg-weak .dmg-item-icon {
-  color: var(--elem-color, #888);
-  filter: drop-shadow(0 0 5px var(--elem-color, #888));
+  color: var(--elem-color, var(--elem-fallback));
+  filter: drop-shadow(0 0 5px var(--elem-color, var(--elem-fallback)));
 }
 
 .dmg-item.dmg-resist .dmg-item-icon {
@@ -240,7 +240,7 @@
   line-height: 1.2;
 }
 
-.dmg-item.dmg-weak .dmg-item-name   { color: var(--elem-color, #888); }
+.dmg-item.dmg-weak .dmg-item-name   { color: var(--elem-color, var(--elem-fallback)); }
 .dmg-item.dmg-resist .dmg-item-name { color: var(--crimson-bright); }
 
 .dmg-item-mult {
@@ -250,7 +250,7 @@
   line-height: 1;
 }
 
-.dmg-item.dmg-weak .dmg-item-mult   { color: var(--elem-color, #888); }
+.dmg-item.dmg-weak .dmg-item-mult   { color: var(--elem-color, var(--elem-fallback)); }
 .dmg-item.dmg-resist .dmg-item-mult { color: var(--crimson-bright); }
 
 /* ── Empty state ──────────────────────────────────────── */

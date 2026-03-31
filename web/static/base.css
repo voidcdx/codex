@@ -3,37 +3,175 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
+  /* ── Core surfaces ── */
   --bg:              #050505;
   --surface:         rgba(18, 10, 10, 0.50);
   --surface2:        rgba(12, 6, 6, 0.55);
   --surface-solid:   #201818;
+
+  /* ── Borders ── */
   --border:          rgba(139, 0, 0, 0.2);
   --border-highlight: rgba(220, 20, 60, 0.6);
   --border-red:      rgba(139, 0, 0, 0.55);
+
+  /* ── Primary accents ── */
   --accent:          #8b0000;
   --accent2:         #dc143c;
   --accent-glow:     rgba(139, 0, 0, 0.2);
   --panel-glow:      rgba(139, 0, 0, 0.13);
   --accent-green:    #8b0000;
   --accent-green2:   #dc143c;
+
+  /* ── Text ── */
   --text:            #a0a0a0;
   --text-primary:    #d8d8d8;
   --text-dim:        #666666;
   --text-field:      #909090;
   --text-muted:      #666666;
+
+  /* ── Semantic ── */
   --good:            #888888;
   --bad:             #dc143c;
+
+  /* ── Riven / Exilus ── */
   --riven:           #5a8a3a;
   --riven-glow:      rgba(90, 138, 58, 0.22);
+
+  /* ── Crimson aliases ── */
   --crimson:         #8b0000;
   --crimson-bright:  #dc143c;
   --crimson-glow:    rgba(220, 20, 60, 0.4);
   --blood-red:       #4a0000;
+  --deep-red:        #1a0000;
+
+  /* ── Fonts / radii / blur ── */
   --font-display:    'Orbitron', monospace;
   --font-body:       'Rajdhani', sans-serif;
   --glass-blur:      20px;
   --radius:          4px;
   --radius-sm:       3px;
+
+  /* ── Void teal (fissures) ── */
+  --void-teal:       #3ddcb8;
+  --void-teal-glow:  rgba(61, 220, 184, 0.18);
+
+  /* ── Backgrounds & overlays ── */
+  --header-bg:        rgba(5, 5, 5, 0.8);
+  --sidebar-bg-top:   #0a0a0a;
+  --dropdown-bg:      rgba(5, 5, 5, 0.97);
+  --tooltip-bg:       rgba(28, 10, 10, 0.97);
+  --overlay-bg:       rgba(0, 0, 0, 0.6);
+  --overlay-bg-heavy: rgba(0, 0, 0, 0.72);
+  --white:            #fff;
+
+  /* ── Shadows ── */
+  --shadow-heavy:  rgba(0, 0, 0, 0.7);
+  --shadow-medium: rgba(0, 0, 0, 0.65);
+  --shadow-light:  rgba(0, 0, 0, 0.5);
+
+  /* ── Glitch effect ── */
+  --glitch-cyan:    #00ffff;
+  --glitch-magenta: #ff003c;
+
+  /* ── Accent alpha steps (base: #8b0000 / rgb 139,0,0) ── */
+  --accent-a4:  rgba(139, 0, 0, 0.04);
+  --accent-a5:  rgba(139, 0, 0, 0.05);
+  --accent-a6:  rgba(139, 0, 0, 0.06);
+  --accent-a7:  rgba(139, 0, 0, 0.07);
+  --accent-a8:  rgba(139, 0, 0, 0.08);
+  --accent-a10: rgba(139, 0, 0, 0.10);
+  --accent-a12: rgba(139, 0, 0, 0.12);
+  --accent-a15: rgba(139, 0, 0, 0.15);
+  --accent-a18: rgba(139, 0, 0, 0.18);
+  --accent-a20: rgba(139, 0, 0, 0.20);
+  --accent-a25: rgba(139, 0, 0, 0.25);
+  --accent-a30: rgba(139, 0, 0, 0.30);
+  --accent-a35: rgba(139, 0, 0, 0.35);
+  --accent-a45: rgba(139, 0, 0, 0.45);
+
+  /* ── Accent mid alpha steps (rgb 148,30,30) ── */
+  --accent-mid-a10: rgba(148, 30, 30, 0.10);
+  --accent-mid-a14: rgba(148, 30, 30, 0.14);
+  --accent-mid-a18: rgba(148, 30, 30, 0.18);
+  --accent-mid-a25: rgba(148, 30, 30, 0.25);
+  --accent-mid-a32: rgba(148, 30, 30, 0.32);
+  --accent-mid-a35: rgba(148, 30, 30, 0.35);
+  --accent-mid-a40: rgba(148, 30, 30, 0.40);
+  --accent-mid-a55: rgba(148, 30, 30, 0.55);
+
+  /* ── Accent hi alpha steps (rgb 197,48,48) ── */
+  --accent-hi-a12: rgba(197, 48, 48, 0.12);
+  --accent-hi-a75: rgba(197, 48, 48, 0.75);
+
+  /* ── Panel decoration line ── */
+  --panel-line-color: rgba(220, 20, 60, 0.55);
+
+  /* ── Status colors ── */
+  --color-positive:      #4caf50;
+  --color-positive-glow: rgba(76, 175, 80, 0.5);
+  --color-positive-bg:   #1a3a1a;
+  --color-negative:    #f44336;
+  --color-negative-bg: #3a1a1a;
+  --color-up:          #00c853;
+
+  /* ── Game-data display colors ── */
+  --cycle-warm:        #e8a060;
+  --cycle-cool:        #80c8ff;
+  --color-crit:        #d45a2a;
+  --color-status-proc: #60b0e0;
+  --color-galv:        #40c8c8;
+  --color-galv-bg:     rgba(64, 200, 200, 0.15);
+  --riven-accent:      rgba(208, 160, 255, 0.3);
+  --elem-fallback:     #888;
+
+  /* ── Error state ── */
+  --error-bg:     rgba(42, 16, 16, 0.8);
+  --error-border: #5a2020;
+  --error-text:   #e07070;
+
+  /* ── Danger action ── */
+  --danger-text:   rgba(255, 100, 100, 0.85);
+  --danger-border: rgba(255, 100, 100, 0.35);
+
+  /* ── Threat bar fills ── */
+  --bar-track-bg:        rgba(255, 255, 255, 0.06);
+  --bar-hp-start:        rgba(180, 50, 50, 0.8);
+  --bar-shield-start:    rgba(60, 100, 180, 0.8);
+  --bar-shield-end:      rgba(100, 160, 255, 0.9);
+  --bar-armor-start:     rgba(140, 120, 60, 0.8);
+  --bar-armor-end:       rgba(220, 190, 80, 0.9);
+  --bar-overguard-start: rgba(60, 180, 180, 0.8);
+  --bar-overguard-end:   rgba(100, 220, 220, 0.9);
+
+  /* ── Mod slot colors (game-data) ── */
+  --stance-dark:         #3a0000;
+  --stance-mid:          #941e1e;
+  --stance-bright:       #c0392b;
+  --stance-label:        #c53030;
+  --stance-border:       rgba(148, 30, 30, 0.40);
+  --stance-border-hover: rgba(197, 48, 48, 0.75);
+  --stance-shadow-hover: rgba(148, 30, 30, 0.25);
+
+  --exilus-dark:         #1a3a0a;
+  --exilus-mid:          #3d6b2a;
+  --exilus-bright:       #5a8a3a;
+  --exilus-border:       rgba(61, 107, 42, 0.35);
+  --exilus-border-hover: rgba(90, 138, 58, 0.70);
+  --exilus-shadow-hover: rgba(61, 107, 42, 0.20);
+  --exilus-bg-faint:     rgba(61, 107, 42, 0.18);
+
+  /* ── Mod rarity colors ── */
+  --rarity-common:          #4a5a3a;
+  --rarity-uncommon:        #3d6b2a;
+  --rarity-rare:            #7a1a1a;
+  --rarity-legendary-start: #7a2020;
+  --rarity-legendary-end:   #c0392b;
+  --rarity-primed-start:    #5a1010;
+
+  /* ── Atmosphere layer colors ── */
+  --atmo-primary:   rgba(139, 0, 0, 0.10);
+  --atmo-secondary: rgba(80, 0, 0, 0.05);
+  --atmo-tertiary:  rgba(100, 0, 0, 0.03);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,7 +197,7 @@ body {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 80% 35% at 50% -5%,  rgba(139,0,0,0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 60% at 100% 50%, rgba(80,0,0,0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 35% 40% at 0% 80%,   rgba(80,0,0,0.05) 0%, transparent 50%),
-    radial-gradient(ellipse 25% 30% at 80% 95%,  rgba(100,0,0,0.03) 0%, transparent 40%);
+    radial-gradient(ellipse 80% 35% at 50% -5%,  var(--atmo-primary)   0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 100% 50%, var(--atmo-secondary)  0%, transparent 55%),
+    radial-gradient(ellipse 35% 40% at 0% 80%,   var(--atmo-secondary)  0%, transparent 50%),
+    radial-gradient(ellipse 25% 30% at 80% 95%,  var(--atmo-tertiary)   0%, transparent 40%);

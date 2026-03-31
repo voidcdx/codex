@@ -1,7 +1,7 @@
 /* ── Buttons ────────────────────────────────────────── */
 .btn-calc {
   width: 100%;
-  background: rgba(148,30,30,0.18);
+  background: var(--accent-mid-a18);
   border: 1px solid var(--accent);
   color: var(--accent2);
   padding: 11px;
@@ -19,20 +19,20 @@
 .btn-calc::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(197,48,48,0.12), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-hi-a12), transparent);
   transform: translateX(-100%);
   transition: transform 0.4s;
 }
 .btn-calc:hover {
-  background: rgba(148,30,30,0.32);
+  background: var(--accent-mid-a32);
   border-color: var(--accent2);
-  box-shadow: 0 0 20px rgba(148,30,30,0.35);
+  box-shadow: 0 0 20px var(--accent-mid-a35);
   color: var(--text-primary);
 }
 .btn-calc:hover::before { transform: translateX(100%); }
 .btn-calc:active { transform: scale(0.99); }
 .btn-calc:disabled {
-  background: rgba(139,0,0,0.06);
+  background: var(--accent-a6);
   border-color: var(--border);
   color: var(--text-dim);
   cursor: default;
@@ -118,8 +118,8 @@
   margin-bottom: 3px;
 }
 .stat-value { font-size: 1rem; font-weight: 600; color: var(--text); }
-.stat-value.crit   { color: #d45a2a; }
-.stat-value.status { color: #60b0e0; }
+.stat-value.crit   { color: var(--color-crit); }
+.stat-value.status { color: var(--color-status-proc); }
 .stat-modded {
   font-size: 0.85rem;
   font-weight: 600;
@@ -138,8 +138,8 @@
             color: var(--text-dim); margin-bottom: 2px; }
 .sc-label[data-tooltip] { border-bottom: 1px dashed var(--border-highlight); cursor: help; }
 .sc-val-lg { font-size: 1.1rem; font-weight: 700; color: var(--text); line-height: 1.1; }
-.sc-val-lg.crit   { color: #d45a2a; }
-.sc-val-lg.status { color: #60b0e0; }
+.sc-val-lg.crit   { color: var(--color-crit); }
+.sc-val-lg.status { color: var(--color-status-proc); }
 .sc-val-sm { font-size: 0.85rem; font-weight: 700; color: var(--text); }
 .sc-modded { font-size: 0.85rem; font-weight: 600; color: var(--accent2); margin-top: 1px; }
 .sc-modded::before { content: '→ '; font-size: 0.67rem; opacity: 0.7; }
@@ -192,7 +192,7 @@
 .breakdown-table th:nth-child(2) { text-align: center; }
 @media (max-width: 520px) { .bar-cell { width: 80px; } }
 .bar-bg { background: var(--surface2); border-radius: 0; height: 8px; }
-.bar-fill { height: 8px; border-radius: 0; transition: width 0.3s ease; box-shadow: 0 0 4px rgba(139,0,0,0.2); }
+.bar-fill { height: 8px; border-radius: 0; transition: width 0.3s ease; box-shadow: 0 0 4px var(--border); }
 .total-row td { border-top: 1px solid var(--border); font-weight: 700; }
 
 /* ── CO Curve table ──────────────────────────────────── */
@@ -219,28 +219,28 @@
 
 /* ── Error ──────────────────────────────────────────── */
 .error-msg {
-  background: rgba(42, 16, 16, 0.8);
-  border: 1px solid #5a2020;
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
   border-radius: var(--radius-sm);
   padding: 12px;
-  color: #e07070;
+  color: var(--error-text);
   font-size: 0.85rem;
   margin-bottom: 12px;
 }
 
 /* ── Tippy.js Warframe Theme ─────────────────────────── */
 .tippy-box[data-theme~='warframe'] {
-  background: rgba(28, 10, 10, 0.97);
+  background: var(--tooltip-bg);
   backdrop-filter: blur(8px);
   color: var(--text-primary);
   border: 1px solid var(--border-red);
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
   line-height: 1.5;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 16px var(--shadow-light);
 }
 .tippy-box[data-theme~='warframe'] .tippy-arrow {
-  color: rgba(28, 10, 10, 0.97);
+  color: var(--tooltip-bg);
 }
 .stat-label[data-tooltip] {
   cursor: default;
@@ -251,5 +251,5 @@
 .ms-note { font-size: 0.85rem; color: var(--text-dim); display: block; margin-top: 6px; }
 .ms-note strong { color: var(--accent2); }
 .eff-badge { font-size: 0.67rem; font-weight: 700; padding: 1px 4px; border-radius: 0; margin-left: 5px; vertical-align: middle; }
-.eff-vuln  { background: rgba(61,107,42,0.18); color: #5a8a3a; }
-.eff-res   { background: rgba(148,30,30,0.18); color: #c53030; }
+.eff-vuln  { background: var(--exilus-bg-faint); color: var(--exilus-bright); }
+.eff-res   { background: var(--accent-mid-a18); color: var(--stance-label); }
