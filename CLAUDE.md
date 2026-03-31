@@ -83,7 +83,15 @@ web/
                    #   .content-side: Results → Options → Calculate → Armor Strip
                    #   Mobile ≤600px: .we-panel-row stacks to 1-col (weapon first, enemy second)
   static/factions.html # Faction Weakness page — at /factions
-                   #   header: .live-header-brand "VOID CODEX" / "FACTION WEAKNESS" glitch subtext
+                   #   Faction roster: single scrollable view, no matrix/no card grid
+                   #   Groups: Grineer / Corpus / Infested / Other (each with group-color label)
+                   #   Each .roster-entry: .roster-info (name, 180px) + .roster-dmg (weak/resist items only)
+                   #   .dmg-item.dmg-weak: elem-color icon+glow+label+×1.5; .dmg-item.dmg-resist: crimson
+                   #   Controls: search + type filter (all/vulnerable/resistant) + group filter
+  static/factions.css  # Faction Weakness styles — .faction-roster, .roster-group, .roster-group-label
+                   #   .roster-entry (flex row, faction-color left border + gradient bleed)
+                   #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
+                   #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/live.css  # Live page styles — .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
                    #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
                    #   .ne-news-list li (flex row), .ne-news-link (inline-flex, 1rem), .ne-news-time (0.85rem dim, inline before title)
@@ -105,10 +113,14 @@ web/
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
     calculate.js   # runCalculation(), showResults(), showError()
     app.js         # loadData() bootstrap — uses setupPickerModal for weapon/enemy; DOMContentLoaded, version fetch
+    factions.js    # renderRoster() — grouped roster; FACTION_GROUPS, FACTION_GROUP_COLORS
+                   #   setFilter(), setGroup(), applyFilter() (composes search+type+group)
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
 ARCHITECTURE.md     # detailed implementation notes — damage pipeline, CSS, live page, scaling formulas, etc.
+skills/
+  ui-ux-pro-max/SKILL.md  # design system guidance — auto-installed by session-start.sh
 ```
 
 ## Tests
@@ -171,6 +183,6 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 `accuracy-notes.md` — accuracy self-assessment covering what the calculator gets right, known gaps, and where confidence is lowest. Read on user request.
 
 ## UI/UX Skill
-`ui-ux-pro-max` skill is installed at `~/.claude/skills/ui-ux-pro-max/SKILL.md` in the sandbox.
-Triggers automatically on UI/UX requests — no slash command needed.
-If missing after a new session, transfer from `C:\Users\jesse\.claude\skills\ui-ux-pro-max\SKILL.md` via temp repo commit.
+`ui-ux-pro-max` skill lives at `skills/ui-ux-pro-max/SKILL.md` in the repo.
+Auto-installed to `~/.claude/skills/ui-ux-pro-max/` on every session via `session-start.sh`.
+No manual transfer needed.

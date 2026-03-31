@@ -4,80 +4,87 @@
 **304 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional.
 
 **Version:** `0.5.8`
-**Branch:** `claude/read-handoff-22llh` — last commit `b401401`
+**Branch:** `claude/continue-handoff-docs-Zw93K` — last commit `94aa98a`
 
 ---
 
 ## What Was Done This Session
 
-### 1. Nightwave challenge — KillEnemiesWithPrimary
-- Added `"KillEnemiesWithPrimary": "Mow Them Down"` to `_NW_NAMES` in `parse_worldstate.py`
-- Added `"KillEnemiesWithPrimary": "Kill 150 Enemies with a Primary Weapon"` to `_NW_DESCRIPTIONS`
-- Confirmed in-game: 1000 standing, challenge name "Mow Them Down"
+### 1. ui-ux-pro-max skill — persisted to repo
+- Skill was ephemeral (lived only in sandbox ~/.claude/skills/) — lost between sessions
+- Fixed: skill file now lives at `skills/ui-ux-pro-max/SKILL.md` in the repo
+- `session-start.sh` updated to loop over `skills/*/` and copy each to `~/.claude/skills/` on startup
+- Skill auto-installs every session going forward
 
-### 2. News & Events panel — text/formatting tweaks (`index.html` + `live.css`)
-- **News capped at 7 items** (was 10)
-- **Relative timestamps** added inline before each article title: `relativeTime(iso)` helper → "Xd ago / Xh ago / Xm ago"; `0.85rem` dim text
-- **News font size** bumped to `1rem` (matches event titles)
-- **Event rows restructured**: `.event-row-header` wraps title (left) + timer (right) on same line
-- **Reward text** (`.event-desc`) color changed from dim grey to crimson (`var(--crimson-bright)`)
-- **Event row padding** reduced from `8px` to `6px` top/bottom
-
-### 3. Nightwave panel layout (`index.html` + `live.css`)
-- **Tag + title on same line**: `.nw-title-row` flex row wraps `<nw-tag>` + `<nw-title>`
-- **Description below** title
-- **Timer moved under standing number**: `.nw-right` is a flex column — rep on top, eta below
-- **Tag alignment fixed**: removed `align-self: flex-start`; removed left padding
-
-### 4. ui-ux-pro-max skill installed
-- Installed via `npm install -g uipro-cli` on Windows, transferred to Linux sandbox
-- Lives at `~/.claude/skills/ui-ux-pro-max/SKILL.md`
-- Triggers automatically on UI/UX-related requests — no slash command needed
-- 67 styles, 96 palettes, 57 font pairings, 25 charts, 13 stacks
+### 2. Factions page — complete redesign
+- Replaced matrix view + card grid with a single scrollable **faction roster**
+- No grids, no rows, no view toggle
+- Factions grouped by type: Grineer / Corpus / Infested / Other
+- Group labels colored by faction group (gold / blue / green / purple)
+- Each faction entry: name on left (180px), damage types on right
+- Only relevant damage types shown — neutral types absent entirely
+  - Weak (×1.5): element-colored icon + glow, element name, ×1.5 mult
+  - Resist (×0.5): crimson icon + glow, element name, ×0.5 mult
+  - Separator between weak and resist sections
+- Entry left border = faction group color; gradient bg bleed from left
+- Hover deepens faction color tint
+- Matrix view, cards view, view toggle, attachMatrixHover, renderMatrix,
+  renderCards, setView, cycleView all removed
+- Search + type filter (all/vulnerable/resistant) + group filter (all/grineer/corpus/infested/other) kept
 
 ---
 
 ## Pending / TODO
 
-- Version bump pending — user deferred, ask at start of next session
+- Version bump deferred — ask at start of next session
 - Enkaus weapon: re-run data refresh once wiki module is updated
 - Debug endpoints (`/api/worldstate/debug-*`) can be removed once live data is stable
 
 ---
 
 ## Key Files Changed This Session
-- `scripts/parse_worldstate.py` — `KillEnemiesWithPrimary` added to `_NW_NAMES` + `_NW_DESCRIPTIONS`
-- `web/static/index.html` — `relativeTime()` helper; `buildNewsEventsPanel()` news slice/timestamps/event-row-header; `buildNightwaveCard()` nw-left/nw-right/nw-title-row restructure
-- `web/static/live.css` — `.ne-news-list li`, `.ne-news-time`, `.ne-news-link` (1rem, inline-flex); `.event-row-header`, `.event-desc` crimson, event padding 6px; `.nw-left`, `.nw-right`, `.nw-title-row`, `.nw-tag` left-padding removed
+- `skills/ui-ux-pro-max/SKILL.md` — new; skill definition for Void Codex design system
+- `.claude/hooks/session-start.sh` — added skills copy loop
+- `web/static/factions.css` — complete rewrite for roster layout
+- `web/static/factions.html` — removed matrix/cards divs + view toggle; added roster div + group filter pills
+- `web/static/js/factions.js` — complete rewrite; renderRoster(), FACTION_GROUPS, FACTION_GROUP_COLORS, setGroup(), applyFilter() with group support
 
 ---
 
-## CSS Class Reference (live.css — News & Events + Nightwave)
+## Factions Roster CSS Reference
 
-### News items
+### Groups
 ```
-.ne-news-list li     flex row: timestamp + link on same line
-.ne-news-time        0.85rem dim, inline before title, flex-shrink:0
-.ne-news-link        inline-flex, 1rem, crimson chevron ::before
-```
-
-### Event rows
-```
-.event-row           padding: 6px 0; border-bottom
-.event-row--gift     gradient bg, padding: 6px 8px, margin: 0 -8px
-.event-row-header    flex row: justify-content: space-between (title left, eta right)
-.event-title         1rem, text-primary
-.event-desc          0.85rem, crimson-bright (reward text)
-.live-eta            0.8rem, text-dim, white-space: nowrap
+.faction-roster          flex column, gap 28px
+.roster-group            flex column, gap 6px — per group section
+.roster-group-label      0.65rem Orbitron, colored by --faction-color, bottom border
 ```
 
-### Nightwave rows
+### Entries
 ```
-.nw-row              flex, align-items: flex-start
-.nw-left             flex column: .nw-title-row → desc
-.nw-title-row        flex row, align-items: baseline — tag + title inline
-.nw-right            flex column, align-items: flex-end — rep then eta
-.nw-tag              0.67rem Orbitron; padding: 1px 5px 1px 0 (no left padding)
+.roster-entry            flex row; border-left: 3px solid --faction-color; gradient bg bleed
+.roster-info             180px flex-shrink:0; padding 16px 20px; border-right
+.roster-name             0.78rem Orbitron 700, uppercase, letter-spacing 0.1em
+.roster-dmg              flex 1; flex wrap; padding 12px 16px; gap 6px
+.dmg-sep                 1px × 36px vertical separator between weak/resist
+```
+
+### Damage items
+```
+.dmg-item                flex column center; padding 8px 12px; min-width 56px; border 1px
+.dmg-item.dmg-weak       elem-color border/bg; icon glow; label+mult in elem-color
+.dmg-item.dmg-resist     crimson border/bg; icon glow; label+mult crimson
+.dmg-item-icon           20×20px SVG
+.dmg-item-name           0.58rem Orbitron uppercase
+.dmg-item-mult           0.65rem Orbitron 700
+```
+
+### Faction group colors (game-data, not UI accents — row borders/labels only)
+```
+grineer   #c07828
+corpus    #4090c0
+infested  #60a030
+other     #9060c0
 ```
 
 ---
@@ -90,5 +97,5 @@
 - `ActiveMissions` + `VoidStorms` — fissures
 
 ## Git Notes
-- Working branch: `claude/read-handoff-22llh`
+- Working branch: `claude/continue-handoff-docs-Zw93K`
 - User is on branch `codex` locally on Windows — they merge from the claude branch
