@@ -275,32 +275,32 @@
 /* ── Nightwave ── */
 .nw-row {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   gap: 8px;
   padding: 6px 0;
   border-bottom: 1px solid var(--border);
 }
 .nw-row:last-child { border-bottom: none; }
+.nw-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.nw-right { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; gap: 2px; }
 .nw-tag {
   font-size: 0.67rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 1px 5px;
-  flex-shrink: 0;
+  align-self: flex-start;
   font-family: var(--font-display);
 }
 .nw-tag.daily  { color: #80c8ff; }
 .nw-tag.weekly { color: #e8a060; }
 .nw-tag.elite  { color: var(--accent2); }
-.nw-challenge-info { flex: 1; min-width: 0; }
 .nw-title { color: var(--text-primary); font-size: 1rem; }
-.nw-desc  { color: var(--text-secondary); font-size: 0.82rem; margin-top: 2px; }
-.nw-eta   { color: var(--text-dim); font-size: 0.8rem; margin-top: 2px; }
+.nw-desc  { color: var(--text-secondary); font-size: 0.82rem; }
+.nw-eta   { color: var(--text-dim); font-size: 0.8rem; }
 .nw-rep {
   color: var(--accent2);
   font-size: 0.85rem;
   font-family: var(--font-display);
-  flex-shrink: 0;
 }
 
 /* ── Alerts ── */

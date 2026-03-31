@@ -248,13 +248,15 @@ function buildNightwaveCard(nw) {
     const cls = ch.is_elite ? 'elite' : ch.is_daily ? 'daily' : 'weekly';
     const lbl = ch.is_elite ? 'Elite' : ch.is_daily ? 'Daily' : 'Weekly';
     return `<div class="nw-row">
-      <span class="nw-tag ${cls}">${lbl}</span>
-      <div class="nw-challenge-info">
+      <div class="nw-left">
+        <span class="nw-tag ${cls}">${lbl}</span>
         <div class="nw-title">${esc(ch.title)}</div>
         ${ch.description ? `<div class="nw-desc">${esc(ch.description)}</div>` : ''}
+      </div>
+      <div class="nw-right">
+        <span class="nw-rep">+${ch.reputation.toLocaleString()}</span>
         <div class="nw-eta" data-expiry="${ch.expiry_ts || 0}">${esc(ch.eta)}</div>
       </div>
-      <span class="nw-rep">+${ch.reputation.toLocaleString()}</span>
     </div>`;
   }).join('');
   return `<div class="panel">
