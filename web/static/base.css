@@ -462,14 +462,7 @@ button[disabled] {
   box-shadow: none;
 }
 
-/* ── Atmosphere layers (live.html style background) ── */
+/* ── Atmosphere layers — disabled ── */
 .atmo {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 35% at 50% -5%,  var(--atmo-primary)   0%, transparent 60%),
-    radial-gradient(ellipse 40% 60% at 100% 50%, var(--atmo-secondary)  0%, transparent 55%),
-    radial-gradient(ellipse 35% 40% at 0% 80%,   var(--atmo-secondary)  0%, transparent 50%),
-    radial-gradient(ellipse 25% 30% at 80% 95%,  var(--atmo-tertiary)   0%, transparent 40%);
+  display: none;
+}
