@@ -169,3 +169,8 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 
 ## Private Notes
 `accuracy-notes.md` — accuracy self-assessment covering what the calculator gets right, known gaps, and where confidence is lowest. Read on user request.
+
+## UI/UX Skill
+`ui-ux-pro-max` skill is installed at `~/.claude/skills/ui-ux-pro-max/SKILL.md` in the sandbox.
+Triggers automatically on UI/UX requests — no slash command needed.
+If missing after a new session, transfer from `C:\Users\jesse\.claude\skills\ui-ux-pro-max\SKILL.md` via temp repo commit.

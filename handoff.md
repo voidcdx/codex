@@ -4,7 +4,7 @@
 **304 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional.
 
 **Version:** `0.5.8`
-**Branch:** `claude/read-handoff-22llh` — last commit `aae97f5`
+**Branch:** `claude/read-handoff-22llh` — last commit `b401401`
 
 ---
 
@@ -16,7 +16,7 @@
 - Confirmed in-game: 1000 standing, challenge name "Mow Them Down"
 
 ### 2. News & Events panel — text/formatting tweaks (`index.html` + `live.css`)
-- **News capped at 7 items** (was 10, briefly 5)
+- **News capped at 7 items** (was 10)
 - **Relative timestamps** added inline before each article title: `relativeTime(iso)` helper → "Xd ago / Xh ago / Xm ago"; `0.85rem` dim text
 - **News font size** bumped to `1rem` (matches event titles)
 - **Event rows restructured**: `.event-row-header` wraps title (left) + timer (right) on same line
@@ -25,9 +25,15 @@
 
 ### 3. Nightwave panel layout (`index.html` + `live.css`)
 - **Tag + title on same line**: `.nw-title-row` flex row wraps `<nw-tag>` + `<nw-title>`
-- **Description below** title (was previously inside a monolithic `.nw-challenge-info` block alongside the timer)
+- **Description below** title
 - **Timer moved under standing number**: `.nw-right` is a flex column — rep on top, eta below
-- **Tag alignment fixed**: removed `align-self: flex-start` (was pushing tag up); removed left padding (no background to justify it)
+- **Tag alignment fixed**: removed `align-self: flex-start`; removed left padding
+
+### 4. ui-ux-pro-max skill installed
+- Installed via `npm install -g uipro-cli` on Windows, transferred to Linux sandbox
+- Lives at `~/.claude/skills/ui-ux-pro-max/SKILL.md`
+- Triggers automatically on UI/UX-related requests — no slash command needed
+- 67 styles, 96 palettes, 57 font pairings, 25 charts, 13 stacks
 
 ---
 
