@@ -130,7 +130,7 @@ skills/
 ```
 
 ## Tests
-Run `pytest` before committing. All tests must pass. **304 tests** as of v0.5.9.
+Run `pytest` before committing. All tests must pass. **304 tests** as of v0.6.0.
 
 ## Data Refresh Notes
 - `fetch_wiki_data.py` is blocked by the wiki (403). **Do not attempt automated fetch.**
@@ -174,7 +174,12 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 - **No global button box-shadow glow** — removed. Do not re-add.
 - **No panel hover border-color change** — removed. Do not re-add.
 - **No pure white text** — all themes use tinted off-whites for `--text` and `--text-primary`. See base.css per-theme values.
-- **Theme accents** — Stalker = crimson, Jade = teal, Ash = TBD parchment. Game-data colors stay as-is.
+- **Theme accents** — Stalker = crimson (`#8b0000`→`#e53e3e`), Jade = teal (`#00897b`→`#00e5c8`), Ash = steel blue (`#466482`→`#7393b3`). Game-data colors stay as-is.
+- **Panel lines** — use `--panel-line-top` (bright) and `--panel-line-bottom` (dim) — NOT the old `--panel-line-color`. Each theme defines both variables in `base.css`.
+- **No panel top gradient line** — only the bottom line is active. Do not re-add the top line to `.panel::before`.
+- **No dashed mod card borders** — `.mod-card.empty` uses solid border only.
+- **Dropdowns must be fully opaque** — `--dropdown-bg` is a solid hex color; no `backdrop-filter` on `.combobox-dropdown`.
+- **Mobile theme switcher** — lives in the sidebar footer (`sidebar-theme-switcher`), hidden in header at ≤900px. Do not put it back in the header on mobile.
 - **Never use native `<select>` elements** — use `setupSelectDropdown()` in `utils.js` instead (iOS picker issue).
 - **Fonts** — Orbitron for headings/values, Rajdhani for labels/buttons. No Share Tech Mono.
 - **Theme system** — all color changes go in `base.css` `:root` (Stalker default) or `body.theme-jade` / `body.theme-ash` override blocks. Never hardcode colors outside these blocks.
