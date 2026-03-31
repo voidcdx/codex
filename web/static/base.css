@@ -109,8 +109,9 @@
   --accent-hi-a12: rgba(180, 0, 0, 0.12);
   --accent-hi-a75: rgba(180, 0, 0, 0.75);
 
-  /* ── Panel decoration line ── */
-  --panel-line-color: rgba(229, 62, 62, 0.70);
+  /* ── Panel decoration lines (top brighter, bottom dimmer) ── */
+  --panel-line-top:    rgba(229, 62, 62, 0.65);
+  --panel-line-bottom: rgba(139, 0, 0, 0.35);
 
   /* ── Status colors ── */
   --color-positive:      #4caf50;
@@ -240,7 +241,8 @@ body.theme-jade {
   --accent-mid-a55: rgba(0, 120, 100, 0.55);
   --accent-hi-a12: rgba(0, 200, 170, 0.12);
   --accent-hi-a75: rgba(0, 200, 170, 0.75);
-  --panel-line-color: rgba(0, 160, 130, 0.55);
+  --panel-line-top:    rgba(0, 160, 130, 0.55);
+  --panel-line-bottom: rgba(0, 120, 100, 0.30);
   --atmo-primary:   rgba(0, 160, 130, 0.08);
   --atmo-secondary: rgba(0, 120, 100, 0.05);
   --atmo-tertiary:  rgba(0,  80,  60, 0.03);
@@ -303,7 +305,8 @@ body.theme-ash {
   --accent-mid-a55: rgba(140, 140, 140, 0.55);
   --accent-hi-a12: rgba(220, 220, 220, 0.12);
   --accent-hi-a75: rgba(220, 220, 220, 0.75);
-  --panel-line-color: rgba(255, 255, 255, 0.30);
+  --panel-line-top:    rgba(210, 185, 155, 0.65);
+  --panel-line-bottom: rgba(180, 155, 120, 0.35);
   --atmo-primary:   rgba(255, 255, 255, 0.04);
   --atmo-secondary: rgba(255, 255, 255, 0.02);
   --atmo-tertiary:  rgba(255, 255, 255, 0.01);
