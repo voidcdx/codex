@@ -264,7 +264,6 @@
   align-items: center;
   gap: 12px;
   padding: 0 20px 24px;
-  border-bottom: 1px solid var(--accent-a15);
 }
 .brand-icon {
   width: 36px; height: 36px; flex-shrink: 0;
