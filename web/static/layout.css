@@ -390,16 +390,6 @@
   letter-spacing: 0;
   text-transform: none;
 }
-.sidebar-refresh {
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--text-dim);
-  margin-top: 6px;
-  border-top: 1px solid var(--accent-a8);
-  padding-top: 8px;
-}
 
 /* ── Mobile sidebar ── */
 .sidebar-overlay {
