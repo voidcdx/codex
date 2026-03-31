@@ -26,11 +26,34 @@ const FACTION_NAMES = {
 
 const FACTION_KEYS = Object.keys(FACTION_NAMES);
 
+const FACTION_GROUPS = {
+  grineer:  ['grineer', 'kuva_grineer', 'scaldra', 'anarchs'],
+  corpus:   ['corpus', 'corpus_amalgam', 'techrot'],
+  infested: ['infested', 'deimos_infested'],
+  other:    ['corrupted', 'sentient', 'narmer', 'themurmur'],
+};
+
+// Game-faction data colors — used for row borders and group tags only
+const FACTION_GROUP_COLORS = {
+  grineer:  '#c07020',
+  corpus:   '#4090c0',
+  infested: '#60a030',
+  other:    '#9060c0',
+};
+
+function getFactionGroup(key) {
+  for (const [group, keys] of Object.entries(FACTION_GROUPS)) {
+    if (keys.includes(key)) return group;
+  }
+  return 'other';
+}
+
 /* ── State ────────────────────────────────────────────── */
 
 let currentFilter = 'all';   // 'all' | 'weak' | 'resist'
 let currentSearch = '';       // lowercase
 let currentView   = 'matrix'; // 'matrix' | 'cards'
+let currentGroup  = 'all';    // 'all' | 'grineer' | 'corpus' | 'infested' | 'other'
 
 /* ── Helpers ──────────────────────────────────────────── */
 
@@ -74,9 +97,10 @@ function renderMatrix() {
 
   // Rows
   FACTION_KEYS.forEach((factionKey, rowIdx) => {
+    const group = getFactionGroup(factionKey);
     // Row label
     cells.push(
-      `<div class="matrix-row-label" data-faction="${factionKey}" data-row-index="${rowIdx}">` +
+      `<div class="matrix-row-label" data-faction="${factionKey}" data-row-index="${rowIdx}" data-group="${group}">` +
         `<span class="faction-name">${esc(FACTION_NAMES[factionKey])}</span>` +
       `</div>`
     );
@@ -108,6 +132,12 @@ function renderMatrix() {
     el.style.setProperty('--elem-color', color);
   });
 
+  // Apply faction group colors to row labels
+  matrix.querySelectorAll('.matrix-row-label').forEach(el => {
+    const color = FACTION_GROUP_COLORS[el.dataset.group] || '';
+    if (color) el.style.setProperty('--faction-color', color);
+  });
+
   attachMatrixHover();
 }
 
@@ -121,9 +151,15 @@ function renderCards() {
     const data = FACTION_EFFECTIVENESS[factionKey] || {};
     const weakTypes   = ALL_DAMAGE_TYPES.filter(t => data[t] === 1.5);
     const resistTypes = ALL_DAMAGE_TYPES.filter(t => data[t] === 0.5);
+    const group = getFactionGroup(factionKey);
+    const groupColor = FACTION_GROUP_COLORS[group] || '';
 
-    let html = `<div class="panel faction-card" data-faction="${factionKey}">`;
-    html += `<div class="card-faction-name">${esc(FACTION_NAMES[factionKey])}</div>`;
+    let html = `<div class="panel faction-card" data-faction="${factionKey}" data-group="${group}">`;
+    if (groupColor) html += `<div class="faction-card-color-bar" style="--faction-color:${groupColor}"></div>`;
+    html += `<div class="card-faction-header">`;
+    html += `<span class="card-faction-name">${esc(FACTION_NAMES[factionKey])}</span>`;
+    html += `<span class="card-faction-group">${esc(group)}</span>`;
+    html += `</div>`;
 
     if (weakTypes.length) {
       html += `<div class="card-section-label">Vulnerable ×1.5</div>`;
@@ -137,7 +173,7 @@ function renderCards() {
     }
 
     if (resistTypes.length) {
-      html += `<div class="card-section-label">Resistant ×0.5</div>`;
+      html += `<div class="card-section-label resist-label">Resistant ×0.5</div>`;
       html += `<div class="card-badges">`;
       resistTypes.forEach(t => {
         html += `<span class="dmg-badge badge-resist" data-dmg-type="${t}">` +
@@ -159,6 +195,12 @@ function renderCards() {
     const color = (ELEM_COLORS && ELEM_COLORS[type]) || '#888';
     el.style.setProperty('--elem-color', color);
   });
+
+  // Apply faction group colors to group tags
+  wrap.querySelectorAll('.faction-card').forEach(card => {
+    const color = FACTION_GROUP_COLORS[card.dataset.group] || '';
+    if (color) card.querySelector('.card-faction-group').style.setProperty('--faction-color', color);
+  });
 }
 
 /* ── Filter ───────────────────────────────────────────── */
@@ -172,7 +214,8 @@ function applyFilter() {
       const key  = label.dataset.faction;
       const name = (FACTION_NAMES[key] || key).toLowerCase();
       const searchMatch = !currentSearch || name.includes(currentSearch);
-      label.classList.toggle('hidden', !searchMatch);
+      const groupMatch  = currentGroup === 'all' || label.dataset.group === currentGroup;
+      label.classList.toggle('hidden', !searchMatch || !groupMatch);
     });
 
     const cells = matrixEl.querySelectorAll('.matrix-cell');
@@ -180,7 +223,9 @@ function applyFilter() {
       const key       = cell.dataset.faction;
       const name      = (FACTION_NAMES[key] || key).toLowerCase();
       const searchMatch = !currentSearch || name.includes(currentSearch);
-      if (!searchMatch) { cell.classList.add('hidden'); return; }
+      const rowLabel  = matrixEl.querySelector(`.matrix-row-label[data-faction="${key}"]`);
+      const groupMatch  = currentGroup === 'all' || (rowLabel && rowLabel.dataset.group === currentGroup);
+      if (!searchMatch || !groupMatch) { cell.classList.add('hidden'); return; }
 
       const isWeak   = cell.classList.contains('cell-weak');
       const isResist = cell.classList.contains('cell-resist');
@@ -215,8 +260,9 @@ function applyFilter() {
       const key  = card.dataset.faction;
       const name = (FACTION_NAMES[key] || key).toLowerCase();
       const searchMatch = !currentSearch || name.includes(currentSearch);
+      const groupMatch  = currentGroup === 'all' || card.dataset.group === currentGroup;
 
-      if (!searchMatch) { card.classList.add('card-hidden'); return; }
+      if (!searchMatch || !groupMatch) { card.classList.add('card-hidden'); return; }
 
       const data       = FACTION_EFFECTIVENESS[key] || {};
       const hasWeak    = Object.values(data).some(v => v === 1.5);
@@ -297,9 +343,16 @@ function attachMatrixHover() {
 /* ── Event handlers ───────────────────────────────────── */
 
 function setFilter(btn) {
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#type-pills .filter-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   currentFilter = btn.dataset.filter;
+  applyFilter();
+}
+
+function setGroup(btn) {
+  document.querySelectorAll('#group-pills .filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentGroup = btn.dataset.group;
   applyFilter();
 }
 
