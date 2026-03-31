@@ -34,10 +34,18 @@
       <input type="text" id="faction-search" class="faction-search-input" placeholder="Search factions…" autocomplete="off">
       <button class="search-clear-btn" id="search-clear" onclick="clearSearch()" aria-label="Clear search">×</button>
     </div>
-    <div class="filter-pills">
+    <div class="filter-pills" id="type-pills">
       <button class="filter-pill active" data-filter="all" onclick="setFilter(this)">All</button>
       <button class="filter-pill" data-filter="weak" onclick="setFilter(this)">Vulnerable</button>
       <button class="filter-pill" data-filter="resist" onclick="setFilter(this)">Resistant</button>
+    </div>
+    <div class="filter-divider"></div>
+    <div class="filter-pills" id="group-pills">
+      <button class="filter-pill active" data-group="all" onclick="setGroup(this)">All</button>
+      <button class="filter-pill" data-group="grineer" onclick="setGroup(this)">Grineer</button>
+      <button class="filter-pill" data-group="corpus" onclick="setGroup(this)">Corpus</button>
+      <button class="filter-pill" data-group="infested" onclick="setGroup(this)">Infested</button>
+      <button class="filter-pill" data-group="other" onclick="setGroup(this)">Other</button>
     </div>
   </div>
 
