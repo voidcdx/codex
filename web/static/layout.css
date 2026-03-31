@@ -39,7 +39,7 @@ body.theme-ash .header::after {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, var(--panel-line-top) 0%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--panel-line-top) 50%, transparent 100%);
   border-radius: 0 0 0 12px;
   pointer-events: none;
 }
