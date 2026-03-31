@@ -1276,6 +1276,7 @@ _NW_NAMES = {
     "MachineInterference":    "Machine Interference",
     # Keys confirmed from live worldstate (actual path segment differs from assumed)
     "KillEnemiesWithPoison":  "Poisoner",
+    "KillEnemiesWithPrimary": "Mow Them Down",
     "SolveCiphers":           "Hacker",
     "KillEnemiesInMech":      "Necralizer",
     "FriendsSurvival":        "Survival with Friends",
@@ -1436,6 +1437,7 @@ _NW_DESCRIPTIONS = {
     "MachineInterference":    "Complete a Spy mission with 3 manual console hacks and no alarms",
     # Keys confirmed from live worldstate (actual path segment differs from assumed)
     "KillEnemiesWithPoison":  "Kill 150 Enemies with Toxin Damage",
+    "KillEnemiesWithPrimary": "Kill 150 Enemies with a Primary Weapon",
     "SolveCiphers":           "Hack 10 Consoles",
     "KillEnemiesInMech":      "Kill 100 enemies with a Necramech",
     "FriendsSurvival":        "Complete a Survival mission reaching at least 20 minutes with a friend or clanmate",
