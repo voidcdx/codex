@@ -19,15 +19,6 @@
   transition: border-color 0.2s;
 
 }
-.panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, transparent, var(--panel-line-color), transparent) top / 100% 1px no-repeat,
-    linear-gradient(90deg, transparent, var(--panel-line-color), transparent) bottom / 100% 1px no-repeat;
-  pointer-events: none;
-}
 
 .panel h2 {
   font-family: var(--font-display);

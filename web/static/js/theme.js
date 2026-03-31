@@ -1,10 +1,10 @@
 /**
  * theme.js — Void Codex theme switcher
- * Themes: stalker (default), forge, amber, infested, ash
+ * Themes: stalker (default), jade, ash
  * Persists to localStorage under key 'void-theme'
  */
 
-const THEME_NAMES = ['stalker', 'forge', 'amber', 'infested', 'ash'];
+const THEME_NAMES = ['stalker', 'jade', 'ash'];
 const THEME_DEFAULT = 'stalker';
 const LS_KEY = 'void-theme';
 
