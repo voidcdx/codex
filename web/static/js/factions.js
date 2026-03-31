@@ -149,39 +149,32 @@ function renderCards() {
 
   const cards = FACTION_KEYS.map(factionKey => {
     const data = FACTION_EFFECTIVENESS[factionKey] || {};
-    const weakTypes   = ALL_DAMAGE_TYPES.filter(t => data[t] === 1.5);
-    const resistTypes = ALL_DAMAGE_TYPES.filter(t => data[t] === 0.5);
     const group = getFactionGroup(factionKey);
-    const groupColor = FACTION_GROUP_COLORS[group] || '';
 
     let html = `<div class="panel faction-card" data-faction="${factionKey}" data-group="${group}">`;
-    if (groupColor) html += `<div class="faction-card-color-bar" style="--faction-color:${groupColor}"></div>`;
+
+    // Header
     html += `<div class="card-faction-header">`;
     html += `<span class="card-faction-name">${esc(FACTION_NAMES[factionKey])}</span>`;
     html += `<span class="card-faction-group">${esc(group)}</span>`;
     html += `</div>`;
 
-    if (weakTypes.length) {
-      html += `<div class="card-section-label">Vulnerable ×1.5</div>`;
-      html += `<div class="card-badges">`;
-      weakTypes.forEach(t => {
-        html += `<span class="dmg-badge badge-weak" data-dmg-type="${t}">` +
-          elemIconSvg(t, 'badge-icon') +
-          `<span>${esc(t)}</span></span>`;
-      });
-      html += `</div>`;
-    }
+    // Damage profile strip — all 13 types in one row
+    html += `<div class="card-dmg-strip">`;
+    ALL_DAMAGE_TYPES.forEach(t => {
+      const eff = data[t] || 1.0;
+      let mod = '';
+      if (eff === 1.5) mod = 'strip-item--weak';
+      if (eff === 0.5) mod = 'strip-item--resist';
 
-    if (resistTypes.length) {
-      html += `<div class="card-section-label resist-label">Resistant ×0.5</div>`;
-      html += `<div class="card-badges">`;
-      resistTypes.forEach(t => {
-        html += `<span class="dmg-badge badge-resist" data-dmg-type="${t}">` +
-          elemIconSvg(t, 'badge-icon') +
-          `<span>${esc(t)}</span></span>`;
-      });
+      html += `<div class="strip-item ${mod}" data-dmg-type="${t}">`;
+      html += elemIconSvg(t, 'strip-icon');
+      if (eff !== 1.0) {
+        html += `<span class="strip-mult">${eff === 1.5 ? '+50' : '−50'}</span>`;
+      }
       html += `</div>`;
-    }
+    });
+    html += `</div>`;
 
     html += `</div>`;
     return html;
@@ -196,10 +189,12 @@ function renderCards() {
     el.style.setProperty('--elem-color', color);
   });
 
-  // Apply faction group colors to group tags
+  // Apply faction group + element colors
   wrap.querySelectorAll('.faction-card').forEach(card => {
     const color = FACTION_GROUP_COLORS[card.dataset.group] || '';
-    if (color) card.querySelector('.card-faction-group').style.setProperty('--faction-color', color);
+    if (color) {
+      card.style.setProperty('--faction-color', color);
+    }
   });
 }
 

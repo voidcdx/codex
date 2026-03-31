@@ -190,16 +190,16 @@
   align-items: center;
   justify-content: flex-end;
   gap: 5px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid color-mix(in srgb, var(--elem-color, #888) 40%, transparent);
   border-left: 1px solid var(--border);
-  background: var(--surface-solid);
+  background: color-mix(in srgb, var(--elem-color, #888) 7%, var(--surface-solid));
   color: var(--elem-color, #888);
   cursor: default;
   transition: background 0.12s;
 }
 
 .matrix-col-header.col-hovered {
-  background: color-mix(in srgb, var(--elem-color, #888) 6%, transparent);
+  background: color-mix(in srgb, var(--elem-color, #888) 14%, var(--surface-solid));
 }
 
 .matrix-col-header.hidden { display: none; }
@@ -209,6 +209,7 @@
   height: 18px;
   flex-shrink: 0;
   color: var(--elem-color, #888);
+  filter: drop-shadow(0 0 4px var(--elem-color, #888));
 }
 
 .col-name {
@@ -221,7 +222,7 @@
   text-align: center;
   line-height: 1.2;
   white-space: nowrap;
-  opacity: 0.8;
+  opacity: 0.75;
 }
 
 /* Row labels */
@@ -301,39 +302,32 @@
 /* ── Cards view ───────────────────────────────────────── */
 .faction-cards-wrap {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 10px;
   align-content: start;
 }
 
 .faction-card {
-  padding: 14px 16px;
+  padding: 0;
   position: relative;
+  overflow: hidden;
 }
 
 .faction-card.card-hidden { display: none; }
 
-.faction-card-color-bar {
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 2px;
-  background: var(--faction-color, var(--border-red));
-  opacity: 0.7;
-}
-
 .card-faction-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
+  padding: 10px 14px 9px;
   border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--faction-color, var(--crimson)) 6%, transparent);
 }
 
 .card-faction-name {
   font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-primary);
@@ -341,65 +335,74 @@
 
 .card-faction-group {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--faction-color, var(--text-dim));
-  opacity: 0.8;
+  border: 1px solid color-mix(in srgb, var(--faction-color, var(--text-dim)) 35%, transparent);
+  padding: 2px 6px;
   flex-shrink: 0;
   margin-left: 8px;
 }
 
-.card-section-label {
-  font-family: var(--font-display);
-  font-size: 0.67rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-dim);
-  margin-bottom: 6px;
-  margin-top: 10px;
-}
-
-.card-section-label:first-of-type { margin-top: 0; }
-.card-section-label.resist-label { color: var(--crimson-bright); }
-
-.card-badges {
+/* ── Damage profile strip ─────────────────────────────── */
+.card-dmg-strip {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  padding: 8px 10px;
+  gap: 2px;
 }
 
-.dmg-badge {
-  display: inline-flex;
+.strip-item {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
-  border: 1px solid;
-  font-family: var(--font-display);
-  font-size: 0.67rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  gap: 3px;
+  padding: 6px 3px 5px;
+  flex: 1;
+  border: 1px solid transparent;
+  transition: all 0.12s;
+  opacity: 0.2;
 }
 
-.dmg-badge.badge-weak {
-  border-color: color-mix(in srgb, var(--elem-color, #888) 40%, transparent);
-  background: color-mix(in srgb, var(--elem-color, #888) 10%, transparent);
-  color: var(--elem-color, #888);
+.strip-item--weak {
+  opacity: 1;
+  background: color-mix(in srgb, var(--elem-color, #888) 12%, transparent);
+  border-color: color-mix(in srgb, var(--elem-color, #888) 35%, transparent);
 }
 
-.dmg-badge.badge-resist {
-  border-color: color-mix(in srgb, var(--crimson-bright) 35%, transparent);
+.strip-item--resist {
+  opacity: 1;
   background: color-mix(in srgb, var(--crimson-bright) 10%, transparent);
-  color: var(--crimson-bright);
+  border-color: color-mix(in srgb, var(--crimson-bright) 35%, transparent);
 }
 
-.badge-icon {
-  width: 12px;
-  height: 12px;
+.strip-icon {
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
-  color: var(--elem-color, #888);
+  color: var(--text-dim);
 }
+
+.strip-item--weak .strip-icon {
+  color: var(--elem-color, #888);
+  filter: drop-shadow(0 0 4px var(--elem-color, #888));
+}
+
+.strip-item--resist .strip-icon {
+  color: var(--crimson-bright);
+  filter: drop-shadow(0 0 4px var(--crimson-glow));
+}
+
+.strip-mult {
+  font-family: var(--font-display);
+  font-size: 0.52rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.strip-item--weak .strip-mult   { color: var(--elem-color, #888); }
+.strip-item--resist .strip-mult { color: var(--crimson-bright); }
 
 /* ── Utility ──────────────────────────────────────────── */
 .hidden { display: none !important; }
