@@ -26,9 +26,9 @@
   flex-shrink: 0;
 }
 
-/* Row 1: search (full width) */
+/* Row 1: search (fixed width) */
 .relic-search-row { display: flex; }
-.relic-search-row .search-wrap { flex: 1; }
+.relic-search-row .search-wrap { width: 320px; }
 
 /* Pin icon vertically in pill */
 .relic-search-row .search-icon {
