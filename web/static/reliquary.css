@@ -139,7 +139,6 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
   align-content: start;
-  width: 100%;
   min-width: 0;
 }
 
