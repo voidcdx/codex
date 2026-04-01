@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Void Codex — Faction Weakness</title>
+  <title>Void Codex — Reliquary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/base.css">
@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/static/panels.css">
   <link rel="stylesheet" href="/static/responsive.css">
   <link rel="stylesheet" href="/static/factions.css">
+  <link rel="stylesheet" href="/static/reliquary.css">
 </head>
 <body>
 <div class="atmo"></div>
@@ -19,7 +20,7 @@
 
 <main class="main">
 <header class="header">
-  <div class="live-header-brand">VOID <span>CODEX</span><div class="live-subtext" data-text="FACTION WEAKNESS">FACTION WEAKNESS</div></div>
+  <div class="live-header-brand">VOID <span>CODEX</span><div class="live-subtext" data-text="RELIQUARY">RELIQUARY</div></div>
   <div class="header-actions">
     <div class="theme-switcher">
       <span class="theme-dot" data-theme="stalker" title="Stalker Classic"></span>
@@ -31,29 +32,35 @@
 
 <div class="factions-wrap">
   <div class="faction-controls">
-    <div class="search-wrap" id="faction-search-wrap">
+    <div class="search-wrap" id="relic-search-wrap">
       <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>
       </svg>
-      <input type="text" id="faction-search" class="faction-search-input" placeholder="Search factions…" autocomplete="off">
+      <input type="text" id="relic-search" class="faction-search-input" placeholder="Search rewards…" autocomplete="off">
       <button class="search-clear-btn" id="search-clear" onclick="clearSearch()" aria-label="Clear search">×</button>
     </div>
-    <div class="filter-pills" id="type-pills">
-      <button class="filter-pill active" data-filter="all" onclick="setFilter(this)">All</button>
-      <button class="filter-pill" data-filter="weak" onclick="setFilter(this)">Vulnerable</button>
-      <button class="filter-pill" data-filter="resist" onclick="setFilter(this)">Resistant</button>
+
+    <div class="filter-pills" id="tier-pills">
+      <button class="filter-pill active" data-tier="all"     onclick="setTier(this)">All</button>
+      <button class="filter-pill lith-pill"    data-tier="Lith"    onclick="setTier(this)">Lith</button>
+      <button class="filter-pill meso-pill"    data-tier="Meso"    onclick="setTier(this)">Meso</button>
+      <button class="filter-pill neo-pill"     data-tier="Neo"     onclick="setTier(this)">Neo</button>
+      <button class="filter-pill axi-pill"     data-tier="Axi"     onclick="setTier(this)">Axi</button>
+      <button class="filter-pill requiem-pill" data-tier="Requiem" onclick="setTier(this)">Requiem</button>
     </div>
+
     <div class="filter-divider"></div>
-    <div class="filter-pills" id="group-pills">
-      <button class="filter-pill active" data-group="all" onclick="setGroup(this)">All</button>
-      <button class="filter-pill" data-group="grineer" onclick="setGroup(this)">Grineer</button>
-      <button class="filter-pill" data-group="corpus" onclick="setGroup(this)">Corpus</button>
-      <button class="filter-pill" data-group="infested" onclick="setGroup(this)">Infested</button>
-      <button class="filter-pill" data-group="other" onclick="setGroup(this)">Other</button>
+
+    <div class="filter-pills" id="vault-pills">
+      <button class="filter-pill active" data-vault="all"       onclick="setVault(this)">All</button>
+      <button class="filter-pill" data-vault="unvaulted" onclick="setVault(this)">Unvaulted</button>
+      <button class="filter-pill" data-vault="vaulted"   onclick="setVault(this)">Vaulted</button>
     </div>
+
+    <div class="relic-count" id="relic-count"></div>
   </div>
 
-  <div class="faction-roster" id="faction-roster"></div>
+  <div class="relic-grid" id="relic-grid"></div>
 </div>
 </main>
 
@@ -75,7 +82,7 @@
       </div>
       Live Data
     </a>
-    <a href="/factions" class="nav-item active">
+    <a href="/factions" class="nav-item">
       <div class="nav-icon">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M10 2L17 5V12C17 15.5 10 18 10 18C10 18 3 15.5 3 12V5Z"/>
@@ -84,7 +91,7 @@
       </div>
       Factions
     </a>
-    <a href="/reliquary" class="nav-item">
+    <a href="/reliquary" class="nav-item active">
       <div class="nav-icon">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="7" width="14" height="10" rx="1"/>
@@ -128,8 +135,7 @@
 
 </div><!-- .app -->
 
-<script src="/static/js/constants.js"></script>
-<script src="/static/js/factions.js"></script>
 <script src="/static/js/theme.js"></script>
+<script src="/static/js/reliquary.js"></script>
 </body>
 </html>

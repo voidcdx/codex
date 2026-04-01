@@ -136,6 +136,14 @@ def _raw_enemies() -> dict[str, Any]:
     return json.loads((DATA_DIR / "enemies.json").read_text(encoding="utf-8"))
 
 
+@lru_cache(maxsize=1)
+def _raw_relics() -> list[dict]:
+    path = DATA_DIR / "relics.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
