@@ -76,8 +76,7 @@
 .relic-search-expand input.relic-search-input {
   width: 200px;
   flex-shrink: 0;
-  height: 30px;
-  min-height: 0;
+  align-self: center;
   appearance: none;
   -webkit-appearance: none;
   background: transparent;
@@ -86,11 +85,11 @@
   box-shadow: none;
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 0.85rem;
-  padding: 7px 24px 7px 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0 24px 0 4px;
   box-sizing: border-box;
   outline: none;
-  display: block;
 }
 .relic-search-expand input.relic-search-input:focus {
   border: none;
