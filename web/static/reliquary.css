@@ -154,15 +154,46 @@
 .relic-tier-pill.active[data-tier="Axi"]     { color: var(--tier-axi);     background: rgba(251,191,36,0.1); }
 .relic-tier-pill.active[data-tier="Requiem"] { color: var(--tier-requiem); background: rgba(192,132,252,0.1); }
 
-/* Vault segmented control */
-.vault-seg {
-  display: flex;
+/* Vault drop button */
+.vault-drop-wrap {
+  position: relative;
   margin-left: auto;
+  flex-shrink: 0;
+}
+.vault-drop-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.vault-drop-btn .vault-icon { width: 14px; height: 14px; }
+.vault-drop-btn:hover { color: var(--text); border-color: var(--border-highlight); }
+.vault-drop-wrap.open .vault-drop-btn,
+.vault-drop-btn.active { color: var(--accent2); border-color: var(--accent2); }
+
+/* Vault dropdown pill */
+.vault-drop-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
+  background: var(--dropdown-bg);
+  z-index: 100;
+  white-space: nowrap;
 }
-.vault-seg-btn {
+.vault-drop-wrap.open .vault-drop-menu { display: flex; }
+.vault-drop-item {
   padding: 4px 12px;
   border: none;
   background: transparent;
@@ -174,9 +205,9 @@
   transition: background 0.12s, color 0.12s;
   white-space: nowrap;
 }
-.vault-seg-btn + .vault-seg-btn { border-left: 1px solid var(--border); }
-.vault-seg-btn:hover { color: var(--text); background: var(--surface2); }
-.vault-seg-btn.active { background: var(--accent-a15); color: var(--accent2); }
+.vault-drop-item + .vault-drop-item { border-left: 1px solid var(--border); }
+.vault-drop-item:hover { color: var(--text); background: var(--surface2); }
+.vault-drop-item.active { background: var(--accent-a15); color: var(--accent2); }
 
 /* ── Card grid ─────────────────────────────────────────── */
 .relic-grid {
@@ -393,7 +424,7 @@
     -webkit-overflow-scrolling: touch;
   }
   .relic-tier-pills::-webkit-scrollbar { display: none; }
-  .vault-seg { order: 3; margin-left: auto; }
+  .vault-drop-wrap { order: 3; margin-left: auto; }
 
   .relic-grid { grid-template-columns: 1fr; gap: 8px; }
 }

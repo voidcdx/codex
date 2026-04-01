@@ -33,9 +33,14 @@ function setTier(btn) {
 }
 
 function setVault(btn) {
-  document.querySelectorAll('#vault-pills .vault-seg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#vault-menu .vault-drop-item').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeVault = btn.dataset.vault;
+  // Accent the circle button when filter is active
+  const vaultBtn = document.getElementById('vault-toggle');
+  if (vaultBtn) vaultBtn.classList.toggle('active', activeVault !== 'all');
+  // Close dropdown
+  document.getElementById('vault-wrap').classList.remove('open');
   currentPage = 0;
   renderGrid();
 }
@@ -204,9 +209,19 @@ document.addEventListener('DOMContentLoaded', () => {
     else closeSearch();
   });
 
+  const vaultWrap   = document.getElementById('vault-wrap');
+  const vaultToggle = document.getElementById('vault-toggle');
+
+  vaultToggle.addEventListener('click', () => {
+    vaultWrap.classList.toggle('open');
+  });
+
   document.addEventListener('click', e => {
     if (searchWrap.classList.contains('open') && !searchWrap.contains(e.target)) {
       closeSearch();
+    }
+    if (vaultWrap.classList.contains('open') && !vaultWrap.contains(e.target)) {
+      vaultWrap.classList.remove('open');
     }
   });
 
