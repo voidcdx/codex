@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagination Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/base.css">
+  <link rel="stylesheet" href="/static/layout.css">
+  <style>
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); }
+    h2 { font-family: var(--font-display); font-size: 0.8rem; color: var(--accent2); letter-spacing: 0.12em; margin: 0 0 12px; }
+    .preview-wrap { display: flex; gap: 40px; padding: 40px; flex-wrap: wrap; align-items: flex-start; }
+    .preview-box { flex: 1; min-width: 300px; max-width: 480px; }
+    .mock-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0; }
+    .mock-card { height: 80px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+
+    /* ── OPTION 2: sticky bar ── */
+    .opt2-frame {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .opt2-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .opt2-sticky {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 10px 16px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── OPTION 3: floating buttons ── */
+    .opt3-frame {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 340px;
+      position: relative;
+    }
+    .opt3-scroll {
+      height: 100%;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .opt3-float {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+    }
+    .opt3-fab {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .opt3-fab:hover { border-color: var(--border-highlight); color: var(--text); }
+    .opt3-fab svg { width: 16px; height: 16px; }
+    .opt3-page-label {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    /* shared button style */
+    .page-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-dim);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+    .page-btn:hover { border-color: var(--border-highlight); color: var(--text); }
+    .page-btn svg { width: 14px; height: 14px; }
+    .page-info {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      min-width: 80px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="preview-wrap">
+
+  <div class="preview-box">
+    <h2>OPTION 2 — STICKY BAR</h2>
+    <div class="opt2-frame">
+      <div class="opt2-scroll">
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+      </div>
+      <div class="opt2-sticky">
+        <button class="page-btn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="10,3 5,8 10,13"/></svg>
+          Prev
+        </button>
+        <span class="page-info">Page 2 of 8</span>
+        <button class="page-btn">
+          Next
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,3 11,8 6,13"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-box">
+    <h2>OPTION 3 — FLOATING ARROWS</h2>
+    <div class="opt3-frame">
+      <div class="opt3-scroll">
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+        <div class="mock-card"></div>
+      </div>
+      <span class="opt3-page-label">Page 2 of 8</span>
+      <div class="opt3-float">
+        <button class="opt3-fab">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="10,3 5,8 10,13"/></svg>
+        </button>
+        <button class="opt3-fab">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,3 11,8 6,13"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
