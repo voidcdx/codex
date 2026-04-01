@@ -41,8 +41,10 @@ function setVault(btn) {
 }
 
 function clearSearch() {
-  document.getElementById('relic-search').value = '';
-  document.getElementById('relic-search-wrap').classList.remove('has-value');
+  const input = document.getElementById('relic-search');
+  const wrap  = document.getElementById('relic-search-wrap');
+  input.value = '';
+  wrap.classList.remove('has-value', 'open');
   searchQuery = '';
   currentPage = 0;
   renderGrid();
@@ -181,8 +183,29 @@ document.addEventListener('DOMContentLoaded', () => {
   loadRelics();
   loadVersion();
 
-  const searchInput = document.getElementById('relic-search');
-  const searchWrap  = document.getElementById('relic-search-wrap');
+  const searchInput  = document.getElementById('relic-search');
+  const searchWrap   = document.getElementById('relic-search-wrap');
+  const searchToggle = document.getElementById('search-toggle');
+
+  searchToggle.addEventListener('click', () => {
+    const isOpen = searchWrap.classList.toggle('open');
+    if (isOpen) {
+      searchInput.focus();
+    } else {
+      searchInput.value = '';
+      searchWrap.classList.remove('has-value');
+      searchQuery = '';
+      currentPage = 0;
+      renderGrid();
+    }
+  });
+
+  searchInput.addEventListener('blur', () => {
+    if (!searchInput.value) {
+      searchWrap.classList.remove('open');
+    }
+  });
+
   searchInput.addEventListener('input', () => {
     searchQuery = searchInput.value;
     searchWrap.classList.toggle('has-value', searchQuery.length > 0);
