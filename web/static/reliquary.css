@@ -283,6 +283,7 @@
   .relic-controls { padding: 12px 0 10px; gap: 8px; }
 
   .relic-search-row { flex-wrap: wrap; gap: 8px; }
+  .relic-search-row .search-wrap { width: 100%; }
   .relic-count { margin-left: 0; }
 
   .relic-filter-row { gap: 8px; }
