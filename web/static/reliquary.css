@@ -26,14 +26,31 @@
   flex-shrink: 0;
 }
 
-/* Row 1: search + count */
-.relic-search-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+/* Row 1: search (full width) */
+.relic-search-row { display: flex; }
 .relic-search-row .search-wrap { flex: 1; }
-.relic-search-row .search-wrap .faction-search-input,
+
+/* Pin icon vertically in pill */
+.relic-search-row .search-icon {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+}
+.relic-search-row .search-clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 4px;
+  display: none;
+}
+.relic-search-row .search-wrap.has-value .search-clear-btn { display: block; }
+
 .relic-search-input {
   width: 100%;
   background: var(--surface2);
@@ -51,6 +68,7 @@
 .relic-search-input:focus { border-color: var(--border-highlight); }
 
 .relic-count {
+  margin-left: auto;
   font-family: var(--font-body);
   font-size: 0.78rem;
   color: var(--text-dim);
