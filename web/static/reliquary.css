@@ -292,5 +292,5 @@
   .relic-grid { grid-template-columns: 1fr; gap: 8px; }
   .relic-grid-wrap { padding: 12px 14px; }
 
-  .factions-wrap { padding: 0; gap: 0; }
+  .factions-wrap { padding: 16px; gap: 12px; }
 }
