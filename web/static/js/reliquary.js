@@ -121,9 +121,12 @@ function renderGrid() {
 function openGuide() {}  // stub — no guide modal on this page yet
 
 function toggleDrawer() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('visible');
-  document.getElementById('burger-btn').classList.toggle('open');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const btn     = document.getElementById('burger-btn');
+  const open    = sidebar.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('open', open);
+  if (btn)     btn.classList.toggle('open', open);
 }
 
 async function loadVersion() {

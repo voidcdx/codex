@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 16px 20px 14px;
+  padding: 16px 0 14px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -139,6 +139,8 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
   align-content: start;
+  width: 100%;
+  min-width: 0;
 }
 
 /* ── Individual relic card ─────────────────────────────── */
@@ -278,7 +280,7 @@
 
 /* Mobile (≤600px) */
 @media (max-width: 600px) {
-  .relic-controls { padding: 12px 14px 10px; gap: 8px; }
+  .relic-controls { padding: 12px 0 10px; gap: 8px; }
 
   .relic-search-row { flex-wrap: wrap; gap: 8px; }
   .relic-count { margin-left: 0; }
