@@ -101,6 +101,7 @@ MT_MISSION_TYPES: dict[str, str] = {
     "MT_EXTERMINATION":    "Exterminate",
     "MT_ARTIFACT":         "Capture",
     "MT_CORRUPTION":       "Corrupted Fissure",
+    "MT_EVACUATION":       "Defection",
 }
 
 FACTION_NAMES: dict[str, str] = {
@@ -197,6 +198,7 @@ SORTIE_MODIFIERS: dict[str, str] = {
     "SORTIE_MODIFIER_HAZARD_ICE":       "Environmental Hazard: Cryogenic",
     "SORTIE_MODIFIER_HAZARD_COLD":      "Environmental Hazard: Cryogenic",
     "SORTIE_MODIFIER_EXPLOSION":        "Environmental Hazard: Explosion",
+    "SORTIE_MODIFIER_POISON":           "Enemy Elemental Enhancement: Toxin",
 }
 ALL_NODES: dict[str, str] = {
     # Mercury
