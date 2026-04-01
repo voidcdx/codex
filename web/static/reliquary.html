@@ -35,8 +35,11 @@
 
     <div class="relic-search-row">
       <div class="search-wrap" id="relic-search-wrap">
+        <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>
+        </svg>
         <input type="text" id="relic-search" class="relic-search-input" placeholder="Search by reward — e.g. Caliban Prime…" autocomplete="off">
-        <button class="relic-clear-btn" id="search-clear" onclick="clearSearch()" aria-label="Clear search">×</button>
+        <button class="search-clear-btn" id="search-clear" onclick="clearSearch()" aria-label="Clear search">×</button>
       </div>
       <span class="relic-count" id="relic-count"></span>
     </div>

@@ -30,7 +30,13 @@
 .relic-search-row { display: flex; }
 .relic-search-row .search-wrap { width: 320px; }
 
-.relic-clear-btn {
+/* Pin icon vertically in pill */
+.relic-search-row .search-icon {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+}
+.relic-search-row .search-clear-btn {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -38,20 +44,19 @@
   background: none;
   border: none;
   color: var(--text-dim);
-  font-size: 1.1rem;
-  line-height: 1;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 0 2px;
-  transition: color 0.15s;
+  padding: 0 4px;
+  display: none;
 }
-.relic-clear-btn:hover { color: var(--text); }
+.relic-search-row .search-wrap.has-value .search-clear-btn { display: block; }
 
 .relic-search-input {
   width: 100%;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 7px 30px 7px 14px;
+  border-radius: 20px;
+  padding: 7px 28px 7px 32px;
   font-family: var(--font-body);
   font-size: 0.88rem;
   color: var(--text);
@@ -87,7 +92,7 @@
 .relic-tier-pill {
   padding: 4px 11px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 20px;
   background: transparent;
   color: var(--text-dim);
   font-family: var(--font-body);
@@ -109,7 +114,7 @@
   display: flex;
   margin-left: auto;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 20px;
   overflow: hidden;
 }
 .vault-seg-btn {
@@ -131,7 +136,7 @@
 /* ── Card grid ─────────────────────────────────────────── */
 .relic-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 300px));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
   align-content: start;
 }
@@ -268,7 +273,7 @@
 
 /* Tablet (≤900px) */
 @media (max-width: 900px) {
-  .relic-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 280px)); }
+  .relic-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 }
 
 /* Mobile (≤600px) */
