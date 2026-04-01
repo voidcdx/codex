@@ -130,6 +130,8 @@
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  isolation: isolate;
 }
 .relic-tier-pill {
   padding: 4px 11px;
@@ -160,6 +162,8 @@
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  isolation: isolate;
 }
 .vault-seg-btn {
   padding: 4px 12px;
