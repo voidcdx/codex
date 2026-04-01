@@ -404,47 +404,4 @@
   border-color: var(--border-highlight);
   color: var(--text);
 }
-.relic-page-btn:disabled { opacity: 0.3; cursor: default; }
-.relic-page-info {
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  color: var(--text-dim);
-  min-width: 80px;
-  text-align: center;
-}
-
-/* ── No results ────────────────────────────────────────── */
-.relic-empty {
-  grid-column: 1 / -1;
-  padding: 40px 0;
-  text-align: center;
-  color: var(--text-dim);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-}
-
-/* ── Responsive ────────────────────────────────────────── */
-
-/* Tablet (≤900px) */
-@media (max-width: 900px) {
-  .relic-controls { padding: 12px 16px; }
-  .relic-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding: 0 16px 16px; }
-  .relic-pagination { padding: 12px 16px 20px; }
-}
-
-/* Mobile (≤600px) */
-@media (max-width: 600px) {
-  .relic-controls { padding: 10px 12px; gap: 6px; flex-wrap: wrap; }
-  .relic-tier-pills {
-    order: 2;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .relic-tier-pills::-webkit-scrollbar { display: none; }
-  .vault-drop-wrap { order: 3; margin-left: auto; }
-
-  .relic-grid { grid-template-columns: 1fr; gap: 8px; }
-}
+.relic-page-btn:disabled { opacity: 0.3; cursor: defa
