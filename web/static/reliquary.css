@@ -68,6 +68,7 @@
 .search-pill-input {
   flex: 1;
   min-width: 0;
+  width: auto;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -84,7 +85,7 @@
 }
 .search-pill.open .search-pill-input { opacity: 1; }
 .search-pill-input::placeholder { color: var(--text-dim); }
-.search-pill-input:focus { border: none; box-shadow: none; outline: none; }
+.search-pill-input:focus { border: none; border-radius: 0; box-shadow: none; outline: none; background: transparent; }
 
 .search-pill-clear {
   flex-shrink: 0;
