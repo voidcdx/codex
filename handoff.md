@@ -4,41 +4,50 @@
 **304 tests passing.** Full 6-step damage pipeline, web UI fully functional.
 
 **Version:** `0.7.0`
-**Branch:** `claude/review-handoff-0NdQw`
+**Branch:** `claude/continue-handoff-docs-dF4Zj`
 
 ---
 
 ## What Was Done This Session
 
-### Reliquary Page (`/reliquary`) — NEW
-Full relic browser page. 732 relics: Lith 188, Meso 177, Neo 175, Axi 183, Requiem 5, Vanguard 4.
+### CSS Consistency Pass
+- **`--radius` token unified** — bumped to `8px` (was `4px`), `--radius-sm` to `4px` (was `3px`). `.panel` and `.cycles-standalone` now use `var(--radius)` instead of hardcoded `8px`. All cards (relic, modal, riven) consistent.
+- **Dot background centralized** — `radial-gradient(circle, var(--accent-a18) 1px, transparent 1px) / 20px 20px` moved from `.live-grid` to `layout.css` targeting `.content, .live-wrap, .factions-wrap`. All pages get it automatically.
+- **Relic cards match panels** — `.relic-card` updated to use `var(--surface)`, `backdrop-filter`, and `::before` gradient accent lines (same as `.panel`).
+- **Roster entries rounded** — `.roster-entry` on factions page now has `border-radius: var(--radius)`.
+- **`cycles-standalone::before`** — fixed stale `--panel-line-color` reference → `--panel-line-top`/`--panel-line-bottom`.
 
-**Files added:**
-- `scripts/fetch_wiki_playwright.py` — Playwright-based wiki fetcher (bypasses 403s). Fetches `weapons_data.lua`, `mods_data.lua`, `enemies_data.lua`, `void_data.lua`. Must run on Windows (sandbox has no outbound internet). Handles both old (`stealth_async`) and new (`Stealth` class) playwright-stealth APIs.
-- `scripts/parse_relic_data.py` — Parses `data/void_data.lua` → `data/relics.json`. Key fix: `_extract_block()` skips the empty `RelicData = {}` declaration (line 51 in the Lua file) and finds the real data block.
-- `data/relics.json` — 732 entries. Each: `{name, tier, vaulted, is_baro, introduced, rewards: [{item, part, rarity}]}`
-- `web/static/reliquary.html` — Page at `/reliquary`. Sidebar nav matches calculator/factions/live. Controls: search row (search input + count) + filter row (tier pills + vault segmented control).
-- `web/static/reliquary.css` — Styles for controls, tier pills, vault segmented control, relic card grid, reward rows with rarity coloring.
-- `web/static/js/reliquary.js` — Filters by tier/vault/search. `matchesSearch()` checks relic name + all reward items + parts.
+### Reliquary Layout Fixes
+- **Mobile overflow fixed** — `overflow-x: hidden` on `.factions-wrap`; horizontal padding moved directly to `.relic-controls` (28px desktop / 16px mobile) and `.relic-grid` (same) instead of relying on `.factions-wrap` padding cascade.
+- **Mobile sidebar drawer** — `toggleDrawer()` was using `.visible` class on overlay; fixed to `.open` (matches `layout.css`).
+- **Duplicate `id="relic-count"`** — removed from search row, kept in filter row.
+- **Favicon** — added to `factions.html` and `reliquary.html` (was only on `calculator.html`).
 
-**Files modified:**
-- `src/loader.py` — Added `_raw_relics()` lru_cache loader
-- `web/api.py` — Added `GET /api/relics` (tier/vaulted/reward query params) + `GET /reliquary` route
-- All sidebar HTML pages (index, calculator, factions) — Added Reliquary nav link (lock icon SVG)
+### Reliquary Pagination
+- **50 relics per page** with `← Prev / Page N of M / Next →` controls.
+- **Default to Unvaulted** — `activeVault = 'unvaulted'` on load; Unvaulted button pre-selected.
+- Count label shows range: `1–50 of 347`.
+- Any filter/search change resets to page 1.
+- Next/Prev scrolls `.factions-wrap` to top.
+- Pagination bar hidden when results fit on one page.
 
-### Incarnon Mode Toggle — NEW
-Weapons with attacks named `*incarnon*` get a `Normal | Incarnon` pill toggle in the weapon panel instead of raw attack tabs. Multi-variant Incarnon (e.g. Form + Form AoE) get sub-tabs when Incarnon is active.
-
-**Files modified:**
-- `web/static/js/weapons.js` — `selectIncarnonMode()`, `renderAttackTabs()` updated
-- `web/static/results.css` — `.incarnon-toggle`, `.incarnon-btn`, `.incarnon-btn.active` styles
+### CLAUDE.md Updates
+- Added **new page checklist** to CSS rules: dot bg, favicon, sidebar nav, `Cache-Control: no-store` in api.py.
 
 ---
 
-## Unresolved UI Issue — Reliquary Layout
-The user flagged two issues that were NOT fully resolved:
-1. **Empty space to the right of cards** — The relic grid shows cards only on the left with a large empty area on the right. Root cause not yet diagnosed. Likely the `.relic-grid` inside `.factions-wrap` (flex column) is not expanding to full width, or `auto-fill` is only creating 1 column. Needs investigation.
-2. **Rounded corners inconsistency** — `border-radius: 20px` on search input, tier pills, and vault seg doesn't match the app's `var(--radius-sm)` standard. An attempt to fix this was reverted by user ("no that's not it") — unclear what the user actually wants. Needs clarification before touching.
+## CSS File Map
+```
+web/static/base.css        # :root — all CSS variables incl. --radius:8px, --radius-sm:4px
+web/static/layout.css      # shared dot bg on .content/.live-wrap/.factions-wrap
+web/static/panels.css      # .panel (uses var(--radius)), .panel::before gradient lines
+web/static/live.css        # live page — dot bg removed (now in layout.css)
+web/static/factions.css    # .factions-wrap, .roster-entry (now rounded)
+web/static/reliquary.css   # relic cards, pagination, mobile layout
+web/static/reliquary.css:  #   .relic-card matches .panel style
+                           #   .relic-controls/.relic-grid own their horizontal padding
+                           #   .relic-pagination — Prev/page-info/Next bar
+```
 
 ---
 
@@ -49,45 +58,21 @@ jade     body.theme-jade        bg: #080808   surface: rgba(10,18,16,0.85)   acc
 ash      body.theme-ash         bg: #080808   surface: rgba(16,16,16,0.85)   accent: #466482 → #7393b3
 ```
 
-## CSS File Map
-```
-web/static/base.css        # :root (Stalker) + body.theme-jade + body.theme-ash — all CSS variables
-web/static/layout.css      # .header, .sidebar, .brand, .theme-switcher, .sidebar-footer, mobile media
-web/static/panels.css      # .panel, .panel::before, .mod-grid, .mod-card, .mod-picker, dropdowns
-web/static/live.css        # live page only — event rows, cycles, fissures, news/events panel
-web/static/results.css     # .btn-calc, result display, incarnon toggle
-web/static/responsive.css  # breakpoint overrides
-web/static/factions.css    # faction roster styles
-web/static/reliquary.css   # reliquary page styles (NEW)
-web/static/js/theme.js     # applyTheme(), initTheme(), localStorage key: 'void-theme'
-web/static/js/reliquary.js # relic browser logic (NEW)
-```
-
----
-
-## Tier Color Tokens (reliquary.css :root)
-```css
---tier-lith:    #9ca3af;   /* cool gray-silver */
---tier-meso:    #4ade80;   /* soft green */
---tier-neo:     #60a5fa;   /* sky blue */
---tier-axi:     #fbbf24;   /* warm gold */
---tier-requiem: #c084fc;   /* violet */
---tier-vanguard:#fb923c;   /* orange — legacy tier */
-```
-
 ---
 
 ## Pending / Known Issues
-- **Reliquary empty space bug** — see above. Diagnose why grid doesn't fill full width.
-- **Reliquary rounded corners** — user wasn't happy with 20px pills but also rejected `var(--radius-sm)` fix. Needs clarification.
-- **Drop location data** — not present in `Module:Void/data`. Would require scraping a separate wiki module. Not started.
-- **27 placeholder weapons** — have fake IPS values in `data/weapons.json`. Data quality issue.
+- **Drop location data** — not present in `Module:Void/data`. Would require scraping a separate wiki module.
+- **27 placeholder weapons** — have fake IPS values in `data/weapons.json`.
 - **Enkaus weapon** — re-run data refresh once wiki module is updated.
 - **URL state / sharing** — high-value missing feature (no work started).
 
 ---
 
 ## Git Notes
-- Working branch: `claude/review-handoff-0NdQw`
-- User is on branch `codex` locally on Windows — they merge from the claude branch
+- Working branch: `claude/continue-handoff-docs-dF4Zj`
+- User is on branch `codex` locally on Windows — merge with:
+  ```
+  git fetch origin
+  git merge origin/claude/continue-handoff-docs-dF4Zj
+  ```
 - `&&` not supported in Windows PowerShell — run git commands separately
