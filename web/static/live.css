@@ -562,7 +562,7 @@ a.ne-news-link:hover { color: var(--crimson-bright); }
   .live-card-wide { grid-column: 1 / -1; }
   .fissure-list { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .live-grid { grid-template-columns: minmax(0, 1fr); }
   .live-card-wide { grid-column: 1 / -1; }
   .live-controls { gap: 8px; }
