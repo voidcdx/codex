@@ -69,6 +69,7 @@
   align-items: center;
   overflow: hidden;
   max-width: 0;
+  height: 32px;
   transition: max-width 0.25s ease;
   position: relative;
 }
