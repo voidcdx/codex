@@ -73,7 +73,7 @@
 }
 .relic-search-expand.open .search-input-wrap { max-width: 220px; }
 
-.relic-search-input {
+.relic-search-expand input.relic-search-input {
   width: 200px;
   flex-shrink: 0;
   height: 30px;
@@ -91,7 +91,7 @@
   outline: none;
   display: block;
 }
-.relic-search-input::placeholder { color: var(--text-dim); }
+.relic-search-expand input.relic-search-input::placeholder { color: var(--text-dim); }
 
 .search-clear-btn {
   position: absolute;
