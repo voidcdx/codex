@@ -72,8 +72,6 @@
   grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
   gap: 12px;
   align-items: start;
-  background-image: radial-gradient(circle, var(--accent-a18) 1px, transparent 1px);
-  background-size: 20px 20px;
 }
 .live-card-full { grid-column: 1 / -1; }
 .live-card-wide { grid-column: span 2; }

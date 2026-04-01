@@ -171,6 +171,14 @@
 .theme-dot[data-theme="jade"]    { background: #00897b; color: #00e5c8; }
 .theme-dot[data-theme="ash"]     { background: #888888; color: #ffffff; }
 
+/* ── Dot background — applied to every scrollable content wrapper ── */
+.content,
+.live-wrap,
+.factions-wrap {
+  background-image: radial-gradient(circle, var(--accent-a18) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
 /* ── Content grid ── */
 .content {
   flex: 1;
