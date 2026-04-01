@@ -74,19 +74,18 @@
   left: 29px;
   top: -1px;
   height: 30px;
-  width: 0;
+  max-width: 0;
   overflow: hidden;
-  border: 1px solid transparent;
-  border-left: none;
+  border: none;
   border-radius: 0 20px 20px 0;
   background: var(--dropdown-bg);
   z-index: 5;
-  transition: width 0.25s ease, border-color 0.15s;
+  transition: max-width 0.25s ease;
 }
 .relic-search-expand.open .search-input-wrap {
-  width: 210px;
-  border-color: var(--border-highlight);
-  border-left-color: transparent;
+  max-width: 210px;
+  border: 1px solid var(--border-highlight);
+  border-left: none;
 }
 
 .relic-search-expand input.relic-search-input {
