@@ -39,10 +39,13 @@
   height: 30px;
   border: 1px solid var(--border);
   border-radius: 20px;
-  overflow: hidden;
-  transition: border-color 0.15s;
+  overflow: visible;
+  transition: border-color 0.15s, border-radius 0.1s;
 }
-.relic-search-expand.open { border-color: var(--border-highlight); }
+.relic-search-expand.open {
+  border-color: var(--border-highlight);
+  border-radius: 20px 0 0 20px;
+}
 
 .search-toggle-btn {
   display: flex;
@@ -62,17 +65,28 @@
 .search-toggle-btn:hover { color: var(--text); }
 .relic-search-expand.open .search-toggle-btn { color: var(--text); }
 
-/* Wrapper clips the input to zero width when closed */
+/* Input wrap — absolute overlay, never affects flex layout */
 .search-input-wrap {
   display: flex;
   align-items: center;
+  position: absolute;
+  left: 29px;
+  top: -1px;
+  height: 30px;
+  width: 0;
   overflow: hidden;
-  max-width: 0;
-  height: 100%;
-  transition: max-width 0.25s ease;
-  position: relative;
+  border: 1px solid transparent;
+  border-left: none;
+  border-radius: 0 20px 20px 0;
+  background: var(--dropdown-bg);
+  z-index: 5;
+  transition: width 0.25s ease, border-color 0.15s;
 }
-.relic-search-expand.open .search-input-wrap { max-width: 220px; }
+.relic-search-expand.open .search-input-wrap {
+  width: 210px;
+  border-color: var(--border-highlight);
+  border-left-color: transparent;
+}
 
 .relic-search-expand input.relic-search-input {
   width: 200px;
