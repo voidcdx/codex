@@ -190,23 +190,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchWrap   = document.getElementById('relic-search-wrap');
   const searchToggle = document.getElementById('search-toggle');
 
+  function closeSearch() {
+    searchWrap.classList.remove('open', 'has-value');
+    searchInput.value = '';
+    searchQuery = '';
+    currentPage = 0;
+    renderGrid();
+  }
+
   searchToggle.addEventListener('click', () => {
     const isOpen = searchWrap.classList.toggle('open');
-    if (isOpen) {
-      searchInput.focus();
-    } else {
-      searchInput.value = '';
-      searchWrap.classList.remove('has-value');
-      searchQuery = '';
-      currentPage = 0;
-      renderGrid();
+    if (isOpen) searchInput.focus();
+    else closeSearch();
+  });
+
+  document.addEventListener('click', e => {
+    if (searchWrap.classList.contains('open') && !searchWrap.contains(e.target)) {
+      closeSearch();
     }
   });
 
-  searchInput.addEventListener('blur', () => {
-    if (!searchInput.value) {
-      searchWrap.classList.remove('open');
-    }
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSearch();
   });
 
   searchInput.addEventListener('input', () => {

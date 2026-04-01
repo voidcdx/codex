@@ -30,38 +30,36 @@
   flex-shrink: 0;
 }
 
-/* Search expand toggle */
+/* Search expand — unified pill */
 .relic-search-expand {
   display: flex;
   align-items: center;
   position: relative;
   flex-shrink: 0;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: border-color 0.15s;
 }
+.relic-search-expand.open { border-color: var(--border-highlight); }
+
 .search-toggle-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
   color: var(--text-dim);
   cursor: pointer;
   flex-shrink: 0;
-  transition: color 0.15s, border-color 0.15s, border-radius 0.15s;
+  transition: color 0.15s;
 }
-.search-toggle-btn .search-icon {
-  width: 14px;
-  height: 14px;
-}
-.search-toggle-btn:hover { color: var(--text); border-color: var(--border-highlight); }
-.relic-search-expand.open .search-toggle-btn {
-  border-color: var(--border-highlight);
-  color: var(--text);
-  border-right: none;
-  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-}
+.search-toggle-btn .search-icon { width: 14px; height: 14px; }
+.search-toggle-btn:hover { color: var(--text); }
+.relic-search-expand.open .search-toggle-btn { color: var(--text); }
 
 /* Wrapper clips the input to zero width when closed */
 .search-input-wrap {
@@ -69,30 +67,26 @@
   align-items: center;
   overflow: hidden;
   max-width: 0;
-  height: 32px;
+  height: 30px;
   transition: max-width 0.25s ease;
   position: relative;
 }
-.relic-search-expand.open .search-input-wrap {
-  max-width: 240px;
-}
+.relic-search-expand.open .search-input-wrap { max-width: 220px; }
 
 .relic-search-input {
-  width: 210px;
+  width: 200px;
   flex-shrink: 0;
-  height: 32px;
+  height: 30px;
   min-height: 0;
   appearance: none;
   -webkit-appearance: none;
-  background: var(--surface2);
-  border: 1px solid var(--border-highlight);
-  border-left: none;
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: transparent;
+  border: none;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 0.85rem;
-  padding: 0 28px 0 10px;
-  line-height: 32px;
+  padding: 0 24px 0 4px;
+  line-height: 30px;
   box-sizing: border-box;
   outline: none;
   display: block;
@@ -109,7 +103,7 @@
   color: var(--text-dim);
   font-size: 1rem;
   cursor: pointer;
-  padding: 0 4px;
+  padding: 0 2px;
   line-height: 1;
   display: none;
   flex-shrink: 0;
