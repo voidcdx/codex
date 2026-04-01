@@ -64,11 +64,12 @@
 }
 
 .relic-search-input {
-  width: 0;
+  max-width: 0;
+  width: 210px;
   height: 32px;
   overflow: hidden;
   background: var(--surface2);
-  border: 1px solid var(--border-highlight);
+  border: 1px solid transparent;
   border-left: none;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--text);
@@ -78,12 +79,13 @@
   box-sizing: border-box;
   outline: none;
   opacity: 0;
-  transition: width 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
+  transition: max-width 0.25s ease, padding 0.25s ease, opacity 0.2s ease, border-color 0.15s;
 }
 .relic-search-expand.open .relic-search-input {
-  width: 210px;
+  max-width: 210px;
   padding: 0 28px 0 10px;
   opacity: 1;
+  border-color: var(--border-highlight);
 }
 .relic-search-input::placeholder { color: var(--text-dim); }
 
