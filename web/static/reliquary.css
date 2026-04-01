@@ -30,29 +30,28 @@
   flex-shrink: 0;
 }
 
-/* Search expand — unified pill */
-.relic-search-expand {
+/* Search pill — single expanding element */
+.search-pill {
   display: flex;
   align-items: center;
-  position: relative;
   flex-shrink: 0;
   width: 32px;
   height: 32px;
   border: 1px solid var(--border);
   border-radius: 20px;
-  overflow: visible;
-  transition: border-color 0.15s, border-radius 0.1s;
+  overflow: hidden;
+  transition: width 0.25s ease, border-color 0.15s;
 }
-.relic-search-expand.open {
+.search-pill.open {
+  width: 220px;
   border-color: var(--border-highlight);
-  border-right: none;
-  border-radius: 20px 0 0 20px;
 }
 
-.search-toggle-btn {
+.search-pill-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 30px;
   height: 30px;
   padding: 0;
@@ -60,42 +59,15 @@
   border: none;
   color: var(--text-dim);
   cursor: pointer;
-  flex-shrink: 0;
   transition: color 0.15s;
 }
-.search-toggle-btn .search-icon { width: 14px; height: 14px; }
-.search-toggle-btn:hover { color: var(--text); }
-.relic-search-expand.open .search-toggle-btn { color: var(--text); }
+.search-pill-btn svg { width: 14px; height: 14px; }
+.search-pill-btn:hover,
+.search-pill.open .search-pill-btn { color: var(--text); }
 
-/* Input wrap — absolute overlay, never affects flex layout */
-.search-input-wrap {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  left: 31px;
-  top: -1px;
-  height: 32px;
-  max-width: 0;
-  overflow: hidden;
-  opacity: 0;
-  border: 1px solid var(--border-highlight);
-  border-left: none;
-  border-radius: 0 20px 20px 0;
-  background: var(--dropdown-bg);
-  z-index: 5;
-  transition: max-width 0.25s ease, opacity 0.15s ease;
-}
-.relic-search-expand.open .search-input-wrap {
-  max-width: 210px;
-  opacity: 1;
-}
-
-.relic-search-expand input.relic-search-input {
-  width: 200px;
-  flex-shrink: 0;
-  align-self: center;
-  appearance: none;
-  -webkit-appearance: none;
+.search-pill-input {
+  flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -104,34 +76,29 @@
   font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 600;
-  padding: 0 24px 0 4px;
+  padding: 0;
   margin-bottom: 0;
-  box-sizing: border-box;
   outline: none;
+  opacity: 0;
+  transition: opacity 0.15s;
 }
-.relic-search-expand input.relic-search-input:focus {
-  border: none;
-  box-shadow: none;
-  outline: none;
-}
-.relic-search-expand input.relic-search-input::placeholder { color: var(--text-dim); }
+.search-pill.open .search-pill-input { opacity: 1; }
+.search-pill-input::placeholder { color: var(--text-dim); }
+.search-pill-input:focus { border: none; box-shadow: none; outline: none; }
 
-.search-clear-btn {
-  position: absolute;
-  right: 4px;
-  top: 50%;
-  transform: translateY(-50%);
+.search-pill-clear {
+  flex-shrink: 0;
+  width: 20px;
   background: none;
   border: none;
   color: var(--text-dim);
   font-size: 1rem;
   cursor: pointer;
-  padding: 0 2px;
+  padding: 0;
   line-height: 1;
   display: none;
-  flex-shrink: 0;
 }
-.relic-search-expand.has-value .search-clear-btn { display: block; }
+.search-pill.has-value .search-pill-clear { display: flex; align-items: center; justify-content: center; }
 
 .relic-count {
   font-family: var(--font-body);
