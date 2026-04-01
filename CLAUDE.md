@@ -50,21 +50,29 @@ data/
   weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
   mods.json         # 1405 mods — damage%, elemental%, ips%, cc/cd/sc/multishot, faction bonus; Conclave mods excluded
   enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, base_level, base_health, base_shield, head_multiplier
+  relics.json       # 732 relics — name, tier, vaulted, is_baro, introduced, rewards:[{item,part,rarity}]
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
   parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json (multi-attack aware)
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
+  fetch_wiki_playwright.py # Playwright-based fetcher — bypasses 403s using real Chromium; must run on Windows
+                   #   Fetches weapons_data.lua, mods_data.lua, enemies_data.lua, void_data.lua
+                   #   Handles both old stealth_async and new Stealth class playwright-stealth APIs
+  parse_relic_data.py # parses data/void_data.lua → data/relics.json (732 relics)
+                   #   _extract_block() skips empty RelicData={} declaration (line 51) to find real data
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
   parse_worldstate.py # worldstate parser: parse(raw); _parse_nightwave(raw); _parse_goals(raw) for anniversary gifts
                    #   _NW_NAMES + _NW_DESCRIPTIONS (~120 entries each); _NW_ELITE_NAMES/_NW_ELITE_DESCRIPTIONS for weekly/elite key collisions
                    #   Gifts of the Lotus: Goals array (Tag: Anniversary*TacAlert) → gift events; Alerts array (Tag: LotusGift) → regular alert rows
 web/
-  api.py            # FastAPI: GET /api/weapons|mods|enemies|version; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
+  api.py            # FastAPI: GET /api/weapons|mods|enemies|version|relics; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
+                   #   GET /api/relics — optional query params: tier, vaulted, reward
                    #   All HTML routes served with Cache-Control: no-store
                    #   GET /favicon.ico → web/static/favicon.png (explicit route, StaticFiles would 404)
                    #   Routes: GET / → index.html (live tracker), GET /live → index.html (alias),
-                   #           GET /calculator → calculator.html, GET /factions → factions.html
+                   #           GET /calculator → calculator.html, GET /factions → factions.html,
+                   #           GET /reliquary → reliquary.html
   static/index.html # Live Data SPA — default page at /
                    #   .live-page-wrap: centering wrapper (no banner — removed)
                    #   header: .live-header-brand ("VOID CODEX" + .live-subtext "WORLD STATUS" glitch) left, .refresh-info right
@@ -92,6 +100,15 @@ web/
                    #   .roster-entry (flex row, faction-color left border + gradient bleed)
                    #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
+  static/reliquary.html # Reliquary page — at /reliquary
+                   #   Controls: search row (search input 320px + count) + filter row (tier pills + vault segmented)
+                   #   Tier pills: All / Lith / Meso / Neo / Axi / Requiem — each tier gets its color when active
+                   #   Vault seg: All / Unvaulted / Vaulted
+                   #   Grid: .relic-grid auto-fill minmax(280px, 1fr) inside .factions-wrap
+                   #   NOTE: large empty space to the right of cards is an unresolved layout bug
+  static/reliquary.css  # Reliquary styles — tier color tokens (:root), controls, tier pills, vault seg,
+                   #   .relic-card (data-tier attr drives tier bar + badge color), reward rows with rarity dots
+                   #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard
   static/live.css  # Live page styles — .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
                    #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
                    #   .ne-news-list li (flex row), .ne-news-link (inline-flex, 1rem), .ne-news-time (0.85rem dim, inline before title)
@@ -111,6 +128,10 @@ web/
     combobox.js    # setupCombobox(), clearCombobox(); setupPickerModal(), openPickerModal(),
                    #   closePickerModal(), renderPickerResults() — modal-based weapon/enemy picker
     weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
+                   #   selectIncarnonMode(mode) — toggles Normal/Incarnon attack; weapons with *incarnon* attacks
+                   #   get a pill toggle instead of raw attack tabs
+    reliquary.js   # relic browser — loadRelics(), renderGrid(), matchesSearch(), renderCard()
+                   #   setTier(btn), setVault(btn), clearSearch() — filter state: activeTier/activeVault/searchQuery
     enemy.js       # enemy panel, level scaling, Steel Path, Eximus
     modals.js      # Alchemy Guide, Riven Builder, Guide, Buffs
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
@@ -130,16 +151,24 @@ skills/
 ```
 
 ## Tests
-Run `pytest` before committing. All tests must pass. **304 tests** as of v0.6.0.
+Run `pytest` before committing. All tests must pass. **304 tests** as of v0.7.0.
 
 ## Data Refresh Notes
 - `fetch_wiki_data.py` is blocked by the wiki (403). **Do not attempt automated fetch.**
-- To refresh data: open browser → download raw Lua modules manually → run parse scripts.
-  1. `https://wiki.warframe.com/w/Module:Weapons/data?action=raw` → save as `data/weapons_data.lua`
-  2. `https://wiki.warframe.com/w/Module:Mods/data?action=raw` → save as `data/mods_data.lua`
-  3. `python scripts/parse_lua.py` → produces `weapons_raw.json` / `mods_raw.json`
-  4. `python scripts/parse_wiki_data.py` → produces `weapons.json` / `mods.json`
-  5. `git diff data/weapons.json` to review changes, then `pytest`
+- To refresh data: use `scripts/fetch_wiki_playwright.py` on Windows (sandbox has no internet):
+  ```
+  python scripts/fetch_wiki_playwright.py
+  ```
+  Downloads: `weapons_data.lua`, `mods_data.lua`, `enemies_data.lua`, `void_data.lua` into `data/`
+- Then run parse scripts:
+  1. `python scripts/parse_lua.py` → produces `weapons_raw.json` / `mods_raw.json`
+  2. `python scripts/parse_wiki_data.py` → produces `weapons.json` / `mods.json`
+  3. `python scripts/parse_relic_data.py` → produces `relics.json`
+  4. `git diff data/weapons.json` to review changes, then `pytest`
+- Fallback (if Playwright fails): open browser → download raw Lua manually from:
+  - `https://wiki.warframe.com/w/Module:Weapons/data?action=raw`
+  - `https://wiki.warframe.com/w/Module:Mods/data?action=raw`
+  - `https://wiki.warframe.com/w/Module:Void/data?action=raw`
 - New weapons appear in `Module:Weapons/data` a few days after in-game release. If a weapon is missing, check the module directly in browser first before debugging the parse pipeline.
 
 ## Versioning
