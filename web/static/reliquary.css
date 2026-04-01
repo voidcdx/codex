@@ -130,8 +130,6 @@
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  isolation: isolate;
 }
 .relic-tier-pill {
   padding: 4px 11px;
@@ -148,6 +146,7 @@
 }
 .relic-tier-pill:first-child { border-left: none; }
 .relic-tier-pill:hover { color: var(--text); background: var(--surface2); }
+.relic-tier-pill { -webkit-tap-highlight-color: transparent; }
 .relic-tier-pill.active[data-tier="all"]     { color: var(--text);         background: var(--surface2); }
 .relic-tier-pill.active[data-tier="Lith"]    { color: var(--tier-lith);    background: rgba(156,163,175,0.1); }
 .relic-tier-pill.active[data-tier="Meso"]    { color: var(--tier-meso);    background: rgba(74,222,128,0.1); }
@@ -162,8 +161,6 @@
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  isolation: isolate;
 }
 .vault-seg-btn {
   padding: 4px 12px;
@@ -377,7 +374,15 @@
 /* Mobile (≤600px) */
 @media (max-width: 600px) {
   .relic-controls { padding: 10px 12px; gap: 6px; flex-wrap: wrap; }
-  .relic-tier-pills { flex-wrap: wrap; gap: 4px; order: 2; }
+  .relic-tier-pills {
+    order: 2;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .relic-tier-pills::-webkit-scrollbar { display: none; }
   .vault-seg { order: 3; margin-left: auto; }
   .relic-count { order: 4; }
 
