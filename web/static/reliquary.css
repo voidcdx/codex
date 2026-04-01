@@ -167,6 +167,7 @@
   width: 30px;
   height: 30px;
   padding: 0;
+  box-sizing: border-box;
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 50%;
@@ -181,7 +182,7 @@
 
 /* Vault dropdown pill */
 .vault-drop-menu {
-  display: none;
+  display: flex;
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
@@ -191,8 +192,11 @@
   background: var(--dropdown-bg);
   z-index: 100;
   white-space: nowrap;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.2s ease, opacity 0.15s ease;
 }
-.vault-drop-wrap.open .vault-drop-menu { display: flex; }
+.vault-drop-wrap.open .vault-drop-menu { max-height: 40px; opacity: 1; }
 .vault-drop-item {
   padding: 4px 12px;
   border: none;
