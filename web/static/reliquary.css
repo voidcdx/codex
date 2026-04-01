@@ -23,26 +23,73 @@
 /* ── Controls ──────────────────────────────────────────── */
 .relic-controls {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 10px;
-  padding: 16px 28px 14px;
+  padding: 12px 28px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
-/* Row 1: search (fixed width) */
-.relic-search-row { display: flex; }
-.relic-search-row .search-wrap { width: 320px; }
-
-/* Pin icon vertically in pill */
-.relic-search-row .search-icon {
-  top: 50%;
-  transform: translateY(-50%);
-  left: 12px;
+/* Search expand toggle */
+.relic-search-expand {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
 }
-.relic-search-row .search-clear-btn {
+.search-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s, border-radius 0.15s;
+}
+.search-toggle-btn .search-icon {
+  width: 14px;
+  height: 14px;
+}
+.search-toggle-btn:hover { color: var(--text); border-color: var(--border-highlight); }
+.relic-search-expand.open .search-toggle-btn {
+  border-color: var(--border-highlight);
+  color: var(--text);
+  border-right: none;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.relic-search-input {
+  width: 0;
+  height: 32px;
+  overflow: hidden;
+  background: var(--surface2);
+  border: 1px solid var(--border-highlight);
+  border-left: none;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  opacity: 0;
+  transition: width 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
+}
+.relic-search-expand.open .relic-search-input {
+  width: 210px;
+  padding: 0 28px 0 10px;
+  opacity: 1;
+}
+.relic-search-input::placeholder { color: var(--text-dim); }
+
+.search-clear-btn {
   position: absolute;
-  right: 10px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -51,28 +98,12 @@
   font-size: 1rem;
   cursor: pointer;
   padding: 0 4px;
+  line-height: 1;
   display: none;
 }
-.relic-search-row .search-wrap.has-value .search-clear-btn { display: block; }
-
-.relic-search-input {
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 7px 28px 7px 32px;
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.15s;
-  box-sizing: border-box;
-}
-.relic-search-input::placeholder { color: var(--text-dim); }
-.relic-search-input:focus { border-color: var(--border-highlight); }
+.relic-search-expand.has-value .search-clear-btn { display: block; }
 
 .relic-count {
-  margin-left: auto;
   font-family: var(--font-body);
   font-size: 0.78rem;
   color: var(--text-dim);
@@ -80,15 +111,7 @@
   flex-shrink: 0;
 }
 
-/* Row 2: tier pills + vault segmented */
-.relic-filter-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* Tier pills */
+/* Tier pills (inline in single controls row) */
 .relic-tier-pills {
   display: flex;
   gap: 4px;
@@ -325,22 +348,17 @@
 
 /* Tablet (≤900px) */
 @media (max-width: 900px) {
-  .relic-controls { padding: 16px 16px 14px; }
+  .relic-controls { padding: 12px 16px; }
   .relic-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding: 0 16px 16px; }
   .relic-pagination { padding: 12px 16px 20px; }
 }
 
 /* Mobile (≤600px) */
 @media (max-width: 600px) {
-  .relic-controls { padding: 12px 16px 10px; gap: 8px; }
-
-  .relic-search-row { flex-wrap: wrap; gap: 8px; }
-  .relic-search-row .search-wrap { width: 100%; }
-  .relic-count { margin-left: 0; }
-
-  .relic-filter-row { gap: 8px; }
-  .relic-tier-pills { flex-wrap: wrap; gap: 4px; }
-  .vault-seg { margin-left: 0; }
+  .relic-controls { padding: 10px 12px; gap: 6px; flex-wrap: wrap; }
+  .relic-tier-pills { flex-wrap: wrap; gap: 4px; order: 2; }
+  .vault-seg { order: 3; margin-left: auto; }
+  .relic-count { order: 4; }
 
   .relic-grid { grid-template-columns: 1fr; gap: 8px; }
 }
