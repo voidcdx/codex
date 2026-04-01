@@ -140,8 +140,8 @@
   inset: 0;
   border-radius: var(--radius);
   background:
-    linear-gradient(90deg, transparent, var(--panel-line-color), transparent) top / 100% 1px no-repeat,
-    linear-gradient(90deg, transparent, var(--panel-line-color), transparent) bottom / 100% 1px no-repeat;
+    linear-gradient(90deg, transparent, var(--panel-line-top), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, var(--panel-line-bottom), transparent) bottom / 100% 1px no-repeat;
   pointer-events: none;
 }
 .fissure-row {

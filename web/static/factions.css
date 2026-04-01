@@ -136,6 +136,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 3px solid var(--faction-color, var(--border-red));
+  border-radius: var(--radius);
   backdrop-filter: blur(var(--glass-blur));
   transition: border-color 0.15s, background 0.15s;
   position: relative;
