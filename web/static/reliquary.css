@@ -16,14 +16,104 @@
   --rarity-rare:     #fbbf24;
 }
 
-/* ── Count label ───────────────────────────────────────── */
-.relic-count {
-  margin-left: auto;
+/* ── Controls ──────────────────────────────────────────── */
+.relic-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* Row 1: search + count */
+.relic-search-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.relic-search-row .search-wrap { flex: 1; }
+.relic-search-row .search-wrap .faction-search-input,
+.relic-search-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 28px 7px 32px;
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.88rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.relic-search-input::placeholder { color: var(--text-dim); }
+.relic-search-input:focus { border-color: var(--border-highlight); }
+
+.relic-count {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
   color: var(--text-dim);
   white-space: nowrap;
+  flex-shrink: 0;
 }
+
+/* Row 2: tier pills + vault segmented */
+.relic-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Tier pills */
+.relic-tier-pills {
+  display: flex;
+  gap: 4px;
+}
+.relic-tier-pill {
+  padding: 4px 11px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.relic-tier-pill:hover { color: var(--text); border-color: var(--border-highlight); }
+.relic-tier-pill.active[data-tier="all"]     { color: var(--text);         border-color: var(--border-highlight); background: var(--surface2); }
+.relic-tier-pill.active[data-tier="Lith"]    { color: var(--tier-lith);    border-color: var(--tier-lith);        background: rgba(156,163,175,0.1); }
+.relic-tier-pill.active[data-tier="Meso"]    { color: var(--tier-meso);    border-color: var(--tier-meso);        background: rgba(74,222,128,0.1); }
+.relic-tier-pill.active[data-tier="Neo"]     { color: var(--tier-neo);     border-color: var(--tier-neo);         background: rgba(96,165,250,0.1); }
+.relic-tier-pill.active[data-tier="Axi"]     { color: var(--tier-axi);     border-color: var(--tier-axi);         background: rgba(251,191,36,0.1); }
+.relic-tier-pill.active[data-tier="Requiem"] { color: var(--tier-requiem); border-color: var(--tier-requiem);     background: rgba(192,132,252,0.1); }
+
+/* Vault segmented control */
+.vault-seg {
+  display: flex;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.vault-seg-btn {
+  padding: 4px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+.vault-seg-btn + .vault-seg-btn { border-left: 1px solid var(--border); }
+.vault-seg-btn:hover { color: var(--text); background: var(--surface2); }
+.vault-seg-btn.active { background: var(--accent-a15); color: var(--accent2); }
 
 /* ── Card grid ─────────────────────────────────────────── */
 .relic-grid {
@@ -151,13 +241,6 @@
   flex-shrink: 0;
 }
 
-/* ── Tier filter pill overrides ────────────────────────── */
-.filter-pill.lith-pill.active    { color: var(--tier-lith);    border-color: var(--tier-lith);    background: rgba(156,163,175,0.12); }
-.filter-pill.meso-pill.active    { color: var(--tier-meso);    border-color: var(--tier-meso);    background: rgba(74,222,128,0.12); }
-.filter-pill.neo-pill.active     { color: var(--tier-neo);     border-color: var(--tier-neo);     background: rgba(96,165,250,0.12); }
-.filter-pill.axi-pill.active     { color: var(--tier-axi);     border-color: var(--tier-axi);     background: rgba(251,191,36,0.12); }
-.filter-pill.requiem-pill.active { color: var(--tier-requiem); border-color: var(--tier-requiem); background: rgba(192,132,252,0.12); }
-
 /* ── No results ────────────────────────────────────────── */
 .relic-empty {
   grid-column: 1 / -1;
@@ -169,7 +252,25 @@
 }
 
 /* ── Responsive ────────────────────────────────────────── */
+
+/* Tablet (≤900px) */
+@media (max-width: 900px) {
+  .relic-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+/* Mobile (≤600px) */
 @media (max-width: 600px) {
-  .relic-grid { grid-template-columns: 1fr; }
-  .relic-count { margin-left: 0; width: 100%; }
+  .relic-controls { padding: 12px 14px 10px; gap: 8px; }
+
+  .relic-search-row { flex-wrap: wrap; gap: 8px; }
+  .relic-count { margin-left: 0; }
+
+  .relic-filter-row { gap: 8px; }
+  .relic-tier-pills { flex-wrap: wrap; gap: 4px; }
+  .vault-seg { margin-left: 0; }
+
+  .relic-grid { grid-template-columns: 1fr; gap: 8px; }
+  .relic-grid-wrap { padding: 12px 14px; }
+
+  .factions-wrap { padding: 0; gap: 0; }
 }
