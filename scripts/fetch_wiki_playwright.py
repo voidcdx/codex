@@ -9,16 +9,24 @@ Run on Windows (where Playwright + Chromium are installed):
 Outputs:
   data/weapons_data.lua
   data/mods_data.lua
-  data/enemies_data.lua   (optional — only if MODULE_ENEMIES is reachable)
+  data/enemies_data.lua
+  data/void_data.lua      ← relic pool data (tiers, rewards, drop locations)
 
 Then run the normal parse pipeline:
   python scripts/parse_lua.py
   python scripts/parse_wiki_data.py
+  python scripts/parse_relic_data.py
+
+Environment variables:
+  PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH — override Chromium binary path
+    e.g. on Linux with system chromium:
+      export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser
 """
 
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -29,6 +37,7 @@ MODULES = [
     ("weapons_data.lua", "https://wiki.warframe.com/w/Module:Weapons/data?action=raw"),
     ("mods_data.lua",    "https://wiki.warframe.com/w/Module:Mods/data?action=raw"),
     ("enemies_data.lua", "https://wiki.warframe.com/w/Module:Enemies/data?action=raw"),
+    ("void_data.lua",    "https://wiki.warframe.com/w/Module:Void/data?action=raw"),
 ]
 
 
@@ -39,8 +48,15 @@ async def fetch_all() -> None:
     except ImportError as exc:
         sys.exit(f"Missing dependency: {exc}\n  pip install playwright playwright-stealth")
 
+    chromium_path = os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH")
+
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        launch_kwargs: dict = {"headless": True}
+        if chromium_path:
+            print(f"Using Chromium at: {chromium_path}")
+            launch_kwargs["executable_path"] = chromium_path
+
+        browser = await p.chromium.launch(**launch_kwargs)
         context = await browser.new_context(
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -72,6 +88,7 @@ async def fetch_all() -> None:
     print("\nDone. Now run:")
     print("  python scripts/parse_lua.py")
     print("  python scripts/parse_wiki_data.py")
+    print("  python scripts/parse_relic_data.py")
 
 
 if __name__ == "__main__":
