@@ -320,12 +320,12 @@ function buildInvasionsCard(invasions) {
         ${inv.eta && inv.eta !== '?' ? `<span class="eta-chip">${esc(inv.eta)}</span>` : ''}
       </div>
       <div class="invasion-sides">
-        <div class="invasion-side invasion-attacker">
+        <div class="invasion-side invasion-attacker" data-faction="${inv.attacker.toLowerCase()}">
           <span class="invasion-faction">${esc(inv.attacker)}</span>
           ${inv.attacker_reward ? `<span class="reward-chip">${esc(inv.attacker_reward)}</span>` : ''}
         </div>
         <span class="invasion-vs">VS</span>
-        <div class="invasion-side invasion-defender">
+        <div class="invasion-side invasion-defender" data-faction="${inv.defender.toLowerCase()}">
           <span class="invasion-faction">${esc(inv.defender)}</span>
           ${inv.defender_reward ? `<span class="reward-chip">${esc(inv.defender_reward)}</span>` : ''}
         </div>

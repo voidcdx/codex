@@ -371,6 +371,12 @@
   color: var(--text-dim);
   padding: 1px 0;
 }
+.invasion-side[data-faction="grineer"]  .reward-chip { color: #c07828; }
+.invasion-side[data-faction="corpus"]   .reward-chip { color: #4090c0; }
+.invasion-side[data-faction="infested"] .reward-chip { color: #60a030; }
+.invasion-side[data-faction="orokin"]   .reward-chip,
+.invasion-side[data-faction="corrupted"] .reward-chip,
+.invasion-side[data-faction="sentient"] .reward-chip { color: #9060c0; }
 
 /* ── Open World Cycles ── */
 .cycle-grid {
