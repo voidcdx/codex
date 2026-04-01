@@ -81,6 +81,9 @@
   width: 210px;
   flex-shrink: 0;
   height: 32px;
+  min-height: 0;
+  appearance: none;
+  -webkit-appearance: none;
   background: var(--surface2);
   border: 1px solid var(--border-highlight);
   border-left: none;
@@ -89,8 +92,10 @@
   font-family: var(--font-body);
   font-size: 0.85rem;
   padding: 0 28px 0 10px;
+  line-height: 32px;
   box-sizing: border-box;
   outline: none;
+  display: block;
 }
 .relic-search-input::placeholder { color: var(--text-dim); }
 
