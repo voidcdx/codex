@@ -525,6 +525,18 @@ function selectAttack(name) {
   updateElementBadges();
 }
 
+function selectIncarnonMode(mode) {
+  const weapon = getCurrentWeapon();
+  if (!weapon || !weapon.attacks) return;
+  if (mode === 'normal') {
+    const normal = weapon.attacks.find(a => !a.name.toLowerCase().includes('incarnon'));
+    selectAttack(normal ? normal.name : weapon.attacks[0].name);
+  } else {
+    const incarnon = weapon.attacks.find(a => a.name.toLowerCase().includes('incarnon'));
+    if (incarnon) selectAttack(incarnon.name);
+  }
+}
+
 function getSelectedAttackData(weapon) {
   if (!weapon || !weapon.attacks || !weapon.attacks.length) return null;
   if (selectedAttack) {
@@ -561,12 +573,29 @@ function showWeaponStats(weapon) {
 
   const isMelee = weapon.slot === 'Melee';
   const hasMultiAttack = weapon.attacks && weapon.attacks.length > 1;
-  const attackTabsHtml = hasMultiAttack
-    ? `<div class="attack-tabs">${weapon.attacks.map(a =>
+  const incarnonAttacks = weapon.attacks ? weapon.attacks.filter(a => a.name.toLowerCase().includes('incarnon')) : [];
+  const hasIncarnon = incarnonAttacks.length > 0;
+  const isIncarnonMode = hasIncarnon && selectedAttack && selectedAttack.toLowerCase().includes('incarnon');
+
+  let attackTabsHtml = '';
+  if (hasIncarnon) {
+    attackTabsHtml = `<div class="incarnon-toggle">
+      <button class="incarnon-btn${!isIncarnonMode ? ' active' : ''}" onclick="selectIncarnonMode('normal')">Normal</button>
+      <button class="incarnon-btn${isIncarnonMode ? ' active' : ''}" onclick="selectIncarnonMode('incarnon')">Incarnon</button>
+    </div>`;
+    if (isIncarnonMode && incarnonAttacks.length > 1) {
+      attackTabsHtml += `<div class="attack-tabs attack-tabs--sub">${incarnonAttacks.map(a => {
+        const label = a.name.replace(/incarnon form\s*/i, '').trim() || 'Form';
+        return `<button class="attack-tab${a.name === selectedAttack ? ' active' : ''}"
+          onclick="selectAttack(this.dataset.name)" data-name="${esc(a.name)}">${esc(label)}</button>`;
+      }).join('')}</div>`;
+    }
+  } else if (hasMultiAttack) {
+    attackTabsHtml = `<div class="attack-tabs">${weapon.attacks.map(a =>
         `<button class="attack-tab${a.name === selectedAttack ? ' active' : ''}"
           onclick="selectAttack(this.dataset.name)" data-name="${esc(a.name)}">${esc(a.name)}</button>`
-      ).join('')}</div>`
-    : '';
+      ).join('')}</div>`;
+  }
 
   document.getElementById('weapon-stats-content').innerHTML = `
     ${imgHtml}
