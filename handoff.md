@@ -101,7 +101,6 @@
 
 ## Pending / Known Issues
 - **Search glass off-center** — unresolved. Container is 30px border-box (28px inner), button is 30px (overflows). Sub-pixel rendering may cause visual off-centering. Consider: move border to button directly (remove from container), use `overflow: hidden` with a separate absolute-positioning wrapper outside the container.
-- **pagination-preview.html** — throwaway file in `web/static/`, can be deleted
 - **Drop location data** — not in `Module:Void/data`. Requires separate wiki module.
 - **27 placeholder weapons** — fake IPS values in `data/weapons.json`.
 - **URL state / sharing** — high-value missing feature (no work started).
