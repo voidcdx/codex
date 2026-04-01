@@ -96,14 +96,24 @@ function renderCard(relic, query) {
   </div>`;
 }
 
-function renderPagination(page, total) {
+function renderPagination(page, total, countText) {
   const el = document.getElementById('relic-pagination');
   if (!el) return;
-  if (total <= 1) { el.innerHTML = ''; return; }
+  const countRow = countText ? `<div class="relic-count">${countText}</div>` : '';
+  if (total <= 1) { el.innerHTML = countRow; return; }
   el.innerHTML = `
-    <button class="relic-page-btn" onclick="goToPage(${page - 1})" ${page === 0 ? 'disabled' : ''}>← Prev</button>
-    <span class="relic-page-info">Page ${page + 1} of ${total}</span>
-    <button class="relic-page-btn" onclick="goToPage(${page + 1})" ${page === total - 1 ? 'disabled' : ''}>Next →</button>
+    <div class="relic-page-controls">
+      <button class="relic-page-btn" onclick="goToPage(${page - 1})" ${page === 0 ? 'disabled' : ''}>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="10,3 5,8 10,13"/></svg>
+        Prev
+      </button>
+      <span class="relic-page-info">Page ${page + 1} of ${total}</span>
+      <button class="relic-page-btn" onclick="goToPage(${page + 1})" ${page === total - 1 ? 'disabled' : ''}>
+        Next
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,3 11,8 6,13"/></svg>
+      </button>
+    </div>
+    ${countRow}
   `;
 }
 
@@ -131,27 +141,20 @@ function renderGrid() {
   const start = currentPage * PAGE_SIZE;
   const pageItems = filtered.slice(start, start + PAGE_SIZE);
 
-  const countEl = document.getElementById('relic-count');
-  if (countEl) {
-    const end = Math.min(start + PAGE_SIZE, filtered.length);
-    if (filtered.length === 0) {
-      countEl.textContent = '0 relics';
-    } else if (totalPages === 1) {
-      countEl.textContent = `${filtered.length} relics`;
-    } else {
-      countEl.textContent = `${start + 1}–${end} of ${filtered.length}`;
-    }
-  }
+  const end = Math.min(start + PAGE_SIZE, filtered.length);
+  const countText = filtered.length === 0 ? '0 relics'
+    : totalPages === 1 ? `${filtered.length} relics`
+    : `${start + 1}–${end} of ${filtered.length} relics`;
 
   const grid = document.getElementById('relic-grid');
   if (filtered.length === 0) {
     grid.innerHTML = '<div class="relic-empty">No relics match your filters.</div>';
-    renderPagination(0, 0);
+    renderPagination(0, 0, countText);
     return;
   }
 
   grid.innerHTML = pageItems.map(r => renderCard(r, q)).join('');
-  renderPagination(currentPage, totalPages);
+  renderPagination(currentPage, totalPages, countText);
 }
 
 // ---------------------------------------------------------------------------
