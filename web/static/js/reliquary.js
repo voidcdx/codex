@@ -23,14 +23,14 @@ async function loadRelics() {
 // Filters
 // ---------------------------------------------------------------------------
 function setTier(btn) {
-  document.querySelectorAll('#tier-pills .filter-pill').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#tier-pills .relic-tier-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeTier = btn.dataset.tier;
   renderGrid();
 }
 
 function setVault(btn) {
-  document.querySelectorAll('#vault-pills .filter-pill').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#vault-pills .vault-seg-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeVault = btn.dataset.vault;
   renderGrid();
