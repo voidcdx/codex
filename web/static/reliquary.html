@@ -55,10 +55,18 @@
       <button class="relic-tier-pill" data-tier="Requiem" onclick="setTier(this)">Requiem</button>
     </div>
 
-    <div class="vault-seg" id="vault-pills">
-      <button class="vault-seg-btn"        data-vault="all"       onclick="setVault(this)">All</button>
-      <button class="vault-seg-btn active" data-vault="unvaulted" onclick="setVault(this)">Unvaulted</button>
-      <button class="vault-seg-btn"        data-vault="vaulted"   onclick="setVault(this)">Vaulted</button>
+    <div class="vault-drop-wrap" id="vault-wrap">
+      <button class="vault-drop-btn" id="vault-toggle" aria-label="Vault filter">
+        <svg class="vault-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="7" width="10" height="8" rx="1.5"/>
+          <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/>
+        </svg>
+      </button>
+      <div class="vault-drop-menu" id="vault-menu">
+        <button class="vault-drop-item"        data-vault="all"       onclick="setVault(this)">All</button>
+        <button class="vault-drop-item active" data-vault="unvaulted" onclick="setVault(this)">Unvaulted</button>
+        <button class="vault-drop-item"        data-vault="vaulted"   onclick="setVault(this)">Vaulted</button>
+      </div>
     </div>
 
   </div>
