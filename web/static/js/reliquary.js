@@ -195,10 +195,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchWrap   = document.getElementById('relic-search-wrap');
   const searchToggle = document.getElementById('search-toggle');
 
+  function closePill() {
+    searchWrap.classList.remove('open');
+  }
+
   searchToggle.addEventListener('click', () => {
     const isOpen = searchWrap.classList.toggle('open');
     if (isOpen) searchInput.focus();
-    else clearSearch();
+    else closePill();
   });
 
   document.getElementById('search-clear').addEventListener('click', clearSearch);
@@ -212,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('click', e => {
     if (searchWrap.classList.contains('open') && !searchWrap.contains(e.target)) {
-      clearSearch();
+      closePill();
     }
     if (vaultWrap.classList.contains('open') && !vaultWrap.contains(e.target)) {
       vaultWrap.classList.remove('open');
@@ -221,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchInput.addEventListener('keydown', e => {
     if (e.key === 'Escape') clearSearch();
+    if (e.key === 'Enter') closePill();
   });
 
   searchInput.addEventListener('input', () => {
