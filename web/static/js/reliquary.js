@@ -1,9 +1,11 @@
 /* Reliquary — relic browser */
 
-let allRelics = [];
+const PAGE_SIZE = 50;
+let allRelics   = [];
 let activeTier  = 'all';
-let activeVault = 'all';
+let activeVault = 'unvaulted';
 let searchQuery = '';
+let currentPage = 0;
 
 // ---------------------------------------------------------------------------
 // Data load
@@ -26,6 +28,7 @@ function setTier(btn) {
   document.querySelectorAll('#tier-pills .relic-tier-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeTier = btn.dataset.tier;
+  currentPage = 0;
   renderGrid();
 }
 
@@ -33,6 +36,7 @@ function setVault(btn) {
   document.querySelectorAll('#vault-pills .vault-seg-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeVault = btn.dataset.vault;
+  currentPage = 0;
   renderGrid();
 }
 
@@ -40,6 +44,7 @@ function clearSearch() {
   document.getElementById('relic-search').value = '';
   document.getElementById('relic-search-wrap').classList.remove('has-value');
   searchQuery = '';
+  currentPage = 0;
   renderGrid();
 }
 
@@ -67,7 +72,6 @@ function matchesSearch(relic, q) {
 
 function renderCard(relic, query) {
   const rewardRows = relic.rewards.map(r => {
-    const fullName = r.part ? `${r.item} ${r.part}` : r.item;
     return `<div class="reward-row rarity-${esc(r.rarity)}">
       <span class="reward-dot"></span>
       <span class="reward-name">${highlight(r.item, query)}${r.part ? ` <span class="reward-part">${highlight(r.part, query)}</span>` : ''}</span>
@@ -90,6 +94,24 @@ function renderCard(relic, query) {
   </div>`;
 }
 
+function renderPagination(page, total) {
+  const el = document.getElementById('relic-pagination');
+  if (!el) return;
+  if (total <= 1) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <button class="relic-page-btn" onclick="goToPage(${page - 1})" ${page === 0 ? 'disabled' : ''}>← Prev</button>
+    <span class="relic-page-info">Page ${page + 1} of ${total}</span>
+    <button class="relic-page-btn" onclick="goToPage(${page + 1})" ${page === total - 1 ? 'disabled' : ''}>Next →</button>
+  `;
+}
+
+function goToPage(n) {
+  currentPage = n;
+  renderGrid();
+  const wrap = document.querySelector('.factions-wrap');
+  if (wrap) wrap.scrollTop = 0;
+}
+
 function renderGrid() {
   const q = searchQuery.trim().toLowerCase();
 
@@ -101,18 +123,33 @@ function renderGrid() {
     return true;
   });
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  currentPage = Math.min(currentPage, totalPages - 1);
+
+  const start = currentPage * PAGE_SIZE;
+  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
   const countEl = document.getElementById('relic-count');
-  countEl.textContent = filtered.length === allRelics.length
-    ? `${allRelics.length} relics`
-    : `${filtered.length} of ${allRelics.length}`;
+  if (countEl) {
+    const end = Math.min(start + PAGE_SIZE, filtered.length);
+    if (filtered.length === 0) {
+      countEl.textContent = '0 relics';
+    } else if (totalPages === 1) {
+      countEl.textContent = `${filtered.length} relics`;
+    } else {
+      countEl.textContent = `${start + 1}–${end} of ${filtered.length}`;
+    }
+  }
 
   const grid = document.getElementById('relic-grid');
   if (filtered.length === 0) {
     grid.innerHTML = '<div class="relic-empty">No relics match your filters.</div>';
+    renderPagination(0, 0);
     return;
   }
 
-  grid.innerHTML = filtered.map(r => renderCard(r, q)).join('');
+  grid.innerHTML = pageItems.map(r => renderCard(r, q)).join('');
+  renderPagination(currentPage, totalPages);
 }
 
 // ---------------------------------------------------------------------------
@@ -149,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   searchInput.addEventListener('input', () => {
     searchQuery = searchInput.value;
     searchWrap.classList.toggle('has-value', searchQuery.length > 0);
+    currentPage = 0;
     renderGrid();
   });
 });

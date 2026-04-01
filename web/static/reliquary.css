@@ -279,6 +279,38 @@
   flex-shrink: 0;
 }
 
+/* ── Pagination ────────────────────────────────────────── */
+.relic-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px 28px 24px;
+}
+.relic-page-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  padding: 4px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.relic-page-btn:hover:not(:disabled) {
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+.relic-page-btn:disabled { opacity: 0.3; cursor: default; }
+.relic-page-info {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  min-width: 80px;
+  text-align: center;
+}
+
 /* ── No results ────────────────────────────────────────── */
 .relic-empty {
   grid-column: 1 / -1;
@@ -295,6 +327,7 @@
 @media (max-width: 900px) {
   .relic-controls { padding: 16px 16px 14px; }
   .relic-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding: 0 16px 16px; }
+  .relic-pagination { padding: 12px 16px 20px; }
 }
 
 /* Mobile (≤600px) */
