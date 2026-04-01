@@ -1,9 +1,10 @@
-/* Reliquary — relic browser */
+/* Reliquary — relic browser with Prime item index */
 
-let allRelics = [];
-let activeTier  = 'all';
-let activeVault = 'all';
-let searchQuery = '';
+let allRelics     = [];
+let activeTier    = 'all';
+let activeVault   = 'all';
+let activeItem    = null;   // null = all relics
+let itemsFilter   = '';     // left panel search
 
 // ---------------------------------------------------------------------------
 // Data load
@@ -12,6 +13,7 @@ async function loadRelics() {
   try {
     const resp = await fetch('/api/relics');
     allRelics = await resp.json();
+    buildItemIndex();
     renderGrid();
   } catch (e) {
     document.getElementById('relic-grid').innerHTML =
@@ -20,7 +22,101 @@ async function loadRelics() {
 }
 
 // ---------------------------------------------------------------------------
-// Filters
+// Left panel: Prime item index
+// ---------------------------------------------------------------------------
+
+// Build sorted list of unique Prime items from rewards
+function buildItemIndex() {
+  const counts = {};  // item → number of relics containing it
+  for (const relic of allRelics) {
+    const seen = new Set();
+    for (const r of relic.rewards) {
+      if (!seen.has(r.item)) {
+        seen.add(r.item);
+        counts[r.item] = (counts[r.item] || 0) + 1;
+      }
+    }
+  }
+
+  // Separate Prime/special items from misc (Forma, Kuva, etc.)
+  const primes  = [];
+  const special = [];
+  for (const name of Object.keys(counts).sort()) {
+    if (name.toLowerCase().includes('prime') || name === 'Forma') {
+      primes.push(name);
+    } else {
+      special.push(name);
+    }
+  }
+
+  renderItemList(primes, special, counts, '');
+}
+
+function renderItemList(primes, special, counts, filter) {
+  const list = document.getElementById('relic-items-list');
+  const q = filter.toLowerCase();
+
+  const filteredPrimes  = primes.filter(n  => n.toLowerCase().includes(q));
+  const filteredSpecial = special.filter(n => n.toLowerCase().includes(q));
+
+  let html = '';
+
+  // "All" entry
+  if (!q) {
+    html += `<button class="relic-item-btn${activeItem === null ? ' active' : ''}"
+      onclick="selectItem(null)">
+      All Relics
+      <span class="relic-item-count">${allRelics.length}</span>
+    </button>`;
+    html += '<div class="items-divider"></div>';
+  }
+
+  if (filteredPrimes.length) {
+    if (!q) html += '<div class="items-section-label">Prime</div>';
+    for (const name of filteredPrimes) {
+      html += itemBtn(name, counts[name]);
+    }
+  }
+
+  if (filteredSpecial.length) {
+    html += '<div class="items-divider"></div>';
+    if (!q) html += '<div class="items-section-label">Other</div>';
+    for (const name of filteredSpecial) {
+      html += itemBtn(name, counts[name]);
+    }
+  }
+
+  if (!html) html = '<div class="relic-empty" style="padding:16px;font-size:0.8rem">No matches</div>';
+
+  list.innerHTML = html;
+
+  // Cache for re-renders (after filter changes don't need to reparse)
+  list._primes  = primes;
+  list._special = special;
+  list._counts  = counts;
+}
+
+function itemBtn(name, count) {
+  const isActive = activeItem === name;
+  return `<button class="relic-item-btn${isActive ? ' active' : ''}"
+    onclick="selectItem(${JSON.stringify(name)})">
+    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span>
+    <span class="relic-item-count">${count}</span>
+  </button>`;
+}
+
+function selectItem(name) {
+  activeItem = name;
+  // Re-render left panel to update active state
+  const list = document.getElementById('relic-items-list');
+  if (list._primes) {
+    renderItemList(list._primes, list._special, list._counts, itemsFilter);
+  }
+  renderGrid();
+}
+
+// ---------------------------------------------------------------------------
+// Top filters
 // ---------------------------------------------------------------------------
 function setTier(btn) {
   document.querySelectorAll('#tier-pills .filter-pill').forEach(b => b.classList.remove('active'));
@@ -36,54 +132,36 @@ function setVault(btn) {
   renderGrid();
 }
 
-function clearSearch() {
-  document.getElementById('relic-search').value = '';
-  document.getElementById('relic-search-wrap').classList.remove('has-value');
-  searchQuery = '';
-  renderGrid();
-}
-
 // ---------------------------------------------------------------------------
 // Render
 // ---------------------------------------------------------------------------
 function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function highlight(text, query) {
-  if (!query) return esc(text);
-  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
-  return esc(text).replace(re, '<mark>$1</mark>');
-}
-
-function matchesSearch(relic, q) {
-  if (!q) return true;
-  const ql = q.toLowerCase();
-  return relic.name.toLowerCase().includes(ql) ||
-    relic.rewards.some(r =>
-      r.item.toLowerCase().includes(ql) || r.part.toLowerCase().includes(ql)
-    );
-}
-
-function renderCard(relic, query) {
-  const rewardRows = relic.rewards.map(r => {
-    const fullName = r.part ? `${r.item} ${r.part}` : r.item;
-    return `<div class="reward-row rarity-${esc(r.rarity)}">
+function renderCard(relic) {
+  const rewardRows = relic.rewards.map(r =>
+    `<div class="reward-row rarity-${esc(r.rarity)}">
       <span class="reward-dot"></span>
-      <span class="reward-name">${highlight(r.item, query)}${r.part ? ` <span class="reward-part">${highlight(r.part, query)}</span>` : ''}</span>
-    </div>`;
-  }).join('');
+      <span class="reward-name">${esc(r.item)}${r.part
+        ? ` <span class="reward-part">${esc(r.part)}</span>` : ''}</span>
+    </div>`
+  ).join('');
 
   const badges = [
-    relic.vaulted  ? '<span class="relic-badge vaulted">Vaulted</span>' : '',
-    relic.is_baro  ? '<span class="relic-badge baro">Baro</span>' : '',
+    relic.vaulted ? '<span class="relic-badge vaulted">Vaulted</span>' : '',
+    relic.is_baro ? '<span class="relic-badge baro">Baro</span>'       : '',
   ].join('');
+
+  const shortName = relic.name.replace(/^(Lith|Meso|Neo|Axi|Requiem|Vanguard)\s+/i, '');
 
   return `<div class="relic-card" data-tier="${esc(relic.tier)}">
     <div class="relic-card-header">
       <div class="relic-tier-bar"></div>
       <span class="relic-tier-badge">${esc(relic.tier)}</span>
-      <span class="relic-name">${highlight(relic.name.replace(/^(Lith|Meso|Neo|Axi|Requiem|Vanguard)\s+/i, ''), query)}</span>
+      <span class="relic-name">${esc(shortName)}</span>
       <div class="relic-badges">${badges}</div>
     </div>
     <div class="relic-rewards">${rewardRows}</div>
@@ -91,13 +169,11 @@ function renderCard(relic, query) {
 }
 
 function renderGrid() {
-  const q = searchQuery.trim().toLowerCase();
-
   const filtered = allRelics.filter(r => {
-    if (activeTier !== 'all' && r.tier !== activeTier) return false;
-    if (activeVault === 'unvaulted' && r.vaulted) return false;
-    if (activeVault === 'vaulted'   && !r.vaulted) return false;
-    if (!matchesSearch(r, q)) return false;
+    if (activeTier !== 'all' && r.tier !== activeTier)   return false;
+    if (activeVault === 'unvaulted' && r.vaulted)         return false;
+    if (activeVault === 'vaulted'   && !r.vaulted)        return false;
+    if (activeItem !== null && !r.rewards.some(rw => rw.item === activeItem)) return false;
     return true;
   });
 
@@ -107,18 +183,15 @@ function renderGrid() {
     : `${filtered.length} of ${allRelics.length}`;
 
   const grid = document.getElementById('relic-grid');
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="relic-empty">No relics match your filters.</div>';
-    return;
-  }
-
-  grid.innerHTML = filtered.map(r => renderCard(r, q)).join('');
+  grid.innerHTML = filtered.length
+    ? filtered.map(renderCard).join('')
+    : '<div class="relic-empty">No relics match your filters.</div>';
 }
 
 // ---------------------------------------------------------------------------
-// Version + sidebar
+// Sidebar / version
 // ---------------------------------------------------------------------------
-function openGuide() {}  // stub — no guide modal on this page yet
+function openGuide() {}
 
 function toggleDrawer() {
   document.getElementById('sidebar').classList.toggle('open');
@@ -141,11 +214,11 @@ document.addEventListener('DOMContentLoaded', () => {
   loadRelics();
   loadVersion();
 
-  const searchInput = document.getElementById('relic-search');
-  const searchWrap  = document.getElementById('relic-search-wrap');
-  searchInput.addEventListener('input', () => {
-    searchQuery = searchInput.value;
-    searchWrap.classList.toggle('has-value', searchQuery.length > 0);
-    renderGrid();
+  document.getElementById('items-search').addEventListener('input', e => {
+    itemsFilter = e.target.value;
+    const list = document.getElementById('relic-items-list');
+    if (list._primes) {
+      renderItemList(list._primes, list._special, list._counts, itemsFilter);
+    }
   });
 });
