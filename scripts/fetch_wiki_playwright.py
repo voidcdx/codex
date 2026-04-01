@@ -44,9 +44,21 @@ MODULES = [
 async def fetch_all() -> None:
     try:
         from playwright.async_api import async_playwright
-        from playwright_stealth import stealth_async
-    except ImportError as exc:
-        sys.exit(f"Missing dependency: {exc}\n  pip install playwright playwright-stealth")
+    except ImportError:
+        sys.exit("Missing dependency: playwright\n  pip install playwright")
+
+    # playwright-stealth API differs by version — handle both gracefully
+    stealth_fn = None
+    try:
+        from playwright_stealth import stealth_async as stealth_fn  # type: ignore
+    except ImportError:
+        try:
+            from playwright_stealth import Stealth  # type: ignore
+            _s = Stealth()
+            async def stealth_fn(page):  # type: ignore
+                await _s.apply_stealth_async(page)
+        except ImportError:
+            pass  # no stealth — proceed without it
 
     chromium_path = os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH")
 
@@ -65,7 +77,8 @@ async def fetch_all() -> None:
             )
         )
         page = await context.new_page()
-        await stealth_async(page)
+        if stealth_fn:
+            await stealth_fn(page)
 
         for filename, url in MODULES:
             out = DATA_DIR / filename
