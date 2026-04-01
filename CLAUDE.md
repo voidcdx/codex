@@ -196,6 +196,8 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 - **Precision:** Use `Decimal` or high-precision floats for intermediate steps to avoid floating-point drift.
 
 ## CSS / Web UI Rules (STRICT)
+- **Dot background on ALL pages** — the dot grid (`radial-gradient(circle, var(--accent-a18) 1px, transparent 1px) / 20px 20px`) is defined once in `layout.css` on `.content, .live-wrap, .factions-wrap`. Every new page must use one of these wrappers — never add a new page without it.
+- **New page checklist** — any new HTML page must: (1) use `.factions-wrap` or equivalent wrapper that gets the dot bg, (2) include `favicon.ico` link, (3) match sidebar nav markup from other pages, (4) have `Cache-Control: no-store` in api.py route.
 - **No inline `style=` attributes** on HTML elements — all styles go to CSS classes. SVG presentation attributes excepted.
 - **No hardcoded `rgba()` for theme colors** — use CSS variables.
 - **No scan-line or noise overlays** — both removed. Do not re-add.
