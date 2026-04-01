@@ -37,6 +37,7 @@
   position: relative;
   flex-shrink: 0;
   height: 30px;
+  background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
