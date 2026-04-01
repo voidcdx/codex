@@ -152,7 +152,7 @@
   padding: 0;
   box-sizing: border-box;
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   border-radius: 50%;
   color: var(--text-dim);
   cursor: pointer;
@@ -160,8 +160,9 @@
 }
 .vault-drop-btn .vault-icon { width: 14px; height: 14px; }
 .vault-drop-btn:hover { color: var(--text); border-color: var(--border-highlight); }
-.vault-drop-wrap.open .vault-drop-btn,
+.vault-drop-wrap.open .vault-drop-btn { color: var(--text); border-color: var(--border-highlight); }
 .vault-drop-btn.active { color: var(--accent2); border-color: var(--accent2); }
+.vault-drop-btn.vaulted { color: var(--accent); border-color: var(--accent); }
 
 /* Vault dropdown pill */
 .vault-drop-menu {

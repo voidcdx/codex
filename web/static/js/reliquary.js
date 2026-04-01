@@ -38,7 +38,10 @@ function setVault(btn) {
   activeVault = btn.dataset.vault;
   // Accent the circle button when filter is active
   const vaultBtn = document.getElementById('vault-toggle');
-  if (vaultBtn) vaultBtn.classList.toggle('active', activeVault !== 'all');
+  if (vaultBtn) {
+    vaultBtn.classList.toggle('active',  activeVault === 'unvaulted');
+    vaultBtn.classList.toggle('vaulted', activeVault === 'vaulted');
+  }
   // Close dropdown
   document.getElementById('vault-wrap').classList.remove('open');
   currentPage = 0;
