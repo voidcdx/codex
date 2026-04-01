@@ -36,7 +36,6 @@
   align-items: center;
   position: relative;
   flex-shrink: 0;
-  height: 30px;
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
@@ -48,8 +47,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  padding: 4px 8px;
   background: transparent;
   border: none;
   color: var(--text-dim);
@@ -57,7 +55,7 @@
   flex-shrink: 0;
   transition: color 0.15s;
 }
-.search-toggle-btn .search-icon { width: 14px; height: 14px; }
+.search-toggle-btn .search-icon { width: 14px; height: 14px; display: block; }
 .search-toggle-btn:hover { color: var(--text); }
 .relic-search-expand.open .search-toggle-btn { color: var(--text); }
 
@@ -67,7 +65,6 @@
   align-items: center;
   overflow: hidden;
   max-width: 0;
-  height: 30px;
   transition: max-width 0.25s ease;
   position: relative;
 }
@@ -76,8 +73,6 @@
 .relic-search-expand input.relic-search-input {
   width: 200px;
   flex-shrink: 0;
-  height: 30px;
-  min-height: 0;
   appearance: none;
   -webkit-appearance: none;
   background: transparent;
@@ -86,9 +81,9 @@
   box-shadow: none;
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 0.85rem;
-  padding: 0 24px 0 4px;
-  line-height: 30px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 24px 4px 4px;
   box-sizing: border-box;
   outline: none;
   display: block;
