@@ -63,35 +63,39 @@
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 }
 
-.relic-search-input {
-  max-width: 0;
-  width: 210px;
-  height: 32px;
+/* Wrapper clips the input to zero width when closed */
+.search-input-wrap {
+  display: flex;
+  align-items: center;
   overflow: hidden;
+  max-width: 0;
+  transition: max-width 0.25s ease;
+  position: relative;
+}
+.relic-search-expand.open .search-input-wrap {
+  max-width: 240px;
+}
+
+.relic-search-input {
+  width: 210px;
+  flex-shrink: 0;
+  height: 32px;
   background: var(--surface2);
-  border: 1px solid transparent;
+  border: 1px solid var(--border-highlight);
   border-left: none;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 0.85rem;
-  padding: 0;
+  padding: 0 28px 0 10px;
   box-sizing: border-box;
   outline: none;
-  opacity: 0;
-  transition: max-width 0.25s ease, padding 0.25s ease, opacity 0.2s ease, border-color 0.15s;
-}
-.relic-search-expand.open .relic-search-input {
-  max-width: 210px;
-  padding: 0 28px 0 10px;
-  opacity: 1;
-  border-color: var(--border-highlight);
 }
 .relic-search-input::placeholder { color: var(--text-dim); }
 
 .search-clear-btn {
   position: absolute;
-  right: 6px;
+  right: 4px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -102,6 +106,7 @@
   padding: 0 4px;
   line-height: 1;
   display: none;
+  flex-shrink: 0;
 }
 .relic-search-expand.has-value .search-clear-btn { display: block; }
 
