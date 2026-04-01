@@ -35,8 +35,8 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
@@ -52,8 +52,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   padding: 0;
   background: transparent;
   border: none;
