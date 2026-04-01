@@ -82,6 +82,8 @@
   -webkit-appearance: none;
   background: transparent;
   border: none;
+  border-radius: 0;
+  box-shadow: none;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -90,6 +92,11 @@
   box-sizing: border-box;
   outline: none;
   display: block;
+}
+.relic-search-expand input.relic-search-input:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
 }
 .relic-search-expand input.relic-search-input::placeholder { color: var(--text-dim); }
 
