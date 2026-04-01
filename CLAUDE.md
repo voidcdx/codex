@@ -101,16 +101,18 @@ web/
                    #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/reliquary.html # Reliquary page — at /reliquary
-                   #   Controls: single flex row — [🔍 expandable search pill] [tier seg] [vault seg right-aligned]
-                   #   Search pill: .relic-search-expand (unified border+radius), glass btn + .search-input-wrap (max-width clip)
-                   #   Click-outside and Escape close the search; JS in reliquary.js
-                   #   Tier seg: All/Lith/Meso/Neo/Axi/Requiem — single connected pill matching vault-seg style
-                   #   Vault seg: All/Unvaulted/Vaulted — right-aligned via margin-left:auto
+                   #   Controls: single flex row — [🔍 circle search btn] [tier seg] [🔒 vault circle btn right-aligned]
+                   #   Search: .relic-search-expand (30×30px circle, border-box), glass btn opens .search-input-wrap
+                   #     .search-input-wrap is position:absolute (overlays tier pills, no layout shift)
+                   #     max-width:0→210px + opacity:0→1 transition; left:29px top:-1px from container
+                   #     Container: overflow:visible; border-right:none + border-radius:20px 0 0 20px when open
+                   #     KNOWN ISSUE: glass icon appears slightly off-center — button 30px overflows 28px inner content
+                   #     See handoff.md for full diagnosis
+                   #   Tier seg: All/Lith/Meso/Neo/Axi/Requiem — single connected pill
+                   #   Vault: .vault-drop-wrap (margin-left:auto) — 28px circle lock btn opens pill dropdown
+                   #     .vault-drop-menu: position:absolute, max-height+opacity transition, fully opaque --dropdown-bg
                    #   Relic count shown below paginator (not in controls row)
-                   #   KNOWN ISSUE: search input text vertical centering unresolved — panels.css global
-                   #     input[type=text] rule (border, border-radius, padding:8px, box-shadow) fights overrides.
-                   #     Use high-specificity selector .relic-search-expand input.relic-search-input to override.
-  static/reliquary.css  # Reliquary styles — tier color tokens (:root), controls, search pill, tier seg, vault seg,
+  static/reliquary.css  # Reliquary styles — tier color tokens (:root), controls, search pill, vault dropdown,
                    #   .relic-card (data-tier attr drives tier bar + badge color), reward rows with rarity dots
                    #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard
                    #   Pagination: .relic-pagination (column), .relic-page-controls (row), .relic-page-btn (Rajdhani+chevron)
