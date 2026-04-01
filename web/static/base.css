@@ -54,8 +54,8 @@
   --font-display:    'Orbitron', monospace;
   --font-body:       'Rajdhani', sans-serif;
   --glass-blur:      20px;
-  --radius:          4px;
-  --radius-sm:       3px;
+  --radius:          8px;
+  --radius-sm:       4px;
 
   /* ── Void teal (fissures) ── */
   --void-teal:       #3ddcb8;
