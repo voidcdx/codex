@@ -39,7 +39,7 @@ from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, calculate_falloff_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
-    _mod_family, _raw_enemies, _raw_mods, _raw_weapons,
+    _mod_family, _raw_enemies, _raw_mods, _raw_weapons, _raw_relics,
     list_enemies, list_mods, list_weapons,
     load_enemy, load_mod, load_weapon, make_riven_mod,
 )
@@ -249,6 +249,27 @@ def get_enemies() -> list[dict]:
             "body_parts":      entry.get("body_parts", {"Body": 1.0, "Head": 1.0}),
         })
     return sorted(out, key=lambda x: x["name"])
+
+
+@app.get("/api/relics")
+def get_relics(
+    tier: str | None = None,
+    vaulted: str | None = None,
+    reward: str | None = None,
+) -> list[dict]:
+    relics = _raw_relics()
+    if tier:
+        relics = [r for r in relics if r["tier"].lower() == tier.lower()]
+    if vaulted is not None:
+        want_vaulted = vaulted.lower() not in ("false", "0", "no")
+        relics = [r for r in relics if r["vaulted"] == want_vaulted]
+    if reward:
+        q = reward.lower()
+        relics = [
+            r for r in relics
+            if any(q in d["item"].lower() or q in d["part"].lower() for d in r["rewards"])
+        ]
+    return relics
 
 
 # ---------------------------------------------------------------------------
@@ -938,6 +959,11 @@ def live() -> FileResponse:
 @app.get("/factions")
 def factions() -> FileResponse:
     return FileResponse(str(_static / "factions.html"))
+
+
+@app.get("/reliquary")
+def reliquary() -> FileResponse:
+    return FileResponse(str(_static / "reliquary.html"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/enemy-preview")
