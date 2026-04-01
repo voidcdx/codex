@@ -44,6 +44,7 @@
 }
 .relic-search-expand.open {
   border-color: var(--border-highlight);
+  border-right-color: transparent;
   border-radius: 20px 0 0 20px;
 }
 
