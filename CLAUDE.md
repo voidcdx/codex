@@ -130,10 +130,7 @@ web/
   static/panels.css # .we-panel-row replaces old .we-grid/.we-col; .picker-open-btn; .item-picker-item
                    #   .panel::before — top/bottom gradient lines (all themes via --panel-line-color)
                    #   body.theme-ash .panel::before — warm gold override
-                   #   CAUTION: global input[type=text] rule sets border, border-radius:var(--radius-sm),
-                   #     padding:8px 10px, background:var(--surface2), box-shadow on focus — overrides require
-                   #     higher-specificity selectors (e.g. .my-wrap input.my-input) + explicit border:none,
-                   #     border-radius:0, box-shadow:none, and :focus override
+                   #   input[type=text] form styles are scoped to .panel — no global bleed
   static/js/
     constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
     utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy(), setupSelectDropdown(), togglePanelHelp()
