@@ -16,12 +16,16 @@
   --rarity-rare:     #fbbf24;
 }
 
+/* ── Strip .factions-wrap horizontal padding — children handle their own ── */
+.factions-wrap { padding-left: 0; padding-right: 0; }
+@media (max-width: 900px) { .factions-wrap { padding-left: 0; padding-right: 0; } }
+
 /* ── Controls ──────────────────────────────────────────── */
 .relic-controls {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 16px 0 14px;
+  padding: 16px 28px 14px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -140,6 +144,7 @@
   gap: 10px;
   align-content: start;
   min-width: 0;
+  padding: 0 28px 20px;
 }
 
 /* ── Individual relic card ─────────────────────────────── */
@@ -274,12 +279,13 @@
 
 /* Tablet (≤900px) */
 @media (max-width: 900px) {
-  .relic-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .relic-controls { padding: 16px 16px 14px; }
+  .relic-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding: 0 16px 16px; }
 }
 
 /* Mobile (≤600px) */
 @media (max-width: 600px) {
-  .relic-controls { padding: 12px 0 10px; gap: 8px; }
+  .relic-controls { padding: 12px 16px 10px; gap: 8px; }
 
   .relic-search-row { flex-wrap: wrap; gap: 8px; }
   .relic-search-row .search-wrap { width: 100%; }
@@ -290,7 +296,4 @@
   .vault-seg { margin-left: 0; }
 
   .relic-grid { grid-template-columns: 1fr; gap: 8px; }
-  .relic-grid-wrap { padding: 12px 14px; }
-
-  .factions-wrap { padding: 16px; gap: 12px; }
 }
