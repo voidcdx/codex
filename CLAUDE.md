@@ -101,15 +101,21 @@ web/
                    #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/reliquary.html # Reliquary page — at /reliquary
-                   #   Controls: search row (search input 320px + count) + filter row (tier pills + vault segmented)
-                   #   Tier pills: All / Lith / Meso / Neo / Axi / Requiem — each tier gets its color when active
-                   #   Vault seg: All / Unvaulted / Vaulted
-                   #   Grid: .relic-grid auto-fill minmax(280px, 1fr) inside .factions-wrap
-                   #   NOTE: large empty space to the right of cards is an unresolved layout bug
-  static/reliquary.css  # Reliquary styles — tier color tokens (:root), controls, tier pills, vault seg,
+                   #   Controls: single flex row — [🔍 expandable search pill] [tier seg] [vault seg right-aligned]
+                   #   Search pill: .relic-search-expand (unified border+radius), glass btn + .search-input-wrap (max-width clip)
+                   #   Click-outside and Escape close the search; JS in reliquary.js
+                   #   Tier seg: All/Lith/Meso/Neo/Axi/Requiem — single connected pill matching vault-seg style
+                   #   Vault seg: All/Unvaulted/Vaulted — right-aligned via margin-left:auto
+                   #   Relic count shown below paginator (not in controls row)
+                   #   KNOWN ISSUE: search input text vertical centering unresolved — panels.css global
+                   #     input[type=text] rule (border, border-radius, padding:8px, box-shadow) fights overrides.
+                   #     Use high-specificity selector .relic-search-expand input.relic-search-input to override.
+  static/reliquary.css  # Reliquary styles — tier color tokens (:root), controls, search pill, tier seg, vault seg,
                    #   .relic-card (data-tier attr drives tier bar + badge color), reward rows with rarity dots
                    #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard
-  static/live.css  # Live page styles — .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
+                   #   Pagination: .relic-pagination (column), .relic-page-controls (row), .relic-page-btn (Rajdhani+chevron)
+  static/live.css  # Live page styles — invasion .reward-chip colored by data-faction attr (Grineer/Corpus/Infested/other)
+                   #   .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
                    #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
                    #   .ne-news-list li (flex row), .ne-news-link (inline-flex, 1rem), .ne-news-time (0.85rem dim, inline before title)
                    #   .event-row / .event-row--gift, .event-row-header (flex row: title left, eta right)
@@ -122,6 +128,10 @@ web/
   static/panels.css # .we-panel-row replaces old .we-grid/.we-col; .picker-open-btn; .item-picker-item
                    #   .panel::before — top/bottom gradient lines (all themes via --panel-line-color)
                    #   body.theme-ash .panel::before — warm gold override
+                   #   CAUTION: global input[type=text] rule sets border, border-radius:var(--radius-sm),
+                   #     padding:8px 10px, background:var(--surface2), box-shadow on focus — overrides require
+                   #     higher-specificity selectors (e.g. .my-wrap input.my-input) + explicit border:none,
+                   #     border-radius:0, box-shadow:none, and :focus override
   static/js/
     constants.js   # all global state + data constants (ELEM_COLORS, TOOLTIPS, etc.)
     utils.js       # esc(), fmtNum(), dmgIcon(), initTooltips(), getCurrentWeapon/Enemy(), setupSelectDropdown(), togglePanelHelp()
