@@ -44,7 +44,7 @@
 }
 .relic-search-expand.open {
   border-color: var(--border-highlight);
-  border-right-color: transparent;
+  border-right: none;
   border-radius: 20px 0 0 20px;
 }
 
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   position: absolute;
-  left: 28px;
+  left: 29px;
   top: -1px;
   height: 30px;
   width: 0;
