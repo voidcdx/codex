@@ -31,14 +31,16 @@ function initBackToTop() {
   const btn = document.getElementById('back-to-top');
   if (!btn) return;
 
-  // Inner scroll containers (desktop uses these; mobile uses window)
-  const SCROLL_SELECTORS = ['.content', '.live-wrap', '.factions-wrap'];
+  const SCROLL_SELECTORS = ['.main', '.content', '.live-wrap', '.factions-wrap'];
 
   function checkScroll(scrollTop) {
     btn.classList.toggle('visible', scrollTop > 200);
   }
 
-  window.addEventListener('scroll', () => checkScroll(window.scrollY), { passive: true });
+  // document catches scroll on Chrome Android more reliably than window
+  document.addEventListener('scroll', () => {
+    checkScroll(window.scrollY || document.documentElement.scrollTop || document.body.scrollTop);
+  }, { passive: true });
 
   SCROLL_SELECTORS.forEach(sel => {
     const el = document.querySelector(sel);
@@ -47,6 +49,8 @@ function initBackToTop() {
 
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     SCROLL_SELECTORS.forEach(sel => {
       const el = document.querySelector(sel);
       if (el) el.scrollTo({ top: 0, behavior: 'smooth' });
