@@ -101,16 +101,15 @@ web/
                    #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/reliquary.html # Reliquary page — at /reliquary
-                   #   Controls: single flex row — [🔍 circle search btn] [tier seg] [🔒 vault circle btn right-aligned]
-                   #   Search: .relic-search-expand (30×30px circle, border-box), glass btn opens .search-input-wrap
-                   #     .search-input-wrap is position:absolute (overlays tier pills, no layout shift)
-                   #     max-width:0→210px + opacity:0→1 transition; left:29px top:-1px from container
-                   #     Container: overflow:visible; border-right:none + border-radius:20px 0 0 20px when open
-                   #     KNOWN ISSUE: glass icon appears slightly off-center — button 30px overflows 28px inner content
-                   #     See handoff.md for full diagnosis
+                   #   Controls: single flex row — [🔍 search pill] [tier seg] [🔒 vault circle btn right-aligned]
+                   #   Search: .search-pill (28px circle → 220px pill, overflow:hidden width transition)
+                   #     Glass btn toggles open; input fades in; SVG × clear btn appears on .has-value
+                   #     closePill() keeps query (click-outside/Enter/toggle); clearSearch() resets (×/Escape)
+                   #     closePill() calls blur() to dismiss mobile keyboard
+                   #   Vault: .vault-drop-wrap — SVG ring lock btn (ring drawn in SVG, not CSS border-radius)
+                   #     States: default=dim/no ring; unvaulted=accent2+ring; vaulted=#e53e3e+ring
+                   #     .vault-drop-menu: position:absolute pill dropdown, max-height+opacity transition
                    #   Tier seg: All/Lith/Meso/Neo/Axi/Requiem — single connected pill
-                   #   Vault: .vault-drop-wrap (margin-left:auto) — 28px circle lock btn opens pill dropdown
-                   #     .vault-drop-menu: position:absolute, max-height+opacity transition, fully opaque --dropdown-bg
                    #   Relic count shown below paginator (not in controls row)
   static/reliquary.css  # Reliquary styles — tier color tokens (:root), controls, search pill, vault dropdown,
                    #   .relic-card (data-tier attr drives tier bar + badge color), reward rows with rarity dots
