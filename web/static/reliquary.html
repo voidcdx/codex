@@ -35,10 +35,10 @@
 
   <div class="rq-sidebar">
     <div class="rq-search-wrap">
-      <svg class="rq-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg class="rq-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>
       </svg>
-      <input type="text" id="rq-search" class="rq-search-input" placeholder="Search sets…" autocomplete="off" oninput="onSearchInput(this)">
+      <input type="text" id="rq-search" class="rq-search-input" placeholder="Search sets…" autocomplete="off" aria-label="Search prime sets" oninput="onSearchInput(this)">
     </div>
 
     <div class="rq-tabs">
@@ -108,7 +108,7 @@
   <div class="sidebar-footer">
     <div class="sidebar-theme-switcher">
       <span class="sidebar-theme-label">Theme</span>
-      <div class="theme-switcher" style="padding-right:0">
+      <div class="theme-switcher">
         <span class="theme-dot" data-theme="stalker" title="Stalker Classic"></span>
         <span class="theme-dot" data-theme="jade"    title="Jade"></span>
         <span class="theme-dot" data-theme="ash"     title="Void Ash"></span>
