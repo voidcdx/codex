@@ -113,17 +113,14 @@ function renderDropSection(relic) {
       Drop Locations<span class="drop-count">${drops.length}</span>
       <svg class="drop-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
     </button>
-    <div class="drop-list" hidden>
+    <div class="drop-list">
       ${top5.map(renderRow).join('')}
     </div>
   </div>`;
 }
 
 function toggleDrops(btn) {
-  const list = btn.nextElementSibling;
-  const open = list.hasAttribute('hidden');
-  list.toggleAttribute('hidden', !open);
-  btn.classList.toggle('open', open);
+  btn.closest('.relic-drops-section').classList.toggle('open');
 }
 
 function renderCard(relic, query) {

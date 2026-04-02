@@ -402,7 +402,7 @@
   user-select: none;
 }
 .relic-drops-toggle:hover,
-.relic-drops-toggle.open { color: var(--text); }
+.relic-drops-section.open .relic-drops-toggle { color: var(--text); }
 
 .drop-chevron {
   width: 12px;
@@ -410,7 +410,7 @@
   flex-shrink: 0;
   transition: transform 0.15s;
 }
-.relic-drops-toggle.open .drop-chevron { transform: rotate(180deg); }
+.relic-drops-section.open .drop-chevron { transform: rotate(180deg); }
 
 .drop-count {
   font-size: 0.68rem;
@@ -423,10 +423,13 @@
 }
 
 .drop-list {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 2px;
   padding: 0 10px 8px;
+}
+.relic-drops-section.open .drop-list {
+  display: flex;
 }
 
 .drop-row {
