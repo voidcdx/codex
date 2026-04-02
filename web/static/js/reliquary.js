@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function closePill() {
     searchWrap.classList.remove('open');
+    searchInput.blur();
   }
 
   searchToggle.addEventListener('click', () => {
