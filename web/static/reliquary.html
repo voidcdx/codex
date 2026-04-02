@@ -31,53 +31,29 @@
   </div>
 </header>
 
-<div class="factions-wrap">
-  <div class="relic-controls">
+<div class="factions-wrap reliquary-wrap">
 
-    <div class="search-pill" id="relic-search-wrap">
-      <button class="search-pill-btn" id="search-toggle" aria-label="Search relics">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>
-        </svg>
-      </button>
-      <input type="text" id="relic-search" class="search-pill-input" placeholder="Search rewards…" autocomplete="off">
-      <button class="search-pill-clear" id="search-clear" aria-label="Clear search">
-        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/>
-        </svg>
-      </button>
+  <div class="rq-sidebar">
+    <div class="rq-search-wrap">
+      <svg class="rq-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>
+      </svg>
+      <input type="text" id="rq-search" class="rq-search-input" placeholder="Search sets…" autocomplete="off" oninput="onSearchInput(this)">
     </div>
 
-    <div class="relic-tier-pills" id="tier-pills">
-      <button class="relic-tier-pill active" data-tier="all"     onclick="setTier(this)">All</button>
-      <button class="relic-tier-pill" data-tier="Lith"    onclick="setTier(this)">Lith</button>
-      <button class="relic-tier-pill" data-tier="Meso"    onclick="setTier(this)">Meso</button>
-      <button class="relic-tier-pill" data-tier="Neo"     onclick="setTier(this)">Neo</button>
-      <button class="relic-tier-pill" data-tier="Axi"     onclick="setTier(this)">Axi</button>
-      <button class="relic-tier-pill" data-tier="Requiem" onclick="setTier(this)">Requiem</button>
+    <div class="rq-tabs">
+      <button class="rq-tab active" data-tab="all"       onclick="setTab(this)">All</button>
+      <button class="rq-tab"        data-tab="warframes" onclick="setTab(this)">Warframes</button>
+      <button class="rq-tab"        data-tab="weapons"   onclick="setTab(this)">Weapons</button>
     </div>
 
-    <div class="vault-drop-wrap" id="vault-wrap">
-      <button class="vault-drop-btn" id="vault-toggle" aria-label="Vault filter">
-        <svg class="vault-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle class="vault-ring" cx="14" cy="14" r="13"/>
-          <g transform="translate(6,6)">
-            <rect x="3" y="5" width="10" height="8" rx="1.5"/>
-            <path d="M5.5 5V3a2.5 2.5 0 0 1 5 0v2"/>
-          </g>
-        </svg>
-      </button>
-      <div class="vault-drop-menu" id="vault-menu">
-        <button class="vault-drop-item"        data-vault="all"       onclick="setVault(this)">All</button>
-        <button class="vault-drop-item active" data-vault="unvaulted" onclick="setVault(this)">Unvaulted</button>
-        <button class="vault-drop-item"        data-vault="vaulted"   onclick="setVault(this)">Vaulted</button>
-      </div>
-    </div>
-
+    <div class="rq-set-list" id="rq-set-list"></div>
   </div>
 
-  <div class="relic-grid" id="relic-grid"></div>
-  <div class="relic-pagination" id="relic-pagination"></div>
+  <div class="rq-detail" id="rq-detail">
+    <div class="rq-empty-detail">Select a Prime set from the list.</div>
+  </div>
+
 </div>
 </main>
 
