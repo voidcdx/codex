@@ -242,7 +242,7 @@ function renderSidebar() {
 // Tab + search
 // ---------------------------------------------------------------------------
 function setTab(btn) {
-  document.querySelectorAll('.rq-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.rq-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeTab = btn.dataset.tab;
   // If selected set is filtered out, clear it
@@ -254,16 +254,41 @@ function setTab(btn) {
   renderSidebar();
 }
 
+// ---------------------------------------------------------------------------
+// Sliding search
+// ---------------------------------------------------------------------------
+function toggleSearch() {
+  const wrap = document.getElementById('rq-search-wrap');
+  const input = document.getElementById('rq-search');
+  const isOpen = wrap.classList.toggle('open');
+  if (isOpen) {
+    input.focus();
+  } else {
+    input.blur();
+    if (input.value) {
+      input.value = '';
+      searchQuery = '';
+      wrap.classList.remove('has-value');
+      renderSidebar();
+    }
+  }
+}
+
 function onSearchInput(input) {
   searchQuery = input.value;
+  const wrap = document.getElementById('rq-search-wrap');
+  wrap.classList.toggle('has-value', !!input.value);
   renderSidebar();
 }
 
 function clearSearch() {
   const input = document.getElementById('rq-search');
+  const wrap = document.getElementById('rq-search-wrap');
   input.value = '';
   searchQuery = '';
+  wrap.classList.remove('has-value');
   renderSidebar();
+  input.focus();
 }
 
 function clearSelection() {
