@@ -37,10 +37,9 @@ function initBackToTop() {
     btn.classList.toggle('visible', scrollTop > 200);
   }
 
-  // document catches scroll on Chrome Android more reliably than window
-  document.addEventListener('scroll', () => {
-    checkScroll(window.scrollY || document.documentElement.scrollTop || document.body.scrollTop);
-  }, { passive: true });
+  const onWindowScroll = () => checkScroll(window.scrollY || document.documentElement.scrollTop || document.body.scrollTop);
+  window.addEventListener('scroll',   onWindowScroll, { passive: true });
+  document.addEventListener('scroll', onWindowScroll, { passive: true });
 
   SCROLL_SELECTORS.forEach(sel => {
     const el = document.querySelector(sel);
