@@ -27,9 +27,22 @@ function initTheme() {
   });
 }
 
+function positionBackToTop(btn) {
+  const sidebar = document.querySelector('.sidebar');
+  if (sidebar && window.innerWidth > 900) {
+    const left = sidebar.getBoundingClientRect().left;
+    btn.style.right = (window.innerWidth - left + 16) + 'px';
+  } else {
+    btn.style.right = '';
+  }
+}
+
 function initBackToTop() {
   const btn = document.getElementById('back-to-top');
   if (!btn) return;
+
+  positionBackToTop(btn);
+  window.addEventListener('resize', () => positionBackToTop(btn), { passive: true });
 
   const SCROLL_SELECTORS = ['.main', '.content', '.live-wrap', '.factions-wrap'];
 
