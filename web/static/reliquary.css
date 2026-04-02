@@ -88,17 +88,19 @@
 
 .search-pill-clear {
   flex-shrink: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
   width: 20px;
+  height: 20px;
   background: none;
   border: none;
   color: var(--text-dim);
-  font-size: 1rem;
   cursor: pointer;
   padding: 0;
-  line-height: 1;
-  display: none;
 }
-.search-pill.has-value .search-pill-clear { display: flex; align-items: center; justify-content: center; }
+.search-pill-clear svg { width: 10px; height: 10px; }
+.search-pill.has-value .search-pill-clear { display: flex; }
 
 .relic-count {
   font-family: var(--font-body);
