@@ -333,8 +333,8 @@ body {
 }
 
 @media (max-width: 900px) {
-  html { height: auto; min-height: 100dvh; }
-  body { height: auto; min-height: 100dvh; overflow-y: auto; overflow-x: hidden; }
+  html { height: auto; overflow: visible; }
+  body { height: auto; overflow-x: hidden; overflow-y: visible; }
 }
 
 
