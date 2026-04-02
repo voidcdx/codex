@@ -153,7 +153,7 @@
   box-sizing: border-box;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 50%;
+  border-radius: 20px;
   color: var(--text-dim);
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
