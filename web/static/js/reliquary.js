@@ -2,6 +2,7 @@
 
 let allSets    = {};    // { "Saryn Prime": { type, parts: { "Neuroptics Blueprint": [{ relic, tier, rarity }] } } }
 let dropsMap   = {};    // from /api/drops
+let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
 let activeTab  = 'all'; // 'all' | 'warframes' | 'weapons'
 let searchQuery = '';
 let selectedSet  = null;
@@ -16,12 +17,17 @@ let wishlist = new Set(JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]'));
 // ---------------------------------------------------------------------------
 async function loadData() {
   try {
-    const [relicsResp, dropsResp] = await Promise.all([
+    const [relicsResp, dropsResp, weaponsResp] = await Promise.all([
       fetch('/api/relics'),
       fetch('/api/drops'),
+      fetch('/api/weapons'),
     ]);
     const relics = await relicsResp.json();
     try { dropsMap = await dropsResp.json(); } catch { dropsMap = {}; }
+    try {
+      const weapons = await weaponsResp.json();
+      for (const w of weapons) if (w.image) weaponImages[w.name] = w.image;
+    } catch {}
     allSets = buildPrimeSets(relics);
     renderGoals();
     renderSidebar();
@@ -398,8 +404,16 @@ function renderDetail() {
 
   const relicSection = selectedPart ? renderRelicSection() : '';
 
+  // Weapon image
+  const imgFile = weaponImages[selectedSet];
+  const heroImgHtml = imgFile
+    ? `<div class="rq-hero-img"><img src="/static/images/weapons/${esc(imgFile)}" alt="" onerror="this.parentElement.style.display='none'"></div>`
+    : '';
+  const heroImgClass = imgFile ? ' rq-hero--has-img' : '';
+
   detail.innerHTML = `
-    <div class="rq-hero">
+    <div class="rq-hero${heroImgClass}">
+      ${heroImgHtml}
       <div class="rq-hero-top">
         <div class="rq-hero-info">
           <div class="rq-hero-type-row">
