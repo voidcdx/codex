@@ -556,7 +556,7 @@ a.ne-news-link:hover { color: var(--crimson-bright); }
 
 /* ── Mobile ── */
 @media (max-width: 900px) {
-  .live-page-wrap { height: auto; min-height: 100dvh; }
+  .live-page-wrap { height: auto; }
   .live-page-wrap > .app { flex: none; height: auto; min-height: 0; }
   .live-wrap { padding: 16px; overflow-y: visible; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 }

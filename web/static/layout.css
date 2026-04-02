@@ -449,7 +449,7 @@
   /* Hide header theme switcher — available in sidebar instead */
   .header .theme-switcher { display: none; }
 
-  .app  { height: auto; min-height: 100dvh; }
+  .app  { height: auto; }
   .main { overflow: visible; height: auto; }
 
   .header {
