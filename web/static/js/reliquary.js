@@ -241,10 +241,16 @@ function renderSidebar() {
 // ---------------------------------------------------------------------------
 // Tab + search
 // ---------------------------------------------------------------------------
-function setTab(btn) {
-  document.querySelectorAll('.rq-pill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  activeTab = btn.dataset.tab;
+function toggleSeg(btn) {
+  const wasActive = btn.classList.contains('active');
+  document.querySelectorAll('.rq-seg-btn').forEach(b => b.classList.remove('active'));
+  if (wasActive) {
+    // Deselect → show all
+    activeTab = 'all';
+  } else {
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+  }
   // If selected set is filtered out, clear it
   if (selectedSet && allSets[selectedSet]) {
     const t = allSets[selectedSet].type;
