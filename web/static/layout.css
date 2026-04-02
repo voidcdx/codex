@@ -452,13 +452,6 @@
   .app  { height: auto; }
   .main { overflow: visible; height: auto; }
 
-  .header {
-    position: sticky;
-    top: env(safe-area-inset-top, 0px);
-    z-index: 50;
-    background: var(--bg);
-  }
-
   .content { grid-template-columns: 1fr; padding: 16px; overflow-y: visible; }
   .content-left { display: none; }
 
