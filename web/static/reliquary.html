@@ -35,17 +35,23 @@
 
   <div class="rq-sidebar">
     <div class="rq-goals rq-goals-empty" id="rq-goals"></div>
-    <div class="rq-search-wrap">
-      <svg class="rq-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>
-      </svg>
-      <input type="text" id="rq-search" class="rq-search-input" placeholder="Search sets…" autocomplete="off" aria-label="Search prime sets" oninput="onSearchInput(this)">
-    </div>
-
-    <div class="rq-tabs">
-      <button class="rq-tab active" data-tab="all"       onclick="setTab(this)">All</button>
-      <button class="rq-tab"        data-tab="warframes" onclick="setTab(this)">Warframes</button>
-      <button class="rq-tab"        data-tab="weapons"   onclick="setTab(this)">Weapons</button>
+    <div class="rq-controls">
+      <div class="rq-search-expand" id="rq-search-wrap">
+        <button class="rq-search-toggle" id="rq-search-toggle" aria-label="Search sets" onclick="toggleSearch()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>
+          </svg>
+        </button>
+        <input type="text" id="rq-search" class="rq-search-input" placeholder="Search sets…" autocomplete="off" aria-label="Search prime sets" oninput="onSearchInput(this)">
+        <button class="rq-search-clear" id="rq-search-clear" onclick="clearSearch()" aria-label="Clear search">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" width="10" height="10"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg>
+        </button>
+      </div>
+      <div class="rq-pills">
+        <button class="rq-pill active" data-tab="all"       onclick="setTab(this)">All</button>
+        <button class="rq-pill"        data-tab="warframes" onclick="setTab(this)">Warframes</button>
+        <button class="rq-pill"        data-tab="weapons"   onclick="setTab(this)">Weapons</button>
+      </div>
     </div>
 
     <div class="rq-set-list" id="rq-set-list"></div>
