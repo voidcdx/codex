@@ -110,7 +110,7 @@ function renderDropSection(relic) {
 
   return `<div class="relic-drops-section" id="${id}">
     <button class="relic-drops-toggle" onclick="toggleDrops(this)" type="button">
-      Drop Locations<span class="drop-count">${drops.length}</span>
+      Drop Locations
       <svg class="drop-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
     </button>
     <div class="drop-list">

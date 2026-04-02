@@ -209,6 +209,7 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
   align-content: start;
+  align-items: start;
   min-width: 0;
   padding: 0 28px 20px;
 }
@@ -411,16 +412,6 @@
   transition: transform 0.15s;
 }
 .relic-drops-section.open .drop-chevron { transform: rotate(180deg); }
-
-.drop-count {
-  font-size: 0.68rem;
-  color: var(--text-dim);
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0 5px;
-  margin-left: auto;
-}
 
 .drop-list {
   display: none;
