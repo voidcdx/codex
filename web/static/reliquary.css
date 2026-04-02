@@ -158,7 +158,7 @@
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
 }
-.vault-drop-btn .vault-icon { width: 14px; height: 14px; }
+.vault-drop-btn .vault-icon { width: 16px; height: 16px; }
 .vault-drop-btn:hover { color: var(--text); border-color: var(--border-highlight); }
 .vault-drop-wrap.open .vault-drop-btn { color: var(--text); border-color: var(--border-highlight); }
 .vault-drop-btn.active { color: var(--accent2); border-color: var(--accent2); }
