@@ -117,6 +117,14 @@ app.state.limiter = _limiter
 app.add_middleware(SlowAPIMiddleware)
 
 
+@app.middleware("http")
+async def _no_cache_static(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 @app.exception_handler(RateLimitExceeded)
 async def _rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONResponse:
     retry_after = getattr(exc, "retry_after", 60)
