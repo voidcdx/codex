@@ -271,7 +271,7 @@
 
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 900px) {
-  .factions-wrap { padding: 16px; }
+  .factions-wrap { padding: 16px; overflow-y: visible; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
   .roster-info { width: 140px; }
 }
 

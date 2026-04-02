@@ -128,8 +128,12 @@ function renderPagination(page, total, countText) {
 function goToPage(n) {
   currentPage = n;
   renderGrid();
-  const wrap = document.querySelector('.factions-wrap');
-  if (wrap) wrap.scrollTop = 0;
+  if (window.innerWidth <= 900) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    const wrap = document.querySelector('.factions-wrap');
+    if (wrap) wrap.scrollTop = 0;
+  }
 }
 
 function renderGrid() {

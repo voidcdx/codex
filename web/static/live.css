@@ -556,7 +556,7 @@ a.ne-news-link:hover { color: var(--crimson-bright); }
 
 /* ── Mobile ── */
 @media (max-width: 900px) {
-  .live-wrap { padding: 16px; }
+  .live-wrap { padding: 16px; overflow-y: visible; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 }
 /* Skip the 2-column zone — jump straight from 3 columns to 1.
    Below ~1340px the content area can't fit 3×360px columns,
