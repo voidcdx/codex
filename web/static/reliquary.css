@@ -135,7 +135,7 @@
   transition: color 0.15s;
 }
 .rq-search-clear:hover { color: var(--accent2); }
-.rq-search-expand.has-value .rq-search-clear { display: flex; }
+.rq-search-expand.open .rq-search-clear { display: flex; }
 
 /* ── Segmented toggle (Warframes / Weapons) ────────────── */
 .rq-seg {

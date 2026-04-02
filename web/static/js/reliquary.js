@@ -270,13 +270,19 @@ function toggleSearch() {
   if (isOpen) {
     input.focus();
   } else {
-    input.blur();
-    if (input.value) {
-      input.value = '';
-      searchQuery = '';
-      wrap.classList.remove('has-value');
-      renderSidebar();
-    }
+    collapseSearch();
+  }
+}
+
+function collapseSearch() {
+  const wrap = document.getElementById('rq-search-wrap');
+  const input = document.getElementById('rq-search');
+  wrap.classList.remove('open', 'has-value');
+  input.blur();
+  if (input.value) {
+    input.value = '';
+    searchQuery = '';
+    renderSidebar();
   }
 }
 
@@ -288,13 +294,7 @@ function onSearchInput(input) {
 }
 
 function clearSearch() {
-  const input = document.getElementById('rq-search');
-  const wrap = document.getElementById('rq-search-wrap');
-  input.value = '';
-  searchQuery = '';
-  wrap.classList.remove('has-value');
-  renderSidebar();
-  input.focus();
+  collapseSearch();
 }
 
 function clearSelection() {
@@ -460,4 +460,12 @@ async function loadVersion() {
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
   loadVersion();
+
+  // Click-away collapses the search
+  document.addEventListener('click', (e) => {
+    const wrap = document.getElementById('rq-search-wrap');
+    if (wrap && wrap.classList.contains('open') && !wrap.contains(e.target)) {
+      collapseSearch();
+    }
+  });
 });
