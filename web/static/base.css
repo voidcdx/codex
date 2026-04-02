@@ -332,6 +332,11 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 900px) {
+  html { height: auto; min-height: 100dvh; }
+  body { height: auto; min-height: 100dvh; overflow-y: auto; overflow-x: hidden; }
+}
+
 
 /* ── Atmosphere layers — disabled ── */
 .atmo {
