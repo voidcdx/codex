@@ -329,6 +329,9 @@ function renderDetail() {
 
   const set = allSets[selectedSet];
   const typeBadge = set.type === 'warframe' ? 'Warframe' : 'Weapon';
+  const typeIcon = set.type === 'warframe'
+    ? '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="10" cy="6" r="3"/><path d="M4 18c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>'
+    : '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 2L3 8v6l7 4 7-4V8z"/><line x1="10" y1="2" x2="10" y2="18"/></svg>';
 
   // Sort parts: Blueprint first, then alphabetical
   const partEntries = Object.entries(set.parts).sort((a, b) => {
@@ -337,26 +340,79 @@ function renderDetail() {
     return a[0].localeCompare(b[0]);
   });
 
+  // Compute stats for hero
+  const totalRelics = partEntries.reduce((s, [, r]) => s + r.length, 0);
+  const rarityCounts = { Common: 0, Uncommon: 0, Rare: 0 };
+  const tierCounts = {};
+  for (const [, relics] of partEntries) {
+    for (const r of relics) {
+      rarityCounts[r.rarity] = (rarityCounts[r.rarity] || 0) + 1;
+      tierCounts[r.tier] = (tierCounts[r.tier] || 0) + 1;
+    }
+  }
+
+  // Stat bars
+  const statBars = [
+    { label: 'PARTS',    value: partEntries.length, color: 'var(--accent2)' },
+    { label: 'RELICS',   value: totalRelics,        color: 'var(--tier-neo)' },
+    { label: 'COMMON',   value: rarityCounts.Common,   color: 'var(--rarity-common)' },
+    { label: 'UNCOMMON', value: rarityCounts.Uncommon,  color: 'var(--rarity-uncommon)' },
+    { label: 'RARE',     value: rarityCounts.Rare,      color: 'var(--rarity-rare)' },
+  ];
+  const maxStat = Math.max(...statBars.map(s => s.value), 1);
+  const statsHtml = statBars.map(s => {
+    const pct = Math.round((s.value / maxStat) * 100);
+    return `<div class="rq-stat-row">
+      <span class="rq-stat-label">${s.label}</span>
+      <span class="rq-stat-value">${s.value}</span>
+      <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:${pct}%;background:${s.color}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Tier summary chips
+  const tierOrder = ['Lith', 'Meso', 'Neo', 'Axi', 'Requiem'];
+  const tierChips = tierOrder
+    .filter(t => tierCounts[t])
+    .map(t => `<span class="rq-tier-chip" data-tier="${esc(t)}">${esc(t)} <span class="rq-tier-chip-count">${tierCounts[t]}</span></span>`)
+    .join('');
+
+  // Part cards
   const partsHtml = partEntries.map(([partName, relics]) => {
     const active = selectedPart === partName ? ' active' : '';
-    // Best rarity across relics for this part
     const bestRarity = getBestRarity(relics);
+    const tierTags = [...new Set(relics.map(r => r.tier))].sort((a, b) =>
+      tierOrder.indexOf(a) - tierOrder.indexOf(b)
+    ).map(t => `<span class="rq-part-tier" data-tier="${esc(t)}">${esc(t)}</span>`).join('');
+
     return `<button class="rq-part-card${active}" data-part="${esc(partName)}" onclick="selectPart('${esc(partName)}')">
-      <span class="rq-part-name">${esc(cleanPartName(partName))}</span>
-      <span class="rq-part-meta">
-        <span class="rq-part-relic-count">${relics.length}</span>
+      <div class="rq-part-left">
+        <span class="rq-part-name">${esc(cleanPartName(partName))}</span>
+        <div class="rq-part-tags">${tierTags}</div>
+      </div>
+      <div class="rq-part-right">
+        <span class="rq-part-relic-count">${relics.length} relic${relics.length !== 1 ? 's' : ''}</span>
         <span class="rq-rarity-dot rq-rarity-${esc(bestRarity)}" aria-hidden="true"></span>
-      </span>
+      </div>
     </button>`;
   }).join('');
 
   const relicSection = selectedPart ? renderRelicSection() : '';
 
   detail.innerHTML = `
-    <div class="rq-detail-header">
-      <h2 class="rq-detail-title">${esc(displayName(selectedSet))}</h2>
-      <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
+    <div class="rq-hero">
+      <div class="rq-hero-top">
+        <div class="rq-hero-info">
+          <div class="rq-hero-type-row">
+            <span class="rq-hero-icon">${typeIcon}</span>
+            <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
+          </div>
+          <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
+          <div class="rq-tier-chips">${tierChips}</div>
+        </div>
+      </div>
+      <div class="rq-hero-stats">${statsHtml}</div>
     </div>
+    <div class="rq-section-label">COMPONENTS</div>
     <div class="rq-parts-grid">${partsHtml}</div>
     ${relicSection}
   `;
