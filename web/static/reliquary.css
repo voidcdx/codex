@@ -152,17 +152,21 @@
   padding: 0;
   box-sizing: border-box;
   background: transparent;
-  border: 1px solid transparent;
-  border-radius: 20px;
+  border: none;
   color: var(--text-dim);
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s;
 }
-.vault-drop-btn .vault-icon { width: 16px; height: 16px; }
-.vault-drop-btn:hover { color: var(--text); border-color: var(--border-highlight); }
-.vault-drop-wrap.open .vault-drop-btn { color: var(--text); border-color: var(--border-highlight); }
-.vault-drop-btn.active { color: var(--accent2); border-color: var(--accent2); }
-.vault-drop-btn.vaulted { color: #e53e3e; border-color: #e53e3e; }
+.vault-drop-btn .vault-icon { width: 28px; height: 28px; }
+.vault-ring { stroke-opacity: 0; transition: stroke-opacity 0.15s; }
+.vault-drop-btn:hover .vault-ring,
+.vault-drop-wrap.open .vault-drop-btn .vault-ring { stroke-opacity: 1; }
+.vault-drop-btn:hover { color: var(--text); }
+.vault-drop-wrap.open .vault-drop-btn { color: var(--text); }
+.vault-drop-btn.active { color: var(--accent2); }
+.vault-drop-btn.active .vault-ring { stroke-opacity: 1; }
+.vault-drop-btn.vaulted { color: #e53e3e; }
+.vault-drop-btn.vaulted .vault-ring { stroke-opacity: 1; }
 
 /* Vault dropdown pill */
 .vault-drop-menu {
