@@ -47,10 +47,9 @@
           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" width="10" height="10"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg>
         </button>
       </div>
-      <div class="rq-pills">
-        <button class="rq-pill active" data-tab="all"       onclick="setTab(this)">All</button>
-        <button class="rq-pill"        data-tab="warframes" onclick="setTab(this)">Warframes</button>
-        <button class="rq-pill"        data-tab="weapons"   onclick="setTab(this)">Weapons</button>
+      <div class="rq-seg" id="rq-seg">
+        <button class="rq-seg-btn active" data-tab="warframes" onclick="toggleSeg(this)">Warframes</button>
+        <button class="rq-seg-btn"        data-tab="weapons"   onclick="toggleSeg(this)">Weapons</button>
       </div>
     </div>
 
