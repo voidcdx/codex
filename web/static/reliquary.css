@@ -63,9 +63,10 @@
   font-weight: 600;
   padding: 0;
   outline: none;
+  touch-action: manipulation;
 }
 .rq-search-input::placeholder { color: var(--text-dim); }
-.rq-search-input:focus { border: none; box-shadow: none; outline: none; }
+.rq-search-input:focus-visible { outline: 1px solid var(--accent2); outline-offset: 2px; border-radius: 2px; }
 
 /* Tabs */
 .rq-tabs {
@@ -88,6 +89,7 @@
 }
 .rq-tab + .rq-tab { border-left: 1px solid var(--border); }
 .rq-tab:hover { color: var(--text); background: var(--surface2); }
+.rq-tab:focus-visible { outline: 1px solid var(--accent2); outline-offset: -1px; }
 .rq-tab.active {
   color: var(--accent2);
   background: var(--accent-a15);
@@ -118,6 +120,10 @@
 }
 .rq-set-item:hover {
   background: var(--surface2);
+}
+.rq-set-item:focus-visible {
+  outline: 1px solid var(--accent2);
+  outline-offset: -1px;
 }
 .rq-set-item.active {
   background: var(--accent-a15);
@@ -257,6 +263,10 @@
 .rq-part-card:hover {
   border-color: var(--border-highlight);
   background: var(--surface2);
+}
+.rq-part-card:focus-visible {
+  outline: 1px solid var(--accent2);
+  outline-offset: 2px;
 }
 .rq-part-card.active {
   border-color: var(--accent2);
@@ -405,6 +415,7 @@
 .drop-chance {
   font-size: 0.75rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   text-align: right;
   flex-shrink: 0;
 }

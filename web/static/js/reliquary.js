@@ -181,7 +181,7 @@ function renderDetail() {
       <span class="rq-part-name">${esc(cleanPartName(partName))}</span>
       <span class="rq-part-meta">
         <span class="rq-part-relic-count">${relics.length} relic${relics.length !== 1 ? 's' : ''}</span>
-        <span class="rq-rarity-dot rq-rarity-${esc(bestRarity)}"></span>
+        <span class="rq-rarity-dot rq-rarity-${esc(bestRarity)}" aria-hidden="true"></span>
       </span>
     </button>`;
   }).join('');
