@@ -22,7 +22,7 @@ async function loadData() {
     renderSidebar();
   } catch (e) {
     document.getElementById('rq-set-list').innerHTML =
-      '<div class="rq-empty">Failed to load relic data.</div>';
+      '<div class="rq-empty">DATA UNAVAILABLE</div>';
   }
 }
 
@@ -89,7 +89,7 @@ function renderSidebar() {
   const filtered = getFilteredSets();
 
   if (filtered.length === 0) {
-    list.innerHTML = '<div class="rq-empty">No sets match your search.</div>';
+    list.innerHTML = '<div class="rq-empty">NO RESULTS</div>';
     return;
   }
 
@@ -159,7 +159,7 @@ function selectSet(name) {
 function renderDetail() {
   const detail = document.getElementById('rq-detail');
   if (!selectedSet || !allSets[selectedSet]) {
-    detail.innerHTML = '<div class="rq-empty-detail">Select a Prime set from the list.</div>';
+    detail.innerHTML = '<div class="rq-empty-detail">SELECT A PRIME SET</div>';
     return;
   }
 
@@ -180,7 +180,7 @@ function renderDetail() {
     return `<button class="rq-part-card${active}" data-part="${esc(partName)}" onclick="selectPart('${esc(partName)}')">
       <span class="rq-part-name">${esc(cleanPartName(partName))}</span>
       <span class="rq-part-meta">
-        <span class="rq-part-relic-count">${relics.length} relic${relics.length !== 1 ? 's' : ''}</span>
+        <span class="rq-part-relic-count">${relics.length}</span>
         <span class="rq-rarity-dot rq-rarity-${esc(bestRarity)}" aria-hidden="true"></span>
       </span>
     </button>`;

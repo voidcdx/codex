@@ -16,20 +16,17 @@
   --rarity-rare:     #fbbf24;
 }
 
-/* ── Strip .factions-wrap horizontal padding ────────────── */
-.factions-wrap { padding-left: 0; padding-right: 0; }
-@media (max-width: 900px) { .factions-wrap { padding-left: 0; padding-right: 0; } }
-
 /* ── Two-panel layout ──────────────────────────────────── */
 .reliquary-wrap {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 260px 1fr;
   gap: 0;
   min-height: 0;
   height: 100%;
+  padding: 0;
 }
 
-/* ── Sidebar ───────────────────────────────────────────── */
+/* ── Left panel — set list ─────────────────────────────── */
 .rq-sidebar {
   display: flex;
   flex-direction: column;
@@ -40,59 +37,69 @@
 
 /* Search */
 .rq-search-wrap {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 14px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border);
 }
 .rq-search-icon {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
+  position: absolute;
+  left: 20px;
+  width: 13px;
+  height: 13px;
   color: var(--text-dim);
+  pointer-events: none;
 }
 .rq-search-input {
   flex: 1;
-  min-width: 0;
-  background: transparent;
-  border: none;
+  background: var(--surface2);
+  border: 1px solid var(--border);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 0;
+  font-size: 0.85rem;
+  padding: 6px 10px 6px 28px;
   outline: none;
   touch-action: manipulation;
+  transition: border-color 0.15s;
 }
 .rq-search-input::placeholder { color: var(--text-dim); }
-.rq-search-input:focus-visible { outline: 1px solid var(--accent2); outline-offset: 2px; border-radius: 2px; }
+.rq-search-input:focus { border-color: var(--border-red); }
+.rq-search-input:focus-visible { outline: none; }
 
-/* Tabs */
+/* Category tabs — filter-pill style */
 .rq-tabs {
   display: flex;
+  gap: 0;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 .rq-tab {
   flex: 1;
-  padding: 8px 0;
-  border: none;
-  background: transparent;
+  padding: 4px 0;
+  border: 1px solid var(--border);
+  background: none;
   color: var(--text-dim);
-  font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: color 0.12s, background 0.12s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
   text-align: center;
 }
-.rq-tab + .rq-tab { border-left: 1px solid var(--border); }
-.rq-tab:hover { color: var(--text); background: var(--surface2); }
+.rq-tab + .rq-tab { border-left: none; }
+.rq-tab:hover:not(.active) {
+  border-color: var(--border-red);
+  color: var(--text-primary);
+}
 .rq-tab:focus-visible { outline: 1px solid var(--accent2); outline-offset: -1px; }
 .rq-tab.active {
+  border-color: var(--accent2);
   color: var(--accent2);
-  background: var(--accent-a15);
+  background: color-mix(in srgb, var(--accent2) 8%, transparent);
 }
 
 /* Set list */
@@ -106,9 +113,9 @@
 .rq-set-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0;
   width: 100%;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border: none;
   border-bottom: 1px solid var(--border);
   border-left: 3px solid transparent;
@@ -116,52 +123,64 @@
   color: var(--text);
   cursor: pointer;
   text-align: left;
-  transition: background 0.12s, border-color 0.12s;
+  transition: background 0.15s, border-color 0.15s;
+  position: relative;
 }
+.rq-set-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 3%, transparent), transparent 50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.rq-set-item:hover::before { opacity: 1; }
 .rq-set-item:hover {
-  background: var(--surface2);
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+  border-left-color: color-mix(in srgb, var(--accent2) 40%, transparent);
 }
-.rq-set-item:focus-visible {
-  outline: 1px solid var(--accent2);
-  outline-offset: -1px;
-}
+.rq-set-item:focus-visible { outline: 1px solid var(--accent2); outline-offset: -1px; }
 .rq-set-item.active {
-  background: var(--accent-a15);
+  background: color-mix(in srgb, var(--accent2) 6%, var(--surface));
   border-left-color: var(--accent2);
 }
+.rq-set-item.active::before { opacity: 1; }
+
 .rq-set-name {
   flex: 1;
   font-family: var(--font-display);
-  font-size: 0.78rem;
+  font-size: 0.73rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .rq-set-name mark {
-  background: var(--accent-a25);
+  background: color-mix(in srgb, var(--accent2) 25%, transparent);
   color: var(--accent2);
-  border-radius: 2px;
+  border-radius: 0;
   padding: 0 1px;
 }
+
 .rq-set-count {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
   color: var(--text-dim);
-  background: var(--surface2);
-  border-radius: 10px;
-  padding: 1px 7px;
   flex-shrink: 0;
+  margin-left: 8px;
 }
 
-/* Type indicator dot on set items */
+/* Type indicator */
 .rq-type-wf .rq-set-name::before {
   content: '';
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--accent2);
   margin-right: 6px;
@@ -170,24 +189,26 @@
 .rq-type-wp .rq-set-name::before {
   content: '';
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--tier-axi);
   margin-right: 6px;
   vertical-align: middle;
 }
 
-/* ── Detail panel ──────────────────────────────────────── */
+/* ── Right panel — detail ──────────────────────────────── */
 .rq-detail {
-  padding: 24px 28px;
+  padding: 20px 28px;
   overflow-y: auto;
   min-height: 0;
 }
 
 .rq-empty-detail, .rq-empty {
-  font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-family: var(--font-display);
+  font-size: 0.73rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--text-dim);
   text-align: center;
   padding: 48px 20px;
@@ -198,96 +219,105 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 14px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
 }
 .rq-detail-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: var(--text);
+  color: var(--text-primary);
   margin: 0;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .rq-type-badge {
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border: 1px solid;
   flex-shrink: 0;
 }
 .rq-badge-warframe {
   color: var(--accent2);
-  background: var(--accent-a15);
+  border-color: color-mix(in srgb, var(--accent2) 40%, transparent);
+  background: color-mix(in srgb, var(--accent2) 6%, transparent);
 }
 .rq-badge-weapon {
   color: var(--tier-axi);
-  background: rgba(251,191,36,0.12);
+  border-color: color-mix(in srgb, var(--tier-axi) 40%, transparent);
+  background: color-mix(in srgb, var(--tier-axi) 6%, transparent);
 }
 
-/* ── Part cards grid ───────────────────────────────────── */
+/* ── Part cards — roster-entry style ───────────────────── */
 .rq-parts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
 .rq-part-card {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px 14px;
+  align-items: center;
+  gap: 0;
+  padding: 12px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--border-red);
   border-radius: var(--radius);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.15s, background 0.12s;
+  transition: border-color 0.15s, background 0.15s;
   position: relative;
+  overflow: hidden;
 }
 .rq-part-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%) bottom / 100% 1px no-repeat;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 4%, transparent), transparent 40%);
   pointer-events: none;
-  z-index: 1;
 }
 .rq-part-card:hover {
-  border-color: var(--border-highlight);
-  background: var(--surface2);
+  border-color: color-mix(in srgb, var(--accent2) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
 }
-.rq-part-card:focus-visible {
-  outline: 1px solid var(--accent2);
-  outline-offset: 2px;
-}
+.rq-part-card:focus-visible { outline: 1px solid var(--accent2); outline-offset: 2px; }
 .rq-part-card.active {
-  border-color: var(--accent2);
-  background: var(--accent-a15);
+  border-left-color: var(--accent2);
+  border-color: color-mix(in srgb, var(--accent2) 40%, transparent);
+  background: color-mix(in srgb, var(--accent2) 6%, var(--surface));
 }
 
 .rq-part-name {
   font-family: var(--font-display);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  flex: 1;
+  min-width: 0;
 }
 .rq-part-meta {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 .rq-part-relic-count {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
   color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 /* Rarity dots */
@@ -304,84 +334,95 @@
 /* ── Relic drill-down section ──────────────────────────── */
 .rq-relic-section {
   border-top: 1px solid var(--border);
-  padding-top: 16px;
+  padding-top: 14px;
 }
 .rq-relic-section-title {
   font-family: var(--font-display);
-  font-size: 0.88rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  color: var(--text);
-  margin: 0 0 12px;
-  letter-spacing: 0.03em;
+  color: var(--accent2);
+  margin: 0 0 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent2) 30%, transparent);
 }
 
 .rq-relic-row {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 .rq-relic-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 8px 12px;
 }
 
 /* Tier badge in relic rows */
 .rq-relic-tier-badge {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 2px 6px;
-  border-radius: var(--radius-sm);
+  border: 1px solid;
   flex-shrink: 0;
 }
-.rq-relic-tier-badge[data-tier="Lith"]    { color: var(--tier-lith);    background: rgba(156,163,175,0.12); }
-.rq-relic-tier-badge[data-tier="Meso"]    { color: var(--tier-meso);    background: rgba(74,222,128,0.12); }
-.rq-relic-tier-badge[data-tier="Neo"]     { color: var(--tier-neo);     background: rgba(96,165,250,0.12); }
-.rq-relic-tier-badge[data-tier="Axi"]     { color: var(--tier-axi);     background: rgba(251,191,36,0.12); }
-.rq-relic-tier-badge[data-tier="Requiem"] { color: var(--tier-requiem); background: rgba(192,132,252,0.12); }
+.rq-relic-tier-badge[data-tier="Lith"]    { color: var(--tier-lith);    border-color: color-mix(in srgb, var(--tier-lith) 40%, transparent);    background: color-mix(in srgb, var(--tier-lith) 8%, transparent); }
+.rq-relic-tier-badge[data-tier="Meso"]    { color: var(--tier-meso);    border-color: color-mix(in srgb, var(--tier-meso) 40%, transparent);    background: color-mix(in srgb, var(--tier-meso) 8%, transparent); }
+.rq-relic-tier-badge[data-tier="Neo"]     { color: var(--tier-neo);     border-color: color-mix(in srgb, var(--tier-neo) 40%, transparent);     background: color-mix(in srgb, var(--tier-neo) 8%, transparent); }
+.rq-relic-tier-badge[data-tier="Axi"]     { color: var(--tier-axi);     border-color: color-mix(in srgb, var(--tier-axi) 40%, transparent);     background: color-mix(in srgb, var(--tier-axi) 8%, transparent); }
+.rq-relic-tier-badge[data-tier="Requiem"] { color: var(--tier-requiem); border-color: color-mix(in srgb, var(--tier-requiem) 40%, transparent); background: color-mix(in srgb, var(--tier-requiem) 8%, transparent); }
 
 .rq-relic-name {
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.73rem;
   font-weight: 600;
   color: var(--text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   flex: 1;
 }
 
-/* Rarity text color */
+/* Rarity text */
 .rq-relic-rarity {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   flex-shrink: 0;
 }
 .rq-rarity-text-Common   { color: var(--rarity-common); }
 .rq-rarity-text-Uncommon { color: var(--rarity-uncommon); }
-.rq-rarity-text-Rare     { color: var(--rarity-rare); }
+.rq-rarity-text-Rare     { color: var(--rarity-rare); text-shadow: 0 0 8px var(--rarity-rare); }
 
 /* Drop locations inside relic rows */
 .rq-drop-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 0 12px 10px;
+  gap: 1px;
+  padding: 4px 12px 8px;
   border-top: 1px solid var(--border);
 }
 .rq-no-drops {
-  padding: 6px 12px 10px;
-  font-family: var(--font-body);
-  font-size: 0.74rem;
+  padding: 4px 12px 8px;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
   color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   border-top: 1px solid var(--border);
 }
 
-/* Reuse drop-row pattern from old reliquary */
+/* Drop rows */
 .drop-row {
   display: grid;
   grid-template-columns: 1fr auto auto auto;
@@ -404,16 +445,15 @@
   flex-shrink: 0;
 }
 .drop-rotation {
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   font-weight: 700;
   color: var(--text-dim);
   background: var(--surface2);
-  border-radius: 3px;
   padding: 0 4px;
   flex-shrink: 0;
 }
 .drop-chance {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -432,19 +472,14 @@
   .reliquary-wrap {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
+    padding: 0;
   }
-
   .rq-sidebar {
     border-right: none;
     border-bottom: 1px solid var(--border);
-    max-height: 40vh;
+    max-height: 35vh;
   }
-
   .rq-detail {
-    padding: 16px 16px;
-  }
-
-  .rq-parts-grid {
-    grid-template-columns: 1fr;
+    padding: 16px;
   }
 }
