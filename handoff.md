@@ -4,109 +4,110 @@
 **304 tests passing.** Full 6-step damage pipeline, web UI fully functional.
 
 **Version:** `0.7.0`
-**Branch:** `claude/continue-handoff-docs-2Mf89`
+**Branch:** `claude/review-handoff-notes-lvohz`
 
 ---
 
 ## What Was Done This Session
 
-### Relic Drop Locations — Full Pipeline
-Added "where to farm this relic" data to the Reliquary page.
+### 1. Drop Tables Auto-Refresh
+Automated the `drops.html` refresh that was previously manual.
 
-**Data source:** `data/drops.html` — official Warframe drop tables page saved locally.
+**How it works:**
+- `_drops_bg_loop()` in `web/api.py` fetches drop tables from the official CDN every 7 days
+- CDN URL: `warframe-web-assets.nyc3.cdn.digitaloceanspaces.com/uploads/cms/hnfvc0o3jnfvc873njb03enrf56.html`
+- `_fetch_drops()`: 3 retries, 2s backoff, 30s timeout; falls back to disk `drops.json`
+- `parse_mission_rewards()` in `scripts/parse_drops.py` now accepts `Path | str` — server passes HTML string directly
+- `sys.exit()` calls replaced with `raise ValueError()` for clean server error handling
+- `POST /api/refresh-drops` — manual trigger for on-demand refresh after game updates
+- `GET /api/drops` serves from in-memory cache, falls back to disk if cache not populated
+- Lifespan manages both worldstate and drops background tasks
 
-**Parser:** `scripts/parse_drops.py`
-- BeautifulSoup4 parses `#missionRewards` section (lines 114–994)
-- State machine: mission header → rotation header → item rows → blank-row separator
-- Normalizes relic names: "Lith D7 Relic" → "Lith D7" (matches `relic.name` in relics.json)
-- Deduplicates by `(location, mission_type, rotation, rarity, chance)` tuple
-- Output: `data/drops.json` — 34 relics, 3409 entries, keyed by relic name
+### 2. Reliquary Prime Sets Pivot (IN PROGRESS)
+Pivoted the Reliquary page from flat relic grid to goal-oriented Prime Sets browser.
 
-**Schema:**
-```json
-{
-  "Lith D7": [
-    {"location": "Void/Taranis", "mission_type": "Defense", "rotation": "A", "rarity": "Rare", "chance": 6.67}
-  ]
-}
-```
-- `rotation` is `null` for no-rotation missions (Capture, Exterminate, etc.)
-- 34 relics = only currently-unvaulted, actively-dropping relics (correct — vaulted ones don't appear in mission drop tables)
+**Architecture:**
+- Two-panel layout: 260px sidebar + detail panel (`.reliquary-wrap` CSS grid)
+- Data derived **client-side** from `/api/relics` — no new endpoint
+- `buildPrimeSets(relics)`: filters unvaulted, groups by `item` name → parts → relics
+- 42 unvaulted prime sets: 11 warframes (4 parts each), 31 weapons (2-5 parts each)
+- Classification: warframe if parts include Neuroptics/Chassis/Systems, else weapon
 
-**Backend:**
-- `src/loader.py` — `_raw_drops()` cached loader (same pattern as `_raw_relics()`)
-- `web/api.py` — `GET /api/drops` endpoint
+**UI flow:**
+1. Sidebar: search + category tabs (All/Warframes/Weapons) + scrollable set list
+2. Click a set → detail panel shows parts as cards (roster-entry style)
+3. Click a part → relic drill-down shows relics with tier badges + top 5 drop locations
 
-**Frontend (`web/static/js/reliquary.js`):**
-- Parallel fetch: `Promise.all([fetch('/api/relics'), fetch('/api/drops')])`
-- `renderDropSection(relic)` — looks up `dropsMap[relic.name]`, renders top 5 by highest % 
-- Button toggle: `<button onclick="toggleDrops(this)">` → `btn.closest('.relic-drops-section').classList.toggle('open')`
-- `IntersectionObserver` on each `.relic-card` — removes `.open` when card scrolls out of view
-- `<details>`/`<summary>` was tried and abandoned — caused multi-card expansion issues in grid
+**Current state — NEEDS DESIGN WORK:**
+- The page is **functionally complete** but visually needs polish
+- User feedback: "dead flat design", "AI slop" — multiple CSS passes attempted
+- Latest version uses `--accent-a*` vars, sidebar has `background: var(--surface)`, part cards have `::before` gradient bleed + `::after` panel line
+- Still needs iteration to match the visual quality of the factions/calculator pages
+- **The user should screenshot and iterate live** — blind CSS iteration doesn't work well
 
-**CSS (`web/static/reliquary.css`):**
-- `.relic-drops-section` — `border-top: 1px solid var(--border)`
-- `.relic-drops-toggle` — full-width button, Rajdhani 0.75rem, chevron rotates on open
-- `.drop-list { display: none }` / `.relic-drops-section.open .drop-list { display: flex }`
-- `.drop-row` — grid: `1fr auto auto auto` (location | mission | rotation badge | chance%)
-- Rarity-colored chance %: Common=dim, Uncommon=accent2, Rare=gold, Ultra Rare=#e879f9, Legendary=tier-axi
-
-### Back-to-Top Button — Desktop Position Fix
-Button was `position: fixed; right: 16px` which overlapped the right sidebar (260px wide).
-
-**Fix:** `positionBackToTop()` in `theme.js` — reads `sidebar.getBoundingClientRect().left` at runtime and sets `btn.style.right = (window.innerWidth - sidebarLeft + 16) + 'px'`. Also fires on `resize`. This handles `.app`'s `max-width: 1440px; margin: 0 auto` centering correctly at any viewport width.
-
-### Grid Card Height Fix
-`align-items: start` was tried on `.relic-grid` to prevent card stretching when a drop list opened. Reverted — it caused gaps below Baro/vaulted relics (no drop data = shorter cards). Default `stretch` is fine because the CSS class toggle means only the clicked card's content changes; neighbours just grow taller without showing content.
-
-### Vercel Agent Skills
-Installed via `npx skills i vercel-labs/agent-skills -y`:
-- `web-design-guidelines` — audits UI against 100+ Vercel design rules
-- `vercel-react-best-practices`, `vercel-composition-patterns`, `vercel-react-view-transitions`
-- `vercel-cli-with-tokens`, `deploy-to-vercel`, `vercel-react-native-skills`
-- Committed to `.agents/skills/` + `.claude/skills/` symlinks + `skills-lock.json`
+**Mobile:** Stacks vertically — sidebar on top (max-height 35vh), detail below. Set click scrolls to detail.
 
 ---
 
 ## Key Files Changed This Session
 ```
-data/drops.html                  # raw Warframe drop tables HTML (source data)
-data/drops.json                  # parsed: 34 relics, 3409 drop entries
-scripts/parse_drops.py           # BeautifulSoup parser for missionRewards section
-requirements.txt                 # added beautifulsoup4>=4.12
-src/loader.py                    # _raw_drops() cached loader
-web/api.py                       # GET /api/drops endpoint
-web/static/js/reliquary.js       # dropsMap fetch, renderDropSection, toggleDrops, IntersectionObserver
-web/static/reliquary.css         # drop section styles — toggle button, drop-row grid, rarity colors
-web/static/js/theme.js           # positionBackToTop() — reads sidebar BoundingClientRect
-web/static/layout.css            # minor back-to-top tweaks
-.agents/skills/                  # Vercel agent skills
-.claude/skills/                  # symlinks
-skills-lock.json                 # skills lock file
+scripts/parse_drops.py           # accepts Path | str; ValueError instead of sys.exit
+web/api.py                       # _drops_bg_loop, _fetch_drops, POST /api/refresh-drops
+                                 #   _lifespan manages both ws + drops tasks
+web/static/reliquary.html        # two-panel layout: .rq-sidebar + .rq-detail
+web/static/reliquary.css         # sidebar, part cards, relic drill-down, tier badges
+web/static/js/reliquary.js       # buildPrimeSets, selectSet, selectPart, renderDetail
 ```
 
 ---
 
 ## Pending / Known Issues
-- **Back-to-top button** — desktop position fix pushed but user reported still wrong; may need `git pull` + hard refresh (Ctrl+Shift+R). JS-based fix (`positionBackToTop`) reads sidebar BoundingClientRect — should work at any viewport width.
+- **Reliquary visual polish** — functional but user unhappy with the design. Needs live iteration with screenshots. The structure/layout is correct; it's the surface treatment, depth, and visual weight that need work.
 - **27 placeholder weapons** — fake IPS values in `data/weapons.json`.
 - **URL state / sharing** — high-value missing feature (no work started).
 - **Chrome mobile toolbar collapse** — different browser behavior, not fixable.
-- **drops.html refresh** — when Warframe updates add new relics to mission rotation, re-save drops.html from the official drop tables page and re-run `python scripts/parse_drops.py`.
 
 ---
 
-## Reliquary Drop Locations — Architecture Notes
+## Reliquary Prime Sets — Architecture
 
 ```
-drops.html (raw) → parse_drops.py → drops.json → GET /api/drops → dropsMap (JS)
-                                                                        ↓
-                                                          renderDropSection(relic)
-                                                          top 5 by highest chance%
-                                                          IntersectionObserver closes on scroll-away
+/api/relics (all 732) → JS filter (vaulted=false) → buildPrimeSets()
+                                                         ↓
+                                               allSets: {
+                                                 "Saryn Prime": {
+                                                   type: "warframe",
+                                                   parts: {
+                                                     "Blueprint": [{ relic, tier, rarity }],
+                                                     "Neuroptics Blueprint": [...],
+                                                     ...
+                                                   }
+                                                 }
+                                               }
+                                                         ↓
+                                         renderSidebar() ← search + tab filter
+                                               ↓ click
+                                         renderDetail() → parts grid
+                                               ↓ click part
+                                         renderRelicSection() → relics + dropsMap lookup
 ```
 
-**Why only 34 relics in drops.json:** The missionRewards section only lists currently-active relics in mission rotation. Vaulted relics don't drop from missions so they correctly have no entries. When vault rotations change, refresh drops.html + re-parse.
+## Drops Auto-Refresh — Architecture
+
+```
+Server startup → _drops_bg_loop() (asyncio task)
+                       ↓
+              _fetch_drops() — GET CDN HTML
+                       ↓
+              parse_mission_rewards(html_string) — in-memory parse
+                       ↓
+              _drops_cache = parsed dict (served by GET /api/drops)
+                       ↓
+              sleep 7 days → repeat
+
+Manual trigger: POST /api/refresh-drops → _fetch_drops() → update cache
+Fallback: disk data/drops.json via _raw_drops() from src/loader.py
+```
 
 ---
 
@@ -124,18 +125,17 @@ position:fixed elements (always visible):
   .sidebar       full-height drawer, z-index:100
 ```
 
-Desktop (>900px) is completely unchanged — inner div scroll as before.
-
 ---
 
 ## CSS File Map
 ```
-web/static/base.css        # :root — all CSS variables; html/body rules; mobile overflow override
-web/static/layout.css      # shared layout, header, sidebar, burger, back-to-top, mobile scroll refactor
+web/static/base.css        # :root — all CSS variables (--accent-a* for visible tints on dark bg)
+web/static/layout.css      # shared layout, header, sidebar, burger, back-to-top
 web/static/panels.css      # .panel, input[type=text] scoped to .panel
-web/static/reliquary.css   # all reliquary styles — search pill, vault button, tier seg, pagination, drop section
-web/static/js/reliquary.js # filter state, search pill, vault toggle, renderGrid, pagination, drop locations
-web/static/js/theme.js     # theme switcher + initBackToTop() + positionBackToTop() (loaded on ALL pages)
+web/static/factions.css    # .roster-entry pattern (THE reference for list-style components)
+web/static/reliquary.css   # .rq-sidebar, .rq-set-item, .rq-part-card, .rq-relic-row
+web/static/js/reliquary.js # prime sets state + rendering
+web/static/js/theme.js     # theme switcher + positionBackToTop() (loaded on ALL pages)
 ```
 
 ---
@@ -149,7 +149,12 @@ ash      body.theme-ash         bg: #080808   surface: rgba(16,16,16,0.85)   acc
 
 ---
 
+## Design System Notes for Next Session
+- **Use `--accent-a*` vars** (defined in base.css) for tints on dark bg — `color-mix()` is invisible at low %
+- **Reference: factions.css `.roster-entry`** — the gold standard for list components (left accent bar, `::before` gradient, glass surface)
+- **Surface contrast**: `--surface` (#121212) vs `--bg` (#0a0a0a) is only 7% brightness diff — panels need explicit background to be visible
+- **Font scale**: 0.55–0.85rem for Orbitron display, all uppercase, 0.08–0.2em letter-spacing
+
 ## Git Notes
-- Working branch: `claude/continue-handoff-docs-2Mf89`
-- User is on same branch locally
+- Working branch: `claude/review-handoff-notes-lvohz`
 - `&&` not supported in Windows PowerShell — run git commands separately

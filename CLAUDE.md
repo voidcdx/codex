@@ -53,7 +53,9 @@ data/
   relics.json       # 732 relics — name, tier, vaulted, is_baro, introduced, rewards:[{item,part,rarity}]
   drops.json        # 34 active relics — keyed by relic name → [{location, mission_type, rotation, rarity, chance}]
                    #   Only unvaulted relics appear (vaulted ones don't drop from missions)
-                   #   Refresh: re-save drops.html from official drop tables, run parse_drops.py
+                   #   Auto-refreshed: server fetches CDN weekly via _drops_bg_loop() in api.py
+                   #   Manual refresh: POST /api/refresh-drops (or re-save drops.html + run parse_drops.py)
+                   #   CDN URL: warframe-web-assets.nyc3.cdn.digitaloceanspaces.com/uploads/cms/hnfvc0o3jnfvc873njb03enrf56.html
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
   parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json (multi-attack aware)
@@ -63,9 +65,10 @@ scripts/
                    #   Handles both old stealth_async and new Stealth class playwright-stealth APIs
   parse_relic_data.py # parses data/void_data.lua → data/relics.json (732 relics)
                    #   _extract_block() skips empty RelicData={} declaration (line 51) to find real data
-  parse_drops.py    # parses data/drops.html #missionRewards → data/drops.json
+  parse_drops.py    # parses drops HTML → relic drop dict; accepts Path or str (for server in-memory parsing)
                    #   BeautifulSoup4 state machine: mission header → rotation → item rows → blank-row
                    #   normalize_relic_name(): "Lith D7 Relic" → "Lith D7"; dedupes by (loc,type,rot,rarity,chance)
+                   #   Raises ValueError (not sys.exit) on parse errors — server catches cleanly
   extract_data.lua  # Lua extraction script / wiki ApiSandbox one-liners
   parse_worldstate.py # worldstate parser: parse(raw); _parse_nightwave(raw); _parse_goals(raw) for anniversary gifts
                    #   _NW_NAMES + _NW_DESCRIPTIONS (~120 entries each); _NW_ELITE_NAMES/_NW_ELITE_DESCRIPTIONS for weekly/elite key collisions
@@ -74,7 +77,9 @@ web/
   api.py            # FastAPI: GET /api/weapons|mods|enemies|version|relics|drops; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
                    #   GET /api/relics — optional query params: tier, vaulted, reward
-                   #   GET /api/drops — relic drop locations dict keyed by relic name
+                   #   GET /api/drops — relic drop locations (served from in-memory cache, disk fallback)
+                   #   POST /api/refresh-drops — manual trigger to re-fetch drop tables from CDN
+                   #   Background loops: _worldstate_bg_loop (60s), _drops_bg_loop (7 days)
                    #   All HTML routes served with Cache-Control: no-store
                    #   GET /favicon.ico → web/static/favicon.png (explicit route, StaticFiles would 404)
                    #   Routes: GET / → index.html (live tracker), GET /live → index.html (alias),
@@ -107,23 +112,18 @@ web/
                    #   .roster-entry (flex row, faction-color left border + gradient bleed)
                    #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
-  static/reliquary.html # Reliquary page — at /reliquary
-                   #   Controls: single flex row — [🔍 search pill] [tier seg] [🔒 vault circle btn right-aligned]
-                   #   Search: .search-pill (28px circle → 220px pill, overflow:hidden width transition)
-                   #     Glass btn toggles open; input fades in; SVG × clear btn appears on .has-value
-                   #     closePill() keeps query (click-outside/Enter/toggle); clearSearch() resets (×/Escape)
-                   #     closePill() calls blur() to dismiss mobile keyboard
-                   #   Vault: .vault-drop-wrap — SVG ring lock btn (ring drawn in SVG, not CSS border-radius)
-                   #     States: default=dim/no ring; unvaulted=accent2+ring; vaulted=#e53e3e+ring
-                   #     .vault-drop-menu: position:absolute pill dropdown, max-height+opacity transition
-                   #   Tier seg: All/Lith/Meso/Neo/Axi/Requiem — single connected pill
-                   #   Relic count shown below paginator (not in controls row)
-  static/reliquary.css  # Reliquary styles — tier color tokens (:root), controls, search pill, vault dropdown,
-                   #   .relic-card (data-tier attr drives tier bar + badge color), reward rows with rarity dots
+  static/reliquary.html # Reliquary page — Prime Sets browser at /reliquary
+                   #   Two-panel layout: .reliquary-wrap (grid: 260px sidebar + 1fr detail)
+                   #   Left .rq-sidebar: search input + category tabs (All/Warframes/Weapons) + scrollable set list
+                   #   Right .rq-detail: selected set header + parts grid + relic drill-down with drop locations
+                   #   Data derived client-side from /api/relics (unvaulted only) — no new endpoint
+                   #   42 unvaulted prime sets: 11 warframes, 31 weapons
+                   #   Mobile ≤900px: stacked (sidebar on top, max-height 35vh; detail below)
+  static/reliquary.css  # Reliquary styles — .rq-sidebar, .rq-set-item, .rq-part-card, .rq-relic-row
                    #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard
-                   #   Pagination: .relic-pagination (column), .relic-page-controls (row), .relic-page-btn (Rajdhani+chevron)
-                   #   Drop section: .relic-drops-section, .relic-drops-toggle (button, chevron), .drop-list (hidden by default),
-                   #     .drop-row (grid 1fr auto auto auto), rarity-drop-* classes color the chance %
+                   #   Part cards: roster-entry style (left accent bar, ::before gradient bleed, ::after panel line)
+                   #   Relic drill-down: tier badges, rarity text, drop-row grid (1fr auto auto auto)
+                   #   Uses --accent-a* vars for visible tints on dark bg (not color-mix)
   static/live.css  # Live page styles — invasion .reward-chip colored by data-faction attr (Grineer/Corpus/Infested/other)
                    #   .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
                    #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
@@ -147,11 +147,11 @@ web/
     weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
                    #   selectIncarnonMode(mode) — toggles Normal/Incarnon attack; weapons with *incarnon* attacks
                    #   get a pill toggle instead of raw attack tabs
-    reliquary.js   # relic browser — loadRelics(), renderGrid(), matchesSearch(), renderCard()
-                   #   setTier(btn), setVault(btn), clearSearch() — filter state: activeTier/activeVault/searchQuery
-                   #   dropsMap: parallel-fetched from /api/drops; renderDropSection(relic) shows top 5 by highest %
-                   #   toggleDrops(btn): classList.toggle('open') on .relic-drops-section
-                   #   IntersectionObserver (initDropObserver): removes .open when card scrolls out of view
+    reliquary.js   # Prime Sets browser — buildPrimeSets(), selectSet(), selectPart()
+                   #   State: allSets, dropsMap, activeTab, searchQuery, selectedSet, selectedPart
+                   #   buildPrimeSets(relics): groups unvaulted relic rewards by item→parts→relics
+                   #   renderSidebar(): filtered/searched set list; renderDetail(): parts + relic drill-down
+                   #   renderRelicSection(): shows relics for selected part with top 5 drop locations each
     enemy.js       # enemy panel, level scaling, Steel Path, Eximus
     modals.js      # Alchemy Guide, Riven Builder, Guide, Buffs
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
