@@ -3,6 +3,7 @@
 let allSets    = {};    // { "Saryn Prime": { type, parts: { "Neuroptics Blueprint": [{ relic, tier, rarity }] } } }
 let dropsMap   = {};    // from /api/drops
 let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
+let weaponStats  = {};  // { "Braton Prime": { slot, class, crit_chance, … }, … }
 let activeTab  = 'all'; // 'all' | 'warframes' | 'weapons'
 let searchQuery = '';
 let selectedSet  = null;
@@ -26,7 +27,12 @@ async function loadData() {
     try { dropsMap = await dropsResp.json(); } catch { dropsMap = {}; }
     try {
       const weapons = await weaponsResp.json();
-      for (const w of weapons) if (w.image) weaponImages[w.name] = w.image;
+      for (const w of weapons) {
+        if (w.image) weaponImages[w.name] = w.image;
+        if (w.name && w.name.includes('Prime')) {
+          weaponStats[w.name] = w;
+        }
+      }
     } catch {}
     allSets = buildPrimeSets(relics);
     renderGoals();
@@ -335,9 +341,6 @@ function renderDetail() {
 
   const set = allSets[selectedSet];
   const typeBadge = set.type === 'warframe' ? 'Warframe' : 'Weapon';
-  const typeIcon = set.type === 'warframe'
-    ? '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="10" cy="6" r="3"/><path d="M4 18c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>'
-    : '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 2L3 8v6l7 4 7-4V8z"/><line x1="10" y1="2" x2="10" y2="18"/></svg>';
 
   // Sort parts: Blueprint first, then alphabetical
   const partEntries = Object.entries(set.parts).sort((a, b) => {
@@ -346,41 +349,38 @@ function renderDetail() {
     return a[0].localeCompare(b[0]);
   });
 
-  // Compute stats for hero
-  const totalRelics = partEntries.reduce((s, [, r]) => s + r.length, 0);
-  const rarityCounts = { Common: 0, Uncommon: 0, Rare: 0 };
-  const tierCounts = {};
-  for (const [, relics] of partEntries) {
-    for (const r of relics) {
-      rarityCounts[r.rarity] = (rarityCounts[r.rarity] || 0) + 1;
-      tierCounts[r.tier] = (tierCounts[r.tier] || 0) + 1;
-    }
+  const tierOrder = ['Lith', 'Meso', 'Neo', 'Axi', 'Requiem'];
+
+  // Weapon stats
+  const ws = weaponStats[selectedSet];
+  let statsHtml = '';
+  if (ws) {
+    const atk = ws.attacks && ws.attacks[0];
+    const totalDmg = atk ? Object.values(atk.base_damage || {}).reduce((s, v) => s + v, 0) : 0;
+    const stats = [
+      { label: 'DAMAGE', value: totalDmg.toFixed(1), bar: Math.min(totalDmg / 100, 1), color: 'var(--accent2)' },
+      { label: 'CRIT',   value: (ws.crit_chance * 100).toFixed(0) + '%', bar: ws.crit_chance, color: 'var(--rarity-rare)' },
+      { label: 'CRIT DMG', value: ws.crit_multiplier.toFixed(1) + 'x', bar: Math.min(ws.crit_multiplier / 5, 1), color: 'var(--tier-axi)' },
+      { label: 'STATUS', value: (ws.status_chance * 100).toFixed(0) + '%', bar: ws.status_chance, color: 'var(--tier-meso)' },
+      { label: 'FIRE RATE', value: ws.fire_rate.toFixed(1), bar: Math.min(ws.fire_rate / 15, 1), color: 'var(--tier-neo)' },
+      { label: 'RIVEN', value: ws.riven_disposition.toFixed(2), bar: ws.riven_disposition / 5, color: 'var(--tier-requiem)' },
+    ];
+    statsHtml = `<div class="rq-hero-stats">${stats.map(s => {
+      const pct = Math.round(s.bar * 100);
+      return `<div class="rq-stat-row">
+        <span class="rq-stat-label">${s.label}</span>
+        <span class="rq-stat-value">${s.value}</span>
+        <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:${pct}%;background:${s.color}"></div></div>
+      </div>`;
+    }).join('')}</div>`;
   }
 
-  // Stat bars
-  const statBars = [
-    { label: 'PARTS',    value: partEntries.length, color: 'var(--accent2)' },
-    { label: 'RELICS',   value: totalRelics,        color: 'var(--tier-neo)' },
-    { label: 'COMMON',   value: rarityCounts.Common,   color: 'var(--rarity-common)' },
-    { label: 'UNCOMMON', value: rarityCounts.Uncommon,  color: 'var(--rarity-uncommon)' },
-    { label: 'RARE',     value: rarityCounts.Rare,      color: 'var(--rarity-rare)' },
-  ];
-  const maxStat = Math.max(...statBars.map(s => s.value), 1);
-  const statsHtml = statBars.map(s => {
-    const pct = Math.round((s.value / maxStat) * 100);
-    return `<div class="rq-stat-row">
-      <span class="rq-stat-label">${s.label}</span>
-      <span class="rq-stat-value">${s.value}</span>
-      <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:${pct}%;background:${s.color}"></div></div>
-    </div>`;
-  }).join('');
-
-  // Tier summary chips
-  const tierOrder = ['Lith', 'Meso', 'Neo', 'Axi', 'Requiem'];
-  const tierChips = tierOrder
-    .filter(t => tierCounts[t])
-    .map(t => `<span class="rq-tier-chip" data-tier="${esc(t)}">${esc(t)} <span class="rq-tier-chip-count">${tierCounts[t]}</span></span>`)
-    .join('');
+  // Weapon sub-info line
+  let subInfo = '';
+  if (ws) {
+    const parts = [ws.slot, ws.class, ws.trigger].filter(Boolean);
+    subInfo = `<div class="rq-hero-sub">${parts.map(p => esc(p)).join(' · ')}</div>`;
+  }
 
   // Part cards
   const partsHtml = partEntries.map(([partName, relics]) => {
@@ -417,17 +417,17 @@ function renderDetail() {
       <div class="rq-hero-top">
         <div class="rq-hero-info">
           <div class="rq-hero-type-row">
-            <span class="rq-hero-icon">${typeIcon}</span>
             <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
           </div>
           <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
-          <div class="rq-tier-chips">${tierChips}</div>
+          ${subInfo}
         </div>
       </div>
-      <div class="rq-hero-stats">${statsHtml}</div>
+      ${statsHtml}
+      <div class="rq-hero-divider"></div>
+      <div class="rq-hero-section-label">COMPONENTS</div>
+      <div class="rq-parts-grid">${partsHtml}</div>
     </div>
-    <div class="rq-section-label">COMPONENTS</div>
-    <div class="rq-parts-grid">${partsHtml}</div>
     ${relicSection}
   `;
 }
