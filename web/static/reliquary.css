@@ -388,19 +388,29 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  width: 100%;
   padding: 6px 10px;
+  background: none;
+  border: none;
   font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-dim);
   cursor: pointer;
-  list-style: none;
+  text-align: left;
   transition: color 0.12s;
   user-select: none;
 }
-.relic-drops-toggle::-webkit-details-marker { display: none; }
-.relic-drops-section[open] .relic-drops-toggle { color: var(--text); }
-.relic-drops-toggle:hover { color: var(--text); }
+.relic-drops-toggle:hover,
+.relic-drops-toggle.open { color: var(--text); }
+
+.drop-chevron {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+}
+.relic-drops-toggle.open .drop-chevron { transform: rotate(180deg); }
 
 .drop-count {
   font-size: 0.68rem;
@@ -464,22 +474,4 @@
 .rarity-drop-Ultra-Rare  .drop-chance { color: #e879f9; }
 .rarity-drop-Legendary   .drop-chance { color: var(--tier-axi); }
 
-.drop-more-btn {
-  align-self: flex-start;
-  margin-top: 3px;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-dim);
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  cursor: pointer;
-  transition: color 0.12s, border-color 0.12s;
-}
-.drop-more-btn:hover {
-  color: var(--text);
-  border-color: var(--border-highlight);
-}
 .relic-page-btn:disabled { opacity: 0.3; cursor: defa

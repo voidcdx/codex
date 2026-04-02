@@ -85,8 +85,7 @@ function matchesSearch(relic, q) {
     );
 }
 
-const DROPS_INITIAL = 8;
-const ROTATION_LABEL = { A: 'A', B: 'B', C: 'C', D: 'D', E: 'E' };
+const DROPS_SHOW = 5;
 
 function renderDropSection(relic) {
   const drops = dropsMap[relic.name];
@@ -94,7 +93,7 @@ function renderDropSection(relic) {
 
   const renderRow = d => {
     const rot = d.rotation
-      ? `<span class="drop-rotation">Rot ${esc(ROTATION_LABEL[d.rotation] || d.rotation)}</span>`
+      ? `<span class="drop-rotation">Rot ${esc(d.rotation)}</span>`
       : '';
     const rarityClass = esc(d.rarity.replace(/\s+/g, '-'));
     const chance = Number(d.chance).toFixed(2);
@@ -106,34 +105,25 @@ function renderDropSection(relic) {
     </div>`;
   };
 
-  const visible = drops.slice(0, DROPS_INITIAL);
-  const hidden  = drops.slice(DROPS_INITIAL);
-  const overflow = hidden.length > 0
-    ? `<div class="drop-overflow" hidden>${hidden.map(renderRow).join('')}</div>
-       <button class="drop-more-btn" onclick="toggleDropOverflow(this)">+${hidden.length} more</button>`
-    : '';
+  const top5 = drops.slice(0, DROPS_SHOW);
+  const id = `drops-${esc(relic.name.replace(/\s+/g, '-'))}`;
 
-  return `<details class="relic-drops-section">
-    <summary class="relic-drops-toggle">
+  return `<div class="relic-drops-section" id="${id}">
+    <button class="relic-drops-toggle" onclick="toggleDrops(this)" type="button">
       Drop Locations<span class="drop-count">${drops.length}</span>
-    </summary>
-    <div class="drop-list">
-      ${visible.map(renderRow).join('')}
-      ${overflow}
+      <svg class="drop-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+    </button>
+    <div class="drop-list" hidden>
+      ${top5.map(renderRow).join('')}
     </div>
-  </details>`;
+  </div>`;
 }
 
-function toggleDropOverflow(btn) {
-  const overflow = btn.previousElementSibling;
-  if (overflow.hasAttribute('hidden')) {
-    overflow.removeAttribute('hidden');
-    btn.textContent = 'Show less';
-  } else {
-    overflow.setAttribute('hidden', '');
-    const count = overflow.querySelectorAll('.drop-row').length;
-    btn.textContent = `+${count} more`;
-  }
+function toggleDrops(btn) {
+  const list = btn.nextElementSibling;
+  const open = list.hasAttribute('hidden');
+  list.toggleAttribute('hidden', !open);
+  btn.classList.toggle('open', open);
 }
 
 function renderCard(relic, query) {
