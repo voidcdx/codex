@@ -209,7 +209,6 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
   align-content: start;
-  align-items: start;
   min-width: 0;
   padding: 0 28px 20px;
 }
