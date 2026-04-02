@@ -105,7 +105,7 @@ function renderDropSection(relic) {
     </div>`;
   };
 
-  const top5 = drops.slice(0, DROPS_SHOW);
+  const top5 = [...drops].sort((a, b) => b.chance - a.chance).slice(0, DROPS_SHOW);
   const id = `drops-${esc(relic.name.replace(/\s+/g, '-'))}`;
 
   return `<div class="relic-drops-section" id="${id}">
