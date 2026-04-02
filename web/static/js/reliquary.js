@@ -7,6 +7,10 @@ let searchQuery = '';
 let selectedSet  = null;
 let selectedPart = null;
 
+// Wishlist — persisted to localStorage
+const WISHLIST_KEY = 'rq-wishlist';
+let wishlist = new Set(JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]'));
+
 // ---------------------------------------------------------------------------
 // Data load + derivation
 // ---------------------------------------------------------------------------
@@ -19,6 +23,7 @@ async function loadData() {
     const relics = await relicsResp.json();
     try { dropsMap = await dropsResp.json(); } catch { dropsMap = {}; }
     allSets = buildPrimeSets(relics);
+    renderGoals();
     renderSidebar();
   } catch (e) {
     document.getElementById('rq-set-list').innerHTML =
@@ -70,6 +75,130 @@ function displayName(name) {
 }
 
 // ---------------------------------------------------------------------------
+// Wishlist
+// ---------------------------------------------------------------------------
+function saveWishlist() {
+  localStorage.setItem(WISHLIST_KEY, JSON.stringify([...wishlist]));
+}
+
+function toggleWishlist(name, ev) {
+  if (ev) ev.stopPropagation();
+  if (wishlist.has(name)) wishlist.delete(name);
+  else wishlist.add(name);
+  saveWishlist();
+  renderGoals();
+  renderSidebar();
+}
+
+function removeGoal(name, ev) {
+  if (ev) ev.stopPropagation();
+  wishlist.delete(name);
+  saveWishlist();
+  renderGoals();
+  renderSidebar();
+}
+
+/** Collect every relic needed by wishlisted sets */
+function getGoalRelics() {
+  const relics = new Set();
+  for (const name of wishlist) {
+    const set = allSets[name];
+    if (!set) continue;
+    for (const parts of Object.values(set.parts)) {
+      for (const r of parts) relics.add(r.relic);
+    }
+  }
+  return relics;
+}
+
+/**
+ * Best Mission — rank missions by how many distinct goal-relics they drop.
+ * Returns top 5 missions as [{ location, mission_type, relics: [name…], count }].
+ */
+function calcBestMissions() {
+  const goalRelics = getGoalRelics();
+  if (goalRelics.size === 0) return [];
+
+  // missionKey → { location, mission_type, relics: Set }
+  const missions = {};
+  for (const relicName of goalRelics) {
+    const drops = dropsMap[relicName];
+    if (!drops) continue;
+    for (const d of drops) {
+      const key = `${d.location}|||${d.mission_type}`;
+      if (!missions[key]) {
+        missions[key] = { location: d.location, mission_type: d.mission_type, relics: new Set() };
+      }
+      missions[key].relics.add(relicName);
+    }
+  }
+
+  return Object.values(missions)
+    .map(m => ({ ...m, relics: [...m.relics], count: m.relics.size }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+}
+
+// ---------------------------------------------------------------------------
+// Goals section rendering
+// ---------------------------------------------------------------------------
+function renderGoals() {
+  const container = document.getElementById('rq-goals');
+  if (!container) return;
+
+  if (wishlist.size === 0) {
+    container.innerHTML = '';
+    container.classList.add('rq-goals-empty');
+    return;
+  }
+  container.classList.remove('rq-goals-empty');
+
+  // Goal chips
+  const chips = [...wishlist].filter(n => allSets[n]).map(name => {
+    const set = allSets[name];
+    const typeClass = set.type === 'warframe' ? 'rq-type-wf' : 'rq-type-wp';
+    return `<button class="rq-goal-chip ${typeClass}" onclick="selectSet('${esc(name)}')">
+      <span class="rq-goal-name">${esc(displayName(name))}</span>
+      <span class="rq-goal-remove" onclick="removeGoal('${esc(name)}', event)" aria-label="Remove">&times;</span>
+    </button>`;
+  }).join('');
+
+  // Best missions
+  const best = calcBestMissions();
+  let bestHtml = '';
+  if (best.length > 0) {
+    const rows = best.map(m => {
+      const relicTags = m.relics.map(r =>
+        `<span class="rq-best-relic">${esc(r)}</span>`
+      ).join(' ');
+      return `<div class="rq-best-row">
+        <div class="rq-best-loc">
+          <span class="rq-best-name">${esc(m.location)}</span>
+          <span class="rq-best-type">${esc(m.mission_type)}</span>
+        </div>
+        <div class="rq-best-count">${m.count} relic${m.count !== 1 ? 's' : ''}</div>
+        <div class="rq-best-relics">${relicTags}</div>
+      </div>`;
+    }).join('');
+
+    bestHtml = `
+      <div class="rq-best-section">
+        <div class="rq-best-title">BEST MISSIONS</div>
+        ${rows}
+      </div>`;
+  }
+
+  container.innerHTML = `
+    <div class="rq-goals-header">
+      <span class="rq-goals-label">MY GOALS</span>
+      <span class="rq-goals-count">${wishlist.size}</span>
+    </div>
+    <div class="rq-goal-chips">${chips}</div>
+    ${bestHtml}
+  `;
+}
+
+// ---------------------------------------------------------------------------
 // Sidebar rendering
 // ---------------------------------------------------------------------------
 function getFilteredSets() {
@@ -98,9 +227,13 @@ function renderSidebar() {
     const partCount = Object.keys(set.parts).length;
     const active = selectedSet === name ? ' active' : '';
     const typeClass = set.type === 'warframe' ? ' rq-type-wf' : ' rq-type-wp';
+    const inWl = wishlist.has(name);
+    const wlClass = inWl ? ' rq-wl-active' : '';
+    const wlIcon = inWl ? '−' : '+';
     return `<button class="rq-set-item${active}${typeClass}" data-set="${esc(name)}" onclick="selectSet('${esc(name)}')">
       <span class="rq-set-name">${highlight(displayName(name), q)}</span>
       <span class="rq-set-count">${partCount}</span>
+      <span class="rq-wl-btn${wlClass}" onclick="toggleWishlist('${esc(name)}', event)" title="${inWl ? 'Remove from goals' : 'Add to goals'}" aria-label="${inWl ? 'Remove from goals' : 'Add to goals'}">${wlIcon}</span>
     </button>`;
   }).join('');
 }
