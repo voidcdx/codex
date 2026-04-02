@@ -283,27 +283,58 @@
   padding: 48px 20px;
 }
 
-/* Detail header */
-.rq-detail-header {
+/* ── Hero card ─────────────────────────────────────────── */
+.rq-hero {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.rq-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--panel-line-bottom), transparent);
+  pointer-events: none;
+}
+.rq-hero-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.rq-hero-info { flex: 1; min-width: 0; }
+.rq-hero-type-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+  gap: 8px;
+  margin-bottom: 8px;
 }
-.rq-detail-title {
+.rq-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--text-dim);
+}
+.rq-hero-icon svg { width: 16px; height: 16px; }
+.rq-hero-title {
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0;
-  letter-spacing: 0.12em;
+  margin: 0 0 8px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .rq-type-badge {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -314,13 +345,99 @@
 }
 .rq-badge-warframe {
   color: var(--accent2);
-  border-color: rgba(229, 62, 62, 0.4);
-  background: rgba(229, 62, 62, 0.06);
+  border-color: var(--accent-a25);
+  background: var(--accent-a5);
 }
 .rq-badge-weapon {
   color: var(--tier-axi);
   border-color: rgba(251, 191, 36, 0.4);
   background: rgba(251, 191, 36, 0.06);
+}
+
+/* Tier summary chips */
+.rq-tier-chips {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.rq-tier-chip {
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid;
+  border-radius: var(--radius-sm);
+}
+.rq-tier-chip-count {
+  font-weight: 700;
+  margin-left: 2px;
+}
+.rq-tier-chip[data-tier="Lith"]    { color: var(--tier-lith);    border-color: rgba(156,163,175,0.3); }
+.rq-tier-chip[data-tier="Meso"]    { color: var(--tier-meso);    border-color: rgba(74,222,128,0.3); }
+.rq-tier-chip[data-tier="Neo"]     { color: var(--tier-neo);     border-color: rgba(96,165,250,0.3); }
+.rq-tier-chip[data-tier="Axi"]     { color: var(--tier-axi);     border-color: rgba(251,191,36,0.3); }
+.rq-tier-chip[data-tier="Requiem"] { color: var(--tier-requiem); border-color: rgba(192,132,252,0.3); }
+
+/* ── Stat bars ─────────────────────────────────────────── */
+.rq-hero-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 20px;
+}
+.rq-stat-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+.rq-stat-label {
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  min-width: 55px;
+}
+.rq-stat-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.rq-stat-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.rq-stat-value {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: right;
+  min-width: 20px;
+}
+
+/* ── Section label ─────────────────────────────────────── */
+.rq-section-label {
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  position: relative;
+}
+.rq-section-label::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; width: 30px;
+  height: 1px;
+  background: var(--accent2);
 }
 
 /* ── Part cards ────────────────────────────────────────── */
@@ -374,6 +491,13 @@
   background: var(--accent-a10);
 }
 
+.rq-part-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 .rq-part-name {
   font-family: var(--font-display);
   font-size: 0.78rem;
@@ -381,10 +505,28 @@
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  flex: 1;
-  min-width: 0;
 }
-.rq-part-meta {
+.rq-part-tags {
+  display: flex;
+  gap: 3px;
+}
+.rq-part-tier {
+  font-family: var(--font-display);
+  font-size: 0.45rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1px 4px;
+  border: 1px solid;
+  border-radius: 2px;
+}
+.rq-part-tier[data-tier="Lith"]    { color: var(--tier-lith);    border-color: rgba(156,163,175,0.3); }
+.rq-part-tier[data-tier="Meso"]    { color: var(--tier-meso);    border-color: rgba(74,222,128,0.3); }
+.rq-part-tier[data-tier="Neo"]     { color: var(--tier-neo);     border-color: rgba(96,165,250,0.3); }
+.rq-part-tier[data-tier="Axi"]     { color: var(--tier-axi);     border-color: rgba(251,191,36,0.3); }
+.rq-part-tier[data-tier="Requiem"] { color: var(--tier-requiem); border-color: rgba(192,132,252,0.3); }
+
+.rq-part-right {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -392,9 +534,10 @@
 }
 .rq-part-relic-count {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: var(--text-dim);
   letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 /* Rarity dots */
