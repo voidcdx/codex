@@ -48,8 +48,6 @@ function initBackToTop() {
 
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
     SCROLL_SELECTORS.forEach(sel => {
       const el = document.querySelector(sel);
       if (el) el.scrollTo({ top: 0, behavior: 'smooth' });
