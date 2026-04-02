@@ -67,22 +67,27 @@ def normalize_relic_name(item_text: str) -> str | None:
     return f"{m.group(1).capitalize()} {m.group(2)}"
 
 
-def parse_mission_rewards(html_path: Path) -> dict[str, list[dict]]:
+def parse_mission_rewards(source: "Path | str") -> dict[str, list[dict]]:
     """
     Parse the #missionRewards <table> and return a dict keyed by relic name.
     Stops at the #relicRewards section.
+
+    *source* can be a ``Path`` to an HTML file **or** an HTML string.
     """
-    html = html_path.read_text(encoding="utf-8")
+    if isinstance(source, Path):
+        html = source.read_text(encoding="utf-8")
+    else:
+        html = source
     soup = BeautifulSoup(html, "html.parser")
 
     # Find the missionRewards h3 and its immediately following table
     h3 = soup.find("h3", id="missionRewards")
     if not h3:
-        sys.exit("ERROR: could not find <h3 id='missionRewards'> in drops.html")
+        raise ValueError("Could not find <h3 id='missionRewards'> in drops HTML")
 
     table = h3.find_next_sibling("table")
     if not table:
-        sys.exit("ERROR: no <table> found after missionRewards heading")
+        raise ValueError("No <table> found after missionRewards heading")
 
     results: dict[str, list[dict]] = {}
     seen: dict[str, set[tuple]] = {}  # for deduplication
@@ -163,7 +168,10 @@ def main() -> None:
         sys.exit(f"ERROR: {html_path} not found")
 
     print(f"Parsing {html_path} ...")
-    drops = parse_mission_rewards(html_path)
+    try:
+        drops = parse_mission_rewards(html_path)
+    except ValueError as exc:
+        sys.exit(f"ERROR: {exc}")
 
     total_entries = sum(len(v) for v in drops.values())
     print(f"Found {len(drops)} relics, {total_entries} total drop entries")

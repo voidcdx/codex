@@ -96,15 +96,18 @@ async def _worldstate_bg_loop() -> None:
 
 @asynccontextmanager
 async def _lifespan(app: FastAPI):
-    task = asyncio.create_task(_worldstate_bg_loop())
+    ws_task = asyncio.create_task(_worldstate_bg_loop())
+    drops_task = asyncio.create_task(_drops_bg_loop())
     try:
         yield
     finally:
-        task.cancel()
-        try:
-            await task
-        except asyncio.CancelledError:
-            pass
+        ws_task.cancel()
+        drops_task.cancel()
+        for t in (ws_task, drops_task):
+            try:
+                await t
+            except asyncio.CancelledError:
+                pass
 
 
 app = FastAPI(title="Warframe Damage Calculator", version=APP_VERSION, lifespan=_lifespan)
@@ -283,6 +286,9 @@ def get_relics(
 @app.get("/api/drops")
 def get_drops() -> dict:
     """Return relic drop location data keyed by relic name."""
+    if _drops_cache is not None:
+        return _drops_cache
+    # Background loop hasn't populated yet — fall back to disk
     return _raw_drops()
 
 
@@ -943,6 +949,93 @@ def debug_worldstate_alerts(request: Request) -> dict:
         "keys_containing_lotusgift": list(gift_hits.keys()),
         "lotusgift_raw": gift_hits,
     }
+
+
+# ---------------------------------------------------------------------------
+# Background drops-table refresh (CDN → parse → in-memory cache)
+# ---------------------------------------------------------------------------
+
+_DROPS_CDN_URL = (
+    "https://warframe-web-assets.nyc3.cdn.digitaloceanspaces.com"
+    "/uploads/cms/hnfvc0o3jnfvc873njb03enrf56.html"
+)
+_DROPS_TTL = 7 * 24 * 3600  # 1 week
+_drops_cache: dict | None = None
+_drops_error: str = ""
+
+_parse_drops_mod = None  # loaded once on first call
+
+
+def _load_parse_drops_mod():
+    """Load scripts/parse_drops.py once and cache the module reference."""
+    global _parse_drops_mod
+    if _parse_drops_mod is not None:
+        return _parse_drops_mod
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "parse_drops",
+        Path(__file__).parent.parent / "scripts" / "parse_drops.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)  # type: ignore[union-attr]
+    _parse_drops_mod = mod
+    return mod
+
+
+def _fetch_drops() -> dict:
+    """Fetch drops HTML from CDN and parse into relic drop dict.
+
+    Retries up to 3 times with 2-second backoff.
+    Falls back to data/drops.json on failure.
+    """
+    mod = _load_parse_drops_mod()
+    last_exc: Exception | None = None
+    for attempt in range(3):
+        try:
+            r = _ws_session.get(_DROPS_CDN_URL, timeout=30)
+            r.raise_for_status()
+            return mod.parse_mission_rewards(r.text)
+        except Exception as exc:
+            last_exc = exc
+            if attempt < 2:
+                time.sleep(2)
+
+    # All attempts failed — fall back to disk
+    _logger.warning("Drops CDN fetch failed (%s); falling back to drops.json", last_exc)
+    data = _raw_drops()
+    if not data:
+        raise RuntimeError(f"Drops CDN unreachable and no local drops.json: {last_exc}")
+    return data
+
+
+async def _drops_bg_loop() -> None:
+    """Refresh drop table data on a fixed interval."""
+    global _drops_cache, _drops_error
+    while True:
+        try:
+            data = await asyncio.to_thread(_fetch_drops)
+            _drops_cache = data
+            _drops_error = ""
+            _logger.info("Drops data refreshed: %d relics", len(data))
+        except Exception as exc:
+            _drops_error = str(exc)
+            _logger.warning("Drops refresh failed: %s", exc)
+        sleep_time = 60 if _drops_cache is None else _DROPS_TTL
+        await asyncio.sleep(sleep_time)
+
+
+@app.post("/api/refresh-drops")
+async def refresh_drops():
+    """Manually trigger a drop table refresh from CDN."""
+    global _drops_cache, _drops_error
+    try:
+        data = await asyncio.to_thread(_fetch_drops)
+        _drops_cache = data
+        _drops_error = ""
+        return {"status": "ok", "relics": len(data)}
+    except Exception as exc:
+        _drops_error = str(exc)
+        raise HTTPException(502, f"Refresh failed: {exc}")
 
 
 # ---------------------------------------------------------------------------
