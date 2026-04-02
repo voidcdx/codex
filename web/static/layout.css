@@ -471,7 +471,7 @@
 
 /* ── Back to top ── */
 .back-to-top {
-  display: none;
+  display: flex;
   position: fixed;
   bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   right: 16px;
@@ -486,9 +486,7 @@
   cursor: pointer;
   padding: 0;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.2s;
 }
-.back-to-top.visible { opacity: 1; }
-@media (max-width: 900px) {
-  .back-to-top { display: flex; }
-}
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
