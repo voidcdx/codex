@@ -39,7 +39,7 @@ from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, calculate_falloff_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
-    _mod_family, _raw_enemies, _raw_mods, _raw_weapons, _raw_relics,
+    _mod_family, _raw_enemies, _raw_mods, _raw_weapons, _raw_relics, _raw_drops,
     list_enemies, list_mods, list_weapons,
     load_enemy, load_mod, load_weapon, make_riven_mod,
 )
@@ -278,6 +278,12 @@ def get_relics(
             if any(q in d["item"].lower() or q in d["part"].lower() for d in r["rewards"])
         ]
     return relics
+
+
+@app.get("/api/drops")
+def get_drops() -> dict:
+    """Return relic drop location data keyed by relic name."""
+    return _raw_drops()
 
 
 # ---------------------------------------------------------------------------

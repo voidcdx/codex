@@ -2,6 +2,7 @@
 
 const PAGE_SIZE = 50;
 let allRelics   = [];
+let dropsMap    = {};
 let activeTier  = 'all';
 let activeVault = 'unvaulted';
 let searchQuery = '';
@@ -12,8 +13,12 @@ let currentPage = 0;
 // ---------------------------------------------------------------------------
 async function loadRelics() {
   try {
-    const resp = await fetch('/api/relics');
-    allRelics = await resp.json();
+    const [relicsResp, dropsResp] = await Promise.all([
+      fetch('/api/relics'),
+      fetch('/api/drops'),
+    ]);
+    allRelics = await relicsResp.json();
+    try { dropsMap = await dropsResp.json(); } catch { dropsMap = {}; }
     renderGrid();
   } catch (e) {
     document.getElementById('relic-grid').innerHTML =
@@ -80,6 +85,57 @@ function matchesSearch(relic, q) {
     );
 }
 
+const DROPS_INITIAL = 8;
+const ROTATION_LABEL = { A: 'A', B: 'B', C: 'C', D: 'D', E: 'E' };
+
+function renderDropSection(relic) {
+  const drops = dropsMap[relic.name];
+  if (!drops || drops.length === 0) return '';
+
+  const renderRow = d => {
+    const rot = d.rotation
+      ? `<span class="drop-rotation">Rot ${esc(ROTATION_LABEL[d.rotation] || d.rotation)}</span>`
+      : '';
+    const rarityClass = esc(d.rarity.replace(/\s+/g, '-'));
+    const chance = Number(d.chance).toFixed(2);
+    return `<div class="drop-row rarity-drop-${rarityClass}">
+      <span class="drop-loc">${esc(d.location)}</span>
+      <span class="drop-mission">${esc(d.mission_type)}</span>
+      ${rot}
+      <span class="drop-chance">${chance}%</span>
+    </div>`;
+  };
+
+  const visible = drops.slice(0, DROPS_INITIAL);
+  const hidden  = drops.slice(DROPS_INITIAL);
+  const overflow = hidden.length > 0
+    ? `<div class="drop-overflow" hidden>${hidden.map(renderRow).join('')}</div>
+       <button class="drop-more-btn" onclick="toggleDropOverflow(this)">+${hidden.length} more</button>`
+    : '';
+
+  return `<details class="relic-drops-section">
+    <summary class="relic-drops-toggle">
+      Drop Locations<span class="drop-count">${drops.length}</span>
+    </summary>
+    <div class="drop-list">
+      ${visible.map(renderRow).join('')}
+      ${overflow}
+    </div>
+  </details>`;
+}
+
+function toggleDropOverflow(btn) {
+  const overflow = btn.previousElementSibling;
+  if (overflow.hasAttribute('hidden')) {
+    overflow.removeAttribute('hidden');
+    btn.textContent = 'Show less';
+  } else {
+    overflow.setAttribute('hidden', '');
+    const count = overflow.querySelectorAll('.drop-row').length;
+    btn.textContent = `+${count} more`;
+  }
+}
+
 function renderCard(relic, query) {
   const rewardRows = relic.rewards.map(r => {
     return `<div class="reward-row rarity-${esc(r.rarity)}">
@@ -101,6 +157,7 @@ function renderCard(relic, query) {
       <div class="relic-badges">${badges}</div>
     </div>
     <div class="relic-rewards">${rewardRows}</div>
+    ${renderDropSection(relic)}
   </div>`;
 }
 

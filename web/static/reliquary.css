@@ -378,4 +378,108 @@
   border-color: var(--border-highlight);
   color: var(--text);
 }
+
+/* ── Drop Locations section ────────────────────────────── */
+.relic-drops-section {
+  border-top: 1px solid var(--border);
+}
+
+.relic-drops-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.12s;
+  user-select: none;
+}
+.relic-drops-toggle::-webkit-details-marker { display: none; }
+.relic-drops-section[open] .relic-drops-toggle { color: var(--text); }
+.relic-drops-toggle:hover { color: var(--text); }
+
+.drop-count {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 5px;
+  margin-left: auto;
+}
+
+.drop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 10px 8px;
+}
+
+.drop-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 6px;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  padding: 1px 0;
+}
+
+.drop-loc {
+  color: var(--text);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.drop-mission {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+.drop-rotation {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--surface2);
+  border-radius: 3px;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+.drop-chance {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rarity-drop-Common      .drop-chance,
+.rarity-drop-Very-Common .drop-chance { color: var(--text-dim); }
+.rarity-drop-Uncommon    .drop-chance { color: var(--rarity-uncommon); }
+.rarity-drop-Rare        .drop-chance { color: var(--rarity-rare); }
+.rarity-drop-Ultra-Rare  .drop-chance { color: #e879f9; }
+.rarity-drop-Legendary   .drop-chance { color: var(--tier-axi); }
+
+.drop-more-btn {
+  align-self: flex-start;
+  margin-top: 3px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+}
+.drop-more-btn:hover {
+  color: var(--text);
+  border-color: var(--border-highlight);
+}
 .relic-page-btn:disabled { opacity: 0.3; cursor: defa
