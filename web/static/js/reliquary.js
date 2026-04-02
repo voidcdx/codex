@@ -123,6 +123,19 @@ function toggleDrops(btn) {
   btn.closest('.relic-drops-section').classList.toggle('open');
 }
 
+let _dropObserver = null;
+function initDropObserver() {
+  if (_dropObserver) _dropObserver.disconnect();
+  _dropObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        entry.target.querySelector('.relic-drops-section')?.classList.remove('open');
+      }
+    });
+  }, { threshold: 0 });
+  document.querySelectorAll('.relic-card').forEach(card => _dropObserver.observe(card));
+}
+
 function renderCard(relic, query) {
   const rewardRows = relic.rewards.map(r => {
     return `<div class="reward-row rarity-${esc(r.rarity)}">
@@ -211,6 +224,7 @@ function renderGrid() {
 
   grid.innerHTML = pageItems.map(r => renderCard(r, q)).join('');
   renderPagination(currentPage, totalPages, countText);
+  initDropObserver();
 }
 
 // ---------------------------------------------------------------------------
