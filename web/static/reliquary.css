@@ -31,6 +31,7 @@
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border);
+  background: var(--surface);
   min-height: 0;
   overflow: hidden;
 }
@@ -53,7 +54,7 @@
 }
 .rq-search-input {
   flex: 1;
-  background: var(--surface2);
+  background: var(--surface-solid);
   border: 1px solid var(--border);
   color: var(--text);
   font-family: var(--font-body);
@@ -67,30 +68,30 @@
 .rq-search-input:focus { border-color: var(--border-red); }
 .rq-search-input:focus-visible { outline: none; }
 
-/* Category tabs — filter-pill style */
+/* Category tabs */
 .rq-tabs {
   display: flex;
-  gap: 0;
+  gap: 4px;
   padding: 8px 12px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 .rq-tab {
   flex: 1;
-  padding: 4px 0;
+  padding: 5px 6px;
   border: 1px solid var(--border);
   background: none;
   color: var(--text-dim);
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
   text-align: center;
+  white-space: nowrap;
 }
-.rq-tab + .rq-tab { border-left: none; }
 .rq-tab:hover:not(.active) {
   border-color: var(--border-red);
   color: var(--text-primary);
@@ -99,7 +100,7 @@
 .rq-tab.active {
   border-color: var(--accent2);
   color: var(--accent2);
-  background: color-mix(in srgb, var(--accent2) 8%, transparent);
+  background: var(--accent-a8);
 }
 
 /* Set list */
@@ -113,9 +114,8 @@
 .rq-set-item {
   display: flex;
   align-items: center;
-  gap: 0;
   width: 100%;
-  padding: 8px 12px;
+  padding: 9px 12px;
   border: none;
   border-bottom: 1px solid var(--border);
   border-left: 3px solid transparent;
@@ -124,28 +124,16 @@
   cursor: pointer;
   text-align: left;
   transition: background 0.15s, border-color 0.15s;
-  position: relative;
 }
-.rq-set-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 3%, transparent), transparent 50%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-.rq-set-item:hover::before { opacity: 1; }
 .rq-set-item:hover {
-  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
-  border-left-color: color-mix(in srgb, var(--accent2) 40%, transparent);
+  background: var(--accent-a5);
+  border-left-color: var(--border-red);
 }
 .rq-set-item:focus-visible { outline: 1px solid var(--accent2); outline-offset: -1px; }
 .rq-set-item.active {
-  background: color-mix(in srgb, var(--accent2) 6%, var(--surface));
+  background: var(--accent-a10);
   border-left-color: var(--accent2);
 }
-.rq-set-item.active::before { opacity: 1; }
 
 .rq-set-name {
   flex: 1;
@@ -160,7 +148,7 @@
   white-space: nowrap;
 }
 .rq-set-name mark {
-  background: color-mix(in srgb, var(--accent2) 25%, transparent);
+  background: var(--accent-a25);
   color: var(--accent2);
   border-radius: 0;
   padding: 0 1px;
@@ -244,16 +232,16 @@
 }
 .rq-badge-warframe {
   color: var(--accent2);
-  border-color: color-mix(in srgb, var(--accent2) 40%, transparent);
-  background: color-mix(in srgb, var(--accent2) 6%, transparent);
+  border-color: rgba(229, 62, 62, 0.4);
+  background: rgba(229, 62, 62, 0.06);
 }
 .rq-badge-weapon {
   color: var(--tier-axi);
-  border-color: color-mix(in srgb, var(--tier-axi) 40%, transparent);
-  background: color-mix(in srgb, var(--tier-axi) 6%, transparent);
+  border-color: rgba(251, 191, 36, 0.4);
+  background: rgba(251, 191, 36, 0.06);
 }
 
-/* ── Part cards — roster-entry style ───────────────────── */
+/* ── Part cards ────────────────────────────────────────── */
 .rq-parts-grid {
   display: flex;
   flex-direction: column;
@@ -264,8 +252,7 @@
 .rq-part-card {
   display: flex;
   align-items: center;
-  gap: 0;
-  padding: 12px 16px;
+  padding: 14px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 3px solid var(--border-red);
@@ -278,22 +265,31 @@
   position: relative;
   overflow: hidden;
 }
+/* gradient bleed from left edge */
 .rq-part-card::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 4%, transparent), transparent 40%);
+  top: 0; left: 0; bottom: 0; width: 80px;
+  background: linear-gradient(90deg, var(--accent-a6), transparent);
+  pointer-events: none;
+}
+/* bottom panel line */
+.rq-part-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--panel-line-bottom), transparent);
   pointer-events: none;
 }
 .rq-part-card:hover {
-  border-color: color-mix(in srgb, var(--accent2) 60%, transparent);
-  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  border-color: var(--border-highlight);
+  background: var(--accent-a5);
 }
 .rq-part-card:focus-visible { outline: 1px solid var(--accent2); outline-offset: 2px; }
 .rq-part-card.active {
   border-left-color: var(--accent2);
-  border-color: color-mix(in srgb, var(--accent2) 40%, transparent);
-  background: color-mix(in srgb, var(--accent2) 6%, var(--surface));
+  border-color: var(--border-highlight);
+  background: var(--accent-a10);
 }
 
 .rq-part-name {
@@ -317,7 +313,6 @@
   font-size: 0.6rem;
   color: var(--text-dim);
   letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 /* Rarity dots */
@@ -345,7 +340,7 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding-bottom: 6px;
-  border-bottom: 1px solid color-mix(in srgb, var(--accent2) 30%, transparent);
+  border-bottom: 1px solid rgba(229, 62, 62, 0.3);
 }
 
 .rq-relic-row {
@@ -375,11 +370,11 @@
   border: 1px solid;
   flex-shrink: 0;
 }
-.rq-relic-tier-badge[data-tier="Lith"]    { color: var(--tier-lith);    border-color: color-mix(in srgb, var(--tier-lith) 40%, transparent);    background: color-mix(in srgb, var(--tier-lith) 8%, transparent); }
-.rq-relic-tier-badge[data-tier="Meso"]    { color: var(--tier-meso);    border-color: color-mix(in srgb, var(--tier-meso) 40%, transparent);    background: color-mix(in srgb, var(--tier-meso) 8%, transparent); }
-.rq-relic-tier-badge[data-tier="Neo"]     { color: var(--tier-neo);     border-color: color-mix(in srgb, var(--tier-neo) 40%, transparent);     background: color-mix(in srgb, var(--tier-neo) 8%, transparent); }
-.rq-relic-tier-badge[data-tier="Axi"]     { color: var(--tier-axi);     border-color: color-mix(in srgb, var(--tier-axi) 40%, transparent);     background: color-mix(in srgb, var(--tier-axi) 8%, transparent); }
-.rq-relic-tier-badge[data-tier="Requiem"] { color: var(--tier-requiem); border-color: color-mix(in srgb, var(--tier-requiem) 40%, transparent); background: color-mix(in srgb, var(--tier-requiem) 8%, transparent); }
+.rq-relic-tier-badge[data-tier="Lith"]    { color: var(--tier-lith);    border-color: rgba(156,163,175,0.4); background: rgba(156,163,175,0.08); }
+.rq-relic-tier-badge[data-tier="Meso"]    { color: var(--tier-meso);    border-color: rgba(74,222,128,0.4);  background: rgba(74,222,128,0.08); }
+.rq-relic-tier-badge[data-tier="Neo"]     { color: var(--tier-neo);     border-color: rgba(96,165,250,0.4);  background: rgba(96,165,250,0.08); }
+.rq-relic-tier-badge[data-tier="Axi"]     { color: var(--tier-axi);     border-color: rgba(251,191,36,0.4);  background: rgba(251,191,36,0.08); }
+.rq-relic-tier-badge[data-tier="Requiem"] { color: var(--tier-requiem); border-color: rgba(192,132,252,0.4); background: rgba(192,132,252,0.08); }
 
 .rq-relic-name {
   font-family: var(--font-display);
