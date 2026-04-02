@@ -491,6 +491,3 @@
 }
 .back-to-top.visible { opacity: 1; pointer-events: auto; }
 
-@media (min-width: 901px) {
-  .back-to-top { right: calc(260px + 16px); }
-}
