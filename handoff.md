@@ -1,148 +1,128 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**304 tests passing.** Full 6-step damage pipeline, web UI fully functional.
+**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional: dark theme, mod card grid, special slots (stance/exilus), weapon images, riven mod builder, enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks, inline SVG damage type icons.
 
-**Version:** `0.7.0`
-**Branch:** `claude/continue-documentation-tN0o0`
+Branch: `claude/continue-handoff-aMsDx`
 
 ---
 
 ## What Was Done This Session
 
-### Reliquary Page — Detail Panel Redesign + Evergreen Sets
+### 1. Mod grid — fix scroll on mobile (SortableJS)
+SortableJS was immediately capturing touch events on mod cards, blocking page scroll. Fixed by adding `delay: 150` + `delayOnTouchOnly: true` to the Sortable config. Desktop drag is instant; mobile requires a 150ms long-press before drag begins.
 
-#### 1. Breakout Image System
-- **Image breaks out of panel** — placed on `.rq-detail-outer` (overflow:visible) wrapper so it physically extends above the `.rq-detail` panel border
-- `.rq-detail-outer`: padding-top:50px, overflow:visible, z-index:2 (above header)
-- `.rq-detail`: scrollable inner panel (overflow-y:auto)
-- **Warframes/sentinels**: image on LEFT side (`.rq-img-left`), text RIGHT-aligned
-- **Weapons**: image on RIGHT side (`.rq-img-right`), tilted -8deg for dynamic look
-- Image: 240px desktop, 150px mobile; radial edge fade on all edges; brightness(1.2); drop-shadow
-- Fade-in animation (0.4s, scale 0.95→1)
-- Mobile: scrollIntoView targets outer container so breakout image is visible
+### 2. Tighter text field sizing (desktop + mobile)
+Reduced padding and font sizes across all form inputs for a more compact UI:
+- Global inputs/selects: `padding 8px 10px → 5px 8px`, `font 13px → 12px`, margins reduced
+- Riven modal inputs: `height 36px → 30px`, `font 14px → 12px`
+- Mobile (≤768px): preserves `font-size: 16px !important` (iOS zoom prevention), adds tight padding override
+- Combobox dropdown items: padding reduced
 
-#### 2. Stat Grid (replaces old hero card)
-- Removed old `.rq-hero` wrapper — content lives directly in `.rq-detail`
-- **2-column grid** (`.rq-stat-grid`) with colored bars: label left, value right, bar underneath
-- **Weapon stats**: Damage, Crit, Crit DMG, Status, Fire Rate, Riven (with colored values/bars)
-- **Warframe/Sentinel placeholders**: Health, Shields, Armor, Energy, Sprint (em-dash values, empty bars) — ready for data
-- Stats sit inside `.rq-detail-info` beside image, tight under title — no dead space
-- Mobile: stays 2-column (3 rows × 2)
+### 3. Weapon/enemy search — bare-bones rewrite
+Stripped the combobox of all overcomplicated machinery that caused bugs on mobile and desktop:
 
-#### 3. Evergreen / Permanently Unvaulted Sets
-- `EVERGREEN_SETS` constant: 14 items that are never vaulted
-  - Warframes: Nyx Prime, Valkyr Prime
-  - Weapons: Braton, Burston, Cernos, Paris, Akbronco, Bronco, Hikou, Lex, Fang, Orthos, Scindo, Venka Prime
-- **Green "Permanent" badge** in the type row next to Weapon/Warframe badge (`.rq-badge-permanent`)
-- Uses tier-meso green color
+**Removed:**
+- Body portal (`document.body.appendChild`) + `position: fixed` + JS repositioning on every scroll/resize
+- `ignoreBlur` mousedown/mouseup hack
+- `tabindex` on every dropdown item (fought touch scrolling)
+- Arrow key navigation inside dropdown
+- `blur` timeout close
 
-#### 4. Layout Tightening
-- Removed all dead space: detail panel padding 12px 20px, tight title margins (4px), divider 8px/6px
-- `.rq-detail-header`: position:static, no min-height — content dictates height
-- `.rq-detail-info`: max-width:60% desktop (100% mobile)
-- Mobile: padding 10px 14px
+**Added/fixed:**
+- `position: absolute` inside `.combobox-wrap` — natural DOM positioning
+- `overscroll-behavior: contain` — dropdown scroll no longer bleeds to page
+- `-webkit-overflow-scrolling: touch` — iOS momentum scrolling
+- `mousedown` + `e.preventDefault()` for desktop selection (no blur)
+- Clean `touchend` handler for mobile item selection
+- Click-outside-to-close via single `mousedown` document listener
 
----
+### 4. Dropdown z-index fix (behind tables)
+`.panel` uses `backdrop-filter` which creates a CSS stacking context, trapping the dropdown's z-index. Fix: when a dropdown opens, its parent `.panel` gets `.combobox-open` class (`z-index: 50; position: relative`) to lift it above sibling panels. Removed on close.
 
-## Key Files Changed This Session
-```
-web/static/reliquary.html          # added .rq-detail-outer wrapper around .rq-detail
-web/static/reliquary.css           # breakout image, stat grid, permanent badge, layout tightening
-web/static/js/reliquary.js         # EVERGREEN_SETS, breakout image on outer, stat grid, permanent tag
-```
+### 5. Dropdown collapses on touch scroll — fixed
+`document.addEventListener('touchstart', ...)` was firing when scrolling inside the dropdown, closing it. Removed the touchstart close listener entirely. Mobile close now relies on tapping outside (mousedown fires on mobile too after touch).
+
+### 6. Search UX — clear on click, persist stats
+Two UX improvements to the search flow:
+- **Click-to-clear:** Focusing the search input now clears the text and opens the full dropdown immediately. No need to manually delete the name or click X first.
+- **Persist stats:** Clicking X or abandoning a search no longer wipes the stats panel. Stats remain visible showing the last confirmed selection until a new one is committed. Achieved via `_confirmed` variable inside `setupCombobox` — restored to input on close-without-commit (Escape or click-outside).
 
 ---
 
-## Pending / Known Issues
-- **Warframe stats data** — placeholder values (—) for Health/Shields/Armor/Energy/Sprint. Need warframe data source.
-- **27 placeholder weapons** — fake IPS values in `data/weapons.json`.
-- **URL state / sharing** — high-value missing feature (no work started).
-- **Hero image radial fade tuning** — current values: `ellipse 75% 65% at center 40%, black 35%, transparent 70%`
+## Architecture Quick Reference
+
+### Damage Pipeline (6 Steps)
+```
+1. Base Damage × (1 + ΣDamageMods)         → Modded Base   [floor]
+2. Modded Base × Body Part × Crit           → Part Damage   [round nearest]
+3. Part Damage × Faction Type Effectiveness  → Typed Damage   [floor]
+4. Typed Damage × Armor Mitigation          → Mitigated     [floor]
+5. Mitigated × (1 + FactionMod + Roar)      → Final         [floor]
+5.5. Final × Eclipse multiplier             → Buffed Final   [floor]
+6. Buffed Final × Viral stacks              → Viral Damage   [floor]
+```
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `src/calculator.py` | 6-step pipeline + crit + armor + faction + Viral + procs |
+| `src/loader.py` | JSON → Weapon/Mod/Enemy; case-insensitive; attack selection |
+| `src/buffs.py` | 4 buff presets (Roar, Eclipse, Xata's Whisper, Nourish) |
+| `src/models.py` | Weapon, WeaponAttack, Mod, Enemy, Buff, DamageComponent |
+| `src/scaling.py` | Enemy level scaling per faction |
+| `src/combiner.py` | Elemental combination by mod slot order |
+| `src/quantizer.py` | quantize() — Decimal + ROUND_HALF_UP |
+| `web/api.py` | FastAPI endpoints |
+| `web/static/index.html` | SPA — all JS inline |
+| `web/static/style.css` | Dark theme styles |
+| `__main__.py` | CLI interface |
+
+### Data Files
+| File | Records |
+|------|---------|
+| `data/weapons.json` | 588 weapons |
+| `data/mods.json` | 1,405 mods |
+| `data/enemies.json` | 983 enemies |
+
+### Combobox Architecture (post-rewrite)
+`setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl)` in `index.html`:
+- Dropdown is `position: absolute` inside `.combobox-wrap` — **no portal**
+- `_confirmed` tracks last committed name; restored to input on abandon
+- `.panel.combobox-open` lifts parent panel z-index when open
+- `overscroll-behavior: contain` on `.combobox-dropdown` prevents scroll bleed
+- Selection: `mousedown` (desktop) + `touchend` (mobile), both with `e.preventDefault()`
+- Close: `mousedown` outside only (no touchstart — it caused scroll collapse)
+- X button dispatches `combobox-clear` custom event to reset `_confirmed` without calling `onSelect`
 
 ---
 
-## Reliquary Detail Panel Architecture (Current)
-```
-.rq-detail-outer (overflow:visible, padding-top:50px, z-index:2)
-  .rq-detail-img (absolute, placed by JS on outer — breaks out of panel)
-    img (240px, fade-in animation, radial mask, brightness 1.2)
-  .rq-detail (scrollable panel, overflow-y:auto)
-    .rq-detail-header
-      .rq-detail-info (max-width:60%)
-        .rq-hero-type-row (Weapon/Warframe badge + Permanent badge)
-        h2.rq-hero-title
-        .rq-hero-sub (slot · class · trigger)
-        .rq-stat-grid (2-col)
-          .rq-stat-item (label + value + bar) × 6
-    .rq-hero-divider
-    .rq-hero-section-label "COMPONENTS"
-    .rq-comp-grid → .rq-comp → .rq-comp-relic (relic rows + drop lists)
-```
+## Known Gaps / TODO
 
-## Image Positioning
-```
-Weapons:    .rq-img-right  → right:10px, top:-30px, rotate(-8deg)
-Warframes:  .rq-img-left   → left:10px, top:-20px, no rotation
-                              text-align:right, margin-left:auto
-Mobile:     150px, top:-15px, same left/right logic
-```
+### Not yet implemented
+- **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare. Stack-based bonuses not modelled.
+- **Kill Time (TTK)** — Shots and seconds to kill at given enemy level.
+- **Build saving / URL sharing** — Encode build state in URL params.
+- **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
+- **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
 
-## Reliquary State (reliquary.js)
-```
-allSets         — { "Saryn Prime": { type:'warframe'|'sentinel'|'weapon', baro, parts: { partName: [{ relic, tier, rarity }] } } }
-dropsMap        — { "Lith S1": [{ location, mission_type, rotation, rarity, chance }] }
-baroRelicNames  — Set of relic names that are baro-exclusive
-weaponImages    — { "Braton Prime": "BratonPrime.png" }  (from weapons.json)
-weaponStats     — { "Braton Prime": { slot, class, crit_chance, … } }
-wishlist        — Set of set names (localStorage 'rq-wishlist')
-activeTab       — 'warframes' (default) | 'all' | 'weapons'
-searchQuery     — current search string
-selectedSet     — currently selected set name
-EVERGREEN_SETS  — const Set of 14 permanently unvaulted Prime names
-```
+### Partially wired
+- **Condition Overload** — `condition_overload_bonus` parsed and stored on Mod. Calculator uses `unique_statuses` parameter. API/CLI don't pass actual unique status counts from UI — caller-side wiring missing.
 
-## Image Conventions
-```
-weapons:    /static/images/weapons/{weapons.json image field}   (data-driven)
-warframes:  /static/images/warframes/{Name-Prime}.png           (convention: spaces→hyphens)
-sentinels:  /static/images/sentinels/{Name-Prime}.png           (convention: spaces→hyphens)
-```
+### Design unsettled
+- **Header / Branding** — Current plain header works but user wants something better. Previous attempts (SVG wings, hero banner) all removed. Needs mobile-first design (≤375px).
+- **Combobox styling** — Intentionally stripped bare this session. Ready to be restyled (border, hover states, shadow, etc.) now that the core mechanics are stable.
 
 ---
 
-## CSS File Map
-```
-web/static/base.css        # :root — all CSS variables, theme overrides
-web/static/layout.css      # shared layout, header, sidebar, burger, back-to-top
-web/static/panels.css      # .panel, .panel::before gradient lines
-web/static/factions.css    # .roster-entry pattern (reference for list components)
-web/static/reliquary.css   # .rq-detail-outer, breakout image, stat grid, badges
-web/static/live.css        # live page, news/events, nightwave
-web/static/js/reliquary.js # prime sets state + rendering + baro + images + evergreen
-web/static/js/theme.js     # theme switcher + positionBackToTop()
+## Scripts (run order after rescrape)
+```bash
+python scripts/parse_wiki_data.py      # rebuild weapons.json + mods.json from raw
+python scripts/fix_secondary_stats.py  # backfill 109 secondary stat fields
+python scripts/fix_galv_stats.py       # restore 10 galvanized mod fields
 ```
 
----
-
-## Current State — Themes
+## Tests
+```bash
+pytest   # 248 passing — run before every commit
 ```
-stalker  (default, no class)   bg: #0a0a0a   surface: #121212   accent: #8b0000 → #e53e3e
-jade     body.theme-jade        bg: #080808   surface: rgba(10,18,16,0.85)   accent: #00897b → #00e5c8
-ash      body.theme-ash         bg: #080808   surface: rgba(16,16,16,0.85)   accent: #466482 → #7393b3
-```
-
-## Design Decisions Log
-- User prefers rounded pills (14px border-radius) for component headers and relic rows
-- User rejected: box-shadow glow on hero, yellow/gold text for baro notes, pill-shaped controls bar wrapper
-- All data should be visible by default — no click-to-expand patterns
-- Baro sets are second-class citizens (dimmed, sorted to bottom)
-- Font: Exo 2 for display (replaced Orbitron across all pages)
-- Don't remove seg toggle pills (Warframes/Weapons) — user wants them
-- Don't add mobile collapsible sidebar — user wanted it removed
-- Don't make seg pills smaller on mobile — keep same size everywhere
-- Breakout images: warframes left, weapons right (tilted -8deg)
-- No mask fading on images — user rejected multiple fade attempts; use radial edge fade only
-- "Permanent" shown as green badge pill next to type badge (not standalone text)
-- Stat bars preferred over stat cards — 2-column grid with colored bars
-- Dead space is enemy #1 — content dictates height, no min-height, tight padding
