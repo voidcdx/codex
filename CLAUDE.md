@@ -48,21 +48,32 @@ tests/
   test_scaling.py     # enemy level scaling: health/shield/armor/overguard per faction
 data/
   weapons.json      # 588 weapons — multi-attack (attacks[]), per-attack IPS/innate/crit/status/shot_type, image
-  mods.json         # 1405 mods — damage%, elemental%, ips%, cc/cd/sc/multishot, faction bonus; Conclave mods excluded
+  mods.json         # 1405 mods — damage%, elemental%, ips%, cc/cd/sc/multishot, faction bonus, image field; Conclave excluded
   enemies.json      # 983 enemies — faction, health_type, armor_type, base_armor, base_level, base_health, base_shield, head_multiplier
+  warframes.json    # 59 Prime entries — health, shield, armor, energy, sprint (warframes + archwing + companions)
   relics.json       # 732 relics — name, tier, vaulted, is_baro, introduced, rewards:[{item,part,rarity}]
   drops.json        # 34 active relics — keyed by relic name → [{location, mission_type, rotation, rarity, chance}]
                    #   Only unvaulted relics appear (vaulted ones don't drop from missions)
                    #   Auto-refreshed: server fetches CDN weekly via _drops_bg_loop() in api.py
                    #   Manual refresh: POST /api/refresh-drops (or re-save drops.html + run parse_drops.py)
                    #   CDN URL: warframe-web-assets.nyc3.cdn.digitaloceanspaces.com/uploads/cms/hnfvc0o3jnfvc873njb03enrf56.html
+  warframes_data.lua   # raw wiki Lua — Module:Warframes/data
+  companions_data.lua  # raw wiki Lua — Module:Companions/data
+  arcanes_data.lua     # raw wiki Lua — Module:Arcane/data
+  resources_data.lua   # raw wiki Lua — Module:Resources/data
+  manifest_*.json      # 6 image download manifests (abilities, arcanes, damage_types, enemies, relics, resources)
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
   parse_wiki_data.py # normalizes raw JSON → calculator-ready weapons.json/mods.json (multi-attack aware)
+  parse_warframe_data.py # parses warframes_data.lua + companions_data.lua → warframes.json (59 Primes)
   fetch_wiki_data.py # (attempted) automated fetch — wiki blocks it, use browser instead
   fetch_wiki_playwright.py # Playwright-based fetcher — bypasses 403s using real Chromium; must run on Windows
                    #   Fetches weapons_data.lua, mods_data.lua, enemies_data.lua, void_data.lua
                    #   Handles both old stealth_async and new Stealth class playwright-stealth APIs
+  fetch_mod_images.py # downloads mod card PNGs from wiki via Playwright (--resume, --limit)
+  fetch_images.py   # universal batch image downloader — 6 categories (--category, --resume, --limit)
+                   #   Categories: abilities, arcanes, enemies, damage_types, relics, resources
+                   #   Reads manifest_*.json files; downloads to web/static/images/<category>/
   parse_relic_data.py # parses data/void_data.lua → data/relics.json (732 relics)
                    #   _extract_block() skips empty RelicData={} declaration (line 51) to find real data
   parse_drops.py    # parses drops HTML → relic drop dict; accepts Path or str (for server in-memory parsing)
@@ -74,7 +85,7 @@ scripts/
                    #   _NW_NAMES + _NW_DESCRIPTIONS (~120 entries each); _NW_ELITE_NAMES/_NW_ELITE_DESCRIPTIONS for weekly/elite key collisions
                    #   Gifts of the Lotus: Goals array (Tag: Anniversary*TacAlert) → gift events; Alerts array (Tag: LotusGift) → regular alert rows
 web/
-  api.py            # FastAPI: GET /api/weapons|mods|enemies|version|relics|drops; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
+  api.py            # FastAPI: GET /api/weapons|mods|enemies|warframes|version|relics|drops; POST /api/modded-weapon, /api/calculate, /api/scaled-enemy
                    #   GET /api/mods returns `effect` field (plain-text effect_raw) used by Alchemy Guide stat pills
                    #   GET /api/relics — optional query params: tier, vaulted, reward
                    #   GET /api/drops — relic drop locations (served from in-memory cache, disk fallback)
@@ -117,11 +128,10 @@ web/
                    #   Left .rq-sidebar: search + seg toggle (Warframes/Weapons) + set list
                    #   Right .rq-detail-outer (overflow:visible, padding-top:50px) → .rq-detail (scrollable)
                    #   Image breaks out of panel via .rq-detail-img on outer container (z-index:0, absolute)
-                   #   Warframes/sentinels: image LEFT (.rq-img-left), text RIGHT-aligned
-                   #   Weapons: image RIGHT (.rq-img-right), text LEFT-aligned, tilted -8deg
+                   #   All images on RIGHT side (.rq-img-right), tilted -8deg
                    #   EVERGREEN_SETS: 14 permanently unvaulted items — shown as green "Permanent" badge in type row
-                   #   Stats: 2-column grid (.rq-stat-grid) with label+value+bar; warframes show placeholder stats
-                   #   Data derived client-side from /api/relics + /api/drops + /api/weapons — no new endpoint
+                   #   Stats: 2-column grid (.rq-stat-grid) with label+value+bar; real warframe stats from /api/warframes
+                   #   Data derived client-side from /api/relics + /api/drops + /api/weapons + /api/warframes
                    #   Baro-only sets sorted to bottom with gold BARO tag badge
                    #   Set types: 'warframe' (Neuroptics/Chassis/Systems), 'sentinel' (Carapace/Cerebrum), 'weapon' (default)
                    #   Mobile ≤900px: set list always visible (no collapse), search shrinks to 100px
@@ -130,7 +140,7 @@ web/
                    #   .rq-sidebar, .rq-detail: glass surface + top/bottom gradient lines
                    #   .rq-detail-outer: overflow:visible wrapper for breakout image
                    #   .rq-detail-img: absolute positioned, 240px, radial edge fade, brightness(1.2), drop-shadow
-                   #   .rq-img-left: warframe image left + text right; .rq-img-right: weapon image right (tilted -8deg)
+                   #   .rq-img-right: all images right side (tilted -8deg); .rq-img-left: unused (kept in CSS)
                    #   .rq-stat-grid: 2-col grid; .rq-stat-item: label+value+bar; .rq-badge-permanent: green pill
                    #   .rq-comp-*: inline expanded components with rounded pill headers + relic rows (14px radius)
                    #   Vertical gradient left border, horizontal gradient separators between components
@@ -161,15 +171,15 @@ web/
                    #   selectIncarnonMode(mode) — toggles Normal/Incarnon attack; weapons with *incarnon* attacks
                    #   get a pill toggle instead of raw attack tabs
     reliquary.js   # Prime Sets browser — buildPrimeSets(), selectSet(), renderDetail()
-                   #   State: allSets, dropsMap, baroRelicNames, weaponImages, weaponStats, wishlist, activeTab, searchQuery, selectedSet
+                   #   State: allSets, dropsMap, baroRelicNames, weaponImages, weaponStats, warframeStats, wishlist, activeTab, searchQuery, selectedSet
                    #   EVERGREEN_SETS: const Set of 14 permanently unvaulted Prime items (2 frames + 12 weapons)
                    #   buildPrimeSets(relics): groups unvaulted relic rewards by item→parts→relics; flags baro-only sets
                    #     Type classification: sentinel (Carapace/Cerebrum), warframe (Neuroptics/Chassis/Systems), weapon (default)
                    #   renderSidebar(): filtered/searched set list; baro sets sorted to bottom with BARO tag
                    #   renderDetail(): breakout image on outer container + stat grid + inline components
                    #     Image placed on .rq-detail-outer (not inside scrollable panel) so it breaks out of card
-                   #     Warframes: image left, text right; Weapons: image right (tilted), text left
-                   #     Stats: 2-col grid with colored bars (weapons), placeholder rows (warframes/sentinels)
+                   #     All images right side (tilted -8deg)
+                   #     Stats: 2-col grid with colored bars (weapons + warframes), placeholder rows (sentinels)
                    #     Images: weapons from weaponImages map, warframes/sentinels by convention (Name-Prime.png)
                    #   renderDropList(relicName): top 5 drop locations; baro relics get Void Trader note
                    #   Wishlist: toggleWishlist(), removeGoal(), getGoalRelics(), calcBestMissions(), renderGoals()
@@ -187,8 +197,15 @@ web/
                    #     handles .app max-width:1440px centering at any viewport width; also fires on resize
   static/images/
     weapons/       # 619 weapon PNGs — filenames from weapons.json `image` field
+    mods/          # 1196 mod card PNGs — filenames from mods.json `image` field
+    enemies/       # 899 enemy portrait PNGs — from manifest_enemies.json
+    resources/     # 871 resource PNGs — from manifest_resources.json
+    abilities/     # 216 warframe ability PNGs — convention: AbilityName130xWhite.png
+    arcanes/       # 162 arcane PNGs — from manifest_arcanes.json
     warframes/     # 50 warframe PNGs — convention: Name-Prime.png (spaces→hyphens)
+    damage_types/  # 12 damage type glyphs — convention: EssentialXGlyph.png
     sentinels/     # 6 sentinel PNGs — convention: Name-Prime.png (spaces→hyphens)
+    relics/        # 5 relic tier PNGs — convention: XRelicIntact.png (missing: Eterna, Vanguard)
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
@@ -199,7 +216,7 @@ skills/
 ```
 
 ## Tests
-Run `pytest` before committing. All tests must pass. **304 tests** as of v0.7.0.
+Run `pytest` before committing. All tests must pass. **304 tests** as of v0.8.0.
 
 ## Data Refresh Notes
 - `fetch_wiki_data.py` is blocked by the wiki (403). **Do not attempt automated fetch.**
@@ -211,12 +228,21 @@ Run `pytest` before committing. All tests must pass. **304 tests** as of v0.7.0.
 - Then run parse scripts:
   1. `python scripts/parse_lua.py` → produces `weapons_raw.json` / `mods_raw.json`
   2. `python scripts/parse_wiki_data.py` → produces `weapons.json` / `mods.json`
-  3. `python scripts/parse_relic_data.py` → produces `relics.json`
-  4. `git diff data/weapons.json` to review changes, then `pytest`
+  3. `python scripts/parse_warframe_data.py` → produces `warframes.json`
+  4. `python scripts/parse_relic_data.py` → produces `relics.json`
+  5. `git diff data/weapons.json` to review changes, then `pytest`
+- **Note:** `parse_wiki_data.py` re-parse will overwrite hand-patched Galvanized mod fields in mods.json.
+  After re-parse, run `python scripts/fix_galv_stats.py` to restore them.
 - Fallback (if Playwright fails): open browser → download raw Lua manually from:
   - `https://wiki.warframe.com/w/Module:Weapons/data?action=raw`
   - `https://wiki.warframe.com/w/Module:Mods/data?action=raw`
   - `https://wiki.warframe.com/w/Module:Void/data?action=raw`
+  - `https://wiki.warframe.com/w/Module:Warframes/data?action=raw`
+  - `https://wiki.warframe.com/w/Module:Companions/data?action=raw`
+  - `https://wiki.warframe.com/w/Module:Arcane/data?action=raw`
+  - `https://wiki.warframe.com/w/Module:Resources/data?action=raw`
+- Image refresh: `python scripts/fetch_images.py --resume` (all categories)
+  or `python scripts/fetch_mod_images.py --resume` (mods only)
 - New weapons appear in `Module:Weapons/data` a few days after in-game release. If a weapon is missing, check the module directly in browser first before debugging the parse pipeline.
 
 ## Versioning
