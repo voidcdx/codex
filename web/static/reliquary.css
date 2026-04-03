@@ -326,12 +326,12 @@
 }
 .rq-detail-img {
   flex-shrink: 0;
-  width: 200px;
-  height: 200px;
+  width: 280px;
+  height: 280px;
 }
 .rq-detail-img img {
-  width: 200px;
-  height: 200px;
+  width: 280px;
+  height: 280px;
   object-fit: contain;
   filter: grayscale(0.1);
   animation: rq-fade-in 0.4s ease-out;
