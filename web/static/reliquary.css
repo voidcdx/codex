@@ -555,9 +555,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 8px;
+  padding: 5px 12px;
   background: var(--accent-a5);
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
 }
 .rq-comp-relic.open .rq-comp-relic-row {
   background: var(--accent-a8);
