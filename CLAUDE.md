@@ -114,16 +114,19 @@ web/
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/reliquary.html # Reliquary page — Prime Sets browser at /reliquary
                    #   Two-panel layout: .reliquary-wrap (grid: 260px sidebar + 1fr detail)
-                   #   Left .rq-sidebar: search input + category tabs (All/Warframes/Weapons) + scrollable set list
-                   #   Right .rq-detail: selected set header + parts grid + relic drill-down with drop locations
-                   #   Data derived client-side from /api/relics (unvaulted only) — no new endpoint
-                   #   42 unvaulted prime sets: 11 warframes, 31 weapons
-                   #   Mobile ≤900px: stacked (sidebar on top, max-height 35vh; detail below)
-  static/reliquary.css  # Reliquary styles — .rq-sidebar, .rq-set-item, .rq-part-card, .rq-relic-row
+                   #   Left .rq-sidebar: mobile toggle (N sets + chevron) + search + seg toggle + set list
+                   #   Right .rq-detail: hero card (weapon stats + image) + inline expanded components
+                   #   Data derived client-side from /api/relics + /api/drops + /api/weapons — no new endpoint
+                   #   Baro-only sets sorted to bottom with gold BARO tag badge
+                   #   Mobile ≤900px: sidebar collapses to controls bar only; tap toggle to expand set list (40vh)
+  static/reliquary.css  # Reliquary styles — glassmorphism panels, hero card, inline components
+                   #   .rq-sidebar, .rq-detail: glass surface + top/bottom gradient lines
+                   #   .rq-hero: transparent bg, no border/lines — blends with content area
+                   #   .rq-comp-*: inline expanded components with rounded pill headers + relic rows (14px radius)
+                   #   Vertical gradient left border, horizontal gradient separators between components
+                   #   .rq-mob-toggle: collapsible sidebar on mobile; .rq-baro-tag: gold badge
                    #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard
-                   #   Part cards: roster-entry style (left accent bar, ::before gradient bleed, ::after panel line)
-                   #   Relic drill-down: tier badges, rarity text, drop-row grid (1fr auto auto auto)
-                   #   Uses --accent-a* vars for visible tints on dark bg (not color-mix)
+                   #   Drop rows: grid (1fr auto auto auto); baro note: italic dim text
   static/live.css  # Live page styles — invasion .reward-chip colored by data-faction attr (Grineer/Corpus/Infested/other)
                    #   .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
                    #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
@@ -147,11 +150,14 @@ web/
     weapons.js     # mod grid, picker, weapon stats, element badges, modded stats, special slots
                    #   selectIncarnonMode(mode) — toggles Normal/Incarnon attack; weapons with *incarnon* attacks
                    #   get a pill toggle instead of raw attack tabs
-    reliquary.js   # Prime Sets browser — buildPrimeSets(), selectSet(), selectPart()
-                   #   State: allSets, dropsMap, activeTab, searchQuery, selectedSet, selectedPart
-                   #   buildPrimeSets(relics): groups unvaulted relic rewards by item→parts→relics
-                   #   renderSidebar(): filtered/searched set list; renderDetail(): parts + relic drill-down
-                   #   renderRelicSection(): shows relics for selected part with top 5 drop locations each
+    reliquary.js   # Prime Sets browser — buildPrimeSets(), selectSet(), renderDetail()
+                   #   State: allSets, dropsMap, baroRelicNames, weaponImages, weaponStats, wishlist, activeTab, searchQuery, selectedSet
+                   #   buildPrimeSets(relics): groups unvaulted relic rewards by item→parts→relics; flags baro-only sets
+                   #   renderSidebar(): filtered/searched set list; baro sets sorted to bottom with BARO tag
+                   #   renderDetail(): hero card with weapon stats + inline expanded components (all drops visible)
+                   #   renderDropList(relicName): top 5 drop locations; baro relics get Void Trader note
+                   #   Wishlist: toggleWishlist(), removeGoal(), getGoalRelics(), calcBestMissions(), renderGoals()
+                   #   Mobile: toggleMobileList(), updateMobCount() — collapsible sidebar on ≤900px
     enemy.js       # enemy panel, level scaling, Steel Path, Eximus
     modals.js      # Alchemy Guide, Riven Builder, Guide, Buffs
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
@@ -234,7 +240,7 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 - **Dropdowns must be fully opaque** — `--dropdown-bg` is a solid hex color; no `backdrop-filter` on `.combobox-dropdown`.
 - **Mobile theme switcher** — lives in the sidebar footer (`sidebar-theme-switcher`), hidden in header at ≤900px. Do not put it back in the header on mobile.
 - **Never use native `<select>` elements** — use `setupSelectDropdown()` in `utils.js` instead (iOS picker issue).
-- **Fonts** — Orbitron for headings/values, Rajdhani for labels/buttons. No Share Tech Mono.
+- **Fonts** — Exo 2 for headings/values, Rajdhani for labels/buttons. No Orbitron, no Share Tech Mono.
 - **Theme system** — all color changes go in `base.css` `:root` (Stalker default) or `body.theme-jade` / `body.theme-ash` override blocks. Never hardcode colors outside these blocks.
 - See `ARCHITECTURE.md` for full CSS variable list, class tables, and layout details.
 
