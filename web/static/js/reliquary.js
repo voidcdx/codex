@@ -362,7 +362,11 @@ function selectSet(name) {
 
 function renderDetail() {
   const detail = document.getElementById('rq-detail');
+  // Clear breakout image when no selection
+  const outerEl = detail.closest('.rq-detail-outer');
+  const existingImg = outerEl && outerEl.querySelector('.rq-detail-img');
   if (!selectedSet || !allSets[selectedSet]) {
+    if (existingImg) existingImg.style.display = 'none';
     detail.innerHTML = '<div class="rq-empty-detail">SELECT A PRIME SET</div>';
     return;
   }
@@ -464,6 +468,19 @@ function renderDetail() {
   const evergreenHtml = EVERGREEN_SETS.has(selectedSet)
     ? '<div class="rq-evergreen-note">Permanent</div>' : '';
 
+  // Place image on outer container so it can break out of panel
+  const outer = detail.closest('.rq-detail-outer');
+  if (outer) {
+    let imgEl = outer.querySelector('.rq-detail-img');
+    if (!imgEl) {
+      imgEl = document.createElement('div');
+      imgEl.className = 'rq-detail-img';
+      outer.appendChild(imgEl);
+    }
+    imgEl.innerHTML = `<img src="${imgSrc}" alt="" onerror="this.parentElement.style.display='none'">`;
+    imgEl.style.display = '';
+  }
+
   detail.innerHTML = `
     <div class="rq-detail-header">
       <div class="rq-detail-info">
@@ -474,9 +491,6 @@ function renderDetail() {
         ${subInfo}
         ${evergreenHtml}
         ${statsHtml}
-      </div>
-      <div class="rq-detail-img">
-        <img src="${imgSrc}" alt="" onerror="this.parentElement.style.display='none'">
       </div>
     </div>
     <div class="rq-hero-divider"></div>
