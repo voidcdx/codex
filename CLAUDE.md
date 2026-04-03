@@ -113,17 +113,25 @@ web/
                    #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/reliquary.html # Reliquary page — Prime Sets browser at /reliquary
-                   #   Two-panel layout: .reliquary-wrap (grid: 260px sidebar + 1fr detail)
+                   #   Two-panel layout: .reliquary-wrap (grid: 260px sidebar + 1fr detail-outer)
                    #   Left .rq-sidebar: search + seg toggle (Warframes/Weapons) + set list
-                   #   Right .rq-detail: hero card (weapon/warframe/sentinel image + stats) + inline expanded components
+                   #   Right .rq-detail-outer (overflow:visible, padding-top:50px) → .rq-detail (scrollable)
+                   #   Image breaks out of panel via .rq-detail-img on outer container (z-index:0, absolute)
+                   #   Warframes/sentinels: image LEFT (.rq-img-left), text RIGHT-aligned
+                   #   Weapons: image RIGHT (.rq-img-right), text LEFT-aligned, tilted -8deg
+                   #   EVERGREEN_SETS: 14 permanently unvaulted items — shown as green "Permanent" badge in type row
+                   #   Stats: 2-column grid (.rq-stat-grid) with label+value+bar; warframes show placeholder stats
                    #   Data derived client-side from /api/relics + /api/drops + /api/weapons — no new endpoint
                    #   Baro-only sets sorted to bottom with gold BARO tag badge
                    #   Set types: 'warframe' (Neuroptics/Chassis/Systems), 'sentinel' (Carapace/Cerebrum), 'weapon' (default)
                    #   Mobile ≤900px: set list always visible (no collapse), search shrinks to 100px
-  static/reliquary.css  # Reliquary styles — glassmorphism panels, hero card, inline components
+                   #   Mobile: scrollIntoView targets outer container so breakout image is visible
+  static/reliquary.css  # Reliquary styles — glassmorphism panels, breakout image, stat grid
                    #   .rq-sidebar, .rq-detail: glass surface + top/bottom gradient lines
-                   #   .rq-hero: transparent bg, no border/lines — blends with content area
-                   #   .rq-hero-img: 256px (180px mobile), radial gradient fade, object-fit contain, no opacity
+                   #   .rq-detail-outer: overflow:visible wrapper for breakout image
+                   #   .rq-detail-img: absolute positioned, 240px, radial edge fade, brightness(1.2), drop-shadow
+                   #   .rq-img-left: warframe image left + text right; .rq-img-right: weapon image right (tilted -8deg)
+                   #   .rq-stat-grid: 2-col grid; .rq-stat-item: label+value+bar; .rq-badge-permanent: green pill
                    #   .rq-comp-*: inline expanded components with rounded pill headers + relic rows (14px radius)
                    #   Vertical gradient left border, horizontal gradient separators between components
                    #   .rq-baro-tag: gold badge; .rq-seg: 22px height matched to search field
@@ -154,10 +162,14 @@ web/
                    #   get a pill toggle instead of raw attack tabs
     reliquary.js   # Prime Sets browser — buildPrimeSets(), selectSet(), renderDetail()
                    #   State: allSets, dropsMap, baroRelicNames, weaponImages, weaponStats, wishlist, activeTab, searchQuery, selectedSet
+                   #   EVERGREEN_SETS: const Set of 14 permanently unvaulted Prime items (2 frames + 12 weapons)
                    #   buildPrimeSets(relics): groups unvaulted relic rewards by item→parts→relics; flags baro-only sets
                    #     Type classification: sentinel (Carapace/Cerebrum), warframe (Neuroptics/Chassis/Systems), weapon (default)
                    #   renderSidebar(): filtered/searched set list; baro sets sorted to bottom with BARO tag
-                   #   renderDetail(): hero card with weapon/warframe/sentinel image + stats + inline components
+                   #   renderDetail(): breakout image on outer container + stat grid + inline components
+                   #     Image placed on .rq-detail-outer (not inside scrollable panel) so it breaks out of card
+                   #     Warframes: image left, text right; Weapons: image right (tilted), text left
+                   #     Stats: 2-col grid with colored bars (weapons), placeholder rows (warframes/sentinels)
                    #     Images: weapons from weaponImages map, warframes/sentinels by convention (Name-Prime.png)
                    #   renderDropList(relicName): top 5 drop locations; baro relics get Void Trader note
                    #   Wishlist: toggleWishlist(), removeGoal(), getGoalRelics(), calcBestMissions(), renderGoals()
