@@ -327,22 +327,23 @@
   content: none;
 }
 
-/* Weapon image — floated right, fades into bg */
+/* Hero image — positioned right, radial fade out */
 .rq-hero-img {
   position: absolute;
-  right: 16px;
-  top: 10px;
-  width: 220px;
+  right: 0;
+  top: 0;
+  width: 256px;
+  height: 256px;
   pointer-events: none;
   z-index: 0;
-  mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
-  opacity: 0.55;
+  mask-image: radial-gradient(ellipse 60% 60% at center, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at center, black 20%, transparent 70%);
 }
 .rq-hero-img img {
-  width: 100%;
-  height: auto;
-  filter: grayscale(0.15);
+  width: 256px;
+  height: 256px;
+  object-fit: contain;
+  filter: grayscale(0.1);
 }
 .rq-hero--has-img .rq-hero-top,
 .rq-hero--has-img .rq-hero-stats,
@@ -947,10 +948,14 @@
     width: 100px;
   }
   .rq-hero-img {
-    width: 160px;
-    right: 8px;
-    top: 8px;
-    opacity: 0.5;
+    width: 180px;
+    height: 180px;
+    right: 0;
+    top: 0;
+  }
+  .rq-hero-img img {
+    width: 180px;
+    height: 180px;
   }
   .rq-detail {
     padding: 16px;
