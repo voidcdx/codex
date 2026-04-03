@@ -389,21 +389,13 @@ function renderDetail() {
     );
 
     const relicRows = sorted.map(r => {
-      const drops = dropsMap[r.relic] || [];
-      const best = [...drops].sort((a, b) => b.chance - a.chance)[0];
-      const bestLoc = best
-        ? `<span class="rq-inline-loc">${esc(best.location)}</span><span class="rq-inline-chance">${Number(best.chance).toFixed(1)}%</span>`
-        : `<span class="rq-inline-loc rq-inline-loc--none">—</span>`;
-      const expanded = selectedPart === `${partName}|||${r.relic}` ? ' open' : '';
-
-      return `<div class="rq-comp-relic${expanded}">
-        <button class="rq-comp-relic-row" onclick="toggleRelic('${esc(partName)}', '${esc(r.relic)}')">
+      return `<div class="rq-comp-relic open">
+        <div class="rq-comp-relic-row">
           <span class="rq-relic-tier-badge" data-tier="${esc(r.tier)}">${esc(r.tier)}</span>
           <span class="rq-comp-relic-name">${esc(r.relic)}</span>
           <span class="rq-relic-rarity rq-rarity-text-${esc(r.rarity)}">${esc(r.rarity)}</span>
-          ${bestLoc}
-        </button>
-        ${expanded ? renderDropList(r.relic) : ''}
+        </div>
+        ${renderDropList(r.relic)}
       </div>`;
     }).join('');
 
@@ -459,12 +451,6 @@ function getBestRarity(relics) {
 // ---------------------------------------------------------------------------
 // Part selection → relic drill-down
 // ---------------------------------------------------------------------------
-function toggleRelic(partName, relicName) {
-  const key = `${partName}|||${relicName}`;
-  selectedPart = selectedPart === key ? null : key;
-  renderDetail();
-}
-
 function renderDropList(relicName) {
   const drops = dropsMap[relicName] || [];
   const top5 = [...drops].sort((a, b) => b.chance - a.chance).slice(0, 5);

@@ -41,10 +41,11 @@
 .rq-sidebar::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 1px;
+  inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--panel-line-top)    50%, transparent 100%) top    / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%) bottom / 100% 1px no-repeat;
   pointer-events: none;
 }
 
@@ -266,10 +267,11 @@
 .rq-detail::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 1px;
+  inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--panel-line-top)    50%, transparent 100%) top    / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%) bottom / 100% 1px no-repeat;
   pointer-events: none;
 }
 
@@ -290,17 +292,19 @@
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border-radius: var(--radius);
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 2px 16px var(--accent-a10);
 }
-/* Panel gradient lines — matches .panel::before */
+/* Panel gradient lines — top + bottom */
 .rq-hero::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background:
+    linear-gradient(90deg, transparent 0%, var(--panel-line-top)    50%, transparent 100%) top    / 100% 1px no-repeat,
     linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%) bottom / 100% 1px no-repeat;
   pointer-events: none;
   z-index: 1;
@@ -510,15 +514,8 @@
   align-items: center;
   gap: 8px;
   padding: 5px 8px;
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.12s;
-}
-.rq-comp-relic-row:hover {
   background: var(--accent-a5);
+  border-radius: var(--radius-sm);
 }
 .rq-comp-relic.open .rq-comp-relic-row {
   background: var(--accent-a8);
