@@ -703,12 +703,13 @@
   border-top: 1px solid var(--border);
 }
 .rq-baro-note {
-  color: #fbbf24;
+  color: var(--text-dim);
   text-transform: none;
   letter-spacing: normal;
   font-family: var(--font-body);
   font-size: 0.78rem;
   line-height: 1.4;
+  font-style: italic;
 }
 
 /* Drop rows */
