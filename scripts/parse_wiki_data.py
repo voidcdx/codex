@@ -385,6 +385,11 @@ def _parse_mod(raw: dict) -> dict | None:
             out.update(parsed)
             out["effect_raw"] = effect
 
+    # Image filename (e.g. "SerrationMod.png")
+    img = raw.get("Image")
+    if isinstance(img, str) and img:
+        out["image"] = img
+
     return out
 
 
