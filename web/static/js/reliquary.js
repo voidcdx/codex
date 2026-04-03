@@ -453,18 +453,20 @@ function renderDetail() {
 
   detail.innerHTML = `
     <div class="rq-hero${heroImgClass}">
-      ${heroImgHtml}
-      <div class="rq-hero-top">
-        <div class="rq-hero-info">
-          <div class="rq-hero-type-row">
-            <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
+      <div class="rq-hero-banner">
+        ${heroImgHtml}
+        <div class="rq-hero-top">
+          <div class="rq-hero-info">
+            <div class="rq-hero-type-row">
+              <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
+            </div>
+            <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
+            ${subInfo}
+            ${EVERGREEN_SETS.has(selectedSet) ? '<div class="rq-evergreen-note">Permanent</div>' : ''}
           </div>
-          <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
-          ${subInfo}
-          ${EVERGREEN_SETS.has(selectedSet) ? '<div class="rq-evergreen-note">Permanent</div>' : ''}
         </div>
+        ${statsHtml}
       </div>
-      ${statsHtml}
       <div class="rq-hero-divider"></div>
       <div class="rq-hero-section-label">COMPONENTS</div>
       <div class="rq-comp-grid">${partsHtml}</div>
