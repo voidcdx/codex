@@ -415,45 +415,37 @@
 .rq-tier-chip[data-tier="Axi"]     { color: var(--tier-axi);     border-color: rgba(251,191,36,0.3); }
 .rq-tier-chip[data-tier="Requiem"] { color: var(--tier-requiem); border-color: rgba(192,132,252,0.3); }
 
-/* ── Stat bars ─────────────────────────────────────────── */
-.rq-hero-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 16px;
+/* ── Stat cards ────────────────────────────────────────── */
+.rq-stat-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-top: 8px;
 }
-.rq-stat-row {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+.rq-stat-card {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  padding: 6px 10px;
+  background: var(--accent-a5);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 56px;
 }
-.rq-stat-label {
+.rq-stat-card-value {
   font-family: var(--font-display);
-  font-size: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.rq-stat-card-label {
+  font-family: var(--font-display);
+  font-size: 0.45rem;
   font-weight: 600;
   letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--text-dim);
-  min-width: 55px;
-}
-.rq-stat-bar {
-  height: 3px;
-  background: var(--border);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.rq-stat-fill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-.rq-stat-value {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-align: right;
-  min-width: 20px;
+  line-height: 1.2;
 }
 
 /* Pending stat placeholder */
@@ -960,8 +952,17 @@
   .rq-detail {
     padding: 10px 14px;
   }
-  .rq-hero-stats {
-    grid-template-columns: 1fr;
-    gap: 3px;
+  .rq-stat-cards {
+    gap: 4px;
+  }
+  .rq-stat-card {
+    padding: 4px 8px;
+    min-width: 48px;
+  }
+  .rq-stat-card-value {
+    font-size: 0.65rem;
+  }
+  .rq-stat-card-label {
+    font-size: 0.4rem;
   }
 }

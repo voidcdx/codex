@@ -390,21 +390,19 @@ function renderDetail() {
     const atk = ws.attacks && ws.attacks[0];
     const totalDmg = atk ? Object.values(atk.base_damage || {}).reduce((s, v) => s + v, 0) : 0;
     const stats = [
-      { label: 'DAMAGE', value: totalDmg.toFixed(1), bar: Math.min(totalDmg / 100, 1), color: 'var(--accent2)' },
-      { label: 'CRIT',   value: (ws.crit_chance * 100).toFixed(0) + '%', bar: ws.crit_chance, color: 'var(--rarity-rare)' },
-      { label: 'CRIT DMG', value: ws.crit_multiplier.toFixed(1) + 'x', bar: Math.min(ws.crit_multiplier / 5, 1), color: 'var(--tier-axi)' },
-      { label: 'STATUS', value: (ws.status_chance * 100).toFixed(0) + '%', bar: ws.status_chance, color: 'var(--tier-meso)' },
-      { label: 'FIRE RATE', value: ws.fire_rate.toFixed(1), bar: Math.min(ws.fire_rate / 15, 1), color: 'var(--tier-neo)' },
-      { label: 'RIVEN', value: ws.riven_disposition.toFixed(2), bar: ws.riven_disposition / 5, color: 'var(--tier-requiem)' },
+      { label: 'DAMAGE',   value: totalDmg.toFixed(1), color: 'var(--accent2)' },
+      { label: 'CRIT',     value: (ws.crit_chance * 100).toFixed(0) + '%', color: 'var(--rarity-rare)' },
+      { label: 'CRIT DMG', value: ws.crit_multiplier.toFixed(1) + 'x', color: 'var(--tier-axi)' },
+      { label: 'STATUS',   value: (ws.status_chance * 100).toFixed(0) + '%', color: 'var(--tier-meso)' },
+      { label: 'FIRE RATE',value: ws.fire_rate.toFixed(1), color: 'var(--tier-neo)' },
+      { label: 'RIVEN',    value: ws.riven_disposition.toFixed(2), color: 'var(--tier-requiem)' },
     ];
-    statsHtml = `<div class="rq-hero-stats">${stats.map(s => {
-      const pct = Math.round(s.bar * 100);
-      return `<div class="rq-stat-row">
-        <span class="rq-stat-label">${s.label}</span>
-        <span class="rq-stat-value">${s.value}</span>
-        <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:${pct}%;background:${s.color}"></div></div>
-      </div>`;
-    }).join('')}</div>`;
+    statsHtml = `<div class="rq-stat-cards">${stats.map(s =>
+      `<div class="rq-stat-card">
+        <span class="rq-stat-card-value" style="color:${s.color}">${s.value}</span>
+        <span class="rq-stat-card-label">${s.label}</span>
+      </div>`
+    ).join('')}</div>`;
     const parts = [ws.slot, ws.class, ws.trigger].filter(Boolean);
     subInfo = `<div class="rq-hero-sub">${parts.map(p => esc(p)).join(' · ')}</div>`;
   } else if (set.type === 'warframe' || set.type === 'sentinel') {
@@ -412,11 +410,10 @@ function renderDetail() {
     const placeholderStats = set.type === 'warframe'
       ? ['HEALTH', 'SHIELDS', 'ARMOR', 'ENERGY', 'SPRINT']
       : ['HEALTH', 'SHIELDS', 'ARMOR'];
-    statsHtml = `<div class="rq-hero-stats">${placeholderStats.map(label =>
-      `<div class="rq-stat-row">
-        <span class="rq-stat-label">${label}</span>
-        <span class="rq-stat-value rq-stat-pending">—</span>
-        <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:0%;background:var(--text-dim)"></div></div>
+    statsHtml = `<div class="rq-stat-cards">${placeholderStats.map(label =>
+      `<div class="rq-stat-card">
+        <span class="rq-stat-card-value rq-stat-pending">—</span>
+        <span class="rq-stat-card-label">${label}</span>
       </div>`
     ).join('')}</div>`;
   }
