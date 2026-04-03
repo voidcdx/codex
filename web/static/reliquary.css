@@ -522,10 +522,13 @@
   padding-left: 10px;
 }
 .rq-comp-header {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  background: var(--accent-a8);
+  padding: 4px 12px;
+  border-radius: 14px;
 }
 .rq-comp-name {
   font-family: var(--font-display);
