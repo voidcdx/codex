@@ -382,27 +382,39 @@ function renderDetail() {
     subInfo = `<div class="rq-hero-sub">${parts.map(p => esc(p)).join(' · ')}</div>`;
   }
 
-  // Part cards
+  // Components — each part shows its relics inline
   const partsHtml = partEntries.map(([partName, relics]) => {
-    const active = selectedPart === partName ? ' active' : '';
-    const bestRarity = getBestRarity(relics);
-    const tierTags = [...new Set(relics.map(r => r.tier))].sort((a, b) =>
-      tierOrder.indexOf(a) - tierOrder.indexOf(b)
-    ).map(t => `<span class="rq-part-tier" data-tier="${esc(t)}">${esc(t)}</span>`).join('');
+    const sorted = [...relics].sort((a, b) =>
+      (tierOrder.indexOf(a.tier)) - (tierOrder.indexOf(b.tier))
+    );
 
-    return `<button class="rq-part-card${active}" data-part="${esc(partName)}" onclick="selectPart('${esc(partName)}')">
-      <div class="rq-part-left">
-        <span class="rq-part-name">${esc(cleanPartName(partName))}</span>
-        <div class="rq-part-tags">${tierTags}</div>
+    const relicRows = sorted.map(r => {
+      const drops = dropsMap[r.relic] || [];
+      const best = [...drops].sort((a, b) => b.chance - a.chance)[0];
+      const bestLoc = best
+        ? `<span class="rq-inline-loc">${esc(best.location)}</span><span class="rq-inline-chance">${Number(best.chance).toFixed(1)}%</span>`
+        : `<span class="rq-inline-loc rq-inline-loc--none">—</span>`;
+      const expanded = selectedPart === `${partName}|||${r.relic}` ? ' open' : '';
+
+      return `<div class="rq-comp-relic${expanded}">
+        <button class="rq-comp-relic-row" onclick="toggleRelic('${esc(partName)}', '${esc(r.relic)}')">
+          <span class="rq-relic-tier-badge" data-tier="${esc(r.tier)}">${esc(r.tier)}</span>
+          <span class="rq-comp-relic-name">${esc(r.relic)}</span>
+          <span class="rq-relic-rarity rq-rarity-text-${esc(r.rarity)}">${esc(r.rarity)}</span>
+          ${bestLoc}
+        </button>
+        ${expanded ? renderDropList(r.relic) : ''}
+      </div>`;
+    }).join('');
+
+    return `<div class="rq-comp">
+      <div class="rq-comp-header">
+        <span class="rq-comp-name">${esc(cleanPartName(partName))}</span>
+        <span class="rq-comp-count">${relics.length}</span>
       </div>
-      <div class="rq-part-right">
-        <span class="rq-part-relic-count">${relics.length} relic${relics.length !== 1 ? 's' : ''}</span>
-        <span class="rq-rarity-dot rq-rarity-${esc(bestRarity)}" aria-hidden="true"></span>
-      </div>
-    </button>`;
+      <div class="rq-comp-relics">${relicRows}</div>
+    </div>`;
   }).join('');
-
-  const relicSection = selectedPart ? renderRelicSection() : '';
 
   // Weapon image
   const imgFile = weaponImages[selectedSet];
@@ -426,9 +438,8 @@ function renderDetail() {
       ${statsHtml}
       <div class="rq-hero-divider"></div>
       <div class="rq-hero-section-label">COMPONENTS</div>
-      <div class="rq-parts-grid">${partsHtml}</div>
+      <div class="rq-comp-grid">${partsHtml}</div>
     </div>
-    ${relicSection}
   `;
 }
 
@@ -448,57 +459,30 @@ function getBestRarity(relics) {
 // ---------------------------------------------------------------------------
 // Part selection → relic drill-down
 // ---------------------------------------------------------------------------
-function selectPart(partName) {
-  selectedPart = selectedPart === partName ? null : partName;
+function toggleRelic(partName, relicName) {
+  const key = `${partName}|||${relicName}`;
+  selectedPart = selectedPart === key ? null : key;
   renderDetail();
 }
 
-function renderRelicSection() {
-  if (!selectedSet || !selectedPart) return '';
-  const relics = allSets[selectedSet].parts[selectedPart];
-  if (!relics || relics.length === 0) return '';
-
-  // Sort by rarity (Common first for easier farming), then tier
-  const tierOrder = { 'Lith': 0, 'Meso': 1, 'Neo': 2, 'Axi': 3, 'Requiem': 4 };
-  const sorted = [...relics].sort((a, b) => {
-    const ta = tierOrder[a.tier] ?? 99;
-    const tb = tierOrder[b.tier] ?? 99;
-    return ta - tb;
-  });
-
-  const rows = sorted.map(r => {
-    const drops = dropsMap[r.relic] || [];
-    const top5 = [...drops].sort((a, b) => b.chance - a.chance).slice(0, 5);
-    const dropHtml = top5.length > 0 ? `
-      <div class="rq-drop-list">
-        ${top5.map(d => {
-          const rot = d.rotation
-            ? `<span class="drop-rotation">Rot ${esc(d.rotation)}</span>`
-            : '';
-          const rarityClass = esc(d.rarity.replace(/\s+/g, '-'));
-          const chance = Number(d.chance).toFixed(2);
-          return `<div class="drop-row rarity-drop-${rarityClass}">
-            <span class="drop-loc">${esc(d.location)}</span>
-            <span class="drop-mission">${esc(d.mission_type)}</span>
-            ${rot}
-            <span class="drop-chance">${chance}%</span>
-          </div>`;
-        }).join('')}
-      </div>` : '<div class="rq-no-drops">No drop locations found</div>';
-
-    return `<div class="rq-relic-row">
-      <div class="rq-relic-header">
-        <span class="rq-relic-tier-badge" data-tier="${esc(r.tier)}">${esc(r.tier)}</span>
-        <span class="rq-relic-name">${esc(r.relic)}</span>
-        <span class="rq-relic-rarity rq-rarity-text-${esc(r.rarity)}">${esc(r.rarity)}</span>
-      </div>
-      ${dropHtml}
-    </div>`;
-  }).join('');
-
-  return `<div class="rq-relic-section">
-    <h3 class="rq-relic-section-title">${esc(cleanPartName(selectedPart))} — Drop Sources</h3>
-    ${rows}
+function renderDropList(relicName) {
+  const drops = dropsMap[relicName] || [];
+  const top5 = [...drops].sort((a, b) => b.chance - a.chance).slice(0, 5);
+  if (top5.length === 0) return '<div class="rq-no-drops">No drop locations found</div>';
+  return `<div class="rq-drop-list">
+    ${top5.map(d => {
+      const rot = d.rotation
+        ? `<span class="drop-rotation">Rot ${esc(d.rotation)}</span>`
+        : '';
+      const rarityClass = esc(d.rarity.replace(/\s+/g, '-'));
+      const chance = Number(d.chance).toFixed(2);
+      return `<div class="drop-row rarity-drop-${rarityClass}">
+        <span class="drop-loc">${esc(d.location)}</span>
+        <span class="drop-mission">${esc(d.mission_type)}</span>
+        ${rot}
+        <span class="drop-chance">${chance}%</span>
+      </div>`;
+    }).join('')}
   </div>`;
 }
 
