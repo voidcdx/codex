@@ -957,13 +957,13 @@
     width: 100px;
   }
   .rq-detail-info {
-    max-width: 65%;
+    max-width: 100%;
   }
   .rq-detail-img {
     width: 160px;
     height: 160px;
-    right: -10px;
-    top: -10px;
+    right: 10px;
+    top: 10px;
   }
   .rq-detail-img img {
     width: 160px;
