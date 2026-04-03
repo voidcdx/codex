@@ -43,10 +43,9 @@ class TestAbilityStrip:
         # Stripped enemy should deal more damage
         assert sum(stripped.values()) > sum(baseline.values())
 
-        # Verify armor value: 300*0.5=150; DR=150/450=0.333…; mult=1-0.333=0.667
-        # Impact vs GRINEER ×1.5: floor(60*1.5)=90; armor_mult=150/(150+300)=1/3
-        # floor(90 * (1-150/450)) = floor(90 * 0.6666...) = floor(60.0) = 60
-        assert stripped[DamageType.IMPACT] == pytest.approx(60.0)
+        # Verify armor value: 300*0.5=150; DM=1−0.9×150/2700=0.95
+        # Impact vs GRINEER ×1.5: floor(60*1.5)=90; floor(90*0.95)=85
+        assert stripped[DamageType.IMPACT] == pytest.approx(85.0)
 
     def test_cp_strip_additive(self):
         """ability_strip_pct=0.3 + cp_strip_pct=0.3 = 60% total strip.
@@ -56,9 +55,9 @@ class TestAbilityStrip:
             ability_strip_pct=0.3,
             cp_strip_pct=0.3,
         )
-        # 120 armor; DR=120/420≈0.2857; mult≈0.7143
-        # Impact vs GRINEER ×1.5: floor(60*1.5)=90; floor(90*(300/(300+120)))=floor(90*0.7142...)=floor(64.28)=64
-        assert result[DamageType.IMPACT] == pytest.approx(64.0)
+        # 120 armor; DM=1−0.9×120/2700=0.96
+        # Impact vs GRINEER ×1.5: floor(60*1.5)=90; floor(90*0.96)=86
+        assert result[DamageType.IMPACT] == pytest.approx(86.0)
 
     def test_pct_capped_at_100(self):
         """ability_strip_pct=0.6 + cp_strip_pct=0.6 → capped at 1.0 → armor=0, full damage."""

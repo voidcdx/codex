@@ -143,7 +143,7 @@ Weapons can have multiple attack modes. Each attack has `name`, `base_damage`, `
 **Viral stack multipliers** (0=×1.0, max 10=×4.25):
 `{1:1.75, 2:2.0, 3:2.25, 4:2.5, 5:2.75, 6:3.0, 7:3.25, 8:3.5, 9:3.75, 10:4.25}`
 
-**Armor Mitigation** = `300 / (300 + min(armor, 2700))` — flat DR, no per-type modifiers (Update 36+).
+**Armor Mitigation** = `DM = 1 − 0.9 × AR / 2700` (linear, capped at AR=2700 → 90% DR). Enemy-specific formula (Update 36+). Tenno use the old hyperbolic `armor / (armor + 300)` — calculator targets enemies only.
 **Faction mods apply LAST** — multiplicative `(1 + bonus)` after armor mitigation.
 
 ---

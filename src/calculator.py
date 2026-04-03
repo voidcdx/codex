@@ -145,17 +145,18 @@ def calculate_crit_multiplier(
 
 
 def calculate_armor_multiplier(armor: float) -> float:
-    """Damage fraction passing through armor (Update 36+: flat DR only).
+    """Damage fraction passing through armor (Update 36+: linear DR).
 
     Post-Update 36 (Jade Shadows): Ferrite/Alloy armor types no longer exist.
-    Armor provides flat damage reduction only: DR = armor / (armor + 300),
-    capped at 2,700 armor (90% DR). All damage type modifiers are faction-based.
+    Enemy armor uses a linear formula: DM = 1 − 0.9 × AR / 2700.
+    At AR ≥ 2700 the DR caps at 90% (DM = 0.1).
+    Source: wiki.warframe.com/w/Armor (enemy armor section)
     Returns 1.0 when there is no armor.
     """
     if armor <= 0.0:
         return 1.0
     clamped = min(2700.0, armor)
-    return 300.0 / (300.0 + clamped)
+    return 1.0 - 0.9 * clamped / 2700.0
 
 
 def status_chance_per_pellet(total_sc: float, pellet_count: int) -> float:

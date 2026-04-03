@@ -124,12 +124,12 @@ class TestSteps2And3:
 # Step2 no headshot: round(63.75 * 1.0) = 64 (round to nearest int)
 # Step3 no faction: floor(64 * 1.0) = 64
 # Step4 Slash vs GRINEER neutral ×1.0: floor(64 * 1.0) = 64
-# Step5 armor 300/(300+300)=0.5: floor(64 * 0.5) = 32
+# Step5 armor DM = 1 − 0.9×300/2700 = 0.9: floor(64 * 0.9) = 57
 # ---------------------------------------------------------------------------
 class TestSteps4And5:
     def test_armor_mitigation(self):
         result = calc.calculate(braton(), [serration()], grineer_flesh_300_armor())
-        assert result[DamageType.SLASH] == pytest.approx(32.0)
+        assert result[DamageType.SLASH] == pytest.approx(57.0)
 
     def test_true_damage_bypasses_armor(self):
         weapon = Weapon(
@@ -217,8 +217,8 @@ class TestNagantakaPrimeIntegration:
 
 # ---------------------------------------------------------------------------
 # calculate_armor_multiplier unit tests
-# Post-Update 36 (Jade Shadows): flat DR only — no armor-type modifiers.
-# DR = armor / (armor + 300), capped at 2700 (90% DR).
+# Post-Update 36 (Jade Shadows): linear enemy DR.
+# DM = 1 − 0.9 × AR / 2700, capped at AR=2700 (90% DR → DM=0.1).
 # ---------------------------------------------------------------------------
 class TestCalculateArmorMultiplier:
     def test_zero_armor_returns_one(self):
@@ -228,16 +228,16 @@ class TestCalculateArmorMultiplier:
         assert calculate_armor_multiplier(-10.0) == pytest.approx(1.0)
 
     def test_300_armor_flat_dr(self):
-        # DR = 300/(300+300) = 0.5 → passes 0.5
-        assert calculate_armor_multiplier(300.0) == pytest.approx(0.5)
+        # DM = 1 − 0.9×300/2700 = 1 − 0.1 = 0.9
+        assert calculate_armor_multiplier(300.0) == pytest.approx(0.9)
 
     def test_armor_capped_at_2700(self):
-        # 9999 armor → clamped to 2700; DR=2700/3000=0.9 → passes 0.1
+        # 9999 armor → clamped to 2700; DM = 1 − 0.9 = 0.1
         assert calculate_armor_multiplier(9999.0) == pytest.approx(0.1)
 
     def test_600_armor(self):
-        # DR = 600/(600+300) = 2/3 → passes 1/3 ≈ 0.333...
-        assert calculate_armor_multiplier(600.0) == pytest.approx(300.0 / 900.0)
+        # DM = 1 − 0.9×600/2700 = 1 − 0.2 = 0.8
+        assert calculate_armor_multiplier(600.0) == pytest.approx(0.8)
 
 
 # ---------------------------------------------------------------------------
@@ -708,32 +708,32 @@ class TestCorrosiveStrip:
         """0 stacks = no armor reduction; baseline reference."""
         # Impact=60, Serration(+165%): floor(60*2.65)=159; quantize→159.375; round→159
         # Impact vs GRINEER ×1.5: floor(159*1.5)=floor(238.5)=238
-        # Flat DR=300/600=0.5; floor(238*0.5)=119
+        # Linear DM = 1−0.9×300/2700 = 0.9; floor(238*0.9) = 214
         result = calc.calculate(
             self._impact_weapon(), [serration()], self._ferrite_enemy(),
             corrosive_stacks=0,
         )
-        assert result[DamageType.IMPACT] == pytest.approx(119.0)
+        assert result[DamageType.IMPACT] == pytest.approx(214.0)
 
     def test_five_stacks_50pct_strip(self):
         """5 stacks: reduction = 0.20+0.06×5 = 0.50 → armor 300→150.
-        Impact vs GRINEER ×1.5 → 238; armor_mult = 1-(150/450) = 0.666...; floor(238*0.666...)=158
+        Impact vs GRINEER ×1.5 → 238; DM = 1−0.9×150/2700 = 0.95; floor(238*0.95)=226
         """
         result = calc.calculate(
             self._impact_weapon(), [serration()], self._ferrite_enemy(),
             corrosive_stacks=5,
         )
-        assert result[DamageType.IMPACT] == pytest.approx(158.0)
+        assert result[DamageType.IMPACT] == pytest.approx(226.0)
 
     def test_ten_stacks_80pct_cap(self):
         """10 stacks: reduction capped at 0.80 → armor 300→60.
-        Impact vs GRINEER ×1.5 → 238; armor_mult = 1-(60/360) = 0.8333...; floor(238*0.8333...)=198
+        Impact vs GRINEER ×1.5 → 238; DM = 1−0.9×60/2700 = 0.98; floor(238*0.98)=233
         """
         result = calc.calculate(
             self._impact_weapon(), [serration()], self._ferrite_enemy(),
             corrosive_stacks=10,
         )
-        assert result[DamageType.IMPACT] == pytest.approx(198.0)
+        assert result[DamageType.IMPACT] == pytest.approx(233.0)
 
     def test_cap_at_80pct(self):
         """14 stacks should give same result as 10 stacks (cap enforced at 80%)."""
