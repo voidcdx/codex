@@ -427,12 +427,19 @@ function renderDetail() {
     </div>`;
   }).join('');
 
-  // Weapon image
+  // Hero image — weapon from data, warframe/sentinel by name convention
+  let heroImgHtml = '';
+  let heroImgClass = '';
   const imgFile = weaponImages[selectedSet];
-  const heroImgHtml = imgFile
-    ? `<div class="rq-hero-img"><img src="/static/images/weapons/${esc(imgFile)}" alt="" onerror="this.parentElement.style.display='none'"></div>`
-    : '';
-  const heroImgClass = imgFile ? ' rq-hero--has-img' : '';
+  if (imgFile) {
+    heroImgHtml = `<div class="rq-hero-img"><img src="/static/images/weapons/${esc(imgFile)}" alt="" onerror="this.parentElement.style.display='none'"></div>`;
+    heroImgClass = ' rq-hero--has-img';
+  } else {
+    const folder = set.type === 'warframe' ? 'warframes' : 'sentinels';
+    const convName = selectedSet.replace(/ /g, '-') + '.png';
+    heroImgHtml = `<div class="rq-hero-img"><img src="/static/images/${esc(folder)}/${esc(convName)}" alt="" onerror="this.parentElement.style.display='none'"></div>`;
+    heroImgClass = ' rq-hero--has-img';
+  }
 
   detail.innerHTML = `
     <div class="rq-hero${heroImgClass}">
