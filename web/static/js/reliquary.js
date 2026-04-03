@@ -475,7 +475,7 @@ function renderDetail() {
   if (outer) {
     // Set position class: warframes/sentinels left, weapons right
     outer.classList.remove('rq-img-left', 'rq-img-right');
-    outer.classList.add(set.type === 'weapon' ? 'rq-img-right' : 'rq-img-left');
+    outer.classList.add('rq-img-right');
     let imgEl = outer.querySelector('.rq-detail-img');
     if (!imgEl) {
       imgEl = document.createElement('div');
