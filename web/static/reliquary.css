@@ -345,10 +345,12 @@
   mask-image: radial-gradient(ellipse 75% 75% at center, black 40%, transparent 72%);
   -webkit-mask-image: radial-gradient(ellipse 75% 75% at center, black 40%, transparent 72%);
 }
-/* Warframes/sentinels — image left */
+/* Warframes/sentinels — image left, bottom fades a bit more */
 .rq-img-left .rq-detail-img {
   right: auto;
   left: 10px;
+  mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
 }
 .rq-img-left .rq-detail-info {
   margin-left: auto;
