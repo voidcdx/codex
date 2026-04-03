@@ -225,9 +225,23 @@ function getFilteredSets() {
     .sort((a, b) => a[0].localeCompare(b[0]));
 }
 
+function updateMobCount() {
+  const el = document.getElementById('rq-mob-count');
+  if (el) {
+    const filtered = getFilteredSets();
+    el.textContent = filtered.length + ' sets';
+  }
+}
+
+function toggleMobileList() {
+  const sidebar = document.querySelector('.rq-sidebar');
+  sidebar.classList.toggle('mob-open');
+}
+
 function renderSidebar() {
   const list = document.getElementById('rq-set-list');
   const filtered = getFilteredSets();
+  updateMobCount();
 
   if (filtered.length === 0) {
     list.innerHTML = '<div class="rq-empty">NO RESULTS</div>';
@@ -325,8 +339,9 @@ function selectSet(name) {
   renderSidebar();
   renderDetail();
 
-  // Mobile: scroll detail into view
+  // Mobile: collapse sidebar and scroll detail into view
   if (window.innerWidth <= 900) {
+    document.querySelector('.rq-sidebar').classList.remove('mob-open');
     const detail = document.getElementById('rq-detail');
     if (detail) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }

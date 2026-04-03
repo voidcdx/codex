@@ -49,6 +49,30 @@
   pointer-events: none;
 }
 
+/* Mobile list toggle — hidden on desktop */
+.rq-mob-toggle {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0;
+  flex-shrink: 0;
+}
+.rq-mob-chev {
+  transition: transform 0.2s;
+}
+.rq-sidebar.mob-open .rq-mob-chev {
+  transform: rotate(180deg);
+}
+
 /* Controls bar — search + pills in one row */
 .rq-controls {
   display: flex;
@@ -889,8 +913,26 @@
     grid-template-rows: auto 1fr;
     padding: 16px;
   }
-  .rq-sidebar {
-    max-height: 35vh;
+  .rq-mob-toggle {
+    display: flex;
+  }
+  .rq-sidebar .rq-set-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+  .rq-sidebar.mob-open .rq-set-list {
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+  .rq-sidebar .rq-goals {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+  .rq-sidebar.mob-open .rq-goals {
+    max-height: 20vh;
+    overflow-y: auto;
   }
   .rq-detail {
     padding: 16px;
