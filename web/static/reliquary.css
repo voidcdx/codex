@@ -488,7 +488,7 @@
 /* Divider between stats and components */
 .rq-hero-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--panel-line-top) 50%, transparent 100%);
   margin: 14px 0 10px;
 }
 
@@ -514,11 +514,11 @@
   display: block;
   height: 1px;
   margin: 10px 0;
-  background: linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--panel-line-top) 50%, transparent 100%);
 }
 .rq-comp {
   border-left: 2px solid transparent;
-  border-image: linear-gradient(to bottom, var(--panel-line-top), transparent) 1;
+  border-image: linear-gradient(to bottom, transparent, var(--panel-line-top) 50%, transparent) 1;
   padding-left: 10px;
 }
 .rq-comp-header {
