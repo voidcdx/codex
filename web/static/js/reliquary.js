@@ -467,8 +467,8 @@ function renderDetail() {
     imgSrc = `/static/images/${esc(folder)}/${esc(convName)}`;
   }
 
-  const evergreenHtml = EVERGREEN_SETS.has(selectedSet)
-    ? '<div class="rq-evergreen-note">Permanent</div>' : '';
+  const evergreenTag = EVERGREEN_SETS.has(selectedSet)
+    ? '<span class="rq-type-badge rq-badge-permanent">Permanent</span>' : '';
 
   // Place image on outer container so it can break out of panel
   const outer = detail.closest('.rq-detail-outer');
@@ -491,10 +491,10 @@ function renderDetail() {
       <div class="rq-detail-info">
         <div class="rq-hero-type-row">
           <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
+          ${evergreenTag}
         </div>
         <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
         ${subInfo}
-        ${evergreenHtml}
         ${statsHtml}
       </div>
     </div>
