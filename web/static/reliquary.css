@@ -331,25 +331,21 @@
 .rq-hero-banner {
   position: relative;
   overflow: hidden;
-  min-height: 120px;
+  min-height: 200px;
 }
 
-/* Hero image — fills banner, fades left/bottom */
+/* Hero image — right-aligned in banner, fades left */
 .rq-hero-img {
   position: absolute;
-  right: -20px;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
   width: 340px;
   height: 340px;
   pointer-events: none;
   z-index: 0;
-  mask-image: linear-gradient(to left, black 10%, transparent 70%),
-              linear-gradient(to top, transparent 0%, black 30%);
-  mask-composite: intersect;
-  -webkit-mask-image: linear-gradient(to left, black 10%, transparent 70%),
-                      linear-gradient(to top, transparent 0%, black 30%);
-  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to left, black 30%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to left, black 30%, transparent 85%);
 }
 .rq-hero-img img {
   width: 340px;
