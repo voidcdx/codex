@@ -49,31 +49,6 @@
   pointer-events: none;
 }
 
-/* Mobile list toggle — hidden on desktop */
-.rq-mob-toggle {
-  display: none;
-  align-items: center;
-  gap: 4px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  flex-shrink: 0;
-}
-.rq-mob-chev {
-  transition: transform 0.2s;
-}
-.rq-sidebar.mob-open .rq-mob-chev {
-  transform: rotate(180deg);
-}
-
 /* Controls bar — search + pills in one row */
 .rq-controls {
   display: flex;
@@ -162,6 +137,39 @@
 }
 .rq-search-clear:hover { color: var(--accent2); }
 .rq-search-expand.open .rq-search-clear { display: flex; }
+
+/* ── Segmented toggle (Warframes / Weapons) ────────────── */
+.rq-seg {
+  display: flex;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.rq-seg-btn {
+  padding: 4px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.rq-seg-btn + .rq-seg-btn { border-left: 1px solid var(--border); }
+.rq-seg-btn:hover:not(.active) {
+  color: var(--text);
+  background: var(--surface2);
+}
+.rq-seg-btn:focus-visible { outline: 1px solid var(--accent2); outline-offset: -1px; }
+.rq-seg-btn.active {
+  color: var(--accent2);
+  background: var(--accent-a8);
+}
 
 /* Set list */
 .rq-set-list {
@@ -921,9 +929,6 @@
     grid-template-rows: auto 1fr;
     padding: 16px;
   }
-  .rq-mob-toggle {
-    display: flex;
-  }
   .rq-search-expand {
     min-width: 0;
     flex-shrink: 1;
@@ -931,23 +936,9 @@
   .rq-search-expand.open .rq-search-input {
     width: 100px;
   }
-  .rq-sidebar .rq-set-list {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.25s ease;
-  }
-  .rq-sidebar.mob-open .rq-set-list {
-    max-height: 40vh;
-    overflow-y: auto;
-  }
-  .rq-sidebar .rq-goals {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.25s ease;
-  }
-  .rq-sidebar.mob-open .rq-goals {
-    max-height: 20vh;
-    overflow-y: auto;
+  .rq-seg-btn {
+    padding: 4px 8px;
+    font-size: 0.55rem;
   }
   .rq-hero-img {
     width: 160px;

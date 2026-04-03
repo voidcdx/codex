@@ -5,7 +5,7 @@ let dropsMap   = {};    // from /api/drops
 let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
 let weaponStats  = {};  // { "Braton Prime": { slot, class, crit_chance, … }, … }
 let baroRelicNames = new Set();
-let activeTab  = 'all';
+let activeTab  = 'warframes'; // 'all' | 'warframes' | 'weapons'
 let searchQuery = '';
 let selectedSet  = null;
 let selectedPart = null;
@@ -223,7 +223,9 @@ function renderGoals() {
 function getFilteredSets() {
   const q = searchQuery.trim().toLowerCase();
   return Object.entries(allSets)
-    .filter(([name]) => {
+    .filter(([name, set]) => {
+      if (activeTab === 'warframes' && set.type !== 'warframe') return false;
+      if (activeTab === 'weapons'   && set.type !== 'weapon')   return false;
       if (q && !name.toLowerCase().includes(q)) return false;
       return true;
     })
@@ -233,23 +235,9 @@ function getFilteredSets() {
     });
 }
 
-function updateMobCount() {
-  const el = document.getElementById('rq-mob-count');
-  if (el) {
-    const filtered = getFilteredSets();
-    el.textContent = filtered.length + ' sets';
-  }
-}
-
-function toggleMobileList() {
-  const sidebar = document.querySelector('.rq-sidebar');
-  sidebar.classList.toggle('mob-open');
-}
-
 function renderSidebar() {
   const list = document.getElementById('rq-set-list');
   const filtered = getFilteredSets();
-  updateMobCount();
 
   if (filtered.length === 0) {
     list.innerHTML = '<div class="rq-empty">NO RESULTS</div>';
@@ -272,6 +260,26 @@ function renderSidebar() {
       <span class="rq-wl-btn${wlClass}" onclick="toggleWishlist('${esc(name)}', event)" title="${inWl ? 'Remove from goals' : 'Add to goals'}" aria-label="${inWl ? 'Remove from goals' : 'Add to goals'}">${wlIcon}</span>
     </button>`;
   }).join('');
+}
+
+// ---------------------------------------------------------------------------
+// Tab toggle
+// ---------------------------------------------------------------------------
+function toggleSeg(btn) {
+  const wasActive = btn.classList.contains('active');
+  document.querySelectorAll('.rq-seg-btn').forEach(b => b.classList.remove('active'));
+  if (wasActive) {
+    activeTab = 'all';
+  } else {
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+  }
+  if (selectedSet && allSets[selectedSet]) {
+    const t = allSets[selectedSet].type;
+    if (activeTab === 'warframes' && t !== 'warframe') clearSelection();
+    if (activeTab === 'weapons'   && t !== 'weapon')   clearSelection();
+  }
+  renderSidebar();
 }
 
 // ---------------------------------------------------------------------------
@@ -337,9 +345,7 @@ function selectSet(name) {
   const detail = document.getElementById('rq-detail');
   if (detail) {
     detail.scrollTop = 0;
-    // Mobile: collapse sidebar and scroll detail into viewport
     if (window.innerWidth <= 900) {
-      document.querySelector('.rq-sidebar').classList.remove('mob-open');
       detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
