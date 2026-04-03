@@ -331,6 +331,7 @@
   z-index: 1;
   max-width: 60%;
 }
+/* Image — default right (weapons) */
 .rq-detail-img {
   position: absolute;
   right: 10px;
@@ -339,7 +340,25 @@
   height: 240px;
   pointer-events: none;
   z-index: 2;
-  filter: brightness(1.2) drop-shadow(0 4px 20px rgba(0,0,0,0.6));
+  filter: brightness(1.2) drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+}
+/* Warframes/sentinels — image left, text right */
+.rq-img-left .rq-detail-img {
+  right: auto;
+  left: 10px;
+}
+.rq-img-left .rq-detail-info {
+  margin-left: auto;
+  text-align: right;
+}
+.rq-img-left .rq-hero-type-row {
+  justify-content: flex-end;
+}
+.rq-img-left .rq-stat-grid {
+  direction: rtl;
+}
+.rq-img-left .rq-stat-item {
+  direction: ltr;
 }
 .rq-detail-img img {
   width: 240px;
@@ -972,6 +991,10 @@
   .rq-detail-img img {
     width: 150px;
     height: 150px;
+  }
+  .rq-img-left .rq-detail-img {
+    right: auto;
+    left: 10px;
   }
   .rq-detail {
     padding: 10px 14px;
