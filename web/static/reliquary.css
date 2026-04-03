@@ -334,7 +334,7 @@
 .rq-hero--has-img .rq-hero-stats,
 .rq-hero--has-img .rq-hero-divider,
 .rq-hero--has-img .rq-hero-section-label,
-.rq-hero--has-img .rq-parts-grid { position: relative; z-index: 1; }
+.rq-hero--has-img .rq-comp-grid { position: relative; z-index: 1; }
 
 .rq-hero-top {
   display: flex;
@@ -475,103 +475,99 @@
   margin-bottom: 8px;
 }
 
-/* ── Part cards ────────────────────────────────────────── */
-.rq-parts-grid {
+/* ── Component sections ───────────────────────────────── */
+.rq-comp-grid {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
-
-.rq-part-card {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--border-red);
-  border-radius: var(--radius);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s, background 0.15s;
-  position: relative;
-  overflow: hidden;
+.rq-comp {
+  border-left: 2px solid var(--border-red);
+  padding-left: 10px;
 }
-/* gradient bleed from left edge */
-.rq-part-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; bottom: 0; width: 80px;
-  background: linear-gradient(90deg, var(--accent-a6), transparent);
-  pointer-events: none;
-}
-/* bottom panel line */
-.rq-part-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--panel-line-bottom), transparent);
-  pointer-events: none;
-}
-.rq-part-card:hover {
-  border-color: var(--border-highlight);
-  background: var(--accent-a5);
-}
-.rq-part-card:focus-visible { outline: 1px solid var(--accent2); outline-offset: 2px; }
-.rq-part-card.active {
-  border-left-color: var(--accent2);
-  border-color: var(--border-highlight);
-  background: var(--accent-a10);
-}
-
-.rq-part-left {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.rq-part-name {
-  font-family: var(--font-display);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-.rq-part-tags {
-  display: flex;
-  gap: 3px;
-}
-.rq-part-tier {
-  font-family: var(--font-display);
-  font-size: 0.45rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 1px 4px;
-  border: 1px solid;
-  border-radius: 2px;
-}
-.rq-part-tier[data-tier="Lith"]    { color: var(--tier-lith);    border-color: rgba(156,163,175,0.3); }
-.rq-part-tier[data-tier="Meso"]    { color: var(--tier-meso);    border-color: rgba(74,222,128,0.3); }
-.rq-part-tier[data-tier="Neo"]     { color: var(--tier-neo);     border-color: rgba(96,165,250,0.3); }
-.rq-part-tier[data-tier="Axi"]     { color: var(--tier-axi);     border-color: rgba(251,191,36,0.3); }
-.rq-part-tier[data-tier="Requiem"] { color: var(--tier-requiem); border-color: rgba(192,132,252,0.3); }
-
-.rq-part-right {
+.rq-comp-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0;
+  margin-bottom: 4px;
 }
-.rq-part-relic-count {
+.rq-comp-name {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.rq-comp-count {
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.rq-comp-relics {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* Inline relic row */
+.rq-comp-relic-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.rq-comp-relic-row:hover {
+  background: var(--accent-a5);
+}
+.rq-comp-relic.open .rq-comp-relic-row {
+  background: var(--accent-a8);
+}
+.rq-comp-relic-name {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rq-inline-loc {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
+}
+.rq-inline-loc--none { color: var(--text-dim); }
+.rq-inline-chance {
   font-family: var(--font-display);
   font-size: 0.55rem;
-  color: var(--text-dim);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Expanded drop list under a relic row */
+.rq-comp-relic .rq-drop-list {
+  padding: 2px 8px 6px 38px;
+}
+.rq-comp-relic .rq-no-drops {
+  padding: 2px 8px 6px 38px;
 }
 
 /* Rarity dots */
