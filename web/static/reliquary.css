@@ -517,7 +517,8 @@
   background: linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%);
 }
 .rq-comp {
-  border-left: 2px solid var(--border-red);
+  border-left: 2px solid transparent;
+  border-image: linear-gradient(to bottom, var(--panel-line-top), transparent) 1;
   padding-left: 10px;
 }
 .rq-comp-header {
