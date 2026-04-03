@@ -437,38 +437,38 @@ function renderDetail() {
     </div>`;
   }).join('');
 
-  // Hero image — weapon from data, warframe/sentinel by name convention
-  let heroImgHtml = '';
-  let heroImgClass = '';
+  // Item image — weapon from data, warframe/sentinel by name convention
+  let imgSrc = '';
   const imgFile = weaponImages[selectedSet];
   if (imgFile) {
-    heroImgHtml = `<div class="rq-hero-img"><img src="/static/images/weapons/${esc(imgFile)}" alt="" onerror="this.parentElement.style.display='none'"></div>`;
-    heroImgClass = ' rq-hero--has-img';
+    imgSrc = `/static/images/weapons/${esc(imgFile)}`;
   } else {
     const folder = set.type === 'sentinel' ? 'sentinels' : 'warframes';
     const convName = selectedSet.replace(/ /g, '-') + '.png';
-    heroImgHtml = `<div class="rq-hero-img"><img src="/static/images/${esc(folder)}/${esc(convName)}" alt="" onerror="this.parentElement.style.display='none'"></div>`;
-    heroImgClass = ' rq-hero--has-img';
+    imgSrc = `/static/images/${esc(folder)}/${esc(convName)}`;
   }
 
+  const evergreenHtml = EVERGREEN_SETS.has(selectedSet)
+    ? '<div class="rq-evergreen-note">Permanent</div>' : '';
+
   detail.innerHTML = `
-    <div class="rq-hero${heroImgClass}">
-      ${heroImgHtml}
-      <div class="rq-hero-top">
-        <div class="rq-hero-info">
-          <div class="rq-hero-type-row">
-            <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
-          </div>
-          <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
-          ${subInfo}
-          ${EVERGREEN_SETS.has(selectedSet) ? '<div class="rq-evergreen-note">Permanent</div>' : ''}
+    <div class="rq-detail-header">
+      <div class="rq-detail-info">
+        <div class="rq-hero-type-row">
+          <span class="rq-type-badge rq-badge-${set.type}">${typeBadge}</span>
         </div>
+        <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
+        ${subInfo}
+        ${evergreenHtml}
       </div>
-      ${statsHtml}
-      <div class="rq-hero-divider"></div>
-      <div class="rq-hero-section-label">COMPONENTS</div>
-      <div class="rq-comp-grid">${partsHtml}</div>
+      <div class="rq-detail-img">
+        <img src="${imgSrc}" alt="" onerror="this.parentElement.style.display='none'">
+      </div>
     </div>
+    ${statsHtml}
+    <div class="rq-hero-divider"></div>
+    <div class="rq-hero-section-label">COMPONENTS</div>
+    <div class="rq-comp-grid">${partsHtml}</div>
   `;
 }
 

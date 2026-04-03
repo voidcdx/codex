@@ -313,55 +313,29 @@
   padding: 48px 20px;
 }
 
-/* ── Hero card ─────────────────────────────────────────── */
-.rq-hero {
-  background: transparent;
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 0;
-  position: relative;
-  overflow: hidden;
+/* ── Detail header — title + image row ─────────────────── */
+.rq-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
 }
-/* No top/bottom gradient lines on hero */
-.rq-hero::before {
-  content: none;
+.rq-detail-info {
+  flex: 1;
+  min-width: 0;
 }
-
-/* Hero image — top-right of hero card, fades left + bottom */
-.rq-hero-img {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 340px;
-  height: 340px;
-  pointer-events: none;
-  z-index: 0;
-  mask-image: linear-gradient(to bottom, black 20%, transparent 65%),
-              linear-gradient(to left, black 20%, transparent 75%);
-  mask-composite: intersect;
-  -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 65%),
-                      linear-gradient(to left, black 20%, transparent 75%);
-  -webkit-mask-composite: source-in;
+.rq-detail-img {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
 }
-.rq-hero-img img {
-  width: 340px;
-  height: 340px;
+.rq-detail-img img {
+  width: 120px;
+  height: 120px;
   object-fit: contain;
   filter: grayscale(0.1);
+  border-radius: var(--radius);
 }
-.rq-hero--has-img .rq-hero-top,
-.rq-hero--has-img .rq-hero-stats { position: relative; z-index: 1; }
-.rq-hero--has-img .rq-comp-grid,
-.rq-hero--has-img .rq-hero-section-label,
-.rq-hero--has-img .rq-hero-divider { position: relative; z-index: 1; }
-
-.rq-hero-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.rq-hero-info { flex: 1; min-width: 0; }
 .rq-hero-type-row {
   display: flex;
   align-items: center;
@@ -962,14 +936,13 @@
   .rq-search-expand.open .rq-search-input {
     width: 100px;
   }
-  .rq-hero-img {
-    width: 200px;
-    height: 200px;
-    right: -10px;
+  .rq-detail-img {
+    width: 80px;
+    height: 80px;
   }
-  .rq-hero-img img {
-    width: 200px;
-    height: 200px;
+  .rq-detail-img img {
+    width: 80px;
+    height: 80px;
   }
   .rq-detail {
     padding: 16px;
