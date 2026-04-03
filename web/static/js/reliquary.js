@@ -4,6 +4,14 @@ let allSets    = {};    // { "Saryn Prime": { type, parts: { "Neuroptics Bluepri
 let dropsMap   = {};    // from /api/drops
 let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
 let weaponStats  = {};  // { "Braton Prime": { slot, class, crit_chance, … }, … }
+
+// Permanently unvaulted sets — always available via Railjack derelict caches
+const EVERGREEN_SETS = new Set([
+  'Nyx Prime', 'Valkyr Prime',
+  'Braton Prime', 'Burston Prime', 'Cernos Prime', 'Paris Prime',
+  'Akbronco Prime', 'Bronco Prime', 'Hikou Prime', 'Lex Prime',
+  'Fang Prime', 'Orthos Prime', 'Scindo Prime', 'Venka Prime',
+]);
 let baroRelicNames = new Set();
 let activeTab  = 'warframes'; // 'all' | 'warframes' | 'weapons'
 let searchQuery = '';
@@ -453,6 +461,7 @@ function renderDetail() {
           </div>
           <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
           ${subInfo}
+          ${EVERGREEN_SETS.has(selectedSet) ? '<div class="rq-evergreen-note">Always available — never vaulted</div>' : ''}
         </div>
       </div>
       ${statsHtml}
