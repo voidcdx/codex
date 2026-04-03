@@ -285,6 +285,7 @@
 .rq-detail {
   padding: 12px 20px;
   overflow-y: auto;
+  overflow-x: clip;
   min-height: 0;
   background: var(--surface);
   backdrop-filter: blur(var(--glass-blur));
@@ -316,7 +317,7 @@
 /* ── Detail header — title + image ─────────────────────── */
 .rq-detail-header {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 4px;
 }
 .rq-detail-info {
@@ -326,8 +327,8 @@
 }
 .rq-detail-img {
   position: absolute;
-  right: -20px;
-  top: -20px;
+  right: -10px;
+  top: -40px;
   width: 240px;
   height: 240px;
   pointer-events: none;
@@ -963,7 +964,7 @@
     width: 160px;
     height: 160px;
     right: 10px;
-    top: 10px;
+    top: -30px;
   }
   .rq-detail-img img {
     width: 160px;
