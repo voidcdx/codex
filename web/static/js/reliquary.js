@@ -380,10 +380,13 @@ function renderDetail() {
 
   const tierOrder = ['Lith', 'Meso', 'Neo', 'Axi', 'Requiem'];
 
-  // Weapon stats
+  // Stats — weapon or warframe/sentinel placeholder
   const ws = weaponStats[selectedSet];
   let statsHtml = '';
+  let subInfo = '';
+
   if (ws) {
+    // Weapon stats
     const atk = ws.attacks && ws.attacks[0];
     const totalDmg = atk ? Object.values(atk.base_damage || {}).reduce((s, v) => s + v, 0) : 0;
     const stats = [
@@ -402,13 +405,20 @@ function renderDetail() {
         <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:${pct}%;background:${s.color}"></div></div>
       </div>`;
     }).join('')}</div>`;
-  }
-
-  // Weapon sub-info line
-  let subInfo = '';
-  if (ws) {
     const parts = [ws.slot, ws.class, ws.trigger].filter(Boolean);
     subInfo = `<div class="rq-hero-sub">${parts.map(p => esc(p)).join(' · ')}</div>`;
+  } else if (set.type === 'warframe' || set.type === 'sentinel') {
+    // Warframe/Sentinel stats — placeholder until data is available
+    const placeholderStats = set.type === 'warframe'
+      ? ['HEALTH', 'SHIELDS', 'ARMOR', 'ENERGY', 'SPRINT']
+      : ['HEALTH', 'SHIELDS', 'ARMOR'];
+    statsHtml = `<div class="rq-hero-stats">${placeholderStats.map(label =>
+      `<div class="rq-stat-row">
+        <span class="rq-stat-label">${label}</span>
+        <span class="rq-stat-value rq-stat-pending">—</span>
+        <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:0%;background:var(--text-dim)"></div></div>
+      </div>`
+    ).join('')}</div>`;
   }
 
   // Components — each part shows its relics inline
