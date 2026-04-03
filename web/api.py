@@ -39,7 +39,7 @@ from src.buffs import BUFF_PRESETS, BUFF_DISPLAY_NAMES, make_buff
 from src.calculator import DamageCalculator, calculate_crit_multiplier, calculate_falloff_multiplier, status_chance_per_pellet
 from src.combiner import combine_elements, PRIMARY_ELEMENTS
 from src.loader import (
-    _mod_family, _raw_enemies, _raw_mods, _raw_weapons, _raw_relics, _raw_drops,
+    _mod_family, _raw_enemies, _raw_mods, _raw_weapons, _raw_warframes, _raw_relics, _raw_drops,
     list_enemies, list_mods, list_weapons,
     load_enemy, load_mod, load_weapon, make_riven_mod,
 )
@@ -260,6 +260,11 @@ def get_enemies() -> list[dict]:
             "body_parts":      entry.get("body_parts", {"Body": 1.0, "Head": 1.0}),
         })
     return sorted(out, key=lambda x: x["name"])
+
+
+@app.get("/api/warframes")
+def get_warframes() -> dict:
+    return _raw_warframes()
 
 
 @app.get("/api/relics")
