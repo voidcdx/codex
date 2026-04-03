@@ -5,7 +5,7 @@ let dropsMap   = {};    // from /api/drops
 let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
 let weaponStats  = {};  // { "Braton Prime": { slot, class, crit_chance, … }, … }
 let baroRelicNames = new Set();
-let activeTab  = 'warframes'; // 'all' | 'warframes' | 'weapons'
+let activeTab  = 'all';
 let searchQuery = '';
 let selectedSet  = null;
 let selectedPart = null;
@@ -223,14 +223,11 @@ function renderGoals() {
 function getFilteredSets() {
   const q = searchQuery.trim().toLowerCase();
   return Object.entries(allSets)
-    .filter(([name, set]) => {
-      if (activeTab === 'warframes' && set.type !== 'warframe') return false;
-      if (activeTab === 'weapons'   && set.type !== 'weapon')   return false;
+    .filter(([name]) => {
       if (q && !name.toLowerCase().includes(q)) return false;
       return true;
     })
     .sort((a, b) => {
-      // Baro-only sets sort to the bottom
       if (a[1].baro !== b[1].baro) return a[1].baro ? 1 : -1;
       return a[0].localeCompare(b[0]);
     });
@@ -275,28 +272,6 @@ function renderSidebar() {
       <span class="rq-wl-btn${wlClass}" onclick="toggleWishlist('${esc(name)}', event)" title="${inWl ? 'Remove from goals' : 'Add to goals'}" aria-label="${inWl ? 'Remove from goals' : 'Add to goals'}">${wlIcon}</span>
     </button>`;
   }).join('');
-}
-
-// ---------------------------------------------------------------------------
-// Tab + search
-// ---------------------------------------------------------------------------
-function toggleSeg(btn) {
-  const wasActive = btn.classList.contains('active');
-  document.querySelectorAll('.rq-seg-btn').forEach(b => b.classList.remove('active'));
-  if (wasActive) {
-    // Deselect → show all
-    activeTab = 'all';
-  } else {
-    btn.classList.add('active');
-    activeTab = btn.dataset.tab;
-  }
-  // If selected set is filtered out, clear it
-  if (selectedSet && allSets[selectedSet]) {
-    const t = allSets[selectedSet].type;
-    if (activeTab === 'warframes' && t !== 'warframe') clearSelection();
-    if (activeTab === 'weapons'   && t !== 'weapon')   clearSelection();
-  }
-  renderSidebar();
 }
 
 // ---------------------------------------------------------------------------

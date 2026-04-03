@@ -163,39 +163,6 @@
 .rq-search-clear:hover { color: var(--accent2); }
 .rq-search-expand.open .rq-search-clear { display: flex; }
 
-/* ── Segmented toggle (Warframes / Weapons) ────────────── */
-.rq-seg {
-  display: flex;
-  margin-left: auto;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-}
-.rq-seg-btn {
-  padding: 4px 12px;
-  border: none;
-  background: transparent;
-  color: var(--text-dim);
-  font-family: var(--font-display);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
-}
-.rq-seg-btn + .rq-seg-btn { border-left: 1px solid var(--border); }
-.rq-seg-btn:hover:not(.active) {
-  color: var(--text);
-  background: var(--surface2);
-}
-.rq-seg-btn:focus-visible { outline: 1px solid var(--accent2); outline-offset: -1px; }
-.rq-seg-btn.active {
-  color: var(--accent2);
-  background: var(--accent-a8);
-}
-
 /* Set list */
 .rq-set-list {
   flex: 1;
@@ -963,10 +930,6 @@
   }
   .rq-search-expand.open .rq-search-input {
     width: 100px;
-  }
-  .rq-seg-btn {
-    padding: 4px 8px;
-    font-size: 0.72rem;
   }
   .rq-sidebar .rq-set-list {
     max-height: 0;
