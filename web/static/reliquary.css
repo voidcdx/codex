@@ -336,8 +336,8 @@
   height: 256px;
   pointer-events: none;
   z-index: 0;
-  mask-image: radial-gradient(ellipse 60% 60% at center, black 20%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 60% 60% at center, black 20%, transparent 70%);
+  mask-image: radial-gradient(ellipse 80% 80% at center, black 50%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at center, black 50%, transparent 90%);
 }
 .rq-hero-img img {
   width: 256px;
