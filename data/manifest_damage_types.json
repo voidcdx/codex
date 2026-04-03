@@ -1,0 +1,18 @@
+{
+  "Impact": "DmgImpactSmall.png",
+  "Puncture": "DmgPunctureSmall.png",
+  "Slash": "DmgSlashSmall.png",
+  "Heat": "DmgHeatSmall.png",
+  "Cold": "DmgColdSmall.png",
+  "Electricity": "DmgElectricitySmall.png",
+  "Toxin": "DmgToxinSmall.png",
+  "Blast": "DmgBlastSmall.png",
+  "Corrosive": "DmgCorrosiveSmall.png",
+  "Gas": "DmgGasSmall.png",
+  "Magnetic": "DmgMagneticSmall.png",
+  "Radiation": "DmgRadiationSmall.png",
+  "Viral": "DmgViralSmall.png",
+  "Void": "DmgVoidSmall.png",
+  "True": "DmgTrueSmall.png",
+  "Tau": "DmgTauSmall.png"
+}
