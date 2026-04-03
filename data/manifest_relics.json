@@ -1,9 +1,9 @@
 {
-  "Lith": "VoidProjectionsIronD.png",
-  "Meso": "VoidProjectionsBronzeD.png",
-  "Neo": "VoidProjectionsSilverD.png",
-  "Axi": "VoidProjectionsGoldD.png",
-  "Requiem": "RequiemRelicD.png",
-  "Eterna": "EternaRelicD.png",
-  "Vanguard": "VanguardRelicD.png"
+  "Lith": "LithRelicIntact.png",
+  "Meso": "MesoRelicIntact.png",
+  "Neo": "NeoRelicIntact.png",
+  "Axi": "AxiRelicIntact.png",
+  "Requiem": "RequiemRelicIntact.png",
+  "Eterna": "EternaRelicIntact.png",
+  "Vanguard": "VanguardRelicIntact.png"
 }
