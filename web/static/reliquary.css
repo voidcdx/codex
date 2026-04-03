@@ -507,7 +507,14 @@
 .rq-comp-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0;
+}
+.rq-comp + .rq-comp::before {
+  content: '';
+  display: block;
+  height: 1px;
+  margin: 10px 0;
+  background: linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%);
 }
 .rq-comp {
   border-left: 2px solid var(--border-red);
@@ -586,9 +593,11 @@
 /* Expanded drop list under a relic row */
 .rq-comp-relic .rq-drop-list {
   padding: 2px 8px 6px 38px;
+  border-top: none;
 }
 .rq-comp-relic .rq-no-drops {
   padding: 2px 8px 6px 38px;
+  border-top: none;
 }
 
 /* Rarity dots */
