@@ -470,12 +470,12 @@ function renderDetail() {
         <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
         ${subInfo}
         ${evergreenHtml}
+        ${statsHtml}
       </div>
       <div class="rq-detail-img">
         <img src="${imgSrc}" alt="" onerror="this.parentElement.style.display='none'">
       </div>
     </div>
-    ${statsHtml}
     <div class="rq-hero-divider"></div>
     <div class="rq-hero-section-label">COMPONENTS</div>
     <div class="rq-comp-grid">${partsHtml}</div>

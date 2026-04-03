@@ -283,7 +283,7 @@
 
 /* ── Right panel — detail ──────────────────────────────── */
 .rq-detail {
-  padding: 20px 28px;
+  padding: 12px 20px;
   overflow-y: auto;
   min-height: 0;
   background: var(--surface);
@@ -316,9 +316,9 @@
 /* ── Detail header — title + image row ─────────────────── */
 .rq-detail-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
 }
 .rq-detail-info {
   flex: 1;
@@ -345,14 +345,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 .rq-hero-title {
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -419,9 +419,8 @@
 .rq-hero-stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px 16px;
-  position: relative;
-  z-index: 1;
+  gap: 4px 16px;
+  margin-top: 8px;
 }
 .rq-stat-row {
   display: grid;
@@ -476,7 +475,7 @@
 .rq-hero-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent 0%, var(--panel-line-top) 50%, transparent 100%);
-  margin: 14px 0 10px;
+  margin: 8px 0 6px;
 }
 
 /* Section label inside hero */
@@ -947,15 +946,22 @@
   .rq-search-expand.open .rq-search-input {
     width: 100px;
   }
+  .rq-detail-header {
+    gap: 10px;
+  }
   .rq-detail-img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
   }
   .rq-detail-img img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
   }
   .rq-detail {
-    padding: 16px;
+    padding: 10px 14px;
+  }
+  .rq-hero-stats {
+    grid-template-columns: 1fr;
+    gap: 3px;
   }
 }
