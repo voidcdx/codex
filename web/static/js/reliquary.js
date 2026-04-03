@@ -355,7 +355,9 @@ function selectSet(name) {
   if (detail) {
     detail.scrollTop = 0;
     if (window.innerWidth <= 900) {
-      detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll to the outer container so the breakout image is visible
+      const outer = detail.closest('.rq-detail-outer');
+      (outer || detail).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 }
