@@ -457,5 +457,70 @@
     "energy": 175,
     "sprint": 1.15,
     "image": "ZephyrPrime_Thumb.png"
+  },
+  "Odonata Prime": {
+    "name": "Odonata Prime",
+    "health": 650,
+    "shield": 640,
+    "armor": 100,
+    "energy": 85,
+    "sprint": 1.05,
+    "image": "OdonataPrime.png"
+  },
+  "Carrier Prime": {
+    "name": "Carrier Prime",
+    "health": 650,
+    "shield": 300,
+    "armor": 150,
+    "energy": 100,
+    "image": "CarrierPrime.png"
+  },
+  "Dethcube Prime": {
+    "name": "Dethcube Prime",
+    "health": 600,
+    "shield": 300,
+    "armor": 150,
+    "energy": 125,
+    "image": "DethcubePrime.png"
+  },
+  "Helios Prime": {
+    "name": "Helios Prime",
+    "health": 700,
+    "shield": 300,
+    "armor": 100,
+    "energy": 100,
+    "image": "HeliosPrime.png"
+  },
+  "Nautilus Prime": {
+    "name": "Nautilus Prime",
+    "health": 560,
+    "shield": 350,
+    "armor": 175,
+    "energy": 100,
+    "image": "NautilusPrime.png"
+  },
+  "Shade Prime": {
+    "name": "Shade Prime",
+    "health": 700,
+    "shield": 300,
+    "armor": 100,
+    "energy": 100,
+    "image": "ShadePrime.png"
+  },
+  "Venari Prime": {
+    "name": "Venari Prime",
+    "health": 1050,
+    "shield": 0,
+    "armor": 450,
+    "energy": 100,
+    "image": "VenariPrime.png"
+  },
+  "Wyrm Prime": {
+    "name": "Wyrm Prime",
+    "health": 450,
+    "shield": 600,
+    "armor": 150,
+    "energy": 100,
+    "image": "WyrmPrime.png"
   }
 }
