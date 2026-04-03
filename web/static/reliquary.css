@@ -332,16 +332,16 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 256px;
-  height: 256px;
+  width: 340px;
+  height: 340px;
   pointer-events: none;
   z-index: 0;
-  mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, black 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, black 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, black 25%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, black 25%, transparent 70%);
 }
 .rq-hero-img img {
-  width: 256px;
-  height: 256px;
+  width: 340px;
+  height: 340px;
   object-fit: contain;
   filter: grayscale(0.1);
 }
@@ -350,7 +350,10 @@
 .rq-hero--has-img .rq-hero-divider,
 .rq-hero--has-img .rq-hero-section-label,
 .rq-hero--has-img .rq-comp-grid { position: relative; z-index: 1; }
-.rq-hero--has-img .rq-hero-top { text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+.rq-hero--has-img .rq-hero-top,
+.rq-hero--has-img .rq-hero-stats,
+.rq-hero--has-img .rq-hero-section-label,
+.rq-hero--has-img .rq-comp-grid { text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 12px rgba(0,0,0,0.5); }
 
 .rq-hero-top {
   display: flex;
