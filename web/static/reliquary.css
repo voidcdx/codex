@@ -345,19 +345,19 @@
 /* Weapon image — floated right, fades into bg */
 .rq-hero-img {
   position: absolute;
-  right: 12px;
-  top: 14px;
-  width: 140px;
+  right: 16px;
+  top: 10px;
+  width: 220px;
   pointer-events: none;
   z-index: 0;
-  mask-image: linear-gradient(to left, transparent 0%, black 40%);
-  -webkit-mask-image: linear-gradient(to left, transparent 0%, black 40%);
-  opacity: 0.4;
+  mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+  opacity: 0.55;
 }
 .rq-hero-img img {
   width: 100%;
   height: auto;
-  filter: grayscale(0.2);
+  filter: grayscale(0.15);
 }
 .rq-hero--has-img .rq-hero-top,
 .rq-hero--has-img .rq-hero-stats,
@@ -985,6 +985,12 @@
   .rq-sidebar.mob-open .rq-goals {
     max-height: 20vh;
     overflow-y: auto;
+  }
+  .rq-hero-img {
+    width: 160px;
+    right: 8px;
+    top: 8px;
+    opacity: 0.5;
   }
   .rq-detail {
     padding: 16px;

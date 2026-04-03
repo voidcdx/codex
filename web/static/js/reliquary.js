@@ -358,11 +358,15 @@ function selectSet(name) {
   renderSidebar();
   renderDetail();
 
-  // Mobile: collapse sidebar and scroll detail into view
-  if (window.innerWidth <= 900) {
-    document.querySelector('.rq-sidebar').classList.remove('mob-open');
-    const detail = document.getElementById('rq-detail');
-    if (detail) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Scroll detail panel content to top
+  const detail = document.getElementById('rq-detail');
+  if (detail) {
+    detail.scrollTop = 0;
+    // Mobile: collapse sidebar and scroll detail into viewport
+    if (window.innerWidth <= 900) {
+      document.querySelector('.rq-sidebar').classList.remove('mob-open');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 }
 
