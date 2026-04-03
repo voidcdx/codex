@@ -957,6 +957,16 @@
   .rq-mob-toggle {
     display: flex;
   }
+  .rq-controls {
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .rq-search-expand.open .rq-search-input {
+    width: 100px;
+  }
+  .rq-seg {
+    margin-left: 0;
+  }
   .rq-sidebar .rq-set-list {
     max-height: 0;
     overflow: hidden;
