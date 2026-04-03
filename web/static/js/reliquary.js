@@ -309,19 +309,25 @@ function toggleSearch() {
   if (isOpen) {
     input.focus();
   } else {
-    collapseSearch();
+    collapseSearch(true);
   }
 }
 
-function collapseSearch() {
+function collapseSearch(forceClear) {
   const wrap = document.getElementById('rq-search-wrap');
   const input = document.getElementById('rq-search');
-  wrap.classList.remove('open', 'has-value');
-  input.blur();
-  if (input.value) {
-    input.value = '';
-    searchQuery = '';
-    renderSidebar();
+  if (forceClear || !input.value) {
+    // No query or explicit clear — fully collapse
+    wrap.classList.remove('open', 'has-value');
+    input.blur();
+    if (input.value) {
+      input.value = '';
+      searchQuery = '';
+      renderSidebar();
+    }
+  } else {
+    // Has a query — keep the input open so filter persists
+    input.blur();
   }
 }
 
@@ -333,7 +339,7 @@ function onSearchInput(input) {
 }
 
 function clearSearch() {
-  collapseSearch();
+  collapseSearch(true);
 }
 
 function clearSelection() {
