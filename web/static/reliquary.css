@@ -295,7 +295,7 @@
   margin-bottom: 0;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 2px 16px var(--accent-a10);
+
 }
 /* Panel gradient lines — top + bottom */
 .rq-hero::before {
