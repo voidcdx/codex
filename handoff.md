@@ -1,128 +1,110 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**248 tests passing.** Full 6-step damage pipeline: weapon + mods + enemy → per-type damage breakdown + status procs (DoT + CC) + DPS. Warframe ability buffs (4 presets). Web UI fully functional: dark theme, mod card grid, special slots (stance/exilus), weapon images, riven mod builder, enemy level scaler, alchemy mixer, Kuva/Tenet bonus element selector, Galvanized Stacks, inline SVG damage type icons.
+**304 tests passing.** v0.8.0. Full damage pipeline, web UI, live tracker, reliquary.
 
-Branch: `claude/continue-handoff-aMsDx`
+**Branch:** `claude/continue-handoff-docs-YjbJQ`
 
 ---
 
 ## What Was Done This Session
 
-### 1. Mod grid — fix scroll on mobile (SortableJS)
-SortableJS was immediately capturing touch events on mod cards, blocking page scroll. Fixed by adding `delay: 150` + `delayOnTouchOnly: true` to the Sortable config. Desktop drag is instant; mobile requires a 150ms long-press before drag begins.
+### 1. Warframe Stats Pipeline
+- Downloaded `warframes_data.lua` + `companions_data.lua` from wiki
+- `scripts/parse_warframe_data.py` → `data/warframes.json` (59 Prime entries)
+  - 51 warframes, 1 archwing (Odonata Prime), 7 companions
+  - Stats: health, shield, armor, energy, sprint
+- `GET /api/warframes` endpoint + `_raw_warframes()` loader
+- Reliquary shows real stat bars for warframes (replaces placeholder dashes)
+- Sentinel stats still placeholder (companion data doesn't map to Reliquary sentinel type cleanly)
 
-### 2. Tighter text field sizing (desktop + mobile)
-Reduced padding and font sizes across all form inputs for a more compact UI:
-- Global inputs/selects: `padding 8px 10px → 5px 8px`, `font 13px → 12px`, margins reduced
-- Riven modal inputs: `height 36px → 30px`, `font 14px → 12px`
-- Mobile (≤768px): preserves `font-size: 16px !important` (iOS zoom prevention), adds tight padding override
-- Combobox dropdown items: padding reduced
+### 2. Mod Images
+- Downloaded 1,186 mod card PNGs → `web/static/images/mods/`
+- `image` field injected into `mods.json` (1,404 of 1,405 mods)
+- `scripts/fetch_mod_images.py` — Playwright batch downloader
+- 4 failed (exalted weapon stances — 404s, not needed)
 
-### 3. Weapon/enemy search — bare-bones rewrite
-Stripped the combobox of all overcomplicated machinery that caused bugs on mobile and desktop:
+### 3. Game Image Library (4,036 total)
+Downloaded 6 additional image categories via `scripts/fetch_images.py`:
 
-**Removed:**
-- Body portal (`document.body.appendChild`) + `position: fixed` + JS repositioning on every scroll/resize
-- `ignoreBlur` mousedown/mouseup hack
-- `tabindex` on every dropdown item (fought touch scrolling)
-- Arrow key navigation inside dropdown
-- `blur` timeout close
+| Category | Count | Folder |
+|---|---|---|
+| Mods | 1,196 | `images/mods/` |
+| Enemies | 899 | `images/enemies/` |
+| Resources | 871 | `images/resources/` |
+| Weapons | 619 | `images/weapons/` |
+| Abilities | 216 | `images/abilities/` |
+| Arcanes | 162 | `images/arcanes/` |
+| Warframes | 50 | `images/warframes/` |
+| Damage types | 12 | `images/damage_types/` |
+| Sentinels | 6 | `images/sentinels/` |
+| Relics | 5 | `images/relics/` |
 
-**Added/fixed:**
-- `position: absolute` inside `.combobox-wrap` — natural DOM positioning
-- `overscroll-behavior: contain` — dropdown scroll no longer bleeds to page
-- `-webkit-overflow-scrolling: touch` — iOS momentum scrolling
-- `mousedown` + `e.preventDefault()` for desktop selection (no blur)
-- Clean `touchend` handler for mobile item selection
-- Click-outside-to-close via single `mousedown` document listener
+Missing: Eterna + Vanguard relic icons (404 on wiki — too new)
 
-### 4. Dropdown z-index fix (behind tables)
-`.panel` uses `backdrop-filter` which creates a CSS stacking context, trapping the dropdown's z-index. Fix: when a dropdown opens, its parent `.panel` gets `.combobox-open` class (`z-index: 50; position: relative`) to lift it above sibling panels. Removed on close.
-
-### 5. Dropdown collapses on touch scroll — fixed
-`document.addEventListener('touchstart', ...)` was firing when scrolling inside the dropdown, closing it. Removed the touchstart close listener entirely. Mobile close now relies on tapping outside (mousedown fires on mobile too after touch).
-
-### 6. Search UX — clear on click, persist stats
-Two UX improvements to the search flow:
-- **Click-to-clear:** Focusing the search input now clears the text and opens the full dropdown immediately. No need to manually delete the name or click X first.
-- **Persist stats:** Clicking X or abandoning a search no longer wipes the stats panel. Stats remain visible showing the last confirmed selection until a new one is committed. Achieved via `_confirmed` variable inside `setupCombobox` — restored to input on close-without-commit (Escape or click-outside).
+### 4. Misc
+- Warframe images moved to right side in Reliquary (matching weapons)
+- Verified "27 placeholder weapons" — actually correct wiki data (equal IPS splits confirmed)
+- Version bumped to 0.8.0
 
 ---
 
-## Architecture Quick Reference
-
-### Damage Pipeline (6 Steps)
+## Key Files Changed
 ```
-1. Base Damage × (1 + ΣDamageMods)         → Modded Base   [floor]
-2. Modded Base × Body Part × Crit           → Part Damage   [round nearest]
-3. Part Damage × Faction Type Effectiveness  → Typed Damage   [floor]
-4. Typed Damage × Armor Mitigation          → Mitigated     [floor]
-5. Mitigated × (1 + FactionMod + Roar)      → Final         [floor]
-5.5. Final × Eclipse multiplier             → Buffed Final   [floor]
-6. Buffed Final × Viral stacks              → Viral Damage   [floor]
+src/version.py                    # 0.7.0 → 0.8.0
+src/loader.py                     # + _raw_warframes()
+web/api.py                        # + GET /api/warframes
+web/static/js/reliquary.js        # real warframe stats, images right side
+data/warframes.json               # 59 Prime entries (new)
+data/mods.json                    # + image field on 1404 mods
+data/warframes_data.lua           # raw wiki source (new)
+data/companions_data.lua          # raw wiki source (new)
+data/arcanes_data.lua             # raw wiki source (new)
+data/resources_data.lua           # raw wiki source (new)
+data/manifest_*.json              # 6 download manifests (new)
+scripts/parse_warframe_data.py    # warframes + archwings + companions parser (new)
+scripts/fetch_mod_images.py       # mod image downloader (new)
+scripts/fetch_images.py           # universal batch image downloader (new)
+scripts/parse_wiki_data.py        # + image field in _parse_mod()
 ```
 
-### Key Files
-| File | Purpose |
-|------|---------|
-| `src/calculator.py` | 6-step pipeline + crit + armor + faction + Viral + procs |
-| `src/loader.py` | JSON → Weapon/Mod/Enemy; case-insensitive; attack selection |
-| `src/buffs.py` | 4 buff presets (Roar, Eclipse, Xata's Whisper, Nourish) |
-| `src/models.py` | Weapon, WeaponAttack, Mod, Enemy, Buff, DamageComponent |
-| `src/scaling.py` | Enemy level scaling per faction |
-| `src/combiner.py` | Elemental combination by mod slot order |
-| `src/quantizer.py` | quantize() — Decimal + ROUND_HALF_UP |
-| `web/api.py` | FastAPI endpoints |
-| `web/static/index.html` | SPA — all JS inline |
-| `web/static/style.css` | Dark theme styles |
-| `__main__.py` | CLI interface |
+---
 
-### Data Files
-| File | Records |
-|------|---------|
-| `data/weapons.json` | 588 weapons |
-| `data/mods.json` | 1,405 mods |
-| `data/enemies.json` | 983 enemies |
-
-### Combobox Architecture (post-rewrite)
-`setupCombobox(inputId, dropdownId, items, onSelect, getImageUrl)` in `index.html`:
-- Dropdown is `position: absolute` inside `.combobox-wrap` — **no portal**
-- `_confirmed` tracks last committed name; restored to input on abandon
-- `.panel.combobox-open` lifts parent panel z-index when open
-- `overscroll-behavior: contain` on `.combobox-dropdown` prevents scroll bleed
-- Selection: `mousedown` (desktop) + `touchend` (mobile), both with `e.preventDefault()`
-- Close: `mousedown` outside only (no touchstart — it caused scroll collapse)
-- X button dispatches `combobox-clear` custom event to reset `_confirmed` without calling `onSelect`
+## Pending / Known Issues
+- **URL state / sharing** — not started
+- **Eterna + Vanguard relic icons** — wiki 404s, check back later
+- **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification (Carapace/Cerebrum parts) doesn't map to companion names automatically
 
 ---
 
-## Known Gaps / TODO
-
-### Not yet implemented
-- **Weapon Arcanes** — Deadhead, Merciless, Cascadia Flare. Stack-based bonuses not modelled.
-- **Kill Time (TTK)** — Shots and seconds to kill at given enemy level.
-- **Build saving / URL sharing** — Encode build state in URL params.
-- **Mod optimizer** — Find highest-DPS mod combination for target faction/enemy.
-- **Side-by-side comparison** — Two builds, DPS/TTK columns next to each other.
-
-### Partially wired
-- **Condition Overload** — `condition_overload_bonus` parsed and stored on Mod. Calculator uses `unique_statuses` parameter. API/CLI don't pass actual unique status counts from UI — caller-side wiring missing.
-
-### Design unsettled
-- **Header / Branding** — Current plain header works but user wants something better. Previous attempts (SVG wings, hero banner) all removed. Needs mobile-first design (≤375px).
-- **Combobox styling** — Intentionally stripped bare this session. Ready to be restyled (border, hover states, shadow, etc.) now that the core mechanics are stable.
-
----
-
-## Scripts (run order after rescrape)
+## Image Download Workflow
 ```bash
-python scripts/parse_wiki_data.py      # rebuild weapons.json + mods.json from raw
-python scripts/fix_secondary_stats.py  # backfill 109 secondary stat fields
-python scripts/fix_galv_stats.py       # restore 10 galvanized mod fields
+# On Windows (wiki blocks automated fetch from sandbox):
+python scripts/fetch_images.py                        # all categories
+python scripts/fetch_images.py --category arcanes     # single category
+python scripts/fetch_images.py --resume               # skip existing
+python scripts/fetch_mod_images.py --resume            # mods only
 ```
 
-## Tests
+Manifests in `data/manifest_*.json` map names → wiki filenames.
+Wiki URL pattern: `https://wiki.warframe.com/w/Special:Redirect/file/{filename}`
+
+## Data Refresh Workflow
 ```bash
-pytest   # 248 passing — run before every commit
+# On Windows (Playwright):
+python scripts/fetch_wiki_playwright.py               # downloads .lua files
+
+# Then parse:
+python scripts/parse_lua.py                           # → weapons_raw.json, mods_raw.json
+python scripts/parse_wiki_data.py                     # → weapons.json, mods.json, enemies.json
+python scripts/parse_warframe_data.py                 # → warframes.json
+python scripts/parse_relic_data.py                    # → relics.json
+pytest                                                # verify
 ```
+
+## Design Decisions Log
+- Warframe/sentinel images on RIGHT side (same as weapons, tilted -8deg)
+- Real stat bars for warframes, placeholders for sentinels until data mapping solved
+- Equal IPS splits are valid wiki data — not placeholders
+- Mod images not yet wired into UI — ready for mod picker redesign
+- All other downloaded images (enemies, arcanes, abilities, resources, damage types, relics) stored for future use
