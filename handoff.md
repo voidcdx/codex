@@ -4,138 +4,118 @@
 **304 tests passing.** Full 6-step damage pipeline, web UI fully functional.
 
 **Version:** `0.7.0`
-**Branch:** `claude/review-handoff-notes-lvohz`
+**Branch:** `claude/review-handoff-notes-fhPol`
 
 ---
 
 ## What Was Done This Session
 
-### 1. Drop Tables Auto-Refresh
-Automated the `drops.html` refresh that was previously manual.
+### Reliquary Page — Major UI Overhaul
 
-**How it works:**
-- `_drops_bg_loop()` in `web/api.py` fetches drop tables from the official CDN every 7 days
-- CDN URL: `warframe-web-assets.nyc3.cdn.digitaloceanspaces.com/uploads/cms/hnfvc0o3jnfvc873njb03enrf56.html`
-- `_fetch_drops()`: 3 retries, 2s backoff, 30s timeout; falls back to disk `drops.json`
-- `parse_mission_rewards()` in `scripts/parse_drops.py` now accepts `Path | str` — server passes HTML string directly
-- `sys.exit()` calls replaced with `raise ValueError()` for clean server error handling
-- `POST /api/refresh-drops` — manual trigger for on-demand refresh after game updates
-- `GET /api/drops` serves from in-memory cache, falls back to disk if cache not populated
-- Lifespan manages both worldstate and drops background tasks
+Continued from previous session's Prime Sets browser. This session focused entirely on visual polish and UX improvements.
 
-### 2. Reliquary Prime Sets Pivot (IN PROGRESS)
-Pivoted the Reliquary page from flat relic grid to goal-oriented Prime Sets browser.
+#### 1. Font Size Overhaul
+All component section fonts were too small (0.5–0.65rem). Bumped across the board:
+- Component name: 0.65→0.8rem, relic count: 0.5→0.7rem
+- Relic name: 0.8→0.88rem, tier badge: 0.55→0.67rem
+- Inline location: 0.72→0.82rem, inline chance: 0.55→0.72rem
+- Drop rows, missions, rotations, chances all bumped proportionally
 
-**Architecture:**
-- Two-panel layout: 260px sidebar + detail panel (`.reliquary-wrap` CSS grid)
-- Data derived **client-side** from `/api/relics` — no new endpoint
-- `buildPrimeSets(relics)`: filters unvaulted, groups by `item` name → parts → relics
-- 42 unvaulted prime sets: 11 warframes (4 parts each), 31 weapons (2-5 parts each)
-- Classification: warframe if parts include Neuroptics/Chassis/Systems, else weapon
+#### 2. Hero Card Redesign
+- Removed solid black `--bg` background → transparent (blends with content area)
+- Removed border, removed top crimson accent line (violates CLAUDE.md rules)
+- Removed box-shadow glow (user rejected it)
+- No panel gradient lines on hero — it's seamless with content area
+- Divider above "Components" label uses centered gradient line (`--panel-line-top`)
 
-**UI flow:**
-1. Sidebar: search + category tabs (All/Warframes/Weapons) + scrollable set list
-2. Click a set → detail panel shows parts as cards (roster-entry style)
-3. Click a part → relic drill-down shows relics with tier badges + top 5 drop locations
+#### 3. Panel Gradient Lines
+- Added **top** gradient line to sidebar and detail panels (was bottom-only)
+- All separators use brighter `--panel-line-top` instead of dim `--panel-line-bottom`
 
-**Current state — NEEDS DESIGN WORK:**
-- The page is **functionally complete** but visually needs polish
-- User feedback: "dead flat design", "AI slop" — multiple CSS passes attempted
-- Latest version uses `--accent-a*` vars, sidebar has `background: var(--surface)`, part cards have `::before` gradient bleed + `::after` panel line
-- Still needs iteration to match the visual quality of the factions/calculator pages
-- **The user should screenshot and iterate live** — blind CSS iteration doesn't work well
+#### 4. Components Section — Inline Expanded Design
+- **Old design**: clickable part cards that expand a separate relic section below hero
+- **New design**: each component shows as a labeled section (`.rq-comp`) with all relics inline
+- All relic drop locations are **always expanded** — no click needed
+- Removed `toggleRelic()` function entirely
+- Relic rows are `<div>` not `<button>` (non-interactive header)
+- Component titles are rounded pills (`border-radius: 14px`, accent bg)
+- Relic name rows are rounded pills (`border-radius: 14px`)
+- Vertical left line: centered gradient (`transparent → --panel-line-top → transparent`)
+- Horizontal separators between components: centered gradient via `::before` on `.rq-comp + .rq-comp`
 
-**Mobile:** Stacks vertically — sidebar on top (max-height 35vh), detail below. Set click scrolls to detail.
+#### 5. Baro Ki'Teer Sorting
+- `buildPrimeSets()` tracks `is_baro` flag from relic data
+- Sets where ALL relics are baro-exclusive get `set.baro = true`
+- Baro sets sort to bottom of sidebar list
+- Gold "BARO" tag badge next to set name, slightly dimmed (`opacity: 0.7`)
+- Baro relics with no mission drops show italic dim note: "Available from Baro Ki'Teer's Void Trader rotation — inventory changes each visit and this relic is not guaranteed to appear."
+- Module-level `baroRelicNames` Set for use in `renderDropList()`
+
+#### 6. Mobile Collapsible Sidebar
+- On ≤900px, set list and goals are **collapsed by default**
+- Controls bar shows "N sets" toggle button with chevron
+- Tap to expand (max-height 40vh with slide transition)
+- Selecting a set auto-collapses sidebar and scrolls to detail
+- `toggleMobileList()`, `updateMobCount()` functions added
+- Toggle button is a rounded pill matching other controls
 
 ---
 
 ## Key Files Changed This Session
 ```
-scripts/parse_drops.py           # accepts Path | str; ValueError instead of sys.exit
-web/api.py                       # _drops_bg_loop, _fetch_drops, POST /api/refresh-drops
-                                 #   _lifespan manages both ws + drops tasks
-web/static/reliquary.html        # two-panel layout: .rq-sidebar + .rq-detail
-web/static/reliquary.css         # sidebar, part cards, relic drill-down, tier badges
-web/static/js/reliquary.js       # buildPrimeSets, selectSet, selectPart, renderDetail
+web/static/reliquary.css         # hero, components, gradients, mobile collapse, baro styles
+web/static/js/reliquary.js       # inline expanded components, baro sorting, mobile toggle
+web/static/reliquary.html        # mobile toggle button in controls bar
 ```
 
 ---
 
 ## Pending / Known Issues
-- **Reliquary visual polish** — functional but user unhappy with the design. Needs live iteration with screenshots. The structure/layout is correct; it's the surface treatment, depth, and visual weight that need work.
+- **Controls bar styling** — user wanted it rounded but reverted the attempt. Needs careful re-approach — don't wrap in a pill, find subtler treatment.
+- **Warframe images** — weapons wired into hero card, warframes still pending.
 - **27 placeholder weapons** — fake IPS values in `data/weapons.json`.
 - **URL state / sharing** — high-value missing feature (no work started).
-- **Chrome mobile toolbar collapse** — different browser behavior, not fixable.
 
 ---
 
-## Reliquary Prime Sets — Architecture
-
+## Reliquary Component Architecture
 ```
-/api/relics (all 732) → JS filter (vaulted=false) → buildPrimeSets()
-                                                         ↓
-                                               allSets: {
-                                                 "Saryn Prime": {
-                                                   type: "warframe",
-                                                   parts: {
-                                                     "Blueprint": [{ relic, tier, rarity }],
-                                                     "Neuroptics Blueprint": [...],
-                                                     ...
-                                                   }
-                                                 }
-                                               }
-                                                         ↓
-                                         renderSidebar() ← search + tab filter
-                                               ↓ click
-                                         renderDetail() → parts grid
-                                               ↓ click part
-                                         renderRelicSection() → relics + dropsMap lookup
+.rq-comp-grid (flex column, gap 0)
+  .rq-comp + .rq-comp::before (gradient separator)
+  .rq-comp (vertical gradient left border)
+    .rq-comp-header (rounded pill: name + count)
+    .rq-comp-relics (flex column)
+      .rq-comp-relic.open (always open)
+        .rq-comp-relic-row (rounded pill: tier badge + name + rarity)
+        .rq-drop-list (top 5 locations) OR .rq-baro-note (Void Trader message)
 ```
 
-## Drops Auto-Refresh — Architecture
-
+## Reliquary State (reliquary.js)
 ```
-Server startup → _drops_bg_loop() (asyncio task)
-                       ↓
-              _fetch_drops() — GET CDN HTML
-                       ↓
-              parse_mission_rewards(html_string) — in-memory parse
-                       ↓
-              _drops_cache = parsed dict (served by GET /api/drops)
-                       ↓
-              sleep 7 days → repeat
-
-Manual trigger: POST /api/refresh-drops → _fetch_drops() → update cache
-Fallback: disk data/drops.json via _raw_drops() from src/loader.py
-```
-
----
-
-## Mobile Architecture (≤900px)
-```
-window scrolls (body/html: overflow:visible, height:auto)
-  └── .app (height:auto)
-        └── .main (overflow:visible, height:auto)
-              ├── .header (in-flow, scrolls away)
-              └── .content / .live-wrap / .factions-wrap (overflow:visible)
-
-position:fixed elements (always visible):
-  .burger-btn    top-right, z-index:200
-  .back-to-top   bottom-right, z-index:199
-  .sidebar       full-height drawer, z-index:100
+allSets         — { "Saryn Prime": { type, baro, parts: { partName: [{ relic, tier, rarity }] } } }
+dropsMap        — { "Lith S1": [{ location, mission_type, rotation, rarity, chance }] }
+baroRelicNames  — Set of relic names that are baro-exclusive
+weaponImages    — { "Braton Prime": "BratonPrime.png" }
+weaponStats     — { "Braton Prime": { slot, class, crit_chance, … } }
+wishlist        — Set of set names (localStorage 'rq-wishlist')
+activeTab       — 'all' | 'warframes' | 'weapons'
+searchQuery     — current search string
+selectedSet     — currently selected set name
+selectedPart    — unused (was for toggle, kept for compat)
 ```
 
 ---
 
 ## CSS File Map
 ```
-web/static/base.css        # :root — all CSS variables (--accent-a* for visible tints on dark bg)
+web/static/base.css        # :root — all CSS variables, theme overrides
 web/static/layout.css      # shared layout, header, sidebar, burger, back-to-top
-web/static/panels.css      # .panel, input[type=text] scoped to .panel
-web/static/factions.css    # .roster-entry pattern (THE reference for list-style components)
-web/static/reliquary.css   # .rq-sidebar, .rq-set-item, .rq-part-card, .rq-relic-row
-web/static/js/reliquary.js # prime sets state + rendering
-web/static/js/theme.js     # theme switcher + positionBackToTop() (loaded on ALL pages)
+web/static/panels.css      # .panel, .panel::before gradient lines
+web/static/factions.css    # .roster-entry pattern (reference for list components)
+web/static/reliquary.css   # .rq-sidebar, .rq-comp-*, .rq-hero, mobile collapse
+web/static/live.css        # live page, news/events, nightwave
+web/static/js/reliquary.js # prime sets state + rendering + baro + mobile
+web/static/js/theme.js     # theme switcher + positionBackToTop()
 ```
 
 ---
@@ -147,14 +127,9 @@ jade     body.theme-jade        bg: #080808   surface: rgba(10,18,16,0.85)   acc
 ash      body.theme-ash         bg: #080808   surface: rgba(16,16,16,0.85)   accent: #466482 → #7393b3
 ```
 
----
-
-## Design System Notes for Next Session
-- **Use `--accent-a*` vars** (defined in base.css) for tints on dark bg — `color-mix()` is invisible at low %
-- **Reference: factions.css `.roster-entry`** — the gold standard for list components (left accent bar, `::before` gradient, glass surface)
-- **Surface contrast**: `--surface` (#121212) vs `--bg` (#0a0a0a) is only 7% brightness diff — panels need explicit background to be visible
-- **Font scale**: 0.55–0.85rem for Orbitron display, all uppercase, 0.08–0.2em letter-spacing
-
-## Git Notes
-- Working branch: `claude/review-handoff-notes-lvohz`
-- `&&` not supported in Windows PowerShell — run git commands separately
+## Design Decisions Log
+- User prefers rounded pills (14px border-radius) for component headers and relic rows
+- User rejected: box-shadow glow on hero, yellow/gold text for baro notes, pill-shaped controls bar wrapper
+- All data should be visible by default — no click-to-expand patterns
+- Baro sets are second-class citizens (dimmed, sorted to bottom)
+- Font: Exo 2 for display (replaced Orbitron across all pages)
