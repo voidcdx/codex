@@ -45,11 +45,13 @@ async function loadData() {
 
 function buildPrimeSets(relics) {
   const sets = {};
+  // Track which relics are baro-only
+  const baroRelics = new Set(relics.filter(r => r.is_baro).map(r => r.name));
   for (const relic of relics) {
     if (relic.vaulted) continue;
     for (const rw of relic.rewards) {
       if (!rw.item.includes('Prime') || !rw.part) continue;
-      if (!sets[rw.item]) sets[rw.item] = { parts: {} };
+      if (!sets[rw.item]) sets[rw.item] = { parts: {}, baro: false };
       if (!sets[rw.item].parts[rw.part]) sets[rw.item].parts[rw.part] = [];
       sets[rw.item].parts[rw.part].push({
         relic: relic.name,
@@ -58,12 +60,15 @@ function buildPrimeSets(relics) {
       });
     }
   }
-  // Classify warframe vs weapon
+  // Classify warframe vs weapon; flag baro-only sets
   for (const [name, set] of Object.entries(sets)) {
     const pn = Object.keys(set.parts);
     set.type = pn.some(p =>
       p.includes('Neuroptics') || p.includes('Chassis') || p.includes('Systems')
     ) ? 'warframe' : 'weapon';
+    // A set is baro-only if ALL its relics come from baro
+    const allRelics = Object.values(set.parts).flat().map(r => r.relic);
+    set.baro = allRelics.length > 0 && allRelics.every(r => baroRelics.has(r));
   }
   return sets;
 }
@@ -222,7 +227,11 @@ function getFilteredSets() {
       if (q && !name.toLowerCase().includes(q)) return false;
       return true;
     })
-    .sort((a, b) => a[0].localeCompare(b[0]));
+    .sort((a, b) => {
+      // Baro-only sets sort to the bottom
+      if (a[1].baro !== b[1].baro) return a[1].baro ? 1 : -1;
+      return a[0].localeCompare(b[0]);
+    });
 }
 
 function updateMobCount() {
@@ -256,8 +265,10 @@ function renderSidebar() {
     const inWl = wishlist.has(name);
     const wlClass = inWl ? ' rq-wl-active' : '';
     const wlIcon = inWl ? '−' : '+';
-    return `<button class="rq-set-item${active}${typeClass}" data-set="${esc(name)}" onclick="selectSet('${esc(name)}')">
-      <span class="rq-set-name">${highlight(displayName(name), q)}</span>
+    const baroClass = set.baro ? ' rq-set-baro' : '';
+    const baroTag = set.baro ? '<span class="rq-baro-tag">BARO</span>' : '';
+    return `<button class="rq-set-item${active}${typeClass}${baroClass}" data-set="${esc(name)}" onclick="selectSet('${esc(name)}')">
+      <span class="rq-set-name">${highlight(displayName(name), q)}${baroTag}</span>
       <span class="rq-set-count">${partCount}</span>
       <span class="rq-wl-btn${wlClass}" onclick="toggleWishlist('${esc(name)}', event)" title="${inWl ? 'Remove from goals' : 'Add to goals'}" aria-label="${inWl ? 'Remove from goals' : 'Add to goals'}">${wlIcon}</span>
     </button>`;
