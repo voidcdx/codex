@@ -114,17 +114,19 @@ web/
                    #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/reliquary.html # Reliquary page — Prime Sets browser at /reliquary
                    #   Two-panel layout: .reliquary-wrap (grid: 260px sidebar + 1fr detail)
-                   #   Left .rq-sidebar: mobile toggle (N sets + chevron) + search + seg toggle + set list
-                   #   Right .rq-detail: hero card (weapon stats + image) + inline expanded components
+                   #   Left .rq-sidebar: search + seg toggle (Warframes/Weapons) + set list
+                   #   Right .rq-detail: hero card (weapon/warframe/sentinel image + stats) + inline expanded components
                    #   Data derived client-side from /api/relics + /api/drops + /api/weapons — no new endpoint
                    #   Baro-only sets sorted to bottom with gold BARO tag badge
-                   #   Mobile ≤900px: sidebar collapses to controls bar only; tap toggle to expand set list (40vh)
+                   #   Set types: 'warframe' (Neuroptics/Chassis/Systems), 'sentinel' (Carapace/Cerebrum), 'weapon' (default)
+                   #   Mobile ≤900px: set list always visible (no collapse), search shrinks to 100px
   static/reliquary.css  # Reliquary styles — glassmorphism panels, hero card, inline components
                    #   .rq-sidebar, .rq-detail: glass surface + top/bottom gradient lines
                    #   .rq-hero: transparent bg, no border/lines — blends with content area
+                   #   .rq-hero-img: 256px (180px mobile), radial gradient fade, object-fit contain, no opacity
                    #   .rq-comp-*: inline expanded components with rounded pill headers + relic rows (14px radius)
                    #   Vertical gradient left border, horizontal gradient separators between components
-                   #   .rq-mob-toggle: collapsible sidebar on mobile; .rq-baro-tag: gold badge
+                   #   .rq-baro-tag: gold badge; .rq-seg: 22px height matched to search field
                    #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard
                    #   Drop rows: grid (1fr auto auto auto); baro note: italic dim text
   static/live.css  # Live page styles — invasion .reward-chip colored by data-faction attr (Grineer/Corpus/Infested/other)
@@ -153,11 +155,13 @@ web/
     reliquary.js   # Prime Sets browser — buildPrimeSets(), selectSet(), renderDetail()
                    #   State: allSets, dropsMap, baroRelicNames, weaponImages, weaponStats, wishlist, activeTab, searchQuery, selectedSet
                    #   buildPrimeSets(relics): groups unvaulted relic rewards by item→parts→relics; flags baro-only sets
+                   #     Type classification: sentinel (Carapace/Cerebrum), warframe (Neuroptics/Chassis/Systems), weapon (default)
                    #   renderSidebar(): filtered/searched set list; baro sets sorted to bottom with BARO tag
-                   #   renderDetail(): hero card with weapon stats + inline expanded components (all drops visible)
+                   #   renderDetail(): hero card with weapon/warframe/sentinel image + stats + inline components
+                   #     Images: weapons from weaponImages map, warframes/sentinels by convention (Name-Prime.png)
                    #   renderDropList(relicName): top 5 drop locations; baro relics get Void Trader note
                    #   Wishlist: toggleWishlist(), removeGoal(), getGoalRelics(), calcBestMissions(), renderGoals()
-                   #   Mobile: toggleMobileList(), updateMobCount() — collapsible sidebar on ≤900px
+                   #   Search: collapseSearch(forceClear) — click-away preserves query, X button clears
     enemy.js       # enemy panel, level scaling, Steel Path, Eximus
     modals.js      # Alchemy Guide, Riven Builder, Guide, Buffs
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
@@ -169,6 +173,10 @@ web/
                    #   THEME_NAMES = ['stalker','jade','ash']; default = 'stalker' (no body class)
                    #   positionBackToTop(btn): reads sidebar.getBoundingClientRect().left, sets btn.style.right dynamically
                    #     handles .app max-width:1440px centering at any viewport width; also fires on resize
+  static/images/
+    weapons/       # 619 weapon PNGs — filenames from weapons.json `image` field
+    warframes/     # 50 warframe PNGs — convention: Name-Prime.png (spaces→hyphens)
+    sentinels/     # 6 sentinel PNGs — convention: Name-Prime.png (spaces→hyphens)
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
