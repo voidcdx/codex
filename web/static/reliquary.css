@@ -702,6 +702,14 @@
   text-transform: uppercase;
   border-top: 1px solid var(--border);
 }
+.rq-baro-note {
+  color: #fbbf24;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
 
 /* Drop rows */
 .drop-row {

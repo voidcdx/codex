@@ -4,6 +4,7 @@ let allSets    = {};    // { "Saryn Prime": { type, parts: { "Neuroptics Bluepri
 let dropsMap   = {};    // from /api/drops
 let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
 let weaponStats  = {};  // { "Braton Prime": { slot, class, crit_chance, … }, … }
+let baroRelicNames = new Set();
 let activeTab  = 'all'; // 'all' | 'warframes' | 'weapons'
 let searchQuery = '';
 let selectedSet  = null;
@@ -46,7 +47,8 @@ async function loadData() {
 function buildPrimeSets(relics) {
   const sets = {};
   // Track which relics are baro-only
-  const baroRelics = new Set(relics.filter(r => r.is_baro).map(r => r.name));
+  baroRelicNames = new Set(relics.filter(r => r.is_baro).map(r => r.name));
+  const baroRelics = baroRelicNames;
   for (const relic of relics) {
     if (relic.vaulted) continue;
     for (const rw of relic.rewards) {
@@ -480,7 +482,12 @@ function getBestRarity(relics) {
 function renderDropList(relicName) {
   const drops = dropsMap[relicName] || [];
   const top5 = [...drops].sort((a, b) => b.chance - a.chance).slice(0, 5);
-  if (top5.length === 0) return '<div class="rq-no-drops">No drop locations found</div>';
+  if (top5.length === 0) {
+    if (baroRelicNames.has(relicName)) {
+      return '<div class="rq-no-drops rq-baro-note">Available from Baro Ki\'Teer\'s Void Trader rotation — inventory changes each visit and this relic is not guaranteed to appear.</div>';
+    }
+    return '<div class="rq-no-drops">No drop locations found</div>';
+  }
   return `<div class="rq-drop-list">
     ${top5.map(d => {
       const rot = d.rotation
