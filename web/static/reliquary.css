@@ -285,7 +285,9 @@
 
 /* ── Hero card ─────────────────────────────────────────── */
 .rq-hero {
-  background: var(--bg);
+  background: var(--surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px;
@@ -293,24 +295,16 @@
   position: relative;
   overflow: hidden;
 }
-/* Top accent line */
+/* Panel gradient lines — matches .panel::before */
 .rq-hero::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, transparent 0%, var(--panel-line-bottom) 50%, transparent 100%) bottom / 100% 1px no-repeat;
   pointer-events: none;
   z-index: 1;
-}
-/* Bottom panel line */
-.rq-hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--panel-line-bottom), transparent);
-  pointer-events: none;
 }
 
 /* Weapon image — floated right, fades into bg */
