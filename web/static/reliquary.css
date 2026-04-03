@@ -332,11 +332,11 @@
   z-index: 1;
   max-width: 60%;
 }
-/* Image — default right (weapons) */
+/* Image — default right (weapons) — tilted for dynamic feel */
 .rq-detail-img {
   position: absolute;
   right: 10px;
-  top: -20px;
+  top: -30px;
   width: 240px;
   height: 240px;
   pointer-events: none;
@@ -344,13 +344,13 @@
   filter: brightness(1.2) drop-shadow(0 6px 12px rgba(0,0,0,0.5));
   mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
+  transform: rotate(-8deg);
 }
-/* Warframes/sentinels — image left, bottom fades a bit more */
+/* Warframes/sentinels — image left, upright */
 .rq-img-left .rq-detail-img {
   right: auto;
   left: 10px;
-  mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
+  transform: none;
 }
 .rq-img-left .rq-detail-info {
   margin-left: auto;
