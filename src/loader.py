@@ -137,6 +137,14 @@ def _raw_enemies() -> dict[str, Any]:
 
 
 @lru_cache(maxsize=1)
+def _raw_warframes() -> dict:
+    path = DATA_DIR / "warframes.json"
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=1)
 def _raw_relics() -> list[dict]:
     path = DATA_DIR / "relics.json"
     if not path.exists():

@@ -4,6 +4,7 @@ let allSets    = {};    // { "Saryn Prime": { type, parts: { "Neuroptics Bluepri
 let dropsMap   = {};    // from /api/drops
 let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
 let weaponStats  = {};  // { "Braton Prime": { slot, class, crit_chance, … }, … }
+let warframeStats = {}; // { "Ash Prime": { health, shield, armor, energy, sprint }, … }
 
 // Permanently unvaulted sets — always available via Railjack derelict caches
 const EVERGREEN_SETS = new Set([
@@ -27,10 +28,11 @@ let wishlist = new Set(JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]'));
 // ---------------------------------------------------------------------------
 async function loadData() {
   try {
-    const [relicsResp, dropsResp, weaponsResp] = await Promise.all([
+    const [relicsResp, dropsResp, weaponsResp, warframesResp] = await Promise.all([
       fetch('/api/relics'),
       fetch('/api/drops'),
       fetch('/api/weapons'),
+      fetch('/api/warframes'),
     ]);
     const relics = await relicsResp.json();
     try { dropsMap = await dropsResp.json(); } catch { dropsMap = {}; }
@@ -43,6 +45,7 @@ async function loadData() {
         }
       }
     } catch {}
+    try { warframeStats = await warframesResp.json(); } catch { warframeStats = {}; }
     allSets = buildPrimeSets(relics);
     renderGoals();
     renderSidebar();
@@ -416,18 +419,39 @@ function renderDetail() {
     const parts = [ws.slot, ws.class, ws.trigger].filter(Boolean);
     subInfo = `<div class="rq-hero-sub">${parts.map(p => esc(p)).join(' · ')}</div>`;
   } else if (set.type === 'warframe' || set.type === 'sentinel') {
-    const placeholderStats = set.type === 'warframe'
-      ? ['HEALTH', 'SHIELDS', 'ARMOR', 'ENERGY', 'SPRINT']
-      : ['HEALTH', 'SHIELDS', 'ARMOR'];
-    statsHtml = `<div class="rq-stat-grid">${placeholderStats.map(label =>
-      `<div class="rq-stat-item">
-        <div class="rq-stat-top">
-          <span class="rq-stat-label">${label}</span>
-          <span class="rq-stat-value rq-stat-pending">—</span>
-        </div>
-        <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:0%"></div></div>
-      </div>`
-    ).join('')}</div>`;
+    const wf = warframeStats[selectedSet];
+    if (wf) {
+      const stats = [
+        { label: 'HEALTH',  value: wf.health,  bar: Math.min(wf.health / 1000, 1),  color: 'var(--accent2)' },
+        { label: 'SHIELDS', value: wf.shield,   bar: Math.min(wf.shield / 1000, 1),  color: 'var(--rarity-rare)' },
+        { label: 'ARMOR',   value: wf.armor,    bar: Math.min(wf.armor / 600, 1),    color: 'var(--tier-axi)' },
+        { label: 'ENERGY',  value: wf.energy,   bar: Math.min(wf.energy / 300, 1),   color: 'var(--tier-meso)' },
+        { label: 'SPRINT',  value: wf.sprint,   bar: Math.min(wf.sprint / 1.5, 1),   color: 'var(--tier-neo)' },
+      ];
+      statsHtml = `<div class="rq-stat-grid">${stats.map(s => {
+        const pct = Math.round(s.bar * 100);
+        return `<div class="rq-stat-item">
+          <div class="rq-stat-top">
+            <span class="rq-stat-label">${s.label}</span>
+            <span class="rq-stat-value" style="color:${s.color}">${s.value}</span>
+          </div>
+          <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:${pct}%;background:${s.color}"></div></div>
+        </div>`;
+      }).join('')}</div>`;
+    } else {
+      const placeholderStats = set.type === 'warframe'
+        ? ['HEALTH', 'SHIELDS', 'ARMOR', 'ENERGY', 'SPRINT']
+        : ['HEALTH', 'SHIELDS', 'ARMOR'];
+      statsHtml = `<div class="rq-stat-grid">${placeholderStats.map(label =>
+        `<div class="rq-stat-item">
+          <div class="rq-stat-top">
+            <span class="rq-stat-label">${label}</span>
+            <span class="rq-stat-value rq-stat-pending">—</span>
+          </div>
+          <div class="rq-stat-bar"><div class="rq-stat-fill" style="width:0%"></div></div>
+        </div>`
+      ).join('')}</div>`;
+    }
   }
 
   // Components — each part shows its relics inline
