@@ -461,7 +461,7 @@ function renderDetail() {
           </div>
           <h2 class="rq-hero-title">${esc(displayName(selectedSet))}</h2>
           ${subInfo}
-          ${EVERGREEN_SETS.has(selectedSet) ? '<div class="rq-evergreen-note">Always available — never vaulted</div>' : ''}
+          ${EVERGREEN_SETS.has(selectedSet) ? '<div class="rq-evergreen-note">Permanent</div>' : ''}
         </div>
       </div>
       ${statsHtml}
