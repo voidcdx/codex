@@ -957,15 +957,16 @@
   .rq-mob-toggle {
     display: flex;
   }
-  .rq-controls {
-    flex-wrap: wrap;
-    gap: 6px 8px;
+  .rq-search-expand {
+    min-width: 0;
+    flex-shrink: 1;
   }
   .rq-search-expand.open .rq-search-input {
     width: 100px;
   }
-  .rq-seg {
-    margin-left: 0;
+  .rq-seg-btn {
+    padding: 4px 8px;
+    font-size: 0.72rem;
   }
   .rq-sidebar .rq-set-list {
     max-height: 0;
