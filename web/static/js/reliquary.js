@@ -65,9 +65,10 @@ function buildPrimeSets(relics) {
   // Classify warframe vs weapon; flag baro-only sets
   for (const [name, set] of Object.entries(sets)) {
     const pn = Object.keys(set.parts);
-    set.type = pn.some(p =>
-      p.includes('Neuroptics') || p.includes('Chassis') || p.includes('Systems')
-    ) ? 'warframe' : 'weapon';
+    const isSentinel = pn.some(p => p.includes('Carapace') || p.includes('Cerebrum'));
+    set.type = isSentinel ? 'sentinel'
+      : pn.some(p => p.includes('Neuroptics') || p.includes('Chassis') || p.includes('Systems'))
+        ? 'warframe' : 'weapon';
     // A set is baro-only if ALL its relics come from baro
     const allRelics = Object.values(set.parts).flat().map(r => r.relic);
     set.baro = allRelics.length > 0 && allRelics.every(r => baroRelics.has(r));
@@ -224,7 +225,7 @@ function getFilteredSets() {
   const q = searchQuery.trim().toLowerCase();
   return Object.entries(allSets)
     .filter(([name, set]) => {
-      if (activeTab === 'warframes' && set.type !== 'warframe') return false;
+      if (activeTab === 'warframes' && set.type !== 'warframe' && set.type !== 'sentinel') return false;
       if (activeTab === 'weapons'   && set.type !== 'weapon')   return false;
       if (q && !name.toLowerCase().includes(q)) return false;
       return true;
@@ -248,7 +249,7 @@ function renderSidebar() {
   list.innerHTML = filtered.map(([name, set]) => {
     const partCount = Object.keys(set.parts).length;
     const active = selectedSet === name ? ' active' : '';
-    const typeClass = set.type === 'warframe' ? ' rq-type-wf' : ' rq-type-wp';
+    const typeClass = set.type === 'weapon' ? ' rq-type-wp' : ' rq-type-wf';
     const inWl = wishlist.has(name);
     const wlClass = inWl ? ' rq-wl-active' : '';
     const wlIcon = inWl ? '−' : '+';
@@ -359,7 +360,8 @@ function renderDetail() {
   }
 
   const set = allSets[selectedSet];
-  const typeBadge = set.type === 'warframe' ? 'Warframe' : 'Weapon';
+  const typeLabels = { warframe: 'Warframe', sentinel: 'Sentinel', weapon: 'Weapon' };
+  const typeBadge = typeLabels[set.type] || 'Weapon';
 
   // Sort parts: Blueprint first, then alphabetical
   const partEntries = Object.entries(set.parts).sort((a, b) => {
@@ -435,7 +437,7 @@ function renderDetail() {
     heroImgHtml = `<div class="rq-hero-img"><img src="/static/images/weapons/${esc(imgFile)}" alt="" onerror="this.parentElement.style.display='none'"></div>`;
     heroImgClass = ' rq-hero--has-img';
   } else {
-    const folder = set.type === 'warframe' ? 'warframes' : 'sentinels';
+    const folder = set.type === 'sentinel' ? 'sentinels' : 'warframes';
     const convName = selectedSet.replace(/ /g, '-') + '.png';
     heroImgHtml = `<div class="rq-hero-img"><img src="/static/images/${esc(folder)}/${esc(convName)}" alt="" onerror="this.parentElement.style.display='none'"></div>`;
     heroImgClass = ' rq-hero--has-img';
