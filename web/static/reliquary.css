@@ -315,25 +315,29 @@
 
 /* ── Detail header — title + image row ─────────────────── */
 .rq-detail-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  position: relative;
   margin-bottom: 4px;
 }
 .rq-detail-info {
-  flex: 1;
-  min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 .rq-detail-img {
-  flex-shrink: 0;
-  width: 280px;
-  height: 280px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  z-index: 0;
 }
 .rq-detail-img img {
-  width: 280px;
-  height: 280px;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
-  filter: grayscale(0.1);
+  filter: grayscale(0.15);
+  opacity: 0.5;
   animation: rq-fade-in 0.4s ease-out;
 }
 
@@ -938,16 +942,13 @@
   .rq-search-expand.open .rq-search-input {
     width: 100px;
   }
-  .rq-detail-header {
-    gap: 10px;
-  }
   .rq-detail-img {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
   .rq-detail-img img {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
   .rq-detail {
     padding: 10px 14px;
