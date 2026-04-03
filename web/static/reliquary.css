@@ -327,25 +327,21 @@
   content: none;
 }
 
-/* Banner wrapper — clips image to title + stats area */
-.rq-hero-banner {
-  position: relative;
-  overflow: hidden;
-  min-height: 200px;
-}
-
-/* Hero image — right-aligned in banner, fades left */
+/* Hero image — top-right of hero card, fades left + bottom */
 .rq-hero-img {
   position: absolute;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
   width: 340px;
   height: 340px;
   pointer-events: none;
   z-index: 0;
-  mask-image: linear-gradient(to left, black 30%, transparent 85%);
-  -webkit-mask-image: linear-gradient(to left, black 30%, transparent 85%);
+  mask-image: linear-gradient(to bottom, black 20%, transparent 65%),
+              linear-gradient(to left, black 20%, transparent 75%);
+  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 65%),
+                      linear-gradient(to left, black 20%, transparent 75%);
+  -webkit-mask-composite: source-in;
 }
 .rq-hero-img img {
   width: 340px;
@@ -353,8 +349,11 @@
   object-fit: contain;
   filter: grayscale(0.1);
 }
-.rq-hero-banner .rq-hero-top,
-.rq-hero-banner .rq-hero-stats { position: relative; z-index: 1; }
+.rq-hero--has-img .rq-hero-top,
+.rq-hero--has-img .rq-hero-stats { position: relative; z-index: 1; }
+.rq-hero--has-img .rq-comp-grid,
+.rq-hero--has-img .rq-hero-section-label,
+.rq-hero--has-img .rq-hero-divider { position: relative; z-index: 1; }
 
 .rq-hero-top {
   display: flex;
