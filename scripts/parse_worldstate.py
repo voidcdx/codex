@@ -800,6 +800,57 @@ ITEM_NAMES: dict[str, str] = {
     "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemA":                                    "Last Chance Offerings",
     "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemB":                                    "Varzia's Offerings - Part 2",
     "/Lotus/StoreItems/Types/StoreItems/Packages/MegaPrimeVault/LastChanceItemC":                                    "Varzia's Offerings",
+    # ── Baro Ki'Teer inventory ───────────────────────────────────────────────
+    # Ship decos & plushies
+    "/Lotus/StoreItems/Types/Items/ShipDecos/Plushies/PlushyLoid":                                                   "Loid Plushie",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/Plushies/PlushyDesertSkate":                                            "Desert Skate Plushie",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/Plushies/Deimos/PlushySunMonsterCommon":                                "Deimos Plushie",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/ItzalArchwingBobbleHead":                                               "Itzal Bobblehead",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/BoredTennoPoster":                                                      "Bored Tenno Poster",
+    "/Lotus/StoreItems/Types/Items/ShipDecos/LisetPropCorpusHarpi":                                                  "Corpus Harpi Model",
+    # Glyphs
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/AvatarImageCommunityClemComic":                                 "Clem Comic Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/AvatarImageDrippy":                                             "Drippy Glyph",
+    "/Lotus/StoreItems/Types/StoreItems/AvatarImages/Factions/GlyphFactionEntrati":                                  "Entrati Glyph",
+    # Primed mods
+    "/Lotus/StoreItems/Upgrades/Mods/Melee/Expert/WeaponMeleeFactionDamageInfestedExpert":                           "Primed Smite Infested",
+    "/Lotus/StoreItems/Upgrades/Mods/Melee/WeaponEventMeleeImpactDamageMod":                                        "Collision Force",
+    "/Lotus/StoreItems/Upgrades/Mods/Pistol/Expert/WeaponFireDamageModExpert":                                       "Primed Heated Charge",
+    "/Lotus/StoreItems/Upgrades/Mods/Pistol/Expert/WeaponPistolFactionDamageGrineerExpert":                          "Primed Expel Grineer",
+    "/Lotus/StoreItems/Upgrades/Mods/Warframe/Expert/AvatarShieldMaxModExpert":                                      "Primed Redirection",
+    "/Lotus/StoreItems/Upgrades/Mods/Rifle/Expert/WeaponRecoilReductionModExpert":                                   "Primed Stabilizer",
+    "/Lotus/StoreItems/Upgrades/Mods/Warframe/Expert/AvatarPowerMaxModExpert":                                       "Primed Flow",
+    "/Lotus/StoreItems/Upgrades/Mods/Archwing/Rifle/PrimedArchwingDamageOnReloadMod":                                "Primed Rubedo-Lined Barrel",
+    # Weapons
+    "/Lotus/StoreItems/Weapons/ClanTech/Energy/VandalElectroProd":                                                   "Prova Vandal",
+    "/Lotus/StoreItems/Weapons/Grineer/Melee/GrineerMachetteAndCleaver/PrismaDualCleavers":                          "Prisma Dual Cleavers",
+    "/Lotus/StoreItems/Weapons/Grineer/Melee/GrineerMachetteAndCleaver/WraithMacheteWeapon":                         "Machete Wraith",
+    # Cosmetics — operator
+    "/Lotus/StoreItems/Upgrades/Skins/Operator/BodySuits/BodySuitNovaEngineer":                                      "Nova Engineer Suit",
+    "/Lotus/StoreItems/Upgrades/Skins/Operator/Hoods/HoodNovaEngineer":                                              "Nova Engineer Hood",
+    "/Lotus/StoreItems/Upgrades/Skins/Operator/Sleeves/SleevesNovaEngineer":                                         "Nova Engineer Sleeves",
+    "/Lotus/StoreItems/Upgrades/Skins/Operator/Leggings/LeggingsNovaEngineer":                                       "Nova Engineer Leggings",
+    "/Lotus/StoreItems/Upgrades/Skins/Operator/Accessories/EarpieceBaroC":                                           "Ki'Teer Earpiece",
+    # Cosmetics — armor
+    "/Lotus/StoreItems/Upgrades/Skins/Armor/TnShinaiArmor/TnShinaiArmorA":                                          "Prisma Shinai Shoulder Plates",
+    "/Lotus/StoreItems/Upgrades/Skins/Armor/TnShinaiArmor/TnShinaiArmorC":                                          "Prisma Shinai Chest Plate",
+    "/Lotus/StoreItems/Upgrades/Skins/Armor/TnShinaiArmor/TnShinaiArmorL":                                          "Prisma Shinai Leg Plates",
+    # Cosmetics — skins & sigils
+    "/Lotus/StoreItems/Upgrades/Skins/VoidTrader/ElixisTigris":                                                      "Elixis Tigris Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Cowgirl/MesaImmortallSkin":                                                    "Mesa Immortal Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Archwing/GrendelArchwingSkin":                                                  "Ki'Teer Archwing Skin",
+    "/Lotus/StoreItems/Upgrades/Skins/Sigils/ThraxSigil":                                                            "Thrax Sigil",
+    "/Lotus/StoreItems/Upgrades/Skins/MeleeDangles/FireMeleeDangle":                                                 "Pyra Sugatra",
+    "/Lotus/StoreItems/Upgrades/Skins/Effects/FootstepsMaple":                                                        "Maple Ephemera",
+    # Cosmetics — colours & misc
+    "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerKiteerItemB":                                 "Ki'Teer Palette",
+    "/Lotus/Types/StoreItems/Packages/KavatColorPackNexus":                                                          "Nexus Kavat Fur Pattern",
+    "/Lotus/StoreItems/Types/Items/MiscItems/PhotoboothTileOrokinExtraction":                                        "Captura Scene: Orokin Extraction",
+    # Relics & keys
+    "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionBaroAkmagnusPrimeBronze":                              "Axi M5 Relic",
+    "/Lotus/StoreItems/Types/Keys/MummyQuestKeyBlueprint":                                                           "Sands of Inaros Blueprint",
+    # Boosters
+    "/Lotus/StoreItems/Types/BoosterPacks/BaroTreasureBox":                                                          "Baro's Treasure",
 }
 
 # ---------------------------------------------------------------------------
