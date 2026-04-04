@@ -467,8 +467,6 @@
 }
 .rq-stat-bar {
   height: 4px;
-  max-width: 70%;
-  margin-left: auto;
   background: var(--border);
   border-radius: 2px;
   overflow: hidden;
