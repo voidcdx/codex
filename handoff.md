@@ -9,71 +9,59 @@
 
 ## What Was Done This Session
 
-### 1. Warframe Stats Pipeline
-- Downloaded `warframes_data.lua` + `companions_data.lua` from wiki
-- `scripts/parse_warframe_data.py` → `data/warframes.json` (59 Prime entries)
-  - 51 warframes, 1 archwing (Odonata Prime), 7 companions
-  - Stats: health, shield, armor, energy, sprint
-- `GET /api/warframes` endpoint + `_raw_warframes()` loader
-- Reliquary shows real stat bars for warframes (replaces placeholder dashes)
-- Sentinel stats still placeholder (companion data doesn't map to Reliquary sentinel type cleanly)
+### 1. Nightwave Challenge Fixes
+- Added 3 missing challenge paths to `_NW_NAMES` + `_NW_DESCRIPTIONS`:
+  - `InteractWithPet` → Loyalty
+  - `CodexScan` → Researcher
+  - `CompleteMissionMelee` → Swordsman
 
-### 2. Mod Images
-- Downloaded 1,186 mod card PNGs → `web/static/images/mods/`
-- `image` field injected into `mods.json` (1,404 of 1,405 mods)
-- `scripts/fetch_mod_images.py` — Playwright batch downloader
-- 4 failed (exalted weapon stances — 404s, not needed)
+### 2. Mission Type Fix
+- Added `MT_RETRIEVAL` → Hijack in both Python and JS parsers (was showing raw in Sortie)
 
-### 3. Game Image Library (4,036 total)
-Downloaded 6 additional image categories via `scripts/fetch_images.py`:
+### 3. Vanguard + Eterna Relic Tiers
+- `TIER_ICONS` map in `reliquary.js`: Vanguard → `AxiRelicIntact.png`, Eterna → `RequiemRelicIntact.png`
+- `tierOrder` extended to include both new tiers
+- CSS tier badge + chip styles for Vanguard and Eterna
+- `--tier-eterna` CSS variable added
 
-| Category | Count | Folder |
-|---|---|---|
-| Mods | 1,196 | `images/mods/` |
-| Enemies | 899 | `images/enemies/` |
-| Resources | 871 | `images/resources/` |
-| Weapons | 619 | `images/weapons/` |
-| Abilities | 216 | `images/abilities/` |
-| Arcanes | 162 | `images/arcanes/` |
-| Warframes | 50 | `images/warframes/` |
-| Damage types | 12 | `images/damage_types/` |
-| Sentinels | 6 | `images/sentinels/` |
-| Relics | 5 | `images/relics/` |
+### 4. Baro Ki'Teer Item Names
+- Added 40 item path → display name mappings to `ITEM_NAMES` in `parse_worldstate.py`
+- Covers: Primed mods, weapons, cosmetics, plushies, glyphs, relics, operator skins
+- Then removed Baro inventory list from live page — now shows only timer + location
+- `ITEM_NAMES` dict + `_item_name()` kept (still used by alerts/invasions/events)
 
-Missing: Eterna + Vanguard relic icons (404 on wiki — too new)
-
-### 4. Misc
-- Warframe images moved to right side in Reliquary (matching weapons)
-- Verified "27 placeholder weapons" — actually correct wiki data (equal IPS splits confirmed)
-- Version bumped to 0.8.0
+### 5. Reliquary Layout Overhaul
+- **Images moved to LEFT side** (were right) — removed `rq-img-left`/`rq-img-right` class system
+- Rotation removed — images sit straight
+- Text shadow on `.rq-detail-info` for readability over image
+- Stats/info pushed to right side (`margin-left: auto`, `text-align: right`)
+- Gradient divider constrained to 60% width under stat grid (full width on mobile)
+- COMPONENTS section spacing increased (margin + label size)
+- Stat label `0.55→0.65rem`, stat value `0.7→0.8rem`, bar height `3→4px`
+- Image/info padding increased (16px each side)
+- Grid gap increased for breathing room
+- **Sprint undefined fix** — sentinel stats filtered for null values (Nautilus no longer shows "undefined")
+- Image fade softened (`transparent 70%→85%`), position lowered (`top -30→-10px`)
 
 ---
 
 ## Key Files Changed
 ```
-src/version.py                    # 0.7.0 → 0.8.0
-src/loader.py                     # + _raw_warframes()
-web/api.py                        # + GET /api/warframes
-web/static/js/reliquary.js        # real warframe stats, images right side
-data/warframes.json               # 59 Prime entries (new)
-data/mods.json                    # + image field on 1404 mods
-data/warframes_data.lua           # raw wiki source (new)
-data/companions_data.lua          # raw wiki source (new)
-data/arcanes_data.lua             # raw wiki source (new)
-data/resources_data.lua           # raw wiki source (new)
-data/manifest_*.json              # 6 download manifests (new)
-scripts/parse_warframe_data.py    # warframes + archwings + companions parser (new)
-scripts/fetch_mod_images.py       # mod image downloader (new)
-scripts/fetch_images.py           # universal batch image downloader (new)
-scripts/parse_wiki_data.py        # + image field in _parse_mod()
+scripts/parse_worldstate.py       # +3 NW challenges, +MT_RETRIEVAL, +40 Baro items, void trader simplified
+web/static/js/worldstate-parser.js # +MT_RETRIEVAL
+web/static/js/reliquary.js        # TIER_ICONS, tierOrder, images left, sprint filter, no class toggling
+web/static/reliquary.css           # images left, stat grid polish, divider alignment, text shadow, spacing
+web/static/index.html              # removed Baro inventory table
+web/static/live.css                # removed inventory-table/ducat-val/credit-val/live-card-wide CSS
 ```
 
 ---
 
 ## Pending / Known Issues
 - **URL state / sharing** — not started
-- **Eterna + Vanguard relic icons** — wiki 404s, check back later
-- **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification (Carapace/Cerebrum parts) doesn't map to companion names automatically
+- **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification doesn't map automatically
+- **Mod images not yet wired into UI** — ready for mod picker redesign
+- **Baro item names** — some guessed names may be wrong (Ki'Teer Archwing Skin, Primed Rubedo-Lined Barrel, Deimos Plushie, Prisma Shinai armor pieces, Nova Engineer operator set)
 
 ---
 
@@ -103,8 +91,12 @@ pytest                                                # verify
 ```
 
 ## Design Decisions Log
-- Warframe/sentinel images on RIGHT side (same as weapons, tilted -8deg)
+- Reliquary images on LEFT side, stats/info on RIGHT — no rotation
+- Text shadow for readability over image
+- Gradient divider only spans stat grid width (60%), full width on mobile
+- Baro inventory list removed — timer + location only
+- Eterna uses RequiemRelicIntact.png, Vanguard uses AxiRelicIntact.png
+- Sprint stat hidden for sentinels (filtered null values)
 - Real stat bars for warframes, placeholders for sentinels until data mapping solved
 - Equal IPS splits are valid wiki data — not placeholders
 - Mod images not yet wired into UI — ready for mod picker redesign
-- All other downloaded images (enemies, arcanes, abilities, resources, damage types, relics) stored for future use
