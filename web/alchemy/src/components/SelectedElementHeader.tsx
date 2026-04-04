@@ -3,7 +3,7 @@
 import React from 'react';
 import { ElementData, ELEMENTS } from '../data/elements';
 import * as LucideIcons from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 interface SelectedElementHeaderProps {
   element: ElementData;

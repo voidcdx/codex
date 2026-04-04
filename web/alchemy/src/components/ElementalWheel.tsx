@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Void Codex. All rights reserved.
 
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
 import { ElementData, ELEMENTS } from '../data/elements';
 

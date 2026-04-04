@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ElementData, ELEMENTS } from '../data/elements';
 import * as LucideIcons from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ElementalCombinerProps {
   onResultSelect: (element: ElementData) => void;
