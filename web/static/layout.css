@@ -473,6 +473,11 @@
 @media (orientation: landscape) and (max-height: 600px) {
   .burger-btn { display: flex; }
   .header .theme-switcher { display: none; }
+
+  .app  { height: auto; }
+  .main { overflow: visible; height: auto; }
+  .content { overflow-y: visible; }
+
   .sidebar {
     position: fixed;
     top: 0; right: 0;
