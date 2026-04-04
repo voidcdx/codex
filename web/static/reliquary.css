@@ -335,6 +335,7 @@
   margin-left: auto;
   text-align: right;
   padding-right: 8px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.7);
 }
 /* Image — left side, tilted for dynamic feel */
 .rq-detail-img {
@@ -493,8 +494,11 @@
 /* Divider between stats and components */
 .rq-hero-divider {
   height: 1px;
+  max-width: 60%;
+  margin-left: auto;
   background: linear-gradient(90deg, transparent 0%, var(--panel-line-top) 50%, transparent 100%);
-  margin: 16px 0 10px;
+  margin-top: 16px;
+  margin-bottom: 10px;
 }
 
 /* Section label inside hero */
@@ -969,6 +973,10 @@
   }
   .rq-detail-info {
     max-width: 100%;
+  }
+  .rq-hero-divider {
+    max-width: 100%;
+    margin-left: 0;
   }
   .rq-detail-outer {
     padding-top: 40px;
