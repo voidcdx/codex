@@ -285,9 +285,9 @@
 /* ── Right panel — detail ──────────────────────────────── */
 .rq-detail-outer {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   min-height: 0;
-  padding-top: 50px;
+  padding-top: 0;
   z-index: 2;
 }
 .rq-detail {
@@ -957,35 +957,6 @@
   padding: 1px 5px;
 }
 
-/* ── Landscape phones — short viewport, wide enough to skip mobile breakpoint */
-@media (max-height: 500px) and (orientation: landscape) {
-  .rq-detail-outer {
-    padding-top: 0;
-    overflow: hidden;
-  }
-  .rq-detail-img {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    left: 10px;
-    top: 4px;
-  }
-  .rq-detail-img img {
-    width: 120px;
-    height: 120px;
-  }
-}
-
-/* ── Landscape phones ───────────────────────────────────── */
-@media (orientation: landscape) and (max-height: 600px) {
-  .rq-detail-outer {
-    padding-top: 0;
-  }
-  .rq-detail-img {
-    display: none;
-  }
-}
-
 /* ── Mobile ────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .reliquary-wrap {
@@ -1006,9 +977,6 @@
   .rq-hero-divider {
     max-width: 100%;
     margin-left: 0;
-  }
-  .rq-detail-outer {
-    padding-top: 40px;
   }
   .rq-detail-img {
     width: 150px;
