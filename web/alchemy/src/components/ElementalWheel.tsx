@@ -35,7 +35,7 @@ export const ElementalWheel: React.FC<ElementalWheelProps> = ({ selectedElement,
   };
 
   return (
-    <div className="relative w-[500px] h-[500px] flex items-center justify-center">
+    <div className="relative w-[min(500px,80vw)] h-[min(500px,80vw)] flex items-center justify-center">
       {/* Background Decorative Rings */}
       <div className="absolute inset-0 border-[1px] border-warframe-accent/20 rounded-full" />
       <div className="absolute inset-4 border-[1px] border-warframe-accent/10 rounded-full" />
