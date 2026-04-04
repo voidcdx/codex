@@ -438,7 +438,7 @@ function renderDetail() {
         { label: 'ARMOR',   value: wf.armor,    bar: Math.min(wf.armor / 600, 1),    color: 'var(--tier-axi)' },
         { label: 'ENERGY',  value: wf.energy,   bar: Math.min(wf.energy / 300, 1),   color: 'var(--tier-meso)' },
         { label: 'SPRINT',  value: wf.sprint,   bar: Math.min(wf.sprint / 1.5, 1),   color: 'var(--tier-neo)' },
-      ];
+      ].filter(s => s.value != null);
       statsHtml = `<div class="rq-stat-grid">${stats.map(s => {
         const pct = Math.round(s.bar * 100);
         return `<div class="rq-stat-item">
