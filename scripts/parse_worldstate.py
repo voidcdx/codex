@@ -102,6 +102,7 @@ MT_MISSION_TYPES: dict[str, str] = {
     "MT_ARTIFACT":         "Capture",
     "MT_CORRUPTION":       "Corrupted Fissure",
     "MT_EVACUATION":       "Defection",
+    "MT_RETRIEVAL":        "Hijack",
 }
 
 FACTION_NAMES: dict[str, str] = {
