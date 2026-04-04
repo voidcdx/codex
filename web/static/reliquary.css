@@ -976,6 +976,16 @@
   }
 }
 
+/* ── Landscape phones ───────────────────────────────────── */
+/* Wide enough to bypass 900px breakpoint but viewport is short;
+   clip the breakout image so it doesn't float over content */
+@media (orientation: landscape) and (max-height: 600px) {
+  .rq-detail-outer {
+    overflow: clip;
+    padding-top: 8px;
+  }
+}
+
 /* ── Mobile ────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .reliquary-wrap {
