@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Void Codex. All rights reserved.
+
 import React, { useState, useEffect } from 'react';
 import { ElementData, ELEMENTS } from '../data/elements';
 import * as LucideIcons from 'lucide-react';
