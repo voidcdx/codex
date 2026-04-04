@@ -364,12 +364,16 @@ function selectSet(name) {
   renderSidebar();
   renderDetail();
 
+  // Auto-close set list in landscape mode after selecting
+  if (window.matchMedia('(orientation: landscape) and (max-height: 600px)').matches) {
+    closeAllDrawers();
+  }
+
   // Scroll detail panel content to top
   const detail = document.getElementById('rq-detail');
   if (detail) {
     detail.scrollTop = 0;
     if (window.innerWidth <= 900) {
-      // Scroll to the outer container so the breakout image is visible
       const outer = detail.closest('.rq-detail-outer');
       (outer || detail).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -581,6 +585,25 @@ function toggleDrawer() {
   const open    = sidebar.classList.toggle('open');
   if (overlay) overlay.classList.toggle('open', open);
   if (btn)     btn.classList.toggle('open', open);
+}
+
+function toggleRqSidebar() {
+  const rqSidebar = document.querySelector('.rq-sidebar');
+  const overlay   = document.getElementById('sidebar-overlay');
+  if (!rqSidebar) return;
+  const open = rqSidebar.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('open', open);
+}
+
+function closeAllDrawers() {
+  const sidebar   = document.getElementById('sidebar');
+  const rqSidebar = document.querySelector('.rq-sidebar');
+  const overlay   = document.getElementById('sidebar-overlay');
+  const btn       = document.getElementById('burger-btn');
+  if (sidebar)   sidebar.classList.remove('open');
+  if (rqSidebar) rqSidebar.classList.remove('open');
+  if (overlay)   overlay.classList.remove('open');
+  if (btn)       btn.classList.remove('open');
 }
 
 async function loadVersion() {
