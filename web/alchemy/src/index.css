@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* hardware-card used across alchemy components */
+.hardware-card {
+  background: #22252e;
+  border: 1px solid rgba(61, 68, 85, 0.5);
+  border-radius: 1rem;
+}

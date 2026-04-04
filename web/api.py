@@ -1068,9 +1068,10 @@ def live() -> FileResponse:
     return FileResponse(str(_static / "index.html"), headers={"Cache-Control": "no-store"})
 
 
-@app.get("/factions")
-def factions() -> FileResponse:
-    return FileResponse(str(_static / "factions.html"))
+@app.get("/alchemy")
+def alchemy() -> FileResponse:
+    dist = _static / "alchemy-dist" / "index.html"
+    return FileResponse(str(dist), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/reliquary")
