@@ -18,7 +18,6 @@ local Table = require('Module:Table')
 -- Nikana Prime Blueprint is an interesting edge case at 25 ducats with 2 rare, 1 uncommon, and 3 common drops
 local DUCAT_EXCEPTIONS = {
         Forma = { Blueprint = 0 },
-        ["Garuda Prime"] = {["Systems Blueprint"] = 100},
         ["Khora Prime"] = {Blueprint = 65},
         ["Akstiletto Prime"] = { Receiver = 45 },
         ["Knell Prime"] = { Receiver = 45 },
@@ -32,8 +31,6 @@ local DUCAT_EXCEPTIONS = {
         ["Panthera Prime"] = { Receiver = 100 },
         ["Fang Prime"] = { Blueprint = 15 },
         ["Limbo Prime"] = { ["Neuroptics Blueprint"] = 100 },
-        ["Baruuk Prime"] = { ["Neuroptics Blueprint"] = 100 },
-        ["Phantasma Prime"] = { Stock = 100 },
         ["Exilus Weapon Adapter"] = { Blueprint = 0 },
         ["Riven Sliver"] = { [""] = 0 },
         ["Kuva"] = { [""] = 0 },
