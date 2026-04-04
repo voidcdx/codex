@@ -90,6 +90,7 @@ const MISSION_TYPE_STRING = {
   "MT_RESCUE": "Rescue",
   "MT_INTERCEPTION": "Interception",
   "MT_HIJACK": "Hijack",
+  "MT_RETRIEVAL": "Hijack",
   "MT_HIVE": "Hive",
   "MT_EXCAVATION": "Excavation",
   "MT_ARENA": "Arena",
