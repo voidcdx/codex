@@ -957,6 +957,18 @@
   padding: 1px 5px;
 }
 
+/* ── Landscape phones ───────────────────────────────────── */
+@media (orientation: landscape) and (max-height: 600px) {
+  .rq-detail-img {
+    width: 130px;
+    height: 130px;
+  }
+  .rq-detail-img img {
+    width: 130px;
+    height: 130px;
+  }
+}
+
 /* ── Mobile ────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .reliquary-wrap {
