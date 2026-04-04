@@ -378,11 +378,7 @@ function selectSet(name) {
 
 function renderDetail() {
   const detail = document.getElementById('rq-detail');
-  // Clear breakout image when no selection
-  const outerEl = detail.closest('.rq-detail-outer');
-  const existingImg = outerEl && outerEl.querySelector('.rq-detail-img');
   if (!selectedSet || !allSets[selectedSet]) {
-    if (existingImg) existingImg.style.display = 'none';
     detail.innerHTML = '<div class="rq-empty-detail">SELECT A PRIME SET</div>';
     return;
   }
@@ -505,20 +501,15 @@ function renderDetail() {
   const evergreenTag = EVERGREEN_SETS.has(selectedSet)
     ? '<span class="rq-type-badge rq-badge-permanent">Permanent</span>' : '';
 
-  // Place image on outer container so it can break out of panel
+  // Remove any old outer-placed image (legacy cleanup)
   const outer = detail.closest('.rq-detail-outer');
   if (outer) {
-    let imgEl = outer.querySelector('.rq-detail-img');
-    if (!imgEl) {
-      imgEl = document.createElement('div');
-      imgEl.className = 'rq-detail-img';
-      outer.appendChild(imgEl);
-    }
-    imgEl.innerHTML = `<img src="${imgSrc}" alt="" onerror="this.parentElement.style.display='none'">`;
-    imgEl.style.display = '';
+    const oldImg = outer.querySelector(':scope > .rq-detail-img');
+    if (oldImg) oldImg.remove();
   }
 
   detail.innerHTML = `
+    <div class="rq-detail-img"><img src="${imgSrc}" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="rq-detail-header">
       <div class="rq-detail-info">
         <div class="rq-hero-type-row">
