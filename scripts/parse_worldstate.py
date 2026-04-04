@@ -1144,7 +1144,7 @@ def _parse_archon_hunt(raw: list, solnode_map: dict) -> dict | None:
 
 def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
     if not raw:
-        return {"active": False, "eta": "Unknown", "node": "", "inventory": []}
+        return {"active": False, "eta": "Unknown", "node": ""}
 
     trader = raw[0]
     activation = _parse_date(trader.get("Activation"))
@@ -1153,25 +1153,12 @@ def _parse_void_trader(raw: list, solnode_map: dict) -> dict:
 
     active = activation is not None and activation <= now and (expiry is None or expiry > now)
 
-    inventory = []
-    for item in trader.get("Manifest", []):
-        item_path = item.get("ItemType", "")
-        item_name = _item_name(item_path)
-        inventory.append({
-            "item":    item_name,
-            "ducats":  item.get("PrimePrice", 0),
-            "credits": item.get("RegularPrice", 0),
-        })
-
     eta_dt = expiry if active else activation
     return {
         "active":    active,
         "node":      _node_display(trader.get("Node", ""), solnode_map),
         "eta":       _eta(eta_dt),
         "expiry_ts": eta_dt.timestamp() if eta_dt else 0,
-        "arrives":   activation.isoformat() if activation else None,
-        "departs":   expiry.isoformat() if expiry else None,
-        "inventory": inventory,
     }
 
 

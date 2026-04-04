@@ -240,24 +240,9 @@ function buildTraderCard(trader) {
   const status = trader.active
     ? `${dot}<span class="trader-location">${esc(trader.node)}</span><span class="trader-eta">Departs <span data-expiry="${trader.expiry_ts || 0}">${esc(trader.eta)}</span></span>`
     : `${dot}<span class="trader-location">${trader.node ? esc(trader.node) : 'Location unknown'}</span><span class="trader-eta">Arrives <span data-expiry="${trader.expiry_ts || 0}">${esc(trader.eta)}</span></span>`;
-  let inventory = '';
-  if (trader.active && trader.inventory && trader.inventory.length) {
-    const rows = trader.inventory.map(it => `
-      <tr>
-        <td>${esc(it.item)}</td>
-        <td class="ducat-val">${it.ducats > 0 ? it.ducats + ' ⟁' : '—'}</td>
-        <td class="credit-val">${it.credits > 0 ? it.credits.toLocaleString() + ' ¢' : '—'}</td>
-      </tr>`).join('');
-    inventory = `<table class="inventory-table">
-      <thead><tr><th>Item</th><th>Ducats</th><th>Credits</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
-  }
-  const wideClass = trader.active && trader.inventory && trader.inventory.length > 6 ? ' live-card-wide' : '';
-  return `<div class="panel${wideClass}">
+  return `<div class="panel">
     <h2>Void Trader — Baro Ki'Teer</h2>
     <div class="trader-status">${status}</div>
-    ${inventory}
   </div>`;
 }
 
