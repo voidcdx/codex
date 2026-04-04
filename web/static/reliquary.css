@@ -957,6 +957,25 @@
   padding: 1px 5px;
 }
 
+/* ── Landscape phones — short viewport, wide enough to skip mobile breakpoint */
+@media (max-height: 500px) and (orientation: landscape) {
+  .rq-detail-outer {
+    padding-top: 0;
+    overflow: hidden;
+  }
+  .rq-detail-img {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 10px;
+    top: 4px;
+  }
+  .rq-detail-img img {
+    width: 120px;
+    height: 120px;
+  }
+}
+
 /* ── Mobile ────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .reliquary-wrap {
