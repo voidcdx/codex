@@ -105,6 +105,7 @@ web/
                    #   relativeTime(iso): helper → "Xd/Xh/Xm ago"; news capped at 7 items; timestamp inline before title
                    #   Event rows: .event-row-header (title + timer same line); reward in crimson (.event-desc)
                    #   Nightwave rows: .nw-title-row (tag + title inline), desc below; .nw-right (rep + eta stacked)
+                   #   Void Trader: timer + location only (inventory list removed); no live-card-wide class
   static/calculator.html # Damage Calculator SPA — at /calculator
                    #   stalker-dashboard layout: inner header + .content grid (1fr 480px) + right .sidebar
                    #   header: .live-header-brand "VOID CODEX" / "DAMAGE CALCULATOR" glitch subtext
@@ -139,13 +140,14 @@ web/
   static/reliquary.css  # Reliquary styles — glassmorphism panels, breakout image, stat grid
                    #   .rq-sidebar, .rq-detail: glass surface + top/bottom gradient lines
                    #   .rq-detail-outer: overflow:visible wrapper for breakout image
-                   #   .rq-detail-img: absolute positioned, 240px, radial edge fade, brightness(1.2), drop-shadow
-                   #   .rq-img-right: all images right side (tilted -8deg); .rq-img-left: unused (kept in CSS)
+                   #   .rq-detail-img: absolute positioned LEFT, 240px, radial edge fade, no rotation
+                   #   .rq-detail-info: max-width 60%, margin-left auto (right-aligned), text-shadow for readability
                    #   .rq-stat-grid: 2-col grid; .rq-stat-item: label+value+bar; .rq-badge-permanent: green pill
+                   #   .rq-hero-divider: max-width 60%, margin-left auto (under stat grid only); full width on mobile
                    #   .rq-comp-*: inline expanded components with rounded pill headers + relic rows (14px radius)
                    #   Vertical gradient left border, horizontal gradient separators between components
                    #   .rq-baro-tag: gold badge; .rq-seg: 22px height matched to search field
-                   #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard
+                   #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard/eterna
                    #   Drop rows: grid (1fr auto auto auto); baro note: italic dim text
   static/live.css  # Live page styles — invasion .reward-chip colored by data-faction attr (Grineer/Corpus/Infested/other)
                    #   .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
@@ -172,14 +174,15 @@ web/
                    #   get a pill toggle instead of raw attack tabs
     reliquary.js   # Prime Sets browser — buildPrimeSets(), selectSet(), renderDetail()
                    #   State: allSets, dropsMap, baroRelicNames, weaponImages, weaponStats, warframeStats, wishlist, activeTab, searchQuery, selectedSet
+                   #   TIER_ICONS: maps tier name → relic PNG (Vanguard→Axi, Eterna→Requiem)
                    #   EVERGREEN_SETS: const Set of 14 permanently unvaulted Prime items (2 frames + 12 weapons)
                    #   buildPrimeSets(relics): groups unvaulted relic rewards by item→parts→relics; flags baro-only sets
                    #     Type classification: sentinel (Carapace/Cerebrum), warframe (Neuroptics/Chassis/Systems), weapon (default)
                    #   renderSidebar(): filtered/searched set list; baro sets sorted to bottom with BARO tag
                    #   renderDetail(): breakout image on outer container + stat grid + inline components
                    #     Image placed on .rq-detail-outer (not inside scrollable panel) so it breaks out of card
-                   #     All images right side (tilted -8deg)
-                   #     Stats: 2-col grid with colored bars (weapons + warframes), placeholder rows (sentinels)
+                   #     All images LEFT side (no rotation), stats/info on RIGHT
+                   #     Stats: 2-col grid with colored bars (weapons + warframes); sentinels filter null stats (no sprint)
                    #     Images: weapons from weaponImages map, warframes/sentinels by convention (Name-Prime.png)
                    #   renderDropList(relicName): top 5 drop locations; baro relics get Void Trader note
                    #   Wishlist: toggleWishlist(), removeGoal(), getGoalRelics(), calcBestMissions(), renderGoals()
