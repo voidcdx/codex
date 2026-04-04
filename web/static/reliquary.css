@@ -341,7 +341,7 @@
 .rq-detail-img {
   position: absolute;
   left: 16px;
-  top: -10px;
+  top: 12px;
   width: 240px;
   height: 240px;
   pointer-events: none;
