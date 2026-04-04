@@ -1,7 +1,9 @@
 {
   "name": "void-codex-alchemy",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.8.1",
+  "author": "Void Codex",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

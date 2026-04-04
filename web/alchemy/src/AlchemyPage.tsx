@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Void Codex. All rights reserved.
+
 import { useState } from 'react';
 import { ELEMENTS, ElementData } from './data/elements';
 import { ElementalWheel } from './components/ElementalWheel';

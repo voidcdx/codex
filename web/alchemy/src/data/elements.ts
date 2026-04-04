@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Void Codex. All rights reserved.
+
 export type HealthType = 'Ferrite' | 'Alloy' | 'Cloned' | 'Infested' | 'Proto' | 'Shield' | 'Robotic';
 
 export interface Multiplier {

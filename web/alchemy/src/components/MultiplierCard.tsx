@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Void Codex. All rights reserved.
+
 import React from 'react';
 import { Multiplier } from '../data/elements';
 import * as LucideIcons from 'lucide-react';
