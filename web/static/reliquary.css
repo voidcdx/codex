@@ -959,6 +959,9 @@
 
 /* ── Landscape phones ───────────────────────────────────── */
 @media (orientation: landscape) and (max-height: 600px) {
+  .reliquary-wrap {
+    height: calc(100dvh - 40px);
+  }
   .rq-detail-img {
     width: 130px;
     height: 130px;

@@ -476,7 +476,6 @@
 
   .app  { height: auto; }
   .main { overflow: visible; height: auto; }
-  .content { overflow-y: visible; }
 
   .sidebar {
     position: fixed;
