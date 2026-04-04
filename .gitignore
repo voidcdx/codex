@@ -7,4 +7,3 @@ data/worldstate_raw.json
 
 # Alchemy React build
 web/alchemy/node_modules/
-web/static/alchemy-dist/
