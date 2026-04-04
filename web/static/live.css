@@ -74,7 +74,6 @@
   align-items: start;
 }
 .live-card-full { grid-column: 1 / -1; }
-.live-card-wide { grid-column: span 2; }
 .panel-stack { display: flex; flex-direction: column; gap: 12px; }
 
 /* ── Count badge in panel h2 ── */
@@ -239,31 +238,6 @@
 .trader-dot.inactive { background: var(--text-dim); }
 .trader-location { color: var(--text-primary); font-size: 1rem; }
 .trader-eta      { color: var(--text-dim); font-size: 0.85rem; margin-left: auto; }
-
-.inventory-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-  margin-top: 8px;
-}
-.inventory-table th {
-  color: var(--text-dim);
-  font-size: 0.73rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 4px 8px;
-  border-bottom: 1px solid var(--border);
-  text-align: left;
-  font-family: var(--font-display);
-}
-.inventory-table td {
-  padding: 5px 8px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text);
-}
-.inventory-table tr:last-child td { border-bottom: none; }
-.ducat-val  { color: var(--cycle-warm); }
-.credit-val { color: var(--text); }
 
 /* ── Nightwave ── */
 .nw-row {
@@ -565,12 +539,10 @@ a.ne-news-link:hover { color: var(--crimson-bright); }
    so collapse to single column instead of showing the mismatched 2-col layout. */
 @media (max-width: 1339px) {
   .live-grid { grid-template-columns: minmax(0, 1fr); }
-  .live-card-wide { grid-column: 1 / -1; }
   .fissure-list { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
   .live-grid { grid-template-columns: minmax(0, 1fr); }
-  .live-card-wide { grid-column: 1 / -1; }
   .live-controls { gap: 8px; }
   .fissure-list { grid-template-columns: 1fr; }
 }
