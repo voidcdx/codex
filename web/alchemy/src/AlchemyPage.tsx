@@ -12,7 +12,7 @@ export default function AlchemyPage() {
   );
 
   return (
-    <div className="flex-1 max-w-7xl mx-auto w-full p-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start bg-warframe-bg text-gray-100 min-h-screen">
+    <div className="w-full p-4 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start text-gray-100">
       {/* Left Side: Visualizers */}
       <div className="flex flex-col gap-12">
         <div className="flex flex-col items-center justify-center hardware-card p-8 bg-black/20 rounded-2xl border border-warframe-accent/30 shadow-2xl">
