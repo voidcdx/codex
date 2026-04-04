@@ -337,14 +337,14 @@
 .rq-detail-img {
   position: absolute;
   right: 10px;
-  top: -30px;
+  top: -10px;
   width: 240px;
   height: 240px;
   pointer-events: none;
   z-index: 0;
   filter: brightness(1.2) drop-shadow(0 6px 12px rgba(0,0,0,0.5));
-  mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 35%, transparent 70%);
+  mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 45%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 45%, transparent 85%);
   transform: rotate(-8deg);
 }
 /* Warframes/sentinels — image left, upright */
@@ -992,7 +992,7 @@
     width: 150px;
     height: 150px;
     right: 10px;
-    top: -15px;
+    top: -5px;
   }
   .rq-detail-img img {
     width: 150px;
