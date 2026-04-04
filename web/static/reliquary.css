@@ -987,6 +987,9 @@
   .rq-detail-info {
     max-width: 100%;
   }
+  .rq-hero-divider {
+    max-width: 100%;
+  }
   .rq-detail-outer {
     padding-top: 40px;
   }
