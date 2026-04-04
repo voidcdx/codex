@@ -332,12 +332,14 @@
   position: relative;
   z-index: 1;
   max-width: 60%;
-  padding-left: 8px;
+  margin-left: auto;
+  text-align: right;
+  padding-right: 8px;
 }
-/* Image — default right (weapons) — tilted for dynamic feel */
+/* Image — left side, tilted for dynamic feel */
 .rq-detail-img {
   position: absolute;
-  right: 10px;
+  left: 10px;
   top: -10px;
   width: 240px;
   height: 240px;
@@ -346,26 +348,7 @@
   filter: brightness(1.2) drop-shadow(0 6px 12px rgba(0,0,0,0.5));
   mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 45%, transparent 85%);
   -webkit-mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 45%, transparent 85%);
-  transform: rotate(-8deg);
-}
-/* Warframes/sentinels — image left, upright */
-.rq-img-left .rq-detail-img {
-  right: auto;
-  left: 10px;
-  transform: none;
-}
-.rq-img-left .rq-detail-info {
-  margin-left: auto;
-  text-align: right;
-}
-.rq-img-left .rq-hero-type-row {
-  justify-content: flex-end;
-}
-.rq-img-left .rq-stat-grid {
-  direction: rtl;
-}
-.rq-img-left .rq-stat-item {
-  direction: ltr;
+  transform: rotate(8deg);
 }
 .rq-detail-img img {
   width: 240px;
@@ -381,6 +364,7 @@
 .rq-hero-type-row {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
   margin-bottom: 4px;
 }
@@ -509,7 +493,6 @@
 /* Divider between stats and components */
 .rq-hero-divider {
   height: 1px;
-  max-width: 60%;
   background: linear-gradient(90deg, transparent 0%, var(--panel-line-top) 50%, transparent 100%);
   margin: 16px 0 10px;
 }
@@ -987,25 +970,18 @@
   .rq-detail-info {
     max-width: 100%;
   }
-  .rq-hero-divider {
-    max-width: 100%;
-  }
   .rq-detail-outer {
     padding-top: 40px;
   }
   .rq-detail-img {
     width: 150px;
     height: 150px;
-    right: 10px;
+    left: 10px;
     top: -5px;
   }
   .rq-detail-img img {
     width: 150px;
     height: 150px;
-  }
-  .rq-img-left .rq-detail-img {
-    right: auto;
-    left: 10px;
   }
   .rq-detail {
     padding: 10px 14px;

@@ -508,9 +508,6 @@ function renderDetail() {
   // Place image on outer container so it can break out of panel
   const outer = detail.closest('.rq-detail-outer');
   if (outer) {
-    // Set position class: warframes/sentinels left, weapons right
-    outer.classList.remove('rq-img-left', 'rq-img-right');
-    outer.classList.add('rq-img-right');
     let imgEl = outer.querySelector('.rq-detail-img');
     if (!imgEl) {
       imgEl = document.createElement('div');
