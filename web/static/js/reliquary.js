@@ -6,6 +6,17 @@ let weaponImages = {};  // { "Braton Prime": "BratonPrime.png", … }
 let weaponStats  = {};  // { "Braton Prime": { slot, class, crit_chance, … }, … }
 let warframeStats = {}; // { "Ash Prime": { health, shield, armor, energy, sprint }, … }
 
+// Relic tier → icon image (Eterna/Vanguard reuse existing images)
+const TIER_ICONS = {
+  'Lith':    'LithRelicIntact.png',
+  'Meso':    'MesoRelicIntact.png',
+  'Neo':     'NeoRelicIntact.png',
+  'Axi':     'AxiRelicIntact.png',
+  'Requiem': 'RequiemRelicIntact.png',
+  'Vanguard':'AxiRelicIntact.png',
+  'Eterna':  'RequiemRelicIntact.png',
+};
+
 // Permanently unvaulted sets — always available via Railjack derelict caches
 const EVERGREEN_SETS = new Set([
   'Nyx Prime', 'Valkyr Prime',
@@ -387,7 +398,7 @@ function renderDetail() {
     return a[0].localeCompare(b[0]);
   });
 
-  const tierOrder = ['Lith', 'Meso', 'Neo', 'Axi', 'Requiem'];
+  const tierOrder = ['Lith', 'Meso', 'Neo', 'Axi', 'Requiem', 'Vanguard', 'Eterna'];
 
   // Stats — weapon or warframe/sentinel placeholder
   const ws = weaponStats[selectedSet];
