@@ -348,7 +348,7 @@
   filter: brightness(1.2) drop-shadow(0 6px 12px rgba(0,0,0,0.5));
   mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 45%, transparent 85%);
   -webkit-mask-image: radial-gradient(ellipse 75% 65% at center 40%, black 45%, transparent 85%);
-  transform: rotate(8deg);
+  transform: none;
 }
 .rq-detail-img img {
   width: 240px;
