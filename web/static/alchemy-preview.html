@@ -6,302 +6,440 @@
 <title>Alchemy Preview — Void Codex</title>
 <link rel="icon" href="/favicon.ico">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{
-    background:#13151a;
-    color:#e0e0e0;
-    font-family:'Exo 2','Segoe UI',sans-serif;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:2rem;
-  }
-  .preview-wrap{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:1rem;
-    max-width:640px;
-    width:100%;
-  }
-  @media(max-width:600px){.preview-wrap{grid-template-columns:1fr}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#13151a;
+  color:#e0e0e0;
+  font-family:'Exo 2','Segoe UI',sans-serif;
+  min-height:100vh;
+  padding:2rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3rem;
+}
 
-  /* Card */
-  .hw-card{
-    background:#22252e;
-    border:1px solid rgba(61,68,85,0.5);
-    border-radius:1rem;
-    padding:1rem;
-    display:flex;
-    flex-direction:column;
-    gap:0.75rem;
-    min-width:0;
-  }
-  .hw-card-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .hw-card-title{
-    font-size:0.7rem;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:0.15em;
-    color:#9ca3af;
-    display:flex;align-items:center;gap:0.5rem;
-  }
-  .hw-card-tag{
-    font-size:0.6rem;
-    font-family:monospace;
-    color:#4b5563;
-    letter-spacing:-0.02em;
-  }
+/* ── WHEEL ── */
+.wheel-section{
+  display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+}
+.wheel-wrap{
+  position:relative;
+  width:min(500px,80vw);height:min(500px,80vw);
+}
+/* Decorative rings */
+.wheel-ring{position:absolute;border-radius:50%;border:1px solid}
+.wheel-ring.r1{inset:0;border-color:rgba(61,68,85,0.2)}
+.wheel-ring.r2{inset:16px;border-color:rgba(61,68,85,0.1)}
+.wheel-ring.r3{inset:48px;border-width:8px;border-color:rgba(61,68,85,0.1)}
+.wheel-ring.r4{inset:48px;border-color:rgba(197,160,89,0.2)}
+.wheel-ring.r5{inset:100px;border-color:rgba(61,68,85,0.4)}
+/* Rotating ring */
+.wheel-spin{
+  position:absolute;inset:48px;
+  border-radius:50%;
+  border-top:2px solid rgba(197,160,89,0.1);
+  border-bottom:2px solid rgba(197,160,89,0.1);
+  border-left:2px solid transparent;
+  border-right:2px solid transparent;
+  animation:wheelSpin 60s linear infinite;
+}
+@keyframes wheelSpin{to{transform:rotate(360deg)}}
+/* Radial glow */
+.wheel-glow{
+  position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,rgba(197,160,89,0.05) 0%,transparent 70%);
+}
+/* Center */
+.wheel-center{
+  position:absolute;z-index:10;
+  width:112px;height:112px;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  background:#22252e;
+  border:2px solid rgba(197,160,89,0.5);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 30px rgba(197,160,89,0.2);
+  overflow:hidden;
+}
+.wheel-center::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(197,160,89,0.1),transparent);
+}
+.wheel-center svg{position:relative;z-index:1}
 
-  /* Bars */
-  .bar-row{position:relative;cursor:default}
-  .bar-label-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:0.25rem;
-  }
-  .bar-name{
-    font-size:0.68rem;
-    font-weight:600;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    color:#9ca3af;
-  }
-  .bar-value{
-    font-size:0.72rem;
-    font-family:monospace;
-    font-weight:800;
-    font-variant-numeric:tabular-nums;
-  }
-  .bar-value.positive{color:#4ade80}
-  .bar-value.negative{color:#f87171}
+/* Element buttons (shared) */
+.elem-btn{
+  position:absolute;z-index:20;
+  border:none;background:transparent;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;border-radius:50%;
+  transition:transform 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.elem-btn:hover{transform:translate(var(--tx),var(--ty)) scale(1.1) !important}
+.elem-btn:active{transform:translate(var(--tx),var(--ty)) scale(0.95) !important}
+.elem-btn.selected{
+  background:rgba(255,255,255,0.1);
+  box-shadow:0 0 20px rgba(255,255,255,0.15);
+}
+/* Inner = 64px, no border */
+.elem-btn.inner{width:64px;height:64px}
+/* Outer = 80px, with border */
+.elem-btn.outer{
+  width:80px;height:80px;
+  border:2px solid rgba(61,68,85,0.6);
+  background:#22252e;
+}
+.elem-btn.outer.selected{
+  border-color:#c5a059;
+  background:rgba(197,160,89,0.1);
+  box-shadow:0 0 30px rgba(197,160,89,0.3);
+}
+.elem-btn.outer:hover{border-color:#9ca3af}
+.elem-name{
+  font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:-0.02em;
+  color:#9ca3af;margin-top:4px;
+}
+/* Glow pulse on selected */
+.elem-glow{
+  position:absolute;inset:0;border-radius:50%;
+  filter:blur(12px);opacity:0;
+  animation:none;pointer-events:none;
+}
+.elem-btn.selected .elem-glow{
+  animation:elemPulse 2s ease-in-out infinite;
+}
+@keyframes elemPulse{
+  0%,100%{opacity:0.3;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(1.2)}
+}
+/* Shine sweep on select */
+.elem-shine{
+  position:absolute;inset:0;border-radius:50%;overflow:hidden;pointer-events:none;
+}
+.elem-shine::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.3) 50%,transparent 60%);
+  transform:translateX(-100%);
+}
+.elem-btn.selected .elem-shine::after{
+  animation:shineSweep 0.5s ease-in-out forwards;
+}
+@keyframes shineSweep{to{transform:translateX(100%)}}
 
-  .bar-track{
-    position:relative;
-    height:10px;
-    background:#1a1c24;
-    border-radius:2px;
-    overflow:hidden;
-    border:1px solid #2a2d38;
-  }
-  .bar-fill{
-    position:absolute;
-    top:0;height:100%;
-    border-radius:2px;
-    width:0;
-    transition:width 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
-  }
-  .bar-fill.positive{
-    left:0;
-    background:linear-gradient(90deg,#4ade8022,#4ade80);
-  }
-  .bar-fill.negative{
-    right:0;
-    background:linear-gradient(270deg,#f8717122,#f87171);
-  }
-  .bar-glow{
-    position:absolute;
-    top:0;height:100%;
-    width:3px;
-    border-radius:999px;
-    opacity:0;
-    transition:opacity 0.3s 0.45s;
-  }
-  .bar-glow.positive{
-    background:#4ade80;
-    box-shadow:0 0 8px rgba(74,222,128,0.4),0 0 16px rgba(74,222,128,0.4);
-  }
-  .bar-glow.negative{
-    background:#f87171;
-    box-shadow:0 0 8px rgba(248,113,113,0.4),0 0 16px rgba(248,113,113,0.4);
-  }
-  .bar-row:hover .bar-track{background:#1e2028}
+/* ── CARDS ── */
+.cards-section{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1rem;max-width:640px;width:100%;
+}
+@media(max-width:600px){.cards-section{grid-template-columns:1fr}}
 
-  /* Tooltip */
-  .bar-tooltip{
-    position:fixed;
-    z-index:50;
-    pointer-events:none;
-    background:#1a1c24;
-    border:1px solid #3d4455;
-    padding:0.35rem 0.65rem;
-    border-radius:4px;
-    font-size:0.6rem;
-    font-family:monospace;
-    box-shadow:0 8px 24px rgba(0,0,0,0.5);
-    white-space:nowrap;
-    opacity:0;
-    transition:opacity 0.12s;
-  }
-  .bar-tooltip.visible{opacity:1}
-  .bar-tooltip .tt-name{color:#9ca3af;text-transform:uppercase;letter-spacing:0.1em}
-  .bar-tooltip .tt-sep{color:#4b5563;margin:0 0.4rem}
-  .bar-tooltip .tt-val.positive{color:#4ade80}
-  .bar-tooltip .tt-val.negative{color:#f87171}
+.hw-card{
+  background:#22252e;border:1px solid rgba(61,68,85,0.5);
+  border-radius:1rem;padding:1rem;
+  display:flex;flex-direction:column;gap:0.75rem;min-width:0;
+}
+.hw-card-header{display:flex;align-items:center;justify-content:space-between}
+.hw-card-title{
+  font-size:0.7rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.15em;color:#9ca3af;
+}
+.hw-card-tag{font-size:0.6rem;font-family:monospace;color:#4b5563}
 
-  /* Footer line */
-  .hw-card-footer{
-    height:1px;
-    background:linear-gradient(90deg,transparent,#3d4455,transparent);
-    margin-top:0.25rem;
-  }
+.bar-row{position:relative;cursor:default}
+.bar-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.25rem}
+.bar-name{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#9ca3af}
+.bar-value{font-size:0.72rem;font-family:monospace;font-weight:800;font-variant-numeric:tabular-nums}
+.bar-value.positive{color:#4ade80}
+.bar-value.negative{color:#f87171}
 
-  /* Empty state */
-  .bar-empty{
-    height:4rem;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:0.68rem;
-    font-family:monospace;
-    color:#4b5563;
-    letter-spacing:0.1em;
-  }
+.bar-track{
+  position:relative;height:10px;background:#1a1c24;
+  border-radius:2px;overflow:hidden;border:1px solid #2a2d38;
+}
+.bar-fill{
+  position:absolute;top:0;height:100%;border-radius:2px;width:0;
+  transition:width 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.bar-fill.positive{left:0;background:linear-gradient(90deg,#4ade8022,#4ade80)}
+.bar-fill.negative{right:0;background:linear-gradient(270deg,#f8717122,#f87171)}
+.bar-glow{
+  position:absolute;top:0;height:100%;width:3px;border-radius:999px;
+  opacity:0;transition:opacity 0.3s 0.45s;
+}
+.bar-glow.positive{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,0.4),0 0 16px rgba(74,222,128,0.4)}
+.bar-glow.negative{background:#f87171;box-shadow:0 0 8px rgba(248,113,113,0.4),0 0 16px rgba(248,113,113,0.4)}
+.bar-row:hover .bar-track{background:#1e2028}
+.bar-empty{
+  height:4rem;display:flex;align-items:center;justify-content:center;
+  font-size:0.68rem;font-family:monospace;color:#4b5563;letter-spacing:0.1em;
+}
+.hw-card-footer{height:1px;background:linear-gradient(90deg,transparent,#3d4455,transparent);margin-top:0.25rem}
 
-  /* Page title */
-  .preview-title{
-    grid-column:1/-1;
-    text-align:center;
-    margin-bottom:1rem;
-  }
-  .preview-title h1{
-    font-size:1.2rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:0.15em;
-    color:#c5a059;
-  }
-  .preview-title p{
-    font-size:0.65rem;
-    color:#4b5563;
-    font-family:monospace;
-    margin-top:0.3rem;
-  }
+/* Tooltip */
+.bar-tooltip{
+  position:fixed;z-index:50;pointer-events:none;
+  background:#1a1c24;border:1px solid #3d4455;
+  padding:0.35rem 0.65rem;border-radius:4px;
+  font-size:0.6rem;font-family:monospace;
+  box-shadow:0 8px 24px rgba(0,0,0,0.5);
+  white-space:nowrap;opacity:0;transition:opacity 0.12s;
+}
+.bar-tooltip.visible{opacity:1}
+.bar-tooltip .tt-name{color:#9ca3af;text-transform:uppercase;letter-spacing:0.1em}
+.bar-tooltip .tt-sep{color:#4b5563;margin:0 0.4rem}
+.bar-tooltip .tt-val.positive{color:#4ade80}
+.bar-tooltip .tt-val.negative{color:#f87171}
+
+/* Section labels */
+.section-label{
+  text-align:center;font-size:0.6rem;font-family:monospace;
+  color:#4b5563;text-transform:uppercase;letter-spacing:0.3em;
+}
+
+/* Selected element banner */
+.selected-banner{
+  background:#22252e;border:1px solid rgba(61,68,85,0.5);
+  border-radius:1rem;padding:1.25rem 1.5rem;
+  display:flex;align-items:center;gap:1.5rem;
+  max-width:640px;width:100%;position:relative;overflow:hidden;
+}
+.selected-banner .sb-glow{
+  position:absolute;right:-80px;top:-80px;width:256px;height:256px;
+  border-radius:50%;filter:blur(100px);opacity:0.2;pointer-events:none;
+}
+.selected-banner .sb-icon{
+  width:64px;height:64px;border-radius:0.75rem;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:1;
+}
+.selected-banner .sb-info{position:relative;z-index:1}
+.selected-banner .sb-name{
+  font-size:1.8rem;font-weight:900;text-transform:uppercase;
+  letter-spacing:-0.02em;color:#fff;
+}
+.selected-banner .sb-combo{
+  font-size:0.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.15em;color:#6b7280;margin-top:0.15rem;
+}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 </style>
 </head>
 <body>
 
-<div class="preview-wrap">
-  <div class="preview-title">
-    <h1>Alchemy — Multiplier Bars</h1>
-    <p>VANILLA CSS PREVIEW — CORROSIVE ELEMENT</p>
+<!-- Wheel -->
+<div class="wheel-section">
+  <div class="wheel-wrap" id="wheel">
+    <div class="wheel-ring r1"></div>
+    <div class="wheel-ring r2"></div>
+    <div class="wheel-ring r3"></div>
+    <div class="wheel-ring r4"></div>
+    <div class="wheel-ring r5"></div>
+    <div class="wheel-spin"></div>
+    <div class="wheel-glow"></div>
+    <div class="wheel-center">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#c5a059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/>
+      </svg>
+    </div>
+    <!-- buttons injected by JS -->
   </div>
-  <!-- Cards injected by JS -->
+  <div class="section-label">Interactive Elemental Matrix</div>
 </div>
 
-<!-- Shared tooltip -->
+<!-- Selected element banner -->
+<div class="selected-banner" id="selected-banner"></div>
+
+<!-- Multiplier cards -->
+<div class="cards-section" id="cards"></div>
+
+<!-- Tooltip -->
 <div class="bar-tooltip" id="bar-tooltip">
-  <span class="tt-name"></span>
-  <span class="tt-sep">|</span>
-  <span class="tt-val"></span>
+  <span class="tt-name"></span><span class="tt-sep">|</span><span class="tt-val"></span>
 </div>
 
 <script>
-// Corrosive multiplier data (same as elements.ts)
-const CARDS = [
-  { title: 'Armor', tag: '2 MATCH', items: [
-    { name: 'Ferrite', value: 75 },
-    { name: 'Alloy', value: -50 }
-  ]},
-  { title: 'Flesh', tag: '2 MATCH', items: [
-    { name: 'Cloned', value: 75 },
-    { name: 'Infested', value: 50 }
-  ]},
-  { title: 'Shields', tag: '2 MATCH', items: [
-    { name: 'Proto', value: 50 },
-    { name: 'Shield', value: -50 }
-  ]},
-  { title: 'Machinery', tag: '1 MATCH', items: [
-    { name: 'Robotic', value: 75 }
-  ]}
+/* ── Element data (from elements.ts) ── */
+const ELEMENTS = [
+  { id:'cold', name:'Cold', color:'#4FC3F7', inner:true,
+    icon:'<path d="M2 12h20M12 2v20M20 16l-4-4 4-4M4 8l4 4-4 4M16 4l-4 4-4-4M8 20l4-4 4 4"/>',
+    multipliers:{ armor:[{type:'Alloy',value:0.25}], flesh:[{type:'Infested',value:0.25}], shields:[{type:'Shield',value:0.5}], machinery:[] }},
+  { id:'electricity', name:'Electricity', color:'#FFEB3B', inner:true,
+    icon:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+    multipliers:{ armor:[], flesh:[], shields:[{type:'Shield',value:0.5},{type:'Proto',value:0.5}], machinery:[{type:'Robotic',value:0.5}] }},
+  { id:'heat', name:'Heat', color:'#FF7043', inner:true,
+    icon:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3.5-7.5-2 3.5-.5 5 1 7.5 1.5 2.5 0 4-1.5 5.5A2.5 2.5 0 0 1 15 17c-1.74-.5-2.96-2.18-2.5-4.5"/>',
+    multipliers:{ armor:[], flesh:[{type:'Cloned',value:0.25},{type:'Infested',value:0.5}], shields:[], machinery:[{type:'Robotic',value:0.25}] }},
+  { id:'toxin', name:'Toxin', color:'#66BB6A', inner:true,
+    icon:'<circle cx="9" cy="12" r="1"/><circle cx="12" cy="9" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="12" cy="15" r="1"/><path d="M7.5 7.5 16 16M7.5 16.5 16 8"/>',
+    multipliers:{ armor:[{type:'Ferrite',value:0.25}], flesh:[{type:'Cloned',value:0.25}], shields:[], machinery:[] }},
+  { id:'corrosive', name:'Corrosive', color:'#8BC34A', components:['toxin','electricity'],
+    icon:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>',
+    multipliers:{ armor:[{type:'Ferrite',value:0.75},{type:'Alloy',value:-0.5}], flesh:[{type:'Cloned',value:0.75},{type:'Infested',value:0.5}], shields:[{type:'Proto',value:0.5},{type:'Shield',value:-0.5}], machinery:[{type:'Robotic',value:0.75}] }},
+  { id:'radiation', name:'Radiation', color:'#FFEE58', components:['heat','electricity'],
+    icon:'<circle cx="12" cy="12" r="4"/><path d="M12 4h.01M20 12h.01M12 20h.01M4 12h.01"/><path d="M17.66 6.34l-.01.01M17.66 17.66l-.01.01M6.34 17.66l-.01.01M6.34 6.34l-.01.01"/>',
+    multipliers:{ armor:[{type:'Alloy',value:0.75}], flesh:[{type:'Infested',value:-0.5}], shields:[{type:'Shield',value:-0.25}], machinery:[{type:'Robotic',value:0.25}] }},
+  { id:'viral', name:'Viral', color:'#BA68C8', components:['cold','toxin'],
+    icon:'<path d="M2 15c6.667-6 13.333 0 20-6M9 3.236s2.299 3.058 3.562 3.236M5.698 12s3.058-2.299 3.236-3.562"/>',
+    multipliers:{ armor:[], flesh:[{type:'Cloned',value:0.75}], shields:[], machinery:[] }},
+  { id:'magnetic', name:'Magnetic', color:'#42A5F5', components:['cold','electricity'],
+    icon:'<path d="M6 15a6 6 0 0 1 12 0M6 15a6 6 0 0 0 12 0M6 9v6M18 9v6"/>',
+    multipliers:{ armor:[], flesh:[], shields:[{type:'Shield',value:0.75},{type:'Proto',value:0.75}], machinery:[] }},
+  { id:'gas', name:'Gas', color:'#00BFA5', components:['heat','toxin'],
+    icon:'<path d="M17.5 19a2.5 2.5 0 0 0 0-5h-9A4.5 4.5 0 1 1 8.5 5H17M22 10a3 3 0 0 0-3-3h-1"/>',
+    multipliers:{ armor:[], flesh:[{type:'Infested',value:0.75}], shields:[], machinery:[] }},
+  { id:'blast', name:'Blast', color:'#EF5350', components:['cold','heat'],
+    icon:'<path d="M12 2l2 7 8-4-5 7 7 4-6 2 2 6-5-3-3 5-3-5-5 3 2-6-6-2 7-4-5-7 8 4 2-7z"/>',
+    multipliers:{ armor:[{type:'Ferrite',value:0.25}], flesh:[], shields:[], machinery:[{type:'Robotic',value:0.75}] }}
 ];
 
-const wrap = document.querySelector('.preview-wrap');
+const INNER_ANGLES = [-135, -45, 135, 45];
+const OUTER_ANGLES = [-90, -30, 30, 90, 150, 210];
 const tooltip = document.getElementById('bar-tooltip');
+let selected = ELEMENTS.find(e => e.id === 'corrosive');
 
-CARDS.forEach((card, ci) => {
-  const el = document.createElement('div');
-  el.className = 'hw-card';
-  el.innerHTML = `
-    <div class="hw-card-header">
-      <div class="hw-card-title">${card.title}</div>
-      <div class="hw-card-tag">${card.tag}</div>
-    </div>
-    <div class="bar-list">
-      ${card.items.length ? card.items.map((item, i) => {
-        const cls = item.value > 0 ? 'positive' : 'negative';
-        const display = item.value > 0 ? `+${item.value}%` : `${item.value}%`;
-        const pct = Math.abs(item.value);
-        return `
-          <div class="bar-row" data-name="${item.name}" data-display="${display}" data-cls="${cls}"
-               style="--delay:${0.1 + i * 0.08}s; --glow-delay:${0.45 + i * 0.08}s">
-            <div class="bar-label-row">
-              <span class="bar-name">${item.name}</span>
-              <span class="bar-value ${cls}" style="animation:fadeIn 0.3s ${0.15 + i * 0.08}s both">${display}</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill ${cls}" data-width="${pct}"></div>
-              <div class="bar-glow ${cls}" data-pct="${pct}" data-dir="${cls}"></div>
-            </div>
-          </div>`;
-      }).join('') : '<div class="bar-empty">NO MODIFIER</div>'}
-    </div>
-    <div class="hw-card-footer"></div>
-  `;
-  wrap.appendChild(el);
+function svgIcon(el, size) {
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+el.color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+el.icon+'</svg>';
+}
 
-  // Animate bars in after a frame
-  requestAnimationFrame(() => {
-    el.querySelectorAll('.bar-fill').forEach(bar => {
-      const w = bar.dataset.width;
-      const delay = parseFloat(bar.closest('.bar-row').style.getPropertyValue('--delay')) * 1000;
-      setTimeout(() => { bar.style.width = w + '%'; }, delay);
-    });
-    el.querySelectorAll('.bar-glow').forEach(glow => {
-      const pct = glow.dataset.pct;
-      const dir = glow.dataset.dir;
-      const delay = parseFloat(glow.closest('.bar-row').style.getPropertyValue('--glow-delay')) * 1000;
-      setTimeout(() => {
-        glow.style.opacity = '1';
-        if (dir === 'positive') {
-          glow.style.left = pct + '%';
-          glow.style.transform = 'translateX(-100%)';
-        } else {
-          glow.style.right = pct + '%';
-          glow.style.transform = 'translateX(100%)';
-        }
-      }, delay);
-    });
+/* ── Build wheel ── */
+function buildWheel() {
+  const wheel = document.getElementById('wheel');
+  const cx = 50, cy = 50; // percent center
+  const inner = ELEMENTS.filter(e => e.inner);
+  const outer = ELEMENTS.filter(e => !e.inner);
+
+  inner.forEach((el, i) => {
+    const angle = INNER_ANGLES[i];
+    const r = 110;
+    const tx = Math.cos(angle * Math.PI / 180) * r;
+    const ty = Math.sin(angle * Math.PI / 180) * r;
+    const btn = document.createElement('button');
+    btn.className = 'elem-btn inner' + (selected.id === el.id ? ' selected' : '');
+    btn.dataset.id = el.id;
+    btn.style.cssText = 'left:50%;top:50%;transform:translate(calc(-50% + '+tx+'px),calc(-50% + '+ty+'px));--tx:calc(-50% + '+tx+'px);--ty:calc(-50% + '+ty+'px)';
+    btn.innerHTML = '<div class="elem-shine"></div><div class="elem-glow" style="background:'+el.color+'"></div>'+svgIcon(el, 24)+'<span class="elem-name">'+el.name+'</span>';
+    btn.onclick = () => selectElement(el.id);
+    wheel.appendChild(btn);
   });
 
-  // Tooltip
-  el.querySelectorAll('.bar-row').forEach(row => {
-    row.addEventListener('mouseenter', () => {
-      tooltip.querySelector('.tt-name').textContent = row.dataset.name;
-      const valEl = tooltip.querySelector('.tt-val');
-      valEl.textContent = row.dataset.display;
-      valEl.className = 'tt-val ' + row.dataset.cls;
-      tooltip.classList.add('visible');
+  outer.forEach((el, i) => {
+    const angle = OUTER_ANGLES[i];
+    const r = 200;
+    const tx = Math.cos(angle * Math.PI / 180) * r;
+    const ty = Math.sin(angle * Math.PI / 180) * r;
+    const btn = document.createElement('button');
+    btn.className = 'elem-btn outer' + (selected.id === el.id ? ' selected' : '');
+    btn.dataset.id = el.id;
+    btn.style.cssText = 'left:50%;top:50%;transform:translate(calc(-50% + '+tx+'px),calc(-50% + '+ty+'px));--tx:calc(-50% + '+tx+'px);--ty:calc(-50% + '+ty+'px)';
+    btn.innerHTML = '<div class="elem-shine"></div><div class="elem-glow" style="background:'+el.color+'"></div>'+svgIcon(el, 24);
+    btn.onclick = () => selectElement(el.id);
+    wheel.appendChild(btn);
+  });
+}
+
+/* ── Selected banner ── */
+function renderBanner() {
+  const el = selected;
+  const banner = document.getElementById('selected-banner');
+  let comboHTML = '';
+  if (el.components) {
+    const c = el.components.map(id => ELEMENTS.find(e => e.id === id));
+    comboHTML = '<div class="sb-combo">(' + c[0].name + ' + ' + c[1].name + ')</div>';
+  }
+  banner.innerHTML =
+    '<div class="sb-glow" style="background:'+el.color+'"></div>' +
+    '<div class="sb-icon" style="background:'+el.color+'15;border:1px solid '+el.color+'40">'+svgIcon(el,32)+'</div>' +
+    '<div class="sb-info"><div class="sb-name">'+el.name+'</div>'+comboHTML+'</div>';
+}
+
+/* ── Multiplier cards ── */
+function renderCards() {
+  const container = document.getElementById('cards');
+  container.innerHTML = '';
+  const cats = [
+    { title:'Armor', items: selected.multipliers.armor },
+    { title:'Flesh', items: selected.multipliers.flesh },
+    { title:'Shields', items: selected.multipliers.shields },
+    { title:'Machinery', items: selected.multipliers.machinery }
+  ];
+
+  cats.forEach(cat => {
+    const card = document.createElement('div');
+    card.className = 'hw-card';
+    const tag = cat.items.length > 0 ? cat.items.length + ' MATCH' : 'NEUTRAL';
+    let barsHTML = '';
+    if (cat.items.length) {
+      barsHTML = cat.items.map((m, i) => {
+        const v = Math.round(m.value * 100);
+        const cls = v > 0 ? 'positive' : 'negative';
+        const display = v > 0 ? '+'+v+'%' : v+'%';
+        const pct = Math.abs(v);
+        return '<div class="bar-row" data-name="'+m.type+'" data-display="'+display+'" data-cls="'+cls+'" style="--delay:'+(0.1+i*0.08)+'s;--glow-delay:'+(0.45+i*0.08)+'s">' +
+          '<div class="bar-label-row"><span class="bar-name">'+m.type+'</span>' +
+          '<span class="bar-value '+cls+'" style="animation:fadeIn 0.3s '+(0.15+i*0.08)+'s both">'+display+'</span></div>' +
+          '<div class="bar-track"><div class="bar-fill '+cls+'" data-width="'+pct+'"></div>' +
+          '<div class="bar-glow '+cls+'" data-pct="'+pct+'" data-dir="'+cls+'"></div></div></div>';
+      }).join('');
+    } else {
+      barsHTML = '<div class="bar-empty">NO MODIFIER</div>';
+    }
+    card.innerHTML =
+      '<div class="hw-card-header"><div class="hw-card-title">'+cat.title+'</div><div class="hw-card-tag">'+tag+'</div></div>' +
+      '<div class="bar-list">'+barsHTML+'</div><div class="hw-card-footer"></div>';
+    container.appendChild(card);
+
+    // Animate bars
+    requestAnimationFrame(() => {
+      card.querySelectorAll('.bar-fill').forEach(bar => {
+        const w = bar.dataset.width;
+        const d = parseFloat(bar.closest('.bar-row').style.getPropertyValue('--delay')) * 1000;
+        setTimeout(() => { bar.style.width = w + '%'; }, d);
+      });
+      card.querySelectorAll('.bar-glow').forEach(glow => {
+        const pct = glow.dataset.pct;
+        const dir = glow.dataset.dir;
+        const d = parseFloat(glow.closest('.bar-row').style.getPropertyValue('--glow-delay')) * 1000;
+        setTimeout(() => {
+          glow.style.opacity = '1';
+          if (dir === 'positive') { glow.style.left = pct+'%'; glow.style.transform = 'translateX(-100%)'; }
+          else { glow.style.right = pct+'%'; glow.style.transform = 'translateX(100%)'; }
+        }, d);
+      });
     });
-    row.addEventListener('mousemove', (e) => {
-      tooltip.style.left = (e.clientX + 12) + 'px';
-      tooltip.style.top = (e.clientY - 36) + 'px';
-    });
-    row.addEventListener('mouseleave', () => {
-      tooltip.classList.remove('visible');
+
+    // Tooltips
+    card.querySelectorAll('.bar-row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        tooltip.querySelector('.tt-name').textContent = row.dataset.name;
+        const v = tooltip.querySelector('.tt-val');
+        v.textContent = row.dataset.display; v.className = 'tt-val ' + row.dataset.cls;
+        tooltip.classList.add('visible');
+      });
+      row.addEventListener('mousemove', e => {
+        tooltip.style.left = (e.clientX+12)+'px'; tooltip.style.top = (e.clientY-36)+'px';
+      });
+      row.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
     });
   });
-});
+}
+
+/* ── Select ── */
+function selectElement(id) {
+  selected = ELEMENTS.find(e => e.id === id);
+  document.querySelectorAll('.elem-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.id === id);
+  });
+  renderBanner();
+  renderCards();
+}
+
+/* ── Init ── */
+buildWheel();
+renderBanner();
+renderCards();
 </script>
-
-<style>
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-</style>
-
 </body>
 </html>
