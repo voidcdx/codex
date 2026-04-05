@@ -16,7 +16,7 @@ var ELEMENTS = [
     icon:'<path d="M12 2 L12 6" fill="none"/><path d="M12 6c-3 3-6 5-6 9a6 6 0 0 0 12 0c0-4-3-6-6-9z" fill="none"/><circle cx="9.5" cy="14" r="1.2" fill="none"/><circle cx="14" cy="16" r="0.8" fill="none"/><circle cx="11" cy="18" r="0.6" fill="none"/>',
     multipliers:{ armor:[{type:'Ferrite',value:0.25}], flesh:[{type:'Cloned',value:0.25}], shields:[], machinery:[] }},
   { id:'corrosive', name:'Corrosive', color:'#8BC34A', components:['toxin','electricity'],
-    icon:'<path d="M6 4c0 0 1 4-2 8s-1 8 4 8c3 0 3-2 5-2s2 2 5 2c5 0 5-4 4-8s-2-8-2-8" fill="none"/><path d="M9 10 L8 14" fill="none"/><path d="M15 8 L13 13" fill="none"/><circle cx="11" cy="16" r="1" fill="none"/>',
+    icon:'<path d="M17 4a9 9 0 0 1 1 12" fill="none"/><path d="M14 19a9 9 0 0 1-10-6" fill="none"/><path d="M4 8a9 9 0 0 1 8-6" fill="none"/><path d="M8 14 L7 18" fill="none"/><path d="M13 16 L12.5 19.5" fill="none"/><circle cx="7" cy="20" r="0.8" fill="none"/><circle cx="12.5" cy="21.5" r="0.6" fill="none"/>',
     multipliers:{ armor:[{type:'Ferrite',value:0.75},{type:'Alloy',value:-0.5}], flesh:[{type:'Cloned',value:0.75},{type:'Infested',value:0.5}], shields:[{type:'Proto',value:0.5},{type:'Shield',value:-0.5}], machinery:[{type:'Robotic',value:0.75}] }},
   { id:'radiation', name:'Radiation', color:'#FFEE58', components:['heat','electricity'],
     icon:'<circle cx="12" cy="12" r="2.5" fill="none"/><path d="M12 9.5 L10 3 A9 9 0 0 1 14 3 Z" fill="none"/><path d="M14.2 13.2 L19.5 16.5 A9 9 0 0 1 16 20 Z" fill="none"/><path d="M9.8 13.2 L4.5 16.5 A9 9 0 0 1 8 20 Z" fill="none"/>',
