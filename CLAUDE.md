@@ -17,9 +17,10 @@ Create a Python-based damage calculator that accurately emulates in-game damage 
 - **Language:** Python 3.11+
 - **Testing:** `pytest`
 - **Data Source:** Warframe Wiki (official: wiki.warframe.com)
-- **Alchemy Page:** React 18 + Vite + TypeScript + Tailwind + Framer Motion + Recharts + Lucide React
+- **Alchemy Page:** React 18 + Vite + TypeScript + Tailwind + Framer Motion + Lucide React (Recharts removed)
   - Build: `cd web/alchemy && npm install && npm run build` (outputs to `web/static/alchemy-dist/`)
   - All dependencies MIT/ISC licensed, no tracking/telemetry
+  - **Planned:** Full vanilla port (HTML/CSS/JS) — preview at `web/static/alchemy-preview.html`
 
 ## Commands
 ```bash
@@ -213,7 +214,7 @@ web/
     sentinels/     # 6 sentinel PNGs — convention: Name-Prime.png (spaces→hyphens)
     relics/        # 5 relic tier PNGs — convention: XRelicIntact.png (missing: Eterna, Vanguard)
 web/alchemy/              # Vite+React sub-app for Alchemy page
-  package.json            # dependencies: react, framer-motion, recharts, lucide-react, tailwind
+  package.json            # dependencies: react, framer-motion, lucide-react, tailwind (recharts removed)
   vite.config.ts          # builds to web/static/alchemy-dist/; base: /static/alchemy-dist/
   tsconfig.json           # TypeScript config
   tailwind.config.js      # warframe theme colors (gold, accent, card, bg)
@@ -227,12 +228,13 @@ web/alchemy/              # Vite+React sub-app for Alchemy page
     components/
       ElementalWheel.tsx        # circular element selector (inner: base, outer: combined)
       ElementalCombiner.tsx     # slot-based combiner (pick 2 base → result)
-      MultiplierCard.tsx        # bar chart cards per category (Recharts)
+      MultiplierCard.tsx        # custom CSS bars + Framer Motion (Recharts removed)
       SelectedElementHeader.tsx # selected element display + component breakdown
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
-web/static/theme-preview.html  # standalone theme/color preview page — open at /static/theme-preview.html
+web/static/theme-preview.html    # standalone theme/color preview page — open at /static/theme-preview.html
+web/static/alchemy-preview.html  # vanilla alchemy proof-of-concept (wheel + cards, zero deps) — open at /static/alchemy-preview.html
 ARCHITECTURE.md     # detailed implementation notes — damage pipeline, CSS, live page, scaling formulas, etc.
 skills/
   ui-ux-pro-max/SKILL.md  # design system guidance — auto-installed by session-start.sh
