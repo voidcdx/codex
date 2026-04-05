@@ -3,7 +3,7 @@
 ## Current Status
 **304 tests passing.** v0.8.1. Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla).
 
-**Branch:** `claude/review-handoff-docs-GK8Zj`
+**Branch:** `claude/continue-documentation-JrJt7`
 
 ---
 
@@ -65,7 +65,7 @@ web/static/alchemy-preview.html      # standalone PoC (superseded)
 - **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification doesn't map automatically
 - **Mod images not yet wired into UI** — ready for mod picker redesign
 - **Baro item names** — some guessed names may be wrong
-- **Factions page** — files kept (factions.html, factions.css, factions.js) but route removed; could be deleted
+- **Factions page** — DONE, deleted (factions.html, factions.css, factions.js); `.factions-wrap` renamed to `.page-wrap` in layout.css
 
 ---
 
@@ -99,4 +99,4 @@ pytest                                                # verify
 - Reliquary images on LEFT side, stats/info on RIGHT — no rotation
 - Reliquary image inside scroll panel (not on outer container) — fixes landscape float
 - Landscape phones: nav sidebar collapses to burger, header scrolls away
-- /factions route replaced by /alchemy; factions files kept but unrouted
+- Factions page fully deleted; `.factions-wrap` renamed to `.page-wrap` (shared wrapper in layout.css)
