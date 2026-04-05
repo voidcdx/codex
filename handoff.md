@@ -58,7 +58,7 @@ web/static/alchemy-preview.html      # standalone PoC (superseded)
 ## Pending / Known Issues
 - **Element icons** — current SVGs are functional placeholders; user wants to create custom graphics (can swap icon strings in alchemy.js)
 - **Missing base element glyphs** — Cold, Electricity, Heat, Toxin PNGs not downloaded (run `fetch_images.py --category damage_types`)
-- **React app cleanup** — `web/alchemy/` directory + `web/static/alchemy-dist/` can be deleted (no longer served)
+- **React app cleanup** — DONE, deleted `web/alchemy/` + `web/static/alchemy-dist/`
 - **Alchemy element data** — multiplier values may need wiki verification for accuracy
 - **Alchemy page styling** — could use further refinement to match Void Codex design system
 - **URL state / sharing** — not started
