@@ -50,7 +50,7 @@
   text-transform: uppercase;
 }
 
-/* ── Page header brand (shared: calculator, factions, live) ── */
+/* ── Page header brand (shared: calculator, live, alchemy, reliquary) ── */
 .live-header-brand {
   font-family: var(--font-display);
   font-size: 0.85rem;
@@ -174,9 +174,20 @@
 /* ── Dot background — applied to every scrollable content wrapper ── */
 .content,
 .live-wrap,
-.factions-wrap {
+.page-wrap {
   background-image: radial-gradient(circle, var(--accent-a18) 1px, transparent 1px);
   background-size: 20px 20px;
+}
+
+/* ── Page wrap — generic full-page wrapper (alchemy, reliquary, etc.) ── */
+.page-wrap {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* ── Content grid ── */
@@ -453,6 +464,7 @@
   .main { overflow: visible; height: auto; }
 
   .content { grid-template-columns: 1fr; padding: 16px; overflow-y: visible; }
+  .page-wrap { padding: 16px; overflow-y: visible; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
   .content-left { display: none; }
 
   .sidebar {

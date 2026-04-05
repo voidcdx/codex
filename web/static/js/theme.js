@@ -44,7 +44,7 @@ function initBackToTop() {
   positionBackToTop(btn);
   window.addEventListener('resize', () => positionBackToTop(btn), { passive: true });
 
-  const SCROLL_SELECTORS = ['.main', '.content', '.live-wrap', '.factions-wrap'];
+  const SCROLL_SELECTORS = ['.main', '.content', '.live-wrap', '.page-wrap'];
 
   function checkScroll(scrollTop) {
     btn.classList.toggle('visible', scrollTop > 200);
