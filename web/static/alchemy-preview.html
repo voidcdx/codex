@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alchemy Preview — Void Codex</title>
+<link rel="icon" href="/favicon.ico">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#13151a;
+    color:#e0e0e0;
+    font-family:'Exo 2','Segoe UI',sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:2rem;
+  }
+  .preview-wrap{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1rem;
+    max-width:640px;
+    width:100%;
+  }
+  @media(max-width:600px){.preview-wrap{grid-template-columns:1fr}}
+
+  /* Card */
+  .hw-card{
+    background:#22252e;
+    border:1px solid rgba(61,68,85,0.5);
+    border-radius:1rem;
+    padding:1rem;
+    display:flex;
+    flex-direction:column;
+    gap:0.75rem;
+    min-width:0;
+  }
+  .hw-card-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .hw-card-title{
+    font-size:0.7rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.15em;
+    color:#9ca3af;
+    display:flex;align-items:center;gap:0.5rem;
+  }
+  .hw-card-tag{
+    font-size:0.6rem;
+    font-family:monospace;
+    color:#4b5563;
+    letter-spacing:-0.02em;
+  }
+
+  /* Bars */
+  .bar-row{position:relative;cursor:default}
+  .bar-label-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:0.25rem;
+  }
+  .bar-name{
+    font-size:0.68rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:#9ca3af;
+  }
+  .bar-value{
+    font-size:0.72rem;
+    font-family:monospace;
+    font-weight:800;
+    font-variant-numeric:tabular-nums;
+  }
+  .bar-value.positive{color:#4ade80}
+  .bar-value.negative{color:#f87171}
+
+  .bar-track{
+    position:relative;
+    height:10px;
+    background:#1a1c24;
+    border-radius:2px;
+    overflow:hidden;
+    border:1px solid #2a2d38;
+  }
+  .bar-fill{
+    position:absolute;
+    top:0;height:100%;
+    border-radius:2px;
+    width:0;
+    transition:width 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .bar-fill.positive{
+    left:0;
+    background:linear-gradient(90deg,#4ade8022,#4ade80);
+  }
+  .bar-fill.negative{
+    right:0;
+    background:linear-gradient(270deg,#f8717122,#f87171);
+  }
+  .bar-glow{
+    position:absolute;
+    top:0;height:100%;
+    width:3px;
+    border-radius:999px;
+    opacity:0;
+    transition:opacity 0.3s 0.45s;
+  }
+  .bar-glow.positive{
+    background:#4ade80;
+    box-shadow:0 0 8px rgba(74,222,128,0.4),0 0 16px rgba(74,222,128,0.4);
+  }
+  .bar-glow.negative{
+    background:#f87171;
+    box-shadow:0 0 8px rgba(248,113,113,0.4),0 0 16px rgba(248,113,113,0.4);
+  }
+  .bar-row:hover .bar-track{background:#1e2028}
+
+  /* Tooltip */
+  .bar-tooltip{
+    position:fixed;
+    z-index:50;
+    pointer-events:none;
+    background:#1a1c24;
+    border:1px solid #3d4455;
+    padding:0.35rem 0.65rem;
+    border-radius:4px;
+    font-size:0.6rem;
+    font-family:monospace;
+    box-shadow:0 8px 24px rgba(0,0,0,0.5);
+    white-space:nowrap;
+    opacity:0;
+    transition:opacity 0.12s;
+  }
+  .bar-tooltip.visible{opacity:1}
+  .bar-tooltip .tt-name{color:#9ca3af;text-transform:uppercase;letter-spacing:0.1em}
+  .bar-tooltip .tt-sep{color:#4b5563;margin:0 0.4rem}
+  .bar-tooltip .tt-val.positive{color:#4ade80}
+  .bar-tooltip .tt-val.negative{color:#f87171}
+
+  /* Footer line */
+  .hw-card-footer{
+    height:1px;
+    background:linear-gradient(90deg,transparent,#3d4455,transparent);
+    margin-top:0.25rem;
+  }
+
+  /* Empty state */
+  .bar-empty{
+    height:4rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0.68rem;
+    font-family:monospace;
+    color:#4b5563;
+    letter-spacing:0.1em;
+  }
+
+  /* Page title */
+  .preview-title{
+    grid-column:1/-1;
+    text-align:center;
+    margin-bottom:1rem;
+  }
+  .preview-title h1{
+    font-size:1.2rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:0.15em;
+    color:#c5a059;
+  }
+  .preview-title p{
+    font-size:0.65rem;
+    color:#4b5563;
+    font-family:monospace;
+    margin-top:0.3rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-wrap">
+  <div class="preview-title">
+    <h1>Alchemy — Multiplier Bars</h1>
+    <p>VANILLA CSS PREVIEW — CORROSIVE ELEMENT</p>
+  </div>
+  <!-- Cards injected by JS -->
+</div>
+
+<!-- Shared tooltip -->
+<div class="bar-tooltip" id="bar-tooltip">
+  <span class="tt-name"></span>
+  <span class="tt-sep">|</span>
+  <span class="tt-val"></span>
+</div>
+
+<script>
+// Corrosive multiplier data (same as elements.ts)
+const CARDS = [
+  { title: 'Armor', tag: '2 MATCH', items: [
+    { name: 'Ferrite', value: 75 },
+    { name: 'Alloy', value: -50 }
+  ]},
+  { title: 'Flesh', tag: '2 MATCH', items: [
+    { name: 'Cloned', value: 75 },
+    { name: 'Infested', value: 50 }
+  ]},
+  { title: 'Shields', tag: '2 MATCH', items: [
+    { name: 'Proto', value: 50 },
+    { name: 'Shield', value: -50 }
+  ]},
+  { title: 'Machinery', tag: '1 MATCH', items: [
+    { name: 'Robotic', value: 75 }
+  ]}
+];
+
+const wrap = document.querySelector('.preview-wrap');
+const tooltip = document.getElementById('bar-tooltip');
+
+CARDS.forEach((card, ci) => {
+  const el = document.createElement('div');
+  el.className = 'hw-card';
+  el.innerHTML = `
+    <div class="hw-card-header">
+      <div class="hw-card-title">${card.title}</div>
+      <div class="hw-card-tag">${card.tag}</div>
+    </div>
+    <div class="bar-list">
+      ${card.items.length ? card.items.map((item, i) => {
+        const cls = item.value > 0 ? 'positive' : 'negative';
+        const display = item.value > 0 ? `+${item.value}%` : `${item.value}%`;
+        const pct = Math.abs(item.value);
+        return `
+          <div class="bar-row" data-name="${item.name}" data-display="${display}" data-cls="${cls}"
+               style="--delay:${0.1 + i * 0.08}s; --glow-delay:${0.45 + i * 0.08}s">
+            <div class="bar-label-row">
+              <span class="bar-name">${item.name}</span>
+              <span class="bar-value ${cls}" style="animation:fadeIn 0.3s ${0.15 + i * 0.08}s both">${display}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill ${cls}" data-width="${pct}"></div>
+              <div class="bar-glow ${cls}" data-pct="${pct}" data-dir="${cls}"></div>
+            </div>
+          </div>`;
+      }).join('') : '<div class="bar-empty">NO MODIFIER</div>'}
+    </div>
+    <div class="hw-card-footer"></div>
+  `;
+  wrap.appendChild(el);
+
+  // Animate bars in after a frame
+  requestAnimationFrame(() => {
+    el.querySelectorAll('.bar-fill').forEach(bar => {
+      const w = bar.dataset.width;
+      const delay = parseFloat(bar.closest('.bar-row').style.getPropertyValue('--delay')) * 1000;
+      setTimeout(() => { bar.style.width = w + '%'; }, delay);
+    });
+    el.querySelectorAll('.bar-glow').forEach(glow => {
+      const pct = glow.dataset.pct;
+      const dir = glow.dataset.dir;
+      const delay = parseFloat(glow.closest('.bar-row').style.getPropertyValue('--glow-delay')) * 1000;
+      setTimeout(() => {
+        glow.style.opacity = '1';
+        if (dir === 'positive') {
+          glow.style.left = pct + '%';
+          glow.style.transform = 'translateX(-100%)';
+        } else {
+          glow.style.right = pct + '%';
+          glow.style.transform = 'translateX(100%)';
+        }
+      }, delay);
+    });
+  });
+
+  // Tooltip
+  el.querySelectorAll('.bar-row').forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      tooltip.querySelector('.tt-name').textContent = row.dataset.name;
+      const valEl = tooltip.querySelector('.tt-val');
+      valEl.textContent = row.dataset.display;
+      valEl.className = 'tt-val ' + row.dataset.cls;
+      tooltip.classList.add('visible');
+    });
+    row.addEventListener('mousemove', (e) => {
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top = (e.clientY - 36) + 'px';
+    });
+    row.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible');
+    });
+  });
+});
+</script>
+
+<style>
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+
+</body>
+</html>
