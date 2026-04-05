@@ -4,6 +4,3 @@ __pycache__/
 *.local.md
 data/worldState_raw.json
 data/worldstate_raw.json
-
-# Alchemy React build
-web/alchemy/node_modules/

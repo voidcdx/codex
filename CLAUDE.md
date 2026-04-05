@@ -218,8 +218,6 @@ web/
     damage_types/  # 12 damage type glyphs — convention: EssentialXGlyph.png
     sentinels/     # 6 sentinel PNGs — convention: Name-Prime.png (spaces→hyphens)
     relics/        # 5 relic tier PNGs — convention: XRelicIntact.png (missing: Eterna, Vanguard)
-web/alchemy/              # OLD React sub-app — no longer served, can be deleted
-                         #   Replaced by vanilla web/static/alchemy.html + alchemy.css + js/alchemy.js
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
