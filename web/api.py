@@ -1070,8 +1070,7 @@ def live() -> FileResponse:
 
 @app.get("/alchemy")
 def alchemy() -> FileResponse:
-    dist = _static / "alchemy-dist" / "index.html"
-    return FileResponse(str(dist), headers={"Cache-Control": "no-store"})
+    return FileResponse(str(_static / "alchemy.html"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/reliquary")
