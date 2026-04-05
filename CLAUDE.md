@@ -117,16 +117,6 @@ web/
                    #     #item-picker-overlay modal for weapon/enemy selection
                    #   .content-side: Results → Options → Calculate → Armor Strip
                    #   Mobile ≤600px: .we-panel-row stacks to 1-col (weapon first, enemy second)
-  static/factions.html # Faction Weakness page — at /factions
-                   #   Faction roster: single scrollable view, no matrix/no card grid
-                   #   Groups: Grineer / Corpus / Infested / Other (each with group-color label)
-                   #   Each .roster-entry: .roster-info (name, 180px) + .roster-dmg (weak/resist items only)
-                   #   .dmg-item.dmg-weak: elem-color icon+glow+label+×1.5; .dmg-item.dmg-resist: crimson
-                   #   Controls: search + type filter (all/vulnerable/resistant) + group filter
-  static/factions.css  # Faction Weakness styles — .faction-roster, .roster-group, .roster-group-label
-                   #   .roster-entry (flex row, faction-color left border + gradient bleed)
-                   #   .roster-info, .roster-name, .roster-dmg, .dmg-sep
-                   #   .dmg-item / .dmg-item.dmg-weak / .dmg-item.dmg-resist
   static/reliquary.html # Reliquary page — Prime Sets browser at /reliquary
                    #   Two-panel layout: .reliquary-wrap (grid: 260px sidebar + 1fr detail-outer)
                    #   Left .rq-sidebar: search + seg toggle (Warframes/Weapons) + set list
@@ -201,8 +191,6 @@ web/
                    #   10 elements (4 base + 6 combined) with custom SVG icons + multipliers per health type
                    #   Combiner: slot1/slot2 state, handleBaseClick(), updateCombiner(), clearSlot()
                    #   TACTIC_TIPS: per-element tactical descriptions
-    factions.js    # renderRoster() — grouped roster; FACTION_GROUPS, FACTION_GROUP_COLORS
-                   #   setFilter(), setGroup(), applyFilter() (composes search+type+group)
     theme.js       # theme switcher — applyTheme(name), initTheme(); localStorage key 'void-theme'
                    #   THEME_NAMES = ['stalker','jade','ash']; default = 'stalker' (no body class)
                    #   positionBackToTop(btn): reads sidebar.getBoundingClientRect().left, sets btn.style.right dynamically
@@ -283,8 +271,8 @@ GAME_DATA_VERSION = "Update NN — …"  # update when data files are refreshed
 - **Precision:** Use `Decimal` or high-precision floats for intermediate steps to avoid floating-point drift.
 
 ## CSS / Web UI Rules (STRICT)
-- **Dot background on ALL pages** — the dot grid (`radial-gradient(circle, var(--accent-a18) 1px, transparent 1px) / 20px 20px`) is defined once in `layout.css` on `.content, .live-wrap, .factions-wrap`. Every new page must use one of these wrappers — never add a new page without it.
-- **New page checklist** — any new HTML page must: (1) use `.factions-wrap` or equivalent wrapper that gets the dot bg, (2) include `favicon.ico` link, (3) match sidebar nav markup from other pages, (4) have `Cache-Control: no-store` in api.py route.
+- **Dot background on ALL pages** — the dot grid (`radial-gradient(circle, var(--accent-a18) 1px, transparent 1px) / 20px 20px`) is defined once in `layout.css` on `.content, .live-wrap, .page-wrap`. Every new page must use one of these wrappers — never add a new page without it.
+- **New page checklist** — any new HTML page must: (1) use `.page-wrap` or equivalent wrapper that gets the dot bg, (2) include `favicon.ico` link, (3) match sidebar nav markup from other pages, (4) have `Cache-Control: no-store` in api.py route.
 - **No inline `style=` attributes** on HTML elements — all styles go to CSS classes. SVG presentation attributes excepted.
 - **No hardcoded `rgba()` for theme colors** — use CSS variables.
 - **No scan-line or noise overlays** — both removed. Do not re-add.
