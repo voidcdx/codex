@@ -17,10 +17,9 @@ Create a Python-based damage calculator that accurately emulates in-game damage 
 - **Language:** Python 3.11+
 - **Testing:** `pytest`
 - **Data Source:** Warframe Wiki (official: wiki.warframe.com)
-- **Alchemy Page:** React 18 + Vite + TypeScript + Tailwind + Framer Motion + Lucide React (Recharts removed)
-  - Build: `cd web/alchemy && npm install && npm run build` (outputs to `web/static/alchemy-dist/`)
-  - All dependencies MIT/ISC licensed, no tracking/telemetry
-  - **Planned:** Full vanilla port (HTML/CSS/JS) — preview at `web/static/alchemy-preview.html`
+- **Alchemy Page:** Vanilla HTML/CSS/JS (no build step, no npm)
+  - `web/static/alchemy.html` + `alchemy.css` + `js/alchemy.js`
+  - Old React app (`web/alchemy/`) still exists but is no longer served — can be deleted
 
 ## Commands
 ```bash
@@ -98,7 +97,7 @@ web/
                    #   All HTML routes served with Cache-Control: no-store
                    #   GET /favicon.ico → web/static/favicon.png (explicit route, StaticFiles would 404)
                    #   Routes: GET / → index.html (live tracker), GET /live → index.html (alias),
-                   #           GET /calculator → calculator.html, GET /alchemy → alchemy-dist/index.html,
+                   #           GET /calculator → calculator.html, GET /alchemy → alchemy.html,
                    #           GET /reliquary → reliquary.html
   static/index.html # Live Data SPA — default page at /
                    #   .live-page-wrap: centering wrapper (no banner — removed)
@@ -153,6 +152,8 @@ web/
                    #   .rq-baro-tag: gold badge; .rq-seg: 22px height matched to search field
                    #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard/eterna
                    #   Drop rows: grid (1fr auto auto auto); baro note: italic dim text
+  static/alchemy.html  # Alchemy page — elemental wheel, combiner, multiplier cards at /alchemy
+  static/alchemy.css   # Alchemy styles — wheel, combiner, cards, banner, tactic tip, responsive
   static/live.css  # Live page styles — invasion .reward-chip colored by data-faction attr (Grineer/Corpus/Infested/other)
                    #   .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
                    #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
@@ -196,6 +197,10 @@ web/
     armorstrip.js  # updateArmorStripDisplay(), getArmorStripPayload(), initArmorStrip()
     calculate.js   # runCalculation(), showResults(), showError()
     app.js         # loadData() bootstrap — uses setupPickerModal for weapon/enemy; DOMContentLoaded, version fetch
+    alchemy.js     # Alchemy page — ELEMENTS data, buildWheel(), combiner logic, renderCards(), renderBanner()
+                   #   10 elements (4 base + 6 combined) with custom SVG icons + multipliers per health type
+                   #   Combiner: slot1/slot2 state, handleBaseClick(), updateCombiner(), clearSlot()
+                   #   TACTIC_TIPS: per-element tactical descriptions
     factions.js    # renderRoster() — grouped roster; FACTION_GROUPS, FACTION_GROUP_COLORS
                    #   setFilter(), setGroup(), applyFilter() (composes search+type+group)
     theme.js       # theme switcher — applyTheme(name), initTheme(); localStorage key 'void-theme'
@@ -213,23 +218,8 @@ web/
     damage_types/  # 12 damage type glyphs — convention: EssentialXGlyph.png
     sentinels/     # 6 sentinel PNGs — convention: Name-Prime.png (spaces→hyphens)
     relics/        # 5 relic tier PNGs — convention: XRelicIntact.png (missing: Eterna, Vanguard)
-web/alchemy/              # Vite+React sub-app for Alchemy page
-  package.json            # dependencies: react, framer-motion, lucide-react, tailwind (recharts removed)
-  vite.config.ts          # builds to web/static/alchemy-dist/; base: /static/alchemy-dist/
-  tsconfig.json           # TypeScript config
-  tailwind.config.js      # warframe theme colors (gold, accent, card, bg)
-  postcss.config.js       # Tailwind + autoprefixer
-  index.html              # Vite entry — full site shell (header, sidebar, burger, themes)
-  src/
-    main.tsx              # React entry point → #alchemy-root
-    AlchemyPage.tsx       # page wrapper — 2-col grid (wheel+combiner left, analysis right)
-    index.css             # Tailwind directives + hardware-card class
-    data/elements.ts      # 10 elements (4 base + 6 combined), multiplier data per health type
-    components/
-      ElementalWheel.tsx        # circular element selector (inner: base, outer: combined)
-      ElementalCombiner.tsx     # slot-based combiner (pick 2 base → result)
-      MultiplierCard.tsx        # custom CSS bars + Framer Motion (Recharts removed)
-      SelectedElementHeader.tsx # selected element display + component breakdown
+web/alchemy/              # OLD React sub-app — no longer served, can be deleted
+                         #   Replaced by vanilla web/static/alchemy.html + alchemy.css + js/alchemy.js
 run_web.py          # python run_web.py → dev server on port 8000
 __main__.py         # python -m dc "Weapon" "Mod" vs "Enemy" [--crit avg|guaranteed|max] [--headshot] [--attack "Name"] [--list-attacks "Weapon"] [--version]
 handoff.md          # session handoff notes for next Claude instance
