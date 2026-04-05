@@ -1,7 +1,7 @@
 # Handoff — Warframe Damage Calculator
 
 ## Current Status
-**304 tests passing.** v0.8.1. Full damage pipeline, web UI, live tracker, reliquary, alchemy page.
+**304 tests passing.** v0.8.1. Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla).
 
 **Branch:** `claude/review-handoff-docs-GK8Zj`
 
@@ -9,63 +9,65 @@
 
 ## What Was Done This Session
 
-### 1. Recharts Removed from Alchemy
-- Replaced Recharts bar charts with custom CSS bars + Framer Motion animations in `MultiplierCard.tsx`
+### 1. Recharts Removed from Alchemy React App
+- Replaced Recharts bar charts with custom CSS bars + Framer Motion in `MultiplierCard.tsx`
 - Each bar: gradient fill, glowing tip edge, staggered entrance animation, hover pulse, floating HUD tooltip
 - Removed `recharts` from `package.json` (~45KB gzip savings)
 
-### 2. Vanilla Alchemy Preview (Proof of Concept)
-- Built `web/static/alchemy-preview.html` — full interactive preview with zero dependencies
-- Elemental wheel (inner base + outer combined rings), decorative rings, rotating animation, glow pulses, shine sweeps
-- Clicking an element updates banner + all 4 multiplier cards with animated bars
-- Proves the entire Alchemy page can be ported from React to vanilla HTML/CSS/JS with identical output
-- Custom element sigils attempted (geometric SVGs) — need redesign to better match Warframe aesthetic
+### 2. Full Vanilla Port of Alchemy Page (COMPLETE)
+- **Replaced** the React/Vite sub-app with vanilla HTML/CSS/JS — zero build step
+- `web/static/alchemy.html` — full site shell (header, sidebar, nav, themes, burger)
+- `web/static/alchemy.css` — wheel, combiner, cards, banner, tactic tip, responsive
+- `web/static/js/alchemy.js` — element data, wheel builder, combiner logic, bar animations, banner, tactic tips
+- `web/api.py` — `/alchemy` route now serves `alchemy.html` directly (was `alchemy-dist/index.html`)
+- Bundle: ~8KB total vs ~180KB React build. No npm install, no npm run build, no Vite dev server
+- Same visual output: wheel with glow/spin/shine, combiner, animated bars, element banner
 
-### 3. Vanilla Port Decision
-- Confirmed React/Vite sub-app is unnecessary — page data is tiny, interactions are simple
-- Vanilla port would: eliminate build step, drop ~180KB bundle, remove npm dependency chain, match every other page
-- Same pixels, same animations, same interactivity — just no build step
-- **Decision: proceed with full vanilla port in next session**
+### 3. Element Icons (Custom SVGs)
+- Designed recognizable stroke-only SVG icons for all 10 elements (24x24 viewBox, 2px stroke)
+- Cold: snowflake with barbs, Electricity: bolt with sparks, Heat: double flame
+- Toxin: droplet with bubbles, Corrosive: broken ring with acid drips
+- Radiation: trefoil sectors, Viral: DNA double helix, Magnetic: horseshoe magnet
+- Gas: rising vapor wisps, Blast: 8-ray starburst
+- Icons are functional placeholders — user plans to create their own custom graphics later
+
+### 4. Vanilla Preview File
+- `web/static/alchemy-preview.html` — standalone proof-of-concept (predates the full port)
+- Can be kept for reference or deleted — the main `alchemy.html` supersedes it
 
 ---
 
 ## Key Files Changed
 ```
-web/alchemy/package.json                    # removed recharts dependency
-web/alchemy/src/components/MultiplierCard.tsx # custom CSS bars replacing Recharts
-web/static/alchemy-preview.html             # vanilla proof-of-concept (wheel + cards)
+# Vanilla alchemy (NEW — replaces React app)
+web/static/alchemy.html              # full page with site shell
+web/static/alchemy.css               # all alchemy-specific styles
+web/static/js/alchemy.js             # element data, wheel, combiner, cards, banner
+web/api.py                           # /alchemy serves alchemy.html (was alchemy-dist)
+
+# React app changes (still exists but no longer served)
+web/alchemy/package.json             # removed recharts dependency
+web/alchemy/src/components/MultiplierCard.tsx  # custom CSS bars (unused now)
+
+# Preview
+web/static/alchemy-preview.html      # standalone PoC (superseded)
 ```
 
 ---
 
 ## Pending / Known Issues
-- **Alchemy vanilla port** — full port from React to vanilla HTML/CSS/JS (preview proves feasibility)
-- **Element icons** — custom sigils need redesign; current geometric SVGs don't match Warframe feel. Options: use official wiki glyphs, or design better originals
-- **Missing base element glyphs** — Cold, Electricity, Heat, Toxin PNGs not downloaded yet (run `fetch_images.py --category damage_types`)
+- **Element icons** — current SVGs are functional placeholders; user wants to create custom graphics (can swap icon strings in alchemy.js)
+- **Missing base element glyphs** — Cold, Electricity, Heat, Toxin PNGs not downloaded (run `fetch_images.py --category damage_types`)
+- **React app cleanup** — `web/alchemy/` directory + `web/static/alchemy-dist/` can be deleted (no longer served)
 - **Alchemy element data** — multiplier values may need wiki verification for accuracy
-- **Alchemy page styling** — needs refinement to match Void Codex design system (fonts, panels, themes)
+- **Alchemy page styling** — could use further refinement to match Void Codex design system
 - **URL state / sharing** — not started
 - **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification doesn't map automatically
 - **Mod images not yet wired into UI** — ready for mod picker redesign
 - **Baro item names** — some guessed names may be wrong
-- **Factions page** — files kept (factions.html, factions.css, factions.js) but route removed; could be deleted or kept as reference
+- **Factions page** — files kept (factions.html, factions.css, factions.js) but route removed; could be deleted
 
 ---
-
-## Alchemy Build Workflow (current — React)
-```powershell
-# On Windows (still needed until vanilla port is done):
-cd C:\Users\jesse\Desktop\codex\web\alchemy
-npm install          # first time only
-npm run build        # outputs to web/static/alchemy-dist/
-npm run dev          # dev server on port 3000 (proxies API to 8000)
-
-# After build, commit the dist:
-cd C:\Users\jesse\Desktop\codex
-git add web/static/alchemy-dist/
-git commit -m "Rebuild alchemy"
-git push
-```
 
 ## Image Download Workflow
 ```bash
@@ -90,11 +92,11 @@ pytest                                                # verify
 ```
 
 ## Design Decisions Log
+- Alchemy page: fully vanilla (HTML/CSS/JS) — React/Vite sub-app replaced, no build step
+- Element icons: custom stroke-only SVGs in alchemy.js, user plans to make their own later
+- Recharts removed — custom CSS bars with gradient fill + glowing tips
+- Vanilla port identical visual output to React version with ~95% less bundle weight
 - Reliquary images on LEFT side, stats/info on RIGHT — no rotation
 - Reliquary image inside scroll panel (not on outer container) — fixes landscape float
 - Landscape phones: nav sidebar collapses to burger, header scrolls away
-- Alchemy page: currently React sub-app, planned vanilla port (preview at alchemy-preview.html)
-- Recharts removed — custom CSS bars with Framer Motion (lighter, more thematic)
-- Vanilla preview proves identical output with zero build step and ~95% less bundle weight
 - /factions route replaced by /alchemy; factions files kept but unrouted
-- Element icons: custom sigils attempted but need redesign; may use official wiki glyphs instead
