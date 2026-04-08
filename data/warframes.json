@@ -413,6 +413,15 @@
     "sprint": 1,
     "image": "VoltPrime_Thumb.png"
   },
+  "Voruna Prime": {
+    "name": "Voruna Prime",
+    "health": 455,
+    "shield": 270,
+    "armor": 265,
+    "energy": 130,
+    "sprint": 1.2,
+    "image": "VorunaPrime_Thumb.png"
+  },
   "Wisp Prime": {
     "name": "Wisp Prime",
     "health": 270,

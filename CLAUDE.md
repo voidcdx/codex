@@ -19,7 +19,6 @@ Create a Python-based damage calculator that accurately emulates in-game damage 
 - **Data Source:** Warframe Wiki (official: wiki.warframe.com)
 - **Alchemy Page:** Vanilla HTML/CSS/JS (no build step, no npm)
   - `web/static/alchemy.html` + `alchemy.css` + `js/alchemy.js`
-  - Old React app (`web/alchemy/`) still exists but is no longer served — can be deleted
 
 ## Commands
 ```bash

@@ -9,63 +9,35 @@
 
 ## What Was Done This Session
 
-### 1. Recharts Removed from Alchemy React App
-- Replaced Recharts bar charts with custom CSS bars + Framer Motion in `MultiplierCard.tsx`
-- Each bar: gradient fill, glowing tip edge, staggered entrance animation, hover pulse, floating HUD tooltip
-- Removed `recharts` from `package.json` (~45KB gzip savings)
+### 1. CLAUDE.md cleanup
+- Removed stale note about `web/alchemy/` React app ("still exists but is no longer served — can be deleted")
 
-### 2. Full Vanilla Port of Alchemy Page (COMPLETE)
-- **Replaced** the React/Vite sub-app with vanilla HTML/CSS/JS — zero build step
-- `web/static/alchemy.html` — full site shell (header, sidebar, nav, themes, burger)
-- `web/static/alchemy.css` — wheel, combiner, cards, banner, tactic tip, responsive
-- `web/static/js/alchemy.js` — element data, wheel builder, combiner logic, bar animations, banner, tactic tips
-- `web/api.py` — `/alchemy` route now serves `alchemy.html` directly (was `alchemy-dist/index.html`)
-- Bundle: ~8KB total vs ~180KB React build. No npm install, no npm run build, no Vite dev server
-- Same visual output: wheel with glow/spin/shine, combiner, animated bars, element banner
+### 2. Deleted `web/alchemy/`
+- Old React/Vite alchemy sub-app fully removed from disk (was untracked)
+- Vanilla port at `web/static/alchemy.html` + `alchemy.css` + `js/alchemy.js` is the canonical page
 
-### 3. Element Icons (Custom SVGs)
-- Designed recognizable stroke-only SVG icons for all 10 elements (24x24 viewBox, 2px stroke)
-- Cold: snowflake with barbs, Electricity: bolt with sparks, Heat: double flame
-- Toxin: droplet with bubbles, Corrosive: broken ring with acid drips
-- Radiation: trefoil sectors, Viral: DNA double helix, Magnetic: horseshoe magnet
-- Gas: rising vapor wisps, Blast: 8-ray starburst
-- Icons are functional placeholders — user plans to create their own custom graphics later
-
-### 4. Vanilla Preview File
-- `web/static/alchemy-preview.html` — standalone proof-of-concept (predates the full port)
-- Can be kept for reference or deleted — the main `alchemy.html` supersedes it
+### 3. HANDOFF.md reset for new session
 
 ---
 
-## Key Files Changed
-```
-# Vanilla alchemy (NEW — replaces React app)
-web/static/alchemy.html              # full page with site shell
-web/static/alchemy.css               # all alchemy-specific styles
-web/static/js/alchemy.js             # element data, wheel, combiner, cards, banner
-web/api.py                           # /alchemy serves alchemy.html (was alchemy-dist)
+## Prior Session Summary (for context)
 
-# React app changes (still exists but no longer served)
-web/alchemy/package.json             # removed recharts dependency
-web/alchemy/src/components/MultiplierCard.tsx  # custom CSS bars (unused now)
-
-# Preview
-web/static/alchemy-preview.html      # standalone PoC (superseded)
-```
+- Alchemy page fully ported to vanilla HTML/CSS/JS — replaced React/Vite app; ~8KB vs 180KB bundle
+- Custom stroke-only SVG icons for all 10 elements (placeholder; user plans custom graphics)
+- Alchemy data rewritten to post-Update 36 faction-based multipliers (Grineer/Corpus/Infested/Sentient/etc.)
+- Recharts removed; custom CSS gradient bars + animations
+- Factions page deleted; `.factions-wrap` renamed to `.page-wrap` in `layout.css`
 
 ---
 
 ## Pending / Known Issues
-- **Element icons** — current SVGs are functional placeholders; user wants to create custom graphics (can swap icon strings in alchemy.js)
+- **Element icons** — current SVGs are functional placeholders; user wants to create custom graphics (swap icon strings in `js/alchemy.js`)
 - **Missing base element glyphs** — Cold, Electricity, Heat, Toxin PNGs not downloaded (run `fetch_images.py --category damage_types`)
-- **React app cleanup** — DONE, deleted `web/alchemy/` + `web/static/alchemy-dist/`
-- **Alchemy element data** — DONE, rewritten to use post-Update 36 faction-based multipliers (Grineer, Corpus, Infested, Sentient, Corrupted, Murmur, etc.) sourced from `src/calculator.py` FACTION_EFFECTIVENESS table. Old health-type multipliers (Ferrite, Alloy, Cloned Flesh, etc.) removed.
 - **Alchemy page styling** — could use further refinement to match Void Codex design system
 - **URL state / sharing** — not started
 - **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification doesn't map automatically
 - **Mod images not yet wired into UI** — ready for mod picker redesign
 - **Baro item names** — some guessed names may be wrong
-- **Factions page** — DONE, deleted (factions.html, factions.css, factions.js); `.factions-wrap` renamed to `.page-wrap` in layout.css
 
 ---
 
@@ -97,7 +69,6 @@ pytest                                                # verify
 - Recharts removed — custom CSS bars with gradient fill + glowing tips
 - Vanilla port identical visual output to React version with ~95% less bundle weight
 - Reliquary images on LEFT side, stats/info on RIGHT — no rotation
-- Reliquary image inside scroll panel (not on outer container) — fixes landscape float
 - Landscape phones: nav sidebar collapses to burger, header scrolls away
 - Factions page fully deleted; `.factions-wrap` renamed to `.page-wrap` (shared wrapper in layout.css)
-- Alchemy multiplier cards: replaced 4 health-type cards (Armor/Flesh/Shields/Machinery) with 2 faction cards (Strong Against/Resisted By) using FACTION_META color-coded badges + animated bars + SVG glyphs per faction
+- Alchemy multiplier cards: 2 faction cards (Strong Against/Resisted By) using FACTION_META color-coded badges + animated bars + SVG glyphs per faction
