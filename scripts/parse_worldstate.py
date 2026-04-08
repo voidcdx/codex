@@ -1337,8 +1337,7 @@ _NW_NAMES = {
     "RiseOfTheMachine":         "Rise of the Machine",
     "CompleteMission":          "Agent",
     "DeployGlyph":              "Graffiti",
-    # Best-guess mappings — no exact wiki match, verify if wrong
-    "CompleteRace":             "Complete a Race",
+    "CompleteRace":             "Ollie Oop!",
     "KuvaSurvivalNoCapsules":   "Hold Your Breath",
 }
 
@@ -1513,9 +1512,8 @@ _NW_DESCRIPTIONS = {
     "RiseOfTheMachine":         "Kill 300 enemies using a Necramech without getting destroyed",
     "CompleteMission":          "Complete a Mission",
     "DeployGlyph":              "Deploy a Glyph while on a mission",
-    # Best-guess mappings — no exact wiki match, verify if wrong
-    "CompleteRace":             "Complete a race in any mode",
-    "KuvaSurvivalNoCapsules":   "Survive for 20 minutes in Kuva Survival without using Life Support Capsules",
+    "CompleteRace":             "Play Ollie's Crash Course and complete a race",
+    "KuvaSurvivalNoCapsules":   "Survive for over 20 minutes in Kuva Survival",
 }
 
 # Elite-specific overrides — for keys shared between weekly and elite tiers
