@@ -1026,7 +1026,7 @@
         "rarity": "Common"
       },
       {
-        "item": "Keres Prime",
+        "item": "Kestrel Prime",
         "part": "Blade",
         "rarity": "Common"
       },
@@ -7449,6 +7449,45 @@
     ]
   },
   {
+    "name": "Meso A10",
+    "tier": "Meso",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Orthos Prime",
+        "part": "Handle",
+        "rarity": "Common"
+      },
+      {
+        "item": "Xaku Prime",
+        "part": "Neuroptics Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Dual Zoren Prime",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Nautilus Prime",
+        "part": "Systems Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Alternox Prime",
+        "part": "Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
     "name": "Meso A2",
     "tier": "Meso",
     "vaulted": true,
@@ -13650,6 +13689,45 @@
     ]
   },
   {
+    "name": "Meso V15",
+    "tier": "Meso",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Caliban Prime",
+        "part": "Chassis Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Trumna Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Venato Prime",
+        "part": "Handle",
+        "rarity": "Common"
+      },
+      {
+        "item": "Caliban Prime",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Vadarya Prime",
+        "part": "Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
     "name": "Meso V2",
     "tier": "Meso",
     "vaulted": true,
@@ -18246,6 +18324,45 @@
       },
       {
         "item": "Nagantaka Prime",
+        "part": "Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Neo N24",
+    "tier": "Neo",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Bronco Prime",
+        "part": "Receiver",
+        "rarity": "Common"
+      },
+      {
+        "item": "Daikyu Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Venato Prime",
+        "part": "Handle",
+        "rarity": "Common"
+      },
+      {
+        "item": "Kestrel Prime",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Lavos Prime",
+        "part": "Neuroptics Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Nautilus Prime",
         "part": "Blueprint",
         "rarity": "Rare"
       }
@@ -23122,6 +23239,45 @@
       {
         "item": "Dual Keres Prime",
         "part": "Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Axi D6",
+    "tier": "Axi",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Lavos Prime",
+        "part": "Chassis Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Lex Prime",
+        "part": "Receiver",
+        "rarity": "Common"
+      },
+      {
+        "item": "Paris Prime",
+        "part": "Lower Limb",
+        "rarity": "Common"
+      },
+      {
+        "item": "Cedo Prime",
+        "part": "Barrel",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Orthos Prime",
+        "part": "Blade",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Dual Zoren Prime",
+        "part": "Blade",
         "rarity": "Rare"
       }
     ]
@@ -28538,6 +28694,45 @@
       {
         "item": "Akarius Prime",
         "part": "Link",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Yareli Prime",
+        "part": "Neuroptics Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Axi Y3",
+    "tier": "Axi",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Burston Prime",
+        "part": "Receiver",
+        "rarity": "Common"
+      },
+      {
+        "item": "Epitaph Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Quassus Prime",
+        "part": "Handle",
+        "rarity": "Common"
+      },
+      {
+        "item": "Sevagoth Prime",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Vadarya Prime",
+        "part": "Barrel",
         "rarity": "Uncommon"
       },
       {

@@ -64,6 +64,7 @@ scripts/
   parse_drops.py           # drops HTML → relic drop dict
   parse_worldstate.py      # worldstate parser — _NW_NAMES/_NW_DESCRIPTIONS (169/167 entries), Nightwave, gifts
   fetch_wiki_playwright.py # Playwright fetcher (Windows only) — downloads all .lua files; bypasses wiki 403s
+                           # Weapons/data is split into subpages — fetches /primary /secondary /melee /archwing /companion /railjack /modular /misc
   fetch_wiki_data.py       # BLOCKED by wiki (403) — do not use
   fetch_images.py          # batch image downloader — 6 categories (--category, --resume, --limit)
   fetch_mod_images.py      # mod card PNG downloader (--resume, --limit)
@@ -99,9 +100,9 @@ web/
     alchemy.js     # ELEMENTS data + FACTION_META (13 factions), buildWheel(), renderCards() — 2 faction panels
     theme.js       # applyTheme(), initTheme(); themes: stalker (default), jade, ash
   static/images/
-    weapons/       # weapon PNGs — filenames from weapons.json `image` field
+    weapons/       # weapon PNGs — PascalCase, no hyphens (e.g. BratonPrime.png) — matches weapons.json `image` field
     mods/          # mod card PNGs — filenames from mods.json `image` field
-    warframes/     # warframe PNGs — convention: Name-Prime.png
+    warframes/     # warframe PNGs — hyphenated: Name-Prime.png (e.g. Ash-Prime.png)
     sentinels/     # sentinel PNGs — convention: Name-Prime.png
     enemies/       # enemy portrait PNGs
     abilities/     # warframe ability PNGs — convention: AbilityName130xWhite.png
