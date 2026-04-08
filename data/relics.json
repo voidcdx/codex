@@ -1014,6 +1014,45 @@
     ]
   },
   {
+    "name": "Lith C14",
+    "tier": "Lith",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Keres Prime",
+        "part": "Blade",
+        "rarity": "Common"
+      },
+      {
+        "item": "Sevagoth Prime",
+        "part": "Systems Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Lavos Prime",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Perigale Prime",
+        "part": "Receiver",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Cedo Prime",
+        "part": "Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
     "name": "Lith C2",
     "tier": "Lith",
     "vaulted": true,
@@ -4285,6 +4324,45 @@
       {
         "item": "Nautilus Prime",
         "part": "Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Lith N19",
+    "tier": "Lith",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Daikyu Prime",
+        "part": "String",
+        "rarity": "Common"
+      },
+      {
+        "item": "Paris Prime",
+        "part": "Upper Limb",
+        "rarity": "Common"
+      },
+      {
+        "item": "Vadarya Prime",
+        "part": "Stock",
+        "rarity": "Common"
+      },
+      {
+        "item": "Forma",
+        "part": "Barrel",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Voruna Prime",
+        "part": "Chassis Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Nautilus Prime",
+        "part": "Cerebrum",
         "rarity": "Rare"
       }
     ]
@@ -8736,6 +8814,45 @@
     ]
   },
   {
+    "name": "Meso D8",
+    "tier": "Meso",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Braton Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Bronco Prime",
+        "part": "Barrel",
+        "rarity": "Common"
+      },
+      {
+        "item": "Dual Zoren Prime",
+        "part": "Handle",
+        "rarity": "Common"
+      },
+      {
+        "item": "Voruna Prime",
+        "part": "Neuroptics Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Yareli Prime",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Daikyu Prime",
+        "part": "Grip",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
     "name": "Meso E1",
     "tier": "Meso",
     "vaulted": true,
@@ -8960,6 +9077,45 @@
       {
         "item": "Akbronco Prime",
         "part": "Link",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Epitaph Prime",
+        "part": "Receiver",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Meso E7",
+    "tier": "Meso",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Cedo Prime",
+        "part": "Stock",
+        "rarity": "Common"
+      },
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Gyre Prime",
+        "part": "Systems Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Daikyu Prime",
+        "part": "Upper Limb",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Sarofang Prime",
+        "part": "Blueprint",
         "rarity": "Uncommon"
       },
       {
@@ -10325,6 +10481,45 @@
       {
         "item": "Okina Prime",
         "part": "Handle",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Lavos Prime",
+        "part": "Systems Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Meso L4",
+    "tier": "Meso",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Burston Prime",
+        "part": "Stock",
+        "rarity": "Common"
+      },
+      {
+        "item": "Perigale Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Sevagoth",
+        "part": "Neuroptics Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Bronco Prime",
+        "part": "Barrel",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Quassus Prime",
+        "part": "Blueprint",
         "rarity": "Uncommon"
       },
       {
@@ -18486,6 +18681,45 @@
     ]
   },
   {
+    "name": "Neo P10",
+    "tier": "Neo",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Burston Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Nautilus Prime",
+        "part": "Carapace",
+        "rarity": "Common"
+      },
+      {
+        "item": "Cedo Prime",
+        "part": "Receiver",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Trumna Prime",
+        "part": "Stock",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Perigale Prime",
+        "part": "Barrel",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
     "name": "Neo P2",
     "tier": "Neo",
     "vaulted": true,
@@ -19500,6 +19734,45 @@
     ]
   },
   {
+    "name": "Neo S20",
+    "tier": "Neo",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Fang Prime",
+        "part": "Blade",
+        "rarity": "Common"
+      },
+      {
+        "item": "Kompressa Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Sarofang Prime",
+        "part": "Handle",
+        "rarity": "Common"
+      },
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Vadarya Prime",
+        "part": "Receiver",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Sevagoth Prime",
+        "part": "Chassis Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
     "name": "Neo S3",
     "tier": "Neo",
     "vaulted": true,
@@ -20197,6 +20470,45 @@
       {
         "item": "Volnus Prime",
         "part": "Handle",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Neo V11",
+    "tier": "Neo",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Akbronco Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Paris Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Yareli Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Epitaph Prime",
+        "part": "Barrel",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Xaku Prime",
+        "part": "Chassis Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Voruna Prime",
+        "part": "Systems Blueprint",
         "rarity": "Rare"
       }
     ]
@@ -22254,6 +22566,45 @@
       {
         "item": "Forma",
         "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Daikyu Prime",
+        "part": "Lower Limb",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Caliban Prime",
+        "part": "Systems Blueprint",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Axi C11",
+    "tier": "Axi",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Braton Prime",
+        "part": "Barrel",
+        "rarity": "Common"
+      },
+      {
+        "item": "Epitaph Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Perigale Prime",
+        "part": "Stock",
+        "rarity": "Common"
+      },
+      {
+        "item": "Akbronco Prime",
+        "part": "Link",
         "rarity": "Uncommon"
       },
       {
@@ -26598,6 +26949,45 @@
     ]
   },
   {
+    "name": "Axi S20",
+    "tier": "Axi",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Dual Zoren Prime",
+        "part": "Handle",
+        "rarity": "Common"
+      },
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Paris Prime",
+        "part": "String",
+        "rarity": "Common"
+      },
+      {
+        "item": "Orthos Prime",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Xaku Prime",
+        "part": "Systems Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Sarofang Prime",
+        "part": "Blade",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
     "name": "Axi S3",
     "tier": "Axi",
     "vaulted": true,
@@ -27568,6 +27958,45 @@
       {
         "item": "Venato Prime",
         "part": "Blade",
+        "rarity": "Rare"
+      }
+    ]
+  },
+  {
+    "name": "Axi V14",
+    "tier": "Axi",
+    "vaulted": false,
+    "is_baro": false,
+    "introduced": "42.0.6",
+    "rewards": [
+      {
+        "item": "Alternox Prime",
+        "part": "Receiver",
+        "rarity": "Common"
+      },
+      {
+        "item": "Fang Prime",
+        "part": "Blueprint",
+        "rarity": "Common"
+      },
+      {
+        "item": "Lex Prime",
+        "part": "Barrel",
+        "rarity": "Common"
+      },
+      {
+        "item": "Forma",
+        "part": "Blueprint",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Kompressa Prime",
+        "part": "Receiver",
+        "rarity": "Uncommon"
+      },
+      {
+        "item": "Voruna Prime",
+        "part": "Blueprint",
         "rarity": "Rare"
       }
     ]
