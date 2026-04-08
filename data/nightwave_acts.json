@@ -1,0 +1,657 @@
+[
+  {
+    "name": "Accelerator",
+    "description": "Kill 10 Enemies while Sliding",
+    "tier": "Daily"
+  },
+  {
+    "name": "Agent",
+    "description": "Complete a Mission",
+    "tier": "Daily"
+  },
+  {
+    "name": "Air It Out",
+    "description": "Deploy an Air Support Charge in a Mission",
+    "tier": "Daily"
+  },
+  {
+    "name": "Arsonist",
+    "description": "Kill 150 Enemies with Heat Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Attractive",
+    "description": "Kill 150 Enemies with Magnetic Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Biohazard",
+    "description": "Kill 150 Enemies with Gas Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Builder's Touch",
+    "description": "Claim an item from your Foundry",
+    "tier": "Daily"
+  },
+  {
+    "name": "Communicator",
+    "description": "Mark 5 Mods or Resources",
+    "tier": "Daily"
+  },
+  {
+    "name": "Confiscated",
+    "description": "Hijack a Crewship from the enemy",
+    "tier": "Daily"
+  },
+  {
+    "name": "Deep Freeze",
+    "description": "Kill 150 Enemies with Cold Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Deep Impact",
+    "description": "Suspend 5 or more enemies in the air at once with a Heavy Slam Melee Attack",
+    "tier": "Daily"
+  },
+  {
+    "name": "Detonator",
+    "description": "Kill 150 Enemies with Blast Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Doppelganger",
+    "description": "Deploy a Specter",
+    "tier": "Daily"
+  },
+  {
+    "name": "Energizing",
+    "description": "Pick up 20 Energy Orbs",
+    "tier": "Daily"
+  },
+  {
+    "name": "Everything Old is New Again",
+    "description": "Complete 1 Transmutations",
+    "tier": "Daily"
+  },
+  {
+    "name": "Executioner",
+    "description": "Kill 10 Enemies with Finishers",
+    "tier": "Daily"
+  },
+  {
+    "name": "Expressive",
+    "description": "Play 1 Emote",
+    "tier": "Daily"
+  },
+  {
+    "name": "Glider",
+    "description": "Kill 15 Enemies while Aim Gliding",
+    "tier": "Daily"
+  },
+  {
+    "name": "Go Viral",
+    "description": "Kill 150 Enemies with Viral Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Grafitti",
+    "description": "Deploy a Glyph while on a mission",
+    "tier": "Daily"
+  },
+  {
+    "name": "Hands Full",
+    "description": "Complete a Mission with only a Primary Weapon equipped",
+    "tier": "Daily"
+  },
+  {
+    "name": "Just Visiting",
+    "description": "Visit a Featured Dojo",
+    "tier": "Daily"
+  },
+  {
+    "name": "Liquidation",
+    "description": "Sell any item in your Inventory for Credits",
+    "tier": "Daily"
+  },
+  {
+    "name": "Loyalty",
+    "description": "Interact with your Kubrow or Kavat",
+    "tier": "Daily"
+  },
+  {
+    "name": "Marksman",
+    "description": "Kill 40 Enemies with Headshots",
+    "tier": "Daily"
+  },
+  {
+    "name": "Meltdown",
+    "description": "Kill 150 Enemies with Corrosive Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Mow Them Down",
+    "description": "Kill 150 Enemies with a Primary Weapon",
+    "tier": "Daily"
+  },
+  {
+    "name": "Patron",
+    "description": "Donate to the Leverian",
+    "tier": "Daily"
+  },
+  {
+    "name": "Poisoner",
+    "description": "Kill 150 Enemies with Toxin Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Power Trip",
+    "description": "Kill 150 Enemies with Abilities",
+    "tier": "Daily"
+  },
+  {
+    "name": "Reactor",
+    "description": "Kill 150 Enemies with Radiation Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Researcher",
+    "description": "Scan 15 Objects or Enemies",
+    "tier": "Daily"
+  },
+  {
+    "name": "Saver",
+    "description": "Pick up 15,000 Credits",
+    "tier": "Daily"
+  },
+  {
+    "name": "Shiny",
+    "description": "Pick up 8 Mods",
+    "tier": "Daily"
+  },
+  {
+    "name": "Short Circuit",
+    "description": "Kill 150 Enemies with Electricity Damage",
+    "tier": "Daily"
+  },
+  {
+    "name": "Sidearm",
+    "description": "Complete a Mission with only a Secondary Weapon equipped",
+    "tier": "Daily"
+  },
+  {
+    "name": "Smaller is Bigger",
+    "description": "Kill 150 Enemies with a Secondary Weapon",
+    "tier": "Daily"
+  },
+  {
+    "name": "Swatter",
+    "description": "Kill 3 Drones or Ospreys with your Melee Weapon",
+    "tier": "Daily"
+  },
+  {
+    "name": "Sword Dance",
+    "description": "Kill 150 Enemies with a Melee Weapon",
+    "tier": "Daily"
+  },
+  {
+    "name": "Swordsman",
+    "description": "Complete a Mission with only a Melee Weapon equipped",
+    "tier": "Daily"
+  },
+  {
+    "name": "The Hunt is On",
+    "description": "Find 5 Syndicate Medallions",
+    "tier": "Daily"
+  },
+  {
+    "name": "The Personal Touch",
+    "description": "Place 1 decoration in your Orbiter",
+    "tier": "Daily"
+  },
+  {
+    "name": "Thrill Rider",
+    "description": "Kill 20 Enemies while riding a K-Drive, Kaithe, Velocipod, or Merulina",
+    "tier": "Daily"
+  },
+  {
+    "name": "Topping Off the Tank",
+    "description": "Successfully defend an Excavator without allowing it to run out of power",
+    "tier": "Daily"
+  },
+  {
+    "name": "Trampoline",
+    "description": "Bullet Jump 150 times",
+    "tier": "Daily"
+  },
+  {
+    "name": "Two For One",
+    "description": "Pierce and kill 2 or more enemies in a single Bow shot",
+    "tier": "Daily"
+  },
+  {
+    "name": "Warning Shot",
+    "description": "Kill 200 Enemies",
+    "tier": "Daily"
+  },
+  {
+    "name": "Ancient Obelisks",
+    "description": "Activate 3 Requiem Obelisk on Deimos",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Animator",
+    "description": "Retrieve the Ayatan Statue for Maroo in Maroo's Bazaar",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Assassin",
+    "description": "Complete 3 Assassination missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Beast Slayer",
+    "description": "Defeat the Orowyrm",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Bloodthirsty",
+    "description": "Kill 20 enemies in 5 seconds",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Cache Hunter",
+    "description": "Find 6 caches across any Sabotage missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Collector",
+    "description": "Collect 100 resources from Duviri",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Conservationist",
+    "description": "Complete 3 different Perfect Animal Captures in Orb Vallis",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Don't Blow It",
+    "description": "Complete 12 Conduits in Disruption",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Don't Fear The Reaper",
+    "description": "Complete 3 Kuva Siphon Missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Earth Bounty Hunter",
+    "description": "Complete 3 different Bounties in the Plains of Eidolon",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Earth Fisher",
+    "description": "Catch 3 Rare Fish in the Plains of Eidolon",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Earth Miner",
+    "description": "Mine 3 Rare Gems or Ore in the Plains of Eidolon",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Eliminator",
+    "description": "Complete 3 Exterminate missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Eternal Guardian",
+    "description": "Complete 2 Void Armageddon missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Explorer",
+    "description": "Complete 3 Railjack Missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Feed the Beast",
+    "description": "Feed the Helminth any Resource",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Finely Tuned",
+    "description": "Play 2 different Shawzin songs in Duviri",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Flawless",
+    "description": "Clear a Railjack Boarding Party without your Warframe taking damage",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Forward Thinking",
+    "description": "Destroy a Crewship with Forward Artillery",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Friendly Fire",
+    "description": "While piloting a hijacked Crewship, destroy 3 enemy Fighters",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Gatherer",
+    "description": "Collect 4,000 Resources",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Good Friend",
+    "description": "Help Clem with his weekly mission",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Hacker",
+    "description": "Hack 10 Consoles",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Heavy Ordnance",
+    "description": "Kill 500 enemies with an Arch Gun",
+    "tier": "Weekly"
+  },
+  {
+    "name": "High Ground",
+    "description": "Complete 3 Void Flood Missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Horsing Around",
+    "description": "Fly your Kaithe for 1000 meters",
+    "tier": "Weekly"
+  },
+  {
+    "name": "I Decree",
+    "description": "Collect 15 Decrees in a single Duviri session, or run of The Circuit",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Invader",
+    "description": "Complete 6 Invasion missions of any type",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Jailer",
+    "description": "Complete 3 Capture missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Kleptomaniac",
+    "description": "Open 30 Lockers",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Loyalty",
+    "description": "Gain 5,000 Standing with any one Syndicate faction",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Necralizer",
+    "description": "Kill 100 enemies with a Necramech",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Night and Day",
+    "description": "Collect 10 Vome or Fass Residue in the Cambion Drift",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Now Boarding",
+    "description": "Complete 3 different K-Drive races in Orb Vallis on Venus or in Cambion Drift on Deimos",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Ollie Oop!",
+    "description": "Play Ollie's Crash Course and complete a race",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Operative",
+    "description": "Complete 3 Spy missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Polarized",
+    "description": "Polarize with Forma 1 time (not in Simulacrum)",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Protector",
+    "description": "Complete 3 Mobile Defense missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Rescuer",
+    "description": "Complete 3 Rescue missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Saboteur",
+    "description": "Complete 3 Sabotage missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Sanctuary Researcher",
+    "description": "Complete 3 Scans for Cephalon Simaris",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Skeletons in the Closet",
+    "description": "Kill 50 Dax enemies in Duviri",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Sortie Specialist",
+    "description": "Complete 1 Sortie",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Sound Sleeper",
+    "description": "Complete 3 Nightmare missions of any type",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Supporter",
+    "description": "Complete 5 Syndicate missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Test Subject",
+    "description": "Complete 8 waves of Sanctuary Onslaught",
+    "tier": "Weekly"
+  },
+  {
+    "name": "The Old Ways",
+    "description": "Complete 1 mission with only a single pistol and a glaive equipped",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Tusk Thumpin'",
+    "description": "Kill a Tusk Thumper in the Plains of Eidolon",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Unlock Relics",
+    "description": "Unlock 3 Relics",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Vault Looter",
+    "description": "Unlock 4 Dragon Key vaults on Deimos",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Vault Raider",
+    "description": "Complete an Isolation Vault Bounty Mission in the Cambion Drift on Deimos",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Venus Bounty Hunter",
+    "description": "Complete 3 different bounties in the Orb Vallis",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Venus Fisher",
+    "description": "Catch 3 Rare Servofish in the Orb Vallis",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Venus Miner",
+    "description": "Mine 3 Rare Gems or Ore in the Orb Vallis",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Zariman Bounty Hunter",
+    "description": "Complete 4 different Bounties in the Zariman",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Eximus Eliminator",
+    "description": "Kill 30 Eximus",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Mission Complete",
+    "description": "Complete any 15 missions",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Not a Warning Shot",
+    "description": "Kill 500 Enemies",
+    "tier": "Weekly"
+  },
+  {
+    "name": "Antiquarian",
+    "description": "Open one of each era/tier of Relic (Lith, Meso, Neo, Axi)",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Archon Hunter",
+    "description": "Complete an Archon Hunt",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Ascendant",
+    "description": "Complete 4 Halls of Ascension on Lua",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Ceremonial Evolution",
+    "description": "Evolve any Incarnon weapon in-mission 5 times",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Cold Steel",
+    "description": "Kill 1000 Enemies on The Steel Path",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Day Trader",
+    "description": "Win 3 wagers in a row without letting the enemy score in one match of The Index",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Defense",
+    "description": "Complete a Defense mission reaching at least wave 12",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Elite Beast Slayer",
+    "description": "Defeat the Orowyrm in Steel Path",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Elite Explorer",
+    "description": "Complete 8 Railjack Missions",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Elite Test Subject",
+    "description": "Complete 8 Zones of Elite Sanctuary Onslaught",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Eximus Executioner",
+    "description": "Kill 100 Eximus",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Fallen Angel",
+    "description": "Defeat 5 Void Angels in the Zariman",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Hold Your Breath",
+    "description": "Survive for over 20 minutes in Kuva Survival",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Hydrolyst Hunter",
+    "description": "Kill or Capture an Eidolon Hydrolyst",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Kill Shot",
+    "description": "Kill 1,500 Enemies",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Mirror, Mirror",
+    "description": "Complete 3 waves of Mirror Defense",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Night Terror",
+    "description": "Complete 5 Nightmare missions of any type",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Nothing but Profit",
+    "description": "Kill The Exploiter Orb",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Perplexed",
+    "description": "Complete 3 puzzles in Duviri",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Profit-Taker",
+    "description": "Kill the Profit-Taker",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Resource Scavenger",
+    "description": "Collect 20 different type of Resources",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Rise of the Machine",
+    "description": "Kill 300 enemies using a Necramech without getting destroyed",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Sortie Expert",
+    "description": "Complete 3 Sorties",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Speedster",
+    "description": "Finish a Capture mission in less than 90 seconds",
+    "tier": "Elite Weekly"
+  },
+  {
+    "name": "Survival",
+    "description": "Complete a Survival mission reaching at least 20 minutes",
+    "tier": "Elite Weekly"
+  }
+]
