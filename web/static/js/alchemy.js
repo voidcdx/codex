@@ -173,7 +173,7 @@ function renderCards() {
 
   cats.forEach(function(cat) {
     var card = document.createElement('div');
-    card.className = 'hw-card faction-card';
+    card.className = 'hw-card faction-card panel';
     var tag = cat.items.length === 0
       ? 'NEUTRAL'
       : cat.items.length + (cat.items.length === 1 ? ' FACTION' : ' FACTIONS');
