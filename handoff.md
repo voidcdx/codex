@@ -1,5 +1,7 @@
 # Handoff — Warframe Damage Calculator
 
+> **Start of session:** always run `git pull` before making any changes to avoid merge conflicts with Cowork pushes.
+
 ## Current Status
 **304 tests passing.** v0.8.1. `GAME_DATA_VERSION = "Update 42 — The Shadowgrapher"`.
 
