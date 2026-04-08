@@ -1601,7 +1601,7 @@
   {
     "name": "Lith D7",
     "tier": "Lith",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -3512,7 +3512,7 @@
   {
     "name": "Lith L7",
     "tier": "Lith",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -11936,7 +11936,7 @@
   {
     "name": "Meso P17",
     "tier": "Meso",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -13496,7 +13496,7 @@
   {
     "name": "Meso V11",
     "tier": "Meso",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "39.1",
     "rewards": [
@@ -13535,7 +13535,7 @@
   {
     "name": "Meso V12",
     "tier": "Meso",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "39.1",
     "rewards": [
@@ -13613,7 +13613,7 @@
   {
     "name": "Meso V14",
     "tier": "Meso",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -14198,7 +14198,7 @@
   {
     "name": "Meso Y1",
     "tier": "Meso",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -15563,7 +15563,7 @@
   {
     "name": "Neo C6",
     "tier": "Neo",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "38.0.10",
     "rewards": [
@@ -15992,7 +15992,7 @@
   {
     "name": "Neo D9",
     "tier": "Neo",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "38.0.10",
     "rewards": [
@@ -18605,7 +18605,7 @@
   {
     "name": "Neo O3",
     "tier": "Neo",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -18995,7 +18995,7 @@
   {
     "name": "Neo P9",
     "tier": "Neo",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -21842,7 +21842,7 @@
   {
     "name": "Axi A20",
     "tier": "Axi",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "41",
     "rewards": [
@@ -22544,7 +22544,7 @@
   {
     "name": "Axi C10",
     "tier": "Axi",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "39.1",
     "rewards": [
@@ -25391,7 +25391,7 @@
   {
     "name": "Axi N13",
     "tier": "Axi",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "38.6",
     "rewards": [
@@ -26249,7 +26249,7 @@
   {
     "name": "Axi P8",
     "tier": "Axi",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "38.0.10",
     "rewards": [
@@ -26834,7 +26834,7 @@
   {
     "name": "Axi S18",
     "tier": "Axi",
-    "vaulted": false,
+    "vaulted": true,
     "is_baro": false,
     "introduced": "39.1",
     "rewards": [
