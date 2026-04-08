@@ -1327,6 +1327,10 @@ _NW_NAMES = {
     "FriendsSurvival":        "Survival with Friends",
     "Assassin":               "Assassin",
     "Gilded":                 "Gilded",
+    "TransmuteMods":            "Everything Old is New Again",
+    "KillEnemiesWithCorrosive": "Meltdown",
+    "FriendsDefense":           "Defense",
+    "HighGround":               "High Ground",
 }
 
 _NW_DESCRIPTIONS = {
@@ -1490,6 +1494,10 @@ _NW_DESCRIPTIONS = {
     "SolveCiphers":           "Hack 10 Consoles",
     "KillEnemiesInMech":      "Kill 100 enemies with a Necramech",
     "FriendsSurvival":        "Complete a Survival mission reaching at least 20 minutes with a friend or clanmate",
+    "TransmuteMods":            "Complete 1 Transmutations",
+    "KillEnemiesWithCorrosive": "Kill 150 Enemies with Corrosive Damage",
+    "FriendsDefense":           "Complete a Defense mission reaching at least wave 12",
+    "HighGround":               "Complete 3 Void Flood Missions",
 }
 
 # Elite-specific overrides — for keys shared between weekly and elite tiers
