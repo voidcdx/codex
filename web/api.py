@@ -999,6 +999,9 @@ def _fetch_drops() -> dict:
         try:
             r = _ws_session.get(_DROPS_CDN_URL, timeout=30)
             r.raise_for_status()
+            # CDN HTML omits the charset header; requests would otherwise
+            # fall back to ISO-8859-1 and mojibake names like "Höllvania".
+            r.encoding = "utf-8"
             return mod.parse_mission_rewards(r.text)
         except Exception as exc:
             last_exc = exc
