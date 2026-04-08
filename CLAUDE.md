@@ -148,8 +148,12 @@ web/
                    #   .rq-baro-tag: gold badge; .rq-seg: 22px height matched to search field
                    #   Tier tokens: --tier-lith/meso/neo/axi/requiem/vanguard/eterna
                    #   Drop rows: grid (1fr auto auto auto); baro note: italic dim text
-  static/alchemy.html  # Alchemy page — elemental wheel, combiner, multiplier cards at /alchemy
-  static/alchemy.css   # Alchemy styles — wheel, combiner, cards, banner, tactic tip, responsive
+  static/alchemy.html  # Alchemy page — elemental wheel, combiner, faction effectiveness cards at /alchemy
+                       #   All major sections use .panel class (glass base from panels.css)
+                       #   No .alchemy-section-label — header changed from "Tactical Optimization" to "Optimization"
+  static/alchemy.css   # Alchemy styles — wheel, combiner, faction cards, banner, tactic tip, responsive
+                       #   Glassmorphism via .panel; all colors via --accent2/--accent-aXX vars (no hardcoded gold)
+                       #   Fonts via --font-display (Exo 2) / --font-body (Rajdhani)
   static/live.css  # Live page styles — invasion .reward-chip colored by data-faction attr (Grineer/Corpus/Infested/other)
                    #   .live-page-wrap, .live-grid (dot bg), .refresh-info, .ne-* (News & Events layout)
                    #   .ne-body / .ne-body--split (1-col / 2-col grid), .ne-col, .ne-news, .ne-events
@@ -194,7 +198,9 @@ web/
     calculate.js   # runCalculation(), showResults(), showError()
     app.js         # loadData() bootstrap — uses setupPickerModal for weapon/enemy; DOMContentLoaded, version fetch
     alchemy.js     # Alchemy page — ELEMENTS data, buildWheel(), combiner logic, renderCards(), renderBanner()
-                   #   10 elements (4 base + 6 combined) with custom SVG icons + multipliers per health type
+                   #   10 elements (4 base + 6 combined) with custom SVG icons + per-element factions{} map
+                   #   Post-Update 36: uses FACTION_META (13 factions w/ color+short+glyph) not health types
+                   #   renderCards() emits 2 panels: "Strong Against" (positive) / "Resisted By" (negative)
                    #   Combiner: slot1/slot2 state, handleBaseClick(), updateCombiner(), clearSlot()
                    #   TACTIC_TIPS: per-element tactical descriptions
     theme.js       # theme switcher — applyTheme(name), initTheme(); localStorage key 'void-theme'
