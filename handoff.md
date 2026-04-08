@@ -1,5 +1,7 @@
 # Handoff — Warframe Damage Calculator
 
+> **Start of session:** always run `git pull` before making any changes to avoid merge conflicts with Cowork pushes.
+
 ## Current Status
 **304 tests passing.** v0.8.1. `GAME_DATA_VERSION = "Update 42 — The Shadowgrapher"`.
 
@@ -11,12 +13,29 @@ Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla, po
 
 ## What Was Done This Session
 
-### 1. Factions page deleted
+### 1. CLAUDE.md cleanup
+- Removed stale note about `web/alchemy/` React app ("still exists but is no longer served — can be deleted")
+
+### 2. Deleted `web/alchemy/`
+- Old React/Vite alchemy sub-app fully removed from disk (was untracked)
+- Vanilla port at `web/static/alchemy.html` + `alchemy.css` + `js/alchemy.js` is the canonical page
+
+### 3. Voruna Prime added
+- `data/warframes.json` — new entry (455hp / 270sh / 265ar / 130en / 1.2sp)
+- `web/static/images/warframes/Voruna-Prime.png` — portrait added
+
+### 4. HANDOFF.md merge conflict resolved
+- Merged HEAD + remote (a67aa967) — no data lost
+
+---
+
+## Prior Sessions Summary (for context)
+
+### Factions page deleted
 - Removed `factions.html`, `factions.css`, `factions.js`, API route, and sidebar nav entries
 - Renamed `.factions-wrap` → `.page-wrap` in `layout.css` (shared wrapper with dot bg)
-- Scrubbed factions references from `CLAUDE.md` + `handoff.md`
 
-### 2. Nightwave act resolution — 11 new mappings added
+### Nightwave act resolution — 11 new mappings
 `scripts/parse_worldstate.py` `_NW_NAMES` + `_NW_DESCRIPTIONS` dicts now have 169 / 167 entries.
 
 **First batch (4 + 1 rename):**
@@ -37,7 +56,7 @@ Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla, po
 
 **Workflow used:** Cowork scraped `wiki.warframe.com/w/Nightwave` → `data/nightwave_acts.json` (131 acts with name/description/tier). Future sessions: grep that file to resolve new CamelCase keys as they appear.
 
-### 3. Alchemy page — faction-based rewrite
+### Alchemy page — faction-based rewrite
 - Discovered page was using pre-Update 36 health-type multipliers (Ferrite, Alloy, Cloned Flesh, Shields) that no longer affect damage in-game
 - Rewrote `web/static/js/alchemy.js`:
   - ELEMENTS data now has `factions: { 'Grineer': 0.5, ... }` instead of `multipliers: { armor: [...] }`
@@ -46,7 +65,7 @@ Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla, po
   - Source of truth: `src/calculator.py` FACTION_EFFECTIVENESS table (extracted from wiki.warframe.com/w/Damage/Overview)
   - Updated `TACTIC_TIPS` with faction-based tactical advice
 
-### 4. Alchemy page — glassmorphism styling
+### Alchemy page — glassmorphism styling
 - Added `.panel` class to wheel card, combiner, selected banner, tactic card, dynamic faction cards
 - Removed `<div class="alchemy-section-label">Interactive Elemental Matrix</div>`
 - Renamed "Tactical Optimization" → "Optimization"
@@ -54,7 +73,12 @@ Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla, po
 - Fonts normalized: `var(--font-display)` (Exo 2) / `var(--font-body)` (Rajdhani)
 - Wheel rings, tooltips, bar tracks, analysis line all themed — auto-switches with Stalker/Jade/Ash
 
-### 5. Prime vaulting — Update 42
+### Alchemy page — vanilla port
+- Fully ported from React/Vite to vanilla HTML/CSS/JS — ~8KB vs 180KB bundle, no build step
+- Custom stroke-only SVG icons for all 10 elements (placeholder; user plans custom graphics)
+- Recharts removed; custom CSS gradient bars + animations
+
+### Prime vaulting — Update 42
 User refreshed wiki data via Playwright on Windows (new `weapons_data.lua` + `void_data.lua`).
 
 **Newly released primes (auto from wiki):** Voruna, Perigale, Sarofang, Keres (4 items, 11 new relics)
@@ -65,30 +89,28 @@ User refreshed wiki data via Playwright on Windows (new `weapons_data.lua` + `vo
 
 Stats: 743 total relics, 708 vaulted, 35 unvaulted, 43 unique unvaulted Prime items.
 
-### 6. `GAME_DATA_VERSION` bumped
+### `GAME_DATA_VERSION` bumped
 - `src/version.py:2` = `"Update 42 — The Shadowgrapher"` (was `"Update 41 — The Old Peace"`)
 - Flows through `/api/version`, Guide modal footer, CLI `--version`
 
-### 7. Höllvania mojibake fix (web/api.py:1002)
+### Höllvania mojibake fix (`web/api.py`)
 - Bug: live drops data showed "HÃ¶llvania" instead of "Höllvania"
-- Root cause: `_fetch_drops()` does `_ws_session.get(_DROPS_CDN_URL).text` but the DigitalOcean CDN serves raw HTML **without a `charset` in `Content-Type`** — so `requests.Response.text` falls back to ISO-8859-1, which decodes the UTF-8 bytes `0xC3 0xB6` as `Ã¶`
+- Root cause: `_fetch_drops()` uses `requests.Response.text` but CDN serves HTML without `charset` in `Content-Type` → falls back to ISO-8859-1
 - Fix: set `r.encoding = "utf-8"` before reading `r.text`
-- Disk `data/drops.json` was unaffected (parse_drops.py reads files with explicit `encoding="utf-8"`); only the in-memory `_drops_cache` populated by `_drops_bg_loop` was corrupted
+- Disk `data/drops.json` was unaffected; only in-memory `_drops_cache` was corrupted
 - To clear stale cache: restart server OR `POST /api/refresh-drops`
 
 ---
 
-## Key Files Changed This Session
+## Key Files Changed (prior sessions)
 ```
 scripts/parse_worldstate.py         # +11 NW mappings, 169 NAMES / 167 DESCRIPTIONS
 src/version.py                      # GAME_DATA_VERSION bump
-src/calculator.py                   # (unchanged — source of FACTION_EFFECTIVENESS consumed by alchemy.js)
 web/api.py                          # Höllvania UTF-8 fix in _fetch_drops()
 web/static/alchemy.html             # .panel classes, label removal, title rename
-web/static/alchemy.css               # glassmorphism rewrite, var()-based theming
+web/static/alchemy.css              # glassmorphism rewrite, var()-based theming
 web/static/js/alchemy.js            # full rewrite: factions{} data + renderCards() for 2 panels
 web/static/layout.css               # .page-wrap replaces .factions-wrap
-CLAUDE.md                           # updated alchemy descriptions + added nightwave_acts.json entry
 data/relics.json                    # 16 relics manually vaulted (Protea/Velox/Okina)
 data/weapons.json                   # refreshed to Update 42 (auto via parse_wiki_data.py)
 data/mods.json                      # refreshed to Update 42
@@ -100,14 +122,13 @@ data/nightwave_acts.json            # NEW — wiki-scraped NW reference (131 act
 ---
 
 ## Pending / Known Issues
-- **React alchemy app** — `web/alchemy/` still exists in repo but no longer served. Safe to delete.
-- **Element icons** — current SVGs are functional placeholders; user plans to make custom graphics (swap strings in `alchemy.js` ELEMENTS array)
+- **Element icons** — current SVGs are functional placeholders; user wants custom graphics (swap icon strings in `js/alchemy.js`)
 - **Missing base element glyphs** — Cold, Electricity, Heat, Toxin PNGs not downloaded (run `fetch_images.py --category damage_types`)
+- **Vaulted relic override is temporary** — will be auto-corrected on next wiki refresh once contributors update `Module:Void/data`
 - **URL state / sharing** — not started
 - **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification doesn't map automatically
 - **Mod images not yet wired into UI** — ready for mod picker redesign
 - **Baro item names** — some guessed names may be wrong
-- **Vaulted relic override is temporary** — will be auto-corrected on next wiki refresh once contributors update `Module:Void/data`
 
 ---
 
@@ -156,12 +177,16 @@ python scripts/fetch_mod_images.py --resume          # mods only
 
 ---
 
-## Design Decisions Log (carryover + new)
+## Design Decisions Log
 - Alchemy page: fully vanilla (HTML/CSS/JS) — React/Vite sub-app replaced, no build step
+- Element icons: custom stroke-only SVGs in alchemy.js, user plans to make their own later
+- Recharts removed — custom CSS bars with gradient fill + glowing tips
+- Vanilla port identical visual output to React version with ~95% less bundle weight
 - Alchemy multiplier cards: 2 faction cards (Strong Against/Resisted By) — not 4 health-type cards — per Update 36+
 - Alchemy styling: glassmorphism via `.panel`, crimson accent, all vars from `base.css`
 - Nightwave mapping: hardcoded dict in `parse_worldstate.py`, reference data in `data/nightwave_acts.json`
 - Vaulted override workflow: manual flip in `relics.json` acceptable when wiki lags DE
 - Factions page: fully deleted; `.page-wrap` is the shared dot-bg wrapper for all pages
 - Reliquary images LEFT, stats RIGHT, no rotation
+- Landscape phones: nav sidebar collapses to burger, header scrolls away
 - `r.text` is unsafe for CDN HTML without charset — always set `r.encoding = 'utf-8'`
