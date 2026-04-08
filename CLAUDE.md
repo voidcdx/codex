@@ -64,6 +64,12 @@ data/
   companions_data.lua  # raw wiki Lua — Module:Companions/data
   arcanes_data.lua     # raw wiki Lua — Module:Arcane/data
   resources_data.lua   # raw wiki Lua — Module:Resources/data
+  nightwave_acts.json  # wiki-scraped Nightwave acts — [{name,description,tier}] x131
+                       #   REFERENCE ONLY — not loaded at runtime
+                       #   Used to resolve unresolved CamelCase act keys in parse_worldstate.py
+                       #   When new worldstate keys appear, grep this file for display name+desc,
+                       #   then add mapping to _NW_NAMES + _NW_DESCRIPTIONS
+                       #   Refresh: scrape wiki.warframe.com/w/Nightwave pages via Cowork/Playwright
   manifest_*.json      # 6 image download manifests (abilities, arcanes, damage_types, enemies, relics, resources)
 scripts/
   parse_lua.py      # parses raw .lua module files downloaded from wiki
