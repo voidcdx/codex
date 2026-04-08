@@ -1221,7 +1221,7 @@ _NW_NAMES = {
     # Weekly / Permanent
     "CompleteMissions":       "Mission Complete",
     "KillEximus":             "Eximus Eliminator",
-    "KillEnemies":            "Not a Warning Shot",
+    "KillEnemies":            "Not A Warning Shot XXIV",
     "CompleteTreasures":      "Animator",
     "NightmareMissions":      "Sound Sleeper",
     "SanctuaryOnslaught":     "Test Subject",
@@ -1331,6 +1331,7 @@ _NW_NAMES = {
     "KillEnemiesWithCorrosive": "Meltdown",
     "FriendsDefense":           "Defense",
     "HighGround":               "High Ground",
+    "KillEnemiesWithHeadshots": "Not A Warning Shot",
 }
 
 _NW_DESCRIPTIONS = {
@@ -1498,6 +1499,7 @@ _NW_DESCRIPTIONS = {
     "KillEnemiesWithCorrosive": "Kill 150 Enemies with Corrosive Damage",
     "FriendsDefense":           "Complete a Defense mission reaching at least wave 12",
     "HighGround":               "Complete 3 Void Flood Missions",
+    "KillEnemiesWithHeadshots": "Kill 100 Enemies with head shots",
 }
 
 # Elite-specific overrides — for keys shared between weekly and elite tiers
