@@ -59,7 +59,7 @@ web/static/alchemy-preview.html      # standalone PoC (superseded)
 - **Element icons** — current SVGs are functional placeholders; user wants to create custom graphics (can swap icon strings in alchemy.js)
 - **Missing base element glyphs** — Cold, Electricity, Heat, Toxin PNGs not downloaded (run `fetch_images.py --category damage_types`)
 - **React app cleanup** — DONE, deleted `web/alchemy/` + `web/static/alchemy-dist/`
-- **Alchemy element data** — multiplier values may need wiki verification for accuracy
+- **Alchemy element data** — DONE, rewritten to use post-Update 36 faction-based multipliers (Grineer, Corpus, Infested, Sentient, Corrupted, Murmur, etc.) sourced from `src/calculator.py` FACTION_EFFECTIVENESS table. Old health-type multipliers (Ferrite, Alloy, Cloned Flesh, etc.) removed.
 - **Alchemy page styling** — could use further refinement to match Void Codex design system
 - **URL state / sharing** — not started
 - **Sentinel stats** — companions_data.lua has stats but Reliquary sentinel classification doesn't map automatically
@@ -100,3 +100,4 @@ pytest                                                # verify
 - Reliquary image inside scroll panel (not on outer container) — fixes landscape float
 - Landscape phones: nav sidebar collapses to burger, header scrolls away
 - Factions page fully deleted; `.factions-wrap` renamed to `.page-wrap` (shared wrapper in layout.css)
+- Alchemy multiplier cards: replaced 4 health-type cards (Armor/Flesh/Shields/Machinery) with 2 faction cards (Strong Against/Resisted By) using FACTION_META color-coded badges + animated bars + SVG glyphs per faction

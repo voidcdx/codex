@@ -5,50 +5,68 @@
 var ELEMENTS = [
   { id:'cold', name:'Cold', color:'#4FC3F7', inner:true,
     icon:'<line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="7" x2="20" y2="17"/><line x1="20" y1="7" x2="4" y2="17"/><line x1="12" y1="6" x2="9" y2="4"/><line x1="12" y1="6" x2="15" y2="4"/><line x1="12" y1="18" x2="9" y2="20"/><line x1="12" y1="18" x2="15" y2="20"/><line x1="7" y1="9" x2="5" y2="7.5"/><line x1="17" y1="9" x2="19" y2="7.5"/><line x1="7" y1="15" x2="5" y2="16.5"/><line x1="17" y1="15" x2="19" y2="16.5"/>',
-    multipliers:{ armor:[{type:'Alloy',value:0.25}], flesh:[{type:'Infested',value:0.25}], shields:[{type:'Shield',value:0.5}], machinery:[] }},
+    factions:{ 'Sentient':0.5, 'Techrot':-0.5 }},
   { id:'electricity', name:'Electricity', color:'#FFEB3B', inner:true,
     icon:'<polyline points="14,2 8,11 13,11 10,22" fill="none"/><line x1="16" y1="8" x2="19" y2="6"/><line x1="17" y1="13" x2="21" y2="13"/><line x1="16" y1="17" x2="19" y2="19"/>',
-    multipliers:{ armor:[], flesh:[], shields:[{type:'Shield',value:0.5},{type:'Proto',value:0.5}], machinery:[{type:'Robotic',value:0.5}] }},
+    factions:{ 'Corpus Amalgam':0.5, 'Murmur':0.5, 'Anarchs':0.5 }},
   { id:'heat', name:'Heat', color:'#FF7043', inner:true,
     icon:'<path d="M12 22c-4 0-7-2.5-7-6.5 0-3 2-5 4-7.5 0.5-0.6 1-1.5 1.5-2.5 0.5-1 1-2 1.5-3.5 0.5 1.5 1 2.5 1.5 3.5 0.5 1 1 1.9 1.5 2.5 2 2.5 4 4.5 4 7.5 0 4-3 6.5-7 6.5z" fill="none"/><path d="M12 22c-2 0-3.5-1.3-3.5-3.5 0-1.5 1-2.5 2-4 0.5 1 1 1.7 1.5 2.5 0.5-0.8 1-1.5 1.5-2.5 1 1.5 2 2.5 2 4 0 2.2-1.5 3.5-3.5 3.5z" fill="none"/>',
-    multipliers:{ armor:[], flesh:[{type:'Cloned',value:0.25},{type:'Infested',value:0.5}], shields:[], machinery:[{type:'Robotic',value:0.25}] }},
+    factions:{ 'Infested':0.5, 'Kuva Grineer':-0.5 }},
   { id:'toxin', name:'Toxin', color:'#66BB6A', inner:true,
     icon:'<path d="M12 2 L12 6" fill="none"/><path d="M12 6c-3 3-6 5-6 9a6 6 0 0 0 12 0c0-4-3-6-6-9z" fill="none"/><circle cx="9.5" cy="14" r="1.2" fill="none"/><circle cx="14" cy="16" r="0.8" fill="none"/><circle cx="11" cy="18" r="0.6" fill="none"/>',
-    multipliers:{ armor:[{type:'Ferrite',value:0.25}], flesh:[{type:'Cloned',value:0.25}], shields:[], machinery:[] }},
+    factions:{ 'Narmer':0.5 }},
   { id:'corrosive', name:'Corrosive', color:'#8BC34A', components:['toxin','electricity'],
     icon:'<path d="M17 4a9 9 0 0 1 1 12" fill="none"/><path d="M14 19a9 9 0 0 1-10-6" fill="none"/><path d="M4 8a9 9 0 0 1 8-6" fill="none"/><path d="M8 14 L7 18" fill="none"/><path d="M13 16 L12.5 19.5" fill="none"/><circle cx="7" cy="20" r="0.8" fill="none"/><circle cx="12.5" cy="21.5" r="0.6" fill="none"/>',
-    multipliers:{ armor:[{type:'Ferrite',value:0.75},{type:'Alloy',value:-0.5}], flesh:[{type:'Cloned',value:0.75},{type:'Infested',value:0.5}], shields:[{type:'Proto',value:0.5},{type:'Shield',value:-0.5}], machinery:[{type:'Robotic',value:0.75}] }},
+    factions:{ 'Grineer':0.5, 'Kuva Grineer':0.5, 'Scaldra':0.5, 'Sentient':-0.5 }},
   { id:'radiation', name:'Radiation', color:'#FFEE58', components:['heat','electricity'],
     icon:'<circle cx="12" cy="12" r="2.5" fill="none"/><path d="M12 9.5 L10 3 A9 9 0 0 1 14 3 Z" fill="none"/><path d="M14.2 13.2 L19.5 16.5 A9 9 0 0 1 16 20 Z" fill="none"/><path d="M9.8 13.2 L4.5 16.5 A9 9 0 0 1 8 20 Z" fill="none"/>',
-    multipliers:{ armor:[{type:'Alloy',value:0.75}], flesh:[{type:'Infested',value:-0.5}], shields:[{type:'Shield',value:-0.25}], machinery:[{type:'Robotic',value:0.25}] }},
+    factions:{ 'Sentient':0.5, 'Murmur':0.5, 'Corrupted':-0.5, 'Anarchs':-0.5 }},
   { id:'viral', name:'Viral', color:'#BA68C8', components:['cold','toxin'],
     icon:'<path d="M8 3c2 3 4 3 4 6s-4 3-4 6 2 3 4 6" fill="none"/><path d="M16 3c-2 3-4 3-4 6s4 3 4 6-2 3-4 6" fill="none"/><circle cx="12" cy="6" r="1" fill="none"/><circle cx="12" cy="12" r="1" fill="none"/><circle cx="12" cy="18" r="1" fill="none"/>',
-    multipliers:{ armor:[], flesh:[{type:'Cloned',value:0.75}], shields:[], machinery:[] }},
+    factions:{ 'Corrupted':0.5, 'Deimos Infested':-0.5, 'Murmur':-0.5 }},
   { id:'magnetic', name:'Magnetic', color:'#42A5F5', components:['cold','electricity'],
     icon:'<path d="M7 2v10a5 5 0 0 0 10 0V2" fill="none"/><line x1="4" y1="2" x2="10" y2="2"/><line x1="14" y1="2" x2="20" y2="2"/><path d="M4 8c-2 4 0 10 8 12" fill="none" stroke-dasharray="2 2"/><path d="M20 8c2 4 0 10-8 12" fill="none" stroke-dasharray="2 2"/>',
-    multipliers:{ armor:[], flesh:[], shields:[{type:'Shield',value:0.75},{type:'Proto',value:0.75}], machinery:[] }},
+    factions:{ 'Corpus':0.5, 'Corpus Amalgam':0.5, 'Techrot':0.5, 'Narmer':-0.5 }},
   { id:'gas', name:'Gas', color:'#00BFA5', components:['heat','toxin'],
     icon:'<path d="M6 18c0-3 2-4 4-5s4-2 4-5a4 4 0 0 0-8 0" fill="none"/><path d="M10 18c0-2 1.5-3 3-4s3-2 3-4" fill="none"/><path d="M5 21c1 0 2-0.5 3-0.5s2 0.5 3 0.5 2-0.5 3-0.5 2 0.5 3 0.5" fill="none"/>',
-    multipliers:{ armor:[], flesh:[{type:'Infested',value:0.75}], shields:[], machinery:[] }},
+    factions:{ 'Deimos Infested':0.5, 'Techrot':0.5, 'Scaldra':-0.5 }},
   { id:'blast', name:'Blast', color:'#EF5350', components:['cold','heat'],
     icon:'<circle cx="12" cy="12" r="2" fill="none"/><line x1="12" y1="2" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="2" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="8.5" y2="8.5"/><line x1="15.5" y1="15.5" x2="19" y2="19"/><line x1="19" y1="5" x2="15.5" y2="8.5"/><line x1="8.5" y1="15.5" x2="5" y2="19"/>',
-    multipliers:{ armor:[{type:'Ferrite',value:0.25}], flesh:[], shields:[], machinery:[{type:'Robotic',value:0.75}] }}
+    factions:{ 'Deimos Infested':0.5, 'Corpus Amalgam':-0.5 }}
 ];
+
+/* ── Faction metadata (Update 36+ damage effectiveness) ── */
+/* Source: src/calculator.py FACTION_EFFECTIVENESS table from wiki.warframe.com */
+var FACTION_META = {
+  'Grineer':         { color:'#C9A227', short:'GRN', icon:'<path d="M12 2v20"/><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/>' },
+  'Kuva Grineer':    { color:'#B71C1C', short:'KVA', icon:'<path d="M12 2c-3 5-6 8-6 12a6 6 0 0 0 12 0c0-4-3-7-6-12z"/>' },
+  'Narmer':          { color:'#D4A574', short:'NAR', icon:'<path d="M6 6 L12 2 L18 6 L18 14 L12 20 L6 14 Z"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/>' },
+  'Corpus':          { color:'#4FC3F7', short:'COR', icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="3" x2="12" y2="8"/>' },
+  'Corpus Amalgam':  { color:'#00E5C8', short:'AMG', icon:'<circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/><line x1="11" y1="12" x2="13" y2="12"/>' },
+  'Infested':        { color:'#9CCC65', short:'INF', icon:'<path d="M12 3c-2 2-5 2-5 6s3 4 2 7 3 4 3 5 2-2 3-5 3-3 2-7-3-4-5-6z"/><circle cx="10" cy="11" r="0.8"/><circle cx="14" cy="13" r="0.8"/>' },
+  'Deimos Infested': { color:'#EC407A', short:'DEI', icon:'<path d="M7 10a5 5 0 0 1 10 0v3l-2 4h-6l-2-4z"/><circle cx="10" cy="11" r="1"/><circle cx="14" cy="11" r="1"/><line x1="10" y1="17" x2="10" y2="20"/><line x1="14" y1="17" x2="14" y2="20"/>' },
+  'Corrupted':       { color:'#FFD54F', short:'CRP', icon:'<path d="M12 2 L22 12 L12 22 L2 12 Z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="1" fill="currentColor"/>' },
+  'Sentient':        { color:'#CE93D8', short:'SNT', icon:'<path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/>' },
+  'Murmur':          { color:'#26C6DA', short:'MUR', icon:'<path d="M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/><path d="M3 16c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>' },
+  'Scaldra':         { color:'#FF5722', short:'SCA', icon:'<path d="M12 2 L16 8 L20 6 L18 12 L22 14 L16 16 L18 22 L12 18 L6 22 L8 16 L2 14 L6 12 L4 6 L8 8 Z"/>' },
+  'Techrot':         { color:'#E91E63', short:'TCH', icon:'<rect x="5" y="5" width="14" height="14" rx="1"/><line x1="9" y1="2" x2="9" y2="5"/><line x1="15" y1="2" x2="15" y2="5"/><line x1="9" y1="19" x2="9" y2="22"/><line x1="15" y1="19" x2="15" y2="22"/><polyline points="10,10 13,10 11,14 14,14"/>' },
+  'Anarchs':         { color:'#7E57C2', short:'ANA', icon:'<circle cx="12" cy="12" r="9"/><line x1="5" y1="16" x2="19" y2="16"/><line x1="9" y1="16" x2="12" y2="6"/><line x1="15" y1="16" x2="12" y2="6"/>' }
+};
 
 var INNER_ANGLES = [-135, -45, 135, 45];
 var OUTER_ANGLES = [-90, -30, 30, 90, 150, 210];
 
 var TACTIC_TIPS = {
-  cold:        'Cold damage slows enemies and reduces their attack speed. Effective against Alloy Armor and Shields.',
-  electricity: 'Electricity creates a chain-lightning effect on status proc. Strong against Shields and Robotics.',
-  heat:        'Heat damage ignites enemies, dealing damage over time and stripping armor. Strong against Infested flesh.',
-  toxin:       'Toxin damage bypasses shields entirely, dealing damage directly to health. Effective against Ferrite Armor.',
-  corrosive:   'Corrosive procs permanently strip armor — 80% on the first stack. Essential for Ferrite-armored Grineer.',
-  viral:       'Viral increases all damage to health — the meta choice for high-level content paired with Slash.',
-  radiation:   'Radiation causes enemies to attack each other. Strongest against Alloy Armor (Eidolons, heavy Grineer).',
-  magnetic:    'Magnetic disrupts shields and energy. The go-to element for Corpus enemies and Profit-Taker shields.',
-  gas:         'Gas creates a lingering toxin cloud on proc. Strongest against Infested flesh.',
-  blast:       'Blast knocks down enemies. Effective against Machinery and Ferrite Armor.'
+  cold:        'Cold damage slows enemies and reduces their attack speed. Strong against Sentients. Resisted by Techrot.',
+  electricity: 'Electricity creates a chain-lightning effect on status proc. Strong against Corpus Amalgam, Murmur, and Anarchs.',
+  heat:        'Heat damage ignites enemies, dealing damage over time and stripping armor. Strong against Infested. Resisted by Kuva Grineer.',
+  toxin:       'Toxin damage bypasses shields entirely, dealing damage directly to health. Strong against Narmer.',
+  corrosive:   'Corrosive procs strip armor — 26% first stack, up to 80% at 10 stacks. Strong against Grineer, Kuva Grineer, and Scaldra. Resisted by Sentients.',
+  viral:       'Viral increases all damage to health — the meta choice for high-level content. Strong against Corrupted. Resisted by Deimos Infested and Murmur.',
+  radiation:   'Radiation causes enemies to attack each other. Strong against Sentients and Murmur. Resisted by Corrupted and Anarchs.',
+  magnetic:    'Magnetic disrupts shields and energy. Strong against Corpus, Corpus Amalgam, and Techrot. Resisted by Narmer.',
+  gas:         'Gas creates a lingering toxin cloud on proc. Strong against Deimos Infested and Techrot. Resisted by Scaldra.',
+  blast:       'Blast knocks down enemies. Strong against Deimos Infested. Resisted by Corpus Amalgam.'
 };
 
 var selected = ELEMENTS.find(function(e) { return e.id === 'corrosive'; });
@@ -127,63 +145,97 @@ function renderBanner() {
     '<div class="sb-status"><div class="sb-badge">Status Active</div><div class="sb-desc">'+statusDesc+'</div></div>';
 }
 
-/* ── Multiplier cards ── */
+/* ── Faction effectiveness cards ── */
+function factionSvg(name, size) {
+  var meta = FACTION_META[name];
+  if (!meta) return '';
+  return '<svg class="faction-glyph" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+meta.color+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+meta.icon+'</svg>';
+}
+
 function renderCards() {
   var container = document.getElementById('cards');
   container.innerHTML = '';
+  var el = selected;
+  var strong = [];
+  var weak = [];
+  Object.keys(el.factions || {}).forEach(function(name) {
+    var v = el.factions[name];
+    if (v > 0) strong.push({ name: name, value: v });
+    else if (v < 0) weak.push({ name: name, value: v });
+  });
+  strong.sort(function(a,b) { return b.value - a.value; });
+  weak.sort(function(a,b) { return a.value - b.value; });
+
   var cats = [
-    { title:'Armor',     items: selected.multipliers.armor },
-    { title:'Flesh',     items: selected.multipliers.flesh },
-    { title:'Shields',   items: selected.multipliers.shields },
-    { title:'Machinery', items: selected.multipliers.machinery }
+    { title:'Strong Against', items: strong, cls:'positive' },
+    { title:'Resisted By',    items: weak,   cls:'negative' }
   ];
 
   cats.forEach(function(cat) {
     var card = document.createElement('div');
-    card.className = 'hw-card';
-    var tag = cat.items.length > 0 ? cat.items.length + ' MATCH' : 'NEUTRAL';
-    var barsHTML = '';
+    card.className = 'hw-card faction-card';
+    var tag = cat.items.length === 0
+      ? 'NEUTRAL'
+      : cat.items.length + (cat.items.length === 1 ? ' FACTION' : ' FACTIONS');
+    var rowsHTML = '';
     if (cat.items.length) {
-      barsHTML = cat.items.map(function(m, i) {
+      rowsHTML = cat.items.map(function(m, i) {
+        var meta = FACTION_META[m.name] || { color:'#888', short:'?', icon:'' };
         var v = Math.round(m.value * 100);
         var cls = v > 0 ? 'positive' : 'negative';
         var display = v > 0 ? '+'+v+'%' : v+'%';
         var pct = Math.abs(v);
-        return '<div class="bar-row" data-name="'+m.type+'" data-display="'+display+'" data-cls="'+cls+'" style="--delay:'+(0.1+i*0.08)+'s;--glow-delay:'+(0.45+i*0.08)+'s">' +
-          '<div class="bar-label-row"><span class="bar-name">'+m.type+'</span>' +
-          '<span class="bar-value '+cls+'" style="animation:fadeIn 0.3s '+(0.15+i*0.08)+'s both">'+display+'</span></div>' +
-          '<div class="bar-track"><div class="bar-fill '+cls+'" data-width="'+pct+'"></div>' +
-          '<div class="bar-glow '+cls+'" data-pct="'+pct+'" data-dir="'+cls+'"></div></div></div>';
+        return '<div class="faction-row" data-name="'+m.name+'" data-display="'+display+'" data-cls="'+cls+'" style="--faction-color:'+meta.color+';--delay:'+(0.08+i*0.1)+'s">' +
+          '<div class="faction-row-header">' +
+            '<div class="faction-badge">' +
+              factionSvg(m.name, 18) +
+              '<span class="faction-short">'+meta.short+'</span>' +
+              '<span class="faction-name">'+m.name+'</span>' +
+            '</div>' +
+            '<span class="faction-value '+cls+'">'+display+'</span>' +
+          '</div>' +
+          '<div class="faction-bar-track">' +
+            '<div class="faction-bar-fill '+cls+'" data-width="'+pct+'"></div>' +
+            '<div class="faction-bar-tip '+cls+'" data-pct="'+pct+'"></div>' +
+          '</div>' +
+        '</div>';
       }).join('');
     } else {
-      barsHTML = '<div class="bar-empty">NO MODIFIER</div>';
+      rowsHTML =
+        '<div class="faction-empty">' +
+          '<div class="faction-empty-ring"></div>' +
+          '<div class="faction-empty-dots">• • •</div>' +
+          '<div class="faction-empty-text">NO INTERACTION</div>' +
+        '</div>';
     }
     card.innerHTML =
-      '<div class="hw-card-header"><div class="hw-card-title">'+cat.title+'</div><div class="hw-card-tag">'+tag+'</div></div>' +
-      '<div class="bar-list">'+barsHTML+'</div><div class="hw-card-footer"></div>';
+      '<div class="hw-card-header">' +
+        '<div class="hw-card-title">'+cat.title+'</div>' +
+        '<div class="hw-card-tag '+cat.cls+'">'+tag+'</div>' +
+      '</div>' +
+      '<div class="faction-list">'+rowsHTML+'</div>' +
+      '<div class="hw-card-footer"></div>';
     container.appendChild(card);
 
     // Animate bars
     requestAnimationFrame(function() {
-      card.querySelectorAll('.bar-fill').forEach(function(bar) {
-        var w = bar.dataset.width;
-        var d = parseFloat(bar.closest('.bar-row').style.getPropertyValue('--delay')) * 1000;
-        setTimeout(function() { bar.style.width = w + '%'; }, d);
-      });
-      card.querySelectorAll('.bar-glow').forEach(function(glow) {
-        var pct = glow.dataset.pct;
-        var dir = glow.dataset.dir;
-        var d = parseFloat(glow.closest('.bar-row').style.getPropertyValue('--glow-delay')) * 1000;
+      card.querySelectorAll('.faction-row').forEach(function(row) {
+        var d = parseFloat(row.style.getPropertyValue('--delay')) * 1000;
+        var fill = row.querySelector('.faction-bar-fill');
+        var tip = row.querySelector('.faction-bar-tip');
         setTimeout(function() {
-          glow.style.opacity = '1';
-          if (dir === 'positive') { glow.style.left = pct+'%'; glow.style.transform = 'translateX(-100%)'; }
-          else { glow.style.right = pct+'%'; glow.style.transform = 'translateX(100%)'; }
+          if (fill) fill.style.width = fill.dataset.width + '%';
+          if (tip) {
+            tip.style.opacity = '1';
+            if (tip.classList.contains('positive')) tip.style.left = tip.dataset.pct + '%';
+            else tip.style.right = tip.dataset.pct + '%';
+          }
         }, d);
       });
     });
 
     // Tooltips
-    card.querySelectorAll('.bar-row').forEach(function(row) {
+    card.querySelectorAll('.faction-row').forEach(function(row) {
       row.addEventListener('mouseenter', function() {
         tooltip.querySelector('.tt-name').textContent = row.dataset.name;
         var v = tooltip.querySelector('.tt-val');
