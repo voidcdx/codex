@@ -100,7 +100,7 @@ web/
     alchemy.js     # ELEMENTS data + FACTION_META (13 factions), buildWheel(), renderCards() — 2 faction panels
     theme.js       # applyTheme(), initTheme(); themes: stalker (default), jade, ash
   static/images/
-    weapons/       # weapon PNGs — PascalCase, no hyphens (e.g. BratonPrime.png) — matches weapons.json `image` field
+    weapons/       # weapon PNGs — hyphenated: Name-Prime.png (e.g. Braton-Prime.png)
     mods/          # mod card PNGs — filenames from mods.json `image` field
     warframes/     # warframe PNGs — hyphenated: Name-Prime.png (e.g. Ash-Prime.png)
     sentinels/     # sentinel PNGs — convention: Name-Prime.png

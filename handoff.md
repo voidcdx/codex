@@ -24,8 +24,8 @@ Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla, po
 - `web/static/images/warframes/Voruna-Prime.png` — portrait added
 
 ### 4. Perigale Prime + Sarofang Prime images added
-- `web/static/images/weapons/PerigalePrime.png`
-- `web/static/images/weapons/SarofangPrime.png`
+- `web/static/images/weapons/Perigale-Prime.png`
+- `web/static/images/weapons/Sarofang-Prime.png`
 
 ### 5. Update 42 data refresh
 - `fetch_wiki_playwright.py` fixed — now fetches weapons subpages (`/primary`, `/secondary`, `/melee`, `/archwing`, `/companion`, `/railjack`, `/modular`, `/misc`) instead of stub module
@@ -34,20 +34,16 @@ Full damage pipeline, web UI, live tracker, reliquary, alchemy page (vanilla, po
 - `data/mods.json` — refreshed + Galvanized fields restored via `fix_galv_stats.py`
 - `data/relics.json` — refreshed
 
-### 6. Weapon image standardization
-- 276 weapon images renamed from `Hyphen-Case.png` to `PascalCase.png` to match `weapons.json` image field
-- Convention: weapons use PascalCase (from wiki's internal Image field); warframes/sentinels use `Name-Prime.png` (hyphenated)
-
-### 7. HANDOFF.md merge conflict resolved
+### 6. HANDOFF.md merge conflict resolved
 - Merged HEAD + remote (a67aa967) — no data lost
 - Added `git pull` reminder at top
 
 ---
 
 ## Image Naming Conventions
-- **Weapons:** PascalCase, no hyphens — e.g. `BratonPrime.png` (matches `weapons.json` image field)
-- **Warframes:** Hyphenated — e.g. `Ash-Prime.png` (convention: `Name.replace(' ', '-') + '.png'`)
-- **Sentinels:** Hyphenated — e.g. `Carrier-Prime.png` (same convention as warframes)
+- **Weapons:** hyphenated — e.g. `Braton-Prime.png`, `Perigale-Prime.png`
+- **Warframes:** hyphenated — e.g. `Ash-Prime.png` (convention: `Name.replace(' ', '-') + '.png'`)
+- **Sentinels:** hyphenated — e.g. `Carrier-Prime.png` (same convention as warframes)
 
 ## Data Refresh Workflow (Update NN)
 ```bash
@@ -78,10 +74,9 @@ python scripts/fetch_mod_images.py --resume    # mods only
 - **Missing base element glyphs** — Cold, Electricity, Heat, Toxin PNGs not downloaded (run `fetch_images.py --category damage_types`)
 - **Vaulted relic override is temporary** — will auto-correct on next wiki refresh once contributors update `Module:Void/data`
 - **URL state / sharing** on alchemy page — not started
-- **Sentinel stats** — all 6 sentinel primes have stats in `warframes.json`; Odonata Prime also added
 - **Mod images** not yet wired into UI — ready for mod picker redesign
 - **Baro item names** — some guessed names may be wrong
-- **252 weapon images missing** — not downloaded yet (run `fetch_images.py`)
+- **252 weapon images missing** — not yet downloaded (run `fetch_images.py`)
 
 ---
 
@@ -109,8 +104,7 @@ python scripts/fetch_mod_images.py --resume    # mods only
 ---
 
 ## Design Decisions Log
-- Weapons images: PascalCase (no hyphens) — matches `weapons.json` image field from wiki
-- Warframe/sentinel images: `Name-Prime.png` hyphenated — JS convention in `reliquary.js`
+- All image folders use hyphenated filenames — e.g. `Braton-Prime.png`, `Ash-Prime.png`
 - Alchemy: fully vanilla, faction-based multipliers, glassmorphism via `.panel`
 - Nightwave: hardcoded dict in `parse_worldstate.py`, reference in `data/nightwave_acts.json`
 - Vaulted override: manual flip in `relics.json` acceptable when wiki lags DE
