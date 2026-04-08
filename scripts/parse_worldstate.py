@@ -1332,6 +1332,14 @@ _NW_NAMES = {
     "FriendsDefense":           "Defense",
     "HighGround":               "High Ground",
     "KillEnemiesWithHeadshots": "Not A Warning Shot",
+    # Update 42 additions (Apr 2026) — matched via wiki scrape
+    "ZarimanBountyHunter":      "Zariman Bounty Hunter",
+    "RiseOfTheMachine":         "Rise of the Machine",
+    "CompleteMission":          "Agent",
+    "DeployGlyph":              "Graffiti",
+    # Best-guess mappings — no exact wiki match, verify if wrong
+    "CompleteRace":             "Complete a Race",
+    "KuvaSurvivalNoCapsules":   "Hold Your Breath",
 }
 
 _NW_DESCRIPTIONS = {
@@ -1500,6 +1508,14 @@ _NW_DESCRIPTIONS = {
     "FriendsDefense":           "Complete a Defense mission reaching at least wave 12",
     "HighGround":               "Complete 3 Void Flood Missions",
     "KillEnemiesWithHeadshots": "Kill 100 Enemies with head shots",
+    # Update 42 additions (Apr 2026) — matched via wiki scrape
+    "ZarimanBountyHunter":      "Complete 4 different Bounties in the Zariman",
+    "RiseOfTheMachine":         "Kill 300 enemies using a Necramech without getting destroyed",
+    "CompleteMission":          "Complete a Mission",
+    "DeployGlyph":              "Deploy a Glyph while on a mission",
+    # Best-guess mappings — no exact wiki match, verify if wrong
+    "CompleteRace":             "Complete a race in any mode",
+    "KuvaSurvivalNoCapsules":   "Survive for 20 minutes in Kuva Survival without using Life Support Capsules",
 }
 
 # Elite-specific overrides — for keys shared between weekly and elite tiers
