@@ -34,10 +34,18 @@ DATA_DIR = Path(__file__).parent.parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 MODULES = [
-    ("weapons_data.lua", "https://wiki.warframe.com/w/Module:Weapons/data?action=raw"),
-    ("mods_data.lua",    "https://wiki.warframe.com/w/Module:Mods/data?action=raw"),
-    ("enemies_data.lua", "https://wiki.warframe.com/w/Module:Enemies/data?action=raw"),
-    ("void_data.lua",    "https://wiki.warframe.com/w/Module:Void/data?action=raw"),
+    # Weapons data is split into subpages — fetch each slot separately
+    ("weapons_primary.lua",   "https://wiki.warframe.com/w/Module:Weapons/data/primary?action=raw"),
+    ("weapons_secondary.lua", "https://wiki.warframe.com/w/Module:Weapons/data/secondary?action=raw"),
+    ("weapons_melee.lua",     "https://wiki.warframe.com/w/Module:Weapons/data/melee?action=raw"),
+    ("weapons_archwing.lua",  "https://wiki.warframe.com/w/Module:Weapons/data/archwing?action=raw"),
+    ("weapons_companion.lua", "https://wiki.warframe.com/w/Module:Weapons/data/companion?action=raw"),
+    ("weapons_railjack.lua",  "https://wiki.warframe.com/w/Module:Weapons/data/railjack?action=raw"),
+    ("weapons_modular.lua",   "https://wiki.warframe.com/w/Module:Weapons/data/modular?action=raw"),
+    ("weapons_misc.lua",      "https://wiki.warframe.com/w/Module:Weapons/data/misc?action=raw"),
+    ("mods_data.lua",         "https://wiki.warframe.com/w/Module:Mods/data?action=raw"),
+    ("enemies_data.lua",      "https://wiki.warframe.com/w/Module:Enemies/data?action=raw"),
+    ("void_data.lua",         "https://wiki.warframe.com/w/Module:Void/data?action=raw"),
 ]
 
 
